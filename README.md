@@ -1,12 +1,12 @@
 # projeto-teste
 
-# Bem-vindo ao Repositório da *****.
+# Bem-vindo ao Repositório da Kronos.
 
 <!-- *código da imagem aqui quando a gente tiver a logo* -->
 
 ## Sobre Nós
 
-Este projeto visa desenvolver uma aplicação de agendamento e controle de estoque voltado ao contexto de um consultório de acupuntura. *Desenvolver justificativa melhor, ou copiar e colar da documentação*
+Este projeto visa desenvolver uma aplicação de agendamento e controle de estoque focado em salões de beleza e estúdios de estética. *Desenvolver justificativa melhor, ou copiar e colar da documentação*
 
 ## Funcionalidades Principais
 
