@@ -1,11 +1,14 @@
-package AtividadeValendoNota.Medicamentos
+package kronos.projetoplenitutenoolhar.usuario
 
+import AtividadeValendoNota.Medicamentos.PatchUsuario
+import AtividadeValendoNota.Medicamentos.Usuario
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/usuario")
 class usuarioController {
+
     val listaUsuarios = mutableListOf<Usuario>(
         Usuario("senha1", "João", 123.45, true, 123456, 789, 18901, 19900101, 0, 1, 2),
         Usuario("senha2", "Maria", 678.90, false, 789012, 345, 982109, 19850515, 1, 0, 3),
@@ -18,10 +21,11 @@ class usuarioController {
 
     @GetMapping // Utilizamos o Get para fazer listagens
     fun lista(): ResponseEntity<List<Usuario>> {
+
         if (listaUsuarios.isEmpty()) {
-            return ResponseEntity.status(200).build()
+            return ResponseEntity.status(204).build()
         }
-        return ResponseEntity.status(204).build()
+        return ResponseEntity.status(200).body(listaUsuarios)
     }
 
     @GetMapping("/{indice}") // Utilizamos o Get para fazer listagens
