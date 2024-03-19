@@ -1,7 +1,6 @@
 package kronos.projetoplenitutenoolhar.usuario
 
-import AtividadeValendoNota.Medicamentos.PatchUsuario
-import AtividadeValendoNota.Medicamentos.Usuario
+
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -10,8 +9,6 @@ import org.springframework.web.bind.annotation.*
 class usuarioController {
 
     val listaUsuarios = mutableListOf<Usuario>(
-        Usuario("senha1", "João", 123.45, true, 123456, 789, 18901, 19900101, 0, 1, 2),
-        Usuario("senha2", "Maria", 678.90, false, 789012, 345, 982109, 19850515, 1, 0, 3),
         // Adicione mais usuários conforme necessário
     )
 
@@ -31,7 +28,7 @@ class usuarioController {
     @GetMapping("/{indice}") // Utilizamos o Get para fazer listagens
     fun Busca(@PathVariable indice: Int): ResponseEntity<Usuario> {
         if (existeUsuario(indice)) {
-            return ResponseEntity.status(200).build()
+            return ResponseEntity.status(200).body(listaUsuarios[indice])
         }
         return ResponseEntity.status(404).build()
     }
@@ -68,10 +65,24 @@ class usuarioController {
         }
     }
 
+    @PutMapping("/{indice}")
+    fun restaurar(
+        @PathVariable indice: Int,
+        @RequestBody atualizacao: PutSenha
+    ): ResponseEntity<Usuario> {
+        try {
+            val usuario = listaUsuarios[indice]
+            usuario.senha = atualizacao.novoValorSenha
+            return ResponseEntity.status(200).build()
+        } catch (exception: Exception) {
+            return ResponseEntity.status(404).build()
+        }
+    }
+
     @DeleteMapping("/{indice}")
     fun deletar(@PathVariable indice: Int): String {
         var usuario1 = listaUsuarios[indice]
-        if (existeUsuario(indice)){
+        if (existeUsuario(indice)) {
             listaUsuarios.removeAt(indice)
         }
         return "Usuário removido ${usuario1.nome}"

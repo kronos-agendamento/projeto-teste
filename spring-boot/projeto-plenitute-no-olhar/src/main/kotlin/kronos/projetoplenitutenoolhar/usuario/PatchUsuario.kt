@@ -1,10 +1,10 @@
-package AtividadeValendoNota.Medicamentos
+package kronos.projetoplenitutenoolhar.usuario
 
 class PatchUsuario(
     var novoValorSenha: String,
-    var novoValorEmail: Double,
-    var novoValorTelefone: Boolean,
-    var novoValorInstagram: Int,
+    var novoValorEmail: String,
+    var novoValorTelefone: String,
+    var novoValorInstagram: String,
     var novoValorGestante: Int
 ){
 

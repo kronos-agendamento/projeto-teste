@@ -1,4 +1,4 @@
-package kronos.projetoplenitutenoolhar
+package kronos.projetoplenitutenoolhar.agendamento
 
 import java.time.LocalDateTime
 
