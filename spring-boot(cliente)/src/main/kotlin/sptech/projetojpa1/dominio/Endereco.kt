@@ -15,6 +15,6 @@ data class Endereco(
     @field:NotBlank var logradouro:String,
     @field:NotNull @field:Size(max=8) var CEP:Double,
     @field:NotNull var numero: Int,
-    @field:ManyToOne var complemento:String?,
+    @field:ManyToOne var complemento:Complemento?,
 
 )
