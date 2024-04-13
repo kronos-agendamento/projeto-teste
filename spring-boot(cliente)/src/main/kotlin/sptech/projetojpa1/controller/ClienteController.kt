@@ -32,7 +32,7 @@ class ClienteController {
     // Listar Clientes
     @GetMapping
     fun get():ResponseEntity<List<Cliente>>{
-        val lista = repository.findAll()
+        val lista = repository.findByStatusTrue()
 
         // se a lista não tiver vazia retorne o resultado com status 200
         if (lista.isNotEmpty()){
@@ -56,14 +56,31 @@ class ClienteController {
         return ResponseEntity.status(404).build()
     }
 
-    // mudar o status de acordo com o codigo -- não consegui fazer, não lembro como faz pra pegar o codigo, mas fiz o delete
-    @DeleteMapping ("/{codigo}")
+    // Desativar o usuario
+    @PatchMapping ("/desativar/{codigo}")
     fun desativar(@PathVariable codigo:Int):ResponseEntity<Void> {
         if (repository.existsById(codigo)){
-            repository.deleteById(codigo)
+
+            var cliente = repository.findById(codigo).get()
+            cliente.status = false
+            repository.save(cliente)
+
             return ResponseEntity.status(204).build()
         }
         return ResponseEntity.status(404).build()
     }
 
+    //Ativar usuario
+    @PatchMapping ("/ativar/{codigo}")
+    fun ativar(@PathVariable codigo:Int):ResponseEntity<Void> {
+        if (repository.existsById(codigo)){
+
+            var cliente = repository.findById(codigo).get()
+            cliente.status = true
+            repository.save(cliente)
+
+            return ResponseEntity.status(204).build()
+        }
+        return ResponseEntity.status(404).build()
+    }
 }

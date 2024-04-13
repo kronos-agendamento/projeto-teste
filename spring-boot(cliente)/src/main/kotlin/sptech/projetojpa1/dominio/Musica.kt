@@ -4,12 +4,16 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
-import jakarta.validation.constraints.NotBlank
+import java.time.LocalDate
 
 @Entity
-class Direcao (
+data class Musica(
+    // Id é do pacote jakarta.persistence
     @field:Id @field:GeneratedValue(strategy = GenerationType.IDENTITY)
     var codigo:Int?,
-    @field:NotBlank var nome:String
-) {
-}
+    var nome:String?,
+    var totalOuvintes:Int?,
+    var lancamento:LocalDate?,
+    var classico: Boolean?,
+    var estilo:String?
+)

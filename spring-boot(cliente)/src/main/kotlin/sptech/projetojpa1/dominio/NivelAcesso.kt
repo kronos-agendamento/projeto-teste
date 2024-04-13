@@ -11,7 +11,7 @@ import jakarta.validation.constraints.Size
 @Entity
 class NivelAcesso (
     @field:Id @field:GeneratedValue(strategy = GenerationType.IDENTITY) var codigo:Int?,
-    @field:NotBlank @field:Size(min = 2, max = 20) var nome:String?,
+    @field:NotBlank var nome:String?,
     @field: NotNull var nivel:Int?,
     @field: NotBlank var descricao:String?
 ){

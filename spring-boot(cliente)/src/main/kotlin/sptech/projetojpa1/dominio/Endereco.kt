@@ -11,7 +11,7 @@ import jakarta.validation.constraints.Size
 
 @Entity
 data class Endereco(
-    @field:Id @field:GeneratedValue(strategy = GenerationType.IDENTITY) var codigo:String,
+    @field:Id @field:GeneratedValue(strategy = GenerationType.IDENTITY) var codigo:Int,
     @field:NotBlank var logradouro:String,
     @field:NotNull @field:Size(max=8) var CEP:Double,
     @field:NotNull var numero: Int,
