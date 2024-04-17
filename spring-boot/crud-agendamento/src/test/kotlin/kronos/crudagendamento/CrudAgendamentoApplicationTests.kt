@@ -1,10 +1,10 @@
-package Kronos.crudagendamentos
+package kronos.crudagendamento
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class CrudAgendamentosApplicationTests {
+class CrudAgendamentoApplicationTests {
 
 	@Test
 	fun contextLoads() {

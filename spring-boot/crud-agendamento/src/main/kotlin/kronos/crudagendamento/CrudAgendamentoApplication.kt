@@ -1,11 +1,11 @@
-package Kronos.crudagendamentos
+package kronos.crudagendamento
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class CrudAgendamentosApplication
+class CrudAgendamentoApplication
 
 fun main(args: Array<String>) {
-	runApplication<CrudAgendamentosApplication>(*args)
+	runApplication<CrudAgendamentoApplication>(*args)
 }
