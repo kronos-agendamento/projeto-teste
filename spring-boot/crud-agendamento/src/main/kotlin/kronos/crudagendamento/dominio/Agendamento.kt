@@ -1,4 +1,4 @@
-package kronos.projetoplenitutenoolhar.agendamento
+package kronos.crudagendamento.dominio
 
 import jakarta.persistence.*
 import org.springframework.format.annotation.DateTimeFormat
@@ -18,7 +18,7 @@ data class Agendamento(
 
     @ManyToOne
     @JoinColumn(name="fk_status")
-    var status:Status
+    var status:StatusAgendamento
 ) {
 
 
