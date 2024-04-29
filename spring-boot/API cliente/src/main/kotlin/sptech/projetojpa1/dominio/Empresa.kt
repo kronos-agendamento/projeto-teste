@@ -5,15 +5,17 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.ManyToOne
-
+import org.hibernate.validator.constraints.br.CNPJ
+import java.time.LocalDateTime
 
 @Entity
-data class PerguntaFicha (
+class Empresa (
     @field:Id @field:GeneratedValue(strategy = GenerationType.IDENTITY)
-    var codigoPerguntaFicha: Int,
-    var status:Boolean = true,
+    var codigo:Int,
     var nome:String,
-    @field:ManyToOne var pergunta:Pergunta,
-    @field:ManyToOne var resposta:Resposta,
-) {
+    var contato:LocalDateTime,
+    @field:CNPJ var CNPJ:Int,
+    @field:ManyToOne var endereco: Endereco,
+    @field:ManyToOne var horarioFuncionamento: HorarioFuncionamento?
+){
 }

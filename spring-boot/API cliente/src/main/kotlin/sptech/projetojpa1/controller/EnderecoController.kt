@@ -1,23 +1,20 @@
 package sptech.projetojpa1.controller
 
-import org.springframework.beans.factory.annotation.Autowired
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import sptech.projetojpa1.dominio.Cliente
-import sptech.projetojpa1.dominio.Complemento
+import sptech.projetojpa1.dominio.Empresa
 import sptech.projetojpa1.dominio.Endereco
-import sptech.projetojpa1.repository.ComplementoRepository
 import sptech.projetojpa1.repository.EnderecoRepository
 
 @RestController
 @RequestMapping("/endereco")
-class EnderecoController {
-    @Autowired
-    lateinit var repository: EnderecoRepository
-
+class EnderecoController (
+    val repository: EnderecoRepository
+) {
     // Cadastro de Novo Complemento
     @PostMapping
-    fun post(@RequestBody novoEndereco: Endereco): ResponseEntity<Endereco> {
+    fun post(@RequestBody @Valid novoEndereco: Endereco): ResponseEntity<Endereco> {
         repository.save(novoEndereco)
         return ResponseEntity.status(201).body(novoEndereco)
     }
@@ -48,4 +45,7 @@ class EnderecoController {
         // se não encontrar o valor retorna erro sem corpo de resposta
         return ResponseEntity.status(404).build()
     }
+
+
+
 }

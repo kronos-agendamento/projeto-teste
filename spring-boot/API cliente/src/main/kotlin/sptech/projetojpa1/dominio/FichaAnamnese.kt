@@ -4,17 +4,12 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
-import jakarta.persistence.ManyToOne
-import org.hibernate.annotations.JdbcTypeCode
-import org.hibernate.type.SqlTypes
+import java.time.LocalDateTime
 
 @Entity
-class Pergunta (
+class FichaAnamnese (
     @field:Id @field:GeneratedValue(strategy = GenerationType.IDENTITY)
-    var codigoPergunta: Int,
-    var tipo:String,
-    var nome:String,
-    @field:ManyToOne
-    val resposta:Resposta
+    var codigoFicha:Int?,
+    var dataPreenchimento:LocalDateTime
 ) {
 }

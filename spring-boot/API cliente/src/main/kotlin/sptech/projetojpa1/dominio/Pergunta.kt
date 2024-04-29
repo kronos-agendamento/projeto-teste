@@ -5,15 +5,13 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.ManyToOne
-import jakarta.validation.constraints.Future
-import java.time.LocalDateTime
 
 @Entity
-class Ficha (
+class Pergunta (
     @field:Id @field:GeneratedValue(strategy = GenerationType.IDENTITY)
-    var codigoFicha:Int?,
-    var nome:String,
-    var status:Boolean = true,
-    var dataCriacao:LocalDateTime
+    var codigoPergunta: Int,
+    var descricao:String,
+    var tipo:String
+
 ) {
 }

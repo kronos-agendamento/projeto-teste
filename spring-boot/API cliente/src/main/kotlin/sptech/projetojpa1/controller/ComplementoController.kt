@@ -1,23 +1,21 @@
 package sptech.projetojpa1.controller
 
+import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import sptech.projetojpa1.dominio.Cliente
 import sptech.projetojpa1.dominio.Complemento
-import sptech.projetojpa1.repository.ClienteRepository
 import sptech.projetojpa1.repository.ComplementoRepository
 
 @RestController
 @RequestMapping("/complemento")
-class ComplementoController {
-
-    @Autowired
-    lateinit var repository: ComplementoRepository
+class ComplementoController (
+   val repository: ComplementoRepository
+) {
 
     // Cadastro de Novo Complemento
     @PostMapping
-    fun post(@RequestBody novoComplemento: Complemento): ResponseEntity<Complemento> {
+    fun post(@RequestBody @Valid novoComplemento: Complemento): ResponseEntity<Complemento> {
         repository.save(novoComplemento)
         return ResponseEntity.status(201).body(novoComplemento)
     }

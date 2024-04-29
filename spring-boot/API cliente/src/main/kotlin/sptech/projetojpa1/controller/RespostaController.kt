@@ -7,13 +7,12 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import sptech.projetojpa1.dominio.Pergunta
 import sptech.projetojpa1.dominio.Resposta
 import sptech.projetojpa1.repository.RespostaRepository
 
 
 @RestController
-@RequestMapping("/ficha/resposta")
+@RequestMapping("/resposta")
 class RespostaController (
     val respostaRepository: RespostaRepository
 ) {
