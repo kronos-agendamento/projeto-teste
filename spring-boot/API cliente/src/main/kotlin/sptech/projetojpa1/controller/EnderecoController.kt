@@ -39,6 +39,8 @@ class EnderecoController (
         if (repository.existsById(codigo)) {
             val endereco = repository.findById(codigo).get()
 
+
+
             // retorna o valor encontrado
             return ResponseEntity.status(200).body(endereco)
         }

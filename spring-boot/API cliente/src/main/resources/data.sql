@@ -25,7 +25,7 @@ insert into usuario (nome, email, senha, instagram, cpf, telefone, telefone_emer
 
 insert into endereco (logradouro, CEP, numero) values
 ('rua piauna', 04258030, 149),
-('rua das orquideias', 04259530, 753),
+('rua das orquideas', 04259530, 753),
 ('av das americas', 02658030, 159);
 
 insert into complemento (complemento, endereco_codigo) values
