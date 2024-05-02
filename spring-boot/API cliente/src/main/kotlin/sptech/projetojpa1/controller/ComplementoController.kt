@@ -47,21 +47,33 @@ class ComplementoController (
         return ResponseEntity.status(200).body(complementos)
     }
 
-    @PatchMapping("/edicaoPorEndereco/{enderecoId}")
+//    @PatchMapping("/edicaoPorEndereco/{enderecoId}")
+//    fun patchComplemento(
+//        @PathVariable enderecoId: Int,
+//        @RequestBody atualizacao: PatchComplemento
+//        ):ResponseEntity<Complemento>{
+//        try {
+//            val complemento = repository.findById(enderecoId).get()
+//
+//            complemento.complemento = atualizacao.novoComplemento
+//            repository.save(complemento)
+//
+//            return ResponseEntity.status(200).body(complemento)
+//        } catch (exception:Exception){
+//            return ResponseEntity.status(404).build()
+//        }
+//    }
+
+
+    @PatchMapping("/edicao-complemento/{enderecoId}")
     fun patchComplemento(
         @PathVariable enderecoId: Int,
-        @RequestBody atualizacao: PatchComplemento
-        ):ResponseEntity<Complemento>{
-        try {
-            val complemento = repository.findById(enderecoId).get()
+        @RequestParam novoComplemento: String
+    ):ResponseEntity<Complemento>{
+        val lista = repository.findById(enderecoId).get()
+        lista.complemento = novoComplemento
+        repository.save(lista)
 
-            complemento.complemento = atualizacao.novoComplemento
-            repository.save(complemento)
-
-            return ResponseEntity.status(200).body(complemento)
-        } catch (exception:Exception){
-            return ResponseEntity.status(404).build()
-        }
+        return ResponseEntity.status(204).build()
     }
-
 }
