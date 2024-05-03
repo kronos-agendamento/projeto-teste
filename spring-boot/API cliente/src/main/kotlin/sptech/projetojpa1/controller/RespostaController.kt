@@ -25,12 +25,31 @@ class RespostaController (
     }
 
     @GetMapping()
-    fun get():ResponseEntity<List<Resposta>> {
+    fun get(): ResponseEntity<List<Resposta>> {
         val respostas = respostaRepository.findAll()
 
-        if(respostas.isEmpty()){
+        if (respostas.isEmpty()) {
             return ResponseEntity.status(204).build()
         }
         return ResponseEntity.status(200).body(respostas)
+    }
+    // Endpoint para obter todas as respostas de um usuário específico
+    @GetMapping("/buscarUsuario")
+    fun getRespostaUsuario(@RequestParam usuarioId: Int): ResponseEntity<List<Resposta>> {
+        val respostas = respostaRepository.findAllByUsuarioId(usuarioId)
+        if (respostas.isEmpty()) {
+            return ResponseEntity.status(204).build()
+        }
+        return ResponseEntity.status(200).body(respostaDTOs)
+    }
+
+    // Fazendo o GET por pergunta de Usuario
+    @GetMapping("/buscarPergunta")
+    fun getRespostasPorPergunta(@RequestParam perguntaId: Int):ResponseEntity<List<Resposta>> {
+        val respostasPorPergunta = respostaRepository.findAllByPerguntaId(perguntaId)
+        if (respostasPorPergunta.isEmpty()) {
+            return ResponseEntity.status(204).build()
+        }
+        return ResponseEntity.status(200).body(respostasPorPergunta)
     }
 }
