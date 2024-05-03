@@ -7,12 +7,11 @@ import jakarta.persistence.Id
 import jakarta.persistence.ManyToOne
 
 @Entity
-class Resposta (
+class Resposta(
     @field:Id @field:GeneratedValue(strategy = GenerationType.IDENTITY)
-    var codigoRespostaFichaUsuario: Int,
-    var resposta:String,
-    @field: ManyToOne var pergunta: Pergunta,
-    @field: ManyToOne var ficha: FichaAnamnese,
-    @field: ManyToOne var usuario: Usuario
-) {
-}
+    var codigoRespostaFichaUsuario: Int? = null,
+    var resposta: String,
+    @field:ManyToOne var pergunta: Pergunta,
+    @field:ManyToOne var ficha: FichaAnamnese,
+    @field:ManyToOne var usuario: Usuario
+)

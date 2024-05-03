@@ -11,13 +11,13 @@ import jakarta.validation.constraints.Size
 
 @Entity
 data class Endereco(
-    @field:Id @field:GeneratedValue(strategy = GenerationType.IDENTITY) var codigo:Int,
-    @field:NotBlank var logradouro:String,
-    @field:NotNull @field:Size(max=8) var CEP:String,
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var codigo: Int?,
+    @field:NotBlank var logradouro: String,
+    @field:NotBlank @Size(max = 10) var cep: String,
     @field:NotNull var numero: Int,
-    var bairro: String,
-    var cidade: String,
-    var estado: String,
-    @field:ManyToOne var complemento:Complemento?
-
+    var bairro: String?,
+    var cidade: String?,
+    var estado: String?,
+    @ManyToOne var complemento: Complemento?,
+    @ManyToOne var usuario: Usuario?
 )

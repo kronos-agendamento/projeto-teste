@@ -35,7 +35,7 @@ class EmpresaController (
 
     @GetMapping("/filtro-nome/{nome}")
     fun filtroNome(@PathVariable nome:String):ResponseEntity<List<Empresa>>{
-        var empresas = repository.findByNomeContainsIgnoreCase(nome)
+        val empresas = repository.findByNomeContainsIgnoreCase(nome)
 
         if (empresas.isEmpty()){
             return ResponseEntity.status(204).build()
@@ -45,7 +45,7 @@ class EmpresaController (
 
     @GetMapping("/filtro-cnpj/{cnpj}")
     fun filtroCnpj(@PathVariable cnpj:String):ResponseEntity<List<Empresa>>{
-        var empresas = repository.findByCNPJ(cnpj)
+        val empresas = repository.findByCNPJ(cnpj)
 
         if (empresas.isEmpty()){
             return ResponseEntity.status(204).build()
@@ -130,7 +130,7 @@ class EmpresaController (
         }
 
         // Verifique se cada parâmetro opcional não é nulo e, se não for, atualize o objeto empresa
-        novoCEP?.let { empresa.endereco.CEP = it }
+        novoCEP?.let { empresa.endereco.cep = it }
         novoLogradouro?.let { empresa.endereco.logradouro = it }
         novoNumero?.let { empresa.endereco.numero = it }
         novoBairro?.let { empresa.endereco.bairro = it }

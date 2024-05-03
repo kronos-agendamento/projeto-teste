@@ -46,7 +46,7 @@ class EnderecoController (
 
     @GetMapping("/cep/{cep}")
     fun getByCEP(@PathVariable cep: String): ResponseEntity<List<Endereco>> {
-        val lista = repository.findByCEPContaining(cep)
+        val lista = repository.findByCepContaining(cep)
         return if (lista.isNotEmpty()) {
             ResponseEntity.status(200).body(lista)
         } else {

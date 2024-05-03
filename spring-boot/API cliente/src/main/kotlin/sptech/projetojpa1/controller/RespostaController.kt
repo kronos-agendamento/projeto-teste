@@ -2,18 +2,14 @@ package sptech.projetojpa1.controller
 
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import sptech.projetojpa1.dominio.Resposta
 import sptech.projetojpa1.repository.RespostaRepository
 
 
 @RestController
 @RequestMapping("/resposta")
-class RespostaController (
+class RespostaController(
     val respostaRepository: RespostaRepository
 ) {
 
@@ -33,23 +29,42 @@ class RespostaController (
         }
         return ResponseEntity.status(200).body(respostas)
     }
-    // Endpoint para obter todas as respostas de um usuário específico
-    @GetMapping("/buscarUsuario")
-    fun getRespostaUsuario(@RequestParam usuarioId: Int): ResponseEntity<List<Resposta>> {
-        val respostas = respostaRepository.findAllByUsuarioId(usuarioId)
-        if (respostas.isEmpty()) {
-            return ResponseEntity.status(204).build()
+
+    @GetMapping("/usuario/{cpf}")
+    fun getByUser(@PathVariable cpf: String): ResponseEntity<List<Map<String, Any?>>> {
+        val respostas = respostaRepository.findByUsuarioCpf(cpf)
+        return if (respostas.isEmpty()) {
+            ResponseEntity.noContent().build()
+        } else {
+            val respostasComUsuario = respostas.map { resposta ->
+                mapOf(
+                    "resposta" to resposta.resposta,
+                    "nomeUsuario" to resposta.usuario.nome,
+                    "cpfUsuario" to resposta.usuario.cpf,
+                    "dataPreenchimentoFicha" to resposta.ficha.dataPreenchimento
+                )
+            }
+            ResponseEntity.ok(respostasComUsuario)
         }
-        return ResponseEntity.status(200).body(respostaDTOs)
     }
 
-    // Fazendo o GET por pergunta de Usuario
-    @GetMapping("/buscarPergunta")
-    fun getRespostasPorPergunta(@RequestParam perguntaId: Int):ResponseEntity<List<Resposta>> {
-        val respostasPorPergunta = respostaRepository.findAllByPerguntaId(perguntaId)
-        if (respostasPorPergunta.isEmpty()) {
-            return ResponseEntity.status(204).build()
+    @GetMapping("/pergunta/{descricao}")
+    fun getByQuestion(@PathVariable descricao: String): ResponseEntity<List<Map<String, Any?>>> {
+        val respostas = respostaRepository.findByPerguntaDescricao(descricao)
+        return if (respostas.isEmpty()) {
+            ResponseEntity.noContent().build()
+        } else {
+            val respostasComPergunta = respostas.map { resposta ->
+                mapOf(
+                    "resposta" to resposta.resposta,
+                    "descricaoPergunta" to resposta.pergunta.descricao,
+                    "tipoPergunta" to resposta.pergunta.tipo,
+                    "nomeUsuario" to resposta.usuario.nome,
+                    "cpfUsuario" to resposta.usuario.cpf,
+                    "dataPreenchimentoFicha" to resposta.ficha.dataPreenchimento
+                )
+            }
+            ResponseEntity.ok(respostasComPergunta)
         }
-        return ResponseEntity.status(200).body(respostasPorPergunta)
     }
 }
