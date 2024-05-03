@@ -2,9 +2,9 @@
 -- ao final é obrigatório ter um ; se não, dará erro
 
 -- sistema
-insert into pergunta(descricao, tipo) values
-('você está gravida?', 'gravidez'),
-('você tem alergia a cosméticos?', 'cosmeticos');
+insert into pergunta(descricao, tipo, status) values
+('você está gravida?', 'gravidez', true),
+('você tem alergia a cosméticos?', 'cosmeticos', false);
 
 insert into nivel_acesso(nome, nivel, descricao) values
 ('adm', 1, 'acesso ilimitado'),
