@@ -19,6 +19,8 @@ interface EmpresaRepository:JpaRepository<Empresa,Int> {
     @Query("SELECT e FROM Empresa e WHERE e.CNPJ LIKE %:cnpj%")
     fun buscarPeloCNPJ(cnpj: String): Empresa?
 
+    fun findByNomeContaining(nome: String): List<Empresa>
+
 
 
 
