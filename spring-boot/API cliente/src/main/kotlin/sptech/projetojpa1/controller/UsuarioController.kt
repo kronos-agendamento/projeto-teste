@@ -21,6 +21,37 @@ class UsuarioController(
     private val respostaRepository: RespostaRepository
 ) {
 
+    @PostMapping("/login")
+    fun fazerLogin(@RequestBody dadosLogin: Map<String, String>): ResponseEntity<Void> {
+        val email = dadosLogin["email"]
+        val senha = dadosLogin["senha"]
+
+        if (email != null && senha != null) {
+            val usuario = repository.findByEmail(email)
+            return if (usuario != null && usuario.senha == senha) {
+                usuario.status = true
+                repository.save(usuario)
+                ResponseEntity.noContent().build()
+            } else {
+                ResponseEntity.badRequest().build()
+            }
+        } else {
+            return ResponseEntity.badRequest().build()
+        }
+    }
+
+    @PatchMapping("/logoff/{cpf}")
+    fun fazerLogoff(@PathVariable cpf: String): ResponseEntity<Void> {
+        val usuario = repository.findByCpf(cpf)
+        return if (usuario != null) {
+            usuario.status = false
+            repository.save(usuario)
+            ResponseEntity.noContent().build()
+        } else {
+            ResponseEntity.notFound().build()
+        }
+    }
+
     @PostMapping
     fun cadastrarUsuario(@RequestBody novoUsuario: Usuario): ResponseEntity<Usuario> {
         val usuarioSalvo = repository.save(novoUsuario)
@@ -162,7 +193,6 @@ class UsuarioController(
             ResponseEntity.notFound().build()
         }
     }
-
 
     @PatchMapping("/endereco/{cpf}")
     fun patchEndereco(
