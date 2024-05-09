@@ -22,76 +22,77 @@ class UsuarioController(
 ) {
 
     @PostMapping("/login")
-    fun fazerLogin(@RequestBody dadosLogin: Map<String, String>): ResponseEntity<Void> {
-        val email = dadosLogin["email"]
-        val senha = dadosLogin["senha"]
-
-        if (email != null && senha != null) {
-            val usuario = repository.findByEmail(email)
-            return if (usuario != null && usuario.senha == senha) {
+    fun fazerLogin(
+        @RequestParam("email") email: String?,
+        @RequestParam("senha") senha: String?
+    ): ResponseEntity<Any> {
+        return if (!email.isNullOrBlank() && !senha.isNullOrBlank()) {
+            val usuario = repository.findByEmailIgnoreCase(email)
+            if (usuario != null && usuario.senha.equals(senha, ignoreCase = true)) {
                 usuario.status = true
                 repository.save(usuario)
-                ResponseEntity.noContent().build()
+                ResponseEntity.status(200).body("Login do(a) ${usuario.nome} realizado com sucesso.")
             } else {
-                ResponseEntity.badRequest().build()
+                ResponseEntity.status(401).body("Email ou senha incorretos, verifique suas credenciais e tente novamente.")
             }
         } else {
-            return ResponseEntity.badRequest().build()
+            ResponseEntity.status(400).body("Campos obrigatórios não informados.")
         }
     }
 
+
     @PatchMapping("/logoff/{cpf}")
-    fun fazerLogoff(@PathVariable cpf: String): ResponseEntity<Void> {
+    fun fazerLogoff(@PathVariable cpf: String): ResponseEntity<Any> {
         val usuario = repository.findByCpf(cpf)
         return if (usuario != null) {
             usuario.status = false
             repository.save(usuario)
-            ResponseEntity.noContent().build()
+            ResponseEntity.status(200).body("Logoff do(a) ${usuario.nome} realizado com sucesso.")
         } else {
-            ResponseEntity.notFound().build()
+            ResponseEntity.status(400).body("Esse CPF não está cadastrado em nosso sistema, verifique a credencial e tente novamente.")
         }
     }
 
-    @PostMapping
+    @PostMapping ("/cadastro-usuario")
     fun cadastrarUsuario(@RequestBody novoUsuario: Usuario): ResponseEntity<Usuario> {
         val usuarioSalvo = repository.save(novoUsuario)
-        return ResponseEntity.ok(usuarioSalvo)
+        return ResponseEntity.status(201).body(usuarioSalvo)
     }
 
-    @GetMapping
-    fun listarUsuariosAtivos(): ResponseEntity<List<Usuario>> {
+    @GetMapping ("/lista-todos-usuarios-ativos")
+    fun listarUsuariosAtivos(): ResponseEntity<Any> {
         val usuariosAtivos = repository.findByStatusTrue()
         return if (usuariosAtivos.isNotEmpty()) {
-            ResponseEntity.ok(usuariosAtivos)
+            ResponseEntity.status(200).body(usuariosAtivos)
         } else {
-            ResponseEntity.noContent().build()
+            ResponseEntity.status(204).body("Não existe nenhum usuário ativo.")
         }
     }
 
-    @GetMapping("/todos")
-    fun listarTodosUsuarios(): ResponseEntity<List<Usuario>> {
+    @GetMapping("/lista-todos-usuarios")
+    fun listarTodosUsuarios(): ResponseEntity<Any> {
         val todosUsuarios = repository.findAll()
         return if (todosUsuarios.isNotEmpty()) {
-            ResponseEntity.ok(todosUsuarios)
+            ResponseEntity.status(200).body(todosUsuarios)
         } else {
-            ResponseEntity.noContent().build()
+            ResponseEntity.status(200).body("Não existe nenhum usuário cadastrado.")
         }
     }
 
-    @GetMapping("/{codigo}")
-    fun buscarUsuarioPorCodigo(@PathVariable codigo: Int): ResponseEntity<Usuario> {
+    @GetMapping("/filtro-por-codigo/{codigo}")
+    fun buscarUsuarioPorCodigo(@PathVariable codigo: Int): ResponseEntity<Any> {
         val usuario = repository.findById(codigo)
         return usuario.map {
-            ResponseEntity.ok(it)
-        }.orElse(ResponseEntity.notFound().build())
+            ResponseEntity.status(200).body<Any>(it)
+        }.orElse(ResponseEntity.status(404).body("Usuário não encontrado, verifique o código fornecido e tente novamente."))
     }
 
-    @PatchMapping("/desativar/{codigo}")
+    @PatchMapping("/desativacao-usuario/{codigo}")
     fun desativarUsuario(@PathVariable codigo: Int): ResponseEntity<Void> {
         return alterarStatusUsuario(codigo, false)
     }
 
-    @PatchMapping("/ativar/{codigo}")
+    @PatchMapping("/ativacao-usuario/{codigo}")
     fun ativarUsuario(@PathVariable codigo: Int): ResponseEntity<Void> {
         return alterarStatusUsuario(codigo, true)
     }
@@ -101,78 +102,78 @@ class UsuarioController(
         return usuarioOptional.map { usuario ->
             usuario.status = status
             repository.save(usuario)
-            ResponseEntity.noContent().build<Void>()
+            ResponseEntity.status(200).build<Void>()
         }.orElse(ResponseEntity.notFound().build())
     }
 
-    @PatchMapping("/imagem/{codigo}")
-    fun atualizarFotoUsuario(
-        @PathVariable codigo: Int, @RequestBody imagem: ByteArray
-    ): ResponseEntity<Void> {
-        val usuarioOptional: Optional<Usuario> = repository.findById(codigo)
-        return usuarioOptional.map { usuario ->
-            usuario.foto = imagem
-            repository.save(usuario)
-            ResponseEntity.noContent().build<Void>()
-        }.orElse(ResponseEntity.notFound().build())
-    }
-
-    @GetMapping("/imagem/{codigo}")
-    fun resgatarImagemUsuario(@PathVariable codigo: Int): ResponseEntity<ByteArray> {
+    @PatchMapping(value= ["/atualizacao-foto/{codigo}"], consumes = ["image/jpeg", "image/png", "image/gif"])
+    fun atualizarFotoUsuario(@PathVariable codigo: Int, @RequestBody imagem: ByteArray): ResponseEntity<Any> {
         val usuarioOptional = repository.findById(codigo)
-        return usuarioOptional.map { usuario ->
-            usuario.foto?.let {
-                ResponseEntity.ok(it)
-            } ?: ResponseEntity.noContent().build()
-        }.orElse(ResponseEntity.notFound().build())
+        if (usuarioOptional.isEmpty) {
+            return ResponseEntity.status(404).body("Usuário não encontrado, verifique o código fornecido e tente novamente.")
+        }
+
+        val usuario = usuarioOptional.get()
+        usuario.foto = imagem
+        repository.save(usuario)
+
+        return ResponseEntity.status(200).body("Foto atualizada com sucesso para o usuário de código $codigo e com o nome de ${usuario.nome}.")
     }
 
-    @GetMapping("/cpf/{cpf}")
-    fun getByCPF(@PathVariable cpf: String): ResponseEntity<Usuario> {
+
+    @GetMapping(value = ["/busca-imagem-usuario/{codigo}"], produces = ["image/jpeg"])
+    fun getFoto(@PathVariable codigo: Int): ResponseEntity<ByteArray> {
+        val foto= repository.findFotoByCodigo(codigo)
+        return ResponseEntity.status(200).body(foto)
+    }
+
+
+    @GetMapping("/filtro-por-cpf/{cpf}")
+    fun getByCPF(@PathVariable cpf: String): ResponseEntity<Any> {
         val usuario = repository.findByCpf(cpf)
         return usuario?.let {
-            ResponseEntity.ok(it)
-        } ?: ResponseEntity.notFound().build()
+            ResponseEntity.status(200).body(it)
+        } ?: ResponseEntity.status(404).body("O CPF fornecido não foi encontrado, verifique o CPF fornecido e tente novamente.")
     }
 
-    @GetMapping("/nome/{nome}")
-    fun getByNomeContains(@PathVariable nome: String): ResponseEntity<List<Usuario>> {
-        val usuarios = repository.findByNomeContaining(nome)
+    @GetMapping("/filtro-por-nome/{nome}")
+    fun getByNomeContains(@PathVariable nome: String): ResponseEntity<Any> {
+        val usuarios = repository.findByNomeContainsIgnoreCase(nome)
         return if (usuarios.isNotEmpty()) {
-            ResponseEntity.ok(usuarios)
+            ResponseEntity.status(200).body(usuarios)
         } else {
-            ResponseEntity.noContent().build()
+            ResponseEntity.status(404).body("Nenhum usuário foi encontrado, verifique o nome fornecido e tente novamente.")
         }
     }
 
-    @GetMapping("/nivelAcesso/{codigo}")
-    fun getUsuariosByNivelAcesso(@PathVariable codigo: Int): ResponseEntity<List<Usuario>> {
+    @GetMapping("/filtro-por-nivel-acesso/{codigo}")
+    fun getUsuariosByNivelAcesso(@PathVariable codigo: Int): ResponseEntity<Any> {
         val nivelAcesso = nivelAcessoRepository.findById(codigo)
         return nivelAcesso.map { nivel ->
             val lista = repository.findByStatusTrueAndNivelAcesso(nivel)
             if (lista.isNotEmpty()) {
-                ResponseEntity.ok(lista)
+                ResponseEntity.status(200).body<Any>(lista)
             } else {
-                ResponseEntity.noContent().build()
+                ResponseEntity.status(404).body<Any>("Nenhum usuário foi encontrado, verifique o código fornecido e tente novamente.")
             }
-        }.orElse(ResponseEntity.notFound().build())
+        }.orElse(ResponseEntity.status(404).body<Any>("Nenhum usuário foi encontrado, verifique o código fornecido e tente novamente."))
     }
 
 
-    @GetMapping("/status/{status}")
-    fun getByStatus(@PathVariable status: Boolean): ResponseEntity<List<Usuario>> {
+    @GetMapping("/filtro-por-status/{status}")
+    fun getByStatus(@PathVariable status: Boolean): ResponseEntity<Any> {
         val usuarios = repository.findByStatus(status)
         return if (usuarios.isNotEmpty()) {
-            ResponseEntity.ok(usuarios)
+            ResponseEntity.status(200).body(usuarios)
         } else {
-            ResponseEntity.noContent().build()
+            ResponseEntity.status(404).body("Nenhum usuário foi encontrado, verifique o status fornecido e tente novamente.")
         }
     }
 
-    @PatchMapping("/ficha/{cpf}")
+    @PatchMapping("/atualizacao-ficha/{cpf}")
     fun patchRespostasFicha(
         @PathVariable cpf: String, @RequestBody respostas: List<Resposta>
-    ): ResponseEntity<Void> {
+    ): ResponseEntity<Any> {
         val usuario = repository.findByCpf(cpf)
         return if (usuario != null) {
             // Verifica se o usuário já tem uma ficha de anamnese
@@ -188,13 +189,13 @@ class UsuarioController(
             }
             // Salvar as respostas no banco de dados
             respostaRepository.saveAll(respostas)
-            ResponseEntity.noContent().build()
+            ResponseEntity.status(201).body("Respostas salvas com sucesso.")
         } else {
-            ResponseEntity.notFound().build()
+            ResponseEntity.status(404).body("Nenhum usuário foi encontrado.")
         }
     }
 
-    @PatchMapping("/endereco/{cpf}")
+    @PatchMapping("/atualizacao-endereco/{cpf}")
     fun patchEndereco(
         @PathVariable cpf: String, @RequestBody endereco: Endereco
     ): ResponseEntity<Void> {
@@ -219,7 +220,7 @@ class UsuarioController(
         }
     }
 
-    @PatchMapping("/nivelAcesso/{cpf}")
+    @PatchMapping("/atualizacao-nivel-acesso/{cpf}")
     fun patchNivelAcessoPorCPF(
         @PathVariable cpf: String, @RequestBody nivelAcesso: NivelAcesso
     ): ResponseEntity<Void> {
@@ -233,7 +234,7 @@ class UsuarioController(
         }
     }
 
-    @PatchMapping("/{cpf}")
+    @PatchMapping("/atualizacao-usuario/{cpf}")
     fun patchUsuario(
         @PathVariable cpf: String, @RequestBody novoUsuario: Usuario
     ): ResponseEntity<Void> {
@@ -250,6 +251,16 @@ class UsuarioController(
             ResponseEntity.noContent().build()
         } else {
             ResponseEntity.notFound().build()
+        }
+    }
+    @DeleteMapping("/exclusao-usuario/{cpf}")
+    fun deleteUsuario(@PathVariable cpf: String): ResponseEntity<Any> {
+        val usuario = repository.findByCpf(cpf)
+        return if (usuario != null) {
+            repository.delete(usuario)
+            ResponseEntity.status(200).body("Usuário(a) ${usuario.nome} excluído(a) com sucesso.")
+        } else {
+            ResponseEntity.status(404).body("Nenhum usuário foi encontrado, verifique o CPF fornecido e tente novamente.")
         }
     }
 }

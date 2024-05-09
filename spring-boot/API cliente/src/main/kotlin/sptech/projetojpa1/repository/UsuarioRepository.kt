@@ -11,9 +11,11 @@ interface UsuarioRepository : JpaRepository<Usuario, Int> {
     fun findByStatusTrueAndNivelAcesso(nivelAcesso: NivelAcesso): List<Usuario>
     fun findByStatusTrue(): List<Usuario>
     fun findByCpf(cpf: String): Usuario?
-    fun findByNomeContaining(nome: String): List<Usuario>
-    fun findByEmail(email: String): Usuario?
+    fun findByNomeContainsIgnoreCase(nome: String): List<Usuario>
+    fun findByEmailIgnoreCase(email: String): Usuario?
 
     @Query("select u.foto from Usuario u where u.codigo = ?1")
     fun findFotoByCodigo(codigo: Int): ByteArray?
+
+
 }
