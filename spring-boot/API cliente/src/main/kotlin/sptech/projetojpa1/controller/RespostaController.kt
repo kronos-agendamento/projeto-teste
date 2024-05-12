@@ -8,7 +8,7 @@ import sptech.projetojpa1.repository.RespostaRepository
 
 
 @RestController
-@RequestMapping("/resposta")
+@RequestMapping("/ficha-resposta")
 class RespostaController(
     val respostaRepository: RespostaRepository
 ) {
@@ -68,7 +68,7 @@ class RespostaController(
         }
     }
 
-    @DeleteMapping("/respostas/{id}")
+    @DeleteMapping("/exclusao-resposta/{id}")
     fun deletarResposta(@PathVariable id: Int): ResponseEntity<String> {
         val resposta = respostaRepository.findById(id)
         if (resposta.isPresent) {

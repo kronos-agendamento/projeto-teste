@@ -8,7 +8,7 @@ import sptech.projetojpa1.dominio.Status
 import sptech.projetojpa1.repository.StatusRepository
 
 @RestController
-@RequestMapping("/statusAgendamento")
+@RequestMapping("/status-agendamento")
 class StatusController {
     @Autowired
     lateinit var repository: StatusRepository

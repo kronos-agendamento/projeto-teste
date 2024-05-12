@@ -2,23 +2,17 @@ package sptech.projetojpa1.controller
 
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PatchMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import sptech.projetojpa1.dominio.Pergunta
 import sptech.projetojpa1.repository.PerguntaRepository
 
 @RestController
-@RequestMapping("/ficha/pergunta")
+@RequestMapping("/ficha-pergunta")
 
 class PerguntaController (
     val perguntaRepository: PerguntaRepository
 ) {
-    @PostMapping
+    @PostMapping ("/cadastro-perguntas")
     fun post(@RequestBody @Valid novaPergunta: Pergunta):ResponseEntity<Pergunta> {
         perguntaRepository.save(novaPergunta)
 
@@ -26,7 +20,7 @@ class PerguntaController (
     }
 
 
-    @GetMapping
+    @GetMapping ("/lista-todas-perguntas")
     fun get():ResponseEntity<List<Pergunta>> {
         val perguntas = perguntaRepository.findAll()
 
@@ -36,17 +30,26 @@ class PerguntaController (
         return ResponseEntity.status(200).body(perguntas)
     }
 
-    @GetMapping("/perguntasStatus")
-    fun getAtivas(@RequestParam status:Boolean):ResponseEntity<List<Pergunta>> {
+    @GetMapping("/filtro-por-descricao")
+    fun buscarPorDescricao(@RequestParam descricao: String): ResponseEntity<List<Pergunta>> {
+        val lista = perguntaRepository.findByDescricaoContainsIgnoreCase(descricao)
+        return if (lista.isNotEmpty()) {
+            ResponseEntity.status(200).body(lista)
+        } else {
+            ResponseEntity.status(404).build()
+        }
+    }
+
+    @GetMapping("/lista-perguntas-ativas")
+    fun getAtivas(@Valid @RequestParam status:Boolean):ResponseEntity<List<Pergunta>> {
         val perguntas = perguntaRepository.findByStatus(status)
 
-        
         return ResponseEntity.status(200).body(perguntas)
     }
 
-    @PatchMapping("/perguntaAtivada")
-    fun perguntaAtivada(@RequestParam codigo: Int):ResponseEntity<Pergunta> {
-        var perguntaOptional = perguntaRepository.findById(codigo)
+    @PatchMapping("/ativacao-pergunta/{id}")
+    fun perguntaAtivada(@Valid @RequestParam id: Int):ResponseEntity<Any> {
+        var perguntaOptional = perguntaRepository.findById(id)
 
         // Verifica se a pergunta foi encontrada
         if (perguntaOptional.isPresent) {
@@ -58,16 +61,16 @@ class PerguntaController (
             // Salva a pergunta atualizada no repositório
             perguntaRepository.save(pergunta)
 
-            return ResponseEntity.ok(pergunta)
+            return ResponseEntity.status(200).body(pergunta)
         } else {
             // Retorna uma resposta 404 caso a pergunta não seja encontrada
-            return ResponseEntity.notFound().build()
+            return ResponseEntity.status(404).body("Pergunta aativada não encontrada.")
         }
     }
 
-    @PatchMapping("/perguntaDesativada")
-    fun perguntaDesativada(@RequestParam codigo: Int):ResponseEntity<Pergunta> {
-        var perguntaOptional = perguntaRepository.findById(codigo)
+    @PatchMapping("/desativacao-pergunta/{id}")
+    fun perguntaDesativada(@Valid @RequestParam id: Int):ResponseEntity<Any> {
+        var perguntaOptional = perguntaRepository.findById(id)
 
         // Verifica se a pergunta foi encontrada
         if (perguntaOptional.isPresent) {
@@ -79,11 +82,20 @@ class PerguntaController (
             // Salva a pergunta atualizada no repositório
             perguntaRepository.save(pergunta)
 
-            return ResponseEntity.ok(pergunta)
+            return ResponseEntity.status(200).body(pergunta)
         } else {
             // Retorna uma resposta 404 caso a pergunta não seja encontrada
-            return ResponseEntity.notFound().build()
+            return ResponseEntity.status(404).body("Pergunta desativada não encontrada.")
         }
+    }
+    @DeleteMapping("/exclusao-pergunta/{id}")
+    fun deletarPergunta(@Valid @PathVariable id: Int): ResponseEntity<String> {
+        val resposta = perguntaRepository.findById(id)
+        if (resposta.isPresent) {
+            perguntaRepository.deleteById(id)
+            return ResponseEntity.status(200).body("Pergunta excluída com sucesso.")
+        }
+        return ResponseEntity.status(404).body("Pergunta não encontrada para o ID fornecido.")
     }
 
 //    -> CONTROLLER Perguntas:

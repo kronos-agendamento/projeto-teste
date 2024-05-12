@@ -11,13 +11,13 @@ import sptech.projetojpa1.repository.FichaAnamneseRepository
 class FichaAnamneseController (
     val fichaAnamneseRepository: FichaAnamneseRepository
 ) {
-    @PostMapping
+    @PostMapping("/cadastro-ficha-anamnese")
     fun post(@RequestBody @Valid novaFichaAnamnese: FichaAnamnese): ResponseEntity<FichaAnamnese> {
 fichaAnamneseRepository
         return ResponseEntity.status(201).body(novaFichaAnamnese)
     }
 
-    @GetMapping
+    @GetMapping ("/lista-ficha")
     fun get():ResponseEntity<List<FichaAnamnese>> {
         val fichas = fichaAnamneseRepository.findAll()
 

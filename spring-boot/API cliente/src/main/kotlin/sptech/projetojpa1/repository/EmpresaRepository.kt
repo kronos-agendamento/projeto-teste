@@ -14,12 +14,12 @@ interface EmpresaRepository:JpaRepository<Empresa,Int> {
 //    fun findByCNPJAndNome(cnpj: Long, nome: String): List<Empresa>
 
     @Query("SELECT e FROM Empresa e WHERE e.nome LIKE %:nome%")
-    fun buscarPeloNome(nome: String): Empresa?
+    fun buscarPeloNomeIgnoreCase(nome: String): Empresa?
 
     @Query("SELECT e FROM Empresa e WHERE e.CNPJ LIKE %:cnpj%")
     fun buscarPeloCNPJ(cnpj: String): Empresa?
 
-    fun findByNomeContaining(nome: String): List<Empresa>
+    fun deleteByCNPJ(cnpj: String)
 
 
 
