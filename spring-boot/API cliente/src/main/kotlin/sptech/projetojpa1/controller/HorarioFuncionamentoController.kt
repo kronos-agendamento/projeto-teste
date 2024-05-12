@@ -30,15 +30,13 @@ class HorarioFuncionamentoController (
     }
 
     // DELETE por ID
-    @DeleteMapping("/exclusao-horario/{id}")
-    fun excluirHorarioFuncionamento(@PathVariable id: Int): ResponseEntity<String> {
-        val horarioOptional = repository.findById(id)
-        return if (horarioOptional.isPresent) {
-            repository.deleteById(id)
-            ResponseEntity.status(200).body("Horário de funcionamento excluído com sucesso")
-        } else {
-            ResponseEntity.status(404).body("Horário de funcionamento não encontrado para o ID fornecido")
+    @DeleteMapping("/exclusao-horario/{codigo}")
+    fun excluirHorarioFuncionamento(@PathVariable codigo:Int):ResponseEntity<Void> {
+        if (repository.existsById(codigo)) {
+            repository.deleteById(codigo)
+            return ResponseEntity.status(204).build()
         }
+        return ResponseEntity.status(404).build()
     }
 
     // PATCH para atualizar horário de abertura

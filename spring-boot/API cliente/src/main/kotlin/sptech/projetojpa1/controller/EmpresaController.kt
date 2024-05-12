@@ -22,7 +22,7 @@ class EmpresaController (
         return ResponseEntity.status(201).body(novaEmpresa)
     }
 
-    @DeleteMapping("/exclusao/{cnpj}")
+    @DeleteMapping("/exclusao-empresa/{cnpj}")
     fun excluirEmpresaPorCNPJ(@PathVariable cnpj: String): ResponseEntity<String> {
         repository.deleteByCNPJ(cnpj)
         return ResponseEntity.status(404).body("Empresa com CNPJ $cnpj excluída com sucesso")

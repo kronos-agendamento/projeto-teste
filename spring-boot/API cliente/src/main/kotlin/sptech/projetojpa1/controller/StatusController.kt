@@ -34,12 +34,10 @@ class StatusController {
     }
 
     @DeleteMapping("/exclusao-status/{id}")
-    fun delete(@Valid @PathVariable id:Int): ResponseEntity<String> {
-        val lista = repository.findById(id)
-        if (lista.isPresent) {
-            val statusDeletado = lista.get()
+    fun delete(@Valid @PathVariable id:Int):ResponseEntity<Any> {
+        if (repository.existsById(id)) {
             repository.deleteById(id)
-            return ResponseEntity.status(200).body("Status deletado com sucesso: $statusDeletado")
+            return ResponseEntity.status(200).body("Status deletado com sucesso.")
         }
         return ResponseEntity.status(404).body("Não encontramos o status pesquisado.")
     }

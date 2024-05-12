@@ -85,16 +85,17 @@ class EnderecoController (
         }
     }
 
-    @DeleteMapping("/exclusao/{id}")
-    fun excluirEndereco(@PathVariable id: Int): ResponseEntity<String> {
-        val enderecoOptional = repository.findById(id)
-        return if (enderecoOptional.isPresent) {
+    @DeleteMapping("/exclusao-endereco/{id}")
+    fun delete(@Valid @PathVariable id:Int): ResponseEntity<String> {
+        val lista = repository.findById(id)
+        if (lista.isPresent) {
+            val enderecoDeletado = lista.get()
             repository.deleteById(id)
-            ResponseEntity.status(200).body("Endereço excluído com sucesso")
-        } else {
-            ResponseEntity.status(404).body("Endereço não encontrado para o ID fornecido")
+            return ResponseEntity.status(200).body("Endereço deletado com sucesso: $enderecoDeletado")
         }
+        return ResponseEntity.status(404).body("Não encontramos o status pesquisado.")
     }
+
 
 
 
