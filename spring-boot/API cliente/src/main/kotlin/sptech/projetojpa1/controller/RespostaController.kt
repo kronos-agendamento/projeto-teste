@@ -13,28 +13,28 @@ class RespostaController(
     val respostaRepository: RespostaRepository
 ) {
 
-    @PostMapping()
-    fun post(@RequestBody @Valid novaResposta: Resposta): ResponseEntity<Resposta> {
+    @PostMapping("/cadastro-resposta")
+    fun post(@RequestBody @Valid novaResposta: Resposta): ResponseEntity<Any> {
         val respostaSalva = respostaRepository.save(novaResposta)
 
-        return ResponseEntity.status(201).body(respostaSalva)
+        return ResponseEntity.status(201).body("Resposta ${respostaSalva.resposta} cadastrada com sucesso")
     }
 
-    @GetMapping()
-    fun get(): ResponseEntity<List<Resposta>> {
+    @GetMapping("/lista-todas-respostas")
+    fun get(): ResponseEntity<Any> {
         val respostas = respostaRepository.findAll()
 
         if (respostas.isEmpty()) {
-            return ResponseEntity.status(204).build()
+            return ResponseEntity.status(204).body("Nenhuma resposta foi cadastrada.")
         }
         return ResponseEntity.status(200).body(respostas)
     }
 
-    @GetMapping("/usuario/{cpf}")
-    fun getByUser(@PathVariable cpf: String): ResponseEntity<List<Map<String, Any?>>> {
+    @GetMapping("/filtro-por-cpf/{cpf}")
+    fun getByUser(@Valid @PathVariable cpf: String): ResponseEntity<Any> {
         val respostas = respostaRepository.findByUsuarioCpf(cpf)
         return if (respostas.isEmpty()) {
-            ResponseEntity.noContent().build()
+            return ResponseEntity.status(204).body("Nenhuma resposta foi cadastrada para esse cliente.")
         } else {
             val respostasComUsuario = respostas.map { resposta ->
                 mapOf(
@@ -44,15 +44,15 @@ class RespostaController(
                     "dataPreenchimentoFicha" to resposta.ficha.dataPreenchimento
                 )
             }
-            ResponseEntity.ok(respostasComUsuario)
+            ResponseEntity.status(200).body(respostasComUsuario)
         }
     }
 
-    @GetMapping("/pergunta/{descricao}")
-    fun getByQuestion(@PathVariable descricao: String): ResponseEntity<List<Map<String, Any?>>> {
-        val respostas = respostaRepository.findByPerguntaDescricao(descricao)
+    @GetMapping("/filtro-por-pergunta/{nome}")
+    fun getByQuestion(@Valid @PathVariable nome: String): ResponseEntity<Any> {
+        val respostas = respostaRepository.findByPerguntaDescricao(nome)
         return if (respostas.isEmpty()) {
-            ResponseEntity.noContent().build()
+            return ResponseEntity.status(204).body("Nenhuma pergunta foi encontrada vinculada à essa pergunta.")
         } else {
             val respostasComPergunta = respostas.map { resposta ->
                 mapOf(
@@ -64,7 +64,17 @@ class RespostaController(
                     "dataPreenchimentoFicha" to resposta.ficha.dataPreenchimento
                 )
             }
-            ResponseEntity.ok(respostasComPergunta)
+            ResponseEntity.status(200).body(respostasComPergunta)
         }
+    }
+
+    @DeleteMapping("/respostas/{id}")
+    fun deletarResposta(@PathVariable id: Int): ResponseEntity<String> {
+        val resposta = respostaRepository.findById(id)
+        if (resposta.isPresent) {
+            respostaRepository.deleteById(id)
+            return ResponseEntity.status(200).body("Resposta excluída com sucesso.")
+        }
+        return ResponseEntity.status(404).body("Resposta não encontrada para o ID fornecido.")
     }
 }

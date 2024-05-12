@@ -1,5 +1,6 @@
 package sptech.projetojpa1.controller
 
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import sptech.projetojpa1.dominio.*
@@ -23,9 +24,9 @@ class UsuarioController(
 
     @PostMapping("/login")
     fun fazerLogin(
-        @RequestParam("email") email: String?,
-        @RequestParam("senha") senha: String?
-    ): ResponseEntity<Any> {
+        @Valid @RequestParam("email") email: String?,
+        @Valid @RequestParam("senha") senha: String?
+       ): ResponseEntity<Any> {
         return if (!email.isNullOrBlank() && !senha.isNullOrBlank()) {
             val usuario = repository.findByEmailIgnoreCase(email)
             if (usuario != null && usuario.senha.equals(senha, ignoreCase = true)) {
@@ -42,7 +43,7 @@ class UsuarioController(
 
 
     @PatchMapping("/logoff/{cpf}")
-    fun fazerLogoff(@PathVariable cpf: String): ResponseEntity<Any> {
+    fun fazerLogoff(@Valid @PathVariable cpf: String): ResponseEntity<Any> {
         val usuario = repository.findByCpf(cpf)
         return if (usuario != null) {
             usuario.status = false
@@ -54,7 +55,7 @@ class UsuarioController(
     }
 
     @PostMapping ("/cadastro-usuario")
-    fun cadastrarUsuario(@RequestBody novoUsuario: Usuario): ResponseEntity<Usuario> {
+    fun cadastrarUsuario(@Valid @RequestBody novoUsuario: Usuario): ResponseEntity<Usuario> {
         val usuarioSalvo = repository.save(novoUsuario)
         return ResponseEntity.status(201).body(usuarioSalvo)
     }
@@ -80,7 +81,7 @@ class UsuarioController(
     }
 
     @GetMapping("/filtro-por-codigo/{codigo}")
-    fun buscarUsuarioPorCodigo(@PathVariable codigo: Int): ResponseEntity<Any> {
+    fun buscarUsuarioPorCodigo(@Valid @PathVariable codigo: Int): ResponseEntity<Any> {
         val usuario = repository.findById(codigo)
         return usuario.map {
             ResponseEntity.status(200).body<Any>(it)
@@ -93,7 +94,7 @@ class UsuarioController(
     }
 
     @PatchMapping("/ativacao-usuario/{codigo}")
-    fun ativarUsuario(@PathVariable codigo: Int): ResponseEntity<Void> {
+    fun ativarUsuario(@Valid @PathVariable codigo: Int): ResponseEntity<Void> {
         return alterarStatusUsuario(codigo, true)
     }
 
@@ -107,7 +108,7 @@ class UsuarioController(
     }
 
     @PatchMapping(value= ["/atualizacao-foto/{codigo}"], consumes = ["image/jpeg", "image/png", "image/gif"])
-    fun atualizarFotoUsuario(@PathVariable codigo: Int, @RequestBody imagem: ByteArray): ResponseEntity<Any> {
+    fun atualizarFotoUsuario(@Valid @PathVariable codigo: Int, @RequestBody imagem: ByteArray): ResponseEntity<Any> {
         val usuarioOptional = repository.findById(codigo)
         if (usuarioOptional.isEmpty) {
             return ResponseEntity.status(404).body("Usuário não encontrado, verifique o código fornecido e tente novamente.")
@@ -122,14 +123,14 @@ class UsuarioController(
 
 
     @GetMapping(value = ["/busca-imagem-usuario/{codigo}"], produces = ["image/jpeg"])
-    fun getFoto(@PathVariable codigo: Int): ResponseEntity<ByteArray> {
+    fun getFoto(@Valid @PathVariable codigo: Int): ResponseEntity<ByteArray> {
         val foto= repository.findFotoByCodigo(codigo)
         return ResponseEntity.status(200).body(foto)
     }
 
 
     @GetMapping("/filtro-por-cpf/{cpf}")
-    fun getByCPF(@PathVariable cpf: String): ResponseEntity<Any> {
+    fun getByCPF(@Valid @PathVariable cpf: String): ResponseEntity<Any> {
         val usuario = repository.findByCpf(cpf)
         return usuario?.let {
             ResponseEntity.status(200).body(it)
@@ -137,7 +138,7 @@ class UsuarioController(
     }
 
     @GetMapping("/filtro-por-nome/{nome}")
-    fun getByNomeContains(@PathVariable nome: String): ResponseEntity<Any> {
+    fun getByNomeContains(@Valid @PathVariable nome: String): ResponseEntity<Any> {
         val usuarios = repository.findByNomeContainsIgnoreCase(nome)
         return if (usuarios.isNotEmpty()) {
             ResponseEntity.status(200).body(usuarios)
@@ -147,7 +148,7 @@ class UsuarioController(
     }
 
     @GetMapping("/filtro-por-nivel-acesso/{codigo}")
-    fun getUsuariosByNivelAcesso(@PathVariable codigo: Int): ResponseEntity<Any> {
+    fun getUsuariosByNivelAcesso(@Valid @PathVariable codigo: Int): ResponseEntity<Any> {
         val nivelAcesso = nivelAcessoRepository.findById(codigo)
         return nivelAcesso.map { nivel ->
             val lista = repository.findByStatusTrueAndNivelAcesso(nivel)
@@ -161,7 +162,7 @@ class UsuarioController(
 
 
     @GetMapping("/filtro-por-status/{status}")
-    fun getByStatus(@PathVariable status: Boolean): ResponseEntity<Any> {
+    fun getByStatus(@Valid @PathVariable status: Boolean): ResponseEntity<Any> {
         val usuarios = repository.findByStatus(status)
         return if (usuarios.isNotEmpty()) {
             ResponseEntity.status(200).body(usuarios)
@@ -172,7 +173,7 @@ class UsuarioController(
 
     @PatchMapping("/atualizacao-ficha/{cpf}")
     fun patchRespostasFicha(
-        @PathVariable cpf: String, @RequestBody respostas: List<Resposta>
+        @Valid @PathVariable cpf: String, @Valid @RequestBody respostas: List<Resposta>
     ): ResponseEntity<Any> {
         val usuario = repository.findByCpf(cpf)
         return if (usuario != null) {
@@ -197,7 +198,7 @@ class UsuarioController(
 
     @PatchMapping("/atualizacao-endereco/{cpf}")
     fun patchEndereco(
-        @PathVariable cpf: String, @RequestBody endereco: Endereco
+        @Valid  @PathVariable cpf: String, @Valid @RequestBody endereco: Endereco
     ): ResponseEntity<Void> {
         val usuario = repository.findByCpf(cpf)
         return if (usuario != null) {
@@ -222,7 +223,7 @@ class UsuarioController(
 
     @PatchMapping("/atualizacao-nivel-acesso/{cpf}")
     fun patchNivelAcessoPorCPF(
-        @PathVariable cpf: String, @RequestBody nivelAcesso: NivelAcesso
+        @Valid  @PathVariable cpf: String, @Valid @RequestBody nivelAcesso: NivelAcesso
     ): ResponseEntity<Void> {
         val usuario = repository.findByCpf(cpf)
         return if (usuario != null) {
@@ -236,7 +237,7 @@ class UsuarioController(
 
     @PatchMapping("/atualizacao-usuario/{cpf}")
     fun patchUsuario(
-        @PathVariable cpf: String, @RequestBody novoUsuario: Usuario
+        @Valid  @PathVariable cpf: String, @Valid @RequestBody novoUsuario: Usuario
     ): ResponseEntity<Void> {
         val usuario = repository.findByCpf(cpf)
         return if (usuario != null) {
@@ -254,7 +255,7 @@ class UsuarioController(
         }
     }
     @DeleteMapping("/exclusao-usuario/{cpf}")
-    fun deleteUsuario(@PathVariable cpf: String): ResponseEntity<Any> {
+    fun deleteUsuario(@Valid @PathVariable cpf: String): ResponseEntity<Any> {
         val usuario = repository.findByCpf(cpf)
         return if (usuario != null) {
             repository.delete(usuario)

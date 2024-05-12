@@ -9,7 +9,7 @@ data class Status(
     // ID do status de agendamento
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "id_status_agendamento") var id: Int?,
     // Descrição do status
-    @Column(name = "descricao", length = 30) @NotBlank(message = "Descrição é obrigatória") var descricao: String?,
-    // Motivo do status
-    @Column(name = "motivo", length = 200) var motivo: String?
+    @Column(name = "nome", length = 30) @NotBlank(message = "Descrição é obrigatória") var nome: String?,
+    @Column(name = "cor", length = 200) var cor: String?,
+    @Column(name = "motivo", length = 200) var motivo: String?,
 )
