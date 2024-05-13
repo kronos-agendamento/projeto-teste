@@ -8,98 +8,87 @@ import sptech.projetojpa1.repository.PerguntaRepository
 
 @RestController
 @RequestMapping("/ficha-pergunta")
-
-class PerguntaController (
+class PerguntaController(
     val perguntaRepository: PerguntaRepository
 ) {
-    @PostMapping ("/cadastro-perguntas")
-    fun post(@RequestBody @Valid novaPergunta: Pergunta):ResponseEntity<Pergunta> {
-        perguntaRepository.save(novaPergunta)
-
-        return ResponseEntity.status(201).body(novaPergunta)
+    // Cadastro de Nova Pergunta
+    @PostMapping("/cadastro-perguntas")
+    fun cadastrarPergunta(@RequestBody @Valid novaPergunta: Pergunta): ResponseEntity<Pergunta> {
+        // Salvando a nova pergunta no banco de dados
+        val perguntaSalva = perguntaRepository.save(novaPergunta)
+        return ResponseEntity.status(201).body(perguntaSalva)
     }
 
-
-    @GetMapping ("/lista-todas-perguntas")
-    fun get():ResponseEntity<List<Pergunta>> {
+    // Listar Todas as Perguntas
+    @GetMapping("/lista-todas-perguntas")
+    fun listarTodasPerguntas(): ResponseEntity<List<Pergunta>> {
         val perguntas = perguntaRepository.findAll()
-
-        if(perguntas.isEmpty()){
-            return ResponseEntity.status(204).build()
+        return if (perguntas.isEmpty()) {
+            // Retornando status 204 se não houver perguntas encontradas
+            ResponseEntity.status(204).build()
+        } else {
+            // Retornando a lista de perguntas se houver alguma encontrada
+            ResponseEntity.status(200).body(perguntas)
         }
-        return ResponseEntity.status(200).body(perguntas)
     }
 
+    // Buscar Perguntas por Descrição
     @GetMapping("/filtro-por-descricao")
     fun buscarPorDescricao(@RequestParam descricao: String): ResponseEntity<List<Pergunta>> {
         val lista = perguntaRepository.findByDescricaoContainsIgnoreCase(descricao)
         return if (lista.isNotEmpty()) {
+            // Retornando a lista de perguntas se houver alguma encontrada para a descrição fornecida
             ResponseEntity.status(200).body(lista)
         } else {
+            // Retornando status 404 se não houver perguntas encontradas para a descrição fornecida
             ResponseEntity.status(404).build()
         }
     }
 
+    // Listar Perguntas Ativas
     @GetMapping("/lista-perguntas-ativas")
-    fun getAtivas(@Valid @RequestParam status:Boolean):ResponseEntity<List<Pergunta>> {
+    fun listarPerguntasAtivas(@RequestParam status: Boolean): ResponseEntity<List<Pergunta>> {
         val perguntas = perguntaRepository.findByStatus(status)
-
         return ResponseEntity.status(200).body(perguntas)
     }
 
+    // Ativar Pergunta por ID
     @PatchMapping("/ativacao-pergunta/{id}")
-    fun perguntaAtivada(@Valid @RequestParam id: Int):ResponseEntity<Any> {
-        var perguntaOptional = perguntaRepository.findById(id)
-
-        // Verifica se a pergunta foi encontrada
-        if (perguntaOptional.isPresent) {
+    fun ativarPergunta(@Valid @PathVariable id: Int): ResponseEntity<Any> {
+        val perguntaOptional = perguntaRepository.findById(id)
+        return if (perguntaOptional.isPresent) {
             val pergunta = perguntaOptional.get()
-
-            // Atualiza o status da pergunta para true
-            pergunta.status = true
-
-            // Salva a pergunta atualizada no repositório
+            pergunta.status = true // Ativa a pergunta
             perguntaRepository.save(pergunta)
-
-            return ResponseEntity.status(200).body(pergunta)
+            ResponseEntity.status(200).body(pergunta)
         } else {
-            // Retorna uma resposta 404 caso a pergunta não seja encontrada
-            return ResponseEntity.status(404).body("Pergunta aativada não encontrada.")
+            ResponseEntity.status(404).body("Pergunta a ser ativada não encontrada.")
         }
     }
 
+    // Desativar Pergunta por ID
     @PatchMapping("/desativacao-pergunta/{id}")
-    fun perguntaDesativada(@Valid @RequestParam id: Int):ResponseEntity<Any> {
-        var perguntaOptional = perguntaRepository.findById(id)
-
-        // Verifica se a pergunta foi encontrada
-        if (perguntaOptional.isPresent) {
+    fun desativarPergunta(@Valid @PathVariable id: Int): ResponseEntity<Any> {
+        val perguntaOptional = perguntaRepository.findById(id)
+        return if (perguntaOptional.isPresent) {
             val pergunta = perguntaOptional.get()
-
-            // Atualiza o status da pergunta para false
-            pergunta.status = false
-
-            // Salva a pergunta atualizada no repositório
+            pergunta.status = false // Desativa a pergunta
             perguntaRepository.save(pergunta)
-
-            return ResponseEntity.status(200).body(pergunta)
+            ResponseEntity.status(200).body(pergunta)
         } else {
-            // Retorna uma resposta 404 caso a pergunta não seja encontrada
-            return ResponseEntity.status(404).body("Pergunta desativada não encontrada.")
+            ResponseEntity.status(404).body("Pergunta a ser desativada não encontrada.")
         }
     }
+
+    // Excluir Pergunta por ID
     @DeleteMapping("/exclusao-pergunta/{id}")
     fun deletarPergunta(@Valid @PathVariable id: Int): ResponseEntity<String> {
-        val resposta = perguntaRepository.findById(id)
-        if (resposta.isPresent) {
+        val perguntaOptional = perguntaRepository.findById(id)
+        return if (perguntaOptional.isPresent) {
             perguntaRepository.deleteById(id)
-            return ResponseEntity.status(200).body("Pergunta excluída com sucesso.")
+            ResponseEntity.status(200).body("Pergunta excluída com sucesso.")
+        } else {
+            ResponseEntity.status(404).body("Pergunta não encontrada para o ID fornecido.")
         }
-        return ResponseEntity.status(404).body("Pergunta não encontrada para o ID fornecido.")
     }
-
-//    -> CONTROLLER Perguntas:
-//    - GET all que estão ativas.
-//    - PATCH de status ativo ou inativo (por descrição da pergunta).
-
 }

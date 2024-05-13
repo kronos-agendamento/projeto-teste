@@ -10,94 +10,114 @@ import sptech.projetojpa1.repository.EnderecoRepository
 
 @RestController
 @RequestMapping("/endereco")
-class EnderecoController (
-    val repository: EnderecoRepository
+class EnderecoController(
+    val repository: EnderecoRepository,
 ) {
-    // Cadastro de Novo Complemento
-    @PostMapping ("/cadastro-endereco")
-    fun post(@RequestBody @Valid novoEndereco: Endereco): ResponseEntity<Endereco> {
-        repository.save(novoEndereco)
-        return ResponseEntity.status(201).body(novoEndereco)
+
+    // Cadastro de Novo Endereço
+    @PostMapping("/cadastro-endereco")
+    fun cadastrarEndereco(@RequestBody @Valid novoEndereco: Endereco): ResponseEntity<Endereco> {
+        // Salvando o novo endereço no banco de dados
+        val enderecoSalvo = repository.save(novoEndereco)
+        return ResponseEntity.status(201).body(enderecoSalvo)
     }
 
-    // Listar Endereco
-    @GetMapping ("/lista-enderecos")
-    fun get(): ResponseEntity<Any> {
+    // Listar Endereços
+    @GetMapping("/lista-enderecos")
+    fun listarEnderecos(): ResponseEntity<Any> {
+        // Buscando todos os endereços no banco de dados
         val lista = repository.findAll()
 
-        if (lista.isNotEmpty()) {
-            return ResponseEntity.status(200).body(lista)
+        return if (lista.isNotEmpty()) {
+            // Retornando a lista de endereços se houver algum encontrado
+            ResponseEntity.status(200).body(lista)
+        } else {
+            // Retornando status 204 se não houver nenhum endereço encontrado
+            ResponseEntity.status(204).body("Nenhum endereço foi encontrado.")
         }
-        return ResponseEntity.status(204).body("Nenhum item foi encontrado.")
     }
 
-    // Listar por código
+    // Listar Endereço por Código
     @GetMapping("/lista-por-codigo/{codigo}")
-    fun get(@PathVariable codigo: Int): ResponseEntity<Any> {
-        if (repository.existsById(codigo)) {
+    fun listarEnderecoPorCodigo(@PathVariable codigo: Int): ResponseEntity<Any> {
+        return if (repository.existsById(codigo)) {
+            // Buscando o endereço pelo código se existir no banco de dados
             val endereco = repository.findById(codigo).get()
-
-            return ResponseEntity.status(200).body(endereco)
+            ResponseEntity.status(200).body(endereco)
+        } else {
+            // Retornando status 404 se o endereço não for encontrado
+            ResponseEntity.status(404).body("Endereço não encontrado para o ID fornecido")
         }
-        return ResponseEntity.status(404).body("Endereço não encontrado para o ID fornecido")
     }
 
+    // Listar Endereços por CEP
     @GetMapping("/lista-por-cep/{cep}")
-    fun getByCEP(@PathVariable cep: String): ResponseEntity<Any> {
+    fun listarEnderecosPorCEP(@PathVariable cep: String): ResponseEntity<Any> {
         val lista = repository.findByCepContaining(cep)
         return if (lista.isNotEmpty()) {
+            // Retornando a lista de endereços se houver algum encontrado para o CEP fornecido
             ResponseEntity.status(200).body(lista)
         } else {
-            ResponseEntity.status(204).body("Endereços não encontrado para o CEP fornecido")
+            // Retornando status 204 se não houver endereços encontrados para o CEP fornecido
+            ResponseEntity.status(204).body("Nenhum endereço encontrado para o CEP fornecido")
         }
     }
 
+    // Listar Endereços por Bairro
     @GetMapping("/lista-por-bairro/{bairro}")
-    fun getByBairro(@PathVariable bairro: String): ResponseEntity<Any> {
+    fun listarEnderecosPorBairro(@PathVariable bairro: String): ResponseEntity<Any> {
         val lista = repository.findByBairroContainsIgnoreCase(bairro)
         return if (lista.isNotEmpty()) {
+            // Retornando a lista de endereços se houver algum encontrado para o bairro fornecido
             ResponseEntity.status(200).body(lista)
         } else {
-            ResponseEntity.status(204).body("Endereços não encontrados para o bairro fornecido")
+            // Retornando status 204 se não houver endereços encontrados para o bairro fornecido
+            ResponseEntity.status(204).body("Nenhum endereço encontrado para o bairro fornecido")
         }
     }
 
+    // Método aninhado para obter Endereço por Empresa
     class ControllerEndereco(private val empresaRepository: EmpresaRepository) {
 
         @GetMapping("/filtro-por-empresa/{nomeEmpresa}")
-        fun getEnderecoPorEmpresa(@PathVariable nomeEmpresa: String): ResponseEntity<String> {
+        fun obterEnderecoPorEmpresa(@PathVariable nomeEmpresa: String): ResponseEntity<String> {
             val empresas: List<Empresa> = empresaRepository.findByNomeContainsIgnoreCase(nomeEmpresa)
-            if (empresas.isNotEmpty()) {
+            return if (empresas.isNotEmpty()) {
+                // Retornando o endereço completo da primeira empresa encontrada com o nome fornecido
                 val enderecoCompleto = empresas.first().endereco.toString()
-                return ResponseEntity.ok("Endereço completo da empresa $nomeEmpresa: $enderecoCompleto")
+                ResponseEntity.ok("Endereço completo da empresa $nomeEmpresa: $enderecoCompleto")
+            } else {
+                // Retornando status 404 se nenhuma empresa for encontrada com o nome fornecido
+                ResponseEntity.notFound().build()
             }
-            return ResponseEntity.notFound().build()
         }
     }
 
-    @GetMapping("/filtro-por-usuario/{usuario}")
-    fun getByUsuario(@PathVariable usuario: String): ResponseEntity<Any> {
+    // Listar Endereços por Usuário
+    @GetMapping("/lista-por-usuario/{usuario}")
+    fun listarEnderecosPorUsuario(@PathVariable usuario: String): ResponseEntity<Any> {
         val lista = repository.findByUsuarioNomeContaining(usuario)
         return if (lista.isNotEmpty()) {
+            // Retornando a lista de endereços se houver algum encontrado para o usuário fornecido
             ResponseEntity.status(200).body(lista)
         } else {
+            // Retornando status 204 se não houver endereços encontrados para o usuário fornecido
             ResponseEntity.status(204).build()
         }
     }
 
+    // Excluir Endereço por ID
     @DeleteMapping("/exclusao-endereco/{id}")
-    fun delete(@Valid @PathVariable id:Int): ResponseEntity<String> {
-        val lista = repository.findById(id)
-        if (lista.isPresent) {
-            val enderecoDeletado = lista.get()
+    fun excluirEndereco(@Valid @PathVariable id: Int): ResponseEntity<String> {
+        val enderecoOptional = repository.findById(id)
+        return if (enderecoOptional.isPresent) {
+            val enderecoDeletado = enderecoOptional.get()
             repository.deleteById(id)
-            return ResponseEntity.status(200).body("Endereço deletado com sucesso: $enderecoDeletado")
+            // Retornando mensagem de sucesso após excluir o endereço
+            ResponseEntity.status(200).body("Endereço deletado com sucesso: $enderecoDeletado")
+        } else {
+            // Retornando status 404 se o endereço não for encontrado para o ID fornecido
+            ResponseEntity.status(404).body("Endereço não encontrado para o ID fornecido")
         }
-        return ResponseEntity.status(404).body("Não encontramos o status pesquisado.")
     }
-
-
-
-
-
 }

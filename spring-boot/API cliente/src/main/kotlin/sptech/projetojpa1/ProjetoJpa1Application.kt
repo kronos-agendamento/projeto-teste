@@ -7,5 +7,6 @@ import org.springframework.boot.runApplication
 class ProjetoJpa1Application
 
 fun main(args: Array<String>) {
-	runApplication<ProjetoJpa1Application>(*args)
+    // Inicia a aplicação Spring Boot
+    runApplication<ProjetoJpa1Application>(*args)
 }

@@ -11,5 +11,5 @@ data class Status(
     // Descrição do status
     @Column(name = "nome", length = 30) @NotBlank(message = "Descrição é obrigatória") var nome: String?,
     @Column(name = "cor", length = 200) var cor: String?,
-    @Column(name = "motivo", length = 200) var motivo: String?,
+    @Column(name = "motivo", length = 200) var motivo: String?
 )

@@ -6,22 +6,23 @@ import org.springframework.web.bind.annotation.*
 import sptech.projetojpa1.dominio.Resposta
 import sptech.projetojpa1.repository.RespostaRepository
 
-
 @RestController
 @RequestMapping("/ficha-resposta")
 class RespostaController(
     val respostaRepository: RespostaRepository
 ) {
 
+    // Cadastro de Nova Resposta
     @PostMapping("/cadastro-resposta")
-    fun post(@RequestBody @Valid novaResposta: Resposta): ResponseEntity<Any> {
+    fun cadastrarResposta(@RequestBody @Valid novaResposta: Resposta): ResponseEntity<Any> {
         val respostaSalva = respostaRepository.save(novaResposta)
 
         return ResponseEntity.status(201).body("Resposta ${respostaSalva.resposta} cadastrada com sucesso")
     }
 
+    // Listar Todas as Respostas
     @GetMapping("/lista-todas-respostas")
-    fun get(): ResponseEntity<Any> {
+    fun listarTodasRespostas(): ResponseEntity<Any> {
         val respostas = respostaRepository.findAll()
 
         if (respostas.isEmpty()) {
@@ -30,12 +31,14 @@ class RespostaController(
         return ResponseEntity.status(200).body(respostas)
     }
 
+    // Filtrar Respostas por CPF do Usuário
     @GetMapping("/filtro-por-cpf/{cpf}")
-    fun getByUser(@Valid @PathVariable cpf: String): ResponseEntity<Any> {
+    fun filtrarPorCpf(@Valid @PathVariable cpf: String): ResponseEntity<Any> {
         val respostas = respostaRepository.findByUsuarioCpf(cpf)
         return if (respostas.isEmpty()) {
-            return ResponseEntity.status(204).body("Nenhuma resposta foi cadastrada para esse cliente.")
+            ResponseEntity.status(204).body("Nenhuma resposta foi cadastrada para esse cliente.")
         } else {
+            // Mapeando as respostas para um formato específico antes de retornar
             val respostasComUsuario = respostas.map { resposta ->
                 mapOf(
                     "resposta" to resposta.resposta,
@@ -48,12 +51,14 @@ class RespostaController(
         }
     }
 
+    // Filtrar Respostas por Descrição da Pergunta
     @GetMapping("/filtro-por-pergunta/{nome}")
-    fun getByQuestion(@Valid @PathVariable nome: String): ResponseEntity<Any> {
+    fun filtrarPorPergunta(@Valid @PathVariable nome: String): ResponseEntity<Any> {
         val respostas = respostaRepository.findByPerguntaDescricao(nome)
         return if (respostas.isEmpty()) {
-            return ResponseEntity.status(204).body("Nenhuma pergunta foi encontrada vinculada à essa pergunta.")
+            ResponseEntity.status(204).body("Nenhuma pergunta foi encontrada vinculada à essa pergunta.")
         } else {
+            // Mapeando as respostas para um formato específico antes de retornar
             val respostasComPergunta = respostas.map { resposta ->
                 mapOf(
                     "resposta" to resposta.resposta,
@@ -68,13 +73,15 @@ class RespostaController(
         }
     }
 
+    // Excluir Resposta por ID
     @DeleteMapping("/exclusao-resposta/{id}")
-    fun deletarResposta(@PathVariable id: Int): ResponseEntity<String> {
-        val resposta = respostaRepository.findById(id)
-        if (resposta.isPresent) {
+    fun excluirResposta(@PathVariable id: Int): ResponseEntity<String> {
+        val respostaOptional = respostaRepository.findById(id)
+        return if (respostaOptional.isPresent) {
             respostaRepository.deleteById(id)
-            return ResponseEntity.status(200).body("Resposta excluída com sucesso.")
+            ResponseEntity.status(200).body("Resposta excluída com sucesso.")
+        } else {
+            ResponseEntity.status(404).body("Resposta não encontrada para o ID fornecido.")
         }
-        return ResponseEntity.status(404).body("Resposta não encontrada para o ID fornecido.")
     }
 }

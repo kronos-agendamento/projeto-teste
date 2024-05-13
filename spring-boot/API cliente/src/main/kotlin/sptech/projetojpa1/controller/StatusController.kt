@@ -10,31 +10,37 @@ import sptech.projetojpa1.repository.StatusRepository
 @RestController
 @RequestMapping("/status-agendamento")
 class StatusController {
+
     @Autowired
     lateinit var repository: StatusRepository
 
-    @PostMapping ("/cadastro-status")
-    fun post(@Valid @RequestBody novoStatus: Status): ResponseEntity<String> {
+    // Cadastro de Novo Status
+    @PostMapping("/cadastro-status")
+    fun cadastrarStatus(@Valid @RequestBody novoStatus: Status): ResponseEntity<String> {
         val statusSalvo = repository.save(novoStatus)
         return ResponseEntity.status(201).body("Status ${statusSalvo.nome} cadastrado com sucesso")
     }
 
-    @GetMapping ("/lista-todos-status")
-    fun get(): ResponseEntity<Any> {
+    // Listar Todos os Status
+    @GetMapping("/lista-todos-status")
+    fun listarTodosStatus(): ResponseEntity<Any> {
         val lista = repository.findAll()
-        if (lista.isNotEmpty()) {
-            return ResponseEntity.status(200).body(lista)
+        return if (lista.isNotEmpty()) {
+            ResponseEntity.status(200).body(lista)
+        } else {
+            ResponseEntity.status(204).body("Infelizmente nenhum cadastro de status foi realizado ainda.")
         }
-        return ResponseEntity.status(204).body("Infelizmente nenhum cadastro de status foi realizado ainda.")
     }
 
+    // Filtrar Status por ID
     @GetMapping("/filtro-por-id/{id}")
-    fun get(@Valid @PathVariable id:Int): ResponseEntity<Status> {
+    fun filtrarStatusPorId(@Valid @PathVariable id: Int): ResponseEntity<Status> {
         return ResponseEntity.of(repository.findById(id))
     }
 
+    // Excluir Status por ID
     @DeleteMapping("/exclusao-status/{id}")
-    fun delete(@Valid @PathVariable id:Int):ResponseEntity<Any> {
+    fun excluirStatus(@Valid @PathVariable id: Int): ResponseEntity<Any> {
         if (repository.existsById(id)) {
             repository.deleteById(id)
             return ResponseEntity.status(200).body("Status deletado com sucesso.")
@@ -42,9 +48,9 @@ class StatusController {
         return ResponseEntity.status(404).body("Não encontramos o status pesquisado.")
     }
 
-
+    // Editar Status por ID
     @PatchMapping("/edicao-status/{id}")
-    fun patch(@Valid @PathVariable id: Int, @RequestBody patchRequest: Status): ResponseEntity<Any> {
+    fun editarStatus(@Valid @PathVariable id: Int, @RequestBody patchRequest: Status): ResponseEntity<Any> {
         // Busca o status existente pelo ID
         val statusExistente = repository.findById(id).orElse(null)
         if (statusExistente != null) {
@@ -62,9 +68,11 @@ class StatusController {
                 }
             } else {
                 // Retorna um erro se a descrição não for "Cancelado"
-                return ResponseEntity.status(400).body("O campo 'motivo' só pode ser editado quando a 'descrição' estiver como 'Cancelado'.")
+                return ResponseEntity.status(400)
+                    .body("O campo 'motivo' só pode ser editado quando a 'descrição' estiver como 'Cancelado'.")
             }
         }
         // Retorna um erro 404 se o status não existir
         return ResponseEntity.status(404).body("Status inexistente no nosso sistema.")
-    }}
+    }
+}

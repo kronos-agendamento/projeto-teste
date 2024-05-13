@@ -41,7 +41,7 @@ data class Usuario(
     // Foto do usuário
     @field:Column(length = 100 * 1024 * 1024) //name = "musica_foto")
     @JsonIgnore
-    var foto:ByteArray?,
+    var foto: ByteArray?,
     // Status do usuário
     var status: Boolean = true,
     // Nível de acesso do usuário
@@ -51,6 +51,5 @@ data class Usuario(
     // Empresa do usuário
     @ManyToOne var empresa: Empresa?,
     // Ficha de anamnese do usuário
-    @ManyToOne var fichaAnamnese: FichaAnamnese?,
-
+    @ManyToOne var fichaAnamnese: FichaAnamnese?
 )
