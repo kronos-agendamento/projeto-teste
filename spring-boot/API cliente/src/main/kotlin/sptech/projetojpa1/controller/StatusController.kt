@@ -54,25 +54,19 @@ class StatusController {
         // Busca o status existente pelo ID
         val statusExistente = repository.findById(id).orElse(null)
         if (statusExistente != null) {
-            // Verifica se a descrição do status é "Cancelado"
-            if (statusExistente.nome.equals("Cancelado", ignoreCase = true)) {
-                // Verifica se o campo motivo está presente e não vazio
-                if (!patchRequest.motivo.isNullOrBlank()) {
-                    // Atualiza o campo motivo e salva no banco de dados
-                    statusExistente.motivo = patchRequest.motivo
-                    repository.save(statusExistente)
-                    return ResponseEntity.ok(statusExistente)
-                } else {
-                    // Retorna um erro se o campo motivo estiver vazio
-                    return ResponseEntity.status(400).body("O campo 'motivo' é obrigatório.")
-                }
+            // Verifica se o campo motivo está presente e não vazio
+            if (!patchRequest.motivo.isNullOrBlank()) {
+                // Atualiza o campo motivo e salva no banco de dados
+                statusExistente.motivo = patchRequest.motivo
+                repository.save(statusExistente)
+                return ResponseEntity.ok(statusExistente)
             } else {
-                // Retorna um erro se a descrição não for "Cancelado"
-                return ResponseEntity.status(400)
-                    .body("O campo 'motivo' só pode ser editado quando a 'descrição' estiver como 'Cancelado'.")
+                // Retorna um erro se o campo motivo estiver vazio
+                return ResponseEntity.status(400).body("O campo 'motivo' é obrigatório.")
             }
         }
         // Retorna um erro 404 se o status não existir
         return ResponseEntity.status(404).body("Status inexistente no nosso sistema.")
     }
+
 }

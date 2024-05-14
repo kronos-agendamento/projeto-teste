@@ -31,4 +31,6 @@ interface UsuarioRepository : JpaRepository<Usuario, Int> {
     // Encontra a foto do usuário pelo código
     @Query("select u.foto from Usuario u where u.codigo = ?1")
     fun findFotoByCodigo(codigo: Int): ByteArray?
+
+    fun findByNivelAcesso(nivelAcesso: NivelAcesso): List<Usuario>
 }
