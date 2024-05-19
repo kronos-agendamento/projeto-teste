@@ -11,13 +11,17 @@ import org.hibernate.validator.constraints.br.CNPJ
 import java.time.LocalDateTime
 
 @Entity
-class Empresa (
-    @field:Id @field:GeneratedValue(strategy = GenerationType.IDENTITY)
-    var codigo:Int,
-    var nome:String,
+class Empresa(
+    // Código da empresa
+    @field:Id @field:GeneratedValue(strategy = GenerationType.IDENTITY) var codigo: Int,
+    // Nome da empresa
+    @field:NotBlank(message = "Nome é obrigatório") var nome: String,
+    // Contato da empresa
     var contato: LocalDateTime,
-    @field:CNPJ var CNPJ:String,
+    // CNPJ da empresa
+    @field:CNPJ(message = "CNPJ inválido") var CNPJ: String,
+    // Endereço da empresa
     @field:ManyToOne var endereco: Endereco,
+    // Horário de funcionamento da empresa
     @field:ManyToOne var horarioFuncionamento: HorarioFuncionamento?
-){
-}
+)

@@ -8,14 +8,13 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 
 @Entity
-class NivelAcesso (
-    @field:Id @field:GeneratedValue(strategy = GenerationType.IDENTITY) var codigo:Int?,
-    @field:NotBlank var
-    nome:String?,
-    @field: NotNull
-    var nivel:Int?,
-    @field: NotBlank
-    var descricao:String?
-){
-
-}
+class NivelAcesso(
+    // Código do nível de acesso
+    @field:Id @field:GeneratedValue(strategy = GenerationType.IDENTITY) var codigo: Int?,
+    // Nome do nível de acesso
+    @field:NotBlank(message = "Nome é obrigatório") var nome: String?,
+    // Nível do acesso
+    @field:NotNull(message = "Nível é obrigatório") var nivel: Int?,
+    // Descrição do nível de acesso
+    @field:NotBlank(message = "Descrição é obrigatória") var descricao: String?
+)

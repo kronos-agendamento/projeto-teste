@@ -4,133 +4,141 @@ import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import sptech.projetojpa1.dominio.Empresa
-import sptech.projetojpa1.dominio.HorarioFuncionamento
 import sptech.projetojpa1.repository.EmpresaRepository
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 
 @RestController
-@RequestMapping("/empresas")
-class EmpresaController (
-    val repository :EmpresaRepository
-){
+@RequestMapping("/empresa")
+class EmpresaController(
+    val repository: EmpresaRepository
+) {
     // Cadastro de Nova Empresa
-    @PostMapping
-    fun post(@RequestBody @Valid novaEmpresa: Empresa): ResponseEntity<Empresa> {
+    @PostMapping("/cadastro-empresa")
+    fun cadastrarEmpresa(@RequestBody @Valid novaEmpresa: Empresa): ResponseEntity<Empresa> {
         repository.save(novaEmpresa)
         return ResponseEntity.status(201).body(novaEmpresa)
     }
 
+    // Excluir Empresa por CNPJ
+    @DeleteMapping("/exclusao-empresa/{cnpj}")
+    fun excluirEmpresaPorCNPJ(@PathVariable cnpj: String): ResponseEntity<String> {
+        repository.deleteByCNPJ(cnpj)
+        return ResponseEntity.status(200).body("Empresa com CNPJ $cnpj excluída com sucesso")
+    }
+
     // Listar empresas
-    @GetMapping
-    fun get():ResponseEntity<List<Empresa>>{
+    @GetMapping("/lista-empresas")
+    fun listarEmpresas(): ResponseEntity<Any> {
         val lista = repository.findAll()
-
-        if (lista.isNotEmpty()){
-            return ResponseEntity.status(200).body(lista)
+        return if (lista.isNotEmpty()) {
+            ResponseEntity.status(200).body(lista)
+        } else {
+            ResponseEntity.status(204).body("Nenhuma empresa cadastrada ainda.")
         }
-        return ResponseEntity.status(204).build()
     }
 
+    // Filtrar empresa por nome
     @GetMapping("/filtro-nome/{nome}")
-    fun filtroNome(@PathVariable nome:String):ResponseEntity<List<Empresa>>{
-        var empresas = repository.findByNomeContainsIgnoreCase(nome)
-
-        if (empresas.isEmpty()){
-            return ResponseEntity.status(204).build()
+    fun filtrarPorNome(@PathVariable nome: String): ResponseEntity<Any> {
+        val empresas = repository.findByNomeContainsIgnoreCase(nome)
+        return if (empresas.isEmpty()) {
+            ResponseEntity.status(404).body("Empresa não encontrada pelo nome fornecido.")
+        } else {
+            ResponseEntity.status(200).body(empresas)
         }
-        return ResponseEntity.status(200).body(empresas)
     }
 
+    // Filtrar empresa por CNPJ
     @GetMapping("/filtro-cnpj/{cnpj}")
-    fun filtroCnpj(@PathVariable cnpj:String):ResponseEntity<List<Empresa>>{
-        var empresas = repository.findByCNPJ(cnpj)
-
-        if (empresas.isEmpty()){
-            return ResponseEntity.status(204).build()
+    fun filtrarPorCnpj(@PathVariable cnpj: String): ResponseEntity<Any> {
+        val empresas = repository.findByCNPJ(cnpj)
+        return if (empresas.isEmpty()) {
+            ResponseEntity.status(404).body("Empresa não encontrada pelo CNPJ fornecido.")
+        } else {
+            ResponseEntity.status(200).body(empresas)
         }
-        return ResponseEntity.status(200).body(empresas)
     }
 
-
+    // Editar CNPJ da empresa
     @PatchMapping("/edicao-cnpj/{nome}")
-    fun patchCNPJ(
+    fun editarCNPJ(
         @PathVariable nome: String,
         @RequestParam novoCNPJ: String
-    ): ResponseEntity<Empresa> {
-        val empresa = repository.buscarPeloNome(nome)
-        if(empresa == null){
-            return ResponseEntity.status(404).build()
+    ): ResponseEntity<Any> {
+        val empresa = repository.buscarPeloNomeIgnoreCase(nome)
+        if (empresa == null) {
+            return ResponseEntity.status(404).body("Empresa não encontrada pelo nome fornecido.")
         }
         empresa.CNPJ = novoCNPJ
         repository.save(empresa)
-        return ResponseEntity.status(204).build()
+        return ResponseEntity.status(204).body(empresa)
     }
 
+    // Editar nome da empresa
     @PatchMapping("/edicao-nome/{cnpj}")
-    fun patchNome(
+    fun editarNome(
         @PathVariable cnpj: String,
         @RequestParam novoNome: String
-    ): ResponseEntity<Empresa> {
-        val empresa = repository.buscarPeloCNPJ(cnpj)
-        if(empresa == null){
-            return ResponseEntity.status(404).build()
-        }
-        empresa.nome = novoNome
-        repository.save(empresa)
-        return ResponseEntity.status(204).build()
-    }
-
-    @PatchMapping("/edicao-horario-funcionamento/{cnpj}")
-    fun patchHorario(
-        @PathVariable cnpj: String,
-        @RequestParam(required = false) diaSemana: String?,
-        @RequestParam(required = false) abertura: String?, // Recebe a hora e o minuto juntos no formato "HH:mm"
-        @RequestParam(required = false) fechamento: String? // Recebe a hora e o minuto juntos no formato "HH:mm"
     ): ResponseEntity<Any> {
         val empresa = repository.buscarPeloCNPJ(cnpj)
         if (empresa == null) {
-            return ResponseEntity.status(404).build()
+            return ResponseEntity.status(404).body("Empresa não encontrada pelo CNPJ fornecido.")
+        }
+        empresa.nome = novoNome
+        repository.save(empresa)
+        return ResponseEntity.status(204).body(empresa)
+    }
+
+    // Editar horário de funcionamento da empresa
+    @PatchMapping("/edicao-horario-funcionamento/{cnpj}")
+    fun editarHorarioFuncionamento(
+        @PathVariable cnpj: String,
+        @RequestParam(required = false) diaSemana: String?,
+        @RequestParam(required = false) abertura: String?,
+        @RequestParam(required = false) fechamento: String?
+    ): ResponseEntity<Any> {
+        val empresa = repository.buscarPeloCNPJ(cnpj)
+        if (empresa == null) {
+            return ResponseEntity.status(404).body("Empresa não encontrada pelo CNPJ fornecido.")
         }
 
-        // Configura o formato esperado da string de horário
         val formato = DateTimeFormatter.ofPattern("HH:mm")
 
         try {
-            // Verifique se cada parâmetro opcional não é nulo e, se não for, faça o parse para LocalTime
             diaSemana?.let { empresa.horarioFuncionamento?.diaSemana = it }
             abertura?.let { empresa.horarioFuncionamento?.horarioAbertura = LocalTime.parse(it, formato).toString() }
-            fechamento?.let { empresa.horarioFuncionamento?.horarioFechamento = LocalTime.parse(it, formato).toString() }
+            fechamento?.let {
+                empresa.horarioFuncionamento?.horarioFechamento = LocalTime.parse(it, formato).toString()
+            }
 
             repository.save(empresa)
 
-            return ResponseEntity.status(204).build()
+            return ResponseEntity.status(200).body(empresa)
         } catch (ex: DateTimeParseException) {
-            // Trata erros de formato de data/horário
             return ResponseEntity.status(400).body("Formato de horário inválido. Use o formato HH:mm.")
         }
     }
 
-
+    // Editar endereço da empresa
     @PatchMapping("/edicao-endereco/{cnpj}")
-    fun patchEndereco(
+    fun editarEndereco(
         @PathVariable cnpj: String,
-        @RequestParam novoCEP: String?,
-        @RequestParam novoLogradouro: String?,
-        @RequestParam novoNumero: Int?,
-        @RequestParam novoBairro: String?,
-        @RequestParam novaCidade: String?,
-        @RequestParam novoEstado: String?,
-        @RequestParam novoComplemento: String?
-    ): ResponseEntity<Empresa> {
+        @RequestParam(required = false) novoCEP: String?,
+        @RequestParam(required = false) novoLogradouro: String?,
+        @RequestParam(required = false) novoNumero: Int?,
+        @RequestParam(required = false) novoBairro: String?,
+        @RequestParam(required = false) novaCidade: String?,
+        @RequestParam(required = false) novoEstado: String?,
+        @RequestParam(required = false) novoComplemento: String?
+    ): ResponseEntity<Any> {
         val empresa = repository.buscarPeloCNPJ(cnpj)
-        if(empresa == null){
-            return ResponseEntity.status(404).build()
+        if (empresa == null) {
+            return ResponseEntity.status(404).body("Empresa não encontrada pelo CNPJ fornecido.")
         }
 
-        // Verifique se cada parâmetro opcional não é nulo e, se não for, atualize o objeto empresa
-        novoCEP?.let { empresa.endereco.CEP = it }
+        novoCEP?.let { empresa.endereco.cep = it }
         novoLogradouro?.let { empresa.endereco.logradouro = it }
         novoNumero?.let { empresa.endereco.numero = it }
         novoBairro?.let { empresa.endereco.bairro = it }
@@ -138,12 +146,7 @@ class EmpresaController (
         novoEstado?.let { empresa.endereco.estado = it }
         novoComplemento?.let { empresa.endereco.complemento?.complemento = it }
 
-
         repository.save(empresa)
-        return ResponseEntity.status(204).build()
+        return ResponseEntity.status(200).body(empresa)
     }
 }
-
-
-
-

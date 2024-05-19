@@ -5,13 +5,16 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.ManyToOne
+import org.jetbrains.annotations.NotNull
 
 @Entity
-class Pergunta (
-    @field:Id @field:GeneratedValue(strategy = GenerationType.IDENTITY)
-    var codigoPergunta: Int,
-    var descricao:String,
-    var tipo:String
-
-) {
-}
+class Pergunta(
+    // Código da pergunta
+    @field:Id @field:GeneratedValue(strategy = GenerationType.IDENTITY) var codigoPergunta: Int,
+    // Descrição da pergunta
+    var descricao: String,
+    // Tipo da pergunta
+    var tipo: String,
+    // Status da pergunta
+    var status: Boolean = false
+)

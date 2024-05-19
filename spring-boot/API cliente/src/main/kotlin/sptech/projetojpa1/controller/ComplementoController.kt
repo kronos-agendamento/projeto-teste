@@ -1,79 +1,86 @@
 package sptech.projetojpa1.controller
 
 import jakarta.validation.Valid
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import sptech.projetojpa1.dominio.Complemento
-import sptech.projetojpa1.dominio.PatchComplemento
 import sptech.projetojpa1.repository.ComplementoRepository
 
 @RestController
 @RequestMapping("/complemento")
-class ComplementoController (
-   val repository: ComplementoRepository
+class ComplementoController(
+    val repository: ComplementoRepository
 ) {
 
     // Cadastro de Novo Complemento
     @PostMapping
-    fun post(@RequestBody @Valid novoComplemento: Complemento): ResponseEntity<Complemento> {
+    fun cadastrarComplemento(@RequestBody @Valid novoComplemento: Complemento): ResponseEntity<Complemento> {
+        // Salvando o novo complemento no banco de dados
         repository.save(novoComplemento)
         return ResponseEntity.status(201).body(novoComplemento)
     }
 
-    // Listar por código
-    @GetMapping("/{codigo}")
-    fun get(@PathVariable codigo: Int): ResponseEntity<Complemento> {
-        // se existir o codigo no repositorio retorna true e recolhe esse valor
-        if (repository.existsById(codigo)) {
-            val complemento = repository.findById(codigo).get()
-
-            // retorna o valor encontrado
+    // Listar Complemento por ID
+    @GetMapping("/{id}")
+    fun obterComplementoPorId(@PathVariable id: Int): ResponseEntity<Any> {
+        // Verificando se o complemento existe no repositório
+        if (repository.existsById(id)) {
+            // Buscando o complemento pelo ID se existir no repositório
+            val complemento = repository.findById(id).get()
             return ResponseEntity.status(200).body(complemento)
         }
-        // se não encontrar o valor retorna erro sem corpo de resposta
-        return ResponseEntity.status(404).build()
+        // Retornando status 404 se o complemento não for encontrado
+        return ResponseEntity.status(404).body("Complemento não encontrado para o ID fornecido")
     }
 
-    // Listar pelo endereço
+    // Listar Complemento por ID de Endereço
     @GetMapping("/filtro-endereco/{enderecoId}")
-    fun getPorIdEndereco(@PathVariable enderecoId: Int): ResponseEntity<List<Complemento>> {
-
+    fun obterComplementosPorIdEndereco(@PathVariable enderecoId: Int): ResponseEntity<Any> {
+        // Buscando complementos pelo ID de endereço
         val complementos = repository.findByEnderecoId(enderecoId)
-
-        if (complementos.isEmpty()) {
-            return ResponseEntity.status(204).build()
+        return if (complementos.isEmpty()) {
+            // Retornando status 404 se nenhum complemento for encontrado para o ID de endereço fornecido
+            ResponseEntity.status(404).body("Complemento não encontrado para o ID fornecido")
+        } else {
+            // Retornando a lista de complementos se houver algum encontrado para o ID de endereço fornecido
+            ResponseEntity.status(200).body(complementos)
         }
-        return ResponseEntity.status(200).body(complementos)
     }
 
-//    @PatchMapping("/edicaoPorEndereco/{enderecoId}")
-//    fun patchComplemento(
-//        @PathVariable enderecoId: Int,
-//        @RequestBody atualizacao: PatchComplemento
-//        ):ResponseEntity<Complemento>{
-//        try {
-//            val complemento = repository.findById(enderecoId).get()
-//
-//            complemento.complemento = atualizacao.novoComplemento
-//            repository.save(complemento)
-//
-//            return ResponseEntity.status(200).body(complemento)
-//        } catch (exception:Exception){
-//            return ResponseEntity.status(404).build()
-//        }
-//    }
-
-
+    // Edição de Complemento por ID de Endereço
     @PatchMapping("/edicao-complemento/{enderecoId}")
-    fun patchComplemento(
+    fun editarComplemento(
         @PathVariable enderecoId: Int,
         @RequestParam novoComplemento: String
-    ):ResponseEntity<Complemento>{
-        val lista = repository.findById(enderecoId).get()
-        lista.complemento = novoComplemento
-        repository.save(lista)
+    ): ResponseEntity<Any> {
+        // Verificando se o complemento existe no repositório
+        val complementoOptional = repository.findById(enderecoId)
+        return if (complementoOptional.isPresent) {
+            val complemento = complementoOptional.get()
+            // Atualizando o complemento com o novo valor fornecido
+            complemento.complemento = novoComplemento
+            repository.save(complemento)
+            // Retornando mensagem de sucesso após editar o complemento
+            ResponseEntity.status(200).body("Complemento editado com sucesso")
+        } else {
+            // Retornando status 404 se o complemento não for encontrado para o ID fornecido
+            ResponseEntity.status(404).body("Complemento não encontrado para o ID fornecido")
+        }
+    }
 
-        return ResponseEntity.status(204).build()
+    // Excluir Complemento por ID
+    @DeleteMapping("/exclusao/{id}")
+    fun excluirComplemento(@PathVariable id: Int): ResponseEntity<String> {
+        // Verificando se o complemento existe no repositório
+        val complementoOptional = repository.findById(id)
+        return if (complementoOptional.isPresent) {
+            // Excluindo o complemento se existir no repositório
+            repository.deleteById(id)
+            // Retornando mensagem de sucesso após excluir o complemento
+            ResponseEntity.status(200).body("Complemento excluído com sucesso")
+        } else {
+            // Retornando status 404 se o complemento não for encontrado para o ID fornecido
+            ResponseEntity.status(404).body("Complemento não encontrado para o ID fornecido")
+        }
     }
 }
