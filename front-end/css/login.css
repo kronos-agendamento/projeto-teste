@@ -1,0 +1,30 @@
+body{
+    background-color: whitesmoke;
+    margin: 144px;
+    font-family:'Poppins';
+}
+
+
+button{
+    border-radius: 20px;
+    background-color: #C11255;
+    width: 350px;
+    margin-top: 25px;
+    color: white;
+    font-family: 'Poppins'
+}
+
+.title{
+    margin-left: 12%;
+}
+
+#divInputs{
+    margin-top: 72px;
+}
+
+#divQuadrados{
+    background: rgb(121,9,94);
+    background: linear-gradient(90deg, rgba(121,9,94,1) 37%, rgba(255,0,147,1) 100%);
+    width: 750px;
+    border-radius: 32px;
+}
