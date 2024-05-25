@@ -1,44 +1,61 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="../css/login.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
+ <link
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
-    <title>Login</title>
+
+    <title>Acessar conta</title>
 </head>
 
 <body>
-    <div id="divImagem">
-        <img class="imagemLogin" src="">
-    </div>
-    
-        <div class="title">
-            <p>Login</p>
+
+    <div class="container" id="container">
+        <div class="form-container sign-up">
+            <form>
+                <h1>Criar Conta</h1>
+                
+                <input type="text" placeholder="Nome Completo">
+                <input type="email" placeholder="Email">
+                <input type="number" placeholder="CPF">
+                <input type="number" placeholder="Telefone">
+                <input type="number" placeholder="Data de Nascimento">
+                <input type="password" placeholder="Crie uma senha">
+                <button>Cadastrar</button>
+            </form>
         </div>
-        <div id="divInputs">
-            <p>Email</p>
-            <input id="inputLogin" type="text"></input><br>
-            <p>Senha</p>
-            <input id="inputSenha" type="text"></input>
+        <div class="form-container sign-in">
+            <form>
+                <h1>Bem-vinda de volta!</h1>
+                
+                <input type="email" placeholder="Email">
+                <input type="password" placeholder="Senha">
+                <a href="#">Esqueceu sua senha?</a>
+                <button>Entrar</button>
+            </form>
         </div>
-        <div id="divBotao">
-            <button onclick="logar()">Entrar</button>
-            <p>Não tem uma conta? Clique <a href="cadastro.html">aqui</a> e realize seu cadastro.</p>
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <h1>Já possui conta?</h1>
+                    <p>Realize seu login clicando aqui:</p>
+                    <button class="hidden" id="login">Fazer login</button>
+                </div>
+                <div class="toggle-panel toggle-right">
+                    <h1>Não possui conta?</h1>
+                    <p>Crie seu cadastro clicando no botão abaixo:</p>
+                    <button class="hidden" id="register">Cadastrar</button>
+                </div>
+            </div>
         </div>
-    
-    <div id="divQuadrado">
-        
     </div>
 
+    <script src="../js/script.js"></script>
 </body>
 
 </html>
-<script>
-
-</script>
