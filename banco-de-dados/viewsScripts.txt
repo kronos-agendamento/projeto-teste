@@ -1,0 +1,242 @@
+KPI's da Pri//////////////////////////////////////////////////////////////////////////////////////
+
+I. Clientes ativos nos últimos três meses:
+
+sql
+Copy code
+CREATE VIEW clientes_ativos_ultimos_tres_meses AS
+SELECT DISTINCT u.id_usuario, u.nome, u.email
+FROM usuario u
+JOIN agendamento a ON u.id_usuario = a.fk_usuario
+WHERE a.data >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH);
+
+II. Clientes inativos nos últimos três meses:
+
+sql
+Copy code
+CREATE VIEW clientes_inativos_ultimos_tres_meses AS
+SELECT u.id_usuario, u.nome, u.email
+FROM usuario u
+LEFT JOIN agendamento a ON u.id_usuario = a.fk_usuario 
+AND a.data >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+WHERE a.id_agendamento IS NULL;
+
+III. Clientes fidelizados nos últimos três meses:
+
+sql
+Copy code
+CREATE VIEW clientes_fidelizados_ultimos_tres_meses AS
+SELECT u.id_usuario, u.nome, u.email, COUNT(a.id_agendamento) AS num_agendamentos
+FROM usuario u
+JOIN agendamento a ON u.id_usuario = a.fk_usuario
+WHERE a.data >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+GROUP BY u.id_usuario, u.nome, u.email
+HAVING COUNT(a.id_agendamento) > 2;
+
+IV. Atendimentos realizados no último ano em relação a um cliente específico:
+
+sql
+Copy code
+CREATE VIEW atendimentos_ultimo_ano AS
+SELECT 
+    a.id_agendamento,
+    a.data,
+    a.horario,
+    p.nome AS procedimento,
+    s.nome AS status
+FROM agendamento a
+INNER JOIN usuario u ON a.fk_usuario = u.id_usuario
+INNER JOIN procedimento p ON a.fk_procedimento = p.id_procedimento
+INNER JOIN status s ON a.fk_status = s.id_status
+WHERE a.data >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
+AND u.id_usuario = <ID_DO_CLIENTE>;
+
+V. Média de receita no último ano que um determinado cliente gerou para o estúdio:
+
+sql
+Copy code
+CREATE VIEW media_receita_ultimo_ano AS
+SELECT 
+    u.id_usuario,
+    u.nome AS nome_cliente,
+    AVG(ep.preco_colocacao + ep.preco_manutencao + ep.preco_retirada) AS media_receita
+FROM 
+    agendamento a
+INNER JOIN 
+    usuario u ON a.fk_usuario = u.id_usuario
+INNER JOIN 
+    especificaoProcedimento ep ON a.fk_procedimento = ep.fk_procedimento
+WHERE 
+    a.data >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
+GROUP BY 
+    u.id_usuario, u.nome;
+
+VI. Avaliação média que um determinado cliente deu para os procedimentos realizados:
+
+sql
+Copy code
+CREATE VIEW avaliacao_media_cliente AS
+SELECT 
+    a.fk_usuario AS id_usuario,
+    u.nome AS nome_cliente,
+    AVG(f.nota) AS avaliacao_media
+FROM 
+    feedback f
+INNER JOIN 
+    agendamento a ON f.fk_agendamento = a.id_agendamento
+INNER JOIN 
+    usuario u ON a.fk_usuario = u.id_usuario
+GROUP BY 
+    a.fk_usuario, u.nome;
+
+VII. Procedimentos mais agendados nos últimos três meses:
+
+sql
+Copy code
+CREATE VIEW procedimentos_mais_agendados_ultimos_tres_meses AS
+SELECT 
+    p.id_procedimento,
+    p.tipo AS tipo_procedimento,
+    p.descricao AS descricao_procedimento,
+    COUNT(a.id_agendamento) AS total_agendamentos
+FROM 
+    agendamento a
+INNER JOIN 
+    especificaoProcedimento ep ON a.fk_procedimento = ep.id_especificao_procedimento
+INNER JOIN 
+    procedimento p ON ep.fk_procedimento = p.id_procedimento
+WHERE 
+    a.data >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+GROUP BY 
+    p.id_procedimento, p.tipo, p.descricao
+ORDER BY 
+    total_agendamentos DESC;
+
+VIII. Procedimentos menos agendados nos últimos três meses:
+
+sql
+Copy code
+CREATE VIEW procedimentos_menos_agendados_ultimos_tres_meses AS
+SELECT 
+    p.id_procedimento,
+    p.tipo AS tipo_procedimento,
+    p.descricao AS descricao_procedimento,
+    COUNT(a.id_agendamento) AS total_agendamentos
+FROM 
+    agendamento a
+INNER JOIN 
+    especificaoProcedimento ep ON a.fk_procedimento = ep.id_especificao_procedimento
+INNER JOIN 
+    procedimento p ON ep.fk_procedimento = p.id_procedimento
+WHERE 
+    a.data >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+GROUP BY 
+    p.id_procedimento, p.tipo, p.descricao
+ORDER BY 
+    total_agendamentos ASC;
+
+IX.?????????????
+
+X. Quantidade de agendamentos nos últimos 7 dias:
+
+sql
+Copy code
+CREATE VIEW agendamentos_ultimos_sete_dias AS
+SELECT 
+    COUNT(id_agendamento) AS quantidade_agendamentos
+FROM 
+    agendamento
+WHERE 
+    data >= DATE_SUB(CURDATE(), INTERVAL 7 DAY);
+
+XI. Quantidade de agendamentos cancelados nos últimos 7 dias:
+CREATE VIEW agendamentos_cancelados_ultimos_sete_dias AS
+SELECT 
+    COUNT(a.id_agendamento) AS quantidade_cancelados
+FROM 
+    agendamento a
+INNER JOIN 
+    statusAgendamento s ON a.fk_status = s.id_status_agendamento
+WHERE 
+    s.nome = 'Cancelado'
+    AND a.data >= DATE_SUB
+
+XII. Quantidade de agendamentos concluídos nos últimos 7 dias:
+CREATE VIEW agendamentos_concluidos_ultimos_sete_dias AS
+SELECT 
+    COUNT(a.id_agendamento) AS quantidade_concluidos
+FROM 
+    agendamento a
+INNER JOIN 
+    statusAgendamento s ON a.fk_status = s.id_status_agendamento
+WHERE 
+    s.nome = 'Concluído'
+    AND a.data >= DATE_SUB(CURDATE(), INTERVAL 7 DAY);
+
+XIII. Receita semestral acumulada:
+CREATE VIEW receita_semestral_acumulada AS
+SELECT 
+    SUM(ep.preco_colocacao + ep.preco_manutencao + ep.preco_retirada) AS receita_total
+FROM 
+    agendamento a
+INNER JOIN 
+    especificaoProcedimento ep ON a.fk_procedimento = ep.id_especificao_procedimento
+WHERE 
+    a.data >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH);
+
+XIV. Porcentagem de onde o cliente conheceu o estúdio no último ano:
+CREATE VIEW porcentagem_origem_clientes_ultimo_ano AS
+SELECT 
+    u.indicacao,
+    COUNT(u.id_usuario) AS total_clientes,
+    (COUNT(u.id_usuario) / (SELECT COUNT(*) FROM usuario u WHERE u.data_nasc >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)) * 100) AS porcentagem
+FROM 
+    usuario u
+WHERE 
+    u.data_nasc >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
+GROUP BY 
+    u.indicacao
+ORDER BY 
+    total_clientes DESC;
+
+
+KPI's para os clientes
+
+I. Dias desde o último procedimento realizado:
+CREATE VIEW dias_desde_ultimo_procedimento_cliente_especifico AS
+SELECT 
+    DATEDIFF(CURDATE(), MAX(a.data)) AS dias_desde_ultimo_procedimento
+FROM 
+    agendamento a
+WHERE 
+    a.fk_usuario = <ID_DO_CLIENTE>;
+
+
+
+II. Procedimentos realizados no mês:
+CREATE VIEW procedimentos_realizados_no_mes_cliente_especifico AS
+SELECT 
+    MONTH(a.data) AS mes,
+    COUNT(a.id_agendamento) AS total_procedimentos
+FROM 
+    agendamento a
+WHERE 
+    a.fk_usuario = <ID_DO_CLIENTE>
+GROUP BY 
+    mes;
+
+III. Dias e horários mais agendados no último semestre:
+CREATE VIEW dias_horarios_mais_agendados_ultimo_semestre AS
+SELECT 
+    DAYNAME(a.data) AS dia_semana,
+    HOUR(a.horario) AS hora,
+    COUNT(*) AS total_agendamentos
+FROM 
+    agendamento a
+WHERE 
+    a.data >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+GROUP BY 
+    dia_semana, hora
+ORDER BY 
+    total_agendamentos DESC;
+
