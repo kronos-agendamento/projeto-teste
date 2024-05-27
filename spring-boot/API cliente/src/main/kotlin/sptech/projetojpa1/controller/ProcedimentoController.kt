@@ -1,120 +1,98 @@
-// Importações necessárias
 package sptech.projetojpa1.controller
 
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
-import sptech.projetojpa1.dominio.Procedimento
-import sptech.projetojpa1.dto.ProcedimentoDTO
-import sptech.projetojpa1.service.ProcedimentoService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
+import sptech.projetojpa1.service.ProcedimentoService
+import sptech.projetojpa1.dto.procedimento.ProcedimentoDTO
+import sptech.projetojpa1.dto.procedimento.ProcedimentoRequestDTO
+import sptech.projetojpa1.dto.procedimento.ProcedimentoResponseDTO
 
-// Controlador para os endpoints relacionados a procedimentos
 @RestController
-@RequestMapping("/procedimentos")
+@RequestMapping("/api/procedimentos")
 class ProcedimentoController(private val procedimentoService: ProcedimentoService) {
 
-    // Operação para obter todos os procedimentos
-    @Operation(summary = "Obter todos os procedimentos")
-    @GetMapping
-    fun getAllProcedimentos(): ResponseEntity<Any> {
-        return try {
-            // Tenta obter todos os procedimentos e mapeá-los para DTOs
-            val procedimentos = procedimentoService.findAll().map { it.toDTO() }
-            ResponseEntity.ok(procedimentos) // Retorna a lista de procedimentos com status OK
-        } catch (ex: Exception) {
-            // Em caso de erro, retorna uma resposta de erro interno do servidor com a mensagem de erro
-            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Erro ao processar a solicitação: ${ex.message}")
-        }
-    }
-
-    // Operação para obter um procedimento por ID
-    @Operation(summary = "Obter procedimento por ID")
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Procedimento encontrado"),
-            ApiResponse(responseCode = "404", description = "Procedimento não encontrado")
-        ]
-    )
-    @GetMapping("/{id}")
-    fun getProcedimentoById(@PathVariable id: Int): ResponseEntity<Any> {
-        return try {
-            // Tenta obter o procedimento pelo ID e converte para DTO
-            val procedimento = procedimentoService.findById(id)?.toDTO()
-            procedimento?.let { ResponseEntity.ok(it) } ?: ResponseEntity.notFound().build()
-        } catch (ex: Exception) {
-            // Em caso de erro, retorna uma resposta de erro interno do servidor com a mensagem de erro
-            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Erro ao processar a solicitação: ${ex.message}")
-        }
-    }
-
-    // Operação para criar um novo procedimento
     @Operation(summary = "Criar um novo procedimento")
-    @PostMapping
-    fun createProcedimento(@RequestBody procedimentoDTO: ProcedimentoDTO): ResponseEntity<Any> {
-        return try {
-            // Tenta salvar o novo procedimento e retorna o DTO com status CREATED
-            val procedimento = procedimentoService.save(procedimentoDTO.toEntity())
-            ResponseEntity(procedimento.toDTO(), HttpStatus.CREATED)
-        } catch (ex: Exception) {
-            // Em caso de erro, retorna uma resposta de erro interno do servidor com a mensagem de erro
-            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Erro ao processar a solicitação: ${ex.message}")
-        }
-    }
-
-    // Operação para atualizar um procedimento existente
-    @Operation(summary = "Atualizar um procedimento existente")
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Procedimento atualizado"),
+            ApiResponse(responseCode = "201", description = "Procedimento criado com sucesso"),
+            ApiResponse(responseCode = "400", description = "Dados inválidos")
+        ]
+    )
+    @PostMapping("/criar")
+    fun criarProcedimento(@RequestBody procedimentoRequestDTO: ProcedimentoRequestDTO): ResponseEntity<ProcedimentoDTO> {
+        val procedimentoDTO = procedimentoService.criarProcedimento(procedimentoRequestDTO)
+        return ResponseEntity(procedimentoDTO, HttpStatus.CREATED)
+    }
+
+    @Operation(summary = "Buscar procedimento por ID")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Operação bem sucedida"),
             ApiResponse(responseCode = "404", description = "Procedimento não encontrado")
         ]
     )
-    @PutMapping("/{id}")
-    fun updateProcedimento(
+    @GetMapping("/buscar/{id}")
+    fun buscarProcedimentoPorId(@PathVariable id: Int): ResponseEntity<ProcedimentoResponseDTO> {
+        val procedimentoDTO = procedimentoService.buscarProcedimentoPorId(id)
+        return if (procedimentoDTO != null) {
+            ResponseEntity(procedimentoDTO, HttpStatus.OK)
+        } else {
+            ResponseEntity(HttpStatus.NOT_FOUND)
+        }
+    }
+
+    @Operation(summary = "Buscar todos os procedimentos")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Lista de procedimentos"),
+            ApiResponse(responseCode = "204", description = "Nenhum procedimento encontrado")
+        ]
+    )
+    @GetMapping("/listar")
+    fun listarTodosProcedimentos(): ResponseEntity<List<ProcedimentoResponseDTO>> {
+        val procedimentos = procedimentoService.listarTodosProcedimentos()
+        return ResponseEntity(procedimentos, HttpStatus.OK)
+    }
+
+    @Operation(summary = "Atualizar procedimento")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Procedimento atualizado com sucesso"),
+            ApiResponse(responseCode = "404", description = "Procedimento não encontrado"),
+            ApiResponse(responseCode = "400", description = "Dados inválidos")
+        ]
+    )
+    @PutMapping("/atualizar/{id}")
+    fun atualizarProcedimento(
         @PathVariable id: Int,
-        @RequestBody procedimentoDTO: ProcedimentoDTO
-    ): ResponseEntity<Any> {
-        return try {
-            // Tenta atualizar o procedimento e retorna o DTO atualizado
-            val updatedProcedimento = procedimentoService.update(id, procedimentoDTO.toEntity())
-            ResponseEntity.ok(updatedProcedimento.toDTO())
-        } catch (ex: Exception) {
-            // Em caso de erro, retorna uma resposta de erro interno do servidor com a mensagem de erro
-            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Erro ao processar a solicitação: ${ex.message}")
+        @RequestBody procedimentoRequestDTO: ProcedimentoRequestDTO
+    ): ResponseEntity<ProcedimentoResponseDTO> {
+        val procedimentoDTO = procedimentoService.atualizarProcedimento(id, procedimentoRequestDTO)
+        return if (procedimentoDTO != null) {
+            ResponseEntity(procedimentoDTO, HttpStatus.OK)
+        } else {
+            ResponseEntity(HttpStatus.NOT_FOUND)
         }
     }
 
-    // Operação para excluir um procedimento
-    @Operation(summary = "Excluir um procedimento")
+    @Operation(summary = "Deletar procedimento")
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "204", description = "Procedimento excluído"),
+            ApiResponse(responseCode = "204", description = "Procedimento deletado com sucesso"),
             ApiResponse(responseCode = "404", description = "Procedimento não encontrado")
         ]
     )
-    @DeleteMapping("/{id}")
-    fun deleteProcedimento(@PathVariable id: Int): ResponseEntity<Any> {
-        return try {
-            // Tenta excluir o procedimento e retorna uma resposta vazia com status NO_CONTENT
-            procedimentoService.delete(id)
-            ResponseEntity.noContent().build()
-        } catch (ex: Exception) {
-            // Em caso de erro, retorna uma resposta de erro interno do servidor com a mensagem de erro
-            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Erro ao processar a solicitação: ${ex.message}")
+    @DeleteMapping("/deletar/{id}")
+    fun deletarProcedimento(@PathVariable id: Int): ResponseEntity<Any> {
+        val deleted = procedimentoService.deletarProcedimento(id)
+        return if (deleted) {
+            ResponseEntity(HttpStatus.NO_CONTENT)
+        } else {
+            ResponseEntity(HttpStatus.NOT_FOUND)
         }
     }
-
-    // Função de extensão para converter Procedimento para ProcedimentoDTO
-    private fun Procedimento.toDTO() = ProcedimentoDTO(id, descricao)
-
-    // Função de extensão para converter ProcedimentoDTO para Procedimento
-    private fun ProcedimentoDTO.toEntity() = Procedimento(id, descricao)
 }

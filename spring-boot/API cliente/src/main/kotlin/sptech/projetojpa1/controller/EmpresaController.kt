@@ -1,37 +1,57 @@
 package sptech.projetojpa1.controller
 
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import sptech.projetojpa1.dominio.Empresa
-import sptech.projetojpa1.repository.EmpresaRepository
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeParseException
+import sptech.projetojpa1.dto.empresa.EmpresaRequestDTO
+import sptech.projetojpa1.dto.empresa.EmpresaResponseDTO
+import sptech.projetojpa1.dto.empresa.EmpresaUpdateDTO
+import sptech.projetojpa1.service.EmpresaService
 
 @RestController
-@RequestMapping("/empresa")
+@RequestMapping("/api/empresas")
 class EmpresaController(
-    val repository: EmpresaRepository
+    private val empresaService: EmpresaService
 ) {
-    // Cadastro de Nova Empresa
-    @PostMapping("/cadastro-empresa")
-    fun cadastrarEmpresa(@RequestBody @Valid novaEmpresa: Empresa): ResponseEntity<Empresa> {
-        repository.save(novaEmpresa)
-        return ResponseEntity.status(201).body(novaEmpresa)
+    @Operation(summary = "Cadastra uma nova empresa")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "201", description = "Empresa cadastrada com sucesso"),
+            ApiResponse(responseCode = "400", description = "Dados de entrada inválidos")
+        ]
+    )
+    @PostMapping("/cadastrar")
+    fun cadastrarNovaEmpresa(@RequestBody @Valid novaEmpresa: EmpresaRequestDTO): ResponseEntity<EmpresaResponseDTO> {
+        val empresa = empresaService.cadastrarEmpresa(novaEmpresa)
+        return ResponseEntity.status(201).body(empresa)
     }
 
-    // Excluir Empresa por CNPJ
-    @DeleteMapping("/exclusao-empresa/{cnpj}")
+    @Operation(summary = "Exclui uma empresa pelo CNPJ")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Empresa excluída com sucesso"),
+            ApiResponse(responseCode = "404", description = "Empresa não encontrada")
+        ]
+    )
+    @DeleteMapping("/excluir-por-cnpj/{cnpj}")
     fun excluirEmpresaPorCNPJ(@PathVariable cnpj: String): ResponseEntity<String> {
-        repository.deleteByCNPJ(cnpj)
-        return ResponseEntity.status(200).body("Empresa com CNPJ $cnpj excluída com sucesso")
+        val mensagem = empresaService.excluirEmpresaPorCNPJ(cnpj)
+        return ResponseEntity.status(200).body(mensagem)
     }
 
-    // Listar empresas
-    @GetMapping("/lista-empresas")
-    fun listarEmpresas(): ResponseEntity<Any> {
-        val lista = repository.findAll()
+    @Operation(summary = "Lista todas as empresas")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Empresas listadas com sucesso"),
+            ApiResponse(responseCode = "204", description = "Nenhuma empresa cadastrada ainda")
+        ]
+    )
+    @GetMapping("/listar")
+    fun listarTodasEmpresas(): ResponseEntity<Any> {
+        val lista = empresaService.listarEmpresas()
         return if (lista.isNotEmpty()) {
             ResponseEntity.status(200).body(lista)
         } else {
@@ -39,10 +59,16 @@ class EmpresaController(
         }
     }
 
-    // Filtrar empresa por nome
-    @GetMapping("/filtro-nome/{nome}")
-    fun filtrarPorNome(@PathVariable nome: String): ResponseEntity<Any> {
-        val empresas = repository.findByNomeContainsIgnoreCase(nome)
+    @Operation(summary = "Filtra empresas pelo nome")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Empresas filtradas pelo nome com sucesso"),
+            ApiResponse(responseCode = "404", description = "Empresa não encontrada pelo nome fornecido")
+        ]
+    )
+    @GetMapping("/filtrar-por-nome/{nome}")
+    fun filtrarEmpresasPorNome(@PathVariable nome: String): ResponseEntity<Any> {
+        val empresas = empresaService.filtrarPorNome(nome)
         return if (empresas.isEmpty()) {
             ResponseEntity.status(404).body("Empresa não encontrada pelo nome fornecido.")
         } else {
@@ -50,10 +76,16 @@ class EmpresaController(
         }
     }
 
-    // Filtrar empresa por CNPJ
-    @GetMapping("/filtro-cnpj/{cnpj}")
-    fun filtrarPorCnpj(@PathVariable cnpj: String): ResponseEntity<Any> {
-        val empresas = repository.findByCNPJ(cnpj)
+    @Operation(summary = "Filtra empresas pelo CNPJ")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Empresas filtradas pelo CNPJ com sucesso"),
+            ApiResponse(responseCode = "404", description = "Empresa não encontrada pelo CNPJ fornecido")
+        ]
+    )
+    @GetMapping("/filtrar-por-cnpj/{cnpj}")
+    fun filtrarEmpresasPorCNPJ(@PathVariable cnpj: String): ResponseEntity<Any> {
+        val empresas = empresaService.filtrarPorCnpj(cnpj)
         return if (empresas.isEmpty()) {
             ResponseEntity.status(404).body("Empresa não encontrada pelo CNPJ fornecido.")
         } else {
@@ -61,69 +93,85 @@ class EmpresaController(
         }
     }
 
-    // Editar CNPJ da empresa
-    @PatchMapping("/edicao-cnpj/{nome}")
-    fun editarCNPJ(
+    @Operation(summary = "Edita o CNPJ da empresa pelo nome")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "CNPJ atualizado com sucesso"),
+            ApiResponse(responseCode = "404", description = "Empresa não encontrada pelo nome fornecido")
+        ]
+    )
+    @PatchMapping("/editar-cnpj-por-nome/{nome}")
+    fun editarCNPJDaEmpresaPorNome(
         @PathVariable nome: String,
         @RequestParam novoCNPJ: String
     ): ResponseEntity<Any> {
-        val empresa = repository.buscarPeloNomeIgnoreCase(nome)
-        if (empresa == null) {
-            return ResponseEntity.status(404).body("Empresa não encontrada pelo nome fornecido.")
-        }
-        empresa.CNPJ = novoCNPJ
-        repository.save(empresa)
-        return ResponseEntity.status(204).body(empresa)
+        val dto = EmpresaUpdateDTO(
+            CNPJ = novoCNPJ,
+            nome = null,
+            contato = null,
+            enderecoId = null,
+            horarioFuncionamentoId = null
+        )
+        val empresa = empresaService.atualizarEmpresa(nome, dto) ?: return ResponseEntity.status(404)
+            .body("Empresa não encontrada pelo nome fornecido.")
+        return ResponseEntity.status(200).body(empresa)
     }
 
-    // Editar nome da empresa
-    @PatchMapping("/edicao-nome/{cnpj}")
-    fun editarNome(
+    @Operation(summary = "Edita o nome da empresa pelo CNPJ")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Nome atualizado com sucesso"),
+            ApiResponse(responseCode = "404", description = "Empresa não encontrada pelo CNPJ fornecido")
+        ]
+    )
+    @PatchMapping("/editar-nome-por-cnpj/{cnpj}")
+    fun editarNomeDaEmpresaPorCNPJ(
         @PathVariable cnpj: String,
         @RequestParam novoNome: String
     ): ResponseEntity<Any> {
-        val empresa = repository.buscarPeloCNPJ(cnpj)
-        if (empresa == null) {
-            return ResponseEntity.status(404).body("Empresa não encontrada pelo CNPJ fornecido.")
-        }
-        empresa.nome = novoNome
-        repository.save(empresa)
-        return ResponseEntity.status(204).body(empresa)
+        val dto = EmpresaUpdateDTO(
+            nome = novoNome,
+            contato = null,
+            CNPJ = null,
+            enderecoId = null,
+            horarioFuncionamentoId = null
+        )
+        val empresa = empresaService.atualizarEmpresa(cnpj, dto) ?: return ResponseEntity.status(404)
+            .body("Empresa não encontrada pelo CNPJ fornecido.")
+        return ResponseEntity.status(200).body(empresa)
     }
 
-    // Editar horário de funcionamento da empresa
-    @PatchMapping("/edicao-horario-funcionamento/{cnpj}")
-    fun editarHorarioFuncionamento(
+    @Operation(summary = "Edita o horário de funcionamento da empresa pelo CNPJ")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Horário de funcionamento atualizado com sucesso"),
+            ApiResponse(responseCode = "404", description = "Empresa não encontrada pelo CNPJ fornecido")
+        ]
+    )
+    @PatchMapping("/editar-horario-funcionamento-por-cnpj/{cnpj}")
+    fun editarHorarioFuncionamentoDaEmpresaPorCNPJ(
         @PathVariable cnpj: String,
         @RequestParam(required = false) diaSemana: String?,
         @RequestParam(required = false) abertura: String?,
         @RequestParam(required = false) fechamento: String?
     ): ResponseEntity<Any> {
-        val empresa = repository.buscarPeloCNPJ(cnpj)
-        if (empresa == null) {
-            return ResponseEntity.status(404).body("Empresa não encontrada pelo CNPJ fornecido.")
-        }
-
-        val formato = DateTimeFormatter.ofPattern("HH:mm")
-
-        try {
-            diaSemana?.let { empresa.horarioFuncionamento?.diaSemana = it }
-            abertura?.let { empresa.horarioFuncionamento?.horarioAbertura = LocalTime.parse(it, formato).toString() }
-            fechamento?.let {
-                empresa.horarioFuncionamento?.horarioFechamento = LocalTime.parse(it, formato).toString()
-            }
-
-            repository.save(empresa)
-
-            return ResponseEntity.status(200).body(empresa)
-        } catch (ex: DateTimeParseException) {
-            return ResponseEntity.status(400).body("Formato de horário inválido. Use o formato HH:mm.")
-        }
+        val dto =
+            EmpresaUpdateDTO(nome = null, contato = null, CNPJ = null, enderecoId = null, horarioFuncionamentoId = null)
+        // Atualizar DTO conforme necessidade
+        val empresa = empresaService.editarHorarioFuncionamento(cnpj, dto) ?: return ResponseEntity.status(404)
+            .body("Empresa não encontrada pelo CNPJ fornecido.")
+        return ResponseEntity.status(200).body(empresa)
     }
 
-    // Editar endereço da empresa
-    @PatchMapping("/edicao-endereco/{cnpj}")
-    fun editarEndereco(
+    @Operation(summary = "Edita o endereço da empresa pelo CNPJ")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Endereço atualizado com sucesso"),
+            ApiResponse(responseCode = "404", description = "Empresa não encontrada pelo CNPJ fornecido")
+        ]
+    )
+    @PatchMapping("/editar-endereco-por-cnpj/{cnpj}")
+    fun editarEnderecoDaEmpresaPorCNPJ(
         @PathVariable cnpj: String,
         @RequestParam(required = false) novoCEP: String?,
         @RequestParam(required = false) novoLogradouro: String?,
@@ -133,20 +181,11 @@ class EmpresaController(
         @RequestParam(required = false) novoEstado: String?,
         @RequestParam(required = false) novoComplemento: String?
     ): ResponseEntity<Any> {
-        val empresa = repository.buscarPeloCNPJ(cnpj)
-        if (empresa == null) {
-            return ResponseEntity.status(404).body("Empresa não encontrada pelo CNPJ fornecido.")
-        }
-
-        novoCEP?.let { empresa.endereco.cep = it }
-        novoLogradouro?.let { empresa.endereco.logradouro = it }
-        novoNumero?.let { empresa.endereco.numero = it }
-        novoBairro?.let { empresa.endereco.bairro = it }
-        novaCidade?.let { empresa.endereco.cidade = it }
-        novoEstado?.let { empresa.endereco.estado = it }
-        novoComplemento?.let { empresa.endereco.complemento?.complemento = it }
-
-        repository.save(empresa)
+        val dto =
+            EmpresaUpdateDTO(nome = null, contato = null, CNPJ = null, enderecoId = null, horarioFuncionamentoId = null)
+        // Atualizar DTO conforme necessidade
+        val empresa = empresaService.editarEndereco(cnpj, dto) ?: return ResponseEntity.status(404)
+            .body("Empresa não encontrada pelo CNPJ fornecido.")
         return ResponseEntity.status(200).body(empresa)
     }
 }

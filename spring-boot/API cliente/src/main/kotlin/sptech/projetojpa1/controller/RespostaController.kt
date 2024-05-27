@@ -1,84 +1,96 @@
 package sptech.projetojpa1.controller
 
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import sptech.projetojpa1.dominio.Resposta
-import sptech.projetojpa1.repository.RespostaRepository
+import sptech.projetojpa1.dto.resposta.RespostaFilteredDTO
+import sptech.projetojpa1.dto.resposta.RespostaRequestDTO
+import sptech.projetojpa1.dto.resposta.RespostaResponseDTO
+import sptech.projetojpa1.service.RespostaService
 
 @RestController
-@RequestMapping("/ficha-resposta")
+@RequestMapping("/api/respostas")
 class RespostaController(
-    val respostaRepository: RespostaRepository
+    private val respostaService: RespostaService
 ) {
 
-    // Cadastro de Nova Resposta
-    @PostMapping("/cadastro-resposta")
-    fun cadastrarResposta(@RequestBody @Valid novaResposta: Resposta): ResponseEntity<Any> {
-        val respostaSalva = respostaRepository.save(novaResposta)
-
-        return ResponseEntity.status(201).body("Resposta ${respostaSalva.resposta} cadastrada com sucesso")
+    @Operation(summary = "Cadastrar uma nova resposta")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "201", description = "Resposta cadastrada com sucesso"),
+            ApiResponse(responseCode = "400", description = "Dados inválidos")
+        ]
+    )
+    @PostMapping("/cadastrar")
+    fun cadastrarResposta(@RequestBody @Valid novaResposta: RespostaRequestDTO): ResponseEntity<RespostaResponseDTO> {
+        val respostaSalva = respostaService.cadastrarResposta(novaResposta)
+        return ResponseEntity.status(201).body(respostaSalva)
     }
 
-    // Listar Todas as Respostas
-    @GetMapping("/lista-todas-respostas")
-    fun listarTodasRespostas(): ResponseEntity<Any> {
-        val respostas = respostaRepository.findAll()
-
-        if (respostas.isEmpty()) {
-            return ResponseEntity.status(204).body("Nenhuma resposta foi cadastrada.")
-        }
-        return ResponseEntity.status(200).body(respostas)
-    }
-
-    // Filtrar Respostas por CPF do Usuário
-    @GetMapping("/filtro-por-cpf/{cpf}")
-    fun filtrarPorCpf(@Valid @PathVariable cpf: String): ResponseEntity<Any> {
-        val respostas = respostaRepository.findByUsuarioCpf(cpf)
+    @Operation(summary = "Listar todas as respostas")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Lista de respostas"),
+            ApiResponse(responseCode = "204", description = "Nenhuma resposta encontrada")
+        ]
+    )
+    @GetMapping("/listar")
+    fun listarTodasRespostas(): ResponseEntity<List<RespostaResponseDTO>> {
+        val respostas = respostaService.listarTodasRespostas()
         return if (respostas.isEmpty()) {
-            ResponseEntity.status(204).body("Nenhuma resposta foi cadastrada para esse cliente.")
+            ResponseEntity.status(204).build()
         } else {
-            // Mapeando as respostas para um formato específico antes de retornar
-            val respostasComUsuario = respostas.map { resposta ->
-                mapOf(
-                    "resposta" to resposta.resposta,
-                    "nomeUsuario" to resposta.usuario.nome,
-                    "cpfUsuario" to resposta.usuario.cpf,
-                    "dataPreenchimentoFicha" to resposta.ficha.dataPreenchimento
-                )
-            }
-            ResponseEntity.status(200).body(respostasComUsuario)
+            ResponseEntity.ok(respostas)
         }
     }
 
-    // Filtrar Respostas por Descrição da Pergunta
-    @GetMapping("/filtro-por-pergunta/{nome}")
-    fun filtrarPorPergunta(@Valid @PathVariable nome: String): ResponseEntity<Any> {
-        val respostas = respostaRepository.findByPerguntaDescricao(nome)
+    @Operation(summary = "Filtrar respostas por CPF do usuário")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Lista de respostas filtradas por CPF"),
+            ApiResponse(responseCode = "204", description = "Nenhuma resposta encontrada para o CPF fornecido")
+        ]
+    )
+    @GetMapping("/filtrar/cpf/{cpf}")
+    fun filtrarPorCpf(@Valid @PathVariable cpf: String): ResponseEntity<List<RespostaFilteredDTO>> {
+        val respostas = respostaService.filtrarPorCpf(cpf)
         return if (respostas.isEmpty()) {
-            ResponseEntity.status(204).body("Nenhuma pergunta foi encontrada vinculada à essa pergunta.")
+            ResponseEntity.status(204).build()
         } else {
-            // Mapeando as respostas para um formato específico antes de retornar
-            val respostasComPergunta = respostas.map { resposta ->
-                mapOf(
-                    "resposta" to resposta.resposta,
-                    "descricaoPergunta" to resposta.pergunta.descricao,
-                    "tipoPergunta" to resposta.pergunta.tipo,
-                    "nomeUsuario" to resposta.usuario.nome,
-                    "cpfUsuario" to resposta.usuario.cpf,
-                    "dataPreenchimentoFicha" to resposta.ficha.dataPreenchimento
-                )
-            }
-            ResponseEntity.status(200).body(respostasComPergunta)
+            ResponseEntity.ok(respostas)
         }
     }
 
-    // Excluir Resposta por ID
-    @DeleteMapping("/exclusao-resposta/{id}")
+    @Operation(summary = "Filtrar respostas por descrição da pergunta")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Lista de respostas filtradas por descrição da pergunta"),
+            ApiResponse(responseCode = "204", description = "Nenhuma resposta encontrada para a descrição fornecida")
+        ]
+    )
+    @GetMapping("/filtrar/pergunta/{nome}")
+    fun filtrarPorPergunta(@Valid @PathVariable nome: String): ResponseEntity<List<RespostaFilteredDTO>> {
+        val respostas = respostaService.filtrarPorPergunta(nome)
+        return if (respostas.isEmpty()) {
+            ResponseEntity.status(204).build()
+        } else {
+            ResponseEntity.ok(respostas)
+        }
+    }
+
+    @Operation(summary = "Excluir uma resposta por ID")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Resposta excluída com sucesso"),
+            ApiResponse(responseCode = "404", description = "Resposta não encontrada para o ID fornecido")
+        ]
+    )
+    @DeleteMapping("/excluir/{id}")
     fun excluirResposta(@PathVariable id: Int): ResponseEntity<String> {
-        val respostaOptional = respostaRepository.findById(id)
-        return if (respostaOptional.isPresent) {
-            respostaRepository.deleteById(id)
+        return if (respostaService.excluirResposta(id)) {
             ResponseEntity.status(200).body("Resposta excluída com sucesso.")
         } else {
             ResponseEntity.status(404).body("Resposta não encontrada para o ID fornecido.")
