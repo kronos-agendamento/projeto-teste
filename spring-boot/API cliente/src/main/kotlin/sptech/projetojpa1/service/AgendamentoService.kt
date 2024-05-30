@@ -1,6 +1,7 @@
 package sptech.projetojpa1.service
 
 import org.springframework.stereotype.Service
+import org.springframework.web.bind.annotation.RequestParam
 import sptech.projetojpa1.dominio.Agendamento
 import sptech.projetojpa1.dto.agendamento.AgendamentoRequestDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoResponseDTO
@@ -8,6 +9,8 @@ import sptech.projetojpa1.repository.AgendamentoRepository
 import sptech.projetojpa1.repository.ProcedimentoRepository
 import sptech.projetojpa1.repository.StatusRepository
 import sptech.projetojpa1.repository.UsuarioRepository
+import java.time.LocalDate
+import java.util.Date
 
 @Service
 class AgendamentoService(
@@ -16,6 +19,32 @@ class AgendamentoService(
     private val procedimentoRepository: ProcedimentoRepository,
     private val statusRepository: StatusRepository
 ) {
+
+    fun listarAgendamento(): List<Agendamento> {
+        val agendamentos = agendamentoRepository.findAll()
+
+        return agendamentos
+    }
+
+    fun validarDiaHora(data: Date, horario: Date): Boolean {
+        val agendamentos = agendamentoRepository.findByDataAndHorario(data, horario)
+        return agendamentos.isEmpty()
+
+        // true: Não existem agendamentos na data e horário especificados.
+        // false: Existe um agendamento na data e horário especificados.
+    }
+
+    fun validarAgendamento(agendamentoRequestDTO: AgendamentoRequestDTO): Boolean {
+        val dataAgendamento = agendamentoRequestDTO.data
+        val horaAgendamento = agendamentoRequestDTO.horario
+
+        // Verifica se dataAgendamento ou horaAgendamento são nulos e lança uma exceção
+        if (dataAgendamento == null || horaAgendamento == null) {
+            throw IllegalArgumentException("Data e horário do agendamento não podem ser nulos")
+        }
+
+        return validarDiaHora(dataAgendamento, horaAgendamento)
+    }
 
     fun criarAgendamento(agendamentoRequestDTO: AgendamentoRequestDTO): AgendamentoResponseDTO {
         val agendamento = Agendamento(
