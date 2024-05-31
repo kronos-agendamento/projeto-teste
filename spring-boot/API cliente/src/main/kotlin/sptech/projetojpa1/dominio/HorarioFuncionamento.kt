@@ -11,6 +11,7 @@ import java.time.LocalTime
 class HorarioFuncionamento(
     // Código do horário de funcionamento
     @field:Id @field:GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_horario_funcionamento")
     var codigo: Int,
     // Dia da semana
     var diaSemana: String,

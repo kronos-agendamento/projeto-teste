@@ -11,7 +11,7 @@ import java.time.LocalDate
 data class Usuario(
     // Código do usuário
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "id_usuario", length = 100)
+    @Column(name = "id_usuario")
     var codigo: Int?,
     // Nome do usuário
     @field:NotBlank(message = "Nome é obrigatório")
@@ -50,7 +50,7 @@ data class Usuario(
     var dataNasc: LocalDate?,
     // Gênero do usuário
     @field:NotBlank(message = "Gênero é obrigatório")
-    var genero: String?,
+    var genero: Boolean?,
     // Indicação do usuário
     var indicacao: String?,
     // Foto do usuário
@@ -61,18 +61,18 @@ data class Usuario(
     var status: Boolean = true,
     // Nível de acesso do usuário
     @ManyToOne
-//    @JoinColumn(name = "fk_nivel_acesso")
+    @JoinColumn(name = "fk_nivel_acesso")
     var nivelAcesso: NivelAcesso?,
     // Endereço do usuário
     @ManyToOne
-//    @JoinColumn(name = "fk_endereco")
+    @JoinColumn(name = "fk_endereco")
     var endereco: Endereco?,
     // Empresa do usuário
     @ManyToOne
-//    @JoinColumn(name = "fk_empresa")
+    @JoinColumn(name = "fk_empresa")
     var empresa: Empresa?,
     // Ficha de anamnese do usuário
     @ManyToOne
-//    @JoinColumn(name = "fk_ficha_anamnese")
+    @JoinColumn(name = "fk_ficha_anamnese")
     var fichaAnamnese: FichaAnamnese?
 )

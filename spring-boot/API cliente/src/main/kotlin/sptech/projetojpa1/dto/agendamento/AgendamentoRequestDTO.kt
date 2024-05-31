@@ -2,6 +2,7 @@ package sptech.projetojpa1.dto.agendamento
 
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotNull
+import java.sql.Timestamp
 import java.util.*
 
 data class AgendamentoRequestDTO(
@@ -13,7 +14,7 @@ data class AgendamentoRequestDTO(
     var data: Date?,
 
     @field:NotNull(message = "Horário não pode ser nulo")
-    var horario: Date?,
+    var horario: Timestamp?,
 
     @field:NotNull(message = "Tipo de agendamento não pode ser nulo")
     var tipoAgendamento: Int?,

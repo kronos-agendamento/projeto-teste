@@ -97,22 +97,22 @@ class EnderecoController(
         }
     }
 
-    @Operation(summary = "Lista endereços por usuário")
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Endereços encontrados"),
-            ApiResponse(responseCode = "204", description = "Nenhum endereço encontrado para o usuário fornecido")
-        ]
-    )
-    @GetMapping("/buscar-por-usuario/{usuario}")
-    fun listarEnderecosPorUsuario(@PathVariable usuario: String): ResponseEntity<Any> {
-        val lista = enderecoService.listarEnderecosPorUsuario(usuario)
-        return if (lista.isNotEmpty()) {
-            ResponseEntity.status(200).body(lista)
-        } else {
-            ResponseEntity.status(204).build()
-        }
-    }
+//    @Operation(summary = "Lista endereços por usuário")
+//    @ApiResponses(
+//        value = [
+//            ApiResponse(responseCode = "200", description = "Endereços encontrados"),
+//            ApiResponse(responseCode = "204", description = "Nenhum endereço encontrado para o usuário fornecido")
+//        ]
+//    )
+//    @GetMapping("/buscar-por-usuario/{usuario}")
+//    fun listarEnderecosPorUsuario(@PathVariable usuario: String): ResponseEntity<Any> {
+//        val lista = enderecoService.listarEnderecosPorUsuario(usuario)
+//        return if (lista.isNotEmpty()) {
+//            ResponseEntity.status(200).body(lista)
+//        } else {
+//            ResponseEntity.status(204).build()
+//        }
+//    }
 
     @Operation(summary = "Exclui um endereço pelo ID")
     @ApiResponses(

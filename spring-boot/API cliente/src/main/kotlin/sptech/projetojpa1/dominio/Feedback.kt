@@ -18,9 +18,11 @@ data class Feedback(
 
     @field:NotNull(message = "Agendamento não pode ser nulo")
     @ManyToOne
+    @JoinColumn(name="fk_agendamento")
     val agendamento: Agendamento?,
 
     @field:NotNull(message = "Usuário não pode ser nulo")
     @ManyToOne
+    @JoinColumn(name="fk_usuario")
     val usuario: Usuario?
 )

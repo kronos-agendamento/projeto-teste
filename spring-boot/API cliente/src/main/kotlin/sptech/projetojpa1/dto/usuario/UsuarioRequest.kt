@@ -12,7 +12,7 @@ data class UsuarioRequest(
     var telefone: Long,
     var telefoneEmergencial: Long,
     var dataNasc: LocalDate,
-    var genero: String,
+    var genero: Boolean,
     var indicacao: String?,
     var status: Boolean,
     var nivelAcessoId: Int?,

@@ -1,5 +1,6 @@
 package sptech.projetojpa1.dominio
 
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -10,7 +11,9 @@ import jakarta.validation.constraints.NotNull
 @Entity
 class NivelAcesso(
     // Código do nível de acesso
-    @field:Id @field:GeneratedValue(strategy = GenerationType.IDENTITY) var codigo: Int?,
+    @field:Id @field:GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_nivel_acesso")
+    var codigo: Int?,
     // Nome do nível de acesso
     @field:NotBlank(message = "Nome é obrigatório") var nome: String?,
     // Nível do acesso

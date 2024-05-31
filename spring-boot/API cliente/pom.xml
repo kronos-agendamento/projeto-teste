@@ -18,8 +18,6 @@
 		<kotlin.version>1.9.23</kotlin.version>
 	</properties>
 	<dependencies>
-
-
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-test</artifactId>
@@ -89,12 +87,11 @@
 			<version>5.10.2</version>
 			<scope>test</scope>
 		</dependency>
-
-		<!--		<dependency>-->
-<!--			<groupId>com.mysql</groupId>-->
-<!--			<artifactId>mysql-connector-j</artifactId>-->
-<!--			<scope>runtime</scope>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

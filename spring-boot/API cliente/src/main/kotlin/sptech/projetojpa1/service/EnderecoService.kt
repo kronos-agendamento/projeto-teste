@@ -18,8 +18,8 @@ class EnderecoService(
 
     @Transactional
     fun cadastrarEndereco(novoEnderecoDTO: EnderecoRequestDTO): EnderecoResponseDTO {
-        val complemento = novoEnderecoDTO.complementoId?.let { complementoRepository.findById(it).orElse(null) }
-        val usuario = novoEnderecoDTO.usuarioId?.let { usuarioRepository.findById(it).orElse(null) }
+//        val complemento = novoEnderecoDTO.complementoId?.let { complementoRepository.findById(it).orElse(null) }
+//        val usuario = novoEnderecoDTO.usuarioId?.let { usuarioRepository.findById(it).orElse(null) }
         val endereco = Endereco(
             codigo = null,
             logradouro = novoEnderecoDTO.logradouro,
@@ -27,9 +27,9 @@ class EnderecoService(
             numero = novoEnderecoDTO.numero,
             bairro = novoEnderecoDTO.bairro,
             cidade = novoEnderecoDTO.cidade,
-            estado = novoEnderecoDTO.estado,
-            complemento = complemento,
-            usuario = usuario
+            estado = novoEnderecoDTO.estado
+//            complemento = complemento,
+//            usuario = usuario
         )
         val enderecoSalvo = enderecoRepository.save(endereco)
         return toResponseDTO(enderecoSalvo)
@@ -44,16 +44,16 @@ class EnderecoService(
     }
 
     fun listarEnderecosPorCEP(cep: String): List<EnderecoResponseDTO> {
-        return enderecoRepository.findByCepContaining(cep).map { toResponseDTO(it) }
+        return enderecoRepository.findByCepContains(cep).map { toResponseDTO(it) }
     }
 
     fun listarEnderecosPorBairro(bairro: String): List<EnderecoResponseDTO> {
         return enderecoRepository.findByBairroContainsIgnoreCase(bairro).map { toResponseDTO(it) }
     }
 
-    fun listarEnderecosPorUsuario(usuario: String): List<EnderecoResponseDTO> {
-        return enderecoRepository.findByUsuarioNomeContaining(usuario).map { toResponseDTO(it) }
-    }
+//    fun listarEnderecosPorUsuario(usuario: String): List<EnderecoResponseDTO> {
+//        return enderecoRepository.findByUsuarioNomeContains(usuario).map { toResponseDTO(it) }
+//    }
 
     @Transactional
     fun excluirEndereco(id: Int): Boolean {
@@ -73,9 +73,9 @@ class EnderecoService(
             numero = endereco.numero,
             bairro = endereco.bairro,
             cidade = endereco.cidade,
-            estado = endereco.estado,
-            complementoId = endereco.complemento?.codigo,
-            usuarioId = endereco.usuario?.codigo
+            estado = endereco.estado
+//            complementoId = endereco.complemento?.codigo,
+//            usuarioId = endereco.usuario?.codigo
         )
     }
 }
