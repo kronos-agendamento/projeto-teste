@@ -5,11 +5,12 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Montserrat', sans-serif;
+        
 }
 
 body{
-    background-color: #c9d6ff;
-    background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+    background-color: white;
+    /* background: linear-gradient(to right, #e2e2e2, #c9d6ff); */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -17,15 +18,20 @@ body{
     height: 100vh;
 }
 
+placeholder{
+    align-items: center;
+}
+
+
 .container{
     background-color: #fff;
     border-radius: 30px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
     position: relative;
     overflow: hidden;
-    width: 768px;
+    width: 1336px;
     max-width: 100%;
-    min-height: 480px;
+    min-height: 660px;
 }
 
 .container p{
@@ -101,6 +107,7 @@ body{
 
 .container.active .sign-in{
     transform: translateX(100%);
+    
 }
 
 .sign-up{
@@ -108,6 +115,7 @@ body{
     width: 50%;
     opacity: 0;
     z-index: 1;
+    
 }
 
 .container.active .sign-up{
@@ -115,6 +123,7 @@ body{
     opacity: 1;
     z-index: 5;
     animation: move 0.6s;
+    
 }
 
 @keyframes move{
@@ -191,21 +200,25 @@ body{
     top: 0;
     transform: translateX(0);
     transition: all 0.6s ease-in-out;
+    
 }
 
 .toggle-left{
     transform: translateX(-200%);
+    
 }
 
 .container.active .toggle-left{
     transform: translateX(0);
+    
 }
 
 .toggle-right{
     right: 0;
     transform: translateX(0);
+    
 }
 
 .container.active .toggle-right{
-    transform: translateX(200%);
+    transform: translateX(200%);   
 }
