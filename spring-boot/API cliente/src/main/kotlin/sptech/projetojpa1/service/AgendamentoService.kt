@@ -1,7 +1,6 @@
 package sptech.projetojpa1.service
 
 import org.springframework.stereotype.Service
-import org.springframework.web.bind.annotation.RequestParam
 import sptech.projetojpa1.dominio.Agendamento
 import sptech.projetojpa1.dto.agendamento.AgendamentoRequestDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoResponseDTO
@@ -9,7 +8,6 @@ import sptech.projetojpa1.repository.AgendamentoRepository
 import sptech.projetojpa1.repository.ProcedimentoRepository
 import sptech.projetojpa1.repository.StatusRepository
 import sptech.projetojpa1.repository.UsuarioRepository
-import java.time.LocalDate
 import java.util.Date
 
 @Service
@@ -19,6 +17,22 @@ class AgendamentoService(
     private val procedimentoRepository: ProcedimentoRepository,
     private val statusRepository: StatusRepository
 ) {
+
+    fun listarTodosAgendamentos(): List<AgendamentoResponseDTO> {
+        val agendamentos = agendamentoRepository.findAll()
+
+        return agendamentos.map { agendamento ->
+            AgendamentoResponseDTO(
+                idAgendamento = agendamento.idAgendamento,
+                data = agendamento.data,
+                horario = agendamento.horario,
+                tipoAgendamento = agendamento.tipoAgendamento,
+                usuario = agendamento.usuario,
+                procedimento = agendamento.procedimento,
+                statusAgendamento = agendamento.statusAgendamento
+            )
+        }
+    }
 
     fun listarAgendamento(): List<Agendamento> {
         val agendamentos = agendamentoRepository.findAll()
@@ -50,7 +64,8 @@ class AgendamentoService(
         val agendamento = Agendamento(
             idAgendamento = agendamentoRequestDTO.idAgendamento,
             data = agendamentoRequestDTO.data ?: throw IllegalArgumentException("Data não pode ser nula"),
-            horario = agendamentoRequestDTO.horario ?: throw IllegalArgumentException("Horário não pode ser nulo"),
+            horario = agendamentoRequestDTO.horario
+                ?: throw IllegalArgumentException("Horário não pode ser nulo"),
             tipoAgendamento = agendamentoRequestDTO.tipoAgendamento
                 ?: throw IllegalArgumentException("Tipo de agendamento não pode ser nulo"),
             usuario = usuarioRepository.findById(agendamentoRequestDTO.fk_usuario)
@@ -76,7 +91,8 @@ class AgendamentoService(
 
     fun obterAgendamento(id: Int): AgendamentoResponseDTO {
         val agendamento =
-            agendamentoRepository.findById(id).orElseThrow { IllegalArgumentException("Agendamento não encontrado") }
+            agendamentoRepository.findById(id)
+                .orElseThrow { IllegalArgumentException("Agendamento não encontrado") }
 
         return AgendamentoResponseDTO(
             idAgendamento = agendamento.idAgendamento,
@@ -91,9 +107,11 @@ class AgendamentoService(
 
     fun atualizarAgendamento(id: Int, agendamentoRequestDTO: AgendamentoRequestDTO): AgendamentoResponseDTO {
         val agendamento =
-            agendamentoRepository.findById(id).orElseThrow { IllegalArgumentException("Agendamento não encontrado") }
+            agendamentoRepository.findById(id)
+                .orElseThrow { IllegalArgumentException("Agendamento não encontrado") }
 
-        agendamento.data = agendamentoRequestDTO.data ?: throw IllegalArgumentException("Data não pode ser nula")
+        agendamento.data =
+            agendamentoRequestDTO.data ?: throw IllegalArgumentException("Data não pode ser nula")
         agendamento.horario =
             agendamentoRequestDTO.horario ?: throw IllegalArgumentException("Horário não pode ser nulo")
         agendamento.tipoAgendamento = agendamentoRequestDTO.tipoAgendamento

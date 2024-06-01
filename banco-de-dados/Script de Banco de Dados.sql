@@ -58,7 +58,7 @@ CREATE TABLE usuario (
     telefone BIGINT,
     telefone_emergencial BIGINT,
     data_nasc DATE,
-    genero boolean,
+    genero VARCHAR(100),
     indicacao VARCHAR(100),
     foto BLOB,
     status boolean,

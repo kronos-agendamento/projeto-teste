@@ -7,7 +7,7 @@ data class UsuarioAtualizacaoRequest(
     var instagram: String?,
     var telefone: Long?,
     var telefoneEmergencial: Long?,
-    var genero: Boolean?,
+    var genero: String?,
     var indicacao: String?,
     var nivelAcessoId: Int?,
     var enderecoId: Int?,

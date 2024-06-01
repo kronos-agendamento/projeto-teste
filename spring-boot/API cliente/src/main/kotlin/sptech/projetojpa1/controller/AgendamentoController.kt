@@ -7,6 +7,7 @@ import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import sptech.projetojpa1.dto.agendamento.AgendamentoRequestDTO
+import sptech.projetojpa1.dto.agendamento.AgendamentoResponseDTO
 import sptech.projetojpa1.service.AgendamentoService
 
 @RestController
@@ -25,13 +26,25 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
 
         val validacao = agendamentoService.validarAgendamento(agendamentoRequestDTO)
 
-        if (validacao == true){
+        if (validacao == true) {
             val agendamentoResponseDTO = agendamentoService.criarAgendamento(agendamentoRequestDTO)
 
             return ResponseEntity.ok(agendamentoResponseDTO)
         }
 
         return ResponseEntity.badRequest().body("Já existe um agendamento para essa data e horário")
+    }
+
+    @Operation(summary = "Lista todos os agendamentos")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Agendamentos listados com sucesso")
+        ]
+    )
+    @GetMapping("/listar")
+    fun listarTodosAgendamentos(): ResponseEntity<List<AgendamentoResponseDTO>> {
+        val agendamentos = agendamentoService.listarTodosAgendamentos()
+        return ResponseEntity.ok(agendamentos)
     }
 
     @Operation(summary = "Obtém um agendamento pelo ID")

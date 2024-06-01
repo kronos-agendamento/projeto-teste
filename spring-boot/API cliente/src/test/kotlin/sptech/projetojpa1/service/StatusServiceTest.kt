@@ -14,7 +14,7 @@ import sptech.projetojpa1.dto.status.StatusResponse
 import sptech.projetojpa1.repository.StatusRepository
 import java.util.*
 
-class StatusServiceTest {
+class  StatusServiceTest {
 
     private lateinit var repository: StatusRepository
     private lateinit var service: StatusService
