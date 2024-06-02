@@ -294,15 +294,17 @@ import sptech.projetojpa1.service.UsuarioService
 @RestController
 @RequestMapping("/usuarios")
 class UsuarioController(
-   val usuarioService: UsuarioService
+    val usuarioService: UsuarioService
 ) {
 
     @Operation(summary = "Fazer login")
-    @ApiResponses(value = [
-        ApiResponse(responseCode = "201", description = "Login realizado com sucesso"),
-        ApiResponse(responseCode = "400", description = "Requisição inválida. Retorna uma mensagem de erro"),
-        ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
-    ])
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "201", description = "Login realizado com sucesso"),
+            ApiResponse(responseCode = "400", description = "Requisição inválida. Retorna uma mensagem de erro"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
     @PostMapping("/login")
     fun fazerLogin(@Valid @RequestBody login: UsuarioLoginRequest): ResponseEntity<String> {
         val responseMessage = usuarioService.fazerLogin(login)
@@ -314,11 +316,13 @@ class UsuarioController(
     }
 
     @Operation(summary = "Fazer logoff")
-    @ApiResponses(value = [
-        ApiResponse(responseCode = "200", description = "Operação bem-sucedida."),
-        ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
-        ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
-    ])
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Operação bem-sucedida."),
+            ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
     @PatchMapping("/logoff/{cpf}")
     fun fazerLogoff(@Valid @PathVariable cpf: String): ResponseEntity<String> {
         val responseMessage = usuarioService.fazerLogoff(cpf)
@@ -330,11 +334,13 @@ class UsuarioController(
     }
 
     @Operation(summary = "Cadastrar novo usuário")
-    @ApiResponses(value = [
-        ApiResponse(responseCode = "201", description = "Recurso criado com sucesso. Retorna o usuário cadastrado"),
-        ApiResponse(responseCode = "400", description = "Requisição inválida. Retorna uma mensagem de erro"),
-        ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
-    ])
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "201", description = "Recurso criado com sucesso. Retorna o usuário cadastrado"),
+            ApiResponse(responseCode = "400", description = "Requisição inválida. Retorna uma mensagem de erro"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
     @PostMapping("/cadastro-usuario")
     fun cadastrarUsuario(@Valid @RequestBody dto: UsuarioRequest): ResponseEntity<UsuarioRequest> {
         val novoUsuario = usuarioService.salvarUsuario(dto)
@@ -342,13 +348,18 @@ class UsuarioController(
     }
 
     @Operation(summary = "Atualizar usuário")
-    @ApiResponses(value = [
-        ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o usuário atualizado"),
-        ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
-        ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
-    ])
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o usuário atualizado"),
+            ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
     @PatchMapping("/atualizacao-usuario/{cpf}")
-    fun atualizarUsuario(@PathVariable cpf: String, @Valid @RequestBody dto: UsuarioAtualizacaoRequest): ResponseEntity<Usuario> {
+    fun atualizarUsuario(
+        @PathVariable cpf: String,
+        @Valid @RequestBody dto: UsuarioAtualizacaoRequest
+    ): ResponseEntity<Usuario> {
         val usuarioAtualizado = usuarioService.atualizarUsuario(cpf, dto)
         return if (usuarioAtualizado != null) {
             ResponseEntity.status(200).body(usuarioAtualizado)
@@ -358,11 +369,13 @@ class UsuarioController(
     }
 
     @Operation(summary = "Deletar usuário por CPF")
-    @ApiResponses(value = [
-        ApiResponse(responseCode = "200", description = "Operação bem-sucedida"),
-        ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
-        ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
-    ])
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Operação bem-sucedida"),
+            ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
     @DeleteMapping("/exclusao-usuario/{cpf}")
     fun deletarUsuario(@PathVariable cpf: String): ResponseEntity<String> {
         val deletado = usuarioService.deletarUsuario(cpf)
@@ -381,11 +394,16 @@ class UsuarioController(
 
 
     @Operation(summary = "Listar todos usuários")
-    @ApiResponses(value = [
-        ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna uma lista de usuários"),
-        ApiResponse(responseCode = "204", description = "Requisição bem-sucedida, mas não há conteúdo para ser exibido. Retorna uma resposta vazia"),
-        ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
-    ])
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna uma lista de usuários"),
+            ApiResponse(
+                responseCode = "204",
+                description = "Requisição bem-sucedida, mas não há conteúdo para ser exibido. Retorna uma resposta vazia"
+            ),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
     @GetMapping
     fun listarTodosUsuarios(): ResponseEntity<List<Usuario>> {
         val usuarios = usuarioService.listarTodosUsuarios()
@@ -393,11 +411,13 @@ class UsuarioController(
     }
 
     @Operation(summary = "Listar usuários por descrição")
-    @ApiResponses(value = [
-        ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o usuário encontrado"),
-        ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
-        ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
-    ])
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o usuário encontrado"),
+            ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
     @GetMapping("/buscar-usuario-por-codigo/{codigo}")
     fun buscarUsuarioPorCodigo(@PathVariable codigo: Int): ResponseEntity<Usuario> {
         val usuario = usuarioService.buscarUsuarioPorCodigo(codigo)
@@ -410,13 +430,17 @@ class UsuarioController(
 
 
     @Operation(summary = "Atualizar foto de usuário")
-    @ApiResponses(value = [
-        ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o usuário atualizado"),
-        ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
-        ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
-    ])
-    @PatchMapping( value = ["/atualizacao-foto/{codigo}"],
-        consumes = ["image/jpeg", "image/png", "image/gif", "image/jpg"])
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o usuário atualizado"),
+            ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
+    @PatchMapping(
+        value = ["/atualizacao-foto/{codigo}"],
+        consumes = ["image/jpeg", "image/png", "image/gif", "image/jpg"]
+    )
     fun atualizarFotoUsuario(@PathVariable codigo: Int, @RequestBody foto: ByteArray): ResponseEntity<Usuario> {
         val usuario = usuarioService.atualizarFotoUsuario(codigo, foto)
         return if (usuario != null) {
@@ -428,12 +452,17 @@ class UsuarioController(
 
 
     @Operation(summary = "Buscar foto de usuário")
-    @ApiResponses(value = [
-        ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o usuário encontrado"),
-        ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
-        ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
-    ])
-    @GetMapping(value = ["/busca-imagem-usuario/{codigo}"], produces = ["image/jpeg", "image/png", "image/gif", "image/jpg"])
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o usuário encontrado"),
+            ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
+    @GetMapping(
+        value = ["/busca-imagem-usuario/{codigo}"],
+        produces = ["image/jpeg", "image/png", "image/gif", "image/jpg"]
+    )
     fun getFoto(@PathVariable codigo: Int): ResponseEntity<ByteArray> {
         val foto = usuarioService.getFoto(codigo)
         return if (foto != null) {
@@ -444,11 +473,13 @@ class UsuarioController(
     }
 
     @Operation(summary = "Listar usuários por CPF")
-    @ApiResponses(value = [
-        ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o usuário encontrado"),
-        ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
-        ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
-    ])
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o usuário encontrado"),
+            ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
     @GetMapping("/buscar-por-cpf/{cpf}")
     fun getByCPF(@PathVariable cpf: String): ResponseEntity<Usuario> {
         val usuario = usuarioService.getByCPF(cpf)
@@ -460,11 +491,13 @@ class UsuarioController(
     }
 
     @Operation(summary = "Listar usuários por nome")
-    @ApiResponses(value = [
-        ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o usuário encontrado"),
-        ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
-        ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
-    ])
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o usuário encontrado"),
+            ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
     @GetMapping("/buscar-por-nome/{nome}")
     fun getByNomeContains(@PathVariable nome: String): ResponseEntity<List<Usuario>> {
         val usuarios = usuarioService.getByNomeContains(nome)
@@ -472,11 +505,13 @@ class UsuarioController(
     }
 
     @Operation(summary = "Listar usuários por nível de acesso")
-    @ApiResponses(value = [
-        ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o usuário encontrado"),
-        ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
-        ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
-    ])
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o usuário encontrado"),
+            ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
     @GetMapping("/buscar-usuarios-por-nivel-acesso/{codigo}")
     fun getUsuariosByNivelAcesso(@PathVariable codigo: Int): ResponseEntity<List<Usuario>> {
         val usuarios = usuarioService.getUsuariosByNivelAcesso(codigo)
@@ -485,11 +520,13 @@ class UsuarioController(
 
 
     @Operation(summary = "Listar usuários por status")
-    @ApiResponses(value = [
-        ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o usuário encontrado"),
-        ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
-        ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
-    ])
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o usuário encontrado"),
+            ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
     @GetMapping("/buscar-por-status/{status}")
     fun getByStatus(@PathVariable status: Boolean): ResponseEntity<List<Usuario>> {
         val usuarios = usuarioService.getByStatus(status)

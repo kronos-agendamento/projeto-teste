@@ -50,7 +50,7 @@ data class Usuario(
     var dataNasc: LocalDate?,
     // Gênero do usuário
     @field:NotBlank(message = "Gênero é obrigatório")
-    var genero: String?, 
+    var genero: String?,
     // Indicação do usuário
     var indicacao: String?,
     // Foto do usuário
