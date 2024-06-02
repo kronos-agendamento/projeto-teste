@@ -1,39 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="../css/login.css">
- <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;700&display=swap" rel="stylesheet">
     <title>Acessar conta</title>
 </head>
 
 <body>
-
     <div class="container" id="container">
         <div class="form-container sign-up">
-            <form>
+            <form id="registerForm">
                 <h1>Criar Conta</h1>
-                
-                <input type="text" placeholder="Nome Completo">
-                <input type="email" placeholder="Email">
-                <input type="number" placeholder="Telefone">
-                <input type="text" placeholder = "Nome de usuário do Instagram">
-                <input type="password" placeholder="Crie uma senha">
-                <button>Cadastrar</button>
+                <input type="text" id="nome" placeholder="Nome Completo" required>
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="text" id="cpf" placeholder="CPF" required>Z
+                <input type="number" id="telefone" placeholder="Telefone" required>
+                <input type="text" id="instagram" placeholder="Nome de usuário do Instagram" required>
+                <input type="password" id="senha" placeholder="Crie uma senha" required>
+                <button type="submit">Cadastrar</button>
             </form>
         </div>
         <div class="form-container sign-in">
-            <form>
+            <form id="loginForm">
                 <h1>Bem-vinda de volta!</h1>
-                <input type="email" placeholder="Email">
-                <input type="password" placeholder="Senha">
+                <input type="email" id="loginEmail" placeholder="Email" required>
+                <input type="password" id="loginSenha" placeholder="Senha" required>
                 <a href="#">Esqueceu sua senha?</a>
-                <button>Entrar</button>
+                <button type="submit">Entrar</button>
             </form>
         </div>
         <div class="toggle-container">
@@ -51,7 +48,6 @@
             </div>
         </div>
     </div>
-
     <script src="../js/script.js"></script>
 </body>
 
