@@ -585,6 +585,44 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+  <script type="text/javascript">
+    (function(d, m){
+        var kommunicateSettings = 
+            {
+                "appId": "19f3afd92dcfbde6b43a61ad6f4a39dcc",  // Substitua pelo seu APP_ID se for diferente
+                "popupWidget": true,
+                "automaticChatOpenOnNavigation": true,
+                "hidePostCTA": true,
+                "onInit": function() {
+                    // Adicionar CSS personalizado
+                    var css = ".mck-msg-right .mck-msg-box{background-color:white!important;color:#ED495C!important;}" + 
+                              ".mck-header{background-color: #2196f3!important;color: #ffffff!important;}" +
+                              ".mck-agent-bubble {background-color: #ff5722!important;color: #ffffff!important;}" +
+                              ".km-chat-widget-launcher {background-color: #007bff !important;}" +
+                              ".mck-box-title{font-family: 'Poppins' !important;}" +
+                              ".mck-box div{font-family: 'Poppins' !important;}";
+                    window.Kommunicate.customizeWidgetCss(css);
+
+                    // Custom header extension
+                    let target = KommunicateGlobal.document.querySelector('.km-conversation-header-title-container');
+                    let customHeaderExtension = document.getElementById('custom');
+                    if (target && customHeaderExtension) {
+                        target.appendChild(customHeaderExtension);
+                        console.log(KommunicateGlobal.document.querySelector('.km-conversation-header-title-container'));
+                    }
+                }
+            };
+        
+        // Adicionar configuração para reiniciar a conversa pelo usuário
+        kommunicateSettings.restartConversationByUser = true;
+
+        var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
+        s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
+        var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
+        window.kommunicate = m; m._globals = kommunicateSettings;
+    })(document, window.kommunicate || {});
+</script>
+
 
 </body>
 
