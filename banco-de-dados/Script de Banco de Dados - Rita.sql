@@ -146,4 +146,24 @@ CREATE TABLE feedback (
     FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario)
 );
 
-select * from status_agendamento;
+
+CREATE TABLE educacao (
+    id_educacao INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(70),
+    descricao VARCHAR(100),
+    nivel VARCHAR(50),
+    modalidade VARCHAR(50),
+    carga_horaria VARCHAR(30),
+    preco_educacao DOUBLE,
+	ativo boolean default true
+);
+
+-- Exemplo 1: Educação em Maquiagem
+INSERT INTO educacao (nome, descricao, nivel, modalidade, carga_horaria, preco_educacao) 
+VALUES ('Curso de Maquiagem Profissional', 'Aprenda técnicas avançadas de maquiagem.', 'Avançado', 'Presencial', '40:00', 399.99);
+
+-- Exemplo 2: Curso de Extensão de Cílios
+INSERT INTO educacao (nome, descricao, nivel, modalidade, carga_horaria, preco_educacao) 
+VALUES ('Curso de Extensão de Cílios', 'Aprenda a técnica de extensão de cílios.', 'Intermediário', 'Presencial', '24:00', 299.99);
+
+select *from educacao;
