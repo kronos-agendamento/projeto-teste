@@ -15,5 +15,9 @@ data class Procedimento(
 
     @field:NotNull(message = "O campo descrição não pode ser nulo")
     @field:Size(min = 1, max = 500, message = "O campo descrição deve ter entre 1 e 500 caracteres")
-    var descricao: String?
+    var descricao: String?,
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_promocao")
+    var promocao: Promocao? = null
 )

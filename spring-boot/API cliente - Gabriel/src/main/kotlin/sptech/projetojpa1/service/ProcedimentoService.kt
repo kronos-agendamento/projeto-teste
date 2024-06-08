@@ -15,7 +15,8 @@ class ProcedimentoService(private val procedimentoRepository: ProcedimentoReposi
         val procedimento = procedimentoRepository.save(
             Procedimento(
                 tipo = procedimentoRequestDTO.tipo,
-                descricao = procedimentoRequestDTO.descricao
+                descricao = procedimentoRequestDTO.descricao,
+                promocao = procedimentoRequestDTO.promocao
             )
         )
         return procedimento.toDTO()
@@ -37,6 +38,7 @@ class ProcedimentoService(private val procedimentoRepository: ProcedimentoReposi
         val procedimento = procedimentoRepository.findById(id).orElse(null) ?: return null
         procedimento.tipo = procedimentoRequestDTO.tipo
         procedimento.descricao = procedimentoRequestDTO.descricao
+        procedimento.promocao = procedimentoRequestDTO.promocao // Atualiza a propriedade promocao
         val updatedProcedimento = procedimentoRepository.save(procedimento)
         return updatedProcedimento.toResponseDTO()
     }
@@ -52,12 +54,14 @@ class ProcedimentoService(private val procedimentoRepository: ProcedimentoReposi
     private fun Procedimento.toDTO() = ProcedimentoDTO(
         idProcedimento = this.idProcedimento,
         tipo = this.tipo,
-        descricao = this.descricao
+        descricao = this.descricao,
+        promocao = this.promocao
     )
 
     private fun Procedimento.toResponseDTO() = ProcedimentoResponseDTO(
         idProcedimento = this.idProcedimento,
         tipo = this.tipo,
-        descricao = this.descricao
+        descricao = this.descricao,
+        promocao = this.promocao
     )
 }
