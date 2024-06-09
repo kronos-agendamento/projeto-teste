@@ -1,5 +1,5 @@
 create database kronosbooking;
---  drop database kronosbooking;
+  -- drop database kronosbooking;
 use  kronosbooking;
 
 CREATE TABLE endereco (
@@ -110,7 +110,8 @@ CREATE TABLE procedimento (
     id_procedimento INT PRIMARY KEY AUTO_INCREMENT,
     tipo VARCHAR(50),
     descricao VARCHAR(45),
-    fk_promocao INT
+    fk_promocao INT,
+    FOREIGN KEY (fk_promocao) REFERENCES promocao(id_promocao)
 );
 
 CREATE TABLE tempo_procedimento (
