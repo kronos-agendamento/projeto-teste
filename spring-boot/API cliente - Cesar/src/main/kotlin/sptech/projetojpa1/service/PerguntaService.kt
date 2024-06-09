@@ -89,4 +89,8 @@ class PerguntaService(
         return null
     }
 
+    fun listarPerguntasPersonalidade(): List<Pergunta> {
+
+        return perguntaRepository.findByTipo("personalidade")
+    }
 }

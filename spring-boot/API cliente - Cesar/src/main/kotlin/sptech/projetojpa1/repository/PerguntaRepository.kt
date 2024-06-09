@@ -11,4 +11,6 @@ interface PerguntaRepository : JpaRepository<Pergunta, Int> {
 
     // Função para buscar perguntas por descrição, ignorando maiúsculas e minúsculas
     fun findByDescricaoContainsIgnoreCase(descricao: String): List<Pergunta>
+
+    fun findByTipo(tipo: String): List<Pergunta>
 }

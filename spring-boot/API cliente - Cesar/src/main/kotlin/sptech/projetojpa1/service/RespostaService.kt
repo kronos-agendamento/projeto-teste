@@ -144,7 +144,7 @@ class RespostaService(
 
         val chave = Quadruple(pergunta1, pergunta2, pergunta3, pergunta4)
         val personalidade = combinacoes[chave] ?: "Personalidade Indefinida"
-
+        
         return personalidade
     }
 

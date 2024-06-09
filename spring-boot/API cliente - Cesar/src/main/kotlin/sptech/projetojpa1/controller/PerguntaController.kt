@@ -100,6 +100,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import sptech.projetojpa1.dominio.Pergunta
 import sptech.projetojpa1.dto.pergunta.PerguntaRequest
 import sptech.projetojpa1.service.PerguntaService
 
@@ -215,4 +216,10 @@ class PerguntaController(
     }
 
 
+    // Get Personalidade - César
+    @GetMapping("perguntas-personalidade")
+    fun buscarPerguntasPersonalidade(): List<Pergunta> {
+        val perguntas = perguntaService.listarPerguntasPersonalidade()
+        return perguntas
+    }
 }

@@ -97,9 +97,16 @@ class RespostaController(
             ResponseEntity.status(404).body("Resposta não encontrada para o ID fornecido.")
         }
     }
-
+    // Post Personalidade - César
     @PostMapping("/verificar-personalidade")
     fun verificarPersonalidade(@RequestBody respostasChegando: RespostaPersonalidade): String{
+        val resultado = respostaService.filtrarPersonalidade(respostasChegando)
+        return resultado
+    }
+
+    // Patch Personalidade - César
+    @PatchMapping("/atualizar-personalidade")
+    fun atualizarPersonalidade(@RequestBody respostasChegando: RespostaPersonalidade): String{
         val resultado = respostaService.filtrarPersonalidade(respostasChegando)
         return resultado
     }
