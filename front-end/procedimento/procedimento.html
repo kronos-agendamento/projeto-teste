@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KRONOS | Procedimento</title>
+    <link rel="stylesheet" href="procedimento.css">
+    <script src="procedimento.js"></script>
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="profile">
+            <img src="../assets/icon.png" alt="Priscila Rossato">
+            <p class="title-p">Priscila Rossato</p>
+            <p>pri@plenitude.com</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#"><img src="../assets/home.png" alt="home">Início</a></li>
+                <li><a href="#"><img src="../assets/profile.png" alt="profile">Perfil</a></li>
+                <li><a href="#"><img src="../assets/schedules.png" alt="schedules">Agendamentos</a></li>
+                <li><a href="#"><img src="../assets/anamnesis.png" alt="anamnesis">Anamneses</a></li>
+                <li><a href="#"><img src="../assets/customers.png" alt="customers">Clientes</a></li>
+                <li><a class="active" href="#"><img src="../assets/proceduresActive.png"
+                            alt="proceduresActive">Procedimentos</a></li>
+                <li><a href="#"><img src="../assets/dashboard.png" alt="dashboard">Dashboard</a></li>
+                <li><a href="#"><img src="../assets/exit.png" alt="exit">Sair</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <p>Procedimentos</p>
+            <img src="../assets/information.png" alt="information">
+        </header>
+        <div class="actions">
+            <button class="filter-btn"><img src="../assets/filter.png" alt="filter">Filtro</button>
+            <div class="right-actions">
+                <button class="planilha-btn"><img src="../assets/spreadsheet.png" alt="spreadsheet">Planilha</button>
+                <button class="criar-btn" onclick="showForm()"><img src="../assets/createNew.png" alt="createNew">Criar
+                    Novo</button>
+            </div>
+        </div>
+        <!--         <div class="table-container">
+ -->
+        <table class="procedures-table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Preço</th>
+                    <th>Duração</th>
+                    <th>Especificação</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Cílios</td>
+                    <td>R$200,00</td>
+                    <td>2h30min</td>
+                    <td>Volume Fio a Fio</td>
+                    <td>
+                        <button class="edit-btn">✏️</button>
+                        <button class="delete-btn">🗑️</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Cílios</td>
+                    <td>R$250,00</td>
+                    <td>1h30min</td>
+                    <td>Volume Russo</td>
+                    <td>
+                        <button class="edit-btn">✏️</button>
+                        <button class="delete-btn">🗑️</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Sobrancelha</td>
+                    <td>R$70,00</td>
+                    <td>30min</td>
+                    <td>Design</td>
+                    <td>
+                        <button class="edit-btn">✏️</button>
+                        <button class="delete-btn">🗑️</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!--         </div>
+ -->
+        <div class="pagination">
+            <span>Próxima Página</span>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <h2>O Mais Agendado</h2>
+                <p>Fio a Fio</p>
+                <p>Nos últimos 3 meses</p>
+                <a href="#">Ver ordem de todos</a>
+            </div>
+            <div class="stat-item">
+                <h2>O Menos Agendado</h2>
+                <p>Fox Eyes</p>
+                <p>Nos últimos 3 meses</p>
+                <a href="#">Ver ordem de todos</a>
+            </div>
+            <div class="stat-item">
+                <h2>O Melhor Avaliado</h2>
+                <p>Brasileiro</p>
+                <p>Nos últimos 3 meses</p>
+                <a href="#">Ver ordem de todos</a>
+            </div>
+        </div>
+    </div>
+    <!-- Formulário oculto para adicionar novo procedimento -->
+    <div id="create-form" style="display: none;">
+        <h2>Criar Novo Procedimento</h2>
+        <form id="procedimento-form">
+            <label for="tipo">Tipo:</label>
+            <input type="text" id="tipo" name="tipo" required><br>
+
+            <label for="descricao">Descrição:</label>
+            <input type="text" id="descricao" name="descricao" required><br>
+
+            <label for="especificacao">Especificação:</label>
+            <input type="text" id="especificacao" name="especificacao" required><br>
+
+            <label for="duracao">Duração:</label>
+            <input type="text" id="duracao" name="duracao" required><br>
+
+            <label for="preco-colocacao">Valor de Colocação:</label>
+            <input type="number" id="preco-colocacao" name="preco-colocacao" required><br>
+
+            <label for="preco-retirada">Valor de Retirada:</label>
+            <input type="number" id="preco-retirada" name="preco-retirada" required><br>
+
+            <label for="preco-manutencao">Valor de Manutenção:</label>
+            <input type="number" id="preco-manutencao" name="preco-manutencao" required><br>
+
+            <label for="foto">Upload de Foto:</label>
+            <input type="file" id="foto" name="foto" accept="image/*"><br>
+
+            <button type="button" onclick="saveProcedimento()">Salvar</button>
+        </form>
+    </div>
+</body>
+
+</html>

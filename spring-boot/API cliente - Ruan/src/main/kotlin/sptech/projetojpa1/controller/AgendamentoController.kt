@@ -89,4 +89,28 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
         agendamentoService.excluirAgendamento(id)
         return ResponseEntity.ok().build<Any>()
     }
+
+    // Adicione esses métodos no AgendamentoController
+
+    @Operation(summary = "Obtém o procedimento mais agendado nos últimos 3 meses")
+    @GetMapping("/mais-agendado")
+    fun obterMaisAgendado(): ResponseEntity<*> {
+        val procedimento = agendamentoService.obterMaisAgendado()
+        return ResponseEntity.ok(procedimento)
+    }
+
+    @Operation(summary = "Obtém o procedimento menos agendado nos últimos 3 meses")
+    @GetMapping("/menos-agendado")
+    fun obterMenosAgendado(): ResponseEntity<*> {
+        val procedimento = agendamentoService.obterMenosAgendado()
+        return ResponseEntity.ok(procedimento)
+    }
+
+    @Operation(summary = "Obtém o procedimento melhor avaliado nos últimos 3 meses")
+    @GetMapping("/melhor-avaliado")
+    fun obterMelhorAvaliado(): ResponseEntity<*> {
+        val procedimento = agendamentoService.obterMelhorAvaliado()
+        return ResponseEntity.ok(procedimento)
+    }
 }
+

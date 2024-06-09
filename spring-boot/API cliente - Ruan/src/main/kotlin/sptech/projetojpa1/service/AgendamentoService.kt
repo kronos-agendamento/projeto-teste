@@ -2,6 +2,7 @@ package sptech.projetojpa1.service
 
 import org.springframework.stereotype.Service
 import sptech.projetojpa1.dominio.Agendamento
+import sptech.projetojpa1.dominio.Procedimento
 import sptech.projetojpa1.dto.agendamento.AgendamentoRequestDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoResponseDTO
 import sptech.projetojpa1.repository.AgendamentoRepository
@@ -142,5 +143,20 @@ class AgendamentoService(
         }
 
         agendamentoRepository.deleteById(id)
+    }
+
+    fun obterMaisAgendado(): Procedimento {
+        // Implemente a lógica para obter o procedimento mais agendado nos últimos 3 meses
+        // Você pode precisar adicionar um novo método no seu repositório para fazer essa consulta
+    }
+
+    fun obterMenosAgendado(): Procedimento {
+        // Implemente a lógica para obter o procedimento menos agendado nos últimos 3 meses
+        // Você pode precisar adicionar um novo método no seu repositório para fazer essa consulta
+    }
+
+    fun obterMelhorAvaliado(): Procedimento {
+        // Implemente a lógica para obter o procedimento melhor avaliado nos últimos 3 meses
+        // Você pode precisar adicionar um novo método no seu repositório para fazer essa consulta
     }
 }

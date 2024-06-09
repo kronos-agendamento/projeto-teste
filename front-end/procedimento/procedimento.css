@@ -1,0 +1,247 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    background-color: #f5f5f5;
+    height: max-content;
+}
+
+
+.sidebar {
+    width: 275px;
+    height: 680px;
+    background-color: #D2135D;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    border-radius: 30px;
+    margin-top: 50px;
+    margin-left: 50px;
+    margin-bottom: 50px;
+}
+
+.profile {
+    text-align: center;
+    margin-top: 35px;
+}
+
+.profile img {
+    border-radius: 50%;
+    width: 110px;
+    height: 110px;
+}
+
+.profile .title-p {
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+.profile p {
+    font-size: 12px;
+}
+
+nav ul {
+    list-style: none;
+    width: 100%;
+    padding: 0;
+    margin-top: 45px;
+}
+
+nav ul li {
+    width: 100%;
+    margin-left: -50px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    display: block;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 500;
+
+}
+
+nav ul li a img {
+    width: 25px;
+    margin-right: 18px;
+}
+
+nav ul li a:hover,
+.active {
+    background-color: #d81b60;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #D2135D;
+    margin-top: 40px;
+    margin-left: 20px;
+    border-radius: 15px;
+    height: 65px;
+    width: 755px;
+}
+
+header p {
+    color: #f9f9f9;
+    font-size: 15px;
+    margin-left: 20px;
+}
+
+header img {
+    width: 25px;
+    margin-right: 40px;
+}
+
+.actions {
+    display: flex;
+    margin-top: 25px;
+    gap: 10px;
+    margin-left: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.actions button {
+    background-color: #ffffff00;
+    color: #000000;
+    border: 1px solid #000000;
+    padding: 2px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: bold;
+}
+
+.actions button img {
+    width: 25px;
+}
+
+.actions button:hover {
+    background-color: #d81b60;
+    color: #fff;
+    border: none;
+}
+
+.right-actions {
+    display: flex;
+    margin-right: 80px;
+}
+
+.planilha-btn {
+    margin-right: 10px;
+}
+
+/* 
+.table-container {
+    background-color: #c095a4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+} */
+
+.procedures-table {
+    width: 400px;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-left: 110px;
+}
+
+.procedures-table thead {
+    background-color: #D2135D;
+    color: #fff;
+}
+
+.procedures-table th,
+.procedures-table td {
+    padding: 15px;
+    text-align: left;
+}
+
+.procedures-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.edit-btn,
+.delete-btn,
+.more-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.edit-btn:hover,
+.delete-btn:hover,
+.more-btn:hover {
+    color: #d81b60;
+}
+
+.pagination {
+    text-align: center;
+    margin: 20px 0;
+    color: #D2135D;
+    cursor: pointer;
+}
+
+.pagination:hover {
+    text-decoration: underline;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.stat-item {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    width: 30%;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.stat-item h2 {
+    color: #D2135D;
+    margin-bottom: 10px;
+}
+
+.stat-item p {
+    margin-bottom: 10px;
+}
+
+.stat-item a {
+    color: #D2135D;
+    text-decoration: none;
+}
+
+.stat-item a:hover {
+    text-decoration: underline;
+}
