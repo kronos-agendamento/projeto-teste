@@ -1,16 +1,23 @@
 package sptech.projetojpa1.service
 
+import io.mockk.every
+import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.any
 import org.mockito.MockitoAnnotations
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import sptech.projetojpa1.dominio.Pergunta
 import sptech.projetojpa1.dto.pergunta.PerguntaRequest
+import sptech.projetojpa1.dto.resposta.RespostaPersonalidade
 import sptech.projetojpa1.repository.PerguntaRepository
+import sptech.projetojpa1.repository.RespostaRepository
 
 class PerguntaServiceTest {
 
@@ -19,10 +26,15 @@ class PerguntaServiceTest {
 
     @InjectMocks
     lateinit var perguntaService: PerguntaService
+    lateinit var respostaService: RespostaService
+
+
 
     @BeforeEach
     fun setUp() {
         MockitoAnnotations.openMocks(this)
+        perguntaRepository = mockk()
+        perguntaService = PerguntaService(perguntaRepository)
     }
 
     @Test
@@ -103,5 +115,24 @@ class PerguntaServiceTest {
         val result = perguntaService.editarDescricaoPergunta(perguntaId, novaDescricao)
 
         assertEquals(novaDescricao, result?.descricao)
+    }
+
+    @Test
+    @DisplayName("Teste para listar perguntas de personalidade")
+    fun `Teste listarPerguntasPersonalidade`() {
+        // Dados de entrada do teste
+        val perguntasEsperadas = listOf(
+            Pergunta(codigoPergunta = 1, descricao = "Pergunta 1", tipo = "personalidade"),
+            Pergunta(codigoPergunta = 2, descricao = "Pergunta 2", tipo = "personalidade")
+        )
+
+        // Mock do comportamento do repository
+        every { perguntaRepository.findByTipo("personalidade") } returns perguntasEsperadas
+
+        // Chamar o serviço
+        val perguntasRetornadas: List<Pergunta> = perguntaService.listarPerguntasPersonalidade()
+
+        // Verificar se as perguntas retornadas estão corretas
+        assertEquals(perguntasEsperadas, perguntasRetornadas)
     }
 }

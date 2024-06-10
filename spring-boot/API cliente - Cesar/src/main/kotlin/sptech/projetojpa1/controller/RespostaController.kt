@@ -97,17 +97,30 @@ class RespostaController(
             ResponseEntity.status(404).body("Resposta não encontrada para o ID fornecido.")
         }
     }
+
     // Post Personalidade - César
     @PostMapping("/verificar-personalidade")
-    fun verificarPersonalidade(@RequestBody respostasChegando: RespostaPersonalidade): String{
-        val resultado = respostaService.filtrarPersonalidade(respostasChegando)
-        return resultado
+    fun registrarPersonalidade(@RequestBody respostasChegando: RespostaPersonalidade): ResponseEntity<String> {
+        return respostaService.filtrarPersonalidade(respostasChegando)
     }
 
     // Patch Personalidade - César
     @PatchMapping("/atualizar-personalidade")
-    fun atualizarPersonalidade(@RequestBody respostasChegando: RespostaPersonalidade): String{
-        val resultado = respostaService.filtrarPersonalidade(respostasChegando)
+    fun atualizarPersonalidade(@RequestBody respostasChegando: RespostaPersonalidade): ResponseEntity<String> {
+        return respostaService.filtrarPersonalidade(respostasChegando)
+    }
+
+    // Get Personalidade - César
+    // @GetMapping("perguntas-personalidade")
+    // fun buscarPerguntasPersonalidade(): List<Pergunta> {
+    //     val perguntas = perguntaService.listarPerguntasPersonalidade()
+    //    return perguntas
+    // }
+
+    // Delete Personalidade - César
+    @DeleteMapping("/deletar-personalidade")
+    fun deletarPersonalidade(@RequestBody respostasChegando: RespostaPersonalidade): ResponseEntity<String>{
+        val resultado =  ResponseEntity.status(200).body("Personalidade apagada!") // respostaService.deletarPersonalidade
         return resultado
     }
 }

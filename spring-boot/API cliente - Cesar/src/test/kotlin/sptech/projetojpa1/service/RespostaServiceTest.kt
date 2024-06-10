@@ -5,15 +5,17 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.mockito.Mockito.`when`
+import org.springframework.http.ResponseEntity
 import sptech.projetojpa1.dominio.*
+import sptech.projetojpa1.dto.resposta.RespostaDTO
+import sptech.projetojpa1.dto.resposta.RespostaPersonalidade
 import sptech.projetojpa1.dto.resposta.RespostaRequestDTO
-import sptech.projetojpa1.repository.RespostaRepository
-import sptech.projetojpa1.repository.PerguntaRepository
-import sptech.projetojpa1.repository.FichaAnamneseRepository
-import sptech.projetojpa1.repository.UsuarioRepository
+import sptech.projetojpa1.repository.*
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
+import javax.management.Query.times
 
 class RespostaServiceTest {
 
@@ -22,11 +24,14 @@ class RespostaServiceTest {
     private val perguntaRepository: PerguntaRepository = mockk()
     private val fichaAnamneseRepository: FichaAnamneseRepository = mockk()
     private val usuarioRepository: UsuarioRepository = mockk()
+    private val personalidadeRepository: PersonalidadeRepository = mockk()
+
+    // private val respostaService: RespostaService = RespostaService(personalidadeRepository, usuarioRepository)
 
     @BeforeEach
     fun setUp() {
         respostaService =
-            RespostaService(respostaRepository, perguntaRepository, fichaAnamneseRepository, usuarioRepository)
+            RespostaService(respostaRepository, perguntaRepository, fichaAnamneseRepository, usuarioRepository, personalidadeRepository)
     }
 
     @Test
@@ -246,4 +251,66 @@ class RespostaServiceTest {
         assertFalse(result)
         verify(exactly = 0) { respostaRepository.deleteById(id) }
     }
+
+
+    // Teste do post do César
+    @Test
+    @DisplayName("Teste para verificar se a personalidade está correta")
+    fun `Teste registrarPersonalidade`() {
+        // Dados de entrada do teste
+        val respostasDTO = listOf(
+            RespostaDTO(resposta = "Cílios", perguntaId = 1),
+            RespostaDTO(resposta = "Volume Fio a Fio", perguntaId = 2),
+            RespostaDTO(resposta = "Ler livros", perguntaId = 3),
+            RespostaDTO(resposta = "Artistica", perguntaId = 4)
+        )
+        val respostaPersonalidade = RespostaPersonalidade(usuarioId = 1, respostas = respostasDTO)
+
+        // Mock do comportamento do repository
+        every { personalidadeRepository.findByPersonalidade("Paciente e Criativa") } returns 1
+        every { usuarioRepository.atualizarPersonalidadeDoUsuario(1, 1) } returns Unit
+
+        // Chamar o serviço com os dados de teste
+        val responseEntity: ResponseEntity<String> = respostaService.filtrarPersonalidade(respostaPersonalidade)
+
+        // Verificar se a personalidade foi determinada corretamente
+        assertEquals(200, responseEntity.statusCodeValue)
+        assertEquals("Paciente e Criativa", responseEntity.body)
+
+        // Verificar se a personalidade foi atualizada no repositório do usuário
+        verify(exactly = 1) { usuarioRepository.atualizarPersonalidadeDoUsuario(1, 1) }
+    }
+
+
+    @Test
+    @DisplayName("Teste para verificar se a personalidade é deletada corretamente")
+    fun `Teste deletarPersonalidade`() {
+        // Dados de entrada do teste
+        val respostasDTO = listOf(
+            RespostaDTO(resposta = "Cílios", perguntaId = 1),
+            RespostaDTO(resposta = "Volume Fio a Fio", perguntaId = 2),
+            RespostaDTO(resposta = "Ler livros", perguntaId = 3),
+            RespostaDTO(resposta = "Artistica", perguntaId = 4)
+        )
+        val respostaPersonalidade = RespostaPersonalidade(usuarioId = 1, respostas = respostasDTO)
+
+        // Mock do comportamento do repository
+        every { usuarioRepository.deletarPersonalidadeDoUsuario(1) } returns Unit
+
+        // Chamar o serviço com os dados de teste
+        val responseEntity: ResponseEntity<String> = respostaService.deletarPersonalidade(respostaPersonalidade)
+
+        // Verificar se a resposta está correta
+        assertEquals(200, responseEntity.statusCodeValue)
+        assertEquals("Deletado com sucesso!", responseEntity.body)
+
+        // Verificar se a personalidade foi deletada no repositório do usuário
+        verify(exactly = 1) { usuarioRepository.deletarPersonalidadeDoUsuario(1) }
+    }
+    // Post Personalidade - César
+    // @PostMapping("/verificar-personalidade")
+    // fun regsitrarPersonalidade(@RequestBody respostasChegando: RespostaPersonalidade): String{
+    //    val resultado = respostaService.filtrarPersonalidade(respostasChegando)
+    //    return resultado
+    //}
 }

@@ -78,5 +78,5 @@ data class Usuario(
 
     @ManyToOne
     @JoinColumn(name = "fk_personalidade")
-    var personalidade: Personalidades?
+    var personalidade: Int = 0
 )
