@@ -49,7 +49,8 @@ class PerguntaService(
     }
 
     fun listarPerguntasAtivas(status: Boolean): List<PerguntaRequest> {
-        return perguntaRepository.findByStatus(status).map { pergunta ->
+        return perguntaRepository.findByStatus(status).map {
+                pergunta ->
             PerguntaRequest(
                 codigoPergunta = pergunta.codigoPergunta,
                 descricao = pergunta.descricao,

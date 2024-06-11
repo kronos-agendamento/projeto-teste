@@ -6,6 +6,7 @@ import jakarta.validation.constraints.*
 @Entity
 @Table(name = "educacao")
 data class Educacao(
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val idEducacao: Int = 0,
 
@@ -15,11 +16,11 @@ data class Educacao(
 
     @field:NotNull(message = "O campo descrição não pode ser nulo")
     @field:Size(min = 1, max = 500, message = "O campo descrição deve ter entre 1 e 500 caracteres")
-    var descricao: String?,
+    var descricao: String,
 
     @field:NotBlank(message = "O nível é obrigatório")
     @field:Size(max = 50, message = "O nível deve ter no máximo 50 caracteres")
-    var nivel: String?,
+    var nivel: String,
 
     @field:NotBlank(message = "A modalidade é obrigatório")
     @field:Size(max = 50, message = "A modalidade deve ter no máximo 50 caracteres")
@@ -29,11 +30,11 @@ data class Educacao(
 
     @field:NotBlank(message = "A carga horária é obrigatória")
     @Column(name = "carga_horaria")
-    var cargaHoraria: String?,
+    var cargaHoraria: String,
 
     @field:NotNull(message = "O preço da Educação é obrigatório") @field:PositiveOrZero(message = "Preço de Educação deve ser zero ou positivo")
     @Column(name = "preco_educacao")
-    var precoEducacao: Double?,
+    var precoEducacao: Double,
 
     @field:NotNull(message = "Status do Programa Educativo não pode ser nulo")
     @Column(name = "ativo")

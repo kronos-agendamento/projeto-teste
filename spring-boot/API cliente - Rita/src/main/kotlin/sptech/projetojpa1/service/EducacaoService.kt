@@ -1,8 +1,10 @@
 package sptech.projetojpa1.service
 
+import org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl
 import org.springframework.stereotype.Service
 import sptech.projetojpa1.dominio.Educacao
 import sptech.projetojpa1.dto.educacao.EducacaoDTO
+import sptech.projetojpa1.dto.educacao.EducacaoPutDTO
 import sptech.projetojpa1.dto.educacao.EducacaoRequestDTO
 import sptech.projetojpa1.dto.educacao.EducacaoResponseDTO
 import sptech.projetojpa1.dto.procedimento.ProcedimentoRequestDTO
@@ -18,7 +20,7 @@ class EducacaoService (private val educacaoRepository: EducacaoRepository) {
         val educacao = educacaoRepository.save(
             Educacao(
                 nome = educacaoRequestDTO.nome,
-                descricao = educacaoRequestDTO.descricao,
+                descricao = educacaoRequestDTO.descricao!!,
                 nivel = educacaoRequestDTO.nivel,
                 modalidade = educacaoRequestDTO.modalidade,
                 cargaHoraria = educacaoRequestDTO.cargaHoraria,
@@ -30,25 +32,53 @@ class EducacaoService (private val educacaoRepository: EducacaoRepository) {
         return educacao.toDTO()
     }
 
-    fun buscarEducacaoPorId(idEducacao: Int):EducacaoResponseDTO? {
-        val educacao = educacaoRepository.findById(idEducacao).orElse(null)?: return null
-        return educacao.toResponseDTO()
-    }
-
     fun listarTodosEducativos(): List<EducacaoResponseDTO> {
         val educacao = educacaoRepository.findAll()
         return educacao.stream().map { educacao ->  educacao.toResponseDTO() }.collect(Collectors.toList())
     }
 
-    fun atualizarEducacao(id: Int, educacaoRequestDTO: EducacaoRequestDTO): EducacaoResponseDTO? {
+    fun listarEducativosAtivos(ativo:Boolean):List<Educacao> {
+        return educacaoRepository.findByAtivo(ativo).map {
+                educacao ->
+            Educacao(
+                idEducacao = educacao.idEducacao,
+                nome = educacao.nome,
+                descricao = educacao.descricao,
+                nivel = educacao.nivel,
+                modalidade = educacao.modalidade,
+                cargaHoraria = educacao.cargaHoraria,
+                precoEducacao = educacao.precoEducacao,
+                ativo = educacao.ativo
+                )
+        }
+    }
+
+    fun buscarEducacaoPorId(idEducacao: Int):EducacaoResponseDTO? {
+        val educacao = educacaoRepository.findById(idEducacao).orElse(null)?: return null
+        return educacao.toResponseDTO()
+    }
+
+    fun atualizarEducacao(id: Int, educacaoRequestDTO: EducacaoPutDTO): EducacaoResponseDTO? {
         val educacao = educacaoRepository.findById(id).orElse(null) ?: return null
 
-        educacao.nome = educacaoRequestDTO.nome
-        educacao.descricao = educacaoRequestDTO.descricao
-        educacao.nivel = educacaoRequestDTO.nivel
-        educacao.modalidade = educacaoRequestDTO.modalidade
-        educacao.cargaHoraria = educacaoRequestDTO.cargaHoraria
-        educacao.precoEducacao = educacaoRequestDTO.precoEducacao
+        if (educacaoRequestDTO.nome != null){
+            educacao.nome = educacaoRequestDTO.nome
+        }
+        if (educacaoRequestDTO.descricao != null){
+            educacao.descricao = educacaoRequestDTO.descricao!!
+        }
+        if (educacaoRequestDTO.nivel != null){
+            educacao.nivel = educacaoRequestDTO.nivel!!
+        }
+        if (educacaoRequestDTO.modalidade != null){
+            educacao.modalidade = educacaoRequestDTO.modalidade
+        }
+        if (educacaoRequestDTO.cargaHoraria != null){
+            educacao.cargaHoraria = educacaoRequestDTO.cargaHoraria!!
+        }
+        if (educacaoRequestDTO.precoEducacao != null){
+            educacao.precoEducacao = educacaoRequestDTO.precoEducacao!!
+        }
 
         val updatedEducacao = educacaoRepository.save(educacao)
         return updatedEducacao.toResponseDTO()
@@ -65,13 +95,40 @@ class EducacaoService (private val educacaoRepository: EducacaoRepository) {
             return false
         }
 
+    fun alterarStatusEducacao(id:Int, novoStatus:Boolean):EducacaoRequestDTO? {
+        val educacaoOptional = educacaoRepository.findById(id)
+        if (educacaoOptional.isPresent){
+            val educacao = educacaoOptional.get()
+            educacao.ativo = novoStatus
+            val educacaoSalva = educacaoRepository.save(educacao)
+            return EducacaoRequestDTO(
+                idEducacao = educacaoSalva.idEducacao,
+                nome =  educacaoSalva.nome,
+                descricao = educacaoSalva.descricao,
+                nivel = educacaoSalva.nivel,
+                modalidade = educacaoSalva.modalidade,
+                cargaHoraria = educacaoSalva.cargaHoraria,
+                precoEducacao = educacaoSalva.precoEducacao,
+                ativo = educacaoSalva.ativo
+            )
+        }
+        return null
+    }
+
+    fun excluirEducacao(id:Int) {
+        if (!educacaoRepository.existsById(id))
+    {
+        throw IllegalArgumentException("Educativo não encontrado!")
+    }
+    educacaoRepository.deleteById(id)
+    }
 
     private fun Educacao.toDTO() = EducacaoDTO(
         idEducacao = this.idEducacao,
-        nome = this.nome,
+        nome = this.nome!!,
         descricao = this.descricao,
         nivel = this.nivel,
-        modalidade = this.modalidade,
+        modalidade = this.modalidade!!,
         cargaHoraria = this.cargaHoraria,
         precoEducacao = this.precoEducacao,
         ativo = this.ativo
@@ -79,10 +136,10 @@ class EducacaoService (private val educacaoRepository: EducacaoRepository) {
 
     private fun Educacao.toResponseDTO() = EducacaoResponseDTO(
         idEducacao = this.idEducacao,
-        nome = this.nome,
+        nome = this.nome!!,
         descricao = this.descricao,
         nivel = this.nivel,
-        modalidade = this.modalidade,
+        modalidade = this.modalidade!!,
         cargaHoraria = this.cargaHoraria,
         precoEducacao = this.precoEducacao,
         ativo = this.ativo
