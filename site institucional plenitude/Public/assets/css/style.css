@@ -99,12 +99,12 @@ h6 {
 
 .back-to-top i {
   font-size: 40px;
-  color: #ED495C;
+  color: #C21256;
   line-height: 0;
 }
 
 .back-to-top:hover {
-  background: #ED495C;
+  background: #C21256;
   color: #fff;
 }
 
@@ -685,7 +685,9 @@ section {
 }
 
 #aboutple img{
-  width: 100vh;
+  width: 80vh;
+  position: relative;
+  bottom: 5vh;
 }
 
 
