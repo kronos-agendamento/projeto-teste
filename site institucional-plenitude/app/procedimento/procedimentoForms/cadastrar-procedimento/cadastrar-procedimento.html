@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KRONOS | Cadastrar Procedimento</title>
+    <link rel="stylesheet" href="cadastrar-procedimento.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="profile">
+                <img src="../../../assets/icon.png" alt="Priscila Rossato">
+                <p class="title-p">Priscila Rossato</p>
+                <p>pri@plenitude.com</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#"><img src="../../../assets/home.png" alt="home">Início</a></li>
+                    <li><a href="#"><img src="../../../assets/profile.png" alt="profile">Perfil</a></li>
+                    <li><a href="#"><img src="../../../assets/schedules.png" alt="schedules">Agendamentos</a></li>
+                    <li><a href="#"><img src="../../../assets/anamnesis.png" alt="anamnesis">Anamneses</a></li>
+                    <li><a href="#"><img src="../../../assets/customers.png" alt="customers">Clientes</a></li>
+                    <li><a class="active" href="#"><img src="../../../assets/proceduresActive.png"
+                                alt="proceduresActive">Procedimentos</a></li>
+                    <li><a href="#"><img src="../../../assets/dashboard.png" alt="dashboard">Dashboard</a></li>
+                    <li><a href="#"><img src="../../../assets/exit.png" alt="exit">Sair</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="main-content">
+            <header>
+                <p>Cadastro de Novos Procedimentos e Especificações</p>
+                <img src="../../../assets/information.png" alt="information">
+            </header>
+            <a href="../../procedimento.html" class="back-link">← Voltar para página de visualização dos
+                procedimentos</a>
+            <section class="form-section">
+                <h2>Dados dos Procedimentos</h2>
+                <form>
+                    <div class="form-group">
+                        <label for="nome">Nome:</label>
+                        <input type="text" id="nome" name="nome">
+                    </div>
+                    <div class="form-group">
+                        <label for="descricao">Descrição:</label>
+                        <input type="text" id="descricao" name="descricao">
+                    </div>
+                </form>
+            </section>
+            <section class="form-section">
+                <h2>Dados das Especificações dos Procedimentos</h2>
+                <form>
+                    <div class="form-group">
+                        <label for="pesquisar">Pesquisar nome do procedimento:</label>
+                        <input type="text" id="pesquisar" name="pesquisar">
+                    </div>
+                    <div class="form-group">
+                        <label for="especificacao">Especificação:</label>
+                        <input type="text" id="especificacao" name="especificacao">
+                    </div>
+                    <div class="form-group">
+                        <label for="duracao-horas">Duração:</label>
+                        <input type="number" id="duracao-horas" name="duracao-horas" placeholder="Horas">
+                        <input type="number" id="duracao-minutos" name="duracao-minutos" placeholder="Minutos">
+                    </div>
+                    <div class="form-group">
+                        <label for="valor-colocacao">Valor colocação:</label>
+                        <input type="text" id="valor-colocacao" name="valor-colocacao">
+                    </div>
+                    <div class="form-group">
+                        <label for="valor-retirada">Valor retirada:</label>
+                        <input type="text" id="valor-retirada" name="valor-retirada">
+                    </div>
+                    <div class="form-group">
+                        <label for="valor-manutencao">Valor manutenção:</label>
+                        <input type="text" id="valor-manutencao" name="valor-manutencao">
+                    </div>
+                    <div class="form-group">
+                        <label for="upload-foto">Upload de foto:</label>
+                        <input type="file" id="upload-foto" name="upload-foto">
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</body>
+
+</html>

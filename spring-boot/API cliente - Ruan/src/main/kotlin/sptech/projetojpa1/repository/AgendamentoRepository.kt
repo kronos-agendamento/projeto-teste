@@ -14,17 +14,5 @@ interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
     @Query("SELECT a FROM Agendamento a WHERE a.data = :data AND a.horario = :horario")
     fun findByDataAndHorario(@Param("data") data: Date, @Param("horario") horario: Date): List<Agendamento>
 
-    // No AgendamentoRepository.kt
-    fun findMostScheduledProcedure(): Procedimento {
-        // Implemente a consulta para obter o procedimento mais agendado nos últimos 3 meses
-    }
-
-    fun findLeastScheduledProcedure(): Procedimento {
-        // Implemente a consulta para obter o procedimento menos agendado nos últimos 3 meses
-    }
-
-    fun findBestRatedProcedure(): Procedimento {
-        // Implemente a consulta para obter o procedimento melhor avaliado nos últimos 3 meses
-    }
 }
 

@@ -145,27 +145,3 @@ CREATE TABLE feedback (
     FOREIGN KEY (fk_agendamento) REFERENCES agendamento(id_agendamento),
     FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario)
 );
-
--- Criar tabela de Publicacao
-CREATE TABLE publicacao (
-    id_publicacao INT PRIMARY KEY AUTO_INCREMENT,
-    titulo VARCHAR(255) NOT NULL,
-    legenda VARCHAR(255),
-    foto VARCHAR(255),
-    curtidas INT NOT NULL DEFAULT 0,
-    id_usuario INT,
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
-);
-
--- Criar tabela de Comentario
-CREATE TABLE comentario (
-    id_comentario INT PRIMARY KEY AUTO_INCREMENT,
-    texto VARCHAR(255) NOT NULL,
-    curtidas INT NOT NULL DEFAULT 0,
-    id_publicacao INT,
-    id_usuario INT,
-    FOREIGN KEY (id_publicacao) REFERENCES publicacao(id_publicacao),
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
-);
-
-select * from comentario;
