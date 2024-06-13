@@ -118,6 +118,7 @@ header img {
 }
 
 .form-section {
+    width: 65vw;
     background-color: #fff;
     padding: 20px;
     margin-bottom: 20px;
@@ -163,4 +164,42 @@ header img {
 
 .form-group input[type="number"]+input[type="number"] {
     margin-left: 20px;
+}
+
+.form-mr {
+    margin-right: 24px;
+}
+
+.form-flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.save-button {
+    display: flex;
+    align-items: center;
+    background-color: #e70069;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.save-button svg {
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+}
+
+.save-button:hover {
+    background-color: #d6005c;
 }

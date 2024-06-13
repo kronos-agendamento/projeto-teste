@@ -12,21 +12,21 @@
 <body>
     <div class="sidebar">
         <div class="profile">
-            <img src="../assets/icon.png" alt="Priscila Rossato">
+            <img src="../../assets/icons/icon.png" alt="Priscila Rossato">
             <p class="title-p">Priscila Rossato</p>
             <p>pri@plenitude.com</p>
         </div>
         <nav>
             <ul>
-                <li><a href="#"><img src="../assets/home.png" alt="home">Início</a></li>
-                <li><a href="#"><img src="../assets/profile.png" alt="profile">Perfil</a></li>
-                <li><a href="#"><img src="../assets/schedules.png" alt="schedules">Agendamentos</a></li>
-                <li><a href="#"><img src="../assets/anamnesis.png" alt="anamnesis">Anamneses</a></li>
-                <li><a href="#"><img src="../assets/customers.png" alt="customers">Clientes</a></li>
-                <li><a class="active" href="#"><img src="../assets/proceduresActive.png"
+                <li><a href="#"><img src="../../assets/icons/home.png" alt="home">Início</a></li>
+                <li><a href="#"><img src="../../assets/icons/profile.png" alt="profile">Perfil</a></li>
+                <li><a href="#"><img src="../../assets/icons/schedules.png" alt="schedules">Agendamentos</a></li>
+                <li><a href="#"><img src="../../assets/icons/anamnesis.png" alt="anamnesis">Anamneses</a></li>
+                <li><a href="#"><img src="../../assets/icons/customers.png" alt="customers">Clientes</a></li>
+                <li><a class="active" href="#"><img src="../../assets/icons/proceduresActive.png"
                             alt="proceduresActive">Procedimentos</a></li>
-                <li><a href="#"><img src="../assets/dashboard.png" alt="dashboard">Dashboard</a></li>
-                <li><a href="#"><img src="../assets/exit.png" alt="exit">Sair</a></li>
+                <li><a href="#"><img src="../../assets/icons/dashboard.png" alt="dashboard">Dashboard</a></li>
+                <li><a href="#"><img src="../../assets/icons/exit.png" alt="exit">Sair</a></li>
             </ul>
         </nav>
     </div>
@@ -34,20 +34,19 @@
     <div class="main-content">
         <header>
             <p>Procedimentos</p>
-            <img src="../assets/information.png" alt="information">
+            <img src="../../assets/icons/information.png" alt="information">
         </header>
         <div class="actions">
-            <button class="filter-btn"><img src="../assets/filter.png" alt="filter">Filtro</button>
+            <button class="filter-btn"><img src="../../assets/icons/filter.png" alt="filter">Filtro</button>
             <div class="right-actions">
-                <button class="planilha-btn"><img src="../assets/spreadsheet.png" alt="spreadsheet">Planilha</button>
+                <button class="planilha-btn"><img src="../../assets/icons/spreadsheet.png" alt="spreadsheet">Planilha</button>
                 <button class="criar-btn" onclick="showForm()"><a
                         href="procedimentoForms/cadastrar-procedimento/cadastrar-procedimento.html"><img
-                            src="../assets/createNew.png" alt="createNew">Criar
+                            src="../../assets/icons/createNew.png" alt="createNew">Criar
                         Novo</button></a>
             </div>
         </div>
-        <!--         <div class="table-container">
- -->
+
         <table class="procedures-table">
             <thead>
                 <tr>
@@ -65,7 +64,8 @@
                     <td>2h30min</td>
                     <td>Volume Fio a Fio</td>
                     <td>
-                        <button class="edit-btn">✏️</button>
+                        <button class="edit-btn"><a
+                                href="procedimentoForms/editar-procedimento/editar-procedimento.html">✏️</a></button>
                         <button class="delete-btn">🗑️</button>
                     </td>
                 </tr>
@@ -75,7 +75,8 @@
                     <td>1h30min</td>
                     <td>Volume Russo</td>
                     <td>
-                        <button class="edit-btn">✏️</button>
+                        <button class="edit-btn"><a
+                                href="procedimentoForms/editar-procedimento/editar-procedimento.html">✏️</a></button>
                         <button class="delete-btn">🗑️</button>
                     </td>
                 </tr>
@@ -85,14 +86,14 @@
                     <td>30min</td>
                     <td>Design</td>
                     <td>
-                        <button class="edit-btn">✏️</button>
+                        <button class="edit-btn"><a
+                                href="procedimentoForms/editar-procedimento/editar-procedimento.html">✏️</a></button>
                         <button class="delete-btn">🗑️</button>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <!--         </div>
- -->
+
         <div class="pagination">
             <span>Próxima Página</span>
         </div>
