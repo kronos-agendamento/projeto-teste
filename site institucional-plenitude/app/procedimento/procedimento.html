@@ -23,7 +23,8 @@
                 <li><a href="#"><img src="../../assets/icons/schedules.png" alt="schedules">Agendamentos</a></li>
                 <li><a href="#"><img src="../../assets/icons/anamnesis.png" alt="anamnesis">Anamneses</a></li>
                 <li><a href="#"><img src="../../assets/icons/customers.png" alt="customers">Clientes</a></li>
-                <li><a class="active" href="#"><img src="../../assets/icons/proceduresActive.png" alt="proceduresActive">Procedimentos</a></li>
+                <li><a class="active" href="#"><img src="../../assets/icons/proceduresActive.png"
+                            alt="proceduresActive">Procedimentos</a></li>
                 <li><a href="#"><img src="../../assets/icons/dashboard.png" alt="dashboard">Dashboard</a></li>
                 <li><a href="#"><img src="../../assets/icons/exit.png" alt="exit">Sair</a></li>
             </ul>
@@ -38,8 +39,12 @@
         <div class="actions">
             <button class="filter-btn"><img src="../../assets/icons/filter.png" alt="filter">Filtro</button>
             <div class="right-actions">
-                <button class="planilha-btn"><img src="../../assets/icons/spreadsheet.png" alt="spreadsheet">Planilha</button>
-                <button class="criar-btn" onclick="showForm()"><a href="procedimentoForms/cadastrar-procedimento/cadastrar-procedimento.html"><img src="../assets/createNew.png" alt="createNew">Criar Novo</button></a>
+                <button class="planilha-btn"><img src="../../assets/icons/spreadsheet.png"
+                        alt="spreadsheet">Planilha</button>
+                <button class="criar-btn" onclick="showForm()"><a
+                        href="procedimentoForms/cadastrar-procedimento/cadastrar-procedimento.html">
+                        <img src="../../assets/icons/createNew.png" alt="createNew"><span>Criar Novo</span>
+                    </a></button>
             </div>
         </div>
 
@@ -94,19 +99,19 @@
         <div class="stats">
             <div class="stat-item">
                 <h2>O Mais Agendado</h2>
-                <p>Fio a Fio</p>
+                <p id="mais-agendado">Carregando...</p>
                 <p>Nos últimos 3 meses</p>
                 <a href="#">Ver ordem de todos</a>
             </div>
             <div class="stat-item">
                 <h2>O Menos Agendado</h2>
-                <p>Fox Eyes</p>
+                <p id="menos-agendado">Carregando...</p>
                 <p>Nos últimos 3 meses</p>
                 <a href="#">Ver ordem de todos</a>
             </div>
             <div class="stat-item">
                 <h2>O Melhor Avaliado</h2>
-                <p>Brasileiro</p>
+                <p id="melhor-avaliado">Carregando...</p>
                 <p>Nos últimos 3 meses</p>
                 <a href="#">Ver ordem de todos</a>
             </div>

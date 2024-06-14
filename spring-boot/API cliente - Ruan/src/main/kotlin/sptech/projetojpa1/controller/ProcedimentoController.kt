@@ -6,10 +6,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import sptech.projetojpa1.service.ProcedimentoService
 import sptech.projetojpa1.dto.procedimento.ProcedimentoDTO
+import sptech.projetojpa1.dto.procedimento.ProcedimentoEstatisticaDTO
 import sptech.projetojpa1.dto.procedimento.ProcedimentoRequestDTO
 import sptech.projetojpa1.dto.procedimento.ProcedimentoResponseDTO
+import sptech.projetojpa1.service.ProcedimentoService
 
 @RestController
 @RequestMapping("/api/procedimentos")
@@ -93,6 +94,36 @@ class ProcedimentoController(private val procedimentoService: ProcedimentoServic
             ResponseEntity(HttpStatus.NO_CONTENT)
         } else {
             ResponseEntity(HttpStatus.NOT_FOUND)
+        }
+    }
+
+    @GetMapping("/mais-agendado")
+    fun getProcedimentoMaisAgendado(): ResponseEntity<ProcedimentoEstatisticaDTO> {
+        val procedimento = procedimentoService.getProcedimentoMaisAgendado()
+        return if (procedimento != null) {
+            ResponseEntity(procedimento, HttpStatus.OK)
+        } else {
+            ResponseEntity(HttpStatus.NO_CONTENT)
+        }
+    }
+
+    @GetMapping("/menos-agendado")
+    fun getProcedimentoMenosAgendado(): ResponseEntity<ProcedimentoEstatisticaDTO> {
+        val procedimento = procedimentoService.getProcedimentoMenosAgendado()
+        return if (procedimento != null) {
+            ResponseEntity(procedimento, HttpStatus.OK)
+        } else {
+            ResponseEntity(HttpStatus.NO_CONTENT)
+        }
+    }
+
+    @GetMapping("/melhor-nota")
+    fun getProcedimentoComMelhorNota(): ResponseEntity<ProcedimentoEstatisticaDTO> {
+        val procedimento = procedimentoService.getProcedimentoComMelhorNota()
+        return if (procedimento != null) {
+            ResponseEntity(procedimento, HttpStatus.OK)
+        } else {
+            ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 }

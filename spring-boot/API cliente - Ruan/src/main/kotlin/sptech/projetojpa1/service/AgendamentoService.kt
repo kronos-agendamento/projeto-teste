@@ -2,14 +2,13 @@ package sptech.projetojpa1.service
 
 import org.springframework.stereotype.Service
 import sptech.projetojpa1.dominio.Agendamento
-import sptech.projetojpa1.dominio.Procedimento
 import sptech.projetojpa1.dto.agendamento.AgendamentoRequestDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoResponseDTO
 import sptech.projetojpa1.repository.AgendamentoRepository
 import sptech.projetojpa1.repository.ProcedimentoRepository
 import sptech.projetojpa1.repository.StatusRepository
 import sptech.projetojpa1.repository.UsuarioRepository
-import java.util.Date
+import java.util.*
 
 @Service
 class AgendamentoService(
@@ -63,7 +62,6 @@ class AgendamentoService(
 
     fun criarAgendamento(agendamentoRequestDTO: AgendamentoRequestDTO): AgendamentoResponseDTO {
         val agendamento = Agendamento(
-            idAgendamento = agendamentoRequestDTO.idAgendamento,
             data = agendamentoRequestDTO.data ?: throw IllegalArgumentException("Data não pode ser nula"),
             horario = agendamentoRequestDTO.horario
                 ?: throw IllegalArgumentException("Horário não pode ser nulo"),

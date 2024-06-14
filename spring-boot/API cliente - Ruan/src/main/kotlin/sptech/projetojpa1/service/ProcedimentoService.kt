@@ -3,6 +3,7 @@ package sptech.projetojpa1.service
 import org.springframework.stereotype.Service
 import sptech.projetojpa1.dominio.Procedimento
 import sptech.projetojpa1.dto.procedimento.ProcedimentoDTO
+import sptech.projetojpa1.dto.procedimento.ProcedimentoEstatisticaDTO
 import sptech.projetojpa1.dto.procedimento.ProcedimentoRequestDTO
 import sptech.projetojpa1.dto.procedimento.ProcedimentoResponseDTO
 import sptech.projetojpa1.repository.ProcedimentoRepository
@@ -60,4 +61,31 @@ class ProcedimentoService(private val procedimentoRepository: ProcedimentoReposi
         tipo = this.tipo,
         descricao = this.descricao
     )
+
+    fun getProcedimentoMaisAgendado(): ProcedimentoEstatisticaDTO? {
+        val result = procedimentoRepository.findProcedimentoMaisAgendado().firstOrNull() ?: return null
+        return ProcedimentoEstatisticaDTO(
+            idProcedimento = result["idProcedimento"] as Int,
+            tipo = result["tipo"] as String,
+            totalAgendamentos = result["totalAgendamentos"] as Long
+        )
+    }
+
+    fun getProcedimentoMenosAgendado(): ProcedimentoEstatisticaDTO? {
+        val result = procedimentoRepository.findProcedimentoMenosAgendado().firstOrNull() ?: return null
+        return ProcedimentoEstatisticaDTO(
+            idProcedimento = result["idProcedimento"] as Int,
+            tipo = result["tipo"] as String,
+            totalAgendamentos = result["totalAgendamentos"] as Long
+        )
+    }
+
+    fun getProcedimentoComMelhorNota(): ProcedimentoEstatisticaDTO? {
+        val result = procedimentoRepository.findProcedimentoComMelhorNota().firstOrNull() ?: return null
+        return ProcedimentoEstatisticaDTO(
+            idProcedimento = result["idProcedimento"] as Int,
+            tipo = result["tipo"] as String,
+            mediaNotas = (result["mediaNotas"] as Double)
+        )
+    }
 }
