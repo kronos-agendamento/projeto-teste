@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
 import sptech.projetojpa1.dominio.Agendamento
+import sptech.projetojpa1.dominio.Usuario
 import java.util.*
 
 @Repository
@@ -12,5 +13,8 @@ interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
 
     @Query("SELECT a FROM Agendamento a WHERE a.data = :data AND a.horario = :horario")
     fun findByDataAndHorario(@Param("data") data: Date, @Param("horario") horario: Date): List<Agendamento>
+
+
+    fun findByUsuario(usuario:Usuario):List<Usuario>
 }
 
