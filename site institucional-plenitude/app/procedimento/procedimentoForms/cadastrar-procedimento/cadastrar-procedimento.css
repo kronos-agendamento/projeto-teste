@@ -146,7 +146,8 @@ header img {
 
 .form-group input[type="text"],
 .form-group input[type="number"],
-.form-group input[type="file"] {
+.form-group input[type="file"],
+.form-group select {
     width: 100%;
     padding: 8px;
     border: 1px solid #ddd;
@@ -202,4 +203,17 @@ header img {
 
 .save-button:hover {
     background-color: #d6005c;
+}
+
+.form-input {
+    width: 50%
+}
+
+.form-section span {
+    display: flex;
+    align-items: center;
+}
+
+.form-group label{
+    font-size: 15px;
 }

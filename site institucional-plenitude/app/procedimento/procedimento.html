@@ -58,42 +58,14 @@
                     <th>Ações</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>Cílios</td>
-                    <td>R$200,00</td>
-                    <td>2h30min</td>
-                    <td>Volume Fio a Fio</td>
-                    <td>
-                        <button class="edit-btn">✏️</button>
-                        <button class="delete-btn" onclick="showModal('Volume Fio a Fio')">🗑️</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Cílios</td>
-                    <td>R$250,00</td>
-                    <td>1h30min</td>
-                    <td>Volume Russo</td>
-                    <td>
-                        <button class="edit-btn">✏️</button>
-                        <button class="delete-btn" onclick="showModal('Volume Russo')">🗑️</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Sobrancelha</td>
-                    <td>R$70,00</td>
-                    <td>30min</td>
-                    <td>Design</td>
-                    <td>
-                        <button class="edit-btn">✏️</button>
-                        <button class="delete-btn" onclick="showModal('Design')">🗑️</button>
-                    </td>
-                </tr>
+            <tbody id="procedures-tbody">
             </tbody>
         </table>
 
         <div class="pagination">
-            <span>Próxima Página</span>
+            <button id="prev-page-btn" disabled>Página Anterior</button>
+            <span id="current-page">1</span> / <span id="total-pages">1</span>
+            <button id="next-page-btn">Próxima Página</button>
         </div>
 
         <div class="stats">
