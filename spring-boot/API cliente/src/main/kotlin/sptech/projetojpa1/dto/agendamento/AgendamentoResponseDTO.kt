@@ -7,7 +7,7 @@ import java.sql.Timestamp
 import java.util.*
 
 data class AgendamentoResponseDTO(
-    var idAgendamento: Int,
+    var idAgendamento: Int?,
     var data: Date?,
     var horario: Timestamp?,
     var tipoAgendamento: Int?,

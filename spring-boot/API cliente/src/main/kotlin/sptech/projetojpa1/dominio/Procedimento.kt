@@ -1,11 +1,12 @@
 package sptech.projetojpa1.dominio
 
 import jakarta.persistence.*
-import jakarta.validation.constraints.*
+import jakarta.validation.constraints.NotNull
+import jakarta.validation.constraints.Size
 
 @Entity
 @Table(name = "procedimento")
-data class Procedimento(
+open class Procedimento(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val idProcedimento: Int = 0,
 

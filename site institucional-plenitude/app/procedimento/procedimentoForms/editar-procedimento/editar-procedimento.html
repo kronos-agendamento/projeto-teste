@@ -6,9 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KRONOS | Editar Procedimento</title>
     <link rel="stylesheet" href="editar-procedimento.css">
+    <script defer src="editar-procedimento.js"></script>
 </head>
 
 <body>
+    <!-- Código HTML existente -->
+
     <div class="container">
         <div class="sidebar">
             <div class="profile">
@@ -38,66 +41,51 @@
                 <a href="../../procedimento.html" class="back-link">← Voltar para página de visualização dos procedimentos</a>
             </div>
             <section class="form-section">
-                
-                    <h2>Dados do Procedimento</h2>
-                
-               
+                <h2>Dados do Procedimento</h2>
                 <form class="container-forms">
-
                     <div class="forms-esquerda">
                         <div class="form-group">
                             <label for="pesquisar">Procedimento:</label>
-                            <input type="text" id="pesquisar" name="pesquisar" value="Cílios">
+                            <input type="text" id="pesquisar" name="pesquisar">
                         </div>
                         <div class="form-group">
                             <label for="especificacao">Especificação:</label>
-                            <input type="text" id="especificacao" name="especificacao" value="Volume Brasileiro">
+                            <input type="text" id="especificacao" name="especificacao">
                         </div>
-
                         <div class="forms-valores">
                             <div class="form-group">
                                 <label for="valor-colocacao" id="texto-valor-colocacao">Valor colocação:</label>
-                                <input type="text" id="valor-colocacao" name="valor-colocacao" value="R$ 200,00">
+                                <input type="text" id="valor-colocacao" name="valor-colocacao">
                             </div>
-        
                             <div class="form-group">
                                 <label for="valor-retirada" id="texto-valor-retirada">Valor retirada:</label>
-                                <input type="text" id="valor-retirada" name="valor-retirada" value="R$ 80,00">
+                                <input type="text" id="valor-retirada" name="valor-retirada">
                             </div>
                             <div class="form-group">
                                 <label for="valor-manutencao" id="texto-valor-manutencao">Valor manutenção:</label>
-                                <input type="text" id="valor-manutencao" name="valor-manutencao" value="R$ 120,00">
+                                <input type="text" id="valor-manutencao" name="valor-manutencao">
                             </div>
                         </div>
                     </div>
-                    
-
-                 <div class="forms-direita">
-                    <label for="duracao-horas">Duração:</label>
-                    <div class="form-group forms-valores">
-                        
-                        <input type="number" id="duracao-horas" name="duracao-horas" value="2" placeholder="Horas">
-                        <input type="number" id="duracao-minutos" name="duracao-minutos" value="00" placeholder="Minutos">
+                    <div class="forms-direita">
+                        <label for="duracao-horas">Duração:</label>
+                        <div class="form-group forms-valores">
+                            <input type="number" id="duracao-horas" name="duracao-horas" placeholder="Horas">
+                            <input type="number" id="duracao-minutos" name="duracao-minutos" placeholder="Minutos">
+                        </div>
+                        <div class="form-group">
+                            <label for="upload-foto">Foto do Procedimento:</label>
+                            <img src="" alt="Procedimento" id="foto-procedimento" style="height: 20vh; width: 50vw;">
+                        </div>
                     </div>
-                 
-                    <div class="form-group">
-                        <label for="upload-foto">Foto do Procedimento:</label>
-                        
-                            <img src="../../../../assets/img/foto-volume-brasileiro.jpg" alt="Procedimento" id="foto-procedimento" style="height: 20vh; width: 50vw;">
-                    
-                        
-                    </div>
-                 </div>
                 </form>
                 <div class="button-container">
                     <button class="save-button">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
-                            class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                            <path
-                                d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z"/>
                         </svg>
                         Salvar Procedimento
-                    </button>
+                    </button>                    
                 </div>
             </section>
         </div>
