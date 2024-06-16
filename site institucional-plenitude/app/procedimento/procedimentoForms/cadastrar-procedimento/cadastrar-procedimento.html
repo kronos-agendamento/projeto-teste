@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KRONOS | Cadastrar Procedimento</title>
     <link rel="stylesheet" href="cadastrar-procedimento.css">
+    <script src="cadastrar-procedimento.js"></script>
 </head>
 
 <body>
@@ -44,25 +45,36 @@
             <section class="form-section">
                 <h2>Dados dos Procedimentos</h2>
                 <form class="form-flex">
-                    <div class="form-group form-mr">
+                    <div class="form-group form-mr form-input">
                         <label for="nome">Nome:</label>
                         <input type="text" id="nome" name="nome">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group form-input">
                         <label for="descricao">Descrição:</label>
                         <input type="text" id="descricao" name="descricao">
                     </div>
                 </form>
+                <div class="button-container">
+                    <button type="button" class="save-button" id="save-procedimento-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
+                            class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                            <path
+                                d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
+                        </svg>
+                        Salvar Procedimento
+                    </button>
+                </div>
             </section>
             <section class="form-section">
                 <h2>Dados das Especificações dos Procedimentos</h2>
                 <form>
                     <div class="form-group form-mr">
-                        <label for="pesquisar">Pesquisar nome do procedimento:</label>
-                        <input type="text" id="pesquisar" name="pesqugitisar">
+                        <label for="procedimento-dropdown">Pesquisar nome do procedimento:</label>
+                        <select id="procedimento-dropdown" name="procedimento-dropdown">
+                        </select>
                     </div>
                     <div class="form-flex">
-                        <div class="form-group form-mr">
+                        <div class="form-group form-mr form-input">
                             <label for="especificacao">Especificação:</label>
                             <input type="text" id="especificacao" name="especificacao">
                         </div>
@@ -70,6 +82,7 @@
                             <label for="duracao-horas">Duração:</label>
                             <div class="form-flex">
                                 <input type="number" id="duracao-horas" name="duracao-horas" placeholder="Horas">
+                                <span>:</span>
                                 <input type="number" id="duracao-minutos" name="duracao-minutos" placeholder="Minutos">
                             </div>
                         </div>
@@ -93,18 +106,17 @@
                         </div>
                     </div>
                     <div class="button-container">
-                        <button class="save-button">
+                        <button type="button" class="save-button" id="save-especificacao-button">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
                                 class="bi bi-check-circle-fill" viewBox="0 0 16 16">
                                 <path
                                     d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
                             </svg>
-                            Salvar Procedimento
+                            Salvar Especificação
                         </button>
                     </div>
                 </form>
             </section>
-
         </div>
     </div>
 </body>
