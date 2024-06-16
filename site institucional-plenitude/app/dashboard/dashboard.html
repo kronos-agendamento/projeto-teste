@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KRONOS | Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="dashboard.js" defer></script>
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="profile">
+            <img src="../../assets/icons/icon.png" alt="Priscila Rossato">
+            <p class="title-p">Priscila Rossato</p>
+            <p>pri@plenitude.com</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#"><img src="../../assets/icons/home.png" alt="home">Início</a></li>
+                <li><a href="#"><img src="../../assets/icons/profile.png" alt="profile">Perfil</a></li>
+                <li><a href="#"><img src="../../assets/icons/schedules.png" alt="schedules">Agendamentos</a></li>
+                <li><a href="#"><img src="../../assets/icons/anamnesis.png" alt="anamnesis">Anamneses</a></li>
+                <li><a href="#"><img src="../../assets/icons/customers.png" alt="customers">Clientes</a></li>
+                <li><a class="active" href="#"><img src="../../assets/icons/proceduresActive.png"
+                            alt="proceduresActive">Procedimentos</a></li>
+                <li><a href="#"><img src="../../assets/icons/dashboard.png" alt="dashboard">Dashboard</a></li>
+                <li><a href="#"><img src="../../assets/icons/exit.png" alt="exit">Sair</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <p>Dashboard</p>
+            <p>Essa é a página onde você pode identificar tendências e gerar insights para seu negócio.</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-button active">Vendas</button>
+            <button class="tab-button">Usabilidade</button>
+            <button class="tab-button">Operacional</button>
+            <button class="tab-button">Gerencial</button>
+        </div>
+        
+        <div class="top-cards">
+            <div class="summary-cards">
+                <div class="summary-card">
+                    <p>Clientes Ativos</p>
+                    <h2>40</h2>
+                    <p>Último trimestre</p>
+                </div>
+                <div class="summary-card">
+                    <p>Clientes Inativos</p>
+                    <h2>12</h2>
+                    <p>Último trimestre</p>
+                </div>
+                <div class="summary-card">
+                    <p>Clientes Fidelizados</p>
+                    <h2>20</h2>
+                    <p>Último trimestre</p>
+                </div>
+            </div>
+
+            <div class="search-section">
+                <input type="text" placeholder="Pesquisar cliente">
+                <button>Avaliação Média</button>
+                <button>Receita Média</button>
+            </div>
+        </div>
+
+        <div class="charts">
+            <div class="chart-container">
+                <h3>Procedimentos Mais Realizados</h3>
+                <canvas id="chart1"></canvas>
+            </div>
+            <div class="chart-container">
+                <h3>Procedimentos com Melhor Avaliação</h3>
+                <canvas id="chart2"></canvas>
+            </div>
+            <div class="chart-container">
+                <h3>Receita Acumulada</h3>
+                <canvas id="chart3"></canvas>
+            </div>
+            <div class="chart-container">
+                <h3>Canais de Divulgação</h3>
+                <canvas id="chart4"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+
+</html>
