@@ -2,6 +2,7 @@ package sptech.projetojpa1.service
 
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
+import sptech.projetojpa1.dominio.PacotePersonalizado
 import sptech.projetojpa1.dominio.Procedimento
 import sptech.projetojpa1.dominio.Usuario
 import sptech.projetojpa1.repository.AgendamentoRepository
@@ -20,7 +21,7 @@ class PacotePersonalizadoService(
     fun obterProcedimentoFrequente(usuario: Usuario):List<Procedimento>{
         val agendamentos = agendamentoRepository.findByUsuario(usuario)
 
-        val frequencia = agendamentos.groupBy{it.procedimento}
+        val frequencia = agendamento.groupBy{it.procedimento}
             .mapValues{it.value.size}
             .toList()
             .sortedByDescending{it.second}
@@ -30,7 +31,7 @@ class PacotePersonalizadoService(
     }
 
     @Transactional
-    fun criarPacote(Id:Int, mes:Int, desconto:Double):PacotePersonalizado{
+    fun criarPacote(Id:Int, mes:Int, desconto:Double): PacotePersonalizado {
         val usuario = usuarioRepository.findById(Id).orElseThrow{IllegalArgumentException("Cliente não encontrado")}
 
         val procedimentoFrequente = obterProcedimentoFrequente(usuario)
@@ -39,8 +40,11 @@ class PacotePersonalizadoService(
             usuario = usuario,
             mes = mes,
             procedimento = procedimentoFrequente,
-            desconto = desconto
+            descontoProcedimento = desconto
         )
+        return pacotePersonalizadoRepository.save(pacote)
     }
+
+
 
 }
