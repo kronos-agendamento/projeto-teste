@@ -19,6 +19,11 @@ body {
     width: 100%;
 }
 
+.main-content {
+    flex: 1;
+    padding: 20px;
+}
+
 .sidebar {
     width: 275px;
     height: 680px;

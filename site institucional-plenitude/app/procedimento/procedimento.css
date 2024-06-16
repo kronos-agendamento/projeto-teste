@@ -118,7 +118,8 @@ header img {
     justify-content: space-between;
 }
 
-.actions button {
+.actions button,
+.button-page {
     background-color: #ffffff00;
     color: #000000;
     border: 1px solid #000000;
@@ -134,13 +135,15 @@ header img {
 
 .actions button img {
     width: 25px;
+    margin-right: 10px;
 }
 
 .actions button span {
     display: inline-block;
 }
 
-.actions button:hover {
+.actions button:hover,
+.button-page:hover {
     background-color: #d81b60;
     color: #fff;
     border: none;
@@ -171,14 +174,16 @@ header img {
 }
 
 .procedures-table {
-    width: 400px;
+    width: 100%;
+    max-width: 600px;
     border-collapse: collapse;
     margin-top: 20px;
     background-color: #fff;
     border-radius: 5px;
     overflow: hidden;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-left: 110px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .procedures-table thead {
@@ -211,15 +216,12 @@ header img {
     color: #d81b60;
 }
 
+/* Pagination */
 .pagination {
     text-align: center;
     margin: 20px 0;
     color: #D2135D;
     cursor: pointer;
-}
-
-.pagination:hover {
-    text-decoration: underline;
 }
 
 .stats {
