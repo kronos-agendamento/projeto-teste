@@ -1,6 +1,25 @@
-create database kronosbooking;
-#drop database kronosbooking;
-use  kronosbooking;
+-- Criação do banco de dados
+CREATE DATABASE IF NOT EXISTS kronosbooking;
+USE kronosbooking;
+
+-- Dropando tabelas se existirem
+DROP TABLE IF EXISTS feedback;
+DROP TABLE IF EXISTS agendamento;
+DROP TABLE IF EXISTS especificacao_procedimento;
+DROP TABLE IF EXISTS tempo_procedimento;
+DROP TABLE IF EXISTS procedimento;
+DROP TABLE IF EXISTS status_agendamento;
+DROP TABLE IF EXISTS resposta;
+DROP TABLE IF EXISTS pergunta;
+DROP TABLE IF EXISTS usuario;
+DROP TABLE IF EXISTS ficha_anamnese;
+DROP TABLE IF EXISTS nivel_acesso;
+DROP TABLE IF EXISTS empresa;
+DROP TABLE IF EXISTS horario_funcionamento;
+DROP TABLE IF EXISTS complemento;
+DROP TABLE IF EXISTS endereco;
+
+-- Criação das tabelas
 CREATE TABLE endereco (
     id_endereco INT PRIMARY KEY AUTO_INCREMENT,
     logradouro VARCHAR(50),
@@ -21,8 +40,8 @@ CREATE TABLE complemento (
 CREATE TABLE horario_funcionamento (
     id_horario_funcionamento INT PRIMARY KEY AUTO_INCREMENT,
     dia_semana VARCHAR(45),
-    horario_abertura varchar(5),
-    horario_fechamento varchar(5)
+    horario_abertura VARCHAR(5),
+    horario_fechamento VARCHAR(5)
 );
 
 CREATE TABLE empresa (
@@ -40,7 +59,7 @@ CREATE TABLE nivel_acesso (
     id_nivel_acesso INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(30),
     nivel INT,
-    descricao VARCHAR(100)
+    descricao VARCHAR(255)
 );
 
 CREATE TABLE ficha_anamnese (
@@ -61,7 +80,7 @@ CREATE TABLE usuario (
     genero VARCHAR(100),
     indicacao VARCHAR(100),
     foto BLOB,
-    status boolean,
+    status BOOLEAN,
     fk_nivel_acesso INT,
     fk_endereco INT,
     fk_empresa INT,
@@ -74,20 +93,20 @@ CREATE TABLE usuario (
 
 CREATE TABLE pergunta (
     id_pergunta INT PRIMARY KEY AUTO_INCREMENT,
-    descricao VARCHAR(45),
-    tipo VARCHAR(45), 
-    status boolean
+    descricao VARCHAR(255),
+    tipo VARCHAR(45),
+    status BOOLEAN
 );
 
 CREATE TABLE resposta (
-	id_resposta INT PRIMARY KEY AUTO_INCREMENT,
+    id_resposta INT PRIMARY KEY AUTO_INCREMENT,
     fk_pergunta INT,
-	fk_ficha INT,
+    fk_ficha INT,
     fk_usuario INT,
     resposta_cliente VARCHAR(45),
     FOREIGN KEY (fk_pergunta) REFERENCES pergunta(id_pergunta),
     FOREIGN KEY (fk_ficha) REFERENCES ficha_anamnese(id_ficha),
-     FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario)
+    FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario)
 );
 
 CREATE TABLE status_agendamento (
@@ -100,14 +119,14 @@ CREATE TABLE status_agendamento (
 CREATE TABLE procedimento (
     id_procedimento INT PRIMARY KEY AUTO_INCREMENT,
     tipo VARCHAR(50),
-    descricao VARCHAR(45)
+    descricao VARCHAR(255)
 );
 
 CREATE TABLE tempo_procedimento (
     id_tempo_procedimento INT PRIMARY KEY AUTO_INCREMENT,
-    tempo_colocacao varchar(5),
-    tempo_manutencao varchar(5),
-    tempo_retirada varchar(5)
+    tempo_colocacao VARCHAR(5),
+    tempo_manutencao VARCHAR(5),
+    tempo_retirada VARCHAR(5)
 );
 
 CREATE TABLE especificacao_procedimento (
