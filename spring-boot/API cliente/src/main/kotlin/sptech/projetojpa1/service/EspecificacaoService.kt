@@ -74,5 +74,7 @@ fun editarPorId(id: Int, dto: EspecificacaoDTO): Especificacao? {
 
     fun getFoto(codigo: Int): ByteArray? = repository.findFotoByCodigo(codigo)
 
-
+    fun getReceitaAcumulada(): Double? {
+        return repository.findReceitaSemestralAcumulada()
+    }
 }

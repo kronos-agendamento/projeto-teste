@@ -196,5 +196,15 @@ class EspecificacaoController(
         }
     }
 
+    @GetMapping("/receita-acumulada")
+    fun getReceitaAcumulada(): ResponseEntity<Double?> {
+        val resultado = service.getReceitaAcumulada()
+
+        return if (resultado != null) {
+            ResponseEntity.ok(resultado)
+        } else {
+            ResponseEntity.status(404).build()
+        }
+    }
 
 }

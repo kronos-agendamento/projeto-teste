@@ -14,4 +14,14 @@ interface EspecificacaoRepository : JpaRepository<Especificacao, Int> {
     @Query("SELECT e.foto FROM Especificacao e WHERE e.idEspecificacaoProcedimento = :codigo")
     fun findFotoByCodigo(codigo: Int): ByteArray?
 
+    @Query(
+        """
+        SELECT SUM(ep.precoColocacao + ep.precoManutencao + ep.precoRetirada) AS receitaTotal 
+        FROM Agendamento a 
+        INNER JOIN EspecificacaoProcedimento ep ON a.fkProcedimento = ep.idEspecificacaoProcedimento 
+        WHERE a.data >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+        """,
+        nativeQuery = true
+    )
+    fun findReceitaSemestralAcumulada(): Double?
 }

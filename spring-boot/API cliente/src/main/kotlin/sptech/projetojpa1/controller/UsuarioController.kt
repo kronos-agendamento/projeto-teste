@@ -282,6 +282,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.validation.Valid
+import org.apache.coyote.Response
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import sptech.projetojpa1.dominio.Usuario
@@ -533,5 +534,10 @@ class UsuarioController(
         return ResponseEntity.ok(usuarios)
     }
 
+    @GetMapping("/canais-de-divulgacao")
+    fun getCanaisDeDivulgacao(): ResponseEntity<Any> {
+
+        return ResponseEntity.ok(0)
+    }
 }
 

@@ -1,17 +1,64 @@
-function showModal(procedimento) {
-    document.getElementById('procedimento').textContent = `Procedimento: ${procedimento}`;
-    document.getElementById('modal').style.display = 'block';
-}
-
-function closeModal() {
-    document.getElementById('modal').style.display = 'none';
-}
 
 
 // Chart.JS abaixo
 
 
 document.addEventListener('DOMContentLoaded', function () {
+    const baseUrl = 'http://localhost:8080';
+
+    // Carrega os dados das KPIs
+    function fetchData(endpoint, id) {
+        fetch(baseUrl + endpoint)
+            .then(response => response.json())
+            .then(data => {
+                const elemento = document.getElementById(id);
+                if (data && data.tipo) {
+                    elemento.textContent = data.tipo;
+                } else {
+                    elemento.textContent = 'Não disponível';
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao buscar dados:', error);
+                document.getElementById(id).textContent = 'Erro ao carregar';
+            });
+    }
+
+    // Altera os dados das KPIs
+    function updateKPIsDashboards() {
+        const endpoints = {
+            procedimentoMaisRealizado: '/api/procedimentos/mais-agendado',
+            procedimentoComMelhorAvaliacao: '/api/procedimentos/melhor-nota',
+            receitaAcumulada: '/api/especificacoes/receita-acumulada',
+            canaisDeDivulgacao: '/api/usuarios/canais-de-divulgacao',
+            clientesAtivos: '/api/procedimentos/melhor-nota',
+            clientesInativos: '/api/procedimentos/melhor-nota',
+            clientesFidelizados: '/api/procedimentos/melhor-nota'
+        };
+
+        const ids = {
+            procedimentoMaisRealizado: 'mais-agendado', // ok
+            procedimentoComMelhorAvaliacao: 'melhor-avaliado', // ok
+            receitaAcumulada: 'receita-acumulada', // ok
+            canaisDeDivulgacao: 'canais-de-divulgacao',
+            clientesAtivos: 'clientes-ativos',
+            clientesInativos: 'clientes-inativos',
+            clientesFidelizados: 'clientes-fidelizados'
+
+        };
+
+        fetchData(endpoints.procedimentoMaisRealizado, ids.procedimentoMaisRealizado);
+        fetchData(endpoints.procedimentoComMelhorAvaliacao, ids.procedimentoComMelhorAvaliacao);
+        fetchData(endpoints.receitaAcumulada, ids.receitaAcumulada);
+        fetchData(endpoints.canaisDeDivulgacao, ids.canaisDeDivulgacao);
+        fetchData(endpoints.clientesAtivos, ids.clientesAtivos);
+        fetchData(endpoints.clientesInativos, ids.clientesInativos);
+        fetchData(endpoints.clientesFidelizados, ids.clientesFidelizados);
+    }
+
+    updateKPIs();
+    setInterval(updateKPIs, 5000);
+
     const ctx1 = document.getElementById('chart1').getContext('2d');
     const ctx2 = document.getElementById('chart2').getContext('2d');
     const ctx3 = document.getElementById('chart3').getContext('2d');
