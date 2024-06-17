@@ -17,7 +17,7 @@ data class PacotePersonalizado(
     val nome:String,
     val descontoProcedimento:Double,
     @OneToMany
-    val procedimentos: List<Procedimento>,
+    val procedimento: List<Procedimento>,
     @OneToMany
     val usuario:Usuario,
     val mes:Int,

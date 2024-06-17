@@ -82,14 +82,14 @@ placeholder{
 }
 
 .container input{
-    background-color: #eee;
     border: none;
+    border-bottom: 2px solid gray;    
+    background: transparent;  
     margin: 8px 0;
     padding: 10px 15px;
     font-size: 13px;
-    border-radius: 8px;
-    width: 100%;
-    outline: none;
+    width: 65%; 
+    outline: 0;
 }
 
 .form-container{
