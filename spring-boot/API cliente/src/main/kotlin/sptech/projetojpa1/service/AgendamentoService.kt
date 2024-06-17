@@ -8,7 +8,7 @@ import sptech.projetojpa1.repository.AgendamentoRepository
 import sptech.projetojpa1.repository.ProcedimentoRepository
 import sptech.projetojpa1.repository.StatusRepository
 import sptech.projetojpa1.repository.UsuarioRepository
-import java.util.Date
+import java.util.*
 
 @Service
 class AgendamentoService(
@@ -62,7 +62,6 @@ class AgendamentoService(
 
     fun criarAgendamento(agendamentoRequestDTO: AgendamentoRequestDTO): AgendamentoResponseDTO {
         val agendamento = Agendamento(
-            idAgendamento = agendamentoRequestDTO.idAgendamento,
             data = agendamentoRequestDTO.data ?: throw IllegalArgumentException("Data não pode ser nula"),
             horario = agendamentoRequestDTO.horario
                 ?: throw IllegalArgumentException("Horário não pode ser nulo"),
@@ -143,4 +142,5 @@ class AgendamentoService(
 
         agendamentoRepository.deleteById(id)
     }
+
 }

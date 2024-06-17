@@ -5,11 +5,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const nextPageBtn = document.getElementById('next-page-btn');
     const currentPageSpan = document.getElementById('current-page');
     const totalPagesSpan = document.getElementById('total-pages');
-
+    const modal = document.getElementById('modal');
+    const modalProcedimento = document.getElementById('procedimento');
+    const btnYes = document.querySelector('.btn-yes');
     let currentPage = 1;
     const itemsPerPage = 3;
+    let procedimentos = [];
+    let procedimentoIdParaDeletar = null;
 
-    // Carrega os dados das KPIs
     function fetchData(endpoint, id) {
         fetch(baseUrl + endpoint)
             .then(response => response.json())
@@ -52,6 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             const response = await fetch(`${baseUrl}/especificacoes`);
             const data = await response.json();
+            console.log('Dados recebidos da API:', data); // Log para verificar os dados recebidos
             return data;
         } catch (error) {
             console.error('Erro ao carregar procedimentos:', error);
@@ -72,113 +76,115 @@ document.addEventListener('DOMContentLoaded', function () {
             const duracao = procedure.fkTempoProcedimento.tempoColocacao;
             const especificacao = procedure.especificacao;
 
+            // Use o idEspecificacaoProcedimento para o data-id
+            const procedimentoId = procedure.idEspecificacaoProcedimento;
+
             row.innerHTML = `
                 <td>${nome}</td>
                 <td>${preco}</td>
                 <td>${duracao}</td>
                 <td>${especificacao}</td>
                 <td>
-                    <button class="edit-btn">✏️</button>
-                    <button class="delete-btn" onclick="showModal('${especificacao}')">🗑️</button>
+                    <button class="edit-btn" data-id="${procedimentoId}">✏️</button>
+                    <button class="delete-btn" data-id="${procedimentoId}" data-especificacao="${especificacao}">🗑️</button>
                 </td>
             `;
             proceduresTbody.appendChild(row);
         });
 
+        // Atualiza a paginação
         currentPageSpan.textContent = page;
         const totalPages = Math.ceil(procedures.length / itemsPerPage);
         totalPagesSpan.textContent = totalPages;
 
         prevPageBtn.disabled = page === 1;
         nextPageBtn.disabled = page === totalPages;
+
+        // Eventos dos botões de deletar
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            const id = button.getAttribute('data-id');
+            button.addEventListener('click', (e) => {
+                procedimentoIdParaDeletar = e.target.getAttribute('data-id');
+                const procedimentoEspecificacao = e.target.getAttribute('data-especificacao');
+                if (procedimentoIdParaDeletar) {
+                    showModal(procedimentoEspecificacao);
+                } else {
+                    console.error('ID do procedimento é indefinido.');
+                }
+            });
+        });
+
+        // Eventos dos botões de editar
+        document.querySelectorAll('.edit-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const id = e.target.getAttribute('data-id');
+                window.location.href = `procedimentoForms/editar-procedimento/editar-procedimento.html?id=${id}`;
+            });
+        });
     }
 
     async function init() {
-        const procedures = await fetchProcedures();
-        renderTable(procedures, currentPage);
+        procedimentos = await fetchProcedures();
+        renderTable(procedimentos, currentPage);
 
         prevPageBtn.addEventListener('click', () => {
             if (currentPage > 1) {
                 currentPage--;
-                renderTable(procedures, currentPage);
+                renderTable(procedimentos, currentPage);
             }
         });
 
         nextPageBtn.addEventListener('click', () => {
-            const totalPages = Math.ceil(procedures.length / itemsPerPage);
+            const totalPages = Math.ceil(procedimentos.length / itemsPerPage);
             if (currentPage < totalPages) {
                 currentPage++;
-                renderTable(procedures, currentPage);
+                renderTable(procedimentos, currentPage);
+            }
+        });
+
+        btnYes.addEventListener('click', async () => {
+            if (procedimentoIdParaDeletar !== null) {
+                console.log(`Tentando deletar o ID: ${procedimentoIdParaDeletar}`);
+                await deleteProcedimento(procedimentoIdParaDeletar);
+                procedimentos = await fetchProcedures();
+                renderTable(procedimentos, currentPage);
+                closeModal();
             }
         });
     }
 
-    init();
+    async function deleteProcedimento(id) {
+        try {
+            const response = await fetch(`${baseUrl}/especificacoes/exclusao-por-id/${id}`, {
+                method: 'DELETE'
+            });
+            const response2 = await fetch(`${baseUrl}/api/procedimentos/deletar/${id}`, {
+                method: 'DELETE'
+            });
+            const response3 = await fetch(`${baseUrl}/api/tempos/exclusao-por-id/${id}`, {
+                method: 'DELETE'
+            });
 
-    // Função para mostrar o modal de confirmação de exclusão
+            if (!response.ok) {
+                throw new Error('Erro ao deletar o procedimento.');
+            }
+            console.log(`Procedimento ${id} deletado com sucesso.`);
+        } catch (error) {
+            console.error('Erro ao deletar o procedimento:', error);
+        }
+    }
+
     function showModal(procedimento) {
-        document.getElementById('procedimento').textContent = `Procedimento: ${procedimento}`;
-        document.getElementById('modal').style.display = 'block';
-
-        const yesButton = document.querySelector('.btn-yes');
-        yesButton.onclick = function () {
-            deleteProcedure(procedimento);
-        };
+        modalProcedimento.textContent = `Procedimento: ${procedimento}`;
+        modal.style.display = 'block';
     }
 
-    // Função para excluir o procedimento, tempo e especificação
-    async function deleteProcedure(procedimento) {
-        try {
-            const procedureId = await getProcedureIdBySpecification(procedimento);
-            const tempoId = await getTempoIdBySpecification(procedimento);
-
-            // Primeira requisição DELETE
-            await fetch(`${baseUrl}/api/procedimentos/deletar/${procedureId}`, { method: 'DELETE' });
-            // Segunda requisição DELETE
-            await fetch(`${baseUrl}/api/tempos/exclusao-por-id/${tempoId}`, { method: 'DELETE' });
-            // Terceira requisição DELETE
-            await fetch(`${baseUrl}/especificacoes/exclusao-por-especificacao/${procedimento}`, { method: 'DELETE' });
-
-            // Atualiza a tabela após exclusão
-            init();
-            closeModal();
-        } catch (error) {
-            console.error('Erro ao excluir procedimento:', error);
-            closeModal();
-            alert('Erro ao excluir procedimento.');
-        }
-    }
-
-    // Função para buscar o ID do procedimento por especificação
-    async function getProcedureIdBySpecification(especificacao) {
-        try {
-            const response = await fetch(`${baseUrl}/api/procedimentos?especificacao=${especificacao}`);
-            const data = await response.json();
-            return data.id; // Ajuste de acordo com o retorno do seu endpoint
-        } catch (error) {
-            console.error('Erro ao buscar procedimento:', error);
-            throw error;
-        }
-    }
-
-    // Função para buscar o ID do tempo do procedimento por especificação
-    async function getTempoIdBySpecification(especificacao) {
-        try {
-            const response = await fetch(`${baseUrl}/api/tempos?especificacao=${especificacao}`);
-            const data = await response.json();
-            return data.id; // Ajuste de acordo com o retorno do seu endpoint
-        } catch (error) {
-            console.error('Erro ao buscar tempo do procedimento:', error);
-            throw error;
-        }
-    }
-
-    // Função para fechar o modal de confirmação de exclusão
     function closeModal() {
-        document.getElementById('modal').style.display = 'none';
+        modal.style.display = 'none';
     }
 
-    // Expor funções globalmente para serem usadas no HTML
     window.showModal = showModal;
     window.closeModal = closeModal;
+
+    init();
 });

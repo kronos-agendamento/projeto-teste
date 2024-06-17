@@ -89,4 +89,7 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
         agendamentoService.excluirAgendamento(id)
         return ResponseEntity.ok().build<Any>()
     }
+    
+
 }
+

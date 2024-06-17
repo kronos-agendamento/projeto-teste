@@ -6,10 +6,6 @@ import java.sql.Timestamp
 import java.util.*
 
 data class AgendamentoRequestDTO(
-    @field:NotNull(message = "Id do agendamento não pode ser nulo")
-    @field:Min(value = 1, message = "Id do agendamento deve ser maior que 0")
-    var idAgendamento: Int,
-
     @field:NotNull(message = "Data não pode ser nula")
     var data: Date?,
 

@@ -48,7 +48,6 @@ class AgendamentoServiceTest {
     @BeforeEach
     fun setUp() {
         agendamentoRequestDTO = AgendamentoRequestDTO(
-            idAgendamento = 1,
             data = dateFormat.parse("2023-05-27"),
             horario = Timestamp(timeFormat.parse("14:00").time),
             tipoAgendamento = 1,

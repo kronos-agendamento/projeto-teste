@@ -3,16 +3,16 @@ package sptech.projetojpa1.dominio
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotNull
 import java.sql.Timestamp
-import java.time.LocalTime
-import java.util.Date
+import java.util.*
 
 @Entity
 @Table(name = "agendamento")
-data class Agendamento(
+open class Agendamento(
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_agendamento")
-    var idAgendamento: Int,
+    var idAgendamento: Int = 0,
 
     @field:NotNull(message = "Data não pode ser nula")
     @Column(name = "data")
@@ -28,16 +28,16 @@ data class Agendamento(
 
     @field:NotNull(message = "Usuário não pode ser nulo")
     @ManyToOne
-    @JoinColumn(name= "fk_usuario")
+    @JoinColumn(name = "fk_usuario")
     var usuario: Usuario,
 
     @field:NotNull(message = "Procedimento não pode ser nulo")
     @ManyToOne
-    @JoinColumn(name= "fk_procedimento")
+    @JoinColumn(name = "fk_procedimento")
     var procedimento: Procedimento,
 
     @field:NotNull(message = "Status do agendamento não pode ser nulo")
     @ManyToOne
-    @JoinColumn(name= "fk_status")
+    @JoinColumn(name = "fk_status")
     var statusAgendamento: Status
 )
