@@ -3,9 +3,10 @@ package sptech.projetojpa1.repository
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import sptech.projetojpa1.dominio.Especificacao
+import sptech.projetojpa1.dto.especificacao.EspecificacaoReceitaMensalDTO
 
 interface EspecificacaoRepository : JpaRepository<Especificacao, Int> {
-//    fun findByFkProcedimentoDescricao(descricao: String): List<Especificacao>
+    //    fun findByFkProcedimentoDescricao(descricao: String): List<Especificacao>
     fun findByEspecificacaoContainsIgnoreCase(especificacao: String): Especificacao?
 
 //    @Query("DELETE FROM Especificacao e WHERE lower(e.especificacao) = lower(:especificacao)")
@@ -14,14 +15,23 @@ interface EspecificacaoRepository : JpaRepository<Especificacao, Int> {
     @Query("SELECT e.foto FROM Especificacao e WHERE e.idEspecificacaoProcedimento = :codigo")
     fun findFotoByCodigo(codigo: Int): ByteArray?
 
-    @Query(
-        """
-        SELECT SUM(ep.precoColocacao + ep.precoManutencao + ep.precoRetirada) AS receitaTotal 
-        FROM Agendamento a 
-        INNER JOIN EspecificacaoProcedimento ep ON a.fkProcedimento = ep.idEspecificacaoProcedimento 
-        WHERE a.data >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
-        """,
-        nativeQuery = true
+    @Query(value = """
+        SELECT 
+        DATE_FORMAT(a.data, '%Y-%m') AS mes,
+        SUM(ep.preco_colocacao + ep.preco_manutencao + ep.preco_retirada) AS receitaTotal 
+        FROM 
+        agendamento a 
+        INNER JOIN 
+        especificacao_procedimento ep 
+        ON 
+        a.fk_procedimento = ep.id_especificacao_procedimento 
+        WHERE 
+        a.data >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+        GROUP BY 
+        mes
+        ORDER BY 
+        mes;
+    """, nativeQuery = true
     )
-    fun findReceitaSemestralAcumulada(): Double?
+    fun findReceitaSemestralAcumulada(): List<EspecificacaoReceitaMensalDTO>
 }

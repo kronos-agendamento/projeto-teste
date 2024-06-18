@@ -535,9 +535,27 @@ class UsuarioController(
     }
 
     @GetMapping("/canais-de-divulgacao")
-    fun getCanaisDeDivulgacao(): ResponseEntity<Any> {
+    fun getCanaisDeDivulgacao(): ResponseEntity<List<Usuario>> {
+        val resultado: List<Usuario> = usuarioService.getIndicacoesFontes()
+        return ResponseEntity.ok(resultado)
+    }
 
-        return ResponseEntity.ok(0)
+    @GetMapping("/clientes-ativos")
+    fun getClientesAtivosUltimosTresMeses(): ResponseEntity<List<Double>> {
+        val numeroClientes = usuarioService.getClientesAtivos()
+        return ResponseEntity.ok(numeroClientes)
+    }
+
+    @GetMapping("/clientes-inativos")
+    fun getClientesInativos(): ResponseEntity<List<Usuario>> {
+        val clientes = usuarioService.getClientesInativos()
+        return ResponseEntity.ok(clientes)
+    }
+
+    @GetMapping("/clientes-fidelizados-ultimos-tres-meses")
+    fun getClientesFidelizadosUltimosTresMeses(): ResponseEntity<List<Usuario>> {
+        val clientes = usuarioService.getClientesFidelizadosUltimosTresMeses()
+        return ResponseEntity.ok(clientes)
     }
 }
 
