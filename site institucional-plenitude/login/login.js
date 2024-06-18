@@ -48,7 +48,12 @@ document.getElementById('registerForm').addEventListener('submit', async (event)
         });
 
         if (response.ok) {
+            // Salva nome e email no localStorage
+            localStorage.setItem('nome', nome);
+            localStorage.setItem('email', email);
+
             alert('Cadastro realizado com sucesso!');
+            window.location.href = '../../app/index/index.html';
         } else {
             alert('Erro ao realizar cadastro.');
         }
@@ -78,11 +83,39 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
         });
 
         if (response.ok) {
+            const loginData = await response.json();
+
+            // Salva o nome e o email no localStorage
+            localStorage.setItem('nome', loginData.nome);
+            localStorage.setItem('email', loginData.email);
+
             alert('Login realizado com sucesso!');
+            window.location.href = '../../app/index/index.html';
         } else {
-            alert('Erro ao realizar login.');
+            alert('Erro ao realizar login. Verifique suas credenciais.');
         }
     } catch (error) {
         alert('Erro ao realizar login.');
     }
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const signInForm = document.getElementById('signInForm');
+    const signUpForm = document.getElementById('signUpForm');
+    const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+    const mobileRegisterBtn = document.getElementById('mobileRegisterBtn');
+
+    mobileLoginBtn.addEventListener('click', function () {
+        signInForm.classList.add('active');
+        signUpForm.classList.remove('active');
+    });
+
+    mobileRegisterBtn.addEventListener('click', function () {
+        signUpForm.classList.add('active');
+        signInForm.classList.remove('active');
+    });
+
+    // Initialize by showing the register form
+    signUpForm.classList.add('active');
+});
+

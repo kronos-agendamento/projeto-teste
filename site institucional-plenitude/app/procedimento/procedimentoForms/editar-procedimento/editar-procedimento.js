@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async function () {
-    const baseUrl = 'http://127.0.0.1:5500';
+    const baseUrl = 'http://localhost:8080';
 
     const urlParams = new URLSearchParams(window.location.search);
     const procedimentoId = urlParams.get('id');
@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     } catch (error) {
         console.error('Erro ao buscar dados do procedimento:', error);
+        showNotification('Erro ao carregar procedimento!', true);
     }
 
     document.querySelector('.save-button').addEventListener('click', async function (event) {
@@ -46,34 +47,48 @@ document.addEventListener('DOMContentLoaded', async function () {
             fkProcedimentoId: procedimentoId,
         };
 
+        const tempoColocacao = `${formatTime(document.getElementById('duracao-horas').value)}:${formatTime(document.getElementById('duracao-minutos').value)}`;
         const tempoProcedimento = {
-            tempoColocacao: `${document.getElementById('duracao-horas').value}:${document.getElementById('duracao-minutos').value}`,
+            tempoColocacao: tempoColocacao,
             tempoManutencao: "00:00", // assuming default values
             tempoRetirada: "00:00", // assuming default values
         };
 
+        const updateEspecificacao = fetch(`${baseUrl}/especificacoes/atualizacao-especificacao/${procedimentoId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(especificacao),
+        });
+
+        const updateTempo = fetch(`${baseUrl}/api/tempos/${procedimentoId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(tempoProcedimento),
+        });
+
+        const updateProcedimento = fetch(`${baseUrl}/api/procedimentos/atualizar/${procedimentoId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(procedimento),
+        });
+
         try {
-            await fetch(`${baseUrl}/especificacoes/atualizacao-especificacao/${procedimentoId}`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(especificacao),
-            });
+            const [especificacaoResponse, tempoResponse, procedimentoResponse] = await Promise.all([updateEspecificacao, updateTempo, updateProcedimento]);
 
-            await fetch(`${baseUrl}/api/tempos/${procedimentoId}`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(tempoProcedimento),
-            });
+            const messages = [];
+            if (especificacaoResponse.ok) messages.push('Especificação atualizada com sucesso!');
+            if (tempoResponse.ok) messages.push('Duração atualizada com sucesso!');
+            if (procedimentoResponse.ok) messages.push('Procedimento atualizado com sucesso!');
 
-            await fetch(`${baseUrl}/api/procedimentos/atualizar/${procedimentoId}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(procedimento),
-            });
-
-            alert('Procedimento atualizado com sucesso!');
+            if (messages.length === 3) {
+                showNotification('Todos os dados foram atualizados com sucesso!');
+            } else {
+                messages.forEach(message => showNotification(message));
+                if (messages.length < 3) showNotification('Nem todos os dados foram atualizados!', true);
+            }
         } catch (error) {
             console.error('Erro ao atualizar o procedimento:', error);
+            showNotification('Erro ao salvar procedimento!', true);
         }
     });
 });
@@ -88,22 +103,31 @@ function parseTempoMinutos(tempo) {
     return 0;
 }
 
-
-// nav
-document.addEventListener('DOMContentLoaded', () => {
-    const buttons = document.querySelectorAll('button');
-    buttons.forEach(button => {
-        button.addEventListener('click', () => {
-            alert(`Button ${button.innerText} clicked!`);
-        });
-    });
-});
-
-const list = document.querySelectorAll(".list");
-function activeLink(){
-    list.forEach((item) => 
-    item.classList.remove("active"));
-    this.classList.add("active");
+function formatTime(value) {
+    return value.toString().padStart(2, '0');
 }
-list.forEach((item) => 
-    item.addEventListener('click', activeLink));
+
+function showNotification(message, isError = false) {
+    const notification = document.getElementById('notification');
+    const notificationMessage = document.getElementById('notification-message');
+    notificationMessage.textContent = message;
+    if (isError) {
+        notification.classList.add('error');
+    } else {
+        notification.classList.remove('error');
+    }
+    notification.classList.add('show');
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 3000);
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const nome = localStorage.getItem('nome');
+    const email = localStorage.getItem('email');
+
+    if (nome && email) {
+        document.getElementById('userName').textContent = nome;
+        document.getElementById('userEmail').textContent = email;
+    }
+});

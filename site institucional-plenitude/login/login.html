@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="login-desktop.css">
+    <link rel="stylesheet" href="login.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;700&display=swap" rel="stylesheet">
     <title>Acessar Conta</title>
 </head>
 
 <body>
     <div class="container" id="container">
-        <div class="form-container sign-up">
+        <div class="form-container sign-up" id="signUpForm">
             <form id="registerForm">
                 <h1>Criar Conta</h1>
                 <input type="text" id="nome" placeholder="Nome Completo" required>
@@ -22,15 +22,23 @@
                 <input type="text" id="instagram" placeholder="Nome de usuário do Instagram" required>
                 <input type="password" id="senha" placeholder="Crie uma senha" required>
                 <button type="submit">Cadastrar</button>
+                <div class="mobile-toggle">
+                    <p>Já tem uma conta?</p>
+                    <button type="button" id="mobileLoginBtn">Fazer login</button>
+                </div>
             </form>
         </div>
-        <div class="form-container sign-in">
+        <div class="form-container sign-in" id="signInForm">
             <form id="loginForm">
                 <h1>Boas-vindas!</h1>
                 <input type="email" id="loginEmail" placeholder="Email" required>
                 <input type="password" id="loginSenha" placeholder="Senha" required>
                 <a href="#">Esqueceu sua senha?</a>
                 <button type="submit">Entrar</button>
+                <div class="mobile-toggle">
+                    <p>Não tem uma conta?</p>
+                    <button type="button" id="mobileRegisterBtn">Cadastrar</button>
+                </div>
             </form>
         </div>
         <div class="toggle-container">
@@ -48,23 +56,7 @@
             </div>
         </div>
     </div>
-    <script src="login-desktop.js"></script>
+    <script src="login.js"></script>
 </body>
 
 </html>
-<script>
-
-function verificarResolucaoAparelho(){
-
-    var resolucao = window.innerWidth
-    var resolucaoMobile = 768
-
-    if(resolucao <= resolucaoMobile){
-        window.location.href = "../login-mobile/login-mobile.html"
-    }
-
-}
-
-window.onload = verificarResolucaoAparelho
-
-</script>

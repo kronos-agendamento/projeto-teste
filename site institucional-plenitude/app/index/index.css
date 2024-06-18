@@ -1,10 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', Arial, sans-serif;
+}
+
 body {
     font-family: Poppins, sans-serif;
     margin: 0;
     padding: 0;
     display: flex;
     background-color: #ffffff;
-
 }
 
 .container {
@@ -79,7 +87,7 @@ header p {
 
 .main-content {
     display: flex;
-    justify-content:space-around;
+    justify-content: space-around;
     align-items: flex-start;
     gap: 20px;
     margin-bottom: 20px;
@@ -129,7 +137,7 @@ header p {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 125%;
     padding: 10px;
-    border: 1px solid  black;
+    border: 1px solid black;
     margin-left: -12%;
     margin-top: 7%;
 }
@@ -174,8 +182,8 @@ header p {
 }
 
 .details {
-    text-align:left;
-    
+    text-align: left;
+
 }
 
 .details h3 {
@@ -186,11 +194,11 @@ header p {
 }
 
 .details p {
-    text-align:start;
+    text-align: start;
     margin: 5px 0 0;
     color: #777;
     font-size: 15px;
- margin-left: -10%;
+    margin-left: -10%;
 }
 
 .weekly-schedule {
@@ -203,11 +211,11 @@ header p {
 }
 
 .weekly-schedule h2 {
-   font-size: 3vh;
-   align-items: center;
-   display: flex;
-   justify-content: center;
-   margin-top: 1vh;
+    font-size: 3vh;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-top: 1vh;
 }
 
 .weekly-schedule h2 i {
@@ -215,7 +223,10 @@ header p {
     font-size: 20px;
 }
 
-.registered-procedures, .frequent-clients, .status, .birthdays {
+.registered-procedures,
+.frequent-clients,
+.status,
+.birthdays {
     background-color: white;
     padding: 20px;
     margin-bottom: 20px;
@@ -231,7 +242,9 @@ table {
     border-collapse: collapse;
 }
 
-table, th, td {
+table,
+th,
+td {
     border: 1px solid #DDD
 }
 
@@ -269,34 +282,36 @@ table, th, td {
     width: 100%;
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
-    
-}
-.navigation ul li a{
 
-position: relative;
-display: flex;
-width: 100%;
-text-decoration: none;
-color: #fff;
-height: 50px;
-margin-bottom: 3vh;
-}
-.navigation ul li a .icon{
-   position: relative;
-   display: block;
-   min-width: 60px;
-   height: 60px;
-   text-align: center;
-   line-height: 70px;
 }
 
-.navigation ul li a .icon ion-icon{
+.navigation ul li a {
+
+    position: relative;
+    display: flex;
+    width: 100%;
+    text-decoration: none;
+    color: #fff;
+    height: 50px;
+    margin-bottom: 3vh;
+}
+
+.navigation ul li a .icon {
+    position: relative;
+    display: block;
+    min-width: 60px;
+    height: 60px;
+    text-align: center;
+    line-height: 70px;
+}
+
+.navigation ul li a .icon ion-icon {
     position: relative;
     font-size: 1.5rem;
     z-index: 1;
 }
 
-.navigation ul li a .title{
+.navigation ul li a .title {
     position: relative;
     display: block;
     padding-left: 10px;
@@ -306,22 +321,24 @@ margin-bottom: 3vh;
     font-size: 15px;
 }
 
-.navigation ul li.active{
+.navigation ul li.active {
     color: black;
     background: #ffffff;
- 
+
 }
 
 .navigation ul li.active a {
-    color: black; /* Cor do texto quando ativo */
+    color: black;
+    /* Cor do texto quando ativo */
 }
 
 .navigation ul li.active a .icon ion-icon {
-    color: black; /* Cor do ícone quando ativo */
+    color: black;
+    /* Cor do ícone quando ativo */
 }
 
 
-.navigation ul li.active a::before{
+.navigation ul li.active a::before {
     content: '';
     position: absolute;
     top: -30px;
@@ -334,7 +351,7 @@ margin-bottom: 3vh;
     color: black;
 }
 
-.navigation ul li.active a::after{
+.navigation ul li.active a::after {
     content: '';
     position: absolute;
     bottom: -30px;
@@ -353,7 +370,7 @@ img {
     margin-bottom: 20px;
 }
 
-.navigation .imagem-perfil{
+.navigation .imagem-perfil {
     width: 30px;
     height: 60px;
     display: flex;
@@ -381,7 +398,8 @@ img {
     margin: 0;
     color: #fff;
     font-size: 1.1em;
-    width: 100%; /* Define a largura do título para 50% */
+    width: 100%;
+    /* Define a largura do título para 50% */
 }
 
 table {
@@ -393,7 +411,8 @@ thead {
     background-color: #facbdc;
 }
 
-th, td {
+th,
+td {
     padding: 15px;
     text-align: center;
     border: 1px solid #000;
