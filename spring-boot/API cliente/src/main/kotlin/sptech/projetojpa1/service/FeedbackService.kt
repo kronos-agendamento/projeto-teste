@@ -58,19 +58,26 @@ class FeedbackService(
 
     fun atualizarFeedback(id: Int, feedbackRequestDTO: FeedbackRequestDTO): FeedbackResponseDTO? {
         val feedbackExistente = feedbackRepository.findById(id).orElse(null) ?: return null
+
+        val usuario = usuarioRepository.findById(feedbackRequestDTO.usuarioId)
+            .orElseThrow { IllegalArgumentException("Usuário não encontrado") }
+        val agendamento = agendamentoRepository.findById(feedbackRequestDTO.agendamentoId)
+            .orElseThrow { IllegalArgumentException("Agendamento não encontrado") }
+
         val feedbackAtualizado = feedbackExistente.copy(
             anotacoes = feedbackRequestDTO.anotacoes,
             nota = feedbackRequestDTO.nota,
-            agendamento = null, // Fetch agendamento entity using agendamentoId
-            usuario = null // Fetch usuario entity using usuarioId
+            agendamento = agendamento,
+            usuario = usuario
         )
+
         val savedFeedback = feedbackRepository.save(feedbackAtualizado)
         return FeedbackResponseDTO(
             idFeedback = savedFeedback.idFeedback,
             anotacoes = savedFeedback.anotacoes,
             nota = savedFeedback.nota,
-            agendamentoId = feedbackRequestDTO.agendamentoId,
-            usuarioId = feedbackRequestDTO.usuarioId
+            agendamentoId = savedFeedback.agendamento?.idAgendamento ?: 0,
+            usuarioId = savedFeedback.usuario?.codigo ?: 0
         )
     }
 

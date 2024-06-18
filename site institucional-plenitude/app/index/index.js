@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const buttons = document.querySelectorAll('button');
     buttons.forEach(button => {
         button.addEventListener('click', () => {
-            alert(`Button ${button.innerText} clicked!`);
         });
     });
 });
@@ -31,3 +30,14 @@ function scrollDown() {
     scrollPosition += 50; // Altere conforme necessário
     content.scrollTo({ top: scrollPosition, behavior: 'smooth' });
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const nome = localStorage.getItem('nome');
+    const email = localStorage.getItem('email');
+
+    if (nome && email) {
+        document.getElementById('userName').textContent = nome;
+        document.getElementById('userNameSpan').textContent = nome;
+        document.getElementById('userEmail').textContent = email;
+    }
+});

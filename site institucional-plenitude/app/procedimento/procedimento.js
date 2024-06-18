@@ -1,5 +1,20 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const baseUrl = 'http://127.0.0.1:5500';
+    function showNotification(message, isError = false) {
+        const notification = document.getElementById('notification');
+        const notificationMessage = document.getElementById('notification-message');
+        notificationMessage.textContent = message;
+        if (isError) {
+            notification.classList.add('error');
+        } else {
+            notification.classList.remove('error');
+        }
+        notification.classList.add('show');
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 3000);
+    }
+
+    const baseUrl = 'http://localhost:8080';
     const proceduresTbody = document.getElementById('procedures-tbody');
     const prevPageBtn = document.getElementById('prev-page-btn');
     const nextPageBtn = document.getElementById('next-page-btn');
@@ -55,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             const response = await fetch(`${baseUrl}/especificacoes`);
             const data = await response.json();
-            console.log('Dados recebidos da API:', data); // Log para verificar os dados recebidos
+            console.log('Dados recebidos da API:', data);
             return data;
         } catch (error) {
             console.error('Erro ao carregar procedimentos:', error);
@@ -74,6 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const nome = procedure.fkProcedimento.tipo;
             const preco = `R$${procedure.precoColocacao.toFixed(2).replace('.', ',')}`;
             const duracao = procedure.fkTempoProcedimento.tempoColocacao;
+            const duracaoFormatada = duracao.toString().padStart(2, '0'); // Garante que sempre tenha 2 dígitos
             const especificacao = procedure.especificacao;
 
             // Use o idEspecificacaoProcedimento para o data-id
@@ -82,11 +98,11 @@ document.addEventListener('DOMContentLoaded', function () {
             row.innerHTML = `
                 <td>${nome}</td>
                 <td>${preco}</td>
-                <td>${duracao}</td>
+                <td>${duracaoFormatada.replace(/^0/, '')}h</td>           
                 <td>${especificacao}</td>
                 <td>
                     <button class="edit-btn" data-id="${procedimentoId}">✏️</button>
-                    <button class="delete-btn" data-id="${procedimentoId}" data-especificacao="${especificacao}">🗑️</button>
+                    <button class="delete-btn" data-id="${procedimentoId}" data-tipo="${nome}">🗑️</button>
                 </td>
             `;
             proceduresTbody.appendChild(row);
@@ -103,11 +119,11 @@ document.addEventListener('DOMContentLoaded', function () {
         // Eventos dos botões de deletar
         document.querySelectorAll('.delete-btn').forEach(button => {
             const id = button.getAttribute('data-id');
+            const tipo = button.getAttribute('data-tipo');
             button.addEventListener('click', (e) => {
                 procedimentoIdParaDeletar = e.target.getAttribute('data-id');
-                const procedimentoEspecificacao = e.target.getAttribute('data-especificacao');
                 if (procedimentoIdParaDeletar) {
-                    showModal(procedimentoEspecificacao);
+                    showModal(tipo);
                 } else {
                     console.error('ID do procedimento é indefinido.');
                 }
@@ -169,13 +185,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 throw new Error('Erro ao deletar o procedimento.');
             }
             console.log(`Procedimento ${id} deletado com sucesso.`);
+            showNotification('Procedimento deletado com sucesso!');
         } catch (error) {
             console.error('Erro ao deletar o procedimento:', error);
         }
     }
 
-    function showModal(procedimento) {
-        modalProcedimento.textContent = `Procedimento: ${procedimento}`;
+    function showModal(tipoProcedimento) {
+        modalProcedimento.textContent = `Procedimento: ${tipoProcedimento}`;
         modal.style.display = 'block';
     }
 
@@ -189,19 +206,47 @@ document.addEventListener('DOMContentLoaded', function () {
     init();
 });
 
-// nav
-document.addEventListener('DOMContentLoaded', () => {
-    const buttons = document.querySelectorAll('button');
-    buttons.forEach(button => {
-        button.addEventListener('click', () => {
-            alert(`Button ${button.innerText} clicked!`);
-        });
-    });
+document.addEventListener('DOMContentLoaded', function () {
+    const nome = localStorage.getItem('nome');
+    const email = localStorage.getItem('email');
 
-    const listItems = document.querySelectorAll(".list");
-    function activeLink() {
-        listItems.forEach((item) => item.classList.remove("active"));
-        this.classList.add("active");
+    if (nome && email) {
+        document.getElementById('userName').textContent = nome;
+        document.getElementById('userEmail').textContent = email;
     }
-    listItems.forEach((item) => item.addEventListener('click', activeLink));
 });
+
+document.querySelector('.planilha-btn').addEventListener('click', function () {
+    exportTableToExcel('procedures-table', 'Procedimentos.xlsx');
+});
+
+function exportTableToExcel(tableId, filename = '') {
+    var table = document.getElementById(tableId);
+
+    // Create a temporary table to remove the "Ações" column
+    var tempTable = table.cloneNode(true);
+
+    // Remove the last column (Ações) from the header
+    var tempThead = tempTable.querySelector('thead');
+    var tempHeaderRow = tempThead.rows[0];
+    tempHeaderRow.deleteCell(-1); // Deletes the last cell from header
+
+    // Remove the last column (Ações) from all rows in the body
+    var tempTbody = tempTable.querySelector('tbody');
+    for (var i = 0; i < tempTbody.rows.length; i++) {
+        tempTbody.rows[i].deleteCell(-1); // Deletes the last cell from each row
+    }
+
+    // Convert the temporary table to Excel workbook and download
+    var wb = XLSX.utils.table_to_book(tempTable, { sheet: "Sheet1" });
+    var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+
+    function s2ab(s) {
+        var buf = new ArrayBuffer(s.length);
+        var view = new Uint8Array(buf);
+        for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+        return buf;
+    }
+
+    saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), filename);
+}

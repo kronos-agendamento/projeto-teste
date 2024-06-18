@@ -16,96 +16,6 @@ body {
     height: 1000px;
 }
 
-/* .sidebar {
-    width: 275px;
-    height: 680px;
-    background-color: #D2135D;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 20px;
-    border-radius: 30px;
-    margin-top: 50px;
-    margin-left: 50px;
-    margin-bottom: 50px;
-}
-
-.profile {
-    text-align: center;
-    margin-top: 35px;
-}
-
-.profile img {
-    border-radius: 50%;
-    width: 110px;
-    height: 110px;
-}
-
-.profile .title-p {
-    margin-top: 10px;
-    font-size: 18px;
-}
-
-.profile p {
-    font-size: 12px;
-}
-
-nav ul {
-    list-style: none;
-    width: 100%;
-    padding: 0;
-    margin-top: 45px;
-}
-
-nav ul li {
-    width: 100%;
-    margin-left: -50px;
-}
-
-nav ul li a {
-    text-decoration: none;
-    color: #fff;
-    display: block;
-    padding: 10px 15px;
-    display: flex;
-    align-items: center;
-    font-size: 12px;
-    font-weight: 500;
-}
-
-nav ul li a img {
-    width: 25px;
-    margin-right: 18px;
-}
-
-nav ul li a:hover,
-.active {
-    background-color: #d81b60;
-}
-
-.main-content {
-    flex: 1;
-    padding: 20px;
-} */
-
-/* header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #D2135D;
-    margin-top: 40px;
-    margin-left: 20px;
-    border-radius: 15px;
-    height: 65px;
-    width: 755px;
-}
-
-header p {
-    color: #f9f9f9;
-    font-size: 15px;
-    margin-left: 20px;
-} */
 header {
     background-color: #D2135D;
     color: white;
@@ -125,10 +35,6 @@ header p {
     margin: 0vh 0vh 0vh 2vh;
     font-size: 2vh;
 }
-/* header img {
-    width: 25px;
-    margin-right: 40px;
-} */
 
 .actions {
     display: flex;
@@ -200,12 +106,12 @@ header p {
     border-collapse: collapse;
     margin-top: 30px;
     background-color: #fff;
-    border-radius:  10px;
+    border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-left: 4.5%;
     margin-right: auto;
-    border: 1px solid  black;
+    border: 1px solid black;
 }
 
 .procedures-table thead {
@@ -248,7 +154,7 @@ header p {
 
 .stats {
     display: flex;
-    justify-content:space-around;
+    justify-content: space-around;
     margin-top: 20px;
 }
 
@@ -261,9 +167,9 @@ header p {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.stats :hover{
+.stats :hover {
     background-color: #FAD2E0;
-   
+
 }
 
 .stat-item h2 {
@@ -277,7 +183,7 @@ header p {
     margin-bottom: 10px;
 }
 
-.stats  .stat-item a {
+.stats .stat-item a {
     color: #000000;
     text-decoration: none;
     font-weight: 300;
@@ -365,8 +271,10 @@ header p {
     margin-left: 32px;
     box-shadow: 10px 0 0 #ffffff;
     border-left: 10px solid #D2135D;
-    overflow-y: auto; /* Permite rolagem vertical se necessário */
-    overflow-x: hidden; /* Remove a rolagem horizontal */
+    overflow-y: auto;
+    /* Permite rolagem vertical se necessário */
+    overflow-x: hidden;
+    /* Remove a rolagem horizontal */
     border-radius: 16px;
     display: flex;
     flex-direction: column;
@@ -391,34 +299,36 @@ header p {
     width: 100%;
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
-    
-}
-.navigation ul li a{
 
-position: relative;
-display: flex;
-width: 100%;
-text-decoration: none;
-color: #fff;
-height: 50px;
-margin-bottom: 3vh;
-}
-.navigation ul li a .icon{
-   position: relative;
-   display: block;
-   min-width: 60px;
-   height: 60px;
-   text-align: center;
-   line-height: 70px;
 }
 
-.navigation ul li a .icon ion-icon{
+.navigation ul li a {
+
+    position: relative;
+    display: flex;
+    width: 100%;
+    text-decoration: none;
+    color: #fff;
+    height: 50px;
+    margin-bottom: 3vh;
+}
+
+.navigation ul li a .icon {
+    position: relative;
+    display: block;
+    min-width: 60px;
+    height: 60px;
+    text-align: center;
+    line-height: 70px;
+}
+
+.navigation ul li a .icon ion-icon {
     position: relative;
     font-size: 1.5rem;
     z-index: 1;
 }
 
-.navigation ul li a .title{
+.navigation ul li a .title {
     position: relative;
     display: block;
     padding-left: 10px;
@@ -428,22 +338,24 @@ margin-bottom: 3vh;
     font-size: 15px;
 }
 
-.navigation ul li.active{
+.navigation ul li.active {
     color: black;
     background: #ffffff;
- 
+
 }
 
 .navigation ul li.active a {
-    color: black; /* Cor do texto quando ativo */
+    color: black;
+    /* Cor do texto quando ativo */
 }
 
 .navigation ul li.active a .icon ion-icon {
-    color: black; /* Cor do ícone quando ativo */
+    color: black;
+    /* Cor do ícone quando ativo */
 }
 
 
-.navigation ul li.active a::before{
+.navigation ul li.active a::before {
     content: '';
     position: absolute;
     top: -30px;
@@ -456,7 +368,7 @@ margin-bottom: 3vh;
     color: black;
 }
 
-.navigation ul li.active a::after{
+.navigation ul li.active a::after {
     content: '';
     position: absolute;
     bottom: -30px;
@@ -475,10 +387,37 @@ img {
     margin-bottom: 20px;
 }
 
-.navigation .imagem-perfil{
+.navigation .imagem-perfil {
     width: 30px;
     height: 60px;
     display: flex;
     justify-content: center;
+}
 
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.notification.show {
+    opacity: 1;
+}
+
+.notification.error {
+    background-color: #dc3545;
+}
+
+.notification svg {
+    margin-right: 10px;
 }
