@@ -4,58 +4,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KRONOS | Procedimento</title>
+    <title>Procedimento | Plenitude no Olhar</title>
     <link rel="stylesheet" href="procedimento.css">
     <script src="procedimento.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body>
-    <div class="sidebar">
-        <div class="profile">
-            <img src="../../assets/icons/icon.png" alt="Priscila Rossato">
-            <p class="title-p">Priscila Rossato</p>
-            <p>pri@plenitude.com</p>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="#"><img src="../../assets/icons/home.png" alt="home">Início</a></li>
-                <li><a href="#"><img src="../../assets/icons/profile.png" alt="profile">Perfil</a></li>
-                <li><a href="#"><img src="../../assets/icons/schedules.png" alt="schedules">Agendamentos</a></li>
-                <li><a href="#"><img src="../../assets/icons/anamnesis.png" alt="anamnesis">Anamneses</a></li>
-                <li><a href="#"><img src="../../assets/icons/customers.png" alt="customers">Clientes</a></li>
-                <li><a class="active" href="#"><img src="../../assets/icons/proceduresActive.png"
-                            alt="proceduresActive">Procedimentos</a></li>
-                <li><a href="#"><img src="../../assets/icons/dashboard.png" alt="dashboard">Dashboard</a></li>
-                <li><a href="#"><img src="../../assets/icons/exit.png" alt="exit">Sair</a></li>
-            </ul>
-        </nav>
+    <div class="navigation" >
+            
+        <li class="list" style="width: 30px; height: 30px; list-style: none;; display: flex; justify-content: center; margin-top: 5vh;">
+            <div class="imagem-perfil" style="width: 20vh; height: 20vh; border-radius: 300px; display: flex; justify-content: center;">
+            <img src="../index/Foto de Perfil.png" style="width: 53vh; height: 23vh;  display: flex; justify-content: center; align-items: center;">
+            </div>
+        </li>
+        <li style="margin-top: 20vh;list-style: none; color: white; font-weight: 600;">
+            Priscila Rossatto
+        </li>
+        <li style="list-style: none; color: white; font-weight: 200; font-size: 12px;">
+            priscilla@plenitude.com.br
+        </li>
+
+        <ul style="margin-top: 80%; position:absolute;">
+            <li class="list">
+                <a href="../index/index.html">
+                    <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                    <span class="title">Início
+                    </span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="#">
+                    <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
+                    <span class="title">Perfil</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="#">
+                    <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
+                    <span class="title">Agendamentos</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="#">
+                    <span class="icon"><ion-icon name="document-text-outline"></ion-icon></span>
+                    <span class="title">Anamneses</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="#">
+                    <span class="icon"><ion-icon name="person-add-outline"></ion-icon></span>
+                    <span class="title">Clientes</span>
+                </a>
+            </li>
+            <li class="list active">
+                <a href="../procedimento/procedimento.html">
+                    <span class="icon"><ion-icon name="brush-outline"></ion-icon></span>
+                    <span class="title">Procedimentos</span>
+                </a>
+            </li>                
+            <li class="list">
+                <a href="#">
+                    <span class="icon"><ion-icon name="stats-chart-outline"></ion-icon></span>
+                    <span class="title">Dashboard</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="#">
+                    <span class="icon"><ion-icon name="exit-outline"></ion-icon></span>
+                    <span class="title">Sair</span>
+                </a>
+            </li>
+        </ul>
     </div>
 
-    <div class="main-content">
-        <header>
+    <div class="main-content" style="margin-top: 1%;">
+        <!-- <header>
             <p>Procedimentos</p>
+            
             <img src="../../assets/icons/information.png" alt="information">
+        </header> -->
+        <header style="height: 14vh; width: 152vh; margin-left: 4.3%;">
+            <h1>Procedimentos</h1>
+            <p>Essa página é destinada para visualização, cadastro, edição ou exclusão de procedimentos.</p>
         </header>
         <div class="actions">
-            <button class="filter-btn"><img src="../../assets/icons/filter.png" alt="filter">Filtro</button>
+            <button class="filter-btn" style="height: 7vh; margin-left: 2.6%;"><img style="height: 5vh; margin-top: 30%;"  src="../../assets/icons/filter.png" alt="filter">Filtro</button>
             <div class="right-actions">
-                <button class="planilha-btn"><img src="../../assets/icons/spreadsheet.png"
+                <button class="planilha-btn" style="height: 7vh; margin-left: 60%;"><img  style="height: 5vh; margin-top: 19%;" src="../../assets/icons/spreadsheet.png"
                         alt="spreadsheet">Planilha</button>
-                <button class="criar-btn" onclick="showForm()"><a
+                <button class="criar-btn" onclick="showForm()" style="height: 7vh; width: 37vh;"><a style="width: max-content;"
                         href="procedimentoForms/cadastrar-procedimento/cadastrar-procedimento.html">
-                        <img src="../../assets/icons/createNew.png" alt="createNew"><span>Criar Novo</span>
+                        <img  style="height: 4vh; margin-top: 17%;" src="../../assets/icons/createNew.png" alt="createNew"><span>Criar Novo</span>
                     </a></button>
             </div>
         </div>
 
-        <table class="procedures-table">
+        <table class="procedures-table" style="width: 152vh;">
             <thead>
                 <tr>
-                    <th>Nome</th>
-                    <th>Preço</th>
+                    <th >Nome</th>
+                    <th >Preço</th>
                     <th>Duração</th>
-                    <th>Especificação</th>
-                    <th>Ações</th>
+                    <th >Especificação</th>
+                    <th >Ações</th>
                 </tr>
             </thead>
             <tbody id="procedures-tbody">
@@ -68,24 +120,24 @@
             <button class="button-page" id="next-page-btn">Próxima Página</button>
         </div>
 
-        <div class="stats">
-            <div class="stat-item">
-                <h2>O Mais <br> Agendado</h2>
-                <p id="mais-agendado">Carregando...</p>
-                <p>Nos últimos 3 meses</p>
-                <a href="#">Ver ordem de todos</a>
+        <div class="stats" style="margin-left: 8%; margin-top: 8%;">
+            <div class="stat-item" style="width: 40vh;">
+                <h2 style="font-weight: normal;">O Mais Agendado</h2>
+                <p id="mais-agendado" style="font-weight: bold;">Carregando...</p>
+                <p style="font-size: 14px;">Nos últimos 3 meses</p>
+                <a href="#" style="font-weight: lighter;">Ver ordem de todos >></a>
             </div>
-            <div class="stat-item">
-                <h2>O Menos Agendado</h2>
-                <p id="menos-agendado">Carregando...</p>
-                <p>Nos últimos 3 meses</p>
-                <a href="#">Ver ordem de todos</a>
+            <div class="stat-item" style="width: 40vh;">
+                <h2 style="font-weight: normal;">O Menos Agendado</h2>
+                <p id="menos-agendado" style="font-weight: bold;">Carregando...</p>
+                <p style="font-size: 14px;">Nos últimos 3 meses</p>
+                <a href="#" style="font-weight: lighter;" >Ver ordem de todos >></a>
             </div>
-            <div class="stat-item">
-                <h2>O Melhor Avaliado</h2>
-                <p id="melhor-avaliado">Carregando...</p>
-                <p>Nos últimos 3 meses</p>
-                <a href="#">Ver ordem de todos</a>
+            <div class="stat-item" style="width: 40vh;">
+                <h2 style="font-weight: normal;">O Melhor Avaliado</h2>
+                <p id="melhor-avaliado" style="font-weight: bold;">Carregando...</p>
+                <p style="font-size: 14px;">Nos últimos 3 meses</p>
+                <a href="#">Ver ordem de todos >></a>
             </div>
         </div>
     </div>
@@ -98,6 +150,8 @@
             <button class="btn btn-no" onclick="closeModal()">NÃO</button>
         </div>
     </div>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 
 </html>

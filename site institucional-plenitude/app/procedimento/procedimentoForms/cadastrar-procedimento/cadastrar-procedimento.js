@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Fetch and populate procedures dropdown
-    fetch('http://localhost:8080/api/procedimentos/listar')
+    fetch('http://127.0.0.1:5500/api/procedimentos/listar')
         .then(response => response.json())
         .then(data => {
             const procedimentoDropdown = document.getElementById('procedimento-dropdown');
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
             descricao: descricao
         };
 
-        fetch('http://localhost:8080/api/procedimentos/criar', {
+        fetch('http://127.0.0.1:5500/api/procedimentos/criar', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
             tempoRetirada: `${duracaoHoras}:${duracaoMinutos}`
         };
 
-        fetch('http://localhost:8080/api/tempos/cadastro-tempo-procedimento', {
+        fetch('http://127.0.0.1:5500/api/tempos/cadastro-tempo-procedimento', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     fkProcedimentoId: procedimentoId
                 };
 
-                return fetch('http://localhost:8080/especificacoes/cadastro-especificacao', {
+                return fetch('http://127.0.0.1:5500/especificacoes/cadastro-especificacao', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -102,3 +102,22 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     });
 });
+
+// nav
+document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            alert(`Button ${button.innerText} clicked!`);
+        });
+    });
+});
+
+const list = document.querySelectorAll(".list");
+function activeLink(){
+    list.forEach((item) => 
+    item.classList.remove("active"));
+    this.classList.add("active");
+}
+list.forEach((item) => 
+    item.addEventListener('click', activeLink));

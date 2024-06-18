@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const baseUrl = 'http://localhost:8080';
+    const baseUrl = 'http://127.0.0.1:5500';
     const proceduresTbody = document.getElementById('procedures-tbody');
     const prevPageBtn = document.getElementById('prev-page-btn');
     const nextPageBtn = document.getElementById('next-page-btn');
@@ -187,4 +187,21 @@ document.addEventListener('DOMContentLoaded', function () {
     window.closeModal = closeModal;
 
     init();
+});
+
+// nav
+document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            alert(`Button ${button.innerText} clicked!`);
+        });
+    });
+
+    const listItems = document.querySelectorAll(".list");
+    function activeLink() {
+        listItems.forEach((item) => item.classList.remove("active"));
+        this.classList.add("active");
+    }
+    listItems.forEach((item) => item.addEventListener('click', activeLink));
 });

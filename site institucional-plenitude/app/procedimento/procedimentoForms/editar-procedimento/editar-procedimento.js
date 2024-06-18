@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async function () {
-    const baseUrl = 'http://localhost:8080';
+    const baseUrl = 'http://127.0.0.1:5500';
 
     const urlParams = new URLSearchParams(window.location.search);
     const procedimentoId = urlParams.get('id');
@@ -87,3 +87,23 @@ function parseTempoMinutos(tempo) {
     }
     return 0;
 }
+
+
+// nav
+document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            alert(`Button ${button.innerText} clicked!`);
+        });
+    });
+});
+
+const list = document.querySelectorAll(".list");
+function activeLink(){
+    list.forEach((item) => 
+    item.classList.remove("active"));
+    this.classList.add("active");
+}
+list.forEach((item) => 
+    item.addEventListener('click', activeLink));
