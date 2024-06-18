@@ -87,8 +87,11 @@ VALUES ('Cílios fio a fio', 150.00, 80.00, 50.00, 1, 1),
 -- Inserções aleatórias na tabela agendamento
 INSERT INTO agendamento (data, horario, tipo_agendamento, fk_usuario, fk_procedimento, fk_status)
 VALUES ('2024-06-01', '2024-06-01 09:00:00', '1', 1, 1, 1),
-       ('2024-06-02', '2024-06-02 10:00:00', '2', 2, 2, 2),
-       ('2024-06-03', '2024-06-03 11:00:00', '1', 3, 3, 3);
+       ('2024-05-02', '2024-05-02 10:00:00', '2', 2, 2, 2),
+       ('2024-04-03', '2024-04-03 11:00:00', '1', 3, 3, 3),
+       ('2024-03-18 10:00:00', '2024-03-18 10:00:00', 1, 1, 1, 1),
+       ('2024-02-19 11:00:00', '2024-02-19 11:00:00', 2, 2, 2, 2),
+       ('2024-01-20 09:30:00', '2024-01-20 09:30:00', 3, 3, 3, 3);
 
 -- Inserções aleatórias na tabela feedback
 INSERT INTO feedback (anotacoes, nota, fk_agendamento, fk_usuario)

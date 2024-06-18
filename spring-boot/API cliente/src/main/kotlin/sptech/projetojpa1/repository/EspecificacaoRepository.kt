@@ -15,23 +15,24 @@ interface EspecificacaoRepository : JpaRepository<Especificacao, Int> {
     @Query("SELECT e.foto FROM Especificacao e WHERE e.idEspecificacaoProcedimento = :codigo")
     fun findFotoByCodigo(codigo: Int): ByteArray?
 
-    @Query(value = """
+    @Query(
+        value = """
         SELECT 
-        DATE_FORMAT(a.data, '%Y-%m') AS mes,
-        SUM(ep.preco_colocacao + ep.preco_manutencao + ep.preco_retirada) AS receitaTotal 
-        FROM 
-        agendamento a 
-        INNER JOIN 
-        especificacao_procedimento ep 
-        ON 
-        a.fk_procedimento = ep.id_especificacao_procedimento 
-        WHERE 
-        a.data >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
-        GROUP BY 
-        mes
-        ORDER BY 
-        mes;
+SUM(ep.preco_colocacao + ep.preco_manutencao + ep.preco_retirada) AS receitaTotal 
+FROM 
+agendamento a 
+INNER JOIN 
+especificacao_procedimento ep 
+ON 
+a.fk_procedimento = ep.id_especificacao_procedimento 
+WHERE 
+a.data >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+GROUP BY 
+DATE_FORMAT(a.data, '%Y-%m')
+ORDER BY 
+DATE_FORMAT(a.data, '%Y-%m');
+
     """, nativeQuery = true
     )
-    fun findReceitaSemestralAcumulada(): List<EspecificacaoReceitaMensalDTO>
+    fun findReceitaSemestralAcumulada(): List<Double>
 }
