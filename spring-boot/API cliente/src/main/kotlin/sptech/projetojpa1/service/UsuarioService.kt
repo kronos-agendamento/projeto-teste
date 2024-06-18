@@ -119,5 +119,17 @@ class UsuarioService(
 
     fun getByStatus(status: Boolean): List<Usuario> = usuarioRepository.findByStatus(status)
 
+    fun getIndicacoesFontes(): List<Usuario> = usuarioRepository.findClientesPorOrigem()
 
+    fun getClientesAtivos(): List<Double> {
+        return usuarioRepository.findClientesAtivos()
+    }
+
+    fun getClientesInativos(): List<Usuario> {
+        return usuarioRepository.findClientesInativos()
+    }
+
+    fun getClientesFidelizadosUltimosTresMeses(): List<Usuario> {
+        return usuarioRepository.findClientesFidelizadosUltimosTresMeses()
+    }
 }

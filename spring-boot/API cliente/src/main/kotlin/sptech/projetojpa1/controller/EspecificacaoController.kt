@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import sptech.projetojpa1.dominio.Especificacao
 import sptech.projetojpa1.dto.especificacao.EspecificacaoDTO
+import sptech.projetojpa1.dto.especificacao.EspecificacaoReceitaMensalDTO
 import sptech.projetojpa1.service.EspecificacaoService
 
 @RestController
@@ -197,14 +198,14 @@ class EspecificacaoController(
     }
 
     @GetMapping("/receita-acumulada")
-    fun getReceitaAcumulada(): ResponseEntity<Double?> {
+    fun getReceitaAcumulada(): ResponseEntity<List<EspecificacaoReceitaMensalDTO>> {
         val resultado = service.getReceitaAcumulada()
-
-        return if (resultado != null) {
+        return if (resultado.isNotEmpty()) {
             ResponseEntity.ok(resultado)
         } else {
-            ResponseEntity.status(404).build()
+            ResponseEntity.noContent().build()
         }
     }
+
 
 }

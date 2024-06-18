@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import sptech.projetojpa1.dominio.Especificacao
 import sptech.projetojpa1.dto.especificacao.EspecificacaoDTO
+import sptech.projetojpa1.dto.especificacao.EspecificacaoReceitaMensalDTO
 import sptech.projetojpa1.repository.EspecificacaoRepository
 import sptech.projetojpa1.repository.ProcedimentoRepository
 import sptech.projetojpa1.repository.TempoProcedimentoRepository
@@ -74,7 +75,7 @@ fun editarPorId(id: Int, dto: EspecificacaoDTO): Especificacao? {
 
     fun getFoto(codigo: Int): ByteArray? = repository.findFotoByCodigo(codigo)
 
-    fun getReceitaAcumulada(): Double? {
+    fun getReceitaAcumulada(): List<EspecificacaoReceitaMensalDTO> {
         return repository.findReceitaSemestralAcumulada()
     }
 }
