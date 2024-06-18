@@ -215,3 +215,38 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('userEmail').textContent = email;
     }
 });
+
+document.querySelector('.planilha-btn').addEventListener('click', function () {
+    exportTableToExcel('procedures-table', 'Procedimentos.xlsx');
+});
+
+function exportTableToExcel(tableId, filename = '') {
+    var table = document.getElementById(tableId);
+
+    // Create a temporary table to remove the "Ações" column
+    var tempTable = table.cloneNode(true);
+
+    // Remove the last column (Ações) from the header
+    var tempThead = tempTable.querySelector('thead');
+    var tempHeaderRow = tempThead.rows[0];
+    tempHeaderRow.deleteCell(-1); // Deletes the last cell from header
+
+    // Remove the last column (Ações) from all rows in the body
+    var tempTbody = tempTable.querySelector('tbody');
+    for (var i = 0; i < tempTbody.rows.length; i++) {
+        tempTbody.rows[i].deleteCell(-1); // Deletes the last cell from each row
+    }
+
+    // Convert the temporary table to Excel workbook and download
+    var wb = XLSX.utils.table_to_book(tempTable, { sheet: "Sheet1" });
+    var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+
+    function s2ab(s) {
+        var buf = new ArrayBuffer(s.length);
+        var view = new Uint8Array(buf);
+        for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+        return buf;
+    }
+
+    saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), filename);
+}
