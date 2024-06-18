@@ -5,8 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d35af601-708d-4cac-8c6c-99c4dd3df842" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../site institucional-plenitude/assets/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/../site institucional-plenitude/assets/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../site institucional-plenitude/assets/img/servicos/Educacao/exten cilios.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../site institucional-plenitude/assets/img/servicos/sobrancelha - design com henna copia.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../site institucional-plenitude/services.html" beforeDir="false" afterPath="$PROJECT_DIR$/../site institucional-plenitude/services.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API cliente - Yan/src/main/kotlin/sptech/projetojpa1/repository/AgendamentoRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/API cliente - Yan/src/main/kotlin/sptech/projetojpa1/repository/AgendamentoRepository.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
