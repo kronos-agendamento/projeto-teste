@@ -26,12 +26,14 @@
                 <input type="text" id="nome" placeholder="Nome Completo" required>
                 <input type="email" id="email" placeholder="Email" required>
                 <input type="text" id="cpf" placeholder="CPF" required>
-                <input type="number" id="telefone" placeholder="Telefone" required>
+                <input type="hidden" id="cpfFormatado" name="cpf">
+                <input type="text" id="telefone" placeholder="(DDD) Telefone" required>
+                <input type="hidden" id="telefoneFormatado" name="telefone">
                 <input type="text" id="instagram" placeholder="Nome de usuário do Instagram" required>
-                <input type="password" id="senha" placeholder="Crie uma senha" required>
+                <input type="text" id="senha" class="senha-visible" placeholder="Crie uma senha" required>
+                <input type="text" id="confirmarSenha" class="senha-visible" placeholder="Confirme sua senha" required>
                 <button type="submit">Cadastrar</button>
                 <div class="mobile-toggle">
-                    <p>Já tem uma conta?</p>
                     <button type="button" id="mobileLoginBtn">Fazer login</button>
                 </div>
             </form>
@@ -40,11 +42,10 @@
             <form id="loginForm">
                 <h1>Boas-vindas!</h1>
                 <input type="email" id="loginEmail" placeholder="Email" required>
-                <input type="password" id="loginSenha" placeholder="Senha" required>
+                <input type="text" id="loginSenha" class="senha-visible" placeholder="Senha" required>
                 <a href="#">Esqueceu sua senha?</a>
                 <button type="submit">Entrar</button>
                 <div class="mobile-toggle">
-                    <p>Não tem uma conta?</p>
                     <button type="button" id="mobileRegisterBtn">Cadastrar</button>
                 </div>
             </form>

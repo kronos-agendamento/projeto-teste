@@ -375,3 +375,13 @@
     .notification svg {
         margin-right: 10px;
     }
+
+    .senha-visible:hover {
+        -webkit-text-security: none !important;
+    }
+
+    .senha-visible {
+        -webkit-text-security: disc !important;
+        /* Chrome, Opera, Safari */
+        /* Firefox */
+    }
