@@ -637,7 +637,7 @@ section {
 
 .cta .cta-btn:hover {
   background: #CDA582;
-  border: 2px solid #34b7a7;
+  border: 2px solid #e80368;
 }
 
 @media (max-width: 1024px) {
@@ -713,7 +713,7 @@ section {
 .about .content ul i {
   font-size: 20px;
   padding-right: 2px;
-  color: #34b7a7;
+  color: #e80368;
 }
 
 .about .content p:last-child {
@@ -813,7 +813,7 @@ section {
 
 .testimonials .testimonial-item .quote-icon-left,
 .testimonials .testimonial-item .quote-icon-right {
-  color: #c8efea;
+  color: #CDA582;
   font-size: 26px;
 }
 
@@ -855,7 +855,7 @@ section {
 }
 
 .testimonials .swiper-pagination .swiper-pagination-bullet-active {
-  background-color: #34b7a7;
+  background-color: #e80368;
 }
 
 /*--------------------------------------------------------------
@@ -872,7 +872,7 @@ section {
 .resume .resume-item {
   padding: 0 0 20px 20px;
   margin-top: -2px;
-  border-left: 2px solid #34b7a7;
+  border-left: 2px solid #e80368;
   position: relative;
 }
 
@@ -881,7 +881,7 @@ section {
   font-size: 18px;
   font-weight: 600;
   font-family: "Poppins", sans-serif;
-  color: #1d685f;
+  color: #C21256;
   margin-bottom: 10px;
 }
 
@@ -892,7 +892,7 @@ section {
   display: inline-block;
   font-weight: 600;
   margin-bottom: 10px;
-  color: #34b7a7;
+  color: #e80368;
 }
 
 .resume .resume-item ul {
@@ -916,7 +916,7 @@ section {
   left: -9px;
   top: 0;
   background: #fff;
-  border: 2px solid #34b7a7;
+  border: 2px solid #e80368;
 }
 
 /*--------------------------------------------------------------
@@ -1061,7 +1061,7 @@ section {
 }
 
 .services .iconbox-teal i {
-  color: #11dbcf;
+  color: #C21256;
 }
 
 .services .iconbox-teal:hover .icon i {
@@ -1270,7 +1270,7 @@ section {
 
 .contact .info i {
   font-size: 20px;
-  color: #34b7a7;
+  color: #e80368;
   float: left;
   width: 44px;
   height: 44px;
@@ -1305,7 +1305,7 @@ section {
 .contact .info .email:hover i,
 .contact .info .address:hover i,
 .contact .info .phone:hover i {
-  background: #34b7a7;
+  background: #e80368;
   color: #fff;
 }
 
@@ -1330,7 +1330,7 @@ section {
 .contact .php-email-form .sent-message {
   display: none;
   color: #fff;
-  background: #18d26e;
+  background: #C21256;
   text-align: center;
   padding: 15px;
   font-weight: 600;
@@ -1350,7 +1350,7 @@ section {
   width: 24px;
   height: 24px;
   margin: 0 10px -6px 0;
-  border: 3px solid #18d26e;
+  border: 3px solid #e80368;
   border-top-color: #eee;
   animation: animate-loading 1s linear infinite;
 }
@@ -1364,7 +1364,7 @@ section {
 
 .contact .php-email-form input:focus,
 .contact .php-email-form textarea:focus {
-  border-color: #34b7a7;
+  border-color: #e80368;
 }
 
 .contact .php-email-form input {
@@ -1376,7 +1376,7 @@ section {
 }
 
 .contact .php-email-form button[type=submit] {
-  background: #34b7a7;
+  background: #e80368;
   border: 0;
   padding: 10px 30px 12px 30px;
   color: #fff;
@@ -1385,7 +1385,7 @@ section {
 }
 
 .contact .php-email-form button[type=submit]:hover {
-  background: #3dc8b7;
+  background: #e80368;
 }
 
 @keyframes animate-loading {
@@ -1415,5 +1415,5 @@ section {
 }
 
 #footer .credits a {
-  color: #34b7a7;
+  color: #e80368;
 }
