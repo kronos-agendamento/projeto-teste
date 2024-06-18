@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service
 import sptech.projetojpa1.dominio.Usuario
 import sptech.projetojpa1.dto.usuario.UsuarioAtualizacaoRequest
 import sptech.projetojpa1.dto.usuario.UsuarioLoginRequest
+import sptech.projetojpa1.dto.usuario.UsuarioLoginResponse
 import sptech.projetojpa1.dto.usuario.UsuarioRequest
 import sptech.projetojpa1.repository.*
 
@@ -41,16 +42,21 @@ class UsuarioService(
         return usuarioRepository.save(usuario)
     }
 
-    fun fazerLogin(request: UsuarioLoginRequest): String {
+    fun fazerLogin(request: UsuarioLoginRequest): UsuarioLoginResponse? {
         val usuario = usuarioRepository.findByEmailIgnoreCase(request.email)
         return if (usuario != null && usuario.senha.equals(request.senha, ignoreCase = true)) {
             usuario.status = true
             usuarioRepository.save(usuario)
-            "Login do(a) ${usuario.nome} realizado com sucesso."
+            UsuarioLoginResponse(
+                mensagem = "Login realizado com sucesso.",
+                nome = usuario.nome ?: "",
+                email = usuario.email ?: ""
+            )
         } else {
-            "Email ou senha incorretos, verifique suas credenciais e tente novamente."
+            null
         }
     }
+
 
     fun fazerLogoff(cpf: String): String {
         val usuario = usuarioRepository.findByCpf(cpf)

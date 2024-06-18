@@ -126,4 +126,4 @@ class ProcedimentoController(private val procedimentoService: ProcedimentoServic
             ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
-}
+}   

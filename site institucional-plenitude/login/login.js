@@ -1,3 +1,18 @@
+function showNotification(message, isError = false) {
+    const notification = document.getElementById('notification');
+    const notificationMessage = document.getElementById('notification-message');
+    notificationMessage.textContent = message;
+    if (isError) {
+        notification.classList.add('error');
+    } else {
+        notification.classList.remove('error');
+    }
+    notification.classList.add('show');
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 3000);
+}
+
 const container = document.getElementById('container');
 const registerBtn = document.getElementById('register');
 const loginBtn = document.getElementById('login');
@@ -52,13 +67,13 @@ document.getElementById('registerForm').addEventListener('submit', async (event)
             localStorage.setItem('nome', nome);
             localStorage.setItem('email', email);
 
-            alert('Cadastro realizado com sucesso!');
+            showNotification('Cadastro realizado com sucesso!');
             window.location.href = '../../app/index/index.html';
         } else {
-            alert('Erro ao realizar cadastro.');
+            showNotification('Erro ao realizar cadastro.', true);
         }
     } catch (error) {
-        alert('Erro ao realizar cadastro.');
+        showNotification('Erro ao realizar cadastro.', true);
     }
 });
 
@@ -89,13 +104,13 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
             localStorage.setItem('nome', loginData.nome);
             localStorage.setItem('email', loginData.email);
 
-            alert('Login realizado com sucesso!');
+            showNotification('Login realizado com sucesso!');
             window.location.href = '../../app/index/index.html';
         } else {
-            alert('Erro ao realizar login. Verifique suas credenciais.');
+            showNotification('Erro ao realizar login. Verifique suas credenciais.', true);
         }
     } catch (error) {
-        alert('Erro ao realizar login.');
+        showNotification('Erro ao realizar login.', true);
     }
 });
 
