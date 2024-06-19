@@ -78,4 +78,9 @@ fun editarPorId(id: Int, dto: EspecificacaoDTO): Especificacao? {
     fun getReceitaAcumulada(): List<Double> {
         return repository.findReceitaSemestralAcumulada()
     }
+
+    fun getReceitaAcumuladaLabels(): List<String> {
+        return repository.findMesesUltimosSeisMeses()
+    }
+
 }

@@ -35,4 +35,20 @@ DATE_FORMAT(a.data, '%Y-%m');
     """, nativeQuery = true
     )
     fun findReceitaSemestralAcumulada(): List<Double>
+
+    @Query(
+        value = """
+    SELECT 
+    DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL seq MONTH), '%Y-%m') as month 
+    FROM 
+    (SELECT 0 as seq 
+        UNION ALL SELECT 1 
+        UNION ALL SELECT 2 
+        UNION ALL SELECT 3 
+        UNION ALL SELECT 4 
+        UNION ALL SELECT 5) as sequence 
+    ORDER BY month;
+    """, nativeQuery = true
+    )
+    fun findMesesUltimosSeisMeses(): List<String>
 }

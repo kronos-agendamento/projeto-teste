@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
             procedimentoMaisRealizado: '/api/procedimentos/mais-agendado',
             procedimentoComMelhorAvaliacao: '/api/procedimentos/melhor-nota',
             receitaAcumulada: '/especificacoes/receita-acumulada',
+            receitaAcumuladaLabels: '/especificacoes/receita-acumulada-labels',
             canaisDeDivulgacao: '/api/usuarios/canais-de-divulgacao',
             clientesAtivos: '/usuarios/clientes-ativos',
             clientesInativos: '/api/usuarios/clientes-inativos',
@@ -36,6 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
        // fetchData(endpoints.procedimentoMaisRealizado, updateChart1);
        // fetchData(endpoints.procedimentoComMelhorAvaliacao, updateChart2);
+       fetchData(endpoints.receitaAcumuladaLabels, updateReceitaAcumuladaLabels);
         fetchData(endpoints.receitaAcumulada, updateChart3);
        // fetchData(endpoints.canaisDeDivulgacao, updateChart4);
     }
@@ -59,6 +61,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Atualiza os Gráficos
+
+    let dataChart3 = null;
+    let labelsChart3 = null;
+
     function updateChart1(data) {
         const labels = data.map(item => item.nome); // Ajuste conforme a estrutura dos dados recebidos
         const valores = data.map(item => item.quantidade); // Ajuste conforme a estrutura dos dados recebidos
@@ -76,11 +82,16 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     
     function updateChart3(data) {
-         // Ajuste conforme a estrutura dos dados recebidos
-        const valores = data.map(item => item.receita); // Ajuste conforme a estrutura dos dados recebidos
     
         var dataChart3 = data
         createCharts(dataChart3);
+    }
+
+    function updateReceitaAcumuladaLabels(data) {
+        labelsChart3 = data;
+        if (dataChart3) {
+            createCharts();
+        }
     }
     
     function updateChart4(data) {
@@ -104,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function createCharts(dataChart3) {
 
-        const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'];
+        if (!dataChart3 || !labelsChart3) return; // Garante que ambos os dados estejam disponíveis antes de criar o gráfico
        // if (chart1) chart1.destroy();
       //  if (chart2) chart2.destroy();
         if (chart3) chart3.destroy();
@@ -137,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function () {
         chart3 = new Chart(ctx3, {
             type: 'line',
             data: {
-                labels: meses,
+                labels: labelsChart3,
                 datasets: [{
                     label: 'Receita Acumulada',
                     data: dataChart3,

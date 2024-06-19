@@ -207,5 +207,14 @@ class EspecificacaoController(
         }
     }
 
+    @GetMapping("/receita-acumulada-labels")
+    fun getReceitaAcumuladaLabels(): ResponseEntity<List<String>> {
+        val labels = service.getReceitaAcumuladaLabels()
+        return if (labels.isNotEmpty()) {
+            ResponseEntity.ok(labels)
+        } else {
+            ResponseEntity.noContent().build()
+        }
+    }
 
 }
