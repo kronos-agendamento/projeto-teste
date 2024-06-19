@@ -7,7 +7,6 @@ import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import sptech.projetojpa1.dominio.Usuario
-import sptech.projetojpa1.dto.*
 import sptech.projetojpa1.dto.usuario.UsuarioAtualizacaoRequest
 import sptech.projetojpa1.dto.usuario.UsuarioLoginRequest
 import sptech.projetojpa1.dto.usuario.UsuarioLoginResponse
@@ -263,19 +262,19 @@ class UsuarioController(
     }
 
     @GetMapping("/clientes-ativos")
-    fun getClientesAtivosUltimosTresMeses(): ResponseEntity<List<Double>> {
+    fun getClientesAtivosUltimosTresMeses(): ResponseEntity<Double> {
         val numeroClientes = usuarioService.getClientesAtivos()
         return ResponseEntity.ok(numeroClientes)
     }
 
     @GetMapping("/clientes-inativos")
-    fun getClientesInativos(): ResponseEntity<List<Usuario>> {
+    fun getClientesInativos(): ResponseEntity<Double> {
         val clientes = usuarioService.getClientesInativos()
         return ResponseEntity.ok(clientes)
     }
 
     @GetMapping("/clientes-fidelizados-ultimos-tres-meses")
-    fun getClientesFidelizadosUltimosTresMeses(): ResponseEntity<List<Usuario>> {
+    fun getClientesFidelizadosUltimosTresMeses(): ResponseEntity<Double> {
         val clientes = usuarioService.getClientesFidelizadosUltimosTresMeses()
         return ResponseEntity.ok(clientes)
     }

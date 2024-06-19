@@ -34,7 +34,8 @@ interface UsuarioRepository : JpaRepository<Usuario, Int> {
 
     fun findByNivelAcesso(nivelAcesso: NivelAcesso): List<Usuario>
 
-    @Query(nativeQuery = true, value =
+    @Query(
+        nativeQuery = true, value =
         "SELECT u.indicacao, COUNT(u.id_usuario) AS total_clientes " +
                 "FROM Usuario u " +
                 "WHERE u.data_nasc >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR) " +
@@ -43,44 +44,41 @@ interface UsuarioRepository : JpaRepository<Usuario, Int> {
     )
     fun findClientesPorOrigem(): List<Usuario>
 
-
-    @Query(nativeQuery = true, value =
-    """
-    SELECT COUNT(DISTINCT u.id_usuario)
-            FROM usuario u
-            JOIN agendamento a ON u.id_usuario = a.fk_usuario
-            WHERE a.data >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)"""
-
+    @Query(
+        nativeQuery = true, value =
+        "SELECT COUNT(DISTINCT u.id_usuario) AS total_clientes " +
+                "FROM usuario u " +
+                "JOIN agendamento a ON u.id_usuario = a.fk_usuario " +
+                "WHERE a.data BETWEEN DATE_SUB(NOW(), INTERVAL 3 MONTH) AND NOW()"
     )
-    fun findClientesAtivos(): List<Double>
+    fun findClientesAtivos(): Double
 
-    @Query(nativeQuery = true, value =
-        "SELECT u FROM Usuario u " +
-                "WHERE NOT EXISTS (SELECT 1 " +
-                "FROM Agendamento a " +
-                "WHERE u.id = a.usuario.id " +
-                "AND a.data >= CURRENT_DATE - 3 MONTH)"
+    @Query(
+        nativeQuery = true, value =
+        """
+        SELECT COUNT(u.id_usuario) AS qtd_clientes_inativos
+        FROM usuario u
+        WHERE u.id_usuario NOT IN (
+            SELECT DISTINCT a.fk_usuario
+            FROM agendamento a
+            WHERE a.data BETWEEN DATE_SUB(NOW(), INTERVAL 3 MONTH) AND NOW()
+        )
+        """
     )
-    fun findClientesInativos(): List<Usuario>
+    fun findClientesInativos(): Double
 
     @Query(
         nativeQuery = true, value = """
-        SELECT 
-            u.id_usuario, 
-            u.nome, 
-            u.email, 
-            COUNT(a.id_agendamento) AS num_agendamentos
-        FROM 
-            usuario u
-        JOIN 
-            agendamento a ON u.id_usuario = a.fk_usuario
-        WHERE 
-            a.data >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
-        GROUP BY 
-            u.id_usuario, u.nome, u.email
-        HAVING 
-            COUNT(a.id_agendamento) > 2
-    """
+        SELECT COUNT(u.id_usuario) AS qtd_clientes_fidelizados
+        FROM usuario u
+        JOIN (
+            SELECT a.fk_usuario
+            FROM agendamento a
+            WHERE a.data BETWEEN DATE_SUB(NOW(), INTERVAL 3 MONTH) AND NOW()
+            GROUP BY a.fk_usuario
+            HAVING COUNT(DISTINCT MONTH(a.data)) = 3
+        ) fidelizados ON u.id_usuario = fidelizados.fk_usuario
+        """
     )
-    fun findClientesFidelizadosUltimosTresMeses(): List<Usuario>
+    fun findClientesFidelizadosUltimosTresMeses(): Double
 }
