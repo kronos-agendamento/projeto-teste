@@ -4,7 +4,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', Arial, sans-serif;
 }
 
 body {
@@ -13,6 +12,7 @@ body {
     padding: 0;
     display: flex;
     background-color: #ffffff;
+    height: 1000px;
 }
 
 .container {

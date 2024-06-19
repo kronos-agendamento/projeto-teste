@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const modalProcedimento = document.getElementById('procedimento');
     const btnYes = document.querySelector('.btn-yes');
     let currentPage = 1;
-    const itemsPerPage = 3;
+    const itemsPerPage = 5;
     let procedimentos = [];
     let procedimentoIdParaDeletar = null;
 
