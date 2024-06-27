@@ -1,0 +1,422 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 1000px;
+}
+
+header {
+    background-color: #D2135D;
+    color: white;
+    padding: 2vh;
+    border-radius: 3vh;
+    margin-bottom: 2vh;
+    margin-top: 2vh;
+    height: 10vh;
+}
+
+header h1 {
+    margin: 1vh 0vh 0vh 2vh;
+    font-size: 3vh;
+}
+
+header p {
+    margin: 0vh 0vh 0vh 2vh;
+    font-size: 2vh;
+}
+
+.actions {
+    display: flex;
+    margin-top: 25px;
+    gap: 10px;
+    margin-left: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.actions button,
+.button-page {
+    background-color: #ffffff00;
+    color: #000000;
+    border: 1px solid #000000;
+    padding: 2px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    font-weight: bold;
+}
+
+.actions button img {
+    width: 25px;
+    margin-right: 10px;
+}
+
+.actions button span {
+    display: inline-block;
+}
+
+.actions button:hover,
+.button-page:hover {
+    background-color: #d81b60;
+    color: #fff;
+    border: none;
+}
+
+.planilha-btn {
+    margin-right: 10px;
+}
+
+.actions button img {
+    width: 25px;
+    margin-right: 5 px;
+}
+
+.actions button:hover {
+    background-color: #d81b60;
+    color: #fff;
+    border: none;
+}
+
+.right-actions {
+    display: flex;
+    margin-right: 80px;
+}
+
+.planilha-btn {
+    margin-right: 10px;
+}
+
+.procedures-table {
+    width: 150vh;
+    max-width: 150vh;
+    border-collapse: collapse;
+    margin-top: 30px;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-left: 4.5%;
+    margin-right: auto;
+}
+
+.procedures-table thead {
+    background-color: #D2135D;
+    color: #fff;
+}
+
+.procedures-table th,
+.procedures-table td {
+    padding: 15px;
+    text-align: left;
+}
+
+.procedures-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.edit-btn,
+.delete-btn,
+.more-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.edit-btn:hover,
+.delete-btn:hover,
+.more-btn:hover {
+    color: #d81b60;
+}
+
+/* Pagination */
+.pagination {
+    text-align: center;
+    margin: 20px 0;
+    color: #D2135D;
+    cursor: pointer;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.stat-item {
+    background-color: #FFE2EC;
+    border-radius: 5px;
+    padding: 10px;
+    width: 30%;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.stats :hover {
+    background-color: #FAD2E0;
+
+}
+
+.stat-item h2 {
+    color: #000000;
+    margin-bottom: 10px;
+    font-size: 20px;
+    width: 100%;
+}
+
+.stat-item p {
+    margin-bottom: 10px;
+}
+
+.stats .stat-item a {
+    color: #000000;
+    text-decoration: none;
+    font-weight: 300;
+    font-size: small;
+}
+
+.stats .stat-item a:hover {
+    text-decoration: underline;
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 40%;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    text-align: center;
+}
+
+.modal-content p {
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.modal-content .btn {
+    margin: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.modal-content .btn-yes {
+    background-color: #28a745;
+    color: white;
+}
+
+.modal-content .btn-no {
+    background-color: #dc3545;
+    color: white;
+}
+
+.modal-content .btn-yes:hover {
+    background-color: #218838;
+}
+
+.modal-content .btn-no:hover {
+    background-color: #c82333;
+}
+
+.criar-btn a {
+    color: inherit;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* nav */
+
+
+/* navbar */
+.navigation {
+    height: auto;
+    background: #D2135D;
+    width: 275px;
+    margin-top: 20px;
+    margin-left: 32px;
+    box-shadow: 10px 0 0 #ffffff;
+    border-left: 10px solid #D2135D;
+    overflow-y: auto;
+    /* Permite rolagem vertical se necessário */
+    overflow-x: hidden;
+    /* Remove a rolagem horizontal */
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 50px;
+    position: relative;
+
+}
+
+.navigation ul {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding-left: 5px;
+    padding-top: 40px;
+}
+
+.navigation ul li {
+    position: relative;
+    list-style: none;
+    width: 100%;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+
+}
+
+.navigation ul li a {
+
+    position: relative;
+    display: flex;
+    width: 100%;
+    text-decoration: none;
+    color: #fff;
+    height: 50px;
+    margin-bottom: 3vh;
+}
+
+.navigation ul li a .icon {
+    position: relative;
+    display: block;
+    min-width: 60px;
+    height: 60px;
+    text-align: center;
+    line-height: 70px;
+}
+
+.navigation ul li a .icon ion-icon {
+    position: relative;
+    font-size: 1.5rem;
+    z-index: 1;
+}
+
+.navigation ul li a .title {
+    position: relative;
+    display: block;
+    padding-left: 10px;
+    height: 60px;
+    line-height: 60px;
+    white-space: nowrap;
+    font-size: 15px;
+}
+
+.navigation ul li.active {
+    color: black;
+    background: #ffffff;
+
+}
+
+.navigation ul li.active a {
+    color: black;
+    /* Cor do texto quando ativo */
+}
+
+.navigation ul li.active a .icon ion-icon {
+    color: black;
+    /* Cor do ícone quando ativo */
+}
+
+
+.navigation ul li.active a::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    background: #D2135D;
+    border-radius: 50%;
+    box-shadow: 15px 15px 0 #ffffff;
+    color: black;
+}
+
+.navigation ul li.active a::after {
+    content: '';
+    position: absolute;
+    bottom: -30px;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    background: #D2135D;
+    border-radius: 50%;
+    box-shadow: 15px -15px 0 #ffffff;
+}
+
+img {
+    width: 1000px;
+    height: 60px;
+    border-radius: 600px;
+    margin-bottom: 20px;
+}
+
+.navigation .imagem-perfil {
+    width: 30px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+}
+
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.notification.show {
+    opacity: 1;
+}
+
+.notification.error {
+    background-color: #dc3545;
+}
+
+.notification svg {
+    margin-right: 10px;
+}

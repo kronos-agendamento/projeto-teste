@@ -57,20 +57,19 @@ class UsuarioService(
         }
     }
 
-
-    fun fazerLogoff(cpf: String): String {
-        val usuario = usuarioRepository.findByCpf(cpf)
+    fun fazerLogoffPorId(id: Int): String {
+        val usuario = usuarioRepository.findById(id).orElse(null)
         return if (usuario != null) {
             usuario.status = false
             usuarioRepository.save(usuario)
             "Logoff do(a) ${usuario.nome} realizado com sucesso."
         } else {
-            "Esse CPF não está cadastrado em nosso sistema, verifique a credencial e tente novamente."
+            "Usuário com ID $id não está cadastrado em nosso sistema, verifique a credencial e tente novamente."
         }
     }
 
-    fun atualizarUsuario(cpf: String, dto: UsuarioAtualizacaoRequest): Usuario? {
-        val usuario = usuarioRepository.findByCpf(cpf) ?: return null
+    fun atualizarUsuarioPorId(id: Int, dto: UsuarioAtualizacaoRequest): Usuario? {
+        val usuario = usuarioRepository.findById(id).orElse(null) ?: return null
         usuario.apply {
             nome = dto.nome ?: nome
             email = dto.email ?: email
@@ -88,8 +87,8 @@ class UsuarioService(
         return usuarioRepository.save(usuario)
     }
 
-    fun deletarUsuario(cpf: String): Boolean {
-        val usuario = usuarioRepository.findByCpf(cpf) ?: return false
+    fun deletarUsuarioPorId(id: Int): Boolean {
+        val usuario = usuarioRepository.findById(id).orElse(null) ?: return false
         usuarioRepository.delete(usuario)
         return true
     }
@@ -110,7 +109,7 @@ class UsuarioService(
     fun getFoto(codigo: Int): ByteArray? = usuarioRepository.findFotoByCodigo(codigo)
 
 
-    fun getByCPF(cpf: String): Usuario? = usuarioRepository.findByCpf(cpf)
+    fun getById(id: Int): Usuario? = usuarioRepository.findById(id).orElse(null)
 
     fun getByNomeContains(nome: String): List<Usuario> = usuarioRepository.findByNomeContainsIgnoreCase(nome)
 

@@ -45,9 +45,9 @@ class UsuarioController(
             ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
         ]
     )
-    @PatchMapping("/logoff/{cpf}")
-    fun fazerLogoff(@Valid @PathVariable cpf: String): ResponseEntity<String> {
-        val responseMessage = usuarioService.fazerLogoff(cpf)
+    @PatchMapping("/logoff/{id}")
+    fun fazerLogoffPorId(@Valid @PathVariable id: Int): ResponseEntity<String> {
+        val responseMessage = usuarioService.fazerLogoffPorId(id)
         return if (responseMessage.contains("sucesso")) {
             ResponseEntity.status(200).body(responseMessage)
         } else {
@@ -77,12 +77,12 @@ class UsuarioController(
             ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
         ]
     )
-    @PatchMapping("/atualizacao-usuario/{cpf}")
-    fun atualizarUsuario(
-        @PathVariable cpf: String,
+    @PatchMapping("/atualizacao-usuario/{id}")
+    fun atualizarUsuarioPorId(
+        @PathVariable id: Int,
         @Valid @RequestBody dto: UsuarioAtualizacaoRequest
     ): ResponseEntity<Usuario> {
-        val usuarioAtualizado = usuarioService.atualizarUsuario(cpf, dto)
+        val usuarioAtualizado = usuarioService.atualizarUsuarioPorId(id, dto)
         return if (usuarioAtualizado != null) {
             ResponseEntity.status(200).body(usuarioAtualizado)
         } else {
@@ -98,9 +98,9 @@ class UsuarioController(
             ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
         ]
     )
-    @DeleteMapping("/exclusao-usuario/{cpf}")
-    fun deletarUsuario(@PathVariable cpf: String): ResponseEntity<String> {
-        val deletado = usuarioService.deletarUsuario(cpf)
+    @DeleteMapping("/exclusao-usuario/{id}")
+    fun deletarUsuarioPorId(@PathVariable id: Int): ResponseEntity<String> {
+        val deletado = usuarioService.deletarUsuarioPorId(id)
         return if (deletado) {
             ResponseEntity.status(200).body("Usuário excluído com sucesso.")
         } else {
@@ -202,9 +202,9 @@ class UsuarioController(
             ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
         ]
     )
-    @GetMapping("/buscar-por-cpf/{cpf}")
-    fun getByCPF(@PathVariable cpf: String): ResponseEntity<Usuario> {
-        val usuario = usuarioService.getByCPF(cpf)
+    @GetMapping("/buscar-por-id/{id}")
+    fun getById(@PathVariable id: Int): ResponseEntity<Usuario> {
+        val usuario = usuarioService.getById(id)
         return if (usuario != null) {
             ResponseEntity.ok(usuario)
         } else {

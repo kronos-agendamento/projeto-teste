@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editar Procedimento | KronosBooking</title>
+    <link rel="stylesheet" href="editar-procedimento.css" />
+    <script defer src="editar-procedimento.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <!-- Código HTML existente -->
+    <div class="navigation">
+      <li
+        class="list"
+        style="
+          width: 30px;
+          height: 30px;
+          list-style: none;
+          display: flex;
+          justify-content: center;
+          margin-top: 5vh;
+        "
+      >
+        <div
+          class="imagem-perfil"
+          style="
+            width: 20vh;
+            height: 20vh;
+            border-radius: 300px;
+            display: flex;
+            justify-content: center;
+          "
+        >
+          <img
+            src="../../../index/Foto de Perfil.png"
+            style="
+              width: 53vh;
+              height: 23vh;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+          />
+        </div>
+      </li>
+      <li
+        id="userName"
+        style="
+          margin-top: 20vh;
+          list-style: none;
+          color: white;
+          font-weight: 600;
+        "
+      ></li>
+      <li
+        id="userEmail"
+        style="
+          list-style: none;
+          color: white;
+          font-weight: 200;
+          font-size: 12px;
+        "
+      ></li>
+
+      <ul style="margin-top: 80%; position: absolute">
+        <li class="list">
+          <a href="../../../index/index.html">
+            <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+            <span class="title">Início </span>
+          </a>
+        </li>
+        <li class="list">
+          <a href="../../../perfil/perfil.html">
+            <span class="icon"
+              ><ion-icon name="people-outline"></ion-icon
+            ></span>
+            <span class="title">Perfil</span>
+          </a>
+        </li>
+        <li class="list">
+          <a href="../../../agendamento/agendamento.html">
+            <span class="icon"
+              ><ion-icon name="calendar-outline"></ion-icon
+            ></span>
+            <span class="title">Agendamentos</span>
+          </a>
+        </li>
+        <li class="list">
+          <a href="../../../anamnese/anamnese.html">
+            <span class="icon"
+              ><ion-icon name="document-text-outline"></ion-icon
+            ></span>
+            <span class="title">Anamneses</span>
+          </a>
+        </li>
+        <li class="list">
+          <a href="../../../cliente/cliente.html">
+            <span class="icon"
+              ><ion-icon name="person-add-outline"></ion-icon
+            ></span>
+            <span class="title">Clientes</span>
+          </a>
+        </li>
+        <li class="list active">
+          <a href="../../procedimento.html">
+            <span class="icon"><ion-icon name="brush-outline"></ion-icon></span>
+            <span class="title">Procedimentos</span>
+          </a>
+        </li>
+        <li class="list">
+          <a href="../../../dashboard/dashboard.html">
+            <span class="icon"
+              ><ion-icon name="stats-chart-outline"></ion-icon
+            ></span>
+            <span class="title">Dashboard</span>
+          </a>
+        </li>
+        <li class="list">
+          <a href="../../../../index.html">
+            <span class="icon"><ion-icon name="exit-outline"></ion-icon></span>
+            <span class="title">Sair</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="main-content" style="margin-top: -0.8%; margin-left: -1.6%">
+      <header style="height: 14vh; width: 152vh; margin-left: 4.3%">
+        <h1>Procedimentos</h1>
+        <p>
+          Essa página é destinada para edição de um procedimento específico.
+        </p>
+      </header>
+      <div id="notification" class="notification">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          fill="white"
+          class="bi bi-check-circle-fill"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z"
+          />
+        </svg>
+        <span id="notification-message"></span>
+      </div>
+      <div class="back-arrow">
+        <a
+          href="../../procedimento.html"
+          class="back-link"
+          style="margin-left: 5.2%"
+          >← Voltar para página de visualização dos procedimentos</a
+        >
+      </div>
+      <section
+        class="form-section"
+        style="border: 1px solid #7b7b7b; margin-left: 5.2%; width: 150vh"
+      >
+        <h2>Dados do Procedimento</h2>
+        <form class="container-forms">
+          <div class="forms-esquerda">
+            <div class="form-group">
+              <label for="pesquisar">Procedimento:</label>
+              <input type="text" id="pesquisar" name="pesquisar" />
+            </div>
+            <div class="form-group">
+              <label for="especificacao">Especificação:</label>
+              <input type="text" id="especificacao" name="especificacao" />
+            </div>
+            <div class="forms-valores">
+              <div class="form-group">
+                <label for="valor-colocacao" id="texto-valor-colocacao"
+                  >Valor colocação:</label
+                >
+                <input
+                  type="text"
+                  id="valor-colocacao"
+                  name="valor-colocacao"
+                />
+              </div>
+              <div class="form-group">
+                <label for="valor-retirada" id="texto-valor-retirada"
+                  >Valor retirada:</label
+                >
+                <input type="text" id="valor-retirada" name="valor-retirada" />
+              </div>
+              <div class="form-group">
+                <label for="valor-manutencao" id="texto-valor-manutencao"
+                  >Valor manutenção:</label
+                >
+                <input
+                  type="text"
+                  id="valor-manutencao"
+                  name="valor-manutencao"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="forms-direita">
+            <label for="duracao-horas">Duração:</label>
+            <div class="form-group forms-horarios">
+              <input
+                type="number"
+                id="duracao-horas"
+                name="duracao-horas"
+                placeholder="Horas"
+              />
+              <span>:</span>
+              <input
+                type="number"
+                id="duracao-minutos"
+                name="duracao-minutos"
+                placeholder="Minutos"
+              />
+            </div>
+            <!-- <div class="form-group">
+                            <label for="upload-foto">Foto do Procedimento:</label>
+                            <img src="" alt="Procedimento" id="foto-procedimento">
+                        </div> -->
+          </div>
+        </form>
+        <div class="button-container">
+          <button class="save-button">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              fill="white"
+              class="bi bi-check-circle-fill"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z"
+              />
+            </svg>
+            Salvar Procedimento
+          </button>
+        </div>
+      </section>
+    </div>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
+  </body>
+</html>

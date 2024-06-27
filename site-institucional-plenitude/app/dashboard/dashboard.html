@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | KronosBooking</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <div class="navigation">
+        <li class="list"
+            style="width: 30px; height: 30px; list-style: none;; display: flex; justify-content: center; margin-top: 5vh;">
+            <div class="imagem-perfil"
+                style="width: 20vh; height: 20vh; border-radius: 300px; display: flex; justify-content: center;">
+                <img src="../../app/index/Foto de Perfil.png"
+                    style="width: 53vh; height: 23vh; display: flex; justify-content: center; align-items: center;">
+            </div>
+        </li>
+        <li id="userName" style="margin-top: 20vh;list-style: none; color: white; font-weight: 600;"></li>
+        <li id="userEmail" style="list-style: none; color: white; font-weight: 200; font-size: 12px;"></li>
+        <ul style="margin-top: 80%; position:absolute;">
+            <li class="list">
+                <a href="../index/index.html">
+                    <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                    <span class="title">Início</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="../../app/perfil/perfil.html">
+                    <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
+                    <span class="title">Perfil</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="../../app/agendamento/agendamento.html">
+                    <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
+                    <span class="title">Agendamentos</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="../../app/anamnese/anamnese.html">
+                    <span class="icon"><ion-icon name="document-text-outline"></ion-icon></span>
+                    <span class="title">Anamneses</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="../../app/cliente/cliente.html">
+                    <span class="icon"><ion-icon name="person-add-outline"></ion-icon></span>
+                    <span class="title">Clientes</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="../procedimento/procedimento.html">
+                    <span class="icon"><ion-icon name="brush-outline"></ion-icon></span>
+                    <span class="title">Procedimentos</span>
+                </a>
+            </li>
+            <li class="list active">
+                <a href="dashboard.html">
+                    <span class="icon"><ion-icon name="stats-chart-outline"></ion-icon></span>
+                    <span class="title">Dashboard</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="../../index.html">
+                    <span class="icon"><ion-icon name="exit-outline"></ion-icon></span>
+                    <span class="title">Sair</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <main style="margin-top: 1%; margin-left: 2%;">
+        <header style="width: 146vh; margin-left: 2%; height: 14vh;">
+            <h1>Dashboard</h1>
+            <p>Essa é a página onde você pode identificar tendências e gerar insights para seu negócio.</p>
+        </header>
+        <div class="main-content">
+            <div class="tabs">
+                <button class="tab-button" style="margin-left: 140%;">Gerencial</button>
+            </div>
+            <div class="top-cards">
+                <div class="summary-cards">
+                    <div class="summary-card" id="clientes-ativos">
+                        <p>Clientes Ativos</p>
+                        <h2 id="clientes-ativos-count">Carregando...</h2>
+                        <p>Último trimestre</p>
+                    </div>
+                    <div class="summary-card" id="clientes-inativos">
+                        <p>Clientes Inativos</p>
+                        <h2 id="clientes-inativos-count">Carregando...</h2>
+                        <p>Último trimestre</p>
+                    </div>
+                    <div class="summary-card" id="clientes-fidelizados">
+                        <p>Clientes Fidelizados</p>
+                        <h2 id="clientes-fidelizados-count">Carregando...</h2>
+                        <p>Último trimestre</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="charts" style="width: 400vh;">
+            <div class="chart-container"
+                style="width: 300vh; margin-left: 8%;  border: 1px solid rgb(97, 97, 97); margin-top: 3%;">
+                <h3>Receita Acumulada</h3>
+                <canvas id="chart3"></canvas>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="dashboard.js"></script>
+        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>
