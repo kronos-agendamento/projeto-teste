@@ -41,3 +41,19 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('userEmail').textContent = email;
     }
 });
+
+(function() {
+    "use strict";
+  
+
+  /**
+   * Preloader
+   */
+  let preloader = select('#preloader');
+  if (preloader) {
+    window.addEventListener('load', () => {
+      preloader.remove()
+    });
+  }
+}
+)
