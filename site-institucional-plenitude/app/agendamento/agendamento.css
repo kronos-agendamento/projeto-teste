@@ -392,7 +392,7 @@ Inicio Filtros
   height: 5vh;
   width: 7vw;
   justify-content: center;
-  margin: 1vh;
+  margin: 2vh;
   padding: 2vh;
   align-items: center;
   font-size: 16px;
@@ -410,6 +410,7 @@ Inicio Filtros
   display: flex;
   font-family: Poppins, sans-serif;
   width: auto;
+  margin: 2vh;
   justify-content: center;
   padding: 3.5vh;
   font-size: 16px;
