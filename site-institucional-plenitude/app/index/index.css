@@ -302,6 +302,8 @@ main {
 }
 
 header {
+    display: flex;
+    justify-content: space-between;
     background-color: #D2135D;
     color: white;
     padding: 2vh;
@@ -351,7 +353,7 @@ header p {
 }
 
 .actions button {
-    background-color: #facbdc;
+    background-color: #FFF0F5;
     display: flex;
     font-family: Poppins, sans-serif;
     height: 10vh;
@@ -549,7 +551,7 @@ table {
 }
 
 thead {
-    background-color: #facbdc;
+    background-color: #FFF0F5;
 }
 
 th,
