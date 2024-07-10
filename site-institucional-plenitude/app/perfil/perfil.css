@@ -287,6 +287,7 @@ header p {
 
 .main-content {
   display: flex;
+  margin-top: 2vh;
 }
 
 /*-------------------------------------------------------------
@@ -298,7 +299,7 @@ Dados do usuário
   flex-direction: column;
   width: 68vw;
   height: auto;
-  margin-top: 1vh;
+  margin-top: 4vh;
   margin-left: 2vw;
   border-radius: 10px;
   overflow: hidden;
@@ -309,9 +310,9 @@ Dados do usuário
 .right-content {
   display: flex;
   flex-direction: column;
-  width: 15vw;
+  width: 25vw;
   height: auto;
-  margin-top: 1vh;
+  margin-top: 2vh;
   margin-left: 2vw;
   border-radius: 10px;
   overflow: hidden;
@@ -322,7 +323,7 @@ Dados do usuário
 .left-content {
   display: flex;
   flex-direction: column;
-  width: 45vw;
+  width: 41vw;
   height: auto;
   margin-top: 2vh;
   margin-left: 2vw;
@@ -336,9 +337,19 @@ Dados do usuário
   display: flex;
   flex-direction: row;
   width: 68vw;
-  height: 30vh;
+  height: 26vh;
   background-color: #FFF0F5;
   align-items: center;
+
+  padding-left: 2vw;
+}
+
+.content-box2{
+  display: flex;
+  flex-direction: row;
+  background-color: #FFF0F5;
+  align-items: center;
+
 }
 
 .content{
@@ -347,6 +358,63 @@ Dados do usuário
   margin: 1vh;
   font-weight: 600;
 }
+
+.content-form-flex {
+  padding: 1.2vw ;
+  display: flex;
+  background-color: #FFF0F5;
+}
+
+.content-form {
+  padding: 1.2vw;
+  background-color: #FFF0F5;
+}
+
+.label{
+padding-top: 1vw;
+padding-right: 1vw;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 2vw;
+  padding-right: 0.9vw;
+  width: 23vw;
+  background-color: #FFF0F5;
+}
+
+.button-container2 {
+  display: flex;
+  justify-content: flex-end;
+  padding: 2vw;
+  width: 68vw;
+  background-color: #FFF0F5;
+}
+
+.save-button {
+  display: flex;
+  align-items: center;
+  background-color: #e70069;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 5px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.save-button svg {
+  margin-right: 10px;
+  width: 20px;
+  height: 20px;
+}
+
+.save-button:hover {
+  background-color: #d6005c;
+}
+
 
 .actions {
   display: grid;

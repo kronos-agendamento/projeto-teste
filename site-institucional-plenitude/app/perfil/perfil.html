@@ -104,21 +104,39 @@
           </div>
           <div class="content-box">
             <div class="content">
-              <input>
+              <div class="label">
+              <input  placeholder="Clique aqui e insira uma imagem de perfil" > 
             </div>
+          </div>
             <div class="content">
-              <p>Nome Completo:</p>
-              <input type="text" id="nome" placeholder="Nome Completo" required>
-              <p>Data de Nascimento:</p>
-              <input type="text" id="nascimento" placeholder="Data de nascimento" required>
+              <div class="label">
+                <p>Nome Completo:</p>
+                <input type="text" id="nome" placeholder="Nome Completo" required>
+              </div>
+              <div class="label">
+                <p>Data de Nascimento:</p>
+                <input type="text" id="nascimento" placeholder="Data de nascimento" required>
+              </div>
+            </div>
 
-            </div>
             <div class="content">
-              <p>Email:</p>
-              <input type="email" id="email" placeholder="Email" required>
-              <p>Telefone:</p>
-              <input type="text" id="telefone" placeholder="(DDD) Telefone" required>
+              <div class="label">
+                <p>Email:</p>
+                <input type="email" id="email" placeholder="Email" required>
+              </div>
+
+              <div class="label">
+                <p>Telefone:</p>
+                <input type="text" id="telefone" placeholder="(DDD) Telefone" required>
+              </div>
             </div>
+          </div>
+
+
+          <div class="button-container2">
+            <button type="button" class="save-button" id="save-procedimento-button">
+              Alterar senha
+            </button>
           </div>
 
         </div>
@@ -129,26 +147,137 @@
             <h1>Dados da empresa</h1>
           </div>
 
+          <div class="content-form-flex">
+
+            <div class="form-group form-mr form-input">
+              <div class="label">
+                <label for="empresa">Nome da Empresa:</label>
+                <select id="empresa" name="empresa">
+                  <option value="">Selecione uma empresa</option>
+                </select>
+              </div>
+
+            </div>
+
+            <div class="form-group form-mr form-input">
+              <div class="label">
+                <label for="cnpj">CNPJ:</label>
+                <select id="cnpj" name="cnpj">
+                  <option value="">xx.xxx.xxx/xxxx-xx</option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+          <div class="content-form-flex">
+
+            <div class="form-group form-mr form-input">
+              <label for="endereco">Endereço:</label>
+              <select id="endereco" name="endereco">
+                <option value="">xxxxxxxxxxxxxxxx, xx - XX</option>
+              </select>
+            </div>
+          </div>
+
+
+          <div class="content-form-flex">
+
+            <div class="form-group form-mr form-input">
+              <label for="empresa">Dias de funcionamento:</label>
+              <div class="content-box2">
+                <div class="label">
+                  <span>De:</span>
+                  <select id="empresa" name="empresa">
+                    <option value="">Terça</option>
+                  </select>
+                </div>
+                <div class="label">
+                  <span>Até:</span>
+                  <select id="empresa" name="empresa">
+                    <option value="">Sábado</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group form-mr form-input">
+              <label for="cnpj"> Horarios de funcionamento</label>
+              <div class="content-box2">
+
+                <div class="label">
+                  <span>De:</span>
+                  <select id="cnpj" name="cnpj">
+                    <option value="">8:00</option>
+                  </select>
+                </div>
+                <div class="label">
+                  <span>Até:</span>
+                  <select id="cnpj" name="cnpj">
+                    <option value="">20:00</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
 
         </div>
         <div class="right-content">
           <div class="table-header">
             <h1>Bloqueio de agendamentos</h1>
           </div>
+          <div class="content-form">
+
+            <div class="form-group form-mr form-input">
+              <div class="label">
+                <label for="empresa">Dia:</label>
+                <select id="empresa" name="empresa">
+                  <option value="">Segunda </option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+          <div class="content-form-flex">
+            <div class="form-group form-mr form-input">
+              <label for="cnpj"> Horarios de funcionamento</label>
+              <div class="content-box2">
+
+                <div class="label">
+                  <span>De:</span>
+                  <select id="cnpj" name="cnpj">
+                    <option value="">8:00</option>
+                  </select>
+                </div>
+                <div class="label">
+                  <span>Até:</span>
+                  <select id="cnpj" name="cnpj">
+                    <option value="">20:00</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="button-container">
+                <button type="button" class="save-button" id="save-procedimento-button">
+                  Adicionar
+                </button>
+              </div>
 
 
-        </div>
-      </div>
-
-      <footer id="footer">
-        <div class="footer_container">
-          <div class="copyright">
-            &copy; Copyright <strong><span>KRONOS</span></strong>. All Rights Reserved
+            </div>
           </div>
         </div>
-      </footer><!-- End  Footer -->
+      </div>
+  </div>
+  <footer id="footer">
+    <div class="footer_container">
+      <div class="copyright">
+        &copy; Copyright <strong><span>KRONOS</span></strong>. All Rights Reserved
+      </div>
+    </div>
+  </footer><!-- End  Footer -->
 
-    </main>
+  </main>
   </div>
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
