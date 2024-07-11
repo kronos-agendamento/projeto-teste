@@ -1,9 +1,9 @@
-package sptech.projetojpa1.dto.educacao
+package sptech.projetojpa1.dto.capacitacao
 
 import jakarta.persistence.Column
 import jakarta.validation.constraints.*
 
-class EducacaoPutDTO (
+class CapacitacaoPutDTO (
 
     @field:Size(max = 30, message = "O nome do procedimento deve ter no máximo 30 caracteres")
     var nome: String?,
@@ -21,11 +21,11 @@ class EducacaoPutDTO (
     @Column(name = "carga_horaria")
     var cargaHoraria: String?,
 
-    @field:PositiveOrZero(message = "Preço de Educação deve ser zero ou positivo")
-    @Column(name = "preco_educacao")
-    var precoEducacao: Double?,
+    @field:PositiveOrZero(message = "Preço de Capacitação deve ser zero ou positivo")
+    @Column(name = "preco_capacitacao")
+    var precoCapacitacao: Double?,
 
-    @field:NotNull(message = "Status do Programa Educativo não pode ser nulo")
+    @field:NotNull(message = "Status de Capacitação não pode ser nulo")
     @Column(name = "ativo")
     var ativo: Boolean? = true
 ){

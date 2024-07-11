@@ -1,12 +1,11 @@
-package sptech.projetojpa1.dto.educacao
+package sptech.projetojpa1.dto.capacitacao
 
 import jakarta.persistence.*
 import jakarta.validation.constraints.*
-import sptech.projetojpa1.dominio.Status
 
-data class EducacaoDTO (
+data class CapacitacaoDTO (
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val idEducacao: Int = 0,
+    val idCapacitacao: Int = 0,
 
     @field:NotBlank(message = "O nome é obrigatório")
     @field:Size(max = 30, message = "O nome do procedimento deve ter no máximo 30 caracteres")
@@ -29,11 +28,11 @@ data class EducacaoDTO (
     @Column(name = "carga_horaria")
     var cargaHoraria: String,
 
-    @field:NotNull(message = "O preço da Educação é obrigatório") @field:PositiveOrZero(message = "Preço de Educação deve ser zero ou positivo")
-    @Column(name = "preco_educacao")
-    var precoEducacao: Double,
+    @field:NotNull(message = "O preço da Capacitação é obrigatório") @field:PositiveOrZero(message = "Preço de Capacitação deve ser zero ou positivo")
+    @Column(name = "preco_capacitacao")
+    var precoCapacitacao: Double,
 
-    @field:NotNull(message = "Status do Programa Educativo não pode ser nulo")
+    @field:NotNull(message = "Status da Capacitação não pode ser nulo")
     @Column(name = "ativo")
     var ativo: Boolean = true
 
