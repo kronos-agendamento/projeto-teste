@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Cadastrar Capacitação | KronosBooking</title>
+
+  <!-- Favicons -->
+  <link href="../../../assets/favicon.png" rel="icon">
+
+  <link rel="stylesheet" href="cadastrar-capacitacao.css" />
+  <link rel="stylesheet" href="../../capacitacao.css" />
+  <script src="cadastrar-capacitacao.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+
+<body>
+
+  <div class="corpo">
+    <div class="navigation">
+      <div class="perfil">
+        <div class="imagem-perfil">
+          <img src="../../../assets/Foto de Perfil.png">
+        </div>
+        <li id="userName">
+          Ritica</li>
+        <li id="userEmail">
+          Ritica@email</li>
+      </div>
+
+
+      <ul>
+        <li class="list">
+          <a href="../../../index/index.html">
+            <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+            <span class="title">Início </span>
+          </a>
+        </li>
+        <li class="list">
+          <a href="../../../procedimento/procedimento.html">
+            <span class="icon"><ion-icon name="brush-outline"></ion-icon></span>
+            <span class="title">Procedimentos</span>
+          </a>
+        </li>
+        <li class="list">
+          <a href="../../../dashboard/dashboard.html">
+            <span class="icon"><ion-icon name="stats-chart-outline"></ion-icon></span>
+            <span class="title">Dashboard</span>
+          </a>
+        </li>
+        <li class="list active">
+          <a href="../../capacitacao.html">
+            <span class="icon"><ion-icon name="exit-outline"></ion-icon></span>
+            <span class="title">Capacitação</span>
+          </a>
+        </li>
+        <li class="list">
+          <a href="../../../../index.html">
+            <span class="icon"><ion-icon name="exit-outline"></ion-icon></span>
+            <span class="title">Sair</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <main>
+      <header>
+        <div>
+          <h1>Capacitação</h1>
+          <p>Esta página permite o cadastro de novos programas de capacitação, incluindo cursos, palestras e
+            consultorias.</p>
+        </div>
+        <div id="notification" class="notification">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill"
+            viewBox="0 0 16 16">
+            <path
+              d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
+          </svg>
+          <span id="notification-message"></span>
+        </div>
+      </header>
+
+      <div class="back-content">
+
+        <a href="../../agendamento.html" class="back-link">← Voltar para página de
+          visualização dos agendamentos</a>
+
+        <div class="form-section">
+          <div class="form-title">
+            <h2>Dados da Capacitação</h2>
+          </div>
+
+          <div class="content-form">
+            <div class="content-flex">
+              <div class="form-group form-mr form-input">
+
+                <label>Nome Completo:</label>
+                <input type="text" id="nome" placeholder="Nome Completo" required>
+              </div>
+
+              <div class="form-group form-mr form-input">
+                <label>Descrição:</label>
+                <input type="text" id="descricao" placeholder="descricao" required>
+              </div>
+
+            </div>
+            <div class="content-flex">
+
+              <div class="form-group form-mr form-input">
+                <label>Nível</label>
+                <select id="nome" name="nivel">
+                  <option value="">Selecione um nível</option>
+                </select>
+              </div>
+
+              <div class="form-group form-mr form-input">
+                <label>Modalidade</label>
+                <select id="modalidade" name="modalidade">
+                  <option value="">Selecione uma modalidade</option>
+                </select>
+              </div>
+
+              <div class="form-group form-mr form-input">
+                <label>Carga Horaria:</label>
+                <input type="text" id="cargahoraria" placeholder="00:00" required>
+              </div>
+
+              <div class="form-group form-mr form-input">
+                <label>Preço:</label>
+                <input type="text" id="preco" placeholder="R$00,00" required>
+              </div>
+
+            </div>
+            <div class="button-container">
+              <button type="button" class="save-button" id="save-procedimento-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
+                  class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                  <path
+                    d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
+                </svg>
+                Criar Capacitação
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+    </main>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>

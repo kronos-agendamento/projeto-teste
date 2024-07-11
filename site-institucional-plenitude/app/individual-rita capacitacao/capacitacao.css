@@ -1,0 +1,496 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.back-link {
+  margin-left: 30px;
+  color: #000000;
+  text-decoration: none;
+
+}
+
+body {
+  font-family: Poppins, sans-serif;
+
+  margin: 0;
+  padding: 0;
+}
+
+.corpo {
+  display: flex;
+  background-color: #ffffff;
+  height: 100vh;
+  width: 97vw;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+}
+
+aside {
+  background-color: #D9006C;
+  color: white;
+  width: 250px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (max-width: 992px) {
+  #main {
+    margin-top: 30px;
+  }
+}
+
+#main {
+  margin-top: 50px;
+}
+
+@media (max-width: 992px) {
+  #main {
+    margin-top: 30px;
+  }
+}
+
+/*--------------------------------------------------------------
+Inicio Nav
+--------------------------------------------------------------*/
+
+.profile img {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+}
+
+.profile h2 {
+  margin: 10px 0 5px;
+}
+
+.profile p {
+  margin: 0;
+  font-size: 0.9em;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  width: 100%;
+}
+
+nav ul li {
+  padding: 10px;
+  text-align: center;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+}
+
+/*--------------------------------------------------------------
+navbar  lateral
+--------------------------------------------------------------*/
+
+.navigation {
+  height: auto;
+  background: #D2135D;
+  width: 19vw;
+  top: 2vh;
+  margin-left: 3vw;
+  border-radius: 3vh;
+  margin-bottom: 2vh;
+  box-shadow: 10px 0 0 #ffffff;
+  border-left: 10px solid #D2135D;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.perfil {
+  padding: 5vh;
+}
+
+.navigation .perfil .imagem-perfil {
+  width: 20vh;
+  height: 20vh;
+  border-radius: 300px;
+  display: flex;
+  justify-content: center;
+  list-style: none;
+}
+
+.navigation .perfil .imagem-perfil img {
+  margin: 1vh;
+  width: 53vh;
+  height: 23vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+}
+
+
+.perfil #userName {
+  display: flex;
+  list-style: none;
+  color: white;
+  font-weight: 600;
+  margin-top: 6vh;
+  justify-content: center;
+
+}
+
+.perfil #userEmail {
+  list-style: none;
+  color: white;
+  font-weight: 200;
+  font-size: 12px;
+  margin-top: 0.5vh;
+  display: flex;
+  justify-content: center;
+}
+
+
+/*--------------------------------------------------------------
+Final Nav
+
+Inicio Main
+--------------------------------------------------------------*/
+
+main {
+  background-color: #ffffff;
+  width: 75vw;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  background-color: #D2135D;
+  color: white;
+  padding: 2vh;
+  border-radius: 3vh;
+  margin-bottom: 2vh;
+  margin-top: 2vh;
+  margin-left: 2%;
+  height: 14vh;
+}
+
+header h1 {
+  margin: 1vh 0vh 0vh 2vh;
+  font-size: 3vh;
+}
+
+header p {
+  margin: 0vh 0vh 0vh 2vh;
+  font-size: 2vh;
+}
+
+.main-content {
+  display: flex;
+}
+
+
+
+/*--------------------------------------------------------------
+# Links
+--------------------------------------------------------------*/
+
+.navigation ul {
+  position: absolute !important;
+  top: 30vh;
+  left: 0;
+  width: 100%;
+  padding-left: 1vw;
+  padding-top: 10vh;
+}
+
+.navigation ul li {
+  position: relative;
+  list-style: none;
+  width: 100%;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+
+}
+
+.navigation ul li a {
+
+  position: relative;
+  display: flex;
+  width: 100%;
+  text-decoration: none;
+  color: #fff;
+  height: 8vh;
+  margin-bottom: 2.5vh;
+}
+
+.navigation ul li a .icon {
+  position: relative;
+  display: block;
+  min-width: 3vw;
+  height: 3vh;
+  text-align: center;
+  line-height: 70px;
+}
+
+.navigation ul li a .icon ion-icon {
+  position: relative;
+  font-size: 1.5rem;
+  z-index: 1;
+}
+
+.navigation ul li a .title {
+  position: relative;
+  display: block;
+  padding-left: 1.5vw;
+  height: 60px;
+  line-height: 60px;
+  white-space: nowrap;
+  font-size: 15px;
+}
+
+.navigation ul li.active {
+  color: black;
+  background: #ffffff;
+
+}
+
+.navigation ul li.active a {
+  color: black;
+  /* Cor do texto quando ativo */
+}
+
+.navigation ul li.active a .icon ion-icon {
+  color: black;
+  /* Cor do ícone quando ativo */
+}
+
+
+.navigation ul li.active a::before {
+  content: '';
+  position: absolute;
+  bottom: 8vh;
+  right: 0;
+  width: 5vh;
+  height: 5vh;
+  background: #D2135D;
+  border-radius: 50%;
+  box-shadow: 15px 15px 0 #ffffff;
+  color: black;
+}
+
+.navigation ul li.active a::after {
+  content: '';
+  position: absolute;
+  top: 8vh;
+  right: 0;
+  width: 5vh;
+  height: 5vh;
+  background: #D2135D;
+  border-radius: 50%;
+  box-shadow: 15px -15px 0 #ffffff;
+}
+
+/*--------------------------------------------------------------
+Final Nav
+Inicio Notifications
+---------------------------------------------------------------*/
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.notification.show {
+  opacity: 1;
+}
+
+.notification.error {
+  background-color: #dc3545;
+}
+
+.notification svg {
+  margin-right: 10px;
+}
+
+/* Progress Bar */
+.progress-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 80%;
+  margin: 20px auto;
+}
+
+.progress-container span {
+  flex: 1;
+  text-align: center;
+  font-size: 14px;
+  color: #d2135d;
+}
+
+.progress-bar {
+  position: relative;
+  flex: 6;
+  height: 15px;
+  background-color: #f3f3f3;
+  border-radius: 10px;
+  margin: 0 10px;
+  overflow: hidden;
+}
+
+.progress {
+  position: absolute;
+  height: 100%;
+  background-color: #d2135d;
+  width: 70%;
+  /* Adjust this percentage based on completed appointments */
+}
+
+.flex {
+  display: flex;
+  gap: 10px;
+}
+
+/*--------------------------------------------------------------
+Final Notifications
+Inicio Filtros
+---------------------------------------------------------------*/
+
+
+.center-content {
+  display: flex;
+  flex-direction: column;
+  width: 68vw;
+  height: auto;
+  margin-top: 1vh;
+  margin-left: 2vw;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.actions button {
+  background-color: #ffffff;
+  display: flex;
+  font-family: Poppins, sans-serif;
+  height: 5vh;
+  width: 7vw;
+  justify-content: center;
+  margin: 2vh;
+  padding: 2vh;
+  align-items: center;
+  font-size: 16px;
+  border-radius: 1vh;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.right-actions {
+  display: flex;
+}
+
+.right-actions button {
+  background-color: #ffffff;
+  display: flex;
+  font-family: Poppins, sans-serif;
+  width: auto;
+  margin: 2vh;
+  justify-content: center;
+  padding: 3.5vh;
+  font-size: 16px;
+  border-radius: 1vh;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.actions button:hover {
+  background-color: #D9006C;
+  color: #dcf5f2;
+  transition-duration: 500ms;
+}
+
+.actions button i {
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+.actions a {
+  text-decoration: none;
+}
+
+.actions img {
+  height: 5vh;
+}
+.right-actions img {
+  height: 5vh;
+}
+
+/*--------------------------------------------------------------
+Final Actions
+Inicio Tabela de procedimentos
+---------------------------------------------------------------*/
+
+.procedures-table{
+  background-color: #D2135D;
+  color: #fff;
+  border: 1px ;
+  width: 73vw;
+  border-radius: 1vh;
+  margin-bottom: 2vh;
+  margin-top: 2vh;
+  margin-left: 2%;
+  padding: 1vh;
+}
+
+.pagination{
+  display: flex;
+  justify-content: center;
+}
+
+.pagination button{
+  background-color: #ffffff;
+  display: flex;
+  font-family: Poppins, sans-serif;
+  font-weight: 600;
+  height: 5vh;
+  justify-content: center;
+  margin: 1vh;
+  padding: 2vh;
+  align-items: center;
+  border-radius: 1vh;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.pagination span{
+  display: flex;
+  font-family: Poppins, sans-serif;
+  font-weight: 600;
+  justify-content: center;
+  padding: 1vh;
+  align-items: center;
+  color: #D2135D;
+  cursor: pointer;
+}
