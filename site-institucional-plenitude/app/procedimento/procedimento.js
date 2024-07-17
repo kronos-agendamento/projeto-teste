@@ -118,8 +118,9 @@ document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.delete-btn').forEach(button => {
             const id = button.getAttribute('data-id');
             const tipo = button.getAttribute('data-tipo');
+            console.log(`Delete button ID: ${id}, Tipo: ${tipo}`); // Debugging log
             button.addEventListener('click', (e) => {
-                procedimentoIdParaDeletar = e.target.getAttribute('data-id');
+                procedimentoIdParaDeletar = e.currentTarget.getAttribute('data-id');
                 if (procedimentoIdParaDeletar) {
                     showModal(tipo);
                 } else {
@@ -131,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Eventos dos botões de editar
         document.querySelectorAll('.edit-btn').forEach(button => {
             button.addEventListener('click', (e) => {
-                const id = e.target.getAttribute('data-id');
+                const id = e.currentTarget.getAttribute('data-id');
                 window.location.href = `procedimento-forms/editar-procedimento/editar-procedimento.html?id=${id}`;
             });
         });
