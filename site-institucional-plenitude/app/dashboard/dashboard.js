@@ -116,3 +116,13 @@ document.addEventListener('DOMContentLoaded', function () {
     // Atualiza os KPIs e gráficos em intervalos regulares (opcional)
     setInterval(updateKPIs, 30000); // Exemplo de atualização a cada 30 segundos
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const nome = localStorage.getItem('nome');
+    const email = localStorage.getItem('email');
+
+    if (nome && email) {
+        document.getElementById('userName').textContent = nome;
+        document.getElementById('userEmail').textContent = email;
+    }
+});
