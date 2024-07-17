@@ -4,11 +4,11 @@ import jakarta.persistence.*
 import jakarta.validation.constraints.*
 
 @Entity
-@Table(name = "educacao")
-data class Educacao(
+@Table(name = "capacitacao")
+data class Capacitacao(
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val idEducacao: Int = 0,
+    val idCapacitacao: Int = 0,
 
     @field:NotBlank(message = "O nome é obrigatório")
     @field:Size(max = 70, message = "O nome do procedimento deve ter no máximo 70 caracteres")
@@ -32,11 +32,11 @@ data class Educacao(
     @Column(name = "carga_horaria")
     var cargaHoraria: String,
 
-    @field:NotNull(message = "O preço da Educação é obrigatório") @field:PositiveOrZero(message = "Preço de Educação deve ser zero ou positivo")
-    @Column(name = "preco_educacao")
-    var precoEducacao: Double,
+    @field:NotNull(message = "O preço da Capacitação é obrigatório") @field:PositiveOrZero(message = "Preço da Capacitação deve ser zero ou positivo")
+    @Column(name = "preco_capacitacao")
+    var precoCapacitacao: Double,
 
-    @field:NotNull(message = "Status do Programa Educativo não pode ser nulo")
+    @field:NotNull(message = "Status de Capacitação não pode ser nulo")
     @Column(name = "ativo")
     var ativo: Boolean = true
 )

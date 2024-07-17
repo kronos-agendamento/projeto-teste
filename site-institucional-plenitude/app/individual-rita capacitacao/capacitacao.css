@@ -6,6 +6,13 @@
   box-sizing: border-box;
 }
 
+.back-link {
+  margin-left: 30px;
+  color: #000000;
+  text-decoration: none;
+
+}
+
 body {
   font-family: Poppins, sans-serif;
 
@@ -16,7 +23,7 @@ body {
 .corpo {
   display: flex;
   background-color: #ffffff;
-  height: 135vh;
+  height: 100vh;
   width: 97vw;
 }
 
@@ -24,7 +31,6 @@ body {
   display: flex;
   width: 100%;
 }
-
 
 aside {
   background-color: #D9006C;
@@ -38,7 +44,7 @@ aside {
 
 @media (max-width: 992px) {
   #main {
-      margin-top: 30px;
+    margin-top: 30px;
   }
 }
 
@@ -48,7 +54,7 @@ aside {
 
 @media (max-width: 992px) {
   #main {
-      margin-top: 30px;
+    margin-top: 30px;
   }
 }
 
@@ -149,6 +155,46 @@ navbar  lateral
   display: flex;
   justify-content: center;
 }
+
+
+/*--------------------------------------------------------------
+Final Nav
+
+Inicio Main
+--------------------------------------------------------------*/
+
+main {
+  background-color: #ffffff;
+  width: 75vw;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  background-color: #D2135D;
+  color: white;
+  padding: 2vh;
+  border-radius: 3vh;
+  margin-bottom: 2vh;
+  margin-top: 2vh;
+  margin-left: 2%;
+  height: 14vh;
+}
+
+header h1 {
+  margin: 1vh 0vh 0vh 2vh;
+  font-size: 3vh;
+}
+
+header p {
+  margin: 0vh 0vh 0vh 2vh;
+  font-size: 2vh;
+}
+
+.main-content {
+  display: flex;
+}
+
 
 
 /*--------------------------------------------------------------
@@ -253,260 +299,8 @@ navbar  lateral
 
 /*--------------------------------------------------------------
 Final Nav
-
-Inicio Main
---------------------------------------------------------------*/
-
-main {
-  background-color: #ffffff;
-  width: 75vw;
-}
-
-header {
-  display: flex;
-  justify-content: space-between;
-  background-color: #D2135D;
-  color: white;
-  padding: 2vh;
-  border-radius: 3vh;
-  margin-bottom: 2vh;
-  margin-top: 2vh;
-  margin-left: 2%;
-  height: 14vh;
-}
-
-header h1 {
-  margin: 1vh 0vh 0vh 2vh;
-  font-size: 3vh;
-}
-
-header p {
-  margin: 0vh 0vh 0vh 2vh;
-  font-size: 2vh;
-}
-
-.main-content {
-  display: flex;
-  margin-top: 2vh;
-}
-
-/*-------------------------------------------------------------
-Dados do usuário
---------------------------------------------------------------*/
-
-.center-content {
-  display: flex;
-  flex-direction: column;
-  width: 68vw;
-  height: auto;
-  margin-top: 4vh;
-  margin-left: 2vw;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border: 1px solid #000;
-}
-
-.right-content {
-  display: flex;
-  flex-direction: column;
-  width: 25vw;
-  height: auto;
-  margin-top: 2vh;
-  margin-left: 2vw;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border: 1px solid #000;
-}
-
-.left-content {
-  display: flex;
-  flex-direction: column;
-  width: 41vw;
-  height: auto;
-  margin-top: 2vh;
-  margin-left: 2vw;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border: 1px solid #000;
-}
-
-.content-box{
-  display: flex;
-  flex-direction: row;
-  width: 68vw;
-  height: 26vh;
-  background-color: #FFF0F5;
-  align-items: center;
-
-  padding-left: 2vw;
-}
-
-.content-box2{
-  display: flex;
-  flex-direction: row;
-  background-color: #FFF0F5;
-  align-items: center;
-
-}
-
-.content{
-  width: 23vw;
-  height: 20vh;
-  margin: 1vh;
-  font-weight: 600;
-}
-
-.content-form-flex {
-  padding: 1.2vw ;
-  display: flex;
-  background-color: #FFF0F5;
-}
-
-.content-form {
-  padding: 1.2vw;
-  background-color: #FFF0F5;
-}
-
-.label{
-padding-top: 1vw;
-padding-right: 1vw;
-}
-
-.button-container {
-  display: flex;
-  justify-content: flex-end;
-  padding-top: 2vw;
-  padding-right: 0.9vw;
-  width: 23vw;
-  background-color: #FFF0F5;
-}
-
-.button-container2 {
-  display: flex;
-  justify-content: flex-end;
-  padding: 2vw;
-  width: 68vw;
-  background-color: #FFF0F5;
-}
-
-.save-button {
-  display: flex;
-  align-items: center;
-  background-color: #e70069;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 5px 10px;
-  font-size: 16px;
-  cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.save-button svg {
-  margin-right: 10px;
-  width: 20px;
-  height: 20px;
-}
-
-.save-button:hover {
-  background-color: #d6005c;
-}
-
-
-.actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-
-.actions button {
-  background-color: #FFF0F5;
-  display: flex;
-  font-family: Poppins, sans-serif;
-  height: 10vh;
-  width: 21vw;
-  justify-content: center;
-  margin: 1vh;
-  padding: 2vh;
-  align-items: center;
-  font-size: 16px;
-  border-radius: 2vh;
-  border: 1px solid black;
-  cursor: pointer;
-}
-
-.actions button:hover {
-  background-color: #E893B9;
-  color: #dcf5f2;
-  transition-duration: 500ms;
-}
-
-.actions button i {
-  margin-right: 10px;
-  font-size: 20px;
-}
-
-.actions a {
-  text-decoration: none;
-}
-
-
-/*--------------------------------------------------------------
-# Tables
---------------------------------------------------------------*/
-
-.table-header {
-  display: flex;
-  align-items: center;
-  background-color: #D2135D;
-  padding: 2.5vh 2.5vw;
-}
-
-.table-header h1 {
-  margin: 0;
-  color: #fff;
-  font-size: 1.1em;
-  width: 100%;
-  /* Define a largura do título para 50% */
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-thead {
-  background-color: #FFF0F5;
-}
-
-th,
-td {
-  padding: 15px;
-  text-align: center;
-  border: 1px solid #000;
-}
-
-th {
-  font-size: 0.9em;
-  color: #333;
-}
-
-td {
-  font-size: 0.8em;
-  color: #000000;
-}
-
-
-
-
-
-/*--------------------------------------------------------------
-# Notification
---------------------------------------------------------------*/
-
-
+Inicio Notifications
+---------------------------------------------------------------*/
 .notification {
   position: fixed;
   top: 20px;
@@ -535,41 +329,168 @@ td {
   margin-right: 10px;
 }
 
+/* Progress Bar */
+.progress-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 80%;
+  margin: 20px auto;
+}
+
+.progress-container span {
+  flex: 1;
+  text-align: center;
+  font-size: 14px;
+  color: #d2135d;
+}
+
+.progress-bar {
+  position: relative;
+  flex: 6;
+  height: 15px;
+  background-color: #f3f3f3;
+  border-radius: 10px;
+  margin: 0 10px;
+  overflow: hidden;
+}
+
+.progress {
+  position: absolute;
+  height: 100%;
+  background-color: #d2135d;
+  width: 70%;
+  /* Adjust this percentage based on completed appointments */
+}
+
 .flex {
   display: flex;
   gap: 10px;
 }
 
+/*--------------------------------------------------------------
+Final Notifications
+Inicio Filtros
+---------------------------------------------------------------*/
+
+
+.center-content {
+  display: flex;
+  flex-direction: column;
+  width: 68vw;
+  height: auto;
+  margin-top: 1vh;
+  margin-left: 2vw;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.actions button {
+  background-color: #ffffff;
+  display: flex;
+  font-family: Poppins, sans-serif;
+  height: 5vh;
+  width: 7vw;
+  justify-content: center;
+  margin: 2vh;
+  padding: 2vh;
+  align-items: center;
+  font-size: 16px;
+  border-radius: 1vh;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.right-actions {
+  display: flex;
+}
+
+.right-actions button {
+  background-color: #ffffff;
+  display: flex;
+  font-family: Poppins, sans-serif;
+  width: auto;
+  margin: 2vh;
+  justify-content: center;
+  padding: 3.5vh;
+  font-size: 16px;
+  border-radius: 1vh;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.actions button:hover {
+  background-color: #D9006C;
+  color: #dcf5f2;
+  transition-duration: 500ms;
+}
+
+.actions button i {
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+.actions a {
+  text-decoration: none;
+}
+
+.actions img {
+  height: 5vh;
+}
+.right-actions img {
+  height: 5vh;
+}
 
 /*--------------------------------------------------------------
-# Footer
---------------------------------------------------------------*/
+Final Actions
+Inicio Tabela de procedimentos
+---------------------------------------------------------------*/
 
-.footer  {
-  text-decoration: none;
-  color: #d63384;
-  font-weight: bold;
+.procedures-table{
+  background-color: #D2135D;
+  color: #fff;
+  border: 1px ;
+  width: 73vw;
+  border-radius: 1vh;
+  margin-bottom: 2vh;
+  margin-top: 2vh;
+  margin-left: 2%;
+  padding: 1vh;
+}
+
+.pagination{
   display: flex;
-  justify-content: flex-end;
-  padding: 0.5vh 1vw 0.5vh 0 ;
+  justify-content: center;
 }
 
-.footer a {
-  text-decoration: none;
-  color: #d63384;
-  font-weight: bold;
-
+.pagination button{
+  background-color: #ffffff;
+  display: flex;
+  font-family: Poppins, sans-serif;
+  font-weight: 600;
+  height: 5vh;
+  justify-content: center;
+  margin: 1vh;
+  padding: 2vh;
+  align-items: center;
+  border-radius: 1vh;
+  border: 1px solid black;
+  cursor: pointer;
 }
 
-#footer {
-  padding: 4vh 0;
-  color: #222222;
-  font-size: 14px;
-  text-align: center;
-  position: relative;
-}
-
-.footer_container {
-  width: 100%;
-
+.pagination span{
+  display: flex;
+  font-family: Poppins, sans-serif;
+  font-weight: 600;
+  justify-content: center;
+  padding: 1vh;
+  align-items: center;
+  color: #D2135D;
+  cursor: pointer;
 }
