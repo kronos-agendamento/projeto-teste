@@ -71,7 +71,7 @@ class UsuarioController(
 
     @Operation(summary = "Atualizar usuário")
     @ApiResponses(
-        value = [
+        value = [   
             ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o usuário atualizado"),
             ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
             ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
