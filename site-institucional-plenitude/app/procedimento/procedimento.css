@@ -258,141 +258,6 @@ header p {
     justify-content: center;
 }
 
-/* nav */
-
-
-/* navbar */
-.navigation {
-    height: auto;
-    background: #D2135D;
-    width: 275px;
-    margin-top: 20px;
-    margin-left: 32px;
-    box-shadow: 10px 0 0 #ffffff;
-    border-left: 10px solid #D2135D;
-    overflow-y: auto;
-    /* Permite rolagem vertical se necessário */
-    overflow-x: hidden;
-    /* Remove a rolagem horizontal */
-    border-radius: 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 50px;
-    position: relative;
-
-}
-
-.navigation ul {
-    position: absolute !important;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding-left: 5px;
-    padding-top: 40px;
-}
-
-.navigation ul li {
-    position: relative;
-    list-style: none;
-    width: 100%;
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-
-}
-
-.navigation ul li a {
-
-    position: relative;
-    display: flex;
-    width: 100%;
-    text-decoration: none;
-    color: #fff;
-    height: 50px;
-    margin-bottom: 3vh;
-}
-
-.navigation ul li a .icon {
-    position: relative;
-    display: block;
-    min-width: 60px;
-    height: 60px;
-    text-align: center;
-    line-height: 70px;
-}
-
-.navigation ul li a .icon ion-icon {
-    position: relative;
-    font-size: 1.5rem;
-    z-index: 1;
-}
-
-.navigation ul li a .title {
-    position: relative;
-    display: block;
-    padding-left: 10px;
-    height: 60px;
-    line-height: 60px;
-    white-space: nowrap;
-    font-size: 15px;
-}
-
-.navigation ul li.active {
-    color: black;
-    background: #ffffff;
-
-}
-
-.navigation ul li.active a {
-    color: black;
-    /* Cor do texto quando ativo */
-}
-
-.navigation ul li.active a .icon ion-icon {
-    color: black;
-    /* Cor do ícone quando ativo */
-}
-
-
-.navigation ul li.active a::before {
-    content: '';
-    position: absolute;
-    top: -30px;
-    right: 0;
-    width: 30px;
-    height: 30px;
-    background: #D2135D;
-    border-radius: 50%;
-    box-shadow: 15px 15px 0 #ffffff;
-    color: black;
-}
-
-.navigation ul li.active a::after {
-    content: '';
-    position: absolute;
-    bottom: -30px;
-    right: 0;
-    width: 30px;
-    height: 30px;
-    background: #D2135D;
-    border-radius: 50%;
-    box-shadow: 15px -15px 0 #ffffff;
-}
-
-img {
-    width: 1000px;
-    height: 60px;
-    border-radius: 600px;
-    margin-bottom: 20px;
-}
-
-.navigation .imagem-perfil {
-    width: 30px;
-    height: 60px;
-    display: flex;
-    justify-content: center;
-}
-
 .notification {
     position: fixed;
     top: 20px;
@@ -419,4 +284,163 @@ img {
 
 .notification svg {
     margin-right: 10px;
+}
+
+
+.navigation {
+    height: auto;
+    background: #D2135D;
+    width: 19vw;
+    top: 2vh;
+    margin-left: 3vw;
+    border-radius: 3vh;
+    margin-bottom: 2vh;
+    box-shadow: 10px 0 0 #ffffff;
+    border-left: 10px solid #D2135D;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.perfil {
+    padding: 5vh;
+}
+
+.navigation .perfil .imagem-perfil {
+    width: 20vh;
+    height: 20vh;
+    border-radius: 300px;
+    display: flex;
+    justify-content: center;
+    list-style: none;
+}
+
+.navigation .perfil .imagem-perfil img {
+    margin: 1vh;
+    width: 53vh;
+    height: 23vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+}
+
+
+.perfil #userName {
+    display: flex;
+    list-style: none;
+    color: white;
+    font-weight: 600;
+    margin-top: 6vh;
+    justify-content: center;
+
+}
+
+.perfil #userEmail {
+    list-style: none;
+    color: white;
+    font-weight: 200;
+    font-size: 12px;
+    margin-top: 0.5vh;
+    display: flex;
+    justify-content: center;
+}
+
+
+.navigation ul {
+    position: absolute !important;
+    top: 30vh;
+    left: 0;
+    width: 100%;
+    padding-left: 1vw;
+    padding-top: 10vh;
+}
+
+.navigation ul li {
+    position: relative;
+    list-style: none;
+    width: 100%;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+
+}
+
+.navigation ul li a {
+
+    position: relative;
+    display: flex;
+    width: 100%;
+    text-decoration: none;
+    color: #fff;
+    height: 8vh;
+    margin-bottom: 2.5vh;
+}
+
+.navigation ul li a .icon {
+    position: relative;
+    display: block;
+    min-width: 3vw;
+    height: 3vh;
+    text-align: center;
+    line-height: 70px;
+}
+
+.navigation ul li a .icon ion-icon {
+    position: relative;
+    font-size: 1.5rem;
+    z-index: 1;
+}
+
+.navigation ul li a .title {
+    position: relative;
+    display: block;
+    padding-left: 1.5vw;
+    height: 60px;
+    line-height: 60px;
+    white-space: nowrap;
+    font-size: 15px;
+}
+
+.navigation ul li.active {
+    color: black;
+    background: #ffffff;
+
+}
+
+.navigation ul li.active a {
+    color: black;
+    /* Cor do texto quando ativo */
+}
+
+.navigation ul li.active a .icon ion-icon {
+    color: black;
+    /* Cor do ícone quando ativo */
+}
+
+
+.navigation ul li.active a::before {
+    content: '';
+    position: absolute;
+    bottom: 8vh;
+    right: 0;
+    width: 5vh;
+    height: 5vh;
+    background: #D2135D;
+    border-radius: 50%;
+    box-shadow: 15px 15px 0 #ffffff;
+    color: black;
+}
+
+.navigation ul li.active a::after {
+    content: '';
+    position: absolute;
+    top: 8vh;
+    right: 0;
+    width: 5vh;
+    height: 5vh;
+    background: #D2135D;
+    border-radius: 50%;
+    box-shadow: 15px -15px 0 #ffffff;
 }

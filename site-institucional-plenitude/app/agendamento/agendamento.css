@@ -437,6 +437,7 @@ Inicio Filtros
 .actions img {
   height: 5vh;
 }
+
 .right-actions img {
   height: 5vh;
 }
@@ -446,24 +447,40 @@ Final Actions
 Inicio Tabela de procedimentos
 ---------------------------------------------------------------*/
 
-.procedures-table{
-  background-color: #D2135D;
-  color: #fff;
-  border: 1px ;
-  width: 73vw;
-  border-radius: 1vh;
-  margin-bottom: 2vh;
-  margin-top: 2vh;
-  margin-left: 2%;
-  padding: 1vh;
+.procedures-table {
+  width: 150vh;
+  max-width: 150vh;
+  border-collapse: collapse;
+  margin-top: 30px;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-left: 4.5%;
+  margin-right: auto;
 }
 
-.pagination{
+.procedures-table thead {
+  background-color: #D2135D;
+  color: #fff;
+}
+
+.procedures-table th,
+.procedures-table td {
+  padding: 15px;
+  text-align: left;
+}
+
+.procedures-table tbody tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+.pagination {
   display: flex;
   justify-content: center;
 }
 
-.pagination button{
+.pagination button {
   background-color: #ffffff;
   display: flex;
   font-family: Poppins, sans-serif;
@@ -478,7 +495,7 @@ Inicio Tabela de procedimentos
   cursor: pointer;
 }
 
-.pagination span{
+.pagination span {
   display: flex;
   font-family: Poppins, sans-serif;
   font-weight: 600;

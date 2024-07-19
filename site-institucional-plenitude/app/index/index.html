@@ -24,9 +24,9 @@
                     <img src="../assets/Foto de Perfil.png">
                 </div>
                 <li id="userName">
-                    Ritica</li>
+                    </li>
                 <li id="userEmail">
-                    Ritica@email</li>
+                    </li>
             </div>
             <ul>
                 <li class="list active">
@@ -96,22 +96,18 @@
                     <p>Tenha uma ótima Segunda-feira!</p>
                 </div>
                 <div id="notification" class="notification">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
-                        class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                        <path
-                            d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
-                    </svg>
+                    
                     <span id="notification-message"></span>
                 </div>
             </header>
             <div class="main-content">
                 <div class="left-content">
                     <section class="actions">
-                        <button><i class="fas fa-calendar-plus"></i> Novo Agendamento</button>
-                        <button><i class="fas fa-user-plus"></i> Novo Cliente</button>
-                        <a href="../procedimento/procedimentoForms/cadastrar-procedimento/cadastrar-procedimento.html"><button><i
+                        <a href="../agendamento/agendamento-forms/cadastrar-agendamento/cadastrar-agendamento.html"><button><i class="fas fa-calendar-plus"></i> Novo Agendamento</button></a>
+                        <a href="../cliente/cliente-forms/cadastrar-cliente/cadastrar-cliente.html"><button><i class="fas fa-user-plus"></i> Novo Cliente</button></a>
+                        <a href="../procedimento/procedimento-Forms/cadastrar-procedimento/cadastrar-procedimento.html"><button><i
                                     class="fas fa-face-smile"> </i> Novo Procedimento</button></a>
-                        <button><i class="fas fa-tasks"></i> Nova Especificação</button>
+                                    <a href="../procedimento/procedimento-forms/cadastrar-procedimento/cadastrar-procedimento.html"><button><i class="fas fa-tasks"></i> Nova Especificação</button></a>
                     </section>
 
                     <div class="table-container">
@@ -123,7 +119,7 @@
                         <div class="table-header">
                             <h1>Procedimentos Cadastrados</h1>
                         </div>
-                        <table>
+                        <table id="procedimentos-cadastrados">
                             <thead>
                                 <tr>
                                     <th>Nome</th>
@@ -133,54 +129,33 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Cílios</td>
-                                    <td>R$200,00</td>
-                                    <td>2h30min</td>
-                                    <td>Volume Russo</td>
-                                </tr>
-                                <tr>
-                                    <td>Cílios</td>
-                                    <td>R$150,00</td>
-                                    <td>1h30min</td>
-                                    <td>Volume Fio a Fio</td>
-                                </tr>
+                                <!-- Linhas serão inseridas aqui pelo JavaScript -->
                             </tbody>
                         </table>
                         <div class="footer">
                             <a href="../procedimento/procedimento.html">Ver todos >></a>
                         </div>
                     </div>
+                    
                     <div class="table-container">
                         <div class="table-header">
                             <h1>Clientes Frequentes</h1>
                         </div>
-                        <table>
+                        <table id="clientes-frequentes">
                             <thead>
                                 <tr>
                                     <th>Nome</th>
                                     <th>CPF</th>
-                                    <th>Ativo Desde</th>
+                                    <th>Última aparição</th>
                                     <th>Último Procedimento</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Gyulia Piqueira</td>
-                                    <td>469.674.588-09</td>
-                                    <td>02/03/2024</td>
-                                    <td>Volume Russo</td>
-                                </tr>
-                                <tr>
-                                    <td>Rita de Cássia</td>
-                                    <td>567.817.555-09</td>
-                                    <td>10/10/2023</td>
-                                    <td>Volume Fio a Fio</td>
-                                </tr>
+                                <!-- Linhas serão inseridas aqui pelo JavaScript -->
                             </tbody>
                         </table>
                         <div class="footer">
-                            <a href="#">Ver todos >></a>
+                            <a href="../cliente/cliente.html">Ver todos >></a>
                         </div>
                     </div>
                 </div>
@@ -248,7 +223,7 @@
                             </tbody>
                         </table>
                         <div class="footer">
-                            <a href="#">Ver todos >></a>
+                            <a href="">Ver todos >></a>
                         </div>
                     </div>
 
