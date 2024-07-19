@@ -115,4 +115,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Atualiza os KPIs e gráficos em intervalos regulares (opcional)
     setInterval(updateKPIs, 30000); // Exemplo de atualização a cada 30 segundos
+
+    
 });

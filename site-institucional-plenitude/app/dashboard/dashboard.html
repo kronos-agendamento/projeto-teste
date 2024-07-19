@@ -79,39 +79,149 @@
         </header>
         <div class="main-content">
             <div class="tabs">
-                <button class="tab-button" style="margin-left: 140%;">Gerencial</button>
+                <button class="tab-button" style="background-color: #f58ab8;" id="usabilidadeBtn">Usabilidade</button>
+                <button class="tab-button" style="background-color: #ff5ba3;" id="operacionalBtn">Operacional</button>
+                <button class="tab-button" style="background-color: #e62762;" id="gerencialBtn">Gerencial</button>
             </div>
-            <div class="top-cards">
-                <div class="summary-cards">
-                    <div class="summary-card" id="clientes-ativos">
-                        <p>Clientes Ativos</p>
-                        <h2 id="clientes-ativos-count">Carregando...</h2>
-                        <p>Último trimestre</p>
+
+            <div class="charts">
+                <div class="grid">
+                    <div class="square">
+                        <div class="mini-grid">
+                            <div class="mini-square">
+                                <div class="card">
+                                    <div class="indicator"></div>
+                                    <div class="card-content">
+                                        <p>Clientes Ativos</p>
+                                        <h2>40</h2>
+                                        <p>Último trimestre</p>
+                                        
+                                    </div>
+                                    <p class="growth">+ 2% <i class="arrow-up"></i></p>
+                                </div>
+                            </div>
+                            <div class="mini-square">
+                                <div class="card">
+                                    <div class="indicator"></div>
+                                    <div class="card-content">
+                                        <p>Clientes Ativos</p>
+                                        <h2>40</h2>
+                                        <p>Último trimestre</p>
+                                        
+                                    </div>
+                                    <p class="growth">+ 2% <i class="arrow-up"></i></p>
+                                </div>
+                            </div>
+                            <div class="mini-square">
+                                <div class="card">
+                                    <div class="indicator"></div>
+                                    <div class="card-content">
+                                        <p>Clientes Ativos</p>
+                                        <h2>40</h2>
+                                        <p>Último trimestre</p>
+                                        
+                                    </div>
+                                    <p class="growth">+ 2% <i class="arrow-up"></i></p>
+                                </div>
+                            </div>
+                            <div class="mini-square">
+                                <div class="card">
+                                    <div class="indicator"></div>
+                                    <div class="card-content">
+                                        <p>Clientes Ativos</p>
+                                        <h2>40</h2>
+                                        <p>Último trimestre</p>
+                                        
+                                    </div>
+                                    <p class="growth">+ 2% <i class="arrow-up"></i></p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="summary-card" id="clientes-inativos">
-                        <p>Clientes Inativos</p>
-                        <h2 id="clientes-inativos-count">Carregando...</h2>
-                        <p>Último trimestre</p>
-                    </div>
-                    <div class="summary-card" id="clientes-fidelizados">
-                        <p>Clientes Fidelizados</p>
-                        <h2 id="clientes-fidelizados-count">Carregando...</h2>
-                        <p>Último trimestre</p>
-                    </div>
+                    <div class="square" style="background-color: white;"></div>
+                    <div class="square" style="background-color: white;"></div>
+                    <div class="square" style="background-color: white;"></div>
+                    <div class="square" style="background-color: white;"></div>
+                    <div class="square" style="background-color: white;"></div>
                 </div>
             </div>
         </div>
-        <div class="charts" style="width: 400vh;">
-            <div class="chart-container"
-                style="width: 300vh; margin-left: 8%;  border: 1px solid rgb(97, 97, 97); margin-top: 3%;">
-                <h3>Receita Acumulada</h3>
-                <canvas id="chart3"></canvas>
-            </div>
-        </div>
+
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="dashboard.js"></script>
         <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+        <script>
+            document.getElementById('usabilidadeBtn').addEventListener('click', function () {
+                const chartContainer = document.querySelector('.chart-container');
+                chartContainer.innerHTML = `
+                    <div class="top-cards">
+                        <div class="summary-cards">
+                            <div class="summary-card" id="usabilidade-1">
+                                <p>Usabilidade Métrica 1</p>
+                                <h2>Dados</h2>
+                                <p>Descrição</p>
+                            </div>
+                            <div class="summary-card" id="usabilidade-2">
+                                <p>Usabilidade Métrica 2</p>
+                                <h2>Dados</h2>
+                                <p>Descrição</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('operacionalBtn').addEventListener('click', function () {
+                const chartContainer = document.querySelector('.chart-container');
+                chartContainer.innerHTML = `
+                    <div class="top-cards">
+                        <div class="summary-cards">
+                            <div class="summary-card" id="clientes-ativos">
+                                <p>Clientes Ativos</p>
+                                <h2 id="clientes-ativos-count">Carregando...</h2>
+                                <p>Último trimestre</p>
+                            </div>
+                            <div class="summary-card" id="clientes-inativos">
+                                <p>Clientes Inativos</p>
+                                <h2 id="clientes-inativos-count">Carregando...</h2>
+                                <p>Último trimestre</p>
+                            </div>
+                            <div class="summary-card" id="clientes-fidelizados">
+                                <p>Clientes Fidelizados</p>
+                                <h2 id="clientes-fidelizados-count">Carregando...</h2>
+                                <p>Último trimestre</p>
+                            </div>
+                        </div>
+                    </div>
+                    <h3>Receita Acumulada</h3>
+                    <canvas id="chart3"></canvas>
+                `;
+                // Iniciar gráfico se necessário
+            });
+
+            document.getElementById('gerencialBtn').addEventListener('click', function () {
+                const chartContainer = document.querySelector('.chart-container');
+                chartContainer.innerHTML = `
+                    <div class="top-cards">
+                        <div class="summary-cards">
+                            <div class="summary-card" id="gerencial-1">
+                                <p>Gerencial Métrica 1</p>
+                                <h2>Dados</h2>
+                                <p>Descrição</p>
+                            </div>
+                            <div class="summary-card" id="gerencial-2">
+                                <p>Gerencial Métrica 2</p>
+                                <h2>Dados</h2>
+                                <p>Descrição</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        </script>
+    </main>
 </body>
 
 </html>
