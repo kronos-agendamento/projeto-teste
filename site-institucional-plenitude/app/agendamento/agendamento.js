@@ -4,6 +4,9 @@ document.addEventListener("DOMContentLoaded", function () {
     let currentPage = 1; // Página atual
     let agendamentos = []; // Array para armazenar os agendamentos
 
+    let totalAgendamentos = 0;
+    let confirmados = 0;
+
     async function fetchAgendamentos() {
         try {
             const response = await fetch(url);
@@ -11,29 +14,31 @@ document.addEventListener("DOMContentLoaded", function () {
                 throw new Error('Erro ao carregar os agendamentos.');
             }
             const data = await response.json();
-            agendamentos = data; // Atualiza o array de agendamentos
+            agendamentos = data;
+
+            // Calcula os valores de progresso fora da renderização
+            totalAgendamentos = agendamentos.length;
+            confirmados = agendamentos.filter(agendamento => agendamento.statusAgendamento.nome === "Confirmado").length;
+
+            // Atualiza a barra de progresso com os valores calculados
+            atualizarProgressBar(confirmados, totalAgendamentos);
+
             renderTable(); // Renderiza a tabela com os agendamentos atuais
         } catch (error) {
             console.error('Erro ao buscar os agendamentos:', error);
         }
     }
 
+
     function renderTable() {
         const tbody = document.getElementById("procedures-tbody");
         tbody.innerHTML = ''; // Limpa qualquer conteúdo existente
-
-        let totalAgendamentos = agendamentos.length;
-        let confirmados = 0;
 
         // Calcula o índice inicial e final dos itens a serem exibidos na página atual
         const startIndex = (currentPage - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
 
         agendamentos.slice(startIndex, endIndex).forEach(agendamento => {
-            if (agendamento.statusAgendamento.nome === "Confirmado") {
-                confirmados++;
-            }
-
             const tr = document.createElement("tr");
 
             // Data/Hora
@@ -82,9 +87,6 @@ document.addEventListener("DOMContentLoaded", function () {
             tbody.appendChild(tr);
         });
 
-        // Atualiza a barra de progresso
-        atualizarProgressBar(confirmados, totalAgendamentos);
-
         // Atualiza a paginação
         const totalPages = Math.ceil(totalAgendamentos / itemsPerPage);
         document.getElementById("current-page").textContent = currentPage;
@@ -98,6 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
         nextPageBtn.disabled = currentPage === totalPages;
     }
 
+
     function atualizarProgressBar(confirmados, total) {
         const progress = document.getElementById("progress");
         const percentage = total === 0 ? 0 : (confirmados / total) * 100;
@@ -107,6 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("progress-label").textContent = `Atendimentos Confirmados: ${confirmados}`;
         document.getElementById("total-label").textContent = `Atendimentos Totais: ${total}`;
     }
+
 
     // Eventos para navegação entre páginas
     document.getElementById("prev-page-btn").addEventListener("click", () => {
