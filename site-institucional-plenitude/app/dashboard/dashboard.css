@@ -122,23 +122,99 @@ header p {
     margin-bottom: 5px;
 } */
 
-.card {
-    width: 100%;
-    height: 100%;
+
+
+.card h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0 0 10px 0;
+}
+
+.subtext {
+    font-size: 14px;
+    color: gray;
+    margin: 0 0 20px 0;
+}
+
+.line-chart-placeholder {
+    background-color: #e0e0e0;
+    height: 300px;
+    border-radius: 10px;
+}
+
+.footer {
     display: flex;
-    justify-content: flex-start;
-    flex-direction: row;
-    padding: 10px;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.footer p {
+    margin: 0;
+    font-size: 14px;
+    color: gray;
+}
+
+.legend {
+    display: flex;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.legend-color {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    margin-right: 5px;
+}
+
+.legend-color.clientes {
+    background-color: #e62762; /* rosa para Clientes */
+}
+
+.legend-color.leads {
+    background-color: #ff5ba3; /* rosa claro para Leads */
 }
 
 .card {
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
     padding: 10px;
     box-sizing: border-box;
+}
+
+.card-graficos {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    box-sizing: border-box;
+    align-items: flex-start
+}
+
+.card-graficos p{
+    display: flex;
+    flex-direction: row;
+    color: black;
+    margin-left: 35px;
+    font-weight: 550;
+}
+
+.card p{
+    display: flex;
+    flex-direction: row;
+    color: black;
 }
 
 .card-content {
@@ -146,6 +222,36 @@ header p {
     flex-direction: column;
     align-items: flex-start;
     text-align: left;
+}
+
+.card-content-2 {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding-left: 35px;
+    margin-top: 15px;
+}
+
+.card-content-2 h1{
+    font-size: x-large;
+width: 200px;
+font-weight:1400;
+}
+
+.card-content-2 p{
+    display: flex;
+    justify-content: center;
+    border: 2px solid rgb(0, 0, 0);
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 5px 10px;
+    margin-right: 23px;
+    font-size: 14px;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+    outline: none;
+    height: fit-content;
+    width: 170px;
 }
 
 .indicator {
@@ -199,14 +305,15 @@ header p {
     width: 224px;
     height: 167px;
     background-color: rgb(255, 255, 255);
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
 .mini-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
-    gap: 12px;
+    gap: 30px;
+    row-gap: 33px;
 }
 
 .square {
