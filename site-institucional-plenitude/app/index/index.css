@@ -717,7 +717,7 @@ Botão Ver todos / Ver menos
     margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 40%;
+    width: 30%;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
     text-align: center;
@@ -738,7 +738,7 @@ Botão Ver todos / Ver menos
     font-weight: bold;
 }
 
-.modal-content .btn-yes {
+.modal-content .btn-yes, .btn-save {
     background-color: #28a745;
     color: white;
 }
@@ -783,6 +783,64 @@ Botão Ver todos / Ver menos
 .notification svg {
     margin-right: 10px;
 }
+
+
+.modal-content2 {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-content2 p {
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.modal-content2 .btn {
+    margin: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.modal-content2 .btn-yes, .btn-save {
+    background-color: #28a745;
+    color: white;
+}
+
+.modal-content2 .btn-no {
+    background-color: #dc3545;
+    color: white;
+}
+
+.modal-content2 .btn-yes:hover {
+    background-color: #218838;
+}
+
+.modal-content2 .btn-no:hover {
+    background-color: #c82333;
+}
+
+#edit-nome, #edit-cor {
+    width: 30%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 3vh;
+    margin-bottom: 2vh;
+}
+
+
 
 
 

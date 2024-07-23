@@ -430,6 +430,7 @@ async function deleteStatus() {
             showNotification('Status deletado com sucesso!');
         } else {
             console.error('Erro ao excluir status:', response.status);
+            showNotification('Erro ao excluir status!', true);
         }
     } catch (error) {
         console.error('Erro na requisição:', error);
@@ -456,8 +457,10 @@ async function updateStatus() {
             );
             renderStatuses();
             closeEditModal();
+            showNotification('Status editado com sucesso!');
         } else {
             console.error('Erro ao atualizar status:', response.status);
+            showNotification('Erro ao editar status!', true);
         }
     } catch (error) {
         console.error('Erro na requisição:', error);
