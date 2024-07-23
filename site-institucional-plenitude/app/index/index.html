@@ -95,11 +95,23 @@
                     <h1>Bom dia <span id="userNameSpan">Usuário</span>!</h1>
                     <p>Tenha uma ótima Segunda-feira!</p>
                 </div>
-                <div id="notification" class="notification">
-                    
-                    <span id="notification-message"></span>
-                </div>
             </header>
+            <div id="notification" class="notification">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  fill="white"
+                  class="bi bi-check-circle-fill"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z"
+                  />
+                </svg>
+                <span id="notification-message"></span>
+              </div>
+              
             <div class="main-content">
                 <div class="left-content">
                     <section class="actions">
@@ -160,41 +172,23 @@
                     </div>
                 </div>
                 <div class="right-content">
+                 
                     <section class="daily-schedule">
                         <div class="agenda">
                             <h1>Agenda Diária</h1>
                             <div class="day">
-                                <h2>Quarta-feira <span>19/06</span></h2>
+                                <h2>
+                                    <span class="weekday">Dia da Semana</span> 
+                                    <span class="date">Data</span>
+                                </h2>
                             </div>
-                            <div class="appointment">
-                                <div class="time">08h00</div>
-                                <div class="details">
-                                    <h3>Gyulia Piqueira</h3>
-                                    <p>Cílios - Volume Fio a Fio</p>
-                                </div>
-                            </div>
-                            <div class="appointment">
-                                <div class="time">10h30</div>
-                                <div class="details">
-                                    <h3>Rita de Cássia</h3>
-                                    <p>Cílios - Volume Brasileiro</p>
-                                </div>
-                            </div>
-                            <div class="appointment">
-                                <div class="time">13h00</div>
-                                <div class="details">
-                                    <h3>Ruan Cardozo</h3>
-                                    <p>Cílios - Volume Brasileiro</p>
-                                </div>
-                            </div>
-                            <div class="appointment">
-                                <div class="time">14h30</div>
-                                <div class="details">
-                                    <h3>Yan Coutinho</h3>
-                                    <p>Cílios - Volume Brasileiro</p>
-                                </div>
+                            <div class="appointments"></div>
+                            <hr>
+                            <div class="footer">
+                                <a href="../agendamento/agendamento.html">Ver todos >></a>
                             </div>
                         </div>
+                        
                     </section>
 
                     <div class="table-container">
@@ -209,21 +203,12 @@
                                     <th>Ações</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Confirmado</td>
-                                    <td>Verde</td>
-                                    <td><button>✏️</button><button>🗑️</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Reagendado</td>
-                                    <td>Rosa</td>
-                                    <td><button>✏️</button><button>🗑️</button></td>
-                                </tr>
+                            <tbody id="status-tbody">
+                                <!-- Conteúdo gerado dinamicamente -->
                             </tbody>
                         </table>
                         <div class="footer">
-                            <a href="">Ver todos >></a>
+                            <a href="#" id="toggle-view">Ver todos >></a>
                         </div>
                     </div>
 
@@ -233,24 +218,32 @@
                                 <h1>Aniversariantes do Mês</h1>
                             </div>
                             <hr>
-                            <div class="birthday-info">
-                                <div class="icon">
-                                    <i class="fas fa-birthday-cake"></i>
-                                </div>
-                                <div class="info">
-                                    <h2>Yan Coutinho</h2>
-                                    <p>Cliente desde 04/23</p>
-                                </div>
-                                <div class="date">
-                                    <p>15/04</p>
-                                </div>
+                            <div class="birthday-list"></div>
+                            <div class="footer-aniversario">
+                                <a href="#" class="toggle-view">Ver todos >></a>
                             </div>
                         </div>
-
-                        <div class="footer">
-                            <a href="#">Ver todos >></a>
-                        </div>
                     </div>
+                    
+                </div>
+            </div>
+
+            <div id="modal" class="modal">
+                <div class="modal-content">
+                    <p>Tem certeza que deseja excluir o status?</p>
+                    <p id="procedimento"></p>
+                    <button class="btn btn-yes">SIM</button>
+                    <button class="btn btn-no" onclick="closeModal()">NÃO</button>
+                </div>
+            </div>
+
+            <div id="edit-modal" class="modal">
+                <div class="modal-content">
+                    <h3>Editar Status</h3>
+                    <input type="text" id="edit-nome" placeholder="Nome">
+                    <input type="text" id="edit-cor" placeholder="Cor">
+                    <button class="btn btn-save">Salvar</button>
+                    <button class="btn btn-no" onclick="closeEditModal()">Cancelar</button>
                 </div>
             </div>
 
