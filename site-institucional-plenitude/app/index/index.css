@@ -578,10 +578,11 @@ Aniversariantes
 .birthday-card {
     background-color: #D2135D;
     color: white;
-    padding: 0 2vw 0 2vw;
+    padding: 0 2vw;
     border-radius: 10px;
     text-align: center;
-    height: 19vh;
+    height: auto; /* Ajusta a altura automática para o conteúdo */
+    margin-bottom: 1vh; /* Espaço entre cartões */
 }
 
 .birthday-card h1 {
@@ -599,6 +600,13 @@ Aniversariantes
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap; /* Permite a quebra de linha para dispositivos menores */
+    padding: 10px;
+}
+
+.birthday-info .icon {
+    flex: 0 0 auto; /* Não permitir que o ícone se expanda */
+    margin-right: 10px;
 }
 
 .birthday-info .icon img {
@@ -607,9 +615,9 @@ Aniversariantes
 }
 
 .birthday-info .info {
-    flex: 1;
+    flex: 1; /* Permite que o texto ocupe o restante do espaço */
     text-align: left;
-    margin-left: 10px;
+    margin: 0;
 }
 
 .birthday-info .info h2 {
@@ -627,10 +635,25 @@ Aniversariantes
     font-size: 18px;
 }
 
-/*--------------------------------------------------------------
-# Footer
---------------------------------------------------------------*/
+/* Responsividade para dispositivos menores */
+@media (max-width: 600px) {
+    .birthday-info {
+        flex-direction: column; /* Coloca os itens em coluna para telas menores */
+        text-align: center; /* Centraliza o texto para melhor visualização */
+    }
 
+    .birthday-info .icon {
+        margin-bottom: 10px; /* Espaço abaixo do ícone */
+    }
+
+    .birthday-info .info {
+        margin: 10px 0; /* Espaço entre o texto e a data */
+    }
+}
+
+/*--------------------------------------------------------------
+Botão Ver todos / Ver menos
+--------------------------------------------------------------*/
 .footer  {
     text-decoration: none;
     color: #d63384;
@@ -659,3 +682,107 @@ Aniversariantes
     width: 100%;
 
 }
+
+.footer-aniversario  {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: bold;
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.5vh 1vw 0.5vh 0 ;
+}
+
+.footer-aniversario a {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: bold;
+
+}
+
+  /* Modal styles */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 40%;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    text-align: center;
+}
+
+.modal-content p {
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.modal-content .btn {
+    margin: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.modal-content .btn-yes {
+    background-color: #28a745;
+    color: white;
+}
+
+.modal-content .btn-no {
+    background-color: #dc3545;
+    color: white;
+}
+
+.modal-content .btn-yes:hover {
+    background-color: #218838;
+}
+
+.modal-content .btn-no:hover {
+    background-color: #c82333;
+}
+
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.notification.show {
+    opacity: 1;
+}
+
+.notification.error {
+    background-color: #dc3545;
+}
+
+.notification svg {
+    margin-right: 10px;
+}
+
+
+
