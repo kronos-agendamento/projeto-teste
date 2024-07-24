@@ -153,3 +153,106 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('userEmail').textContent = email;
     }
 });
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Evento para abrir o modal de exclusão
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            const agendamentoInfo = this.getAttribute('data-info'); // Supondo que você passe algumas informações do agendamento via atributo data
+            document.getElementById('agendamento').innerText = agendamentoInfo;
+            document.getElementById('modal').style.display = 'block';
+        });
+    });
+
+    // Evento para abrir o modal de salvar status
+    const saveStatusButton = document.querySelector('.actions button:nth-child(4)'); // Supondo que este é o botão para criar status
+    saveStatusButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        document.getElementById('save-modal').style.display = 'block';
+    });
+
+    // Evento para fechar os modais
+    document.querySelector('.btn-no').addEventListener('click', function() {
+        document.getElementById('modal').style.display = 'none';
+        document.getElementById('save-modal').style.display = 'none';
+    });
+
+    document.querySelector('.modal-content2 .btn-no').addEventListener('click', function() {
+        document.getElementById('save-modal').style.display = 'none';
+    });
+
+    document.querySelector('.btn-save').addEventListener('click', function() {
+        // Adicione a lógica para salvar o status aqui
+        document.getElementById('save-modal').style.display = 'none';
+    });
+});
+
+let agendamentoIdToDelete = null;
+
+function excluirAgendamento(id) {
+    // Armazena o ID do agendamento a ser excluído
+    agendamentoIdToDelete = id;
+    
+    // Atualiza o conteúdo do modal
+    const procedimento = document.getElementById("procedimento");
+    procedimento.textContent = `ID do agendamento: ${id}`; // Ou outras informações relevantes
+    
+    // Exibe o modal
+    document.getElementById("modal").style.display = "block";
+}
+
+function closeModal() {
+    // Oculta o modal
+    document.getElementById("modal").style.display = "none";
+}
+
+function confirmDeletion() {
+    // Lógica para excluir o agendamento
+    if (agendamentoIdToDelete !== null) {
+        console.log(`Excluir agendamento com ID: ${agendamentoIdToDelete}`);
+        // Aqui você pode fazer uma chamada para o servidor ou executar a exclusão
+        // Exemplo: api.deleteAgendamento(agendamentoIdToDelete);
+
+        // Limpa a variável de ID e oculta o modal
+        agendamentoIdToDelete = null;
+        closeModal();
+
+        // Recarrega a tabela
+        renderTable();
+    }
+}
+
+function openEditModal() {
+    // Exibe o modal de edição
+    document.getElementById("edit-modal").style.display = "block";
+}
+
+function closeEditModal() {
+    // Oculta o modal de edição
+    document.getElementById("edit-modal").style.display = "none";
+}
+
+function saveStatus() {
+    // Lógica para salvar as alterações
+    const nome = document.getElementById("edit-nome").value;
+    const cor = document.getElementById("edit-cor").value;
+    
+    console.log(`Salvar Status - Nome: ${nome}, Cor: ${cor}`);
+    
+    // Aqui você pode fazer uma chamada para o servidor para salvar os dados
+    // Exemplo: api.saveStatus({ nome, cor });
+
+    // Após salvar, fecha o modal
+    closeEditModal();
+
+    // Recarregar a tabela ou fazer outras atualizações necessárias
+    renderTable();
+}
+
+// Adiciona o evento de clique ao botão de salvar
+document.querySelector(".btn-save").addEventListener("click", saveStatus);
+
+
