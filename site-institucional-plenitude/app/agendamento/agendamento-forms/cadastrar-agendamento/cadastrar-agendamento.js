@@ -14,66 +14,66 @@ document.addEventListener("DOMContentLoaded", function () {
     const horariosContainer = document.getElementById("horarios-disponiveis");
     const saveButton = document.getElementById("save-agendamento-button");
 
-    async function carregarClientes() {
-        try {
-            const response = await fetch(apiUrlClientes);
-            if (response.ok) {
-                const clientes = await response.json();
-                clientes.forEach(cliente => {
-                    const option = document.createElement("option");
-                    option.value = cliente.codigo;
-                    option.text = cliente.nome;
-                    clientesSelect.appendChild(option);
-                });
-            } else {
-                console.error("Erro ao buscar clientes: " + response.statusText);
-            }
-        } catch (error) {
-            console.error("Erro ao buscar clientes: ", error);
-        }
+  async function carregarClientes() {
+    try {
+      const response = await fetch(apiUrlClientes);
+      if (response.ok) {
+        const clientes = await response.json();
+        clientes.forEach((cliente) => {
+          const option = document.createElement("option");
+          option.value = cliente.codigo;
+          option.text = cliente.nome;
+          clientesSelect.appendChild(option);
+        });
+      } else {
+        console.error("Erro ao buscar clientes: " + response.statusText);
+      }
+    } catch (error) {
+      console.error("Erro ao buscar clientes: ", error);
     }
+  }
 
-    async function carregarProcedimentos() {
-        try {
-            const response = await fetch(apiUrlProcedimentos);
-            if (response.ok) {
-                const procedimentos = await response.json();
-                const tiposSet = new Set();
-                procedimentos.forEach(procedimento => {
-                    tiposSet.add(procedimento.tipo);
-                });
-                tiposSet.forEach(tipo => {
-                    const option = document.createElement("option");
-                    option.value = tipo;
-                    option.text = tipo;
-                    procedimentosSelect.appendChild(option);
-                });
-            } else {
-                console.error("Erro ao buscar procedimentos: " + response.statusText);
-            }
-        } catch (error) {
-            console.error("Erro ao buscar procedimentos: ", error);
-        }
+  async function carregarProcedimentos() {
+    try {
+      const response = await fetch(apiUrlProcedimentos);
+      if (response.ok) {
+        const procedimentos = await response.json();
+        const tiposSet = new Set();
+        procedimentos.forEach((procedimento) => {
+          tiposSet.add(procedimento.tipo);
+        });
+        tiposSet.forEach((tipo) => {
+          const option = document.createElement("option");
+          option.value = tipo;
+          option.text = tipo;
+          procedimentosSelect.appendChild(option);
+        });
+      } else {
+        console.error("Erro ao buscar procedimentos: " + response.statusText);
+      }
+    } catch (error) {
+      console.error("Erro ao buscar procedimentos: ", error);
     }
+  }
 
-    async function carregarEspecificacoes() {
-        try {
-            const response = await fetch(apiUrlEspecificacoes);
-            if (response.ok) {
-                const especificacoes = await response.json();
-                especificacoes.forEach(especificacao => {
-                    const option = document.createElement("option");
-                    option.value = especificacao.idEspecificacaoProcedimento;
-                    option.text = especificacao.especificacao;
-                    especificacoesSelect.appendChild(option);
-                });
-            } else {
-                console.error("Erro ao buscar especificações: " + response.statusText);
-            }
-        } catch (error) {
-            console.error("Erro ao buscar especificações: ", error);
-        }
+  async function carregarEspecificacoes() {
+    try {
+      const response = await fetch(apiUrlEspecificacoes);
+      if (response.ok) {
+        const especificacoes = await response.json();
+        especificacoes.forEach((especificacao) => {
+          const option = document.createElement("option");
+          option.value = especificacao.idEspecificacaoProcedimento;
+          option.text = especificacao.especificacao;
+          especificacoesSelect.appendChild(option);
+        });
+      } else {
+        console.error("Erro ao buscar especificações: " + response.statusText);
+      }
+    } catch (error) {
+      console.error("Erro ao buscar especificações: ", error);
     }
+  }
 
     async function carregarTiposAgendamentos() {
         try {

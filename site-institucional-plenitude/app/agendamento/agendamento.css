@@ -36,7 +36,7 @@ body {
 }
 
 aside {
-  background-color: #D9006C;
+  background-color: #d9006c;
   color: white;
   width: 250px;
   padding: 20px;
@@ -100,14 +100,14 @@ navbar  lateral
 
 .navigation {
   height: auto;
-  background: #D2135D;
+  background: #d2135d;
   width: 19vw;
   top: 2vh;
   margin-left: 3vw;
   border-radius: 3vh;
   margin-bottom: 2vh;
   box-shadow: 10px 0 0 #ffffff;
-  border-left: 10px solid #D2135D;
+  border-left: 10px solid #d2135d;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
@@ -138,7 +138,6 @@ navbar  lateral
   list-style: none;
 }
 
-
 .perfil #userName {
   display: flex;
   list-style: none;
@@ -146,7 +145,6 @@ navbar  lateral
   font-weight: 600;
   margin-top: 6vh;
   justify-content: center;
-
 }
 
 .perfil #userEmail {
@@ -158,7 +156,6 @@ navbar  lateral
   display: flex;
   justify-content: center;
 }
-
 
 /*--------------------------------------------------------------
 Final Nav
@@ -174,7 +171,7 @@ main {
 header {
   display: flex;
   justify-content: space-between;
-  background-color: #D2135D;
+  background-color: #d2135d;
   color: white;
   padding: 2vh;
   border-radius: 3vh;
@@ -198,8 +195,6 @@ header p {
   display: flex;
 }
 
-
-
 /*--------------------------------------------------------------
 # Links
 --------------------------------------------------------------*/
@@ -219,11 +214,9 @@ header p {
   width: 100%;
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
-
 }
 
 .navigation ul li a {
-
   position: relative;
   display: flex;
   width: 100%;
@@ -261,7 +254,6 @@ header p {
 .navigation ul li.active {
   color: black;
   background: #ffffff;
-
 }
 
 .navigation ul li.active a {
@@ -274,28 +266,27 @@ header p {
   /* Cor do ícone quando ativo */
 }
 
-
 .navigation ul li.active a::before {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 8vh;
   right: 0;
   width: 5vh;
   height: 5vh;
-  background: #D2135D;
+  background: #d2135d;
   border-radius: 50%;
   box-shadow: 15px 15px 0 #ffffff;
   color: black;
 }
 
 .navigation ul li.active a::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 8vh;
   right: 0;
   width: 5vh;
   height: 5vh;
-  background: #D2135D;
+  background: #d2135d;
   border-radius: 50%;
   box-shadow: 15px -15px 0 #ffffff;
 }
@@ -376,7 +367,6 @@ Final Notifications
 Inicio Filtros
 ---------------------------------------------------------------*/
 
-
 .center-content {
   display: flex;
   flex-direction: column;
@@ -387,7 +377,6 @@ Inicio Filtros
   border-radius: 10px;
   overflow: hidden;
 }
-
 
 .actions {
   display: grid;
@@ -429,7 +418,7 @@ Inicio Filtros
 }
 
 .actions button:hover {
-  background-color: #D9006C;
+  background-color: #d9006c;
   color: #dcf5f2;
   transition-duration: 500ms;
 }
@@ -470,7 +459,7 @@ Inicio Tabela de procedimentos
 }
 
 .procedures-table thead {
-  background-color: #D2135D;
+  background-color: #d2135d;
   color: #fff;
 }
 
@@ -511,7 +500,7 @@ Inicio Tabela de procedimentos
   justify-content: center;
   padding: 1vh;
   align-items: center;
-  color: #D2135D;
+  color: #d2135d;
   cursor: pointer;
 }
 
@@ -553,7 +542,8 @@ Inicio Tabela de procedimentos
   font-weight: bold;
 }
 
-.modal-content .btn-yes, .btn-save {
+.modal-content .btn-yes,
+.btn-save {
   background-color: #28a745;
   color: white;
 }
@@ -570,7 +560,6 @@ Inicio Tabela de procedimentos
 .modal-content .btn-no:hover {
   background-color: #c82333;
 }
-
 
 .modal-content2 {
   background-color: #fefefe;
@@ -600,7 +589,8 @@ Inicio Tabela de procedimentos
   font-weight: bold;
 }
 
-.modal-content2 .btn-yes, .btn-save {
+.modal-content2 .btn-yes,
+.btn-save {
   background-color: #28a745;
   color: white;
 }
@@ -618,7 +608,13 @@ Inicio Tabela de procedimentos
   background-color: #c82333;
 }
 
-#edit-nome, #edit-cor {
+#edit-nome,
+#edit-cor,
+#filter-from,
+#filter-to,
+#filter-client,
+#filter-procedure,
+#filter-specification {
   width: 30%;
   padding: 8px;
   border: 1px solid #ddd;
@@ -637,7 +633,79 @@ Inicio Tabela de procedimentos
   width: 100%;
 }
 
-#status-modal .modal-content .btn-no {
-  background-color: #dc3545;
-  color: white;
+#filter-modal .modal-content {
+  width: 40%;
+  max-width: 600px;
+}
+
+#filter-modal .modal-content label {
+  margin: 10px 0 5px;
+}
+
+#status-modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#status-modal .table-header {
+  display: flex;
+  align-items: center;
+  background-color: #d2135d;
+  padding: 2.5vh 2.5vw;
+}
+
+#status-modal .table-header h1 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.1em;
+  width: 100%;
+  /* Define a largura do título para 50% */
+}
+
+#status-modal table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#status-modal thead {
+  background-color: #fff0f5;
+}
+
+#status-modal th,
+#status-modal td {
+  padding: 15px;
+  text-align: center;
+  border: 1px solid #000;
+}
+
+#status-modal th {
+  font-size: 0.9em;
+  color: #333;
+}
+
+#status-modal td {
+  font-size: 0.8em;
+  color: #000000;
 }
