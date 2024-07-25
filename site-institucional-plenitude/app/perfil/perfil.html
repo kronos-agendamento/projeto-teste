@@ -24,9 +24,9 @@
           <img src="../assets/Foto de Perfil.png">
         </div>
         <li id="userName">
-          </li>
+        </li>
         <li id="userEmail">
-          </li>
+        </li>
       </div>
 
       <ul>
@@ -103,36 +103,43 @@
             <h1>Dados do usuário</h1>
           </div>
           <div class="content-box">
-            <div class="content">
-              <div class="label">
-              <input  placeholder="Clique aqui e insira uma imagem de perfil" > 
+            <div class="content-form-flex">
+              <div class="imagem">
+                <div class="image">
+                  <img src="../../assets/icons/upload.png" alt="">
+                </div>
+                <p>Insira aqui uma imagem de perfil!</p>
+                <input type="file" name="profileImage" accept="image/*" placeholder="aaaaaaaaaa">
+              </div>
+            </div>
+
+            <div class="content-form-flex">
+              <div class="form-group form-mr form-input">
+                <div class="label">
+                  <p>Nome Completo:</p>
+                  <input type="text" id="nome" placeholder="Nome Completo" required>
+                </div>
+                <div class="label">
+                  <p>Data de Nascimento:</p>
+                  <input type="text" id="nascimento" placeholder="Data de nascimento" required>
+                </div>
+              </div>
+
+            </div>
+            <div class="content-form-flex">
+              <div class="form-group form-mr form-input">
+                <div class="label">
+                  <p>Email:</p>
+                  <input type="text" id="email" placeholder="xxxxxxxxxxx@xxxx.com" required>
+                </div>
+
+                <div class="label">
+                  <p>Telefone:</p>
+                  <input type="text" id="telefone" placeholder="(DDD) Telefone" required>
+                </div>
+              </div>
             </div>
           </div>
-            <div class="content">
-              <div class="label">
-                <p>Nome Completo:</p>
-                <input type="text" id="nome" placeholder="Nome Completo" required>
-              </div>
-              <div class="label">
-                <p>Data de Nascimento:</p>
-                <input type="text" id="nascimento" placeholder="Data de nascimento" required>
-              </div>
-            </div>
-
-            <div class="content">
-              <div class="label">
-                <p>Email:</p>
-                <input type="email" id="email" placeholder="Email" required>
-              </div>
-
-              <div class="label">
-                <p>Telefone:</p>
-                <input type="text" id="telefone" placeholder="(DDD) Telefone" required>
-              </div>
-            </div>
-          </div>
-
-
           <div class="button-container2">
             <button type="button" class="save-button" id="save-procedimento-button">
               Alterar senha
@@ -151,108 +158,102 @@
 
             <div class="form-group form-mr form-input">
               <div class="label">
-                <label for="empresa">Nome da Empresa:</label>
-                <select id="empresa" name="empresa">
-                  <option value="">Selecione uma empresa</option>
-                </select>
+                <p>Nome da Empresa:</p>
+                <input type="text" id="empresa" placeholder="XXXX" required>
               </div>
 
             </div>
 
             <div class="form-group form-mr form-input">
               <div class="label">
-                <label for="cnpj">CNPJ:</label>
-                <select id="cnpj" name="cnpj">
-                  <option value="">xx.xxx.xxx/xxxx-xx</option>
-                </select>
+                <p>CNPJ:</p>
+                <input type="text" id="cnpj" placeholder="xx.xxx.xxx/xxxx-xx" required>
               </div>
             </div>
 
-          </div>
-          <div class="content-form-flex">
-
-            <div class="form-group form-mr form-input">
-              <label for="endereco">Endereço:</label>
-              <select id="endereco" name="endereco">
-                <option value="">xxxxxxxxxxxxxxxx, xx - XX</option>
-              </select>
-            </div>
-          </div>
-
-
-          <div class="content-form-flex">
-
-            <div class="form-group form-mr form-input">
-              <label for="empresa">Dias de funcionamento:</label>
-              <div class="content-box2">
-                <div class="label">
-                  <span>De:</span>
-                  <select id="empresa" name="empresa">
-                    <option value="">Terça</option>
-                  </select>
-                </div>
-                <div class="label">
-                  <span>Até:</span>
-                  <select id="empresa" name="empresa">
-                    <option value="">Sábado</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <div class="form-group form-mr form-input">
-              <label for="cnpj"> Horarios de funcionamento</label>
-              <div class="content-box2">
-
-                <div class="label">
-                  <span>De:</span>
-                  <select id="cnpj" name="cnpj">
-                    <option value="">8:00</option>
-                  </select>
-                </div>
-                <div class="label">
-                  <span>Até:</span>
-                  <select id="cnpj" name="cnpj">
-                    <option value="">20:00</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-        </div>
-        <div class="right-content">
-          <div class="table-header">
-            <h1>Bloqueio de agendamentos</h1>
           </div>
           <div class="content-form">
 
             <div class="form-group form-mr form-input">
+              <p>Endereço:</p>
+              <input type="text" id="endereco" placeholder="xx.xxx.xxx/xxxx-xx" required>
+            </div>
+          </div>
+
+
+          <div class="content-form-flex">
+
+            <div class="form-group form-mr form-input">
               <div class="label">
-                <label for="empresa">Dia:</label>
-                <select id="empresa" name="empresa">
-                  <option value="">Segunda </option>
-                </select>
+                <p>Dias de funcionamento:</p>
+
+                <div class="content-box2">
+                  <p>De:</p>
+                  <select name="" id="" required>
+                    <option value="Terça">Terça</option>
+                  </select>
+
+                  <div class="content-box2">
+                    <p>Ate:</p>
+                    <select name="" id="" required>
+                      <option value="Sabado">Sabado</option>
+                    </select>
+                  </div>
+                </div>
               </div>
             </div>
 
+            <div class="form-group form-mr form-input">
+              <div class="label">
+                <p>Horários de funcionamento:</p>
+
+                <div class="content-box2">
+                  <p>De:</p>
+                  <select name="" id="" required>
+                    <option value="9:00">9:00</option>
+                  </select>
+
+                  <div class="content-box2">
+                    <p>Ate:</p>
+                    <select name="" id="" required>
+                      <option value="20:00">20:00</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="right-content">
+          <div class="table-header">
+            <h1>Bloqueio de agendamentos</h1>
+          </div>
+          <div class="form-group form-mr form-input">
+
+            <div class="content-form">
+              <div class="label">
+                <p>Dia Escolhido:</p>
+                <select name="" id="" required style="width: 80%;">
+                  <option value="Terça">Terça</option>
+                </select>
+              </div>
+            </div>
           </div>
           <div class="content-form-flex">
             <div class="form-group form-mr form-input">
-              <label for="cnpj"> Horarios de funcionamento</label>
-              <div class="content-box2">
+              <p>Horário de bloqueio:</p>
 
-                <div class="label">
-                  <span>De:</span>
-                  <select id="cnpj" name="cnpj">
-                    <option value="">8:00</option>
-                  </select>
-                </div>
-                <div class="label">
-                  <span>Até:</span>
-                  <select id="cnpj" name="cnpj">
-                    <option value="">20:00</option>
+              <div class="content-box2">
+                <p>De:</p>
+                <select name="" id="" required>
+                  <option value="12:00">12:00</option>
+                </select>
+
+                <div class="content-box2">
+                  <p>Ate:</p>
+                  <select name="" id="" required>
+                    <option value="13:00">13:00</option>
                   </select>
                 </div>
               </div>
@@ -262,9 +263,8 @@
                   Adicionar
                 </button>
               </div>
-
-
             </div>
+
           </div>
         </div>
       </div>

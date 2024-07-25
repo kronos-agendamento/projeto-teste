@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -23,12 +22,9 @@
         <div class="imagem-perfil">
           <img src="../assets/Foto de Perfil.png">
         </div>
-        <li id="userName">
-          Ritica</li>
-        <li id="userEmail">
-          Ritica@email</li>
+        <li id="userName">Ritica</li>
+        <li id="userEmail">Ritica@email</li>
       </div>
-
 
       <ul>
         <li class="list">
@@ -63,52 +59,44 @@
         </li>
       </ul>
     </div>
-    <main>
 
+    <main>
       <header>
         <div>
           <h1>Capacitação</h1>
-          <p>Esta página permite a visualização, cadastro, edição e exclusão de programas de capacitação, incluindo
-            cursos, palestras e consultorias.</p>
+          <p>Esta página permite a visualização, cadastro, edição e exclusão de programas de capacitação, incluindo cursos, palestras e consultorias.</p>
         </div>
         <div id="notification" class="notification">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill"
-            viewBox="0 0 16 16">
-            <path
-              d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+            <path d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
           </svg>
           <span id="notification-message"></span>
         </div>
       </header>
+
       <div class="main-content">
         <div class="center-content">
           <section class="actions">
-
-
             <button id="openFilterModalBtn" class="filter-btn">
               <img src="../../assets/icons/filter.png" alt="filter" />
               Filtro
             </button>
 
             <div class="right-actions">
-              <button class="criar-btn" onclick="showForm()">
+              <button class="criar-btn">
                 <img src="../../assets/icons/createNew.png" alt="createNew" />
-                <a href="capacitacao-forms/cadastrar-capacitacao/cadastrar-capacitacao.html"><span>Criar Nova
-                    Capacitação</span></a>
+                <a href="capacitacao-forms/cadastrar-capacitacao/cadastrar-capacitacao.html"><span>Criar Nova Capacitação</span></a>
               </button>
 
-              <button class="editar-btn" onclick="showForm()">
-                <img src="../../assets/icons/pen.png" alt="createNew" />
-                <a href="capacitacao-forms/editar-capacitacao/editar-capacitacao.html"><span>Editar
-                    Capacitação</span></a>
+              <button class="editar-btn">
+                <img src="../../assets/icons/pen.png" alt="edit" />
+                <a href="capacitacao-forms/editar-capacitacao/editar-capacitacao.html"><span>Editar Capacitação</span></a>
               </button>
 
-              <button class="desativar-btn" onclick="showForm()">
-                <img src="../../assets/icons/desativar.webp" alt="createNew" />
-                <a href="capacitacao-forms/cadastrar-capacitacao/cadastrar-capacitacao.html"><span>Desativar
-                    Capacitação</span></a>
+              <button class="desativar-btn">
+                <img src="../../assets/icons/desativar.webp" alt="deactivate" />
+                <a href="capacitacao-forms/cadastrar-capacitacao/cadastrar-capacitacao.html"><span>Desativar Capacitação</span></a>
               </button>
-
             </div>
           </section>
         </div>
@@ -146,11 +134,10 @@
           <span id="total-pages">1</span></span>
         <button class="button-page" id="next-page-btn">Próxima Página</button>
       </div>
+    </main>
   </div>
+
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-  </div>
-  </main>
 </body>
-
 </html>
