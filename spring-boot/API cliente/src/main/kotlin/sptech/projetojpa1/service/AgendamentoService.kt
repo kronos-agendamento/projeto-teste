@@ -63,16 +63,11 @@ class AgendamentoService(
     fun criarAgendamento(agendamentoRequestDTO: AgendamentoRequestDTO): AgendamentoResponseDTO {
         val agendamento = Agendamento(
             data = agendamentoRequestDTO.data ?: throw IllegalArgumentException("Data não pode ser nula"),
-            horario = agendamentoRequestDTO.horario
-                ?: throw IllegalArgumentException("Horário não pode ser nulo"),
-            tipoAgendamento = agendamentoRequestDTO.tipoAgendamento
-                ?: throw IllegalArgumentException("Tipo de agendamento não pode ser nulo"),
-            usuario = usuarioRepository.findById(agendamentoRequestDTO.fk_usuario)
-                .orElseThrow { IllegalArgumentException("Usuário não encontrado") },
-            procedimento = procedimentoRepository.findById(agendamentoRequestDTO.fk_procedimento)
-                .orElseThrow { IllegalArgumentException("Procedimento não encontrado") },
-            statusAgendamento = statusRepository.findById(agendamentoRequestDTO.fk_status)
-                .orElseThrow { IllegalArgumentException("Status não encontrado") }
+            horario = agendamentoRequestDTO.horario ?: throw IllegalArgumentException("Horário não pode ser nulo"),
+            tipoAgendamento = agendamentoRequestDTO.tipoAgendamento ?: throw IllegalArgumentException("Tipo de agendamento não pode ser nulo"),
+            usuario = usuarioRepository.findById(agendamentoRequestDTO.fk_usuario).orElseThrow { IllegalArgumentException("Usuário não encontrado") },
+            procedimento = procedimentoRepository.findById(agendamentoRequestDTO.fk_procedimento).orElseThrow { IllegalArgumentException("Procedimento não encontrado") },
+            statusAgendamento = statusRepository.findById(agendamentoRequestDTO.fk_status).orElseThrow { IllegalArgumentException("Status não encontrado") }
         )
 
         val savedAgendamento = agendamentoRepository.save(agendamento)
@@ -142,5 +137,4 @@ class AgendamentoService(
 
         agendamentoRepository.deleteById(id)
     }
-
 }

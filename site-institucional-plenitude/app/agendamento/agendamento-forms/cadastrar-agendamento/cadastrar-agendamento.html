@@ -24,9 +24,9 @@
           <img src="../../../assets/Foto de Perfil.png">
         </div>
         <li id="userName">
-          </li>
+        </li>
         <li id="userEmail">
-          </li>
+        </li>
       </div>
 
       <ul>
@@ -125,8 +125,10 @@
                   </select>
                 </div>
                 <div class="form-group form-input">
-                  <label for="descricao">Tipo de Atendimento:</label>
-                  <input type="text" id="descricao" name="descricao" />
+                  <label for="tipo-agendamentos">Tipo de Agendamento:</label>
+                  <select id="tipo-agendamentos" name="tipo-agendamentos">
+                    <option value="">Selecione um tipo de agendamento</option>
+                  </select>
                 </div>
               </form>
               <div class="form-group form-mr form-input">
@@ -141,10 +143,12 @@
                 <p id="data-selecionada"></p>
               </div>
               <div class="form-group form-input">
-                <label for="descricao">Escolha o melhor horarío dentro do dia {?}:</label>
+                <label for="descricao">Escolha o melhor horário dentro do dia:</label>
+                <div id="horarios-disponiveis" class="horarios-container"></div>
               </div>
+
               <div class="button-container">
-                <button type="button" class="save-button" id="save-procedimento-button">
+                <button type="button" class="save-button" id="save-agendamento-button">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
                     class="bi bi-check-circle-fill" viewBox="0 0 16 16">
                     <path

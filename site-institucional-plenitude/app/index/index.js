@@ -387,8 +387,8 @@ function renderStatuses() {
             <td>${status.nome}</td>
             <td>${status.cor}</td>
             <td>
-                <button class="edit-button" data-id="${status.id}">✏️</button>
-                <button class="delete-button" data-id="${status.id}">🗑️</button>
+                <button class="edit-btn" data-id="${status.id}"><i class="fas fa-edit"></i></button>
+                <button class="delete-btn" data-id="${status.id}"><i class="fas fa-trash"></i></button>
             </td>
         `;
         statusTbody.appendChild(row);
@@ -398,7 +398,7 @@ function renderStatuses() {
 }
 
 function attachEventListeners() {
-    const deleteButtons = document.querySelectorAll('.delete-button');
+    const deleteButtons = document.querySelectorAll('.delete-btn');
     deleteButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             deleteStatusId = e.target.getAttribute('data-id');
@@ -408,7 +408,7 @@ function attachEventListeners() {
         });
     });
 
-    const editButtons = document.querySelectorAll('.edit-button');
+    const editButtons = document.querySelectorAll('.edit-btn');
     editButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             editStatusId = e.target.getAttribute('data-id');
