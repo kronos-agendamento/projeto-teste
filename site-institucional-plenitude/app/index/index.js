@@ -408,8 +408,8 @@ function renderStatuses() {
             <td>${status.nome}</td>
             <td>${status.cor}</td>
             <td>
-                <button class="edit-button" data-id="${status.id}">✏️</button>
-                <button class="delete-button" data-id="${status.id}">🗑️</button>
+                <button class="edit-btn" data-id="${status.id}"><i class="fas fa-edit"></i></button>
+                <button class="delete-btn" data-id="${status.id}"><i class="fas fa-trash"></i></button>
             </td>
         `;
     statusTbody.appendChild(row);

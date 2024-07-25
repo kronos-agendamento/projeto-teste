@@ -822,3 +822,19 @@ Botão Ver todos / Ver menos
   margin-top: 3vh;
   margin-bottom: 2vh;
 }
+
+.edit-btn,
+.delete-btn,
+.more-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.edit-btn:hover,
+.delete-btn:hover,
+.more-btn:hover {
+    color: #d81b60;
+    font-size: 20px;
+}

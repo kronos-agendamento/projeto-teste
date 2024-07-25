@@ -26,7 +26,7 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
 
         val validacao = agendamentoService.validarAgendamento(agendamentoRequestDTO)
 
-        if (validacao == true) {
+        if (validacao) {
             val agendamentoResponseDTO = agendamentoService.criarAgendamento(agendamentoRequestDTO)
 
             return ResponseEntity.ok(agendamentoResponseDTO)
@@ -89,7 +89,4 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
         agendamentoService.excluirAgendamento(id)
         return ResponseEntity.ok().build<Any>()
     }
-    
-
 }
-

@@ -139,6 +139,102 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+    window.editarAgendamento = function (id) {
+        window.location.href = `agendamento-forms/editar-agendamento/editar-agendamento.html?id=${id}`;
+    };
+
+    window.excluirAgendamento = function (id) {
+        agendamentoIdToDelete = id;
+        document.getElementById("procedimento").textContent = `ID do agendamento: ${id}`;
+        document.getElementById("modal").style.display = "block";
+    };
+
+    window.closeModal = function () {
+        document.getElementById("modal").style.display = "none";
+    };
+
+    window.confirmDeletion = async function () {
+        if (agendamentoIdToDelete !== null) {
+            try {
+                const response = await fetch(`http://localhost:8080/api/agendamentos/excluir/${agendamentoIdToDelete}`, {
+                    method: 'DELETE'
+                });
+
+                if (!response.ok) throw new Error('Erro ao excluir o agendamento.');
+                await fetchAgendamentos();
+                agendamentoIdToDelete = null;
+                closeModal();
+                showNotification("Agendamento excluído com sucesso!");
+            } catch (error) {
+                console.error('Erro ao excluir o agendamento:', error);
+                showNotification('Erro ao excluir o agendamento!', true);
+            }
+        }
+    };
+
+    function showNotification(message, isError = false) {
+        const notification = document.getElementById('notification');
+        const notificationMessage = document.getElementById('notification-message');
+        notificationMessage.textContent = message;
+        if (isError) {
+            notification.classList.add('error');
+        } else {
+            notification.classList.remove('error');
+        }
+        notification.classList.add('show');
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 3000);
+    }
+
+    async function saveStatus() {
+        const nome = document.getElementById("save-nome").value;
+        const cor = document.getElementById("save-cor").value;
+
+        try {
+            const response = await fetch('http://localhost:8080/status-agendamento/cadastro-status', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nome, cor })
+            });
+
+            if (!response.ok) throw new Error('Erro ao salvar o status.');
+            showNotification('Status salvo com sucesso!');
+            closeSaveModal();
+            renderTable();
+        } catch (error) {
+            showNotification('Erro ao salvar o status!', true);
+        }
+    }
+
+    // Define the openSaveModal function in the global scope
+    window.openSaveModal = function () {
+        document.getElementById("save-modal").style.display = "block";
+    };
+
+    window.closeSaveModal = function () {
+        document.getElementById("save-modal").style.display = "none";
+    };
+    // Garantir que o evento de clique no botão "Salvar" seja adicionado apenas uma vez
+    const saveButton = document.querySelector(".btn-save");
+    saveButton.removeEventListener("click", saveStatus); // Remove qualquer evento anterior
+    saveButton.addEventListener("click", saveStatus);
+
+    fetchAgendamentos();
+
+    const nome = localStorage.getItem('nome');
+    const email = localStorage.getItem('email');
+    if (nome && email) {
+        document.getElementById('userName').textContent = nome;
+        document.getElementById('userEmail').textContent = email;
+    }
+
+    document.querySelector('.btn-no').addEventListener('click', function () {
+        document.getElementById('modal').style.display = 'none';
+        document.getElementById('save-modal').style.display = 'none';
+    });
   // Inicializa a página
   fetchAgendamentos();
 });

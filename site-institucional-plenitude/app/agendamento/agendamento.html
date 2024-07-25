@@ -24,9 +24,9 @@
           <img src="../assets/Foto de Perfil.png">
         </div>
         <li id="userName">
-          </li>
+        </li>
         <li id="userEmail">
-          </li>
+        </li>
       </div>
 
       <ul>
@@ -110,7 +110,7 @@
               <button class="planilha-btn" id="open-status-modal">
                 <img src="../../assets/icons/createNew.png" alt="spreadsheet"/>Status Cadastrados
               </button>
-              <button class="btn btn-create" onclick="openEditModal()">
+              <button class="btn btn-create" onclick="openSaveModal()">
                 <img src="../../assets/icons/createNew.png" alt="createNew" /><span>Criar Status</span>
               </button>
               <button class="criar-btn" onclick="showForm()">
@@ -161,14 +161,14 @@
 
   <div id="modal" class="modal" style="display: none;">
     <div class="modal-content">
-        <p>Tem certeza que deseja excluir o agendamento?</p>
-        <p id="procedimento"></p>
-        <button class="btn btn-yes" onclick="confirmDeletion()">SIM</button>
-        <button class="btn btn-no" onclick="closeModal()">NÃO</button>
+      <p>Tem certeza que deseja excluir o agendamento?</p>
+      <p id="procedimento"></p>
+      <button class="btn btn-yes" onclick="confirmDeletion()">SIM</button>
+      <button class="btn btn-no" onclick="closeModal()">NÃO</button>
     </div>
-</div>
+  </div>
 
-<div id="edit-modal" class="modal">
+  <div id="save-modal" class="modal">
     <div class="modal-content2">
         <h3>Criar Status</h3>
         <div>
@@ -179,8 +179,8 @@
     </div>
         <div>
         <button class="btn btn-save">Salvar</button>
-        <button class="btn btn-no" onclick="closeEditModal()">Cancelar</button>
-    </div>
+        <button class="btn btn-no" onclick="closeSaveModal()">Cancelar</button>
+      </div>
     </div>
 </div>
 
@@ -232,7 +232,7 @@
 
 </main>
 
-</div>
+  </div>
 
   </main>
 </body>
