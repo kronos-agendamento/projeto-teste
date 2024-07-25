@@ -317,6 +317,7 @@
         .modal-close:hover,
         .modal-close:focus {
             color: black;
+            transition-duration: 500ms;
         }
 
         /* Show mobile buttons only on mobile */
