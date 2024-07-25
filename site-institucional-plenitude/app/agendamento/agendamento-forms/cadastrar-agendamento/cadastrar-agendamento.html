@@ -1,167 +1,209 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastrar Agendamento | KronosBooking</title>
 
-  <title>Cadastrar Agendamento | KronosBooking</title>
+    <!-- Favicons -->
+    <link href="../../../assets/favicon.png" rel="icon" />
 
-  <!-- Favicons -->
-  <link href="../../../assets/favicon.png" rel="icon">
+    <link rel="stylesheet" href="cadastrar-agendamento.css" />
+    <link rel="stylesheet" href="../../agendamento.css" />
+    <script src="cadastrar-agendamento.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
 
-  <link rel="stylesheet" href="cadastrar-agendamento.css" />
-  <link rel="stylesheet" href="../../agendamento.css" />
-  <script src="cadastrar-agendamento.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-</head>
-
-<body>
-  <div class="corpo">
-    <div class="navigation">
-      <div class="perfil">
-        <div class="imagem-perfil">
-          <img src="../../../assets/Foto de Perfil.png">
+  <body>
+    <div class="corpo">
+      <div class="navigation">
+        <div class="perfil">
+          <div class="imagem-perfil">
+            <img src="../../../assets/Foto de Perfil.png" />
+          </div>
+          <li id="userName"></li>
+          <li id="userEmail"></li>
         </div>
-        <li id="userName">
+
+        <ul>
+          <li class="list">
+            <a href="../index/index.html">
+              <span class="icon"
+                ><ion-icon name="home-outline"></ion-icon
+              ></span>
+              <span class="title">Início </span>
+            </a>
           </li>
-        <li id="userEmail">
+          <li class="list">
+            <a href="../perfil/perfil.html">
+              <span class="icon"
+                ><ion-icon name="people-outline"></ion-icon
+              ></span>
+              <span class="title">Perfil</span>
+            </a>
           </li>
+          <li class="list active">
+            <a href="agendamento.html">
+              <span class="icon"
+                ><ion-icon name="calendar-outline"></ion-icon
+              ></span>
+              <span class="title">Agendamentos</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../anamnese/anamnese.html">
+              <span class="icon"
+                ><ion-icon name="document-text-outline"></ion-icon
+              ></span>
+              <span class="title">Anamneses</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../cliente/cliente.html">
+              <span class="icon"
+                ><ion-icon name="person-add-outline"></ion-icon
+              ></span>
+              <span class="title">Clientes</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../procedimento/procedimento.html">
+              <span class="icon"
+                ><ion-icon name="brush-outline"></ion-icon
+              ></span>
+              <span class="title">Procedimentos</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../dashboard/dashboard.html">
+              <span class="icon"
+                ><ion-icon name="stats-chart-outline"></ion-icon
+              ></span>
+              <span class="title">Dashboard</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../../index.html">
+              <span class="icon"
+                ><ion-icon name="exit-outline"></ion-icon
+              ></span>
+              <span class="title">Sair</span>
+            </a>
+          </li>
+        </ul>
       </div>
 
-      <ul>
-        <li class="list">
-          <a href="../index/index.html">
-            <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
-            <span class="title">Início </span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../perfil/perfil.html">
-            <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
-            <span class="title">Perfil</span>
-          </a>
-        </li>
-        <li class="list active">
-          <a href="agendamento.html">
-            <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
-            <span class="title">Agendamentos</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../anamnese/anamnese.html">
-            <span class="icon"><ion-icon name="document-text-outline"></ion-icon></span>
-            <span class="title">Anamneses</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../cliente/cliente.html">
-            <span class="icon"><ion-icon name="person-add-outline"></ion-icon></span>
-            <span class="title">Clientes</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../procedimento/procedimento.html">
-            <span class="icon"><ion-icon name="brush-outline"></ion-icon></span>
-            <span class="title">Procedimentos</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../dashboard/dashboard.html">
-            <span class="icon"><ion-icon name="stats-chart-outline"></ion-icon></span>
-            <span class="title">Dashboard</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../../index.html">
-            <span class="icon"><ion-icon name="exit-outline"></ion-icon></span>
-            <span class="title">Sair</span>
-          </a>
-        </li>
-      </ul>
-    </div>
+      <main>
+        <header>
+          <div>
+            <h1>Agendamentos</h1>
+            <p>
+              Essa página é destinada para o cadastro de um novo agendamento.
+            </p>
+          </div>
+          <div id="notification" class="notification">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              fill="white"
+              class="bi bi-check-circle-fill"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z"
+              />
+            </svg>
+            <span id="notification-message"></span>
+          </div>
+        </header>
 
-    <main>
-      <header>
-        <div>
-          <h1>Agendamentos</h1>
-          <p>Essa página é destinada para o cadastro de um novo agendamento.</p>
-        </div>
-        <div id="notification" class="notification">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill"
-            viewBox="0 0 16 16">
-            <path
-              d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
-          </svg>
-          <span id="notification-message"></span>
-        </div>
-      </header>
+        <div class="back-content">
+          <div class="left-content">
+            <a href="../../agendamento.html" class="back-link"
+              >← Voltar para página de visualização dos agendamentos</a
+            >
 
-      <div class="back-content">
-
-        <div class="left-content">
-          <a href="../../agendamento.html" class="back-link">← Voltar para página de
-            visualização dos agendamentos</a>
-
-
-          <section class="form-section">
-            <div class="form-title">
-              <h2>Dados dos Agendamentos</h2>
-            </div>
-
-            <div class="content-form">
-              <div class="form-group form-mr form-input">
-                <label for="clientes">Pesquisar nome do cliente:</label>
-                <select id="clientes" name="clientes">
-                  <option value="">Selecione um cliente</option>
-                </select>
+            <section class="form-section">
+              <div class="form-title">
+                <h2>Dados dos Agendamentos</h2>
               </div>
 
-              <form class="form-flex">
+              <div class="content-form">
                 <div class="form-group form-mr form-input">
-                  <label for="procedimentos">Procedimento:</label>
-                  <select id="procedimentos" name="procedimentos">
-                    <option value="">Selecione um procedimento</option>
+                  <label for="clientes">Pesquisar nome do cliente:</label>
+                  <select id="clientes" name="clientes">
+                    <option value="">Selecione um cliente</option>
                   </select>
                 </div>
-                <div class="form-group form-input">
-                  <label for="descricao">Tipo de Atendimento:</label>
-                  <input type="text" id="descricao" name="descricao" />
+
+                <form class="form-flex">
+                  <div class="form-group form-mr form-input">
+                    <label for="procedimentos">Procedimento:</label>
+                    <select id="procedimentos" name="procedimentos">
+                      <option value="">Selecione um procedimento</option>
+                    </select>
+                  </div>
+                  <div class="form-group form-input">
+                    <label for="descricao">Tipo de Atendimento:</label>
+                    <input type="text" id="descricao" name="descricao" />
+                  </div>
+                </form>
+                <div class="form-group form-mr form-input">
+                  <label for="especificacoes">Especificação:</label>
+                  <select id="especificacoes" name="especificacoes">
+                    <option value="">Selecione uma especificação</option>
+                  </select>
                 </div>
-              </form>
-              <div class="form-group form-mr form-input">
-                <label for="especificacoes">Especificação:</label>
-                <select id="especificacoes" name="especificacoes">
-                  <option value="">Selecione uma especificação</option>
-                </select>
+                <div class="form-group form-mr form-input">
+                  <label for="data">Escolha o melhor dia:</label>
+                  <input type="date" id="data" name="data" />
+                  <p id="data-selecionada"></p>
+                </div>
+                <div class="form-group form-input">
+                  <label for="descricao"
+                    >Escolha o melhor horarío dentro do dia {?}:</label
+                  >
+                </div>
+                <div class="button-container">
+                  <button
+                    type="button"
+                    class="save-button"
+                    id="save-procedimento-button"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      fill="white"
+                      class="bi bi-check-circle-fill"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z"
+                      />
+                    </svg>
+                    Salvar Agendamento
+                  </button>
+                </div>
               </div>
-              <div class="form-group form-mr form-input">
-                <label for="data">Escolha o melhor dia:</label>
-                <input type="date" id="data" name="data">
-                <p id="data-selecionada"></p>
-              </div>
-              <div class="form-group form-input">
-                <label for="descricao">Escolha o melhor horarío dentro do dia {?}:</label>
-              </div>
-              <div class="button-container">
-                <button type="button" class="save-button" id="save-procedimento-button">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
-                    class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                    <path
-                      d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
-                  </svg>
-                  Salvar Agendamento
-                </button>
-              </div>
-            </div>
-          </section>
+            </section>
+          </div>
         </div>
-      </div>
 
-      <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-      <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    </main>
-  </div>
-</body>
-
+        <script
+          type="module"
+          src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+        ></script>
+        <script
+          nomodule
+          src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+        ></script>
+      </main>
+    </div>
+  </body>
 </html>
