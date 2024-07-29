@@ -15,7 +15,7 @@ import sptech.projetojpa1.dto.capacitacao.CapacitacaoResponseDTO
 import sptech.projetojpa1.service.CapacitacaoService
 
 @RestController
-@RequestMapping("/capacitacao")
+@RequestMapping("/app/capacitacao")
 class CapacitacaoController(private val service: CapacitacaoService) {
 
     @Operation(summary = "Criar uma nova capacitação")
