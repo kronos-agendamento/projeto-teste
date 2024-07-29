@@ -24,7 +24,7 @@ open class Agendamento(
 
     @field:NotNull(message = "Tipo de agendamento não pode ser nulo")
     @Column(name = "tipo_agendamento")
-    var tipoAgendamento: Int?,
+    var tipoAgendamento: String?,  // Mudança para String
 
     @field:NotNull(message = "Usuário não pode ser nulo")
     @ManyToOne

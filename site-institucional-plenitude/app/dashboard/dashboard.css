@@ -209,12 +209,15 @@ header p {
     color: black;
     margin-left: 35px;
     font-weight: 550;
+    font-size: smaller;
+    width:400px
 }
 
 .card p{
     display: flex;
     flex-direction: row;
     color: black;
+    margin-left: 5px;
 }
 
 .card-content {
@@ -230,11 +233,12 @@ header p {
     width: 100%;
     padding-left: 35px;
     margin-top: 15px;
+    align-items: center;
 }
 
 .card-content-2 h1{
     font-size: x-large;
-width: 200px;
+width: 300px;
 font-weight:1400;
 }
 
@@ -244,8 +248,10 @@ font-weight:1400;
     border: 2px solid rgb(0, 0, 0);
     background-color: #fff;
     border-radius: 15px;
-    padding: 5px 10px;
+    /* padding: 5px 10px; */
     margin-right: 23px;
+    margin-left: 0px;
+    
     font-size: 14px;
     color: rgb(0, 0, 0);
     cursor: pointer;
@@ -403,7 +409,8 @@ font-weight:1400;
 .charts {
     display: flex;
     flex-wrap: wrap;
-    width: 146vh;
+    /* width: 146vh; */
+    width: fit-content;
     border: 2.5px solid #D2135D; 
     border-radius: 10px 0 10px 10px;
     justify-content: center;

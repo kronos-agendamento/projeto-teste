@@ -13,7 +13,7 @@ data class AgendamentoRequestDTO(
     var horario: Timestamp?,
 
     @field:NotNull(message = "Tipo de agendamento não pode ser nulo")
-    var tipoAgendamento: Int?,
+    var tipoAgendamento: String?,  // Mudança para String
 
     @field:NotNull(message = "Id do usuário não pode ser nulo")
     @field:Min(value = 1, message = "Id do usuário deve ser maior que 0")

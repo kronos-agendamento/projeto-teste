@@ -10,7 +10,7 @@ data class AgendamentoResponseDTO(
     var idAgendamento: Int?,
     var data: Date?,
     var horario: Timestamp?,
-    var tipoAgendamento: Int?,
+    var tipoAgendamento: String?,  // Mudança para String
     var usuario: Usuario,
     var procedimento: Procedimento,
     var statusAgendamento: Status
