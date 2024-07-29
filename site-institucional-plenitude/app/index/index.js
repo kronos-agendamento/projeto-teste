@@ -3,7 +3,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const buttons = document.querySelectorAll("button");
   buttons.forEach((button) => {
-    button.addEventListener("click", () => {});
+    button.addEventListener("click", () => { });
   });
 });
 
@@ -56,38 +56,6 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", () => {
   const apiBaseUrl = "http://localhost:8080";
 
-  const fetchProcedimentos = async () => {
-    try {
-      const response = await fetch(`${apiBaseUrl}/api/procedimentos/listar`);
-      if (response.ok) {
-        const data = await response.json();
-        return data.slice(0, 2); // Retorna no máximo 2 procedimentos
-      } else {
-        console.error("Falha ao buscar procedimentos");
-        return [];
-      }
-    } catch (error) {
-      console.error("Erro:", error);
-      return [];
-    }
-  };
-
-  const fetchTempos = async () => {
-    try {
-      const response = await fetch(`${apiBaseUrl}/api/tempos`);
-      if (response.ok) {
-        const data = await response.json();
-        return data;
-      } else {
-        console.error("Falha ao buscar tempos de procedimentos");
-        return [];
-      }
-    } catch (error) {
-      console.error("Erro:", error);
-      return [];
-    }
-  };
-
   const fetchEspecificacoes = async () => {
     try {
       const response = await fetch(`${apiBaseUrl}/especificacoes`);
@@ -114,49 +82,42 @@ document.addEventListener("DOMContentLoaded", () => {
     const minutosFormatados = parseInt(minutos, 10);
 
     if (horasFormatadas === 0) {
-      return `${minutosFormatados}h`;
+      return `${minutosFormatados}`;
     } else {
-      return `${horasFormatadas}:${
-        minutosFormatados < 10 ? "0" + minutosFormatados : minutosFormatados
-      }`;
+      return `${horasFormatadas}:${minutosFormatados < 10 ? "0" + minutosFormatados : minutosFormatados}`;
     }
   };
 
   const popularTabela = async () => {
-    const procedimentos = await fetchProcedimentos();
-    const tempos = await fetchTempos();
     const especificacoes = await fetchEspecificacoes();
 
     const tabela = document.querySelector("#procedimentos-cadastrados tbody");
     tabela.innerHTML = ""; // Limpa a tabela antes de inserir novos dados
 
-    procedimentos.forEach((procedimento) => {
-      const tempo = tempos.find((t) => t.procedimentoId === procedimento.id);
-      const especificacao = especificacoes.find(
-        (e) => e.procedimentoId === procedimento.id
-      );
+    especificacoes.forEach((especificacao) => {
+      const procedimento = especificacao.fkProcedimento;
+      const tempo = especificacao.fkTempoProcedimento;
 
-      // Formata o preço com "R$" antes do número
-      const precoFormatado = `R$ ${especificacao.precoColocacao.toFixed(2)}`;
+      // Formata o preço com "R$" antes do número e usa vírgula como separador decimal
+      const precoFormatado = `R$ ${especificacao.precoColocacao.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
       // Formata a duração (tempo) conforme especificado
-      const duracaoFormatada = tempo
-        ? formatarDuracao(tempo.tempoColocacao)
-        : "N/A";
+      const duracaoFormatada = tempo ? formatarDuracao(tempo.tempoColocacao) : "N/A";
 
       const row = document.createElement("tr");
       row.innerHTML = `
-                <td>${procedimento.tipo}</td>
-                <td>${precoFormatado}</td>
-                <td>${duracaoFormatada}h</td>
-                <td>${especificacao ? especificacao.especificacao : "N/A"}</td>
-            `;
+        <td>${procedimento.tipo}</td>
+        <td>${precoFormatado}</td>
+        <td>${duracaoFormatada}h</td>
+        <td>${especificacao.especificacao}</td>
+      `;
       tabela.appendChild(row);
     });
   };
 
   popularTabela();
 });
+
 
 document.addEventListener("DOMContentLoaded", () => {
   // Função para formatar o CPF
@@ -360,7 +321,7 @@ async function carregarAniversariantes() {
     e.preventDefault();
     exibirTodos = !exibirTodos;
     renderizarAniversariantes(aniversariantes, exibirTodos);
-    toggleView.textContent = exibirTodos ? "Ver menos" : "Ver todos >>";
+    toggleView.textContent = exibirTodos ? "Ver menos <<" : "Ver todos >>";
   });
 }
 
@@ -405,34 +366,35 @@ function renderStatuses() {
   statusesToShow.forEach((status) => {
     const row = document.createElement("tr");
     row.innerHTML = `
-            <td>${status.nome}</td>
-            <td>${status.cor}</td>
-            <td>
-                <button class="edit-btn" data-id="${status.id}"><i class="fas fa-edit"></i></button>
-                <button class="delete-btn" data-id="${status.id}"><i class="fas fa-trash"></i></button>
-            </td>
+    <td>${status.nome}</td>
+    <td>${status.cor}</td>
+    <td>
+        <button class="edit-btn" data-id="${status.id}"><i class="fas fa-edit"></i></button>
+        <button class="delete-btn" data-id="${status.id}"><i class="fas fa-trash"></i></button>
+    </td>
+
         `;
     statusTbody.appendChild(row);
   });
-  toggleView.innerText = showingAll ? "Ver menos" : "Ver todos >>";
+  toggleView.innerText = showingAll ? "Ver menos <<" : "Ver todos >>";
   attachEventListeners();
 }
 
 function attachEventListeners() {
-  const deleteButtons = document.querySelectorAll(".delete-button");
+  const deleteButtons = document.querySelectorAll(".delete-btn");
   deleteButtons.forEach((button) => {
     button.addEventListener("click", (e) => {
-      deleteStatusId = e.target.getAttribute("data-id");
+      deleteStatusId = e.target.closest("button").getAttribute("data-id");
       const status = allStatuses.find((status) => status.id == deleteStatusId);
       procedimentoText.innerText = status.nome;
       openModal();
     });
   });
 
-  const editButtons = document.querySelectorAll(".edit-button");
+  const editButtons = document.querySelectorAll(".edit-btn");
   editButtons.forEach((button) => {
     button.addEventListener("click", (e) => {
-      editStatusId = e.target.getAttribute("data-id");
+      editStatusId = e.target.closest("button").getAttribute("data-id");
       const status = allStatuses.find((status) => status.id == editStatusId);
       editNome.value = status.nome;
       editCor.value = status.cor;
