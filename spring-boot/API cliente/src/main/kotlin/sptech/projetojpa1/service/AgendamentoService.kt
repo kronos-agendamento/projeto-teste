@@ -5,6 +5,7 @@ import sptech.projetojpa1.dominio.Agendamento
 import sptech.projetojpa1.dto.agendamento.AgendamentoRequestDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoResponseDTO
 import sptech.projetojpa1.repository.AgendamentoRepository
+import sptech.projetojpa1.repository.EspecificacaoRepository  // Novo repositório
 import sptech.projetojpa1.repository.ProcedimentoRepository
 import sptech.projetojpa1.repository.StatusRepository
 import sptech.projetojpa1.repository.UsuarioRepository
@@ -15,6 +16,7 @@ class AgendamentoService(
     private val agendamentoRepository: AgendamentoRepository,
     private val usuarioRepository: UsuarioRepository,
     private val procedimentoRepository: ProcedimentoRepository,
+    private val especificacaoRepository: EspecificacaoRepository,  // Novo repositório
     private val statusRepository: StatusRepository
 ) {
 
@@ -24,11 +26,11 @@ class AgendamentoService(
         return agendamentos.map { agendamento ->
             AgendamentoResponseDTO(
                 idAgendamento = agendamento.idAgendamento,
-                data = agendamento.data,
-                horario = agendamento.horario,
+                dataHorario = agendamento.dataHorario,
                 tipoAgendamento = agendamento.tipoAgendamento,
                 usuario = agendamento.usuario,
                 procedimento = agendamento.procedimento,
+                especificacao = agendamento.especificacao,  // Novo campo
                 statusAgendamento = agendamento.statusAgendamento
             )
         }
@@ -40,33 +42,32 @@ class AgendamentoService(
         return agendamentos
     }
 
-    fun validarDiaHora(data: Date, horario: Date): Boolean {
-        val agendamentos = agendamentoRepository.findByDataAndHorario(data, horario)
+    fun validarDia(dataHorario: Date): Boolean {
+        val agendamentos = agendamentoRepository.findByDataHorario(dataHorario)
         return agendamentos.isEmpty()
 
-        // true: Não existem agendamentos na data e horário especificados.
-        // false: Existe um agendamento na data e horário especificados.
+        // true: Não existem agendamentos na data especificada.
+        // false: Existe um agendamento na data especificada.
     }
 
     fun validarAgendamento(agendamentoRequestDTO: AgendamentoRequestDTO): Boolean {
-        val dataAgendamento = agendamentoRequestDTO.data
-        val horaAgendamento = agendamentoRequestDTO.horario
+        val dataAgendamento = agendamentoRequestDTO.dataHorario
 
-        // Verifica se dataAgendamento ou horaAgendamento são nulos e lança uma exceção
-        if (dataAgendamento == null || horaAgendamento == null) {
-            throw IllegalArgumentException("Data e horário do agendamento não podem ser nulos")
+        // Verifica se dataAgendamento é nulo e lança uma exceção
+        if (dataAgendamento == null) {
+            throw IllegalArgumentException("Data do agendamento não pode ser nula")
         }
 
-        return validarDiaHora(dataAgendamento, horaAgendamento)
+        return validarDia(dataAgendamento)
     }
 
     fun criarAgendamento(agendamentoRequestDTO: AgendamentoRequestDTO): AgendamentoResponseDTO {
         val agendamento = Agendamento(
-            data = agendamentoRequestDTO.data ?: throw IllegalArgumentException("Data não pode ser nula"),
-            horario = agendamentoRequestDTO.horario ?: throw IllegalArgumentException("Horário não pode ser nulo"),
+            dataHorario = agendamentoRequestDTO.dataHorario ?: throw IllegalArgumentException("Data não pode ser nula"),
             tipoAgendamento = agendamentoRequestDTO.tipoAgendamento ?: throw IllegalArgumentException("Tipo de agendamento não pode ser nulo"),
             usuario = usuarioRepository.findById(agendamentoRequestDTO.fk_usuario).orElseThrow { IllegalArgumentException("Usuário não encontrado") },
             procedimento = procedimentoRepository.findById(agendamentoRequestDTO.fk_procedimento).orElseThrow { IllegalArgumentException("Procedimento não encontrado") },
+            especificacao = especificacaoRepository.findById(agendamentoRequestDTO.fk_especificacao).orElseThrow { IllegalArgumentException("Especificação não encontrada") },  // Novo campo
             statusAgendamento = statusRepository.findById(agendamentoRequestDTO.fk_status).orElseThrow { IllegalArgumentException("Status não encontrado") }
         )
 
@@ -74,11 +75,11 @@ class AgendamentoService(
 
         return AgendamentoResponseDTO(
             idAgendamento = savedAgendamento.idAgendamento,
-            data = savedAgendamento.data,
-            horario = savedAgendamento.horario,
+            dataHorario = savedAgendamento.dataHorario,
             tipoAgendamento = savedAgendamento.tipoAgendamento,
             usuario = savedAgendamento.usuario,
             procedimento = savedAgendamento.procedimento,
+            especificacao = savedAgendamento.especificacao,  // Novo campo
             statusAgendamento = savedAgendamento.statusAgendamento
         )
     }
@@ -90,11 +91,11 @@ class AgendamentoService(
 
         return AgendamentoResponseDTO(
             idAgendamento = agendamento.idAgendamento,
-            data = agendamento.data,
-            horario = agendamento.horario,
+            dataHorario = agendamento.dataHorario,
             tipoAgendamento = agendamento.tipoAgendamento,
             usuario = agendamento.usuario,
             procedimento = agendamento.procedimento,
+            especificacao = agendamento.especificacao,  // Novo campo
             statusAgendamento = agendamento.statusAgendamento
         )
     }
@@ -104,16 +105,16 @@ class AgendamentoService(
             agendamentoRepository.findById(id)
                 .orElseThrow { IllegalArgumentException("Agendamento não encontrado") }
 
-        agendamento.data =
-            agendamentoRequestDTO.data ?: throw IllegalArgumentException("Data não pode ser nula")
-        agendamento.horario =
-            agendamentoRequestDTO.horario ?: throw IllegalArgumentException("Horário não pode ser nulo")
+        agendamento.dataHorario =
+            agendamentoRequestDTO.dataHorario ?: throw IllegalArgumentException("Data não pode ser nula")
         agendamento.tipoAgendamento = agendamentoRequestDTO.tipoAgendamento
             ?: throw IllegalArgumentException("Tipo de agendamento não pode ser nulo")
         agendamento.usuario = usuarioRepository.findById(agendamentoRequestDTO.fk_usuario)
             .orElseThrow { IllegalArgumentException("Usuário não encontrado") }
         agendamento.procedimento = procedimentoRepository.findById(agendamentoRequestDTO.fk_procedimento)
             .orElseThrow { IllegalArgumentException("Procedimento não encontrado") }
+        agendamento.especificacao = especificacaoRepository.findById(agendamentoRequestDTO.fk_especificacao)
+            .orElseThrow { IllegalArgumentException("Especificação não encontrada") }  // Novo campo
         agendamento.statusAgendamento = statusRepository.findById(agendamentoRequestDTO.fk_status)
             .orElseThrow { IllegalArgumentException("Status não encontrado") }
 
@@ -121,11 +122,11 @@ class AgendamentoService(
 
         return AgendamentoResponseDTO(
             idAgendamento = updatedAgendamento.idAgendamento,
-            data = updatedAgendamento.data,
-            horario = updatedAgendamento.horario,
+            dataHorario = updatedAgendamento.dataHorario,
             tipoAgendamento = updatedAgendamento.tipoAgendamento,
             usuario = updatedAgendamento.usuario,
             procedimento = updatedAgendamento.procedimento,
+            especificacao = updatedAgendamento.especificacao,  // Novo campo
             statusAgendamento = updatedAgendamento.statusAgendamento
         )
     }

@@ -147,3 +147,7 @@
     cursor: not-allowed;
   }
   
+.horario-button.selected {
+  background-color: #4CAF50; /* Cor para o horário selecionado */
+  color: white;
+}
