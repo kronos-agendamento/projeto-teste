@@ -709,3 +709,8 @@ Inicio Tabela de procedimentos
   font-size: 0.8em;
   color: #000000;
 }
+
+.criar-btn a span {
+  color: black;
+  /* Altere 'red' para a cor desejada */
+}

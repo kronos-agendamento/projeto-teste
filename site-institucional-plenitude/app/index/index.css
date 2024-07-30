@@ -426,7 +426,7 @@ Inicio Agenda
   font-size: 1.2em;
   color: #333;
   display: flex;
-  margin: 2vh 0 0 2vw;
+  margin: 2vh 2vw 0 2vw;
 }
 
 .details h3 {
@@ -659,6 +659,7 @@ Botão Ver todos / Ver menos
   font-size: 14px;
   text-align: center;
   position: relative;
+  margin-top: 100px;
 }
 
 .footer_container {

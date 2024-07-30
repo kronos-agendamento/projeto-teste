@@ -23,10 +23,8 @@
         <div class="imagem-perfil">
           <img src="../assets/Foto de Perfil.png">
         </div>
-        <li id="userName">
-        </li>
-        <li id="userEmail">
-        </li>
+        <li id="userName"></li>
+        <li id="userEmail"></li>
       </div>
 
       <ul>
@@ -154,9 +152,7 @@
           <span id="total-pages">1</span></span>
         <button class="button-page" id="next-page-btn">Próxima Página</button>
       </div>
-  </div>
-  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    </main>
   </div>
 
   <div id="modal" class="modal" style="display: none;">
@@ -200,41 +196,34 @@
         <input type="text" id="filter-specification" placeholder="Especificação">
       </div>
       <div>
-        <button class="btn btn-save" onclick="applyFilter()">Filtrar</button>
+        <button class="btn btn-save" onclick="applyFilters()">Aplicar Filtros</button>
         <button class="btn btn-no" onclick="closeFilterModal()">Cancelar</button>
       </div>
     </div>
   </div>
 
-
   <div id="status-modal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeStatusModal()">&times;</span>
-      <h2>Status Cadastrados</h2>
-      <div class="table-container">
-        <div class="table-header">
-          <h1>Status Cadastrados</h1>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Cor</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody id="status-tbody"></tbody>
-        </table>
+    <div class="modal-content2">
+      <h3>Status Cadastrados</h3>
+      <table class="status-table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Cor</th>
+          </tr>
+        </thead>
+        <tbody id="status-tbody"></tbody>
+      </table>
+      <div>
+        <button class="btn btn-no" onclick="closeStatusModal()">Fechar</button>
       </div>
     </div>
   </div>
 
-
-  </main>
-
-  </div>
-
-  </main>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+  <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.2/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 </body>
 
 </html>

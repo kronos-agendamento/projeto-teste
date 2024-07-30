@@ -52,7 +52,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-
   async function carregarEspecificacoes() {
     try {
       const response = await fetch(apiUrlEspecificacoes);
@@ -78,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (response.ok) {
         const agendamentos = await response.json();
         const horariosOcupados = agendamentos
-          .filter(agendamento => agendamento.data.startsWith(data))
+          .filter(agendamento => agendamento.data && agendamento.data.startsWith(data))
           .map(agendamento => new Date(agendamento.horario).getHours());
 
         const horariosDisponiveis = [];
@@ -107,7 +106,6 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("Erro ao buscar agendamentos: ", error);
     }
   }
-
 
   dataInput.addEventListener("change", function () {
     const dataSelecionada = new Date(dataInput.value + 'T00:00:00');
@@ -167,8 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const dataHora = new Date(`${data}T${horario}:00:00Z`).toISOString();
 
     const agendamento = {
-      data: dataHora, // Inclua a data e o horário combinados
-      horario: dataHora, // Inclua a data e o horário combinados
+      dataHorario: dataHora, // Inclua a data e o horário combinados
       tipoAgendamento: tipoAtendimento,
       fk_usuario: parseInt(clienteId),
       fk_procedimento: parseInt(procedimentoId),
@@ -178,8 +175,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     criarAgendamento(agendamento);
   });
-
-
 
   carregarClientes();
   carregarProcedimentos();

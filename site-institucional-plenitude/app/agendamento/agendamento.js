@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       totalAgendamentos = agendamentos.length;
       confirmados = agendamentos.filter(
-        (agendamento) => agendamento.statusAgendamento.nome === "Confirmado"
+        (agendamento) => agendamento.statusAgendamento.nome === "Concluído"
       ).length;
 
       atualizarProgressBar(confirmados, totalAgendamentos);
@@ -39,18 +39,15 @@ document.addEventListener("DOMContentLoaded", function () {
       const tr = document.createElement("tr");
 
       // Ajustar para UTC
-      const dataHora = new Date(agendamento.data);
-      const dataHoraUtc = new Date(Date.UTC(
-        dataHora.getUTCFullYear(),
-        dataHora.getUTCMonth(),
-        dataHora.getUTCDate(),
-        dataHora.getUTCHours(),
-        dataHora.getUTCMinutes(),
-        dataHora.getUTCSeconds()
-      ));
+      const dataHora = new Date(agendamento.dataHorario);
+      const dia = String(dataHora.getUTCDate()).padStart(2, '0');
+      const mes = String(dataHora.getUTCMonth() + 1).padStart(2, '0'); // Months are zero-based
+      const horas = String(dataHora.getUTCHours()).padStart(2, '0');
+      const minutos = String(dataHora.getUTCMinutes()).padStart(2, '0');
+      const dataHoraFormatada = `${dia}/${mes} - ${horas}:${minutos}`;
 
       const dataHoraTd = document.createElement("td");
-      dataHoraTd.textContent = `${dataHoraUtc.toISOString().slice(0, 16).replace("T", " ")}`;
+      dataHoraTd.textContent = dataHoraFormatada;
       tr.appendChild(dataHoraTd);
 
       const clienteTd = document.createElement("td");
@@ -62,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
       tr.appendChild(procedimentoTd);
 
       const especificacaoTd = document.createElement("td");
-      especificacaoTd.textContent = agendamento.procedimento.descricao;
+      especificacaoTd.textContent = agendamento.especificacao.especificacao;
       tr.appendChild(especificacaoTd);
 
       const statusTd = document.createElement("td");
@@ -99,11 +96,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   function atualizarProgressBar(confirmados, total) {
-    const progress = document.getElementById("progress-bar");
+    const progress = document.getElementById("progress");
     const percentage = total === 0 ? 0 : (confirmados / total) * 100;
     progress.style.width = `${percentage}%`;
 
-    document.getElementById("progress-label").textContent = `Atendimentos Confirmados: ${confirmados}`;
+    document.getElementById("progress-label").textContent = `Atendimentos Concluídos: ${confirmados}`;
     document.getElementById("total-label").textContent = `Atendimentos Totais: ${total}`;
   }
 
@@ -171,4 +168,14 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   fetchAgendamentos();
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const nome = localStorage.getItem("nome");
+  const email = localStorage.getItem("email");
+
+  if (nome && email) {
+    document.getElementById("userName").textContent = nome;
+    document.getElementById("userEmail").textContent = email;
+  }
 });

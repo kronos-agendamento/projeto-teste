@@ -1,5 +1,3 @@
-// Your JavaScript functionality can be added here.
-// For now, let's just add some basic functionality for demonstration.
 document.addEventListener("DOMContentLoaded", () => {
   const buttons = document.querySelectorAll("button");
   buttons.forEach((button) => {
@@ -45,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
   /**
    * Preloader
    */
-  let preloader = select("#preloader");
+  let preloader = document.querySelector("#preloader");
   if (preloader) {
     window.addEventListener("load", () => {
       preloader.remove();
@@ -94,7 +92,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const tabela = document.querySelector("#procedimentos-cadastrados tbody");
     tabela.innerHTML = ""; // Limpa a tabela antes de inserir novos dados
 
-    especificacoes.forEach((especificacao) => {
+    // Limita a exibição aos primeiros 2 itens
+    especificacoes.slice(0, 2).forEach((especificacao) => {
       const procedimento = especificacao.fkProcedimento;
       const tempo = especificacao.fkTempoProcedimento;
 
@@ -116,76 +115,95 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   popularTabela();
+
 });
 
+async function fetchAgendamentos() {
+  const apiBaseUrl = "http://localhost:8080";
+  try {
+    const response = await fetch(`${apiBaseUrl}/api/agendamentos/listar`);
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      console.error("Erro ao buscar agendamentos");
+      return [];
+    }
+  } catch (error) {
+    console.error("Erro:", error);
+    return [];
+  }
+}
 
 document.addEventListener("DOMContentLoaded", () => {
+  const apiBaseUrl = "http://localhost:8080";
+
   // Função para formatar o CPF
   function formatarCPF(cpf) {
     cpf = cpf.replace(/\D/g, ""); // Remove tudo que não é dígito
     return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"); // Formatação com pontos e traço
   }
 
-  // Realiza a requisição para obter os agendamentos
-  fetch("http://localhost:8080/api/agendamentos/listar")
-    .then((response) => response.json())
-    .then((data) => {
-      // Ordena os agendamentos pela data em ordem decrescente
-      const sortedData = data.sort(
-        (a, b) => new Date(b.data) - new Date(a.data)
-      );
-
-      // Seleciona a tabela de "Clientes Frequentes"
-      const frequentClientsTable = document
-        .getElementById("clientes-frequentes")
-        .getElementsByTagName("tbody")[0];
-
-      // Itera pelos dois agendamentos mais recentes
-      sortedData.slice(0, 2).forEach((agendamento) => {
-        const row = frequentClientsTable.insertRow();
-        const nome = agendamento.usuario.nome;
-        const cpfFormatado = formatarCPF(agendamento.usuario.cpf);
-        const ultimaAparicao = new Date(agendamento.data).toLocaleDateString(
-          "pt-BR"
-        );
-        const ultimoProcedimento = agendamento.procedimento.tipo;
-
-        row.insertCell(0).innerText = nome;
-        row.insertCell(1).innerText = cpfFormatado;
-        row.insertCell(2).innerText = ultimaAparicao;
-        row.insertCell(3).innerText = ultimoProcedimento;
+  // Função para formatar a data
+  function formatarData(data) {
+    const dataObj = new Date(data);
+    if (!isNaN(dataObj)) {
+      return dataObj.toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
       });
-    })
-    .catch((error) => console.error("Erro:", error));
-});
-
-async function fetchAgendamentos() {
-  try {
-    const response = await fetch(
-      "http://localhost:8080/api/agendamentos/listar"
-    );
-    if (!response.ok) {
-      throw new Error("Erro ao buscar agendamentos");
     }
-    const agendamentos = await response.json();
-    return agendamentos;
-  } catch (error) {
-    console.error(error);
-    return [];
+    return "Data inválida";
   }
-}
+
+  // Função para buscar agendamentos e popular a tabela
+  function fetchAgendamentos() {
+    fetch(`${apiBaseUrl}/api/agendamentos/listar`)
+      .then((response) => response.json())
+      .then((data) => {
+        // Ordena os agendamentos pela data em ordem decrescente
+        const sortedData = data.sort(
+          (a, b) => new Date(b.dataHorario) - new Date(a.dataHorario)
+        );
+
+        // Seleciona a tabela de "Clientes Frequentes"
+        const frequentClientsTable = document
+          .getElementById("clientes-frequentes")
+          .getElementsByTagName("tbody")[0];
+
+        // Itera pelos dois agendamentos mais recentes
+        sortedData.slice(0, 2).forEach((agendamento) => {
+          const row = frequentClientsTable.insertRow();
+          const nome = agendamento.usuario.nome;
+          const cpfFormatado = formatarCPF(agendamento.usuario.cpf);
+          const ultimaAparicao = formatarData(agendamento.dataHorario);
+          const ultimoProcedimento = agendamento.procedimento.tipo;
+
+          row.insertCell(0).innerText = nome;
+          row.insertCell(1).innerText = cpfFormatado;
+          row.insertCell(2).innerText = ultimaAparicao;
+          row.insertCell(3).innerText = ultimoProcedimento;
+        });
+      })
+      .catch((error) => console.error("Erro:", error));
+  }
+
+  // Chama a função para buscar agendamentos e popular a tabela
+  fetchAgendamentos();
+});
 
 // Função para filtrar os agendamentos do dia atual
 function filtrarAgendamentosDoDia(agendamentos) {
   const hoje = new Date().toISOString().split("T")[0]; // Formato YYYY-MM-DD
   return agendamentos.filter(
-    (agendamento) => agendamento.data.split("T")[0] === hoje
+    (agendamento) => agendamento.dataHorario.split("T")[0] === hoje
   );
 }
 
 // Função para ordenar os agendamentos por horário
 function ordenarAgendamentosPorHorario(agendamentos) {
-  return agendamentos.sort((a, b) => new Date(a.horario) - new Date(b.horario));
+  return agendamentos.sort((a, b) => new Date(a.dataHorario) - new Date(b.dataHorario));
 }
 
 // Função para renderizar a agenda diária
@@ -199,22 +217,15 @@ function renderizarAgendaDiaria(agendamentos) {
   const diaSemana = hoje.toLocaleDateString("pt-BR", { weekday: "long" });
   const data = hoje.toLocaleDateString("pt-BR");
 
-  // Atualizar o dia da semana e a data
-  dayElement.textContent =
-    diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1);
+  dayElement.textContent = diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1);
   dateElement.textContent = data;
 
-  // Limpar agendamentos mocados
   appointmentsContainer.innerHTML = "";
 
-  // Ordenar os agendamentos e pegar os 3 primeiros
-  const agendamentosOrdenados = ordenarAgendamentosPorHorario(
-    agendamentos
-  ).slice(0, 3);
+  const agendamentosOrdenados = ordenarAgendamentosPorHorario(agendamentos).slice(0, 3);
 
-  // Adicionar os agendamentos reais
-  agendamentosOrdenados.forEach((agendamento) => {
-    const horario = new Date(agendamento.horario).toLocaleTimeString("pt-BR", {
+  agendamentosOrdenados.forEach(agendamento => {
+    const horario = new Date(agendamento.dataHorario).toLocaleTimeString("pt-BR", {
       hour: "2-digit",
       minute: "2-digit",
     });
@@ -224,25 +235,28 @@ function renderizarAgendaDiaria(agendamentos) {
     const appointmentElement = document.createElement("div");
     appointmentElement.className = "appointment";
     appointmentElement.innerHTML = `
-            <div class="time">${horario}h</div>
-            <div class="details">
-                <h3>${cliente}</h3>
-                <p>${procedimento}</p>
-            </div>
-        `;
+      <div class="time">${horario}h</div>
+      <div class="details">
+        <h3>${cliente}</h3>
+        <p>${procedimento}</p>
+      </div>
+    `;
+
     appointmentsContainer.appendChild(appointmentElement);
   });
 }
 
-// Função principal para carregar a agenda diária
+// Função para carregar a agenda diária
 async function carregarAgendaDiaria() {
   const agendamentos = await fetchAgendamentos();
   const agendamentosDoDia = filtrarAgendamentosDoDia(agendamentos);
   renderizarAgendaDiaria(agendamentosDoDia);
 }
 
-// Chamar a função principal quando a página for carregada
+// Chama a função para carregar a agenda diária quando a página é carregada
 document.addEventListener("DOMContentLoaded", carregarAgendaDiaria);
+
+
 
 // Função para buscar os usuários do backend
 async function fetchUsuarios() {
