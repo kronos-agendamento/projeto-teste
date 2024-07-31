@@ -16,6 +16,9 @@ document.addEventListener("DOMContentLoaded", function () {
       const data = await response.json();
       agendamentos = data;
 
+      // Ordenar agendamentos por data, do mais recente ao mais antigo
+      agendamentos.sort((a, b) => new Date(b.dataHorario) - new Date(a.dataHorario));
+
       totalAgendamentos = agendamentos.length;
       confirmados = agendamentos.filter(
         (agendamento) => agendamento.statusAgendamento.nome === "Concluído"
@@ -62,8 +65,25 @@ document.addEventListener("DOMContentLoaded", function () {
       especificacaoTd.textContent = agendamento.especificacao.especificacao;
       tr.appendChild(especificacaoTd);
 
+      // Cria uma td para o status
       const statusTd = document.createElement("td");
-      statusTd.textContent = agendamento.statusAgendamento.nome;
+
+      // Cria a div com a cor do status
+      const statusColorDiv = document.createElement("div");
+      statusColorDiv.style.backgroundColor = agendamento.statusAgendamento.cor;
+      statusColorDiv.style.width = "10px";
+      statusColorDiv.style.height = "10px";
+      statusColorDiv.style.borderRadius = "100px";
+      statusColorDiv.style.display = "inline-block";
+      statusColorDiv.style.marginRight = "5px"; // Espaço entre a bolinha e o nome do status
+
+      // Cria um span para o nome do status
+      const statusNomeSpan = document.createElement("span");
+      statusNomeSpan.textContent = agendamento.statusAgendamento.nome;
+
+      // Adiciona o div de cor e o span de nome à td de status
+      statusTd.appendChild(statusColorDiv);
+      statusTd.appendChild(statusNomeSpan);
       tr.appendChild(statusTd);
 
       const acoesTd = document.createElement("td");
@@ -168,14 +188,183 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   fetchAgendamentos();
+
+  function salvarStatus() {
+    // Obter os valores dos inputs
+    const nome = document.getElementById('edit-nome').value;
+    const cor = document.getElementById('edit-cor').value;
+
+    // Validar os dados antes de enviar
+    if (!nome || !cor) {
+      showNotification("Por favor, preencha todos os campos!", true);
+      return;
+    }
+
+    // Preparar o corpo da requisição
+    const statusData = {
+      nome: nome,
+      cor: cor,
+      motivo: '' // Enviar motivo vazio por enquanto
+    };
+
+    // Fazer a requisição POST
+    fetch('http://localhost:8080/status-agendamento/cadastro-status', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(statusData)
+    })
+      .then(response => {
+        // Verificar o tipo de conteúdo da resposta
+        const contentType = response.headers.get('Content-Type');
+
+        if (contentType && contentType.includes('application/json')) {
+          return response.json(); // Se for JSON, parse como JSON
+        } else {
+          return response.text(); // Caso contrário, trate como texto
+        }
+      })
+      .then(data => {
+        // Exibir a mensagem de sucesso retornada pelo servidor
+        showNotification("Status cadastrado com sucesso!");
+        document.getElementById('save-modal').style.display = 'none'; // Fechar o modal após o sucesso
+      })
+      .catch(error => {
+        console.error('Erro ao salvar o status:', error);
+        showNotification("Ocorreu um erro ao salvar o status!", true);
+      });
+  }
+
+  document.getElementById('open-save-modal-btn').addEventListener('click', () => {
+    document.getElementById('save-modal').style.display = 'block';
+  });
+
+  document.getElementById('save-button').addEventListener('click', salvarStatus);
+
+  document.getElementById('open-status-modal-btn').addEventListener('click', () => {
+    document.getElementById('status-modal').style.display = 'block';
+  });
+
+  document.getElementById('open-filter-modal-btn').addEventListener('click', () => {
+    document.getElementById('filter-modal').style.display = 'block';
+  });
+  document.getElementById('close-save-modal').addEventListener('click', () => {
+    document.getElementById('save-modal').style.display = 'none';
+  });
+
+  document.getElementById('close-status-modal').addEventListener('click', () => {
+    document.getElementById('status-modal').style.display = 'none';
+  });
+
+  document.getElementById('close-filter-modal').addEventListener('click', () => {
+    document.getElementById('filter-modal').style.display = 'none';
+  });
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  const nome = localStorage.getItem("nome");
-  const email = localStorage.getItem("email");
+  // Função para carregar os status ao abrir o modal
+  function carregarStatus() {
+    fetch('http://localhost:8080/status-agendamento')
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else if (response.status === 204) {
+          throw new Error("Nenhum status cadastrado ainda.");
+        } else {
+          throw new Error("Erro ao buscar os status.");
+        }
+      })
+      .then(data => {
+        const tbody = document.getElementById("status-tbody");
+        tbody.innerHTML = ""; // Limpa o conteúdo existente
 
-  if (nome && email) {
-    document.getElementById("userName").textContent = nome;
-    document.getElementById("userEmail").textContent = email;
+        data.forEach(status => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+                      <td>${status.nome}</td>
+                      <td><div class="color-box" style="background-color: ${status.cor}; width: 20px; height: 20px;"></div></td>
+                      <td>
+                          <button class="edit-btn" data-id="${status.id}"><i class="fas fa-edit"></i></button>
+                          <button class="delete-btn" data-id="${status.id}"><i class="fas fa-trash"></i></button>
+                      </td>
+                  `;
+          tbody.appendChild(row);
+        });
+      })
+      .catch(error => {
+        console.error("Erro:", error.message);
+        alert(error.message);
+      });
+    attachEventListeners();
+
   }
+
+  // Exemplo: carregar status ao abrir o modal
+  const statusModal = document.getElementById("status-modal");
+  statusModal.addEventListener("show", carregarStatus); // Se o modal tiver um evento de exibição
+  // Ou chame carregarStatus() em outro ponto adequado, como ao clicar em um botão
+  carregarStatus();
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const statusModal = document.getElementById("status-modal");
+  const closeModalButton = document.getElementById("close-modal");
+
+  // Função para fechar o modal
+  function fecharModal() {
+    statusModal.style.display = "none";
+  }
+
+  // Evento de clique no botão "X" para fechar o modal
+  closeModalButton.addEventListener("click", fecharModal);
+
+  // Exemplo: abrir o modal para teste
+  function abrirModal() {
+    statusModal.style.display = "block";
+  }
+
+  // Simulando a abertura do modal para testes
+  abrirModal();
+});
+
+function attachEventListeners() {
+  const deleteButtons = document.querySelectorAll(".delete-btn");
+  deleteButtons.forEach((button) => {
+    button.addEventListener("click", (e) => {
+      deleteStatusId = e.target.closest("button").getAttribute("data-id");
+      const status = allStatuses.find((status) => status.id == deleteStatusId);
+      procedimentoText.innerText = status.nome;
+      openDeleteModal();
+    });
+  });
+
+  const editButtons = document.querySelectorAll(".edit-btn");
+  editButtons.forEach((button) => {
+    button.addEventListener("click", (e) => {
+      editStatusId = e.target.closest("button").getAttribute("data-id");
+      const status = allStatuses.find((status) => status.id == editStatusId);
+      editNome.value = status.nome;
+      editCor.value = status.cor;
+      openEditModal();
+    });
+  });
+}
+
+function openDeleteModal() {
+  modal.style.display = "block";
+}
+
+function closeDeleteModal() {
+  modal.style.display = "none";
+  deleteStatusId = null;
+}
+
+function openEditModal() {
+  editModal.style.display = "block";
+}
+
+function closeEditModal() {
+  editModal.style.display = "none";
+  editStatusId = null;
+}

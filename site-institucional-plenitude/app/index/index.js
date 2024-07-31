@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
     tabela.innerHTML = ""; // Limpa a tabela antes de inserir novos dados
 
     // Limita a exibição aos primeiros 2 itens
-    especificacoes.slice(0, 2).forEach((especificacao) => {
+    especificacoes.slice(0, 3).forEach((especificacao) => {
       const procedimento = especificacao.fkProcedimento;
       const tempo = especificacao.fkTempoProcedimento;
 
@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
           .getElementsByTagName("tbody")[0];
 
         // Itera pelos dois agendamentos mais recentes
-        sortedData.slice(0, 2).forEach((agendamento) => {
+        sortedData.slice(0, 3).forEach((agendamento) => {
           const row = frequentClientsTable.insertRow();
           const nome = agendamento.usuario.nome;
           const cpfFormatado = formatarCPF(agendamento.usuario.cpf);
@@ -222,7 +222,7 @@ function renderizarAgendaDiaria(agendamentos) {
 
   appointmentsContainer.innerHTML = "";
 
-  const agendamentosOrdenados = ordenarAgendamentosPorHorario(agendamentos).slice(0, 3);
+  const agendamentosOrdenados = ordenarAgendamentosPorHorario(agendamentos);
 
   agendamentosOrdenados.forEach(agendamento => {
     const horario = new Date(agendamento.dataHorario).toLocaleTimeString("pt-BR", {
@@ -235,7 +235,7 @@ function renderizarAgendaDiaria(agendamentos) {
     const appointmentElement = document.createElement("div");
     appointmentElement.className = "appointment";
     appointmentElement.innerHTML = `
-      <div class="time">${horario}h</div>
+      <div class="time">${horario}</div>
       <div class="details">
         <h3>${cliente}</h3>
         <p>${procedimento}</p>
@@ -301,7 +301,7 @@ function renderizarAniversariantes(aniversariantes, exibirTodos) {
 
   const aniversariantesParaExibir = exibirTodos
     ? aniversariantes
-    : aniversariantes.slice(0, 2);
+    : aniversariantes.slice(0, 3);
 
   aniversariantesParaExibir.forEach((usuario) => {
     const dataNasc = ajustarData(usuario.dataNasc);
@@ -376,12 +376,12 @@ async function fetchStatuses() {
 
 function renderStatuses() {
   statusTbody.innerHTML = "";
-  const statusesToShow = showingAll ? allStatuses : allStatuses.slice(0, 2);
+  const statusesToShow = showingAll ? allStatuses : allStatuses.slice(0, 3);
   statusesToShow.forEach((status) => {
     const row = document.createElement("tr");
     row.innerHTML = `
     <td>${status.nome}</td>
-    <td>${status.cor}</td>
+    <td><div class="color-box" style="background-color: ${status.cor};"></div></td>
     <td>
         <button class="edit-btn" data-id="${status.id}"><i class="fas fa-edit"></i></button>
         <button class="delete-btn" data-id="${status.id}"><i class="fas fa-trash"></i></button>

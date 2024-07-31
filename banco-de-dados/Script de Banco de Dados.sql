@@ -145,8 +145,8 @@ CREATE TABLE especificacao_procedimento (
 
 CREATE TABLE agendamento (
     id_agendamento INT PRIMARY KEY AUTO_INCREMENT,
-    data_hora DATETIME,
-    tipo_agendamento INT,
+    data_horario DATETIME,
+    tipo_agendamento VARCHAR(45),
     fk_usuario INT,
     fk_procedimento INT,
     fk_status INT,
@@ -243,9 +243,10 @@ VALUES
 -- Inserir status de agendamento
 INSERT INTO status_agendamento (nome, cor, motivo)
 VALUES 
-('Agendado', 'verde', 'Confirmado pelo cliente'),
-('Cancelado', 'vermelho', 'Cliente cancelou'),
-('Concluído', 'azul', 'Procedimento realizado');
+('Agendado', '#008000', 'Confirmado pelo cliente'),  -- Verde
+('Cancelado', '#FF0000', 'Cliente cancelou'),        -- Vermelho
+('Concluído', '#0000FF', 'Procedimento realizado');  -- Azul
+
 
 -- Inserir procedimentos
 INSERT INTO procedimento (tipo, descricao)
@@ -271,15 +272,16 @@ VALUES
 ('Aplicação de Cílios', 150.00, 75.00, 50.00, NULL, 1, 3),
 ('Manutenção de Cílios', 100.00, 50.00, 30.00, NULL, 1, 3);
 
--- Inserir agendamentos
-INSERT INTO agendamento (data_hora, tipo_agendamento, fk_usuario, fk_procedimento, fk_status, fk_especificacao_procedimento)
-VALUES 
-(NOW(), 1, 1, 1, 1, 1),
-(NOW(), 1, 1, 2, 1, 2),
-(NOW(), 2, 2, 3, 1, 3),
-(NOW(), 3, 3, 1, 1, 4),
-(NOW(), 2, 2, 2, 2, 5),
-(NOW(), 3, 3, 3, 3, 6);
+-- Inserir agendamentos com datas e horários variados
+INSERT INTO agendamento (data_horario, tipo_agendamento, fk_usuario, fk_procedimento, fk_status, fk_especificacao_procedimento)
+VALUES
+-- 2024-08-01
+('2024-08-01 09:00:00', 'Manutenção', 1, 1, 1, 1),
+('2024-08-02 10:00:00', 'Primeira vez', 1, 2, 1, 2),
+('2024-07-23 11:00:00', 'Retorno', 2, 3, 1, 3),
+('2024-07-22 12:00:00', 'Manutenção', 3, 1, 1, 4),
+('2024-08-05 13:00:00', 'Primeira vez', 2, 2, 2, 5),
+('2024-07-17 14:00:00', 'Retorno', 3, 3, 3, 6);
 
 -- Inserir feedbacks
 INSERT INTO feedback (anotacoes, nota, fk_agendamento, fk_usuario)

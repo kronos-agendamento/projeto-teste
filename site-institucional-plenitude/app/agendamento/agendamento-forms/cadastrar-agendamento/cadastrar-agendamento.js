@@ -133,19 +133,20 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       if (response.ok) {
-        const notificationMessage = document.getElementById('notification-message');
-        notificationMessage.textContent = "Agendamento criado com sucesso!";
-        notificationMessage.style.color = "green";
-        document.getElementById('notification').style.display = "block";
+        showNotification("Agendamento criado com sucesso!");
+        setTimeout(() => {
+          window.location.href = "../../agendamento.html";
+        }, 1000);
       } else {
         console.error("Erro ao criar agendamento: " + response.statusText);
-        alert("Erro ao criar agendamento: " + response.statusText);
+        showNotification("Já existe um agendamento para essa data e horário", true);
       }
     } catch (error) {
       console.error("Erro ao criar agendamento: ", error);
-      alert("Erro ao criar agendamento: " + error.message);
+      showNotification("Erro ao criar agendamento", true);
     }
   }
+
 
   saveButton.addEventListener("click", function () {
     const clienteId = clientesSelect.value;
@@ -157,7 +158,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const horario = horarioButton ? horarioButton.textContent.split(":")[0] : null;
 
     if (!clienteId || !procedimentoId || !tipoAtendimento || !especificacaoId || !data || !horario) {
-      alert("Todos os campos são obrigatórios!");
+      showNotification("Todos os campos são obrigatórios", true);
       return;
     }
 
@@ -180,3 +181,18 @@ document.addEventListener("DOMContentLoaded", function () {
   carregarProcedimentos();
   carregarEspecificacoes();
 });
+
+function showNotification(message, isError = false) {
+  const notification = document.getElementById("notification");
+  const notificationMessage = document.getElementById("notification-message");
+  notificationMessage.textContent = message;
+  if (isError) {
+    notification.classList.add("error");
+  } else {
+    notification.classList.remove("error");
+  }
+  notification.classList.add("show");
+  setTimeout(() => {
+    notification.classList.remove("show");
+  }, 3000);
+}

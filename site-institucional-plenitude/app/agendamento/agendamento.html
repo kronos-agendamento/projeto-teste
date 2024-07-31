@@ -100,16 +100,17 @@
       <div class="main-content">
         <div class="center-content">
           <section class="actions">
-            <button id="openFilterModalBtn" class="filter-btn">
+            <button id="open-filter-modal-btn" class="filter-btn">
               <img src="../../assets/icons/filter.png" alt="filter" />
               Filtro
             </button>
             <div class="right-actions">
-              <button class="planilha-btn" id="open-status-modal">
-                <img src="../../assets/icons/createNew.png" alt="spreadsheet" />Status Cadastrados
-              </button>
-              <button class="btn btn-create" onclick="openSaveModal()">
+              <!-- Botões para abrir os modais -->
+              <button class="btn btn-create" id="open-save-modal-btn">
                 <img src="../../assets/icons/createNew.png" alt="createNew" /><span>Criar Status</span>
+              </button>
+              <button class="planilha-btn" id="open-status-modal-btn">
+                <img src="../../assets/icons/createNew.png" alt="spreadsheet" />Status Cadastrados
               </button>
               <button class="criar-btn" onclick="showForm()">
                 <img src="../../assets/icons/createNew.png" alt="createNew" />
@@ -171,11 +172,11 @@
         <label for="filter-from">Descrição:</label>
         <input type="text" id="edit-nome" placeholder="Nome do Status"><br>
         <label for="filter-from">Cor:</label>
-        <input type="text" id="edit-cor" placeholder="Cor do Status">
+        <input type="color" id="edit-cor" placeholder="Cor do Status">
       </div>
       <div>
-        <button class="btn btn-save" onclick="salvarStatus()">Salvar</button>
-        <button class="btn btn-no" onclick="closeSaveModal()">Cancelar</button>
+        <button id="save-button" class="btn btn-save">Salvar</button>
+        <button id="close-save-modal" class="btn btn-no">Cancelar</button>
       </div>
     </div>
   </div>
@@ -197,25 +198,51 @@
       </div>
       <div>
         <button class="btn btn-save" onclick="applyFilters()">Aplicar Filtros</button>
-        <button class="btn btn-no" onclick="closeFilterModal()">Cancelar</button>
+        <button id="close-filter-modal" class="btn btn-no">Cancelar</button>
       </div>
     </div>
   </div>
 
   <div id="status-modal" class="modal">
     <div class="modal-content2">
-      <h3>Status Cadastrados</h3>
-      <table class="status-table">
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Cor</th>
-          </tr>
-        </thead>
-        <tbody id="status-tbody"></tbody>
-      </table>
+      <div class="table-container">
+        <div class="table-header">
+          <h1>Status Cadastrados</h1>
+          <div><button id="close-status-modal" class="close-button">&times;</button></div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Cor</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="status-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="delete-modal" class="modal">
+    <div class="modal-content">
+      <p>Tem certeza que deseja excluir o status?</p>
+      <p id="status-name"></p>
+      <button class="btn btn-yes" onclick="confirmDeletion()">SIM</button>
+      <button class="btn btn-no" onclick="closeDeleteModal()">NÃO</button>
+    </div>
+  </div>
+
+  <div id="edit-modal" class="modal">
+    <div class="modal-content2">
+      <h3>Editar Status</h3>
       <div>
-        <button class="btn btn-no" onclick="closeStatusModal()">Fechar</button>
+        <input type="text" id="edit-nome" placeholder="Nome" />
+        <input type="color" id="edit-cor" placeholder="Cor do Status">
+      </div>
+      <div>
+        <button class="btn btn-save" onclick="salvarStatusEditado()">Salvar</button>
+        <button class="btn btn-no" onclick="closeEditModal()">Cancelar</button>
       </div>
     </div>
   </div>

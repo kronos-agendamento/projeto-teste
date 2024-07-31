@@ -609,7 +609,6 @@ Inicio Tabela de procedimentos
 }
 
 #edit-nome,
-#edit-cor,
 #filter-from,
 #filter-to,
 #filter-client,
@@ -617,6 +616,16 @@ Inicio Tabela de procedimentos
 #filter-specification {
   width: 30%;
   padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-top: 3vh;
+  margin-bottom: 2vh;
+}
+
+#edit-cor {
+  width: 30%;
+  padding-right: 30px;
+  padding-left: 30px;
   border: 1px solid #ddd;
   border-radius: 5px;
   margin-top: 3vh;
@@ -713,4 +722,21 @@ Inicio Tabela de procedimentos
 .criar-btn a span {
   color: black;
   /* Altere 'red' para a cor desejada */
+}
+
+.close-button {
+  display: flex;
+  justify-content: end;
+  position: absolute;
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 1;
+  margin-top: -20px ;
+}
+
+.close-button:hover {
+  color: white;
+  /* Muda a cor ao passar o mouse */
 }

@@ -565,8 +565,10 @@ Aniversariantes
   padding: 0 2vw;
   border-radius: 10px;
   text-align: center;
-  height: auto; /* Ajusta a altura automática para o conteúdo */
-  margin-bottom: 1vh; /* Espaço entre cartões */
+  height: auto;
+  /* Ajusta a altura automática para o conteúdo */
+  margin-bottom: 1vh;
+  /* Espaço entre cartões */
 }
 
 .birthday-card h1 {
@@ -584,12 +586,14 @@ Aniversariantes
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap; /* Permite a quebra de linha para dispositivos menores */
+  flex-wrap: wrap;
+  /* Permite a quebra de linha para dispositivos menores */
   padding: 10px;
 }
 
 .birthday-info .icon {
-  flex: 0 0 auto; /* Não permitir que o ícone se expanda */
+  flex: 0 0 auto;
+  /* Não permitir que o ícone se expanda */
   margin-right: 10px;
 }
 
@@ -599,7 +603,8 @@ Aniversariantes
 }
 
 .birthday-info .info {
-  flex: 1; /* Permite que o texto ocupe o restante do espaço */
+  flex: 1;
+  /* Permite que o texto ocupe o restante do espaço */
   text-align: left;
   margin: 0;
 }
@@ -622,16 +627,20 @@ Aniversariantes
 /* Responsividade para dispositivos menores */
 @media (max-width: 600px) {
   .birthday-info {
-    flex-direction: column; /* Coloca os itens em coluna para telas menores */
-    text-align: center; /* Centraliza o texto para melhor visualização */
+    flex-direction: column;
+    /* Coloca os itens em coluna para telas menores */
+    text-align: center;
+    /* Centraliza o texto para melhor visualização */
   }
 
   .birthday-info .icon {
-    margin-bottom: 10px; /* Espaço abaixo do ícone */
+    margin-bottom: 10px;
+    /* Espaço abaixo do ícone */
   }
 
   .birthday-info .info {
-    margin: 10px 0; /* Espaço entre o texto e a data */
+    margin: 10px 0;
+    /* Espaço entre o texto e a data */
   }
 }
 
@@ -814,10 +823,19 @@ Botão Ver todos / Ver menos
   background-color: #c82333;
 }
 
-#edit-nome,
-#edit-cor {
+#edit-nome {
   width: 30%;
   padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-top: 3vh;
+  margin-bottom: 2vh;
+}
+
+#edit-cor {
+  width: 30%;
+  height: 33px;
+  padding: 8px 20px 8px 20px;
   border: 1px solid #ddd;
   border-radius: 5px;
   margin-top: 3vh;
@@ -827,15 +845,27 @@ Botão Ver todos / Ver menos
 .edit-btn,
 .delete-btn,
 .more-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
 }
 
 .edit-btn:hover,
 .delete-btn:hover,
 .more-btn:hover {
-    color: #d81b60;
-    font-size: 20px;
+  color: #d81b60;
+  font-size: 20px;
+}
+
+.color-box {
+  width: 20px;
+  /* Largura do quadrado */
+  height: 20px;
+  /* Altura do quadrado */
+  border: 1px solid #000;
+  /* Borda para destacar a cor */
+  display: inline-block;
+  /* Para que o div se comporte como um elemento inline */
+  border-radius: 100px;
 }
