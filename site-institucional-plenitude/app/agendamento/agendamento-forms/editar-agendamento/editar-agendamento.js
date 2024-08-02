@@ -79,19 +79,21 @@ document.addEventListener("DOMContentLoaded", function () {
       const response = await fetch(`${apiUrlAgendamentos}/buscar/${id}`);
       if (response.ok) {
         const agendamento = await response.json();
+
+        // Verifique se os valores estão corretos
+        console.log(agendamento.usuario.codigo, agendamento.procedimento.idProcedimento, agendamento.especificacao.idEspecificacaoProcedimento);
+
+        // Define os valores corretamente nos selects
         clientesSelect.value = agendamento.usuario.codigo;
         procedimentosSelect.value = agendamento.procedimento.idProcedimento;
         tipoAgendamentoSelect.value = agendamento.tipoAgendamento;
         especificacoesSelect.value = agendamento.especificacao.idEspecificacaoProcedimento;
 
+        // Define a data e hora
         const dataHora = new Date(agendamento.dataHorario);
-        console.log("Data e hora recebida:", agendamento.dataHorario);
-        console.log("Data e hora convertida:", dataHora);
-
         if (!isNaN(dataHora.getTime())) {
           dataInput.value = dataHora.toISOString().split("T")[0];
           dataSelecionadaP.textContent = `Data Selecionada: ${dataHora.toLocaleDateString()}`;
-
           await carregarHorariosDisponiveis(dataInput.value);
 
           const horaFormatada = dataHora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -112,7 +114,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-
   async function carregarHorariosDisponiveis(data) {
     try {
       const response = await fetch(`${apiUrlAgendamentos}/listar`);
@@ -123,6 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Extrai a data escolhida
         const dataEscolhida = new Date(data);
         dataEscolhida.setHours(0, 0, 0, 0);
+        console.log("Data escolhida:", dataEscolhida);
 
         // Gera horários entre 09:00 e 18:00
         const horariosParaExibir = [];
@@ -130,6 +132,7 @@ document.addEventListener("DOMContentLoaded", function () {
           const hora = h.toString().padStart(2, '0') + ":00";
           horariosParaExibir.push(hora);
         }
+        console.log("Horários gerados:", horariosParaExibir);
 
         // Filtra agendamentos do dia escolhido
         const agendamentosNoDia = agendamentos.filter(agendamento => {
@@ -137,6 +140,7 @@ document.addEventListener("DOMContentLoaded", function () {
           dataAgendamento.setHours(0, 0, 0, 0);
           return dataAgendamento.getTime() === dataEscolhida.getTime();
         });
+        console.log("Agendamentos no dia:", agendamentosNoDia);
 
         // Remove horários ocupados
         agendamentosNoDia.forEach(agendamento => {
@@ -146,6 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
             horariosParaExibir.splice(index, 1);
           }
         });
+        console.log("Horários disponíveis após filtragem:", horariosParaExibir);
 
         const horariosContainer = document.getElementById("horariosContainer");
         horariosContainer.innerHTML = "";
@@ -157,6 +162,11 @@ document.addEventListener("DOMContentLoaded", function () {
           button.dataset.hora = horario;
           horariosContainer.appendChild(button);
         });
+
+        // Se não houver horários disponíveis
+        if (horariosParaExibir.length === 0) {
+          horariosContainer.innerHTML = "<p>Nenhum horário disponível para a data selecionada.</p>";
+        }
       } else {
         console.error("Erro ao carregar agendamentos.");
       }
@@ -164,7 +174,6 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("Erro ao carregar agendamentos:", error);
     }
   }
-
 
   async function salvarAgendamento() {
     const clienteId = clientesSelect.value;
@@ -228,11 +237,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
   saveButton.addEventListener("click", salvarAgendamento);
 
-  carregarClientes();
-  carregarProcedimentos();
-  carregarEspecificacoes();
+  async function inicializarFormulario() {
+    await carregarClientes();
+    await carregarProcedimentos();
+    await carregarEspecificacoes();
 
-  if (agendamentoId) {
-    carregarDadosAgendamento(agendamentoId);
+    if (agendamentoId) {
+      await carregarDadosAgendamento(agendamentoId);
+    }
   }
+
+  inicializarFormulario();
 });

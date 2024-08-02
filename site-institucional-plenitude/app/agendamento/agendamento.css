@@ -733,10 +733,16 @@ Inicio Tabela de procedimentos
   font-size: 24px;
   cursor: pointer;
   z-index: 1;
-  margin-top: -20px ;
+  margin-top: -20px;
 }
 
 .close-button:hover {
   color: white;
   /* Muda a cor ao passar o mouse */
+}
+
+.edit-btn:hover,
+.delete-btn:hover,
+.more-btn:hover {
+  color: #d81b60;
 }

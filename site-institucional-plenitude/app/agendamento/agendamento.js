@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", function () {
   let totalAgendamentos = 0;
   let confirmados = 0;
   let agendamentoIdToDelete = null;
+  let allStatuses = [];
+  let editStatusId = null;
 
   async function fetchAgendamentos() {
     try {
@@ -114,7 +116,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("next-page-btn").disabled = currentPage === totalPages;
   }
 
-
   function atualizarProgressBar(confirmados, total) {
     const progress = document.getElementById("progress");
     const percentage = total === 0 ? 0 : (confirmados / total) * 100;
@@ -189,7 +190,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   fetchAgendamentos();
 
-  function salvarStatus() {
+  window.salvarStatus = function () {
     // Obter os valores dos inputs
     const nome = document.getElementById('edit-nome').value;
     const cor = document.getElementById('edit-cor').value;
@@ -236,6 +237,131 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
+  window.carregarStatus = function () {
+    fetch('http://localhost:8080/status-agendamento')
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else if (response.status === 204) {
+          throw new Error("Nenhum status cadastrado ainda.");
+        } else {
+          throw new Error("Erro ao buscar os status.");
+        }
+      })
+      .then(data => {
+        allStatuses = data; // Guardar os status carregados
+        const tbody = document.getElementById("status-tbody");
+        tbody.innerHTML = ""; // Limpa o conteúdo existente
+
+        data.forEach(status => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${status.nome}</td>
+            <td><div class="color-box" style="background-color: ${status.cor}; width: 20px; height: 20px; border-radius: 100px; margin-left: 35%;"></div></td>
+            <td>
+                <button class="edit-btn" data-id="${status.id}"><i class="fas fa-edit"></i></button>
+                <button class="delete-btn" data-id="${status.id}"><i class="fas fa-trash"></i></button>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+
+        attachEventListeners(); // Reanexar os event listeners
+      })
+      .catch(error => {
+        console.error("Erro:", error.message);
+        alert(error.message);
+      });
+  };
+
+  window.confirmDeletion2 = async function () {
+    if (deleteStatusId) {
+      try {
+        const response = await fetch(`http://localhost:8080/status-agendamento/exclusao-por-id/${deleteStatusId}`, {
+          method: 'DELETE'
+        });
+        if (!response.ok) throw new Error('Erro ao excluir o status.');
+        await carregarStatus();
+        deleteStatusId = null;
+        closeDeleteModal();
+        showNotification('Status excluído com sucesso!');
+      } catch (error) {
+        console.error('Erro ao excluir o status:', error);
+        showNotification('Erro ao excluir o status!', true);
+      }
+    }
+  };
+
+  window.salvarStatusEditado = async function () {
+    if (editStatusId) {
+      const nome = document.getElementById('edit-nome2').value;
+      const cor = document.getElementById('edit-cor2').value;
+      const statusData = {
+        nome: nome,
+        cor: cor
+      };
+
+      try {
+        const response = await fetch(`http://localhost:8080/status-agendamento/atualizacao-status/${editStatusId}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(statusData)
+        });
+        if (!response.ok) throw new Error('Erro ao editar o status.');
+        await carregarStatus();
+        editStatusId = null;
+        closeEditModal();
+        showNotification('Status editado com sucesso!');
+      } catch (error) {
+        console.error('Erro ao editar o status:', error);
+        showNotification('Erro ao editar o status!', true);
+      }
+    }
+  };
+
+  function attachEventListeners() {
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+    deleteButtons.forEach(button => {
+      button.addEventListener('click', e => {
+        deleteStatusId = e.target.closest('button').getAttribute('data-id');
+        const status = allStatuses.find(status => status.id == deleteStatusId);
+        document.getElementById('status-name').innerText = status.nome;
+        openDeleteModal();
+      });
+    });
+
+    const editButtons = document.querySelectorAll('.edit-btn');
+    editButtons.forEach(button => {
+      button.addEventListener('click', e => {
+        editStatusId = e.target.closest('button').getAttribute('data-id');
+        const status = allStatuses.find(status => status.id == editStatusId);
+        document.getElementById('edit-nome2').value = status.nome;
+        document.getElementById('edit-cor2').value = status.cor;
+        openEditModal();
+      });
+    });
+  }
+
+  window.openDeleteModal = function () {
+    document.getElementById("delete-modal").style.display = "block";
+  };
+
+  window.closeDeleteModal = function () {
+    document.getElementById("delete-modal").style.display = "none";
+    deleteStatusId = null;
+  };
+
+  window.openEditModal = function () {
+    document.getElementById("edit-modal").style.display = "block";
+  };
+
+  window.closeEditModal = function () {
+    document.getElementById("edit-modal").style.display = "none";
+    editStatusId = null;
+  };
+
   document.getElementById('open-save-modal-btn').addEventListener('click', () => {
     document.getElementById('save-modal').style.display = 'block';
   });
@@ -243,12 +369,14 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById('save-button').addEventListener('click', salvarStatus);
 
   document.getElementById('open-status-modal-btn').addEventListener('click', () => {
+    carregarStatus();
     document.getElementById('status-modal').style.display = 'block';
   });
 
   document.getElementById('open-filter-modal-btn').addEventListener('click', () => {
     document.getElementById('filter-modal').style.display = 'block';
   });
+
   document.getElementById('close-save-modal').addEventListener('click', () => {
     document.getElementById('save-modal').style.display = 'none';
   });
@@ -261,110 +389,3 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('filter-modal').style.display = 'none';
   });
 });
-
-document.addEventListener("DOMContentLoaded", function () {
-  // Função para carregar os status ao abrir o modal
-  function carregarStatus() {
-    fetch('http://localhost:8080/status-agendamento')
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        } else if (response.status === 204) {
-          throw new Error("Nenhum status cadastrado ainda.");
-        } else {
-          throw new Error("Erro ao buscar os status.");
-        }
-      })
-      .then(data => {
-        const tbody = document.getElementById("status-tbody");
-        tbody.innerHTML = ""; // Limpa o conteúdo existente
-
-        data.forEach(status => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-                      <td>${status.nome}</td>
-                      <td><div class="color-box" style="background-color: ${status.cor}; width: 20px; height: 20px;"></div></td>
-                      <td>
-                          <button class="edit-btn" data-id="${status.id}"><i class="fas fa-edit"></i></button>
-                          <button class="delete-btn" data-id="${status.id}"><i class="fas fa-trash"></i></button>
-                      </td>
-                  `;
-          tbody.appendChild(row);
-        });
-      })
-      .catch(error => {
-        console.error("Erro:", error.message);
-        alert(error.message);
-      });
-    attachEventListeners();
-
-  }
-
-  // Exemplo: carregar status ao abrir o modal
-  const statusModal = document.getElementById("status-modal");
-  statusModal.addEventListener("show", carregarStatus); // Se o modal tiver um evento de exibição
-  // Ou chame carregarStatus() em outro ponto adequado, como ao clicar em um botão
-  carregarStatus();
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-  const statusModal = document.getElementById("status-modal");
-  const closeModalButton = document.getElementById("close-modal");
-
-  // Função para fechar o modal
-  function fecharModal() {
-    statusModal.style.display = "none";
-  }
-
-  // Evento de clique no botão "X" para fechar o modal
-  closeModalButton.addEventListener("click", fecharModal);
-
-  // Exemplo: abrir o modal para teste
-  function abrirModal() {
-    statusModal.style.display = "block";
-  }
-
-  // Simulando a abertura do modal para testes
-  abrirModal();
-});
-
-function attachEventListeners() {
-  const deleteButtons = document.querySelectorAll(".delete-btn");
-  deleteButtons.forEach((button) => {
-    button.addEventListener("click", (e) => {
-      deleteStatusId = e.target.closest("button").getAttribute("data-id");
-      const status = allStatuses.find((status) => status.id == deleteStatusId);
-      procedimentoText.innerText = status.nome;
-      openDeleteModal();
-    });
-  });
-
-  const editButtons = document.querySelectorAll(".edit-btn");
-  editButtons.forEach((button) => {
-    button.addEventListener("click", (e) => {
-      editStatusId = e.target.closest("button").getAttribute("data-id");
-      const status = allStatuses.find((status) => status.id == editStatusId);
-      editNome.value = status.nome;
-      editCor.value = status.cor;
-      openEditModal();
-    });
-  });
-}
-
-function openDeleteModal() {
-  modal.style.display = "block";
-}
-
-function closeDeleteModal() {
-  modal.style.display = "none";
-  deleteStatusId = null;
-}
-
-function openEditModal() {
-  editModal.style.display = "block";
-}
-
-function closeEditModal() {
-  editModal.style.display = "none";
-  editStatusId = null;
-}
