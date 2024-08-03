@@ -48,16 +48,16 @@ document.getElementById('registerForm').addEventListener('submit', async (event)
         instagram,
         senha,
         cpf,
-        telefoneEmergencial: telefone,
-        dataNasc: "2000-01-01",
-        genero: "não informado",
+        telefoneEmergencial: null,
+        dataNasc: null,
+        genero: null,
         indicacao: null,
         status: true,
         nivelAcessoId: null,
         enderecoId: null,
         empresaId: null,
         fichaAnamneseId: null
-    };
+    }; 
 
     try {
         const response = await fetch('http://localhost:8080/usuarios/cadastro-usuario', {
@@ -72,6 +72,7 @@ document.getElementById('registerForm').addEventListener('submit', async (event)
             // Salva nome e email no localStorage
             localStorage.setItem('nome', nome);
             localStorage.setItem('email', email);
+            localStorage.setItem('cpf', cpf);
 
             showNotification('Cadastro realizado com sucesso!');
             window.location.href = '../../app/index/index.html';

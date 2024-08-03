@@ -137,4 +137,6 @@ class UsuarioService(
     fun getClientesFidelizadosUltimosTresMeses(): Double {
         return usuarioRepository.findClientesFidelizadosUltimosTresMeses()
     }
+
+    fun getByCpf(cpf: String): Usuario? = usuarioRepository.findByCpf(cpf)
 }

@@ -278,5 +278,23 @@ class UsuarioController(
         val clientes = usuarioService.getClientesFidelizadosUltimosTresMeses()
         return ResponseEntity.ok(clientes)
     }
+
+    @Operation(summary = "Listar usuário por CPF")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o usuário encontrado"),
+            ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
+    @GetMapping("/buscar-por-cpf/{cpf}")
+    fun getByCpf(@PathVariable cpf: String): ResponseEntity<Usuario> {
+        val usuario = usuarioService.getByCpf(cpf)
+        return if (usuario != null) {
+            ResponseEntity.ok(usuario)
+        } else {
+            ResponseEntity.status(404).body(null)
+        }
+    }
 }
 
