@@ -2,23 +2,20 @@ package sptech.projetojpa1.service
 
 import org.springframework.stereotype.Service
 import sptech.projetojpa1.dominio.HorarioFuncionamento
-import sptech.projetojpa1.dominio.Status
 import sptech.projetojpa1.dto.horario.HorarioFuncionamentoRequest
-import sptech.projetojpa1.dto.status.StatusResponse
 import sptech.projetojpa1.repository.HorarioFuncionamentoRepository
-import java.util.*
 
 @Service
-data class HorarioFuncionamentoService(
-    val repository: HorarioFuncionamentoRepository
+class HorarioFuncionamentoService(
+    private val repository: HorarioFuncionamentoRepository
 ) {
 
-    fun cadastrarHorarioFuncionamento(novoHorario: HorarioFuncionamentoRequest): HorarioFuncionamento {
+    fun cadastrarHorarioFuncionamento(request: HorarioFuncionamentoRequest): HorarioFuncionamento {
         val horario = HorarioFuncionamento(
-            codigo = 0,
-            diaSemana = novoHorario.diaSemana,
-            horarioAbertura = novoHorario.horarioAbertura,
-            horarioFechamento = novoHorario.horarioFechamento
+            diaInicio = request.diaInicio,
+            diaFim = request.diaFim,
+            horarioAbertura = request.horarioAbertura,
+            horarioFechamento = request.horarioFechamento
         )
         return repository.save(horario)
     }
@@ -59,5 +56,4 @@ data class HorarioFuncionamentoService(
             false
         }
     }
-
 }

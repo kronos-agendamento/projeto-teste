@@ -8,6 +8,4 @@ data class EnderecoResponseDTO(
     val bairro: String?,
     val cidade: String?,
     val estado: String?
-//    val complementoId: Int?,
-//    val usuarioId: Int?
 )

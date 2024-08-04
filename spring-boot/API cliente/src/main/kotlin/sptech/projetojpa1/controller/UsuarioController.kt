@@ -69,20 +69,20 @@ class UsuarioController(
         return ResponseEntity.status(201).body(dto.copy(codigo = novoUsuario.codigo))
     }
 
-    @Operation(summary = "Atualizar usuário")
+    @Operation(summary = "Atualizar usuário por CPF")
     @ApiResponses(
-        value = [   
+        value = [
             ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o usuário atualizado"),
             ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
             ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
         ]
     )
-    @PatchMapping("/atualizacao-usuario/{id}")
-    fun atualizarUsuarioPorId(
-        @PathVariable id: Int,
+    @PatchMapping("/atualizacao-usuario-por-cpf/{cpf}")
+    fun atualizarUsuarioPorCpf(
+        @PathVariable cpf: String,
         @Valid @RequestBody dto: UsuarioAtualizacaoRequest
     ): ResponseEntity<Usuario> {
-        val usuarioAtualizado = usuarioService.atualizarUsuarioPorId(id, dto)
+        val usuarioAtualizado = usuarioService.atualizarUsuarioPorCpf(cpf, dto)
         return if (usuarioAtualizado != null) {
             ResponseEntity.status(200).body(usuarioAtualizado)
         } else {

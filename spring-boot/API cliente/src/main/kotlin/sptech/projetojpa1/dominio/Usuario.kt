@@ -41,7 +41,6 @@ data class Usuario(
     @field:Past(message = "Data de nascimento deve estar no passado")
     var dataNasc: LocalDate? = null,
     // Gênero do usuário
-    @field:NotBlank(message = "Gênero é obrigatório")
     var genero: String? = null,
     // Indicação do usuário
     var indicacao: String? = null,

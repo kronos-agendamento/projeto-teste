@@ -40,7 +40,8 @@ CREATE TABLE complemento (
 
 CREATE TABLE horario_funcionamento (
     id_horario_funcionamento INT PRIMARY KEY AUTO_INCREMENT,
-    dia_semana VARCHAR(45),
+    dia_inicio VARCHAR(45),
+    dia_fim VARCHAR(45),
     horario_abertura VARCHAR(5),
     horario_fechamento VARCHAR(5)
 );
@@ -192,16 +193,15 @@ VALUES
 ('Sala 202', 2),
 ('Casa 1', 3);
 
--- Inserir horários de funcionamento
-INSERT INTO horario_funcionamento (dia_semana, horario_abertura, horario_fechamento)
+INSERT INTO horario_funcionamento (dia_inicio, dia_fim, horario_abertura, horario_fechamento)
 VALUES 
-('Segunda-feira', '09:00', '18:00'),
-('Terça-feira', '09:00', '18:00'),
-('Quarta-feira', '09:00', '18:00'),
-('Quinta-feira', '09:00', '18:00'),
-('Sexta-feira', '09:00', '18:00');
+('Segunda-feira', 'Segunda-feira', '09:00', '18:00'),
+('Terça-feira', 'Terça-feira', '09:00', '18:00'),
+('Quarta-feira', 'Quarta-feira', '09:00', '18:00'),
+('Quinta-feira', 'Quinta-feira', '09:00', '18:00'),
+('Sexta-feira', 'Sexta-feira', '09:00', '18:00');
 
--- Inserir empresas
+-- Inserir empresas com os IDs corretos de horários de funcionamento
 INSERT INTO empresa (nome, contato, cnpj, endereco_id_endereco, fk_horario_funcionamento)
 VALUES 
 ('Clínica Estética SP', '11999999999', '12345678000101', 1, 1),
@@ -296,3 +296,5 @@ VALUES
 ('Design de Sobrancelhas', 'Curso completo de design de sobrancelhas', 'Básico', 'Presencial', '20 horas', 500.00, TRUE),
 ('Maquiagem Profissional', 'Curso de maquiagem profissional', 'Intermediário', 'Online', '30 horas', 700.00, TRUE),
 ('Extensão de Cílios', 'Curso de extensão de cílios', 'Avançado', 'Presencial', '25 horas', 800.00, TRUE);
+
+select * from usuario;

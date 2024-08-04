@@ -26,10 +26,5 @@ data class Endereco(
     var cidade: String?,
     // Estado do endereço
     var estado: String?,
-    // Complemento associado ao endereço
-//    @ManyToOne
-//    @JoinColumn(name = "")
-//    var complemento: Complemento?,
-//    // Usuário associado ao endereço
-//    @ManyToOne var usuario: Usuario?
+
 )

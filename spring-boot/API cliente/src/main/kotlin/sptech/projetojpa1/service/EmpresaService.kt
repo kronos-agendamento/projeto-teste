@@ -37,10 +37,10 @@ class EmpresaService(
         return EmpresaResponseDTO(
             codigo = empresa.codigo,
             nome = empresa.nome,
-            contato = empresa.contato,
+            contato = empresa.contato.toString(),
             CNPJ = empresa.CNPJ,
-            enderecoId = empresa.endereco.codigo!!,
-            horarioFuncionamentoId = empresa.horarioFuncionamento?.codigo
+            endereco = empresa.endereco,
+            horarioFuncionamento = empresa.horarioFuncionamento
         )
     }
 
@@ -55,10 +55,10 @@ class EmpresaService(
             EmpresaResponseDTO(
                 codigo = empresa.codigo,
                 nome = empresa.nome,
-                contato = empresa.contato,
+                contato = empresa.contato.toString(),
                 CNPJ = empresa.CNPJ,
-                enderecoId = empresa.endereco.codigo!!,
-                horarioFuncionamentoId = empresa.horarioFuncionamento?.codigo
+                endereco = empresa.endereco,
+                horarioFuncionamento = empresa.horarioFuncionamento
             )
         }
     }
@@ -69,10 +69,10 @@ class EmpresaService(
             EmpresaResponseDTO(
                 codigo = empresa.codigo,
                 nome = empresa.nome,
-                contato = empresa.contato,
+                contato = empresa.contato.toString(),
                 CNPJ = empresa.CNPJ,
-                enderecoId = empresa.endereco.codigo!!,
-                horarioFuncionamentoId = empresa.horarioFuncionamento?.codigo
+                endereco = empresa.endereco,
+                horarioFuncionamento = empresa.horarioFuncionamento
             )
         }
     }
@@ -83,10 +83,10 @@ class EmpresaService(
             EmpresaResponseDTO(
                 codigo = empresa.codigo,
                 nome = empresa.nome,
-                contato = empresa.contato,
+                contato = empresa.contato.toString(),
                 CNPJ = empresa.CNPJ,
-                enderecoId = empresa.endereco.codigo!!,
-                horarioFuncionamentoId = empresa.horarioFuncionamento?.codigo
+                endereco = empresa.endereco,
+                horarioFuncionamento = empresa.horarioFuncionamento
             )
         }
     }
@@ -110,10 +110,10 @@ class EmpresaService(
         return EmpresaResponseDTO(
             codigo = empresa.codigo,
             nome = empresa.nome,
-            contato = empresa.contato,
+            contato = empresa.contato.toString(),
             CNPJ = empresa.CNPJ,
-            enderecoId = empresa.endereco.codigo!!,
-            horarioFuncionamentoId = empresa.horarioFuncionamento?.codigo
+            endereco = empresa.endereco,
+            horarioFuncionamento = empresa.horarioFuncionamento
         )
     }
 
@@ -128,10 +128,10 @@ class EmpresaService(
         return EmpresaResponseDTO(
             codigo = empresa.codigo,
             nome = empresa.nome,
-            contato = empresa.contato,
+            contato = empresa.contato.toString(),
             CNPJ = empresa.CNPJ,
-            enderecoId = empresa.endereco.codigo!!,
-            horarioFuncionamentoId = empresa.horarioFuncionamento?.codigo
+            endereco = empresa.endereco,
+            horarioFuncionamento = empresa.horarioFuncionamento
         )
     }
 
@@ -146,10 +146,10 @@ class EmpresaService(
         return EmpresaResponseDTO(
             codigo = empresa.codigo,
             nome = empresa.nome,
-            contato = empresa.contato,
+            contato = empresa.contato.toString(),
             CNPJ = empresa.CNPJ,
-            enderecoId = empresa.endereco.codigo!!,
-            horarioFuncionamentoId = empresa.horarioFuncionamento?.codigo
+            endereco = empresa.endereco,
+            horarioFuncionamento = empresa.horarioFuncionamento
         )
     }
 }

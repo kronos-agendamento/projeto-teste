@@ -50,7 +50,8 @@ class UsuarioService(
             UsuarioLoginResponse(
                 mensagem = "Login realizado com sucesso.",
                 nome = usuario.nome ?: "",
-                email = usuario.email ?: ""
+                email = usuario.email ?: "",
+                cpf = usuario.cpf ?: ""
             )
         } else {
             null
@@ -68,13 +69,14 @@ class UsuarioService(
         }
     }
 
-    fun atualizarUsuarioPorId(id: Int, dto: UsuarioAtualizacaoRequest): Usuario? {
-        val usuario = usuarioRepository.findById(id).orElse(null) ?: return null
+    fun atualizarUsuarioPorCpf(cpf: String, dto: UsuarioAtualizacaoRequest): Usuario? {
+        val usuario = usuarioRepository.findByCpf(cpf) ?: return null
         usuario.apply {
             nome = dto.nome ?: nome
             email = dto.email ?: email
             senha = dto.senha ?: senha
             instagram = dto.instagram ?: instagram
+            dataNasc = dto.dataNasc ?: dataNasc
             telefone = dto.telefone ?: telefone
             telefoneEmergencial = dto.telefoneEmergencial ?: telefoneEmergencial
             genero = dto.genero ?: genero
