@@ -456,6 +456,9 @@ Dados do usuário
 .form-group input[type="text"],
 .form-group input[type="number"],
 .form-group input[type="file"],
+.form-group input[type="password"],
+.form-group input[type="date"],
+.form-group input[type="email"],
 .form-group select {
   padding: 0.3vw;
   border: 1px solid #ddd;

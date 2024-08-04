@@ -116,7 +116,6 @@
 
             <div class="content-form-flex">
               <div class="form-group form-mr form-input">
-
                 <div class="label">
                   <p>Nome Completo:</p>
                   <input type="text" id="nome" placeholder="Nome Completo" required>
@@ -124,28 +123,32 @@
 
                 <div class="label">
                   <p>Data de Nascimento:</p>
-                  <input type="text" id="nascimento" placeholder="Data de nascimento" required>
+                  <input type="date" id="nascimento" placeholder="Data de nascimento" required>
                 </div>
 
                 <div class="label">
                   <p>Telefone:</p>
-                  <input type="text" id="telefone" placeholder="(DDD) Telefone" required>
+                  <input type="text" id="telefone" placeholder="(00) 00000-0000" required>
                 </div>
 
                 <div class="label">
                   <p>Telefone Emergencial:</p>
-                  <input type="text" id="telefoneEmergencial" placeholder="(DDD) Telefone" required>
+                  <input type="text" id="telefoneEmergencial" placeholder="(00) 00000-0000" required>
                 </div>
-
               </div>
             </div>
 
             <div class="content-form-flex">
               <div class="form-group form-mr form-input">
-
                 <div class="label">
                   <p>Gênero:</p>
-                  <input type="text" id="genero" placeholder="Gênero" required>
+                  <select id="genero" required>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Feminino">Feminino</option>
+                    <option value="Não-binário">Não-binário</option>
+                    <option value="Prefiro não dizer">Prefiro não dizer</option>
+                    <option value="Outro">Outro</option>
+                  </select>
                 </div>
 
                 <div class="label">
@@ -153,8 +156,17 @@
                   <input type="text" id="instagram" placeholder="@instagram" required>
                 </div>
 
-             
-
+                <div class="label">
+                  <p>Indicação:</p>
+                  <select id="indicacao" required>
+                    <option value="Internet">Internet</option>
+                    <option value="Anúncio">Anúncio</option>
+                    <option value="Amigo contou">Amigo contou</option>
+                    <option value="Cliente contou">Cliente contou</option>
+                    <option value="Instagram">Instagram</option>
+                    <option value="Passou na frente e viu">Passou na frente e viu</option>
+                  </select>
+                </div>
               </div>
             </div>
 
@@ -162,15 +174,15 @@
               <div class="form-group form-mr form-input">
                 <div class="label">
                   <p>Email:</p>
-                  <input type="text" id="email" placeholder="xxxxxxxxxxx@xxxx.com" required>
+                  <input type="email" id="email" placeholder="xxxxxxxxxxx@xxxx.com" required>
                 </div>
                 <div class="label">
                   <p>Senha:</p>
-                  <input type="text" id="senha" placeholder="senha@123" required>
+                  <input type="password" id="senha" placeholder="senha@123" required>
                 </div>
 
                 <div class="button-container" id="button-alterar">
-                  <button type="button" class="save-button" id="save-procedimento-button">
+                  <button type="button" class="save-button" id="save-usuario-button">
                     Alterar dados
                   </button>
                 </div>
@@ -218,15 +230,11 @@
 
                   <div class="content-box2">
                     <p>De:</p>
-                    <select name="" id="" required>
-                      <option value="Terça">Terça</option>
-                    </select>
-
+                    <select name="" id="diasInicio" required></select>
                     <div class="content-box2">
                       <p>Ate:</p>
-                      <select name="" id="" required>
-                        <option value="Sabado">Sabado</option>
-                      </select>
+                      <select name="" id="diasFim" required></select>
+
                     </div>
                   </div>
                 </div>
@@ -240,15 +248,10 @@
 
                   <div class="content-box2">
                     <p>De:</p>
-                    <select name="" id="" required>
-                      <option value="9:00">9:00</option>
-                    </select>
-
+                    <select name="" id="horarioInicio" required></select>
                     <div class="content-box2">
                       <p>Ate:</p>
-                      <select name="" id="" required>
-                        <option value="20:00">20:00</option>
-                      </select>
+                      <select name="" id="horarioFim" required></select>
                     </div>
                   </div>
                 </div>

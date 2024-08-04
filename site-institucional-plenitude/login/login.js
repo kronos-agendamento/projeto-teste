@@ -57,7 +57,7 @@ document.getElementById('registerForm').addEventListener('submit', async (event)
         enderecoId: null,
         empresaId: null,
         fichaAnamneseId: null
-    }; 
+    };
 
     try {
         const response = await fetch('http://localhost:8080/usuarios/cadastro-usuario', {
@@ -108,9 +108,10 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
         if (response.ok) {
             const loginData = await response.json();
 
-            // Salva o nome e o email no localStorage
+            // Salva o nome, email e cpf no localStorage
             localStorage.setItem('nome', loginData.nome);
             localStorage.setItem('email', loginData.email);
+            localStorage.setItem('cpf', loginData.cpf);
 
             showNotification('Login realizado com sucesso!');
             window.location.href = '../../app/index/index.html';
