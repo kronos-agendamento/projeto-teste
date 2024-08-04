@@ -741,8 +741,114 @@ Inicio Tabela de procedimentos
   /* Muda a cor ao passar o mouse */
 }
 
+.detalhes-button {
+  display: flex;
+  justify-content: end;
+  position: absolute;
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 1;
+  margin-top: -20px;
+}
+
+.detalhes-button:hover {
+  color: #d2135d;
+  /* Muda a cor ao passar o mouse */
+}
+
 .edit-btn:hover,
 .delete-btn:hover,
 .more-btn:hover {
   color: #d81b60;
+}
+
+#edit-nome2 {
+  width: 30%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-top: 3vh;
+  margin-bottom: 2vh;
+}
+
+#edit-cor2 {
+  width: 30%;
+  height: 33px;
+  padding: 8px 20px 8px 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-top: 3vh;
+  margin-bottom: 2vh;
+}
+
+.tabs {
+  display: flex;
+  width: 146vh;
+  justify-content: flex-end;
+  margin-bottom: -30px;
+}
+
+.tab-button {
+  background-color: #91214a;
+  /* Cor padrão dos botões */
+  color: #fff;
+  border: none;
+  border-radius: 12px 12px 0 0;
+  padding: 10px 20px;
+  cursor: pointer;
+  width: 130px;
+}
+
+.tab-button.active {
+  background-color: #d2135d;
+  /* Cor do botão ativo */
+}
+
+.tab-button:hover {
+  background-color: #c2185b;
+  /* Cor ao passar o mouse (opcional) */
+}
+
+input[type="text"],
+input[type="number"],
+input[type="file"],
+input[type="password"],
+input[type="date"],
+input[type="email"],
+select {
+  padding: 0.3vw;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-right: 0.2vw;
+  margin-left: 0.2vw;
+  margin-top: 15px;
+  width: 50%;
+}
+
+.disabled-input {
+  pointer-events: none;
+  user-select: none;
+  background-color: #f0f0f0;
+  /* Opcional: para indicar visualmente que está desativado */
+}
+
+.btn-disabled {
+  /* Cor do texto mais clara */
+  cursor: not-allowed !important;
+  /* Mostrar o cursor de "não permitido" */
+  opacity: 0.6;
+  /* Diminuir a opacidade para aparência apagada */
+}
+
+/* Estilo para tornar as linhas da tabela clicáveis */
+table tr.clickable-row {
+  cursor: pointer;
+  /* Altera o cursor para indicar que a linha é clicável */
+}
+
+table tr.clickable-row:hover {
+  background-color: #f1f1f1;
+  /* Cor de fundo ao passar o mouse (opcional) */
 }

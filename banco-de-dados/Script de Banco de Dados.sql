@@ -38,13 +38,13 @@ CREATE TABLE complemento (
     FOREIGN KEY (fk_endereco) REFERENCES endereco(id_endereco)
 );
 
-CREATE TABLE horario_funcionamento (
-    id_horario_funcionamento INT PRIMARY KEY AUTO_INCREMENT,
-    dia_inicio VARCHAR(45),
-    dia_fim VARCHAR(45),
-    horario_abertura VARCHAR(5),
-    horario_fechamento VARCHAR(5)
-);
+	CREATE TABLE horario_funcionamento (
+		id_horario_funcionamento INT PRIMARY KEY AUTO_INCREMENT,
+		dia_inicio VARCHAR(45),
+		dia_fim VARCHAR(45),
+		horario_abertura VARCHAR(5),
+		horario_fechamento VARCHAR(5)
+	);
 
 CREATE TABLE empresa (
     id_empresa INT PRIMARY KEY AUTO_INCREMENT,
@@ -296,5 +296,3 @@ VALUES
 ('Design de Sobrancelhas', 'Curso completo de design de sobrancelhas', 'Básico', 'Presencial', '20 horas', 500.00, TRUE),
 ('Maquiagem Profissional', 'Curso de maquiagem profissional', 'Intermediário', 'Online', '30 horas', 700.00, TRUE),
 ('Extensão de Cílios', 'Curso de extensão de cílios', 'Avançado', 'Presencial', '25 horas', 800.00, TRUE);
-
-select * from usuario;

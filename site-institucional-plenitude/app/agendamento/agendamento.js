@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let agendamentoIdToDelete = null;
   let allStatuses = [];
   let editStatusId = null;
+  let selectedAgendamentoId = null;
 
   async function fetchAgendamentos() {
     try {
@@ -33,20 +34,78 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function renderTable() {
+  // Filtrar agendamentos
+  function filterAgendamentos() {
+    const procedimentoValue = document.getElementById('procedimento-filter').value;
+    const especificacaoValue = document.getElementById('especificacao-filter').value;
+    const clienteValue = document.getElementById('cliente-filter').value;
+    const dataValue = document.getElementById('data-filter').value;
+
+    const filteredAgendamentos = agendamentos.filter(agendamento => {
+      const matchProcedimento = procedimentoValue === "" || agendamento.procedimento.tipo === procedimentoValue;
+      const matchEspecificacao = especificacaoValue === "" || agendamento.especificacao.especificacao === especificacaoValue;
+      const matchCliente = clienteValue === "" || agendamento.usuario.nome === clienteValue;
+      const matchData = dataValue === "" || agendamento.dataHorario.startsWith(dataValue);
+
+      return matchProcedimento && matchEspecificacao && matchCliente && matchData;
+    });
+
+    renderTable(filteredAgendamentos);
+  }
+
+  function renderTable(filtro = 'todos') {
     const tbody = document.getElementById("procedures-tbody");
     tbody.innerHTML = "";
+
+    const hoje = new Date();
+    const dataHoje = `${hoje.getUTCFullYear()}-${String(hoje.getUTCMonth() + 1).padStart(2, '0')}-${String(hoje.getUTCDate()).padStart(2, '0')}`;
+
+    let agendamentosFiltrados = agendamentos;
+
+    if (filtro === 'hoje') {
+      agendamentosFiltrados = agendamentos.filter(agendamento => {
+        const dataAgendamento = new Date(agendamento.dataHorario);
+        const dataAgendamentoFormatada = `${dataAgendamento.getUTCFullYear()}-${String(dataAgendamento.getUTCMonth() + 1).padStart(2, '0')}-${String(dataAgendamento.getUTCDate()).padStart(2, '0')}`;
+        return dataAgendamentoFormatada === dataHoje;
+      });
+    } else if (filtro === 'custom') {
+      const from = document.getElementById("filter-from").value;
+      const to = document.getElementById("filter-to").value;
+      const client = document.getElementById("filter-client").value.toLowerCase();
+      const procedure = document.getElementById("filter-procedure").value.toLowerCase();
+      const specification = document.getElementById("filter-specification").value.toLowerCase();
+
+      agendamentosFiltrados = agendamentos.filter(agendamento => {
+        const dataAgendamento = new Date(agendamento.dataHorario);
+        const dataAgendamentoFormatada = `${dataAgendamento.getUTCFullYear()}-${String(dataAgendamento.getUTCMonth() + 1).padStart(2, '0')}-${String(dataAgendamento.getUTCDate()).padStart(2, '0')}`;
+
+        const isWithinDateRange = (!from || dataAgendamentoFormatada >= from) && (!to || dataAgendamentoFormatada <= to);
+        const matchesClient = !client || agendamento.usuario.nome.toLowerCase().includes(client);
+        const matchesProcedure = !procedure || agendamento.procedimento.tipo.toLowerCase().includes(procedure);
+        const matchesSpecification = !specification || agendamento.especificacao.especificacao.toLowerCase().includes(specification);
+
+        return isWithinDateRange && matchesClient && matchesProcedure && matchesSpecification;
+      });
+    }
+
+    const totalPages = Math.ceil(agendamentosFiltrados.length / itemsPerPage);
+    document.getElementById("current-page").textContent = currentPage;
+    document.getElementById("total-pages").textContent = totalPages;
+
+    document.getElementById("prev-page-btn").disabled = currentPage === 1;
+    document.getElementById("next-page-btn").disabled = currentPage === totalPages;
 
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
 
-    agendamentos.slice(startIndex, endIndex).forEach((agendamento) => {
+    agendamentosFiltrados.slice(startIndex, endIndex).forEach((agendamento) => {
       const tr = document.createElement("tr");
+      tr.classList.add("clickable-row");
 
       // Ajustar para UTC
       const dataHora = new Date(agendamento.dataHorario);
       const dia = String(dataHora.getUTCDate()).padStart(2, '0');
-      const mes = String(dataHora.getUTCMonth() + 1).padStart(2, '0'); // Months are zero-based
+      const mes = String(dataHora.getUTCMonth() + 1).padStart(2, '0');
       const horas = String(dataHora.getUTCHours()).padStart(2, '0');
       const minutos = String(dataHora.getUTCMinutes()).padStart(2, '0');
       const dataHoraFormatada = `${dia}/${mes} - ${horas}:${minutos}`;
@@ -77,7 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
       statusColorDiv.style.height = "10px";
       statusColorDiv.style.borderRadius = "100px";
       statusColorDiv.style.display = "inline-block";
-      statusColorDiv.style.marginRight = "5px"; // Espaço entre a bolinha e o nome do status
+      statusColorDiv.style.marginRight = "5px";
 
       // Cria um span para o nome do status
       const statusNomeSpan = document.createElement("span");
@@ -93,27 +152,111 @@ document.addEventListener("DOMContentLoaded", function () {
       editButton.classList.add("edit-btn");
       editButton.dataset.id = agendamento.idAgendamento;
       editButton.innerHTML = '<i class="fas fa-edit"></i>';
-      editButton.addEventListener("click", () => editarAgendamento(agendamento.idAgendamento));
+      editButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        editarAgendamento(agendamento.idAgendamento);
+      });
 
       const deleteButton = document.createElement("button");
       deleteButton.classList.add("delete-btn");
       deleteButton.dataset.id = agendamento.idAgendamento;
       deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
-      deleteButton.addEventListener("click", () => excluirAgendamento(agendamento.idAgendamento));
+      deleteButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        excluirAgendamento(agendamento.idAgendamento);
+      });
 
       acoesTd.appendChild(editButton);
       acoesTd.appendChild(deleteButton);
       tr.appendChild(acoesTd);
 
+      tr.addEventListener("click", () => showDetalhesModal(agendamento.idAgendamento));
+
       tbody.appendChild(tr);
     });
+  }
 
-    const totalPages = Math.ceil(totalAgendamentos / itemsPerPage);
-    document.getElementById("current-page").textContent = currentPage;
-    document.getElementById("total-pages").textContent = totalPages;
+  function showDetalhesModal(id) {
+    const agendamento = agendamentos.find(a => a.idAgendamento === id);
 
-    document.getElementById("prev-page-btn").disabled = currentPage === 1;
-    document.getElementById("next-page-btn").disabled = currentPage === totalPages;
+    if (agendamento) {
+      selectedAgendamentoId = id; // Define o ID selecionado
+      document.getElementById('detalhe-cliente').value = agendamento.usuario.nome;
+      document.getElementById('detalhe-celular').value = agendamento.usuario.telefone;
+      const dataHora = new Date(agendamento.dataHorario);
+      document.getElementById('detalhe-data').value = `${dataHora.getUTCFullYear()}-${String(dataHora.getUTCMonth() + 1).padStart(2, '0')}-${String(dataHora.getUTCDate()).padStart(2, '0')}`;
+      document.getElementById('detalhe-inicio').value = `${String(dataHora.getUTCHours()).padStart(2, '0')}:${String(dataHora.getUTCMinutes()).padStart(2, '0')}`;
+      document.getElementById('detalhe-fim').value = `${String(dataHora.getUTCHours() + 1).padStart(2, '0')}:${String(dataHora.getUTCMinutes()).padStart(2, '0')}`; // Ajuste conforme necessário
+      document.getElementById('detalhe-procedimento').value = agendamento.procedimento.tipo;
+      document.getElementById('detalhe-status').value = agendamento.statusAgendamento.nome;
+
+      // Verifica o status do agendamento
+      const statusId = agendamento.statusAgendamento.id; // Assumindo que você tem o id no objeto de status
+      const clienteFaltouButton = document.getElementById('clienteFaltou');
+      const atendimentoConcluidoButton = document.getElementById('atendimentoConcluido');
+
+      // Desabilita ou habilita os botões conforme o status
+      if (statusId === 1) { // Status Agendado
+        clienteFaltouButton.disabled = false;
+        atendimentoConcluidoButton.disabled = false;
+        clienteFaltouButton.classList.remove('btn-disabled');
+        atendimentoConcluidoButton.classList.remove('btn-disabled');
+      } else {
+        clienteFaltouButton.disabled = true;
+        atendimentoConcluidoButton.disabled = true;
+        clienteFaltouButton.classList.add('btn-disabled');
+        atendimentoConcluidoButton.classList.add('btn-disabled');
+      }
+
+      document.getElementById('detalhes-modal').style.display = 'block';
+    }
+  }
+
+  window.closeDetalhesModal = function () {
+    selectedAgendamentoId = null; // Redefinir o ID selecionado
+    document.getElementById('detalhes-modal').style.display = 'none';
+  };
+
+  window.clienteFaltou = async function () {
+    if (!selectedAgendamentoId) {
+      showNotification('Nenhum agendamento selecionado!', true);
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8080/api/agendamentos/atualizar-status/${selectedAgendamentoId}?statusId=2`, {
+        method: 'PUT'
+      });
+
+      if (!response.ok) throw new Error('Erro ao atualizar o status para "Cliente Faltou".');
+      await fetchAgendamentos(); // Atualizar a lista de agendamentos
+      closeDetalhesModal(); // Fechar o modal de detalhes
+      showNotification('Status atualizado para "Cliente Faltou" com sucesso!');
+    } catch (error) {
+      console.error('Erro ao atualizar o status:', error);
+      showNotification('Erro ao atualizar o status!', true);
+    }
+  }
+
+  window.atendimentoConcluido = async function () {
+    if (!selectedAgendamentoId) {
+      showNotification('Nenhum agendamento selecionado!', true);
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8080/api/agendamentos/atualizar-status/${selectedAgendamentoId}?statusId=3`, {
+        method: 'PUT'
+      });
+
+      if (!response.ok) throw new Error('Erro ao atualizar o status para "Atendimento Concluído".');
+      await fetchAgendamentos(); // Atualizar a lista de agendamentos
+      closeDetalhesModal(); // Fechar o modal de detalhes
+      showNotification('Status atualizado para "Atendimento Concluído" com sucesso!');
+    } catch (error) {
+      console.error('Erro ao atualizar o status:', error);
+      showNotification('Erro ao atualizar o status!', true);
+    }
   }
 
   function atualizarProgressBar(confirmados, total) {
@@ -256,13 +399,13 @@ document.addEventListener("DOMContentLoaded", function () {
         data.forEach(status => {
           const row = document.createElement("tr");
           row.innerHTML = `
-            <td>${status.nome}</td>
-            <td><div class="color-box" style="background-color: ${status.cor}; width: 20px; height: 20px; border-radius: 100px; margin-left: 35%;"></div></td>
-            <td>
-                <button class="edit-btn" data-id="${status.id}"><i class="fas fa-edit"></i></button>
-                <button class="delete-btn" data-id="${status.id}"><i class="fas fa-trash"></i></button>
-            </td>
-          `;
+              <td>${status.nome}</td>
+              <td><div class="color-box" style="background-color: ${status.cor}; width: 20px; height: 20px; border-radius: 100px; margin-left: 35%;"></div></td>
+              <td>
+                  <button class="edit-btn" data-id="${status.id}"><i class="fas fa-edit"></i></button>
+                  <button class="delete-btn" data-id="${status.id}"><i class="fas fa-trash"></i></button>
+              </td>
+            `;
           tbody.appendChild(row);
         });
 
@@ -311,6 +454,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         if (!response.ok) throw new Error('Erro ao editar o status.');
         await carregarStatus();
+        await fetchAgendamentos(); // Adicione esta linha para atualizar a tabela de agendamentos
         editStatusId = null;
         closeEditModal();
         showNotification('Status editado com sucesso!');
@@ -366,6 +510,30 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('save-modal').style.display = 'block';
   });
 
+  function setActiveTab(tabId) {
+    // Remove a classe active de todos os botões
+    document.querySelectorAll('.tab-button').forEach(button => {
+      button.classList.remove('active');
+    });
+
+    // Adiciona a classe active ao botão clicado
+    document.getElementById(tabId).classList.add('active');
+  }
+
+  setActiveTab('todos-agendamentos');
+
+  document.getElementById("todos-agendamentos").addEventListener("click", () => {
+    currentPage = 1;
+    setActiveTab('todos-agendamentos');
+    renderTable('todos');
+  });
+
+  document.getElementById("hoje-agendamentos").addEventListener("click", () => {
+    currentPage = 1;
+    setActiveTab('hoje-agendamentos');
+    renderTable('hoje');
+  });
+
   document.getElementById('save-button').addEventListener('click', salvarStatus);
 
   document.getElementById('open-status-modal-btn').addEventListener('click', () => {
@@ -388,4 +556,52 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById('close-filter-modal').addEventListener('click', () => {
     document.getElementById('filter-modal').style.display = 'none';
   });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+  fetch('http://localhost:8080/api/procedimentos/listar')
+    .then(response => response.json())
+    .then(data => {
+      const procedimentoSelect = document.getElementById('procedimento-filtro');
+      data.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.idProcedimento;
+        option.textContent = item.tipo;
+        procedimentoSelect.appendChild(option);
+      });
+    });
+
+  fetch('http://localhost:8080/especificacoes')
+    .then(response => response.json())
+    .then(data => {
+      const especificacaoSelect = document.getElementById('especificacao-filtro');
+      data.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.idEspecificacao;
+        option.textContent = item.especificacao;
+        especificacaoSelect.appendChild(option);
+      });
+    });
+
+  fetch('http://localhost:8080/usuarios')
+    .then(response => response.json())
+    .then(data => {
+      const clienteSelect = document.getElementById('cliente-filtro');
+      data.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.idCliente;
+        option.textContent = item.nome;
+        clienteSelect.appendChild(option);
+      });
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const nome = localStorage.getItem("nome");
+  const email = localStorage.getItem("email");
+
+  if (nome && email) {
+    document.getElementById("userName").textContent = nome;
+    document.getElementById("userEmail").textContent = email;
+  }
 });

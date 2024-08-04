@@ -2,8 +2,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const apiUrlClientes = "http://localhost:8080/usuarios";
   const apiUrlProcedimentos = "http://localhost:8080/api/procedimentos/listar";
   const apiUrlEspecificacoes = "http://localhost:8080/especificacoes";
-  const apiUrlAgendamentos = "http://localhost:8080/api/agendamentos";
-  const apiUrlCriarAgendamento = `${apiUrlAgendamentos}/criar`;
+  const apiUrlAgendamentos = "http://localhost:8080/api/agendamentos/listar";
+  const apiUrlCriarAgendamento = "http://localhost:8080/api/agendamentos/criar";
 
   const clientesSelect = document.getElementById("clientes");
   const procedimentosSelect = document.getElementById("procedimentos");
@@ -14,25 +14,22 @@ document.addEventListener("DOMContentLoaded", function () {
   const horariosContainer = document.getElementById("horarios-disponiveis");
   const saveButton = document.getElementById("save-agendamento-button");
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const agendamentoId = urlParams.get('id');
-
   async function carregarClientes() {
     try {
       const response = await fetch(apiUrlClientes);
       if (response.ok) {
         const clientes = await response.json();
-        clientes.forEach(cliente => {
+        clientes.forEach((cliente) => {
           const option = document.createElement("option");
-          option.value = cliente.id;
-          option.textContent = cliente.nome;
+          option.value = cliente.codigo;
+          option.text = cliente.nome;
           clientesSelect.appendChild(option);
         });
       } else {
-        console.error("Erro ao carregar clientes.");
+        console.error("Erro ao buscar clientes: " + response.statusText);
       }
     } catch (error) {
-      console.error("Erro ao carregar clientes:", error);
+      console.error("Erro ao buscar clientes: ", error);
     }
   }
 
@@ -41,17 +38,17 @@ document.addEventListener("DOMContentLoaded", function () {
       const response = await fetch(apiUrlProcedimentos);
       if (response.ok) {
         const procedimentos = await response.json();
-        procedimentos.forEach(procedimento => {
+        procedimentos.forEach((procedimento) => {
           const option = document.createElement("option");
           option.value = procedimento.idProcedimento;
-          option.textContent = procedimento.tipo;
+          option.text = procedimento.tipo; // Atualize para exibir a descrição
           procedimentosSelect.appendChild(option);
         });
       } else {
-        console.error("Erro ao carregar procedimentos.");
+        console.error("Erro ao buscar procedimentos: " + response.statusText);
       }
     } catch (error) {
-      console.error("Erro ao carregar procedimentos:", error);
+      console.error("Erro ao buscar procedimentos: ", error);
     }
   }
 
@@ -60,192 +57,152 @@ document.addEventListener("DOMContentLoaded", function () {
       const response = await fetch(apiUrlEspecificacoes);
       if (response.ok) {
         const especificacoes = await response.json();
-        especificacoes.forEach(especificacao => {
+        especificacoes.forEach((especificacao) => {
           const option = document.createElement("option");
-          option.value = especificacao.id;
-          option.textContent = especificacao.especificacao;
+          option.value = especificacao.idEspecificacaoProcedimento;
+          option.text = especificacao.especificacao;
           especificacoesSelect.appendChild(option);
         });
       } else {
-        console.error("Erro ao carregar especificações.");
+        console.error("Erro ao buscar especificações: " + response.statusText);
       }
     } catch (error) {
-      console.error("Erro ao carregar especificações:", error);
-    }
-  }
-
-  async function carregarDadosAgendamento(id) {
-    try {
-      const response = await fetch(`${apiUrlAgendamentos}/buscar/${id}`);
-      if (response.ok) {
-        const agendamento = await response.json();
-
-        // Verifique se os valores estão corretos
-        console.log(agendamento.usuario.codigo, agendamento.procedimento.idProcedimento, agendamento.especificacao.idEspecificacaoProcedimento);
-
-        // Define os valores corretamente nos selects
-        clientesSelect.value = agendamento.usuario.codigo;
-        procedimentosSelect.value = agendamento.procedimento.idProcedimento;
-        tipoAgendamentoSelect.value = agendamento.tipoAgendamento;
-        especificacoesSelect.value = agendamento.especificacao.idEspecificacaoProcedimento;
-
-        // Define a data e hora
-        const dataHora = new Date(agendamento.dataHorario);
-        if (!isNaN(dataHora.getTime())) {
-          dataInput.value = dataHora.toISOString().split("T")[0];
-          dataSelecionadaP.textContent = `Data Selecionada: ${dataHora.toLocaleDateString()}`;
-          await carregarHorariosDisponiveis(dataInput.value);
-
-          const horaFormatada = dataHora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-          const horarioButton = document.querySelector(`.horario-button[data-hora="${horaFormatada}"]`);
-          if (horarioButton) {
-            horarioButton.classList.add("selected");
-          } else {
-            console.error(`Horário ${horaFormatada} não encontrado entre os horários disponíveis.`);
-          }
-        } else {
-          console.error("Data e hora inválidas no agendamento.");
-        }
-      } else {
-        console.error("Erro ao carregar dados do agendamento.");
-      }
-    } catch (error) {
-      console.error("Erro ao carregar dados do agendamento:", error);
+      console.error("Erro ao buscar especificações: ", error);
     }
   }
 
   async function carregarHorariosDisponiveis(data) {
     try {
-      const response = await fetch(`${apiUrlAgendamentos}/listar`);
+      const response = await fetch(apiUrlAgendamentos);
       if (response.ok) {
         const agendamentos = await response.json();
-        console.log("Agendamentos recebidos:", agendamentos);
+        const horariosOcupados = agendamentos
+          .filter(agendamento => agendamento.data && agendamento.data.startsWith(data))
+          .map(agendamento => new Date(agendamento.horario).getHours());
 
-        // Extrai a data escolhida
-        const dataEscolhida = new Date(data);
-        dataEscolhida.setHours(0, 0, 0, 0);
-        console.log("Data escolhida:", dataEscolhida);
-
-        // Gera horários entre 09:00 e 18:00
-        const horariosParaExibir = [];
-        for (let h = 9; h < 18; h++) {
-          const hora = h.toString().padStart(2, '0') + ":00";
-          horariosParaExibir.push(hora);
-        }
-        console.log("Horários gerados:", horariosParaExibir);
-
-        // Filtra agendamentos do dia escolhido
-        const agendamentosNoDia = agendamentos.filter(agendamento => {
-          const dataAgendamento = new Date(agendamento.dataHorario);
-          dataAgendamento.setHours(0, 0, 0, 0);
-          return dataAgendamento.getTime() === dataEscolhida.getTime();
-        });
-        console.log("Agendamentos no dia:", agendamentosNoDia);
-
-        // Remove horários ocupados
-        agendamentosNoDia.forEach(agendamento => {
-          const horaAgendamento = new Date(agendamento.dataHorario).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-          const index = horariosParaExibir.indexOf(horaAgendamento);
-          if (index > -1) {
-            horariosParaExibir.splice(index, 1);
+        const horariosDisponiveis = [];
+        for (let i = 9; i <= 18; i++) {
+          if (!horariosOcupados.includes(i)) {
+            horariosDisponiveis.push(i);
           }
-        });
-        console.log("Horários disponíveis após filtragem:", horariosParaExibir);
-
-        const horariosContainer = document.getElementById("horariosContainer");
-        horariosContainer.innerHTML = "";
-
-        horariosParaExibir.forEach(horario => {
-          const button = document.createElement("button");
-          button.classList.add("horario-button");
-          button.textContent = horario;
-          button.dataset.hora = horario;
-          horariosContainer.appendChild(button);
-        });
-
-        // Se não houver horários disponíveis
-        if (horariosParaExibir.length === 0) {
-          horariosContainer.innerHTML = "<p>Nenhum horário disponível para a data selecionada.</p>";
         }
+
+        horariosContainer.innerHTML = "";
+        horariosDisponiveis.forEach(horario => {
+          const button = document.createElement("button");
+          button.textContent = `${horario}:00`;
+          button.classList.add("horario-button");
+          horariosContainer.appendChild(button);
+
+          button.addEventListener("click", function () {
+            document.querySelectorAll(".horario-button").forEach(btn => btn.classList.remove("selected"));
+            button.classList.add("selected");
+          });
+        });
       } else {
-        console.error("Erro ao carregar agendamentos.");
+        console.error("Erro ao buscar agendamentos: " + response.statusText);
       }
     } catch (error) {
-      console.error("Erro ao carregar agendamentos:", error);
+      console.error("Erro ao buscar agendamentos: ", error);
     }
   }
 
-  async function salvarAgendamento() {
-    const clienteId = clientesSelect.value;
-    const procedimentoId = procedimentosSelect.value;
-    const especificacaoId = especificacoesSelect.value;
-    const tipo = tipoAgendamentoSelect.value;
-    const data = dataInput.value;
-    const horarioSelecionado = document.querySelector(".horario-button.selected")?.textContent;
+  dataInput.addEventListener("change", function () {
+    const dataSelecionada = new Date(dataInput.value + 'T00:00:00');
+    if (!isNaN(dataSelecionada)) {
+      const dia = dataSelecionada.getDate();
+      const mes = dataSelecionada.toLocaleString('default', { month: 'long' });
+      const diaSemana = dataSelecionada.toLocaleString('default', { weekday: 'long' });
+      dataSelecionadaP.textContent = `Dia ${dia} de ${mes} - ${diaSemana}`;
 
-    if (!clienteId || !procedimentoId || !especificacaoId || !tipo || !data || !horarioSelecionado) {
-      alert("Por favor, preencha todos os campos.");
-      return;
-    }
-
-    const dataHora = new Date(`${data}T${horarioSelecionado}`);
-
-    const agendamento = {
-      clienteId,
-      procedimentoId,
-      especificacaoId,
-      tipo,
-      dataHora: dataHora.toISOString()
-    };
-
-    try {
-      const response = await fetch(`${apiUrlAgendamentos}/atualizar/${agendamentoId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(agendamento)
-      });
-      if (response.ok) {
-        exibirNotificacao("Agendamento atualizado com sucesso!");
-      } else {
-        console.error("Erro ao atualizar agendamento.");
-      }
-    } catch (error) {
-      console.error("Erro ao atualizar agendamento:", error);
-    }
-  }
-
-
-  function exibirNotificacao(mensagem) {
-    const notification = document.getElementById("notification");
-    const notificationMessage = document.getElementById("notification-message");
-    notificationMessage.textContent = mensagem;
-    notification.style.display = "block";
-    setTimeout(() => {
-      notification.style.display = "none";
-    }, 3000);
-  }
-
-  dataInput.addEventListener("change", () => {
-    const data = dataInput.value;
-    if (data) {
-      carregarHorariosDisponiveis(data);
-      dataSelecionadaP.textContent = `Data Selecionada: ${new Date(data).toLocaleDateString()}`;
+      carregarHorariosDisponiveis(dataInput.value);
+    } else {
+      dataSelecionadaP.textContent = "";
+      horariosContainer.innerHTML = "";
     }
   });
 
-  saveButton.addEventListener("click", salvarAgendamento);
+  async function criarAgendamento(agendamento) {
+    try {
+      const response = await fetch(apiUrlCriarAgendamento, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(agendamento),
+      });
 
-  async function inicializarFormulario() {
-    await carregarClientes();
-    await carregarProcedimentos();
-    await carregarEspecificacoes();
-
-    if (agendamentoId) {
-      await carregarDadosAgendamento(agendamentoId);
+      if (response.ok) {
+        showNotification("Agendamento criado com sucesso!");
+        setTimeout(() => {
+          window.location.href = "../../agendamento.html";
+        }, 1000);
+      } else {
+        console.error("Erro ao criar agendamento: " + response.statusText);
+        showNotification("Já existe um agendamento para essa data e horário", true);
+      }
+    } catch (error) {
+      console.error("Erro ao criar agendamento: ", error);
+      showNotification("Erro ao criar agendamento", true);
     }
   }
 
-  inicializarFormulario();
+
+  saveButton.addEventListener("click", function () {
+    const clienteId = clientesSelect.value;
+    const procedimentoId = procedimentosSelect.value;
+    const tipoAtendimento = tipoAgendamentoSelect.value;
+    const especificacaoId = especificacoesSelect.value;
+    const data = dataInput.value;
+    const horarioButton = document.querySelector(".horario-button.selected");
+    const horario = horarioButton ? horarioButton.textContent.split(":")[0] : null;
+
+    if (!clienteId || !procedimentoId || !tipoAtendimento || !especificacaoId || !data || !horario) {
+      showNotification("Todos os campos são obrigatórios", true);
+      return;
+    }
+
+    // Combine data e horário
+    const dataHora = new Date(`${data}T${horario}:00:00Z`).toISOString();
+
+    const agendamento = {
+      dataHorario: dataHora, // Inclua a data e o horário combinados
+      tipoAgendamento: tipoAtendimento,
+      fk_usuario: parseInt(clienteId),
+      fk_procedimento: parseInt(procedimentoId),
+      fk_especificacao: parseInt(especificacaoId),
+      fk_status: 1,
+    };
+
+    criarAgendamento(agendamento);
+  });
+
+  carregarClientes();
+  carregarProcedimentos();
+  carregarEspecificacoes();
+});
+
+function showNotification(message, isError = false) {
+  const notification = document.getElementById("notification");
+  const notificationMessage = document.getElementById("notification-message");
+  notificationMessage.textContent = message;
+  if (isError) {
+    notification.classList.add("error");
+  } else {
+    notification.classList.remove("error");
+  }
+  notification.classList.add("show");
+  setTimeout(() => {
+    notification.classList.remove("show");
+  }, 3000);
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  const nome = localStorage.getItem("nome");
+  const email = localStorage.getItem("email");
+
+  if (nome && email) {
+    document.getElementById("userName").textContent = nome;
+    document.getElementById("userEmail").textContent = email;
+  }
 });

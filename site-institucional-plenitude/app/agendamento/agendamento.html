@@ -129,7 +129,10 @@
         </div>
         <span id="total-label">Atendimentos Totais</span>
       </div>
-
+      <div class="tabs">
+        <button class="tab-button" id="todos-agendamentos">Todos</button>
+        <button class="tab-button" id="hoje-agendamentos">Hoje</button>
+      </div>
       <table id="procedures-table" class="procedures-table">
         <thead>
           <tr>
@@ -190,14 +193,20 @@
         <label for="filter-to">Até:</label>
         <input type="date" id="filter-to"><br>
         <label for="filter-client">Cliente:</label>
-        <input type="text" id="filter-client" placeholder="Nome do Cliente"><br>
-        <label for="filter-procedure">Procedimento:</label>
-        <input type="text" id="filter-procedure" placeholder="Nome do Procedimento"><br>
+        <select id="cliente-filtro">
+          <!-- Options will be populated dynamically -->
+        </select><br>
+        <label for="procedimento">Procedimento:</label>
+        <select id="procedimento-filtro">
+          <!-- Options will be populated dynamically -->
+        </select><br>
         <label for="filter-specification">Especificação:</label>
-        <input type="text" id="filter-specification" placeholder="Especificação">
+        <select id="especificacao-filtro">
+          <!-- Options will be populated dynamically -->
+        </select><br>
       </div>
       <div>
-        <button class="btn btn-save" onclick="applyFilters()">Aplicar Filtros</button>
+        <button class="btn btn-save" id="apply-filter-button" onclick="applyFilters()">Aplicar Filtros</button>
         <button id="close-filter-modal" class="btn btn-no">Cancelar</button>
       </div>
     </div>
@@ -243,6 +252,49 @@
       <div>
         <button class="btn btn-save" onclick="salvarStatusEditado()">Salvar</button>
         <button class="btn btn-no" onclick="closeEditModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="detalhes-modal" class="modal">
+    <div class="modal-content2">
+      <h3>Detalhes do Agendamento</h3>
+      <div style="margin-left: 25vw;"><button onclick="closeDetalhesModal()" id="close-status-modal"
+          class="detalhes-button">&times;</button></div>
+      <div>
+        <div class="label">
+          <label for="detalhe-cliente">Cliente:</label>
+          <input class="disabled-input" type="text" id="detalhe-cliente" placeholder="Cliente">
+        </div>
+        <div class="label">
+          <label for="detalhe-celular">Celular:</label>
+          <input class="disabled-input" type="text" id="detalhe-celular" placeholder="Celular">
+        </div>
+        <div class="label">
+          <label for="detalhe-data">Data:</label>
+          <input class="disabled-input" type="text" id="detalhe-data" placeholder="Data">
+        </div>
+        <div class="label">
+          <label for="detalhe-inicio">Inicio:</label>
+          <input class="disabled-input" type="text" id="detalhe-inicio" placeholder="Inicio">
+        </div>
+        <div class="label">
+          <label for="detalhe-fim">Fim:</label>
+          <input class="disabled-input" type="text" id="detalhe-fim" placeholder="Fim">
+        </div>
+        <div class="label">
+          <label for="detalhe-procedimento">Procedimento:</label>
+          <input class="disabled-input" type="text" id="detalhe-procedimento" placeholder="Procedimento">
+        </div>
+        <div class="label">
+          <label for="detalhe-status">Status:</label>
+          <input class="disabled-input" type="text" id="detalhe-status" placeholder="Status">
+        </div>
+      </div>
+      <div>
+        <button class="btn btn-no" id="clienteFaltou" onclick="clienteFaltou()">Cliente Faltou</button>
+        <button class="btn btn-save" id="atendimentoConcluido" onclick="atendimentoConcluido()">Atendimento
+          Concluído</button>
       </div>
     </div>
   </div>

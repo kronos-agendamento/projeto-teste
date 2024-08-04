@@ -131,6 +131,30 @@ class AgendamentoService(
         )
     }
 
+    // Adicione o método abaixo na classe AgendamentoService
+
+    fun atualizarStatusAgendamento(id: Int, novoStatusId: Int): AgendamentoResponseDTO {
+        val agendamento = agendamentoRepository.findById(id)
+            .orElseThrow { IllegalArgumentException("Agendamento não encontrado") }
+
+        val novoStatus = statusRepository.findById(novoStatusId)
+            .orElseThrow { IllegalArgumentException("Status não encontrado") }
+
+        agendamento.statusAgendamento = novoStatus
+
+        val updatedAgendamento = agendamentoRepository.save(agendamento)
+
+        return AgendamentoResponseDTO(
+            idAgendamento = updatedAgendamento.idAgendamento,
+            dataHorario = updatedAgendamento.dataHorario,
+            tipoAgendamento = updatedAgendamento.tipoAgendamento,
+            usuario = updatedAgendamento.usuario,
+            procedimento = updatedAgendamento.procedimento,
+            especificacao = updatedAgendamento.especificacao,
+            statusAgendamento = updatedAgendamento.statusAgendamento
+        )
+    }
+
     fun excluirAgendamento(id: Int) {
         if (!agendamentoRepository.existsById(id)) {
             throw IllegalArgumentException("Agendamento não encontrado")

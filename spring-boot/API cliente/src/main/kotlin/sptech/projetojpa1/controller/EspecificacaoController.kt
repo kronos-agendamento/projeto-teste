@@ -42,7 +42,7 @@ class EspecificacaoController(
     }
 
     @Operation(summary = "Listar especificação por descrição")
-    @ApiResponses(
+    @ApiResponses(      
         value = [
             ApiResponse(
                 responseCode = "200",

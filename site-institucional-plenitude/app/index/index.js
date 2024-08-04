@@ -225,17 +225,25 @@ function renderizarAgendaDiaria(agendamentos) {
   const agendamentosOrdenados = ordenarAgendamentosPorHorario(agendamentos);
 
   agendamentosOrdenados.forEach(agendamento => {
-    const horario = new Date(agendamento.dataHorario).toLocaleTimeString("pt-BR", {
+    // Ajusta a data e hora para o fuso horário local
+    const dataUTC = new Date(agendamento.dataHorario);
+
+    // Adiciona 3 horas ao horário UTC
+    dataUTC.setHours(dataUTC.getHours() + 3);
+
+    const horarioLocal = dataUTC.toLocaleTimeString("pt-BR", {
       hour: "2-digit",
       minute: "2-digit",
+      hour12: false // Use o formato 24 horas
     });
+
     const cliente = agendamento.usuario.nome;
     const procedimento = agendamento.procedimento.descricao;
 
     const appointmentElement = document.createElement("div");
     appointmentElement.className = "appointment";
     appointmentElement.innerHTML = `
-      <div class="time">${horario}</div>
+      <div class="time">${horarioLocal}</div>
       <div class="details">
         <h3>${cliente}</h3>
         <p>${procedimento}</p>
