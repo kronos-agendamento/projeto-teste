@@ -68,6 +68,69 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    const profileImageInput = document.getElementById('profileImage');
+    const confirmModal = document.getElementById('confirmModal');
+    const confirmButton = document.getElementById('confirmButton');
+    const cancelButton = document.getElementById('cancelButton');
+    const closeButton = document.querySelector('.close');
+    let selectedFile = null;
+
+    profileImageInput.addEventListener('change', function () {
+        selectedFile = this.files[0];
+        if (selectedFile) {
+            confirmModal.style.display = 'block';
+        }
+    });
+
+    confirmButton.addEventListener('click', async function () {
+        if (selectedFile) {
+            const formData = new FormData();
+            formData.append('foto', selectedFile);
+
+            const cpf = localStorage.getItem('cpf');
+            if (cpf) {
+                try {
+                    const response = await fetch(`http://localhost:8080/usuarios/atualizacao-foto/${cpf}`, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`Erro ao atualizar foto: ${response.status}`);
+                    }
+
+                    const updatedUser = await response.json();
+                    console.log('Foto atualizada com sucesso:', updatedUser);
+
+                    document.getElementById('notification-message').textContent = 'Foto atualizada com sucesso!';
+                    document.getElementById('notification').style.display = 'block';
+                } catch (error) {
+                    console.error('Erro ao atualizar foto:', error);
+                    alert('Erro ao atualizar foto.');
+                }
+            } else {
+                alert('CPF não encontrado.');
+            }
+        }
+        confirmModal.style.display = 'none';
+    });
+
+    cancelButton.addEventListener('click', function () {
+        confirmModal.style.display = 'none';
+    });
+
+    closeButton.addEventListener('click', function () {
+        confirmModal.style.display = 'none';
+    });
+
+    window.addEventListener('click', function (event) {
+        if (event.target == confirmModal) {
+            confirmModal.style.display = 'none';
+        }
+    });
+});
+
 function fillUserProfile(userData) {
     if (!userData) {
         console.error('Dados do usuário estão nulos ou indefinidos.');
@@ -212,9 +275,9 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", function () {
     const nome = localStorage.getItem("nome");
     const email = localStorage.getItem("email");
-  
+
     if (nome && email) {
-      document.getElementById("userName").textContent = nome;
-      document.getElementById("userEmail").textContent = email;
+        document.getElementById("userName").textContent = nome;
+        document.getElementById("userEmail").textContent = email;
     }
-  });
+});

@@ -4,25 +4,20 @@ import org.springframework.stereotype.Service
 import sptech.projetojpa1.dominio.Agendamento
 import sptech.projetojpa1.dto.agendamento.AgendamentoRequestDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoResponseDTO
-import sptech.projetojpa1.repository.AgendamentoRepository
-import sptech.projetojpa1.repository.EspecificacaoRepository  // Novo repositório
-import sptech.projetojpa1.repository.ProcedimentoRepository
-import sptech.projetojpa1.repository.StatusRepository
-import sptech.projetojpa1.repository.UsuarioRepository
-import java.util.*
+import sptech.projetojpa1.repository.*
+import java.time.LocalDateTime
 
 @Service
 class AgendamentoService(
     private val agendamentoRepository: AgendamentoRepository,
     private val usuarioRepository: UsuarioRepository,
     private val procedimentoRepository: ProcedimentoRepository,
-    private val especificacaoRepository: EspecificacaoRepository,  // Novo repositório
+    private val especificacaoRepository: EspecificacaoRepository,
     private val statusRepository: StatusRepository
 ) {
 
     fun listarTodosAgendamentos(): List<AgendamentoResponseDTO> {
         val agendamentos = agendamentoRepository.findAll()
-
         return agendamentos.map { agendamento ->
             AgendamentoResponseDTO(
                 idAgendamento = agendamento.idAgendamento,
@@ -30,45 +25,61 @@ class AgendamentoService(
                 tipoAgendamento = agendamento.tipoAgendamento,
                 usuario = agendamento.usuario,
                 procedimento = agendamento.procedimento,
-                especificacao = agendamento.especificacao,  // Novo campo
+                especificacao = agendamento.especificacao,
                 statusAgendamento = agendamento.statusAgendamento
             )
         }
     }
 
-    fun listarAgendamento(): List<Agendamento> {
-        val agendamentos = agendamentoRepository.findAll()
-
-        return agendamentos
-    }
-
-    fun validarDia(dataHorario: Date): Boolean {
-        val agendamentos = agendamentoRepository.findByDataHorario(dataHorario)
+    fun validarDia(dataInicio: LocalDateTime, dataFim: LocalDateTime): Boolean {
+        val agendamentos = agendamentoRepository.findByDataHorarioBetween(dataInicio, dataFim)
         return agendamentos.isEmpty()
-
-        // true: Não existem agendamentos na data especificada.
-        // false: Existe um agendamento na data especificada.
     }
 
     fun validarAgendamento(agendamentoRequestDTO: AgendamentoRequestDTO): Boolean {
-        val dataAgendamento = agendamentoRequestDTO.dataHorario
+        val dataInicio = agendamentoRequestDTO.dataHorario
+            ?: throw IllegalArgumentException("Data do agendamento não pode ser nula")
 
-        // Verifica se dataAgendamento é nulo e lança uma exceção
-        if (dataAgendamento == null) {
-            throw IllegalArgumentException("Data do agendamento não pode ser nula")
+        val especificacao = especificacaoRepository.findById(agendamentoRequestDTO.fk_especificacao)
+            .orElseThrow { IllegalArgumentException("Especificação não encontrada") }
+
+        val tempoProcedimento = especificacao.fkTempoProcedimento
+            ?: throw IllegalArgumentException("Tempo do procedimento não pode ser nulo")
+
+        val duracao = when (agendamentoRequestDTO.tipoAgendamento) {
+            "Colocação" -> tempoProcedimento.tempoColocacao
+            "Manutenção" -> tempoProcedimento.tempoManutencao
+            "Retirada" -> tempoProcedimento.tempoRetirada
+            else -> throw IllegalArgumentException("Tipo de agendamento inválido")
         }
 
-        return validarDia(dataAgendamento)
+        val duracaoHorasMinutos = duracao.split(":")
+        val horas = duracaoHorasMinutos[0].toInt()
+        val minutos = duracaoHorasMinutos[1].toInt()
+
+        val dataFim = dataInicio.plusHours(horas.toLong()).plusMinutes(minutos.toLong())
+
+        return validarDia(dataInicio, dataFim)
     }
 
     fun criarAgendamento(agendamentoRequestDTO: AgendamentoRequestDTO): AgendamentoResponseDTO {
+        if (!validarAgendamento(agendamentoRequestDTO)) {
+            throw IllegalArgumentException("Já existe um agendamento para esse horário")
+        }
+
         val agendamento = Agendamento(
-            dataHorario = agendamentoRequestDTO.dataHorario ?: throw IllegalArgumentException("Data não pode ser nula"),
-            tipoAgendamento = agendamentoRequestDTO.tipoAgendamento ?: throw IllegalArgumentException("Tipo de agendamento não pode ser nulo"),
-            usuario = usuarioRepository.findById(agendamentoRequestDTO.fk_usuario).orElseThrow { IllegalArgumentException("Usuário não encontrado") },
-            procedimento = procedimentoRepository.findById(agendamentoRequestDTO.fk_procedimento).orElseThrow { IllegalArgumentException("Procedimento não encontrado") },
-            especificacao = especificacaoRepository.findById(agendamentoRequestDTO.fk_especificacao).orElseThrow { IllegalArgumentException("Especificação não encontrada") },  // Novo campo
-            statusAgendamento = statusRepository.findById(agendamentoRequestDTO.fk_status).orElseThrow { IllegalArgumentException("Status não encontrado") }
+            dataHorario = agendamentoRequestDTO.dataHorario
+                ?: throw IllegalArgumentException("Data não pode ser nula"),
+            tipoAgendamento = agendamentoRequestDTO.tipoAgendamento
+                ?: throw IllegalArgumentException("Tipo de agendamento não pode ser nulo"),
+            usuario = usuarioRepository.findById(agendamentoRequestDTO.fk_usuario)
+                .orElseThrow { IllegalArgumentException("Usuário não encontrado") },
+            procedimento = procedimentoRepository.findById(agendamentoRequestDTO.fk_procedimento)
+                .orElseThrow { IllegalArgumentException("Procedimento não encontrado") },
+            especificacao = especificacaoRepository.findById(agendamentoRequestDTO.fk_especificacao)
+                .orElseThrow { IllegalArgumentException("Especificação não encontrada") },
+            statusAgendamento = statusRepository.findById(agendamentoRequestDTO.fk_status)
+                .orElseThrow { IllegalArgumentException("Status não encontrado") }
         )
 
         val savedAgendamento = agendamentoRepository.save(agendamento)
@@ -79,7 +90,7 @@ class AgendamentoService(
             tipoAgendamento = savedAgendamento.tipoAgendamento,
             usuario = savedAgendamento.usuario,
             procedimento = savedAgendamento.procedimento,
-            especificacao = savedAgendamento.especificacao,  // Novo campo
+            especificacao = savedAgendamento.especificacao,
             statusAgendamento = savedAgendamento.statusAgendamento
         )
     }
@@ -95,7 +106,7 @@ class AgendamentoService(
             tipoAgendamento = agendamento.tipoAgendamento,
             usuario = agendamento.usuario,
             procedimento = agendamento.procedimento,
-            especificacao = agendamento.especificacao,  // Novo campo
+            especificacao = agendamento.especificacao,
             statusAgendamento = agendamento.statusAgendamento
         )
     }
@@ -114,7 +125,7 @@ class AgendamentoService(
         agendamento.procedimento = procedimentoRepository.findById(agendamentoRequestDTO.fk_procedimento)
             .orElseThrow { IllegalArgumentException("Procedimento não encontrado") }
         agendamento.especificacao = especificacaoRepository.findById(agendamentoRequestDTO.fk_especificacao)
-            .orElseThrow { IllegalArgumentException("Especificação não encontrada") }  // Novo campo
+            .orElseThrow { IllegalArgumentException("Especificação não encontrada") }
         agendamento.statusAgendamento = statusRepository.findById(agendamentoRequestDTO.fk_status)
             .orElseThrow { IllegalArgumentException("Status não encontrado") }
 
@@ -126,12 +137,10 @@ class AgendamentoService(
             tipoAgendamento = updatedAgendamento.tipoAgendamento,
             usuario = updatedAgendamento.usuario,
             procedimento = updatedAgendamento.procedimento,
-            especificacao = updatedAgendamento.especificacao,  // Novo campo
+            especificacao = updatedAgendamento.especificacao,
             statusAgendamento = updatedAgendamento.statusAgendamento
         )
     }
-
-    // Adicione o método abaixo na classe AgendamentoService
 
     fun atualizarStatusAgendamento(id: Int, novoStatusId: Int): AgendamentoResponseDTO {
         val agendamento = agendamentoRepository.findById(id)
