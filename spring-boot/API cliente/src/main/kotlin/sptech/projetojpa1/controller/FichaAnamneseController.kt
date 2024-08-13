@@ -81,4 +81,6 @@ class FichaAnamneseController(
             ResponseEntity.status(200).body(fichas)
         }
     }
+
+
 }

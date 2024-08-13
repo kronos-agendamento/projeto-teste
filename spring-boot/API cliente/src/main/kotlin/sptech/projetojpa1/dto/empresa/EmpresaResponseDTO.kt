@@ -1,12 +1,14 @@
 package sptech.projetojpa1.dto.empresa
 
-import java.time.LocalDateTime
+import sptech.projetojpa1.dominio.Endereco
+import sptech.projetojpa1.dominio.HorarioFuncionamento
 
 data class EmpresaResponseDTO(
     val codigo: Int,
     val nome: String,
-    val contato: Char,
+    val contato: String,
     val CNPJ: String,
-    val enderecoId: Int,
-    val horarioFuncionamentoId: Int?
+    val endereco: Endereco,
+    val horarioFuncionamento: HorarioFuncionamento?
 )
+

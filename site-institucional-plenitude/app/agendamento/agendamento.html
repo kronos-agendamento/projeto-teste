@@ -23,10 +23,8 @@
         <div class="imagem-perfil">
           <img src="../assets/Foto de Perfil.png">
         </div>
-        <li id="userName">
-        </li>
-        <li id="userEmail">
-        </li>
+        <li id="userName"></li>
+        <li id="userEmail"></li>
       </div>
 
       <ul>
@@ -102,16 +100,17 @@
       <div class="main-content">
         <div class="center-content">
           <section class="actions">
-            <button id="openFilterModalBtn" class="filter-btn">
+            <button id="open-filter-modal-btn" class="filter-btn">
               <img src="../../assets/icons/filter.png" alt="filter" />
               Filtro
             </button>
             <div class="right-actions">
-              <button class="planilha-btn" id="open-status-modal">
-                <img src="../../assets/icons/createNew.png" alt="spreadsheet"/>Status Cadastrados
-              </button>
-              <button class="btn btn-create" onclick="openSaveModal()">
+              <!-- Botões para abrir os modais -->
+              <button class="btn btn-create" id="open-save-modal-btn">
                 <img src="../../assets/icons/createNew.png" alt="createNew" /><span>Criar Status</span>
+              </button>
+              <button class="planilha-btn" id="open-status-modal-btn">
+                <img src="../../assets/icons/createNew.png" alt="spreadsheet" />Status Cadastrados
               </button>
               <button class="criar-btn" onclick="showForm()">
                 <img src="../../assets/icons/createNew.png" alt="createNew" />
@@ -130,7 +129,10 @@
         </div>
         <span id="total-label">Atendimentos Totais</span>
       </div>
-
+      <div class="tabs">
+        <button class="tab-button" id="todos-agendamentos">Todos</button>
+        <button class="tab-button" id="hoje-agendamentos">Hoje</button>
+      </div>
       <table id="procedures-table" class="procedures-table">
         <thead>
           <tr>
@@ -154,9 +156,7 @@
           <span id="total-pages">1</span></span>
         <button class="button-page" id="next-page-btn">Próxima Página</button>
       </div>
-  </div>
-  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    </main>
   </div>
 
   <div id="modal" class="modal" style="display: none;">
@@ -170,71 +170,139 @@
 
   <div id="save-modal" class="modal">
     <div class="modal-content2">
-        <h3>Criar Status</h3>
-        <div>
+      <h3>Criar Status</h3>
+      <div>
         <label for="filter-from">Descrição:</label>
         <input type="text" id="edit-nome" placeholder="Nome do Status"><br>
         <label for="filter-from">Cor:</label>
-        <input type="text" id="edit-cor" placeholder="Cor do Status">
-    </div>
-        <div>
-        <button class="btn btn-save">Salvar</button>
-        <button class="btn btn-no" onclick="closeSaveModal()">Cancelar</button>
+        <input type="color" id="edit-cor" placeholder="Cor do Status">
+      </div>
+      <div>
+        <button id="save-button" class="btn btn-save">Salvar</button>
+        <button id="close-save-modal" class="btn btn-no">Cancelar</button>
       </div>
     </div>
-</div>
-
-<div id="filter-modal" class="modal">
-  <div class="modal-content">
-    <h3>Filtro de Agendamentos</h3>
-    <div>
-      <label for="filter-from">De:</label>
-      <input type="date" id="filter-from">
-      <label for="filter-to">Até:</label>
-      <input type="date" id="filter-to"><br>
-      <label for="filter-client">Cliente:</label>
-      <input type="text" id="filter-client" placeholder="Nome do Cliente"><br>
-      <label for="filter-procedure">Procedimento:</label>
-      <input type="text" id="filter-procedure" placeholder="Nome do Procedimento"><br>
-      <label for="filter-specification">Especificação:</label>
-      <input type="text" id="filter-specification" placeholder="Especificação">
-    </div>
-    <div>
-      <button class="btn btn-save" onclick="applyFilter()">Filtrar</button>
-      <button class="btn btn-no" onclick="closeFilterModal()">Cancelar</button>
-    </div>
   </div>
-</div>
 
-
-<div id="status-modal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeStatusModal()">&times;</span>
-    <h2>Status Cadastrados</h2>
-    <div class="table-container">
-      <div class="table-header">
-        <h1>Status Cadastrados</h1>
+  <div id="filter-modal" class="modal">
+    <div class="modal-content">
+      <h3>Filtro de Agendamentos</h3>
+      <div>
+        <label for="filter-from">De:</label>
+        <input type="date" id="filter-from">
+        <label for="filter-to">Até:</label>
+        <input type="date" id="filter-to"><br>
+        <label for="filter-client">Cliente:</label>
+        <select id="cliente-filtro">
+          <!-- Options will be populated dynamically -->
+        </select><br>
+        <label for="procedimento">Procedimento:</label>
+        <select id="procedimento-filtro">
+          <!-- Options will be populated dynamically -->
+        </select><br>
+        <label for="filter-specification">Especificação:</label>
+        <select id="especificacao-filtro">
+          <!-- Options will be populated dynamically -->
+        </select><br>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Cor</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody id="status-tbody"></tbody>
-      </table>
+      <div>
+        <button class="btn btn-save" id="apply-filter-button" onclick="applyFilters()">Aplicar Filtros</button>
+        <button id="close-filter-modal" class="btn btn-no">Cancelar</button>
+      </div>
     </div>
   </div>
-</div>
 
-
-</main>
-
+  <div id="status-modal" class="modal">
+    <div class="modal-content2">
+      <div class="table-container">
+        <div class="table-header">
+          <h1>Status Cadastrados</h1>
+          <div><button id="close-status-modal" class="close-button">&times;</button></div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Cor</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="status-tbody"></tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
-  </main>
+  <div id="delete-modal" class="modal">
+    <div class="modal-content">
+      <p>Tem certeza que deseja excluir o status?</p>
+      <p id="status-name"></p>
+      <button class="btn btn-yes" onclick="confirmDeletion2()">SIM</button>
+      <button class="btn btn-no" onclick="closeDeleteModal()">NÃO</button>
+    </div>
+  </div>
+
+  <div id="edit-modal" class="modal">
+    <div class="modal-content2">
+      <h3>Editar Status</h3>
+      <div>
+        <input type="text" id="edit-nome2" placeholder="Nome" />
+        <input type="color" id="edit-cor2" placeholder="Cor do Status">
+      </div>
+      <div>
+        <button class="btn btn-save" onclick="salvarStatusEditado()">Salvar</button>
+        <button class="btn btn-no" onclick="closeEditModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="detalhes-modal" class="modal">
+    <div class="modal-content2">
+      <h3>Detalhes do Agendamento</h3>
+      <div style="margin-left: 25vw;"><button onclick="closeDetalhesModal()" id="close-status-modal"
+          class="detalhes-button">&times;</button></div>
+      <div>
+        <div class="label">
+          <label for="detalhe-cliente">Cliente:</label>
+          <input class="disabled-input" type="text" id="detalhe-cliente" placeholder="Cliente">
+        </div>
+        <div class="label">
+          <label for="detalhe-celular">Celular:</label>
+          <input class="disabled-input" type="text" id="detalhe-celular" placeholder="Celular">
+        </div>
+        <div class="label">
+          <label for="detalhe-data">Data:</label>
+          <input class="disabled-input" type="text" id="detalhe-data" placeholder="Data">
+        </div>
+        <div class="label">
+          <label for="detalhe-inicio">Inicio:</label>
+          <input class="disabled-input" type="text" id="detalhe-inicio" placeholder="Inicio">
+        </div>
+        <div class="label">
+          <label for="detalhe-fim">Fim:</label>
+          <input class="disabled-input" type="text" id="detalhe-fim" placeholder="Fim">
+        </div>
+        <div class="label">
+          <label for="detalhe-procedimento">Procedimento:</label>
+          <input class="disabled-input" type="text" id="detalhe-procedimento" placeholder="Procedimento">
+        </div>
+        <div class="label">
+          <label for="detalhe-status">Status:</label>
+          <input class="disabled-input" type="text" id="detalhe-status" placeholder="Status">
+        </div>
+      </div>
+      <div>
+        <button class="btn btn-no" id="clienteFaltou" onclick="clienteFaltou()">Cliente Faltou</button>
+        <button class="btn btn-save" id="atendimentoConcluido" onclick="atendimentoConcluido()">Atendimento
+          Concluído</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+  <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.2/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 </body>
 
 </html>

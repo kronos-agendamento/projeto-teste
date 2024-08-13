@@ -16,7 +16,7 @@ body {
 .corpo {
   display: flex;
   background-color: #ffffff;
-  height: 135vh;
+  height: 140vh;
   width: 97vw;
 }
 
@@ -25,9 +25,8 @@ body {
   width: 100%;
 }
 
-
 aside {
-  background-color: #D9006C;
+  background-color: #d9006c;
   color: white;
   width: 250px;
   padding: 20px;
@@ -49,6 +48,43 @@ aside {
 @media (max-width: 992px) {
   #main {
     margin-top: 30px;
+  }
+}
+
+/*--------------------------------------------------------------
+# Preloader
+--------------------------------------------------------------*/
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  overflow: hidden;
+  background: #fff;
+}
+
+#preloader:before {
+  content: "";
+  position: fixed;
+  top: calc(50% - 30px);
+  left: calc(50% - 30px);
+  border: 6px solid #cda582;
+  border-top-color: #dcf5f2;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: animate-preloader 1s linear infinite;
+}
+
+@keyframes animate-preloader {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
   }
 }
 
@@ -91,14 +127,14 @@ navbar  lateral
 
 .navigation {
   height: auto;
-  background: #D2135D;
+  background: #d2135d;
   width: 19vw;
   top: 2vh;
   margin-left: 3vw;
   border-radius: 3vh;
   margin-bottom: 2vh;
   box-shadow: 10px 0 0 #ffffff;
-  border-left: 10px solid #D2135D;
+  border-left: 10px solid #d2135d;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
@@ -129,7 +165,6 @@ navbar  lateral
   list-style: none;
 }
 
-
 .perfil #userName {
   display: flex;
   list-style: none;
@@ -137,7 +172,6 @@ navbar  lateral
   font-weight: 600;
   margin-top: 6vh;
   justify-content: center;
-
 }
 
 .perfil #userEmail {
@@ -149,7 +183,6 @@ navbar  lateral
   display: flex;
   justify-content: center;
 }
-
 
 /*--------------------------------------------------------------
 # Links
@@ -170,11 +203,9 @@ navbar  lateral
   width: 100%;
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
-
 }
 
 .navigation ul li a {
-
   position: relative;
   display: flex;
   width: 100%;
@@ -212,7 +243,6 @@ navbar  lateral
 .navigation ul li.active {
   color: black;
   background: #ffffff;
-
 }
 
 .navigation ul li.active a {
@@ -225,31 +255,31 @@ navbar  lateral
   /* Cor do ícone quando ativo */
 }
 
-
 .navigation ul li.active a::before {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 8vh;
   right: 0;
   width: 5vh;
   height: 5vh;
-  background: #D2135D;
+  background: #d2135d;
   border-radius: 50%;
   box-shadow: 15px 15px 0 #ffffff;
   color: black;
 }
 
 .navigation ul li.active a::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 8vh;
   right: 0;
   width: 5vh;
   height: 5vh;
-  background: #D2135D;
+  background: #d2135d;
   border-radius: 50%;
   box-shadow: 15px -15px 0 #ffffff;
 }
+
 
 /*--------------------------------------------------------------
 Final Nav
@@ -297,7 +327,7 @@ Dados do usuário
 .center-content {
   display: flex;
   flex-direction: column;
-  width: 68vw;
+  width: 80vw;
   height: auto;
   margin-top: 4vh;
   margin-left: 2vw;
@@ -305,26 +335,13 @@ Dados do usuário
   overflow: hidden;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border: 1px solid #000;
-}
-
-.right-content {
-  display: flex;
-  flex-direction: column;
-  width: 25vw;
-  height: auto;
-  margin-top: 2vh;
-  margin-left: 2vw;
-  border-radius: 10px;
-  background-color: #FFF0F5;
-  overflow: hidden;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border: 1px solid #000;
+  background-color:  #FFF0F5;
 }
 
 .left-content {
   display: flex;
   flex-direction: column;
-  width: 41vw;
+  width: 55vw;
   height: auto;
   margin-top: 2vh;
   margin-left: 2vw;
@@ -332,15 +349,30 @@ Dados do usuário
   overflow: hidden;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border: 1px solid #000;
+  background-color: #FFF0F5;
 }
 
+.right-content {
+  display: flex;
+  flex-direction: column;
+  width: 21vw;
+  height: auto;
+  margin-top: 2vh;
+  margin-left: 2vw;
+  border-radius: 10px;
+  background-color: #FFF0F5;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #000;
+}
+
+
+
 .content-box {
+  justify-content: space-around;
   display: flex;
   flex-direction: row;
-  width: 68vw;
-  height: 30vh;
   background-color: #FFF0F5;
-  padding-left: 2vw;
 }
 
 .content-box2 {
@@ -349,12 +381,17 @@ Dados do usuário
   background-color: #FFF0F5;
   align-items: center;
   justify-content: space-around;
+}
+
+.content-box3 {
+  justify-content: space-around;
+  display: flex;
+  flex-direction: row;
+  background-color: #FFF0F5;
 
 }
 
 .content {
-  width: 23vw;
-  height: 20vh;
   margin: 1vh;
   font-weight: 600;
 }
@@ -363,6 +400,8 @@ Dados do usuário
   padding: 1vw;
   display: flex;
   background-color: #FFF0F5;
+  width: 30vw;
+
 }
 
 .content-form {
@@ -370,54 +409,63 @@ Dados do usuário
   background-color: #FFF0F5;
 }
 
-.imagem {
-  background-color: #FBDBE7;
-  max-width: 80%;
+.content-form-flex-image{
   padding: 1vw;
+  display: flex;
+  background-color: #FFF0F5;
+
+}
+
+
+.content-form-flex-image p{
+  margin: 0;
+  font-size: 1em;
+}
+
+.imagem {
+  background-color: #fff;
+  max-width: 80%;
+  padding: 0.5vw;
   border: 1px dotted #000000;
-  height: 25vh;
   margin: 1vw;
-  margin-left: 2vw;
+  width: 20vw;
+  height: 25vh;
 
   input {
     padding: 1vw;
-    width: 95%;
-    margin-left: 0.5vw;
-
+    width: 100%;
   }
 }
 
 .image {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 
   img {
-    width: 5vw;
+    width: 3vw;
   }
 }
 
 .label {
   padding: 0.5vw;
   margin-right: 2vw;
-  width: auto;
-}
-
-
-.form-group label {
-  margin-bottom: 5px;
-  font-weight: bold;
+  width: 100%;
 }
 
 .form-group input[type="text"],
 .form-group input[type="number"],
 .form-group input[type="file"],
+.form-group input[type="password"],
+.form-group input[type="date"],
+.form-group input[type="email"],
 .form-group select {
-
-  padding: 1vw;
+  padding: 0.3vw;
   border: 1px solid #ddd;
   border-radius: 5px;
-  margin-right: 0.5vw;
-  margin-left: 0.5vw;
+  margin-right: 0.2vw;
+  margin-left: 0.2vw;
+  width: 100%; 
 }
 
 .form-group input[type="file"] {
@@ -436,19 +484,15 @@ Dados do usuário
 .button-container {
   display: flex;
   justify-content: flex-end;
-  padding-top: 3vw;
+  padding-top: 2vw;
   padding-right: 0.9vw;
-  width: 23vw;
-  background-color: #FFF0F5;
+
 }
 
-.button-container2 {
-  display: flex;
-  justify-content: flex-end;
-  padding-right: 1vw;
-  padding-bottom: 1vw;
-  width: 68vw;
-  background-color: #FFF0F5;
+.content-form-flex #button-alterar{
+  justify-content:center;
+  padding-top: 2.5vw;
+
 }
 
 .save-button {
@@ -458,7 +502,7 @@ Dados do usuário
   color: white;
   border: none;
   border-radius: 10px;
-  padding: 5px 10px;
+  padding: 10px;
   font-size: 16px;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);

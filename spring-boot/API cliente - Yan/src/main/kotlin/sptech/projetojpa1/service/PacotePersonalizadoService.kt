@@ -12,39 +12,36 @@ import sptech.projetojpa1.repository.UsuarioRepository
 
 @Service
 class PacotePersonalizadoService(
-     val usuarioRepository: UsuarioRepository,
-     val procedimentoRepository: ProcedimentoRepository,
-     val pacotePersonalizadoRepository:PacotePersonalizadoRepository,
-     val agendamentoRepository:AgendamentoRepository
+    private val usuarioRepository: UsuarioRepository,
+    private val procedimentoRepository: ProcedimentoRepository,
+    private val pacotePersonalizadoRepository: PacotePersonalizadoRepository,
+    private val agendamentoRepository: AgendamentoRepository
 ) {
 
-    fun obterProcedimentoFrequente(usuario: Usuario):List<Procedimento>{
+    fun obterProcedimentosFrequentes(usuario: Usuario): List<Procedimento> {
         val agendamentos = agendamentoRepository.findByUsuario(usuario)
 
-        val frequencia = agendamento.groupBy{it.procedimento}
-            .mapValues{it.value.size}
+        val frequencia = agendamentos.groupBy { it.procedimento }
+            .mapValues { it.value.size }
             .toList()
-            .sortedByDescending{it.second}
-            .map{it.first}
+            .sortedByDescending { it.second }
+            .map { it.first }
 
         return frequencia.take(3)
     }
 
     @Transactional
-    fun criarPacote(Id:Int, mes:Int, desconto:Double): PacotePersonalizado {
-        val usuario = usuarioRepository.findById(Id).orElseThrow{IllegalArgumentException("Cliente não encontrado")}
+    fun criarPacote(id: Int, mes: Int, desconto: Double): PacotePersonalizado {
+        val usuario = usuarioRepository.findById(id).orElseThrow { IllegalArgumentException("Cliente não encontrado") }
 
-        val procedimentoFrequente = obterProcedimentoFrequente(usuario)
+        val procedimentosFrequentes = obterProcedimentosFrequentes(usuario)
 
         val pacote = PacotePersonalizado(
             usuario = usuario,
             mes = mes,
-            procedimento = procedimentoFrequente,
+            procedimentos = procedimentosFrequentes, // Certifique-se de que PacotePersonalizado aceita uma lista de procedimentos
             descontoProcedimento = desconto
         )
         return pacotePersonalizadoRepository.save(pacote)
     }
-
-
-
 }

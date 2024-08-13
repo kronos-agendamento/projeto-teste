@@ -77,7 +77,7 @@ class StatusController(private val statusService: StatusService) {
         ApiResponse(responseCode = "404", description = "Status não encontrado"),
         ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
     ])
-    @PatchMapping("/atualizacao-status/{id}")
+    @PatchMapping("atualizacao-status/{id}")
     fun editarStatus(@PathVariable id: Int, @Valid @RequestBody patchRequest: StatusRequest): ResponseEntity<Any> {
         return try {
             val updatedStatus = statusService.updateStatus(id, patchRequest)

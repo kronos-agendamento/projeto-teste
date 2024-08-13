@@ -77,6 +77,26 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
         return ResponseEntity.ok(agendamentoResponseDTO)
     }
 
+    // Adicione o método abaixo na classe AgendamentoController
+
+    @Operation(summary = "Atualiza o status de um agendamento pelo ID")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Status do agendamento atualizado com sucesso"),
+            ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos"),
+            ApiResponse(responseCode = "404", description = "Agendamento ou status não encontrado")
+        ]
+    )
+    @PutMapping("/atualizar-status/{id}")
+    fun atualizarStatusAgendamento(
+        @PathVariable id: Int,
+        @RequestParam statusId: Int
+    ): ResponseEntity<*> {
+        val agendamentoResponseDTO = agendamentoService.atualizarStatusAgendamento(id, statusId)
+        return ResponseEntity.ok(agendamentoResponseDTO)
+    }
+
+
     @Operation(summary = "Exclui um agendamento pelo ID")
     @ApiResponses(
         value = [

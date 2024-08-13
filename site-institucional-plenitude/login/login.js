@@ -48,9 +48,9 @@ document.getElementById('registerForm').addEventListener('submit', async (event)
         instagram,
         senha,
         cpf,
-        telefoneEmergencial: telefone,
-        dataNasc: "2000-01-01",
-        genero: "não informado",
+        telefoneEmergencial: null,
+        dataNasc: null,
+        genero: null,
         indicacao: null,
         status: true,
         nivelAcessoId: null,
@@ -72,6 +72,7 @@ document.getElementById('registerForm').addEventListener('submit', async (event)
             // Salva nome e email no localStorage
             localStorage.setItem('nome', nome);
             localStorage.setItem('email', email);
+            localStorage.setItem('cpf', cpf);
 
             showNotification('Cadastro realizado com sucesso!');
             window.location.href = '../../app/index/index.html';
@@ -107,9 +108,10 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
         if (response.ok) {
             const loginData = await response.json();
 
-            // Salva o nome e o email no localStorage
+            // Salva o nome, email e cpf no localStorage
             localStorage.setItem('nome', loginData.nome);
             localStorage.setItem('email', loginData.email);
+            localStorage.setItem('cpf', loginData.cpf);
 
             showNotification('Login realizado com sucesso!');
             window.location.href = '../../app/index/index.html';
