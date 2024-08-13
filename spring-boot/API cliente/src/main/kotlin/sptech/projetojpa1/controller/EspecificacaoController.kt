@@ -217,4 +217,9 @@ class EspecificacaoController(
         }
     }
 
+    @GetMapping("/nomes")
+    fun getEspecificacoes(): ResponseEntity<List<String>> {
+        val especificacoes = service.getEspecificacoes()
+        return ResponseEntity.ok(especificacoes)
+    }
 }

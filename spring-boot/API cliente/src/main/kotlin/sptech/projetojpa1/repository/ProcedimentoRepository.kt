@@ -29,4 +29,18 @@ interface ProcedimentoRepository : JpaRepository<Procedimento, Int> {
                 "ORDER BY mediaNotas DESC"
     )
     fun findProcedimentoComMelhorNota(): List<Map<String, Any>>
+
+    @Query(
+        nativeQuery = true, value = """
+            SELECT 
+                COUNT(a.id_agendamento) AS quantidade_agendamentos
+            FROM 
+                procedimento p
+            LEFT JOIN 
+                agendamento a ON p.id_procedimento = a.fk_procedimento
+            GROUP BY 
+                p.id_procedimento
+        """
+    )
+    fun findQuantidadeAgendamentosPorProcedimento(): List<Int>
 }

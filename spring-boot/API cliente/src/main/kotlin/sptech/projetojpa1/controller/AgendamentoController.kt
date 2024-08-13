@@ -89,4 +89,11 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
         agendamentoService.excluirAgendamento(id)
         return ResponseEntity.ok().build<Any>()
     }
+
+    @GetMapping("/agendamentos-realizados")
+    fun agendamentosRealizadosUltimoTrimestre(): ResponseEntity<Int> {
+        val quantidadeConcluidos = agendamentoService.agendamentosRealizadosTrimestre()
+        return ResponseEntity.ok(quantidadeConcluidos)
+    }
+
 }

@@ -82,4 +82,7 @@ fun editarPorId(id: Int, dto: EspecificacaoDTO): Especificacao? {
         return repository.findMesesUltimosSeisMeses()
     }
 
+    fun getEspecificacoes(): List<String> {
+        return repository.findEspecificacoes()
+    }
 }
