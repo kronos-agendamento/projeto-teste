@@ -200,7 +200,10 @@ header p {
     align-items: center;
     padding: 10px;
     box-sizing: border-box;
-    align-items: flex-start
+}
+
+.caixa-grafico {
+    width: 85%;
 }
 
 .card-graficos p{
@@ -208,6 +211,7 @@ header p {
     flex-direction: row;
     color: black;
     margin-left: 35px;
+    margin-right: 20px;
     font-weight: 550;
     font-size: smaller;
     width:400px

@@ -36,6 +36,12 @@ class AgendamentoService(
         }
     }
 
+    fun agendamentosRealizadosTrimestre(): Int{
+        val agendamentos = agendamentoRepository.findAgendamentosConcluidosUltimoTrimestre()
+
+        return agendamentos
+    }
+
     fun listarAgendamento(): List<Agendamento> {
         val agendamentos = agendamentoRepository.findAll()
 
