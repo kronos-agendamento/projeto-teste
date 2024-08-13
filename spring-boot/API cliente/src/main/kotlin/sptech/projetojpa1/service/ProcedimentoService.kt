@@ -88,4 +88,8 @@ class ProcedimentoService(private val procedimentoRepository: ProcedimentoReposi
             mediaNotas = (result["mediaNotas"] as Double)
         )
     }
+
+    fun getQuantidadeAgendamentosPorProcedimento(): List<Int> {
+        return procedimentoRepository.findQuantidadeAgendamentosPorProcedimento()
+    }
 }

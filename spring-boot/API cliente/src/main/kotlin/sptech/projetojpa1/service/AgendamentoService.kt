@@ -31,9 +31,24 @@ class AgendamentoService(
         }
     }
 
-    fun validarDia(dataInicio: LocalDateTime, dataFim: LocalDateTime): Boolean {
-        val agendamentos = agendamentoRepository.findByDataHorarioBetween(dataInicio, dataFim)
+    fun agendamentosRealizadosTrimestre(): Int{
+        val agendamentos = agendamentoRepository.findAgendamentosConcluidosUltimoTrimestre()
+
+        return agendamentos
+    }
+
+    fun listarAgendamento(): List<Agendamento> {
+        val agendamentos = agendamentoRepository.findAll()
+
+        return agendamentos
+    }
+
+    fun validarDia(dataHorario: Date): Boolean {
+        val agendamentos = agendamentoRepository.findByDataHorario(dataHorario)
         return agendamentos.isEmpty()
+
+        // true: Não existem agendamentos na data especificada.
+        // false: Existe um agendamento na data especificada.
     }
 
     fun validarAgendamento(agendamentoRequestDTO: AgendamentoRequestDTO): Boolean {

@@ -51,4 +51,18 @@ DATE_FORMAT(a.data, '%Y-%m');
     """, nativeQuery = true
     )
     fun findMesesUltimosSeisMeses(): List<String>
+
+
+
+        @Query(
+            nativeQuery = true, value = """
+            SELECT 
+                ep.especificacao
+            FROM 
+                especificacao_procedimento ep
+        """
+        )
+        fun findEspecificacoes(): List<String>
+
+
 }

@@ -126,4 +126,10 @@ class ProcedimentoController(private val procedimentoService: ProcedimentoServic
             ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
+
+    @GetMapping("/quantidade-agendamentos-procedimentos")
+    fun getQuantidadeAgendamentos(): ResponseEntity<List<Int>> {
+        val quantidadeAgendamentos = procedimentoService.getQuantidadeAgendamentosPorProcedimento()
+        return ResponseEntity.ok(quantidadeAgendamentos)
+    }
 }   
