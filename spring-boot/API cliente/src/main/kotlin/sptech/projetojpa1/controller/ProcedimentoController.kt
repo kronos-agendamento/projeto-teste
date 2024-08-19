@@ -6,10 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import sptech.projetojpa1.dto.procedimento.ProcedimentoDTO
-import sptech.projetojpa1.dto.procedimento.ProcedimentoEstatisticaDTO
-import sptech.projetojpa1.dto.procedimento.ProcedimentoRequestDTO
-import sptech.projetojpa1.dto.procedimento.ProcedimentoResponseDTO
+import sptech.projetojpa1.dto.procedimento.*
 import sptech.projetojpa1.service.ProcedimentoService
 
 @RestController
@@ -56,6 +53,12 @@ class ProcedimentoController(private val procedimentoService: ProcedimentoServic
     @GetMapping("/listar")
     fun listarTodosProcedimentos(): ResponseEntity<List<ProcedimentoResponseDTO>> {
         val procedimentos = procedimentoService.listarTodosProcedimentos()
+        return ResponseEntity(procedimentos, HttpStatus.OK)
+    }
+
+    @GetMapping("/listar-bem-avaliados")
+    fun listarProcedimentosBemAvaliados(): ResponseEntity<List<String>> {
+        val procedimentos = procedimentoService.listarProcedimentosBemAvaliados()
         return ResponseEntity(procedimentos, HttpStatus.OK)
     }
 

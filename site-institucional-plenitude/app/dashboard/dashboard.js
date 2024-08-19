@@ -26,6 +26,10 @@ document.addEventListener('DOMContentLoaded', function () {
             clientesFidelizados: '/usuarios/clientes-fidelizados-ultimos-tres-meses',
             agendamentosRealizados:'/api/agendamentos/agendamentos-realizados',
 
+            // Gráfico 33
+            listarProcedimentosBemAvaliados: '/api/procedimentos/listar-bem-avaliados',
+            buscarMediaNotas: '/api/feedbacks/buscar-media-notas',
+
             // Gráfico 4
             receitaAcumulada: '/especificacoes/receita-acumulada',
             receitaAcumuladaLabels: '/especificacoes/receita-acumulada-labels',
@@ -44,6 +48,10 @@ document.addEventListener('DOMContentLoaded', function () {
         // Chamadas para atualizar os dados do gráfico 2
         fetchData(endpoints.receitaAcumuladaLabels, updateReceitaAcumuladaLabels);
         fetchData(endpoints.receitaAcumulada, updateChart3);
+
+        // Chamadas para atualizar os dados do gráfico 3
+        fetchData(endpoints.listarProcedimentosBemAvaliados, updateChart33Labels)
+        fetchData(endpoints.buscarMediaNotas, updateChart33);
 
         // Chamadas para atualizar os dados do gráfico 4
         fetchData(endpoints.agendamentosProcedimentosLabels, updateChart4Labels);
@@ -82,6 +90,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const ctx4 = document.getElementById('chart4').getContext('2d');
     let chart4;
 
+    let dataChart33 = null;
+    let labelsChart33 = null;
+    const ctx33 = document.getElementById('chart33').getContext('2d');
+    let chart33;
+
+    // console.log(dataChart33)
+    // console.log(labelsChart33)
+
+
     function updateChart3(data) {
         dataChart3 = data;
         createChart3();
@@ -90,6 +107,18 @@ document.addEventListener('DOMContentLoaded', function () {
         labelsChart3 = data;
         if (dataChart3) {
             createChart3();
+        }
+    }
+
+    function updateChart33(data) {
+        dataChart33 = data;
+        createChart33();
+    }
+
+    function updateChart33Labels(data) {
+        labelsChart33 = data;
+        if (dataChart33) {
+            createChart33();
         }
     }
 
@@ -103,6 +132,8 @@ document.addEventListener('DOMContentLoaded', function () {
             createChart4();
         }
     }
+
+
 
     // Criação de gráficos
     function createChart3() {
@@ -136,6 +167,50 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    function createChart33 () {
+        if (!dataChart33 || !labelsChart33) return;
+
+        if (chart33) chart33.destroy();
+
+        chart33 = new Chart(ctx33, {
+            type: 'bar',
+            data: {
+                labels: labelsChart33, 
+                datasets: [{
+                    label: 'caiu sinal da tim',
+                    data: dataChart33,
+                    backgroundColor: ['#D2135D', '#E84E8A', '#F59DBF'],
+                    borderColor: '#D2135D',
+                    fill: false
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+            responsive: true,
+                plugins: {
+                    subtitle: {
+                        display: true,
+                        text: '',
+                        font: {
+                            size: 14
+                        }
+                    },
+                    legend: {
+                        position: 'right',
+                    },
+                    title: {
+                        display: true
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
     function createChart4 () {
         if (!dataChart4 || !labelsChart4) return;
 
@@ -144,16 +219,18 @@ document.addEventListener('DOMContentLoaded', function () {
         chart4 = new Chart(ctx4, {
             type: 'bar',
             data: {
-                labels: [10, 20, 30, 40, 50], 
+                labels: labelsChart4, 
                 datasets: [{
-                    label: labelsChart4,
+                    label: 'Vezes Agendadas',
                     data: dataChart4,
-                    backgroundColor: '#D2135D',
+                    backgroundColor: ['#D2135D', '#E84E8A', '#F59DBF'],
                     borderColor: '#D2135D',
                     fill: false
                 }]
             },
             options: {
+                indexAxis: 'y',
+            responsive: true,
                 plugins: {
                     subtitle: {
                         display: true,
@@ -161,6 +238,17 @@ document.addEventListener('DOMContentLoaded', function () {
                         font: {
                             size: 14
                         }
+                    },
+                    legend: {
+                        position: 'right',
+                    },
+                    title: {
+                        display: true
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
                     }
                 }
             }
