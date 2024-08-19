@@ -23,16 +23,12 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
     )
     @PostMapping("/criar")
     fun criarNovoAgendamento(@Valid @RequestBody agendamentoRequestDTO: AgendamentoRequestDTO): ResponseEntity<*> {
-
-        val validacao = agendamentoService.validarAgendamento(agendamentoRequestDTO)
-
-        if (validacao) {
+        try {
             val agendamentoResponseDTO = agendamentoService.criarAgendamento(agendamentoRequestDTO)
-
             return ResponseEntity.ok(agendamentoResponseDTO)
+        } catch (ex: IllegalArgumentException) {
+            return ResponseEntity.badRequest().body(ex.message)
         }
-
-        return ResponseEntity.badRequest().body("Já existe um agendamento para essa data e horário")
     }
 
     @Operation(summary = "Lista todos os agendamentos")

@@ -95,10 +95,10 @@
       <div class="main-content">
         <div class="center-content">
           <section class="actions">
-            <button id="openFilterModalBtn" class="filter-btn">
-              <img src="../../assets/icons/search.webp " alt="filter" />
+            <a href="../anamnese/anamnese.html"><button id="openFilterModalBtn" class="filter-btn">
+              <img src="../../assets/icons/search.webp " alt="filter"/>
               Pesquisar Ficha Por Cliente
-            </button>
+            </button></a>
             <div class="right-actions">
               <button class="planilha-btn">
                 <img src="../../assets/icons/createNew.png" alt="spreadsheet" />Perguntas Desativadas
@@ -107,15 +107,20 @@
                 <img src="../../assets/icons/createNew.png" alt="createNew" />
                 <a href=""><span>Criar Pergunta</span></a>
 
+                <dialog><div class="divTopoModal">
+                  Descrição Tipo
+                </div>
+                *descrição da pergunta*  *Resposta Enviada*
+              </dialog>
               </button>
             </div>
+            
           </section>
         </div>
       </div>
       <div class="main-content">
         <div class="center-content">
-          <a href="../../agendamento.html" class="back-link">← Voltar para página de
-            visualização dos agendamentos</a>
+          
 
 
           <section class="form-section">
@@ -139,12 +144,7 @@
                   <div class="input-content">
                     <input type="text" id="cirurgia" name="cirurgia" />
 
-                    <button id="openStatusModalBtn2" class="function">
-                      <img src="../../assets/icons/createNew.png" alt="create" />
-                    </button>
-                    <button id="openStatusModalBtn2" class="trash">
-                      <img src="../../assets/icons/trash.png" alt="createNew" />
-                    </button>
+        
                     <button id="openStatusModalBtn2" class="edit">
                       <img src="../../assets/icons/pen.png" alt="createNew" />
                     </button>
@@ -157,12 +157,6 @@
                   <div class="input-content">
                     <input type="text" id="descricao" name="descricao" />
 
-                    <button id="openStatusModalBtn2" class="function">
-                      <img src="../../assets/icons/createNew.png" alt="create" />
-                    </button>
-                    <button id="openStatusModalBtn2" class="trash">
-                      <img src="../../assets/icons/trash.png" alt="createNew" />
-                    </button>
                     <button id="openStatusModalBtn2" class="edit">
                       <img src="../../assets/icons/pen.png" alt="createNew" />
                     </button>
@@ -179,12 +173,6 @@
                   <div class="input-content">
                     <input type="text" id="descricao" name="descricao" />
 
-                    <button id="openStatusModalBtn2" class="function">
-                      <img src="../../assets/icons/createNew.png" alt="create" />
-                    </button>
-                    <button id="openStatusModalBtn2" class="trash">
-                      <img src="../../assets/icons/trash.png" alt="createNew" />
-                    </button>
                     <button id="openStatusModalBtn2" class="edit">
                       <img src="../../assets/icons/pen.png" alt="createNew" />
                     </button>
@@ -197,12 +185,6 @@
                   <div class="input-content">
                     <input type="text" id="descricao" name="descricao" />
 
-                    <button id="openStatusModalBtn2" class="function">
-                      <img src="../../assets/icons/createNew.png" alt="create" />
-                    </button>
-                    <button id="openStatusModalBtn2" class="trash">
-                      <img src="../../assets/icons/trash.png" alt="createNew" />
-                    </button>
                     <button id="openStatusModalBtn2" class="edit">
                       <img src="../../assets/icons/pen.png" alt="createNew" />
                     </button>
@@ -213,18 +195,6 @@
             </div>
             </form>
 
-
-            <div class="button-container">
-              <button type="button" class="save-button" id="save-procedimento-button">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
-                  class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                  <path
-                    d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
-                </svg>
-                Salvar Agendamento
-              </button>
-            </div>
-        </div>
         </section>
         </section>
 
@@ -240,3 +210,10 @@
 </body>
 
 </html>
+
+<script>
+
+  function mostrarPerguntas(){
+    modal.showModal()
+  }
+</script>

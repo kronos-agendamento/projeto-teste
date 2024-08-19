@@ -101,15 +101,13 @@ class UsuarioService(
 
     fun buscarUsuarioPorCodigo(codigo: Int): Usuario? = usuarioRepository.findById(codigo).orElse(null)
 
-
-    fun atualizarFotoUsuario(codigo: Int, imagem: ByteArray): Usuario? {
-        val usuario = usuarioRepository.findById(codigo).orElse(null) ?: return null
+    fun atualizarFotoUsuario(cpf: String, imagem: ByteArray): Usuario? {
+        val usuario = usuarioRepository.findByCpf(cpf) ?: return null
         usuario.foto = imagem
         return usuarioRepository.save(usuario)
     }
 
     fun getFoto(codigo: Int): ByteArray? = usuarioRepository.findFotoByCodigo(codigo)
-
 
     fun getById(id: Int): Usuario? = usuarioRepository.findById(id).orElse(null)
 

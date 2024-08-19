@@ -2,6 +2,7 @@ package sptech.projetojpa1.dominio
 
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotNull
+import java.time.LocalDateTime
 import java.util.*
 
 @Entity
@@ -15,7 +16,7 @@ open class Agendamento(
 
     @field:NotNull(message = "Data e horário não podem ser nulos")
     @Column(name = "data_horario")
-    var dataHorario: Date?,
+    var dataHorario: LocalDateTime?,
 
     @field:NotNull(message = "Tipo de agendamento não pode ser nulo")
     @Column(name = "tipo_agendamento")

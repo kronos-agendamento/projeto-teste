@@ -4,11 +4,12 @@ import sptech.projetojpa1.dominio.Especificacao
 import sptech.projetojpa1.dominio.Procedimento
 import sptech.projetojpa1.dominio.Status
 import sptech.projetojpa1.dominio.Usuario
+import java.time.LocalDateTime
 import java.util.*
 
 data class AgendamentoResponseDTO(
     var idAgendamento: Int?,
-    var dataHorario: Date?,
+    var dataHorario: LocalDateTime?,
     var tipoAgendamento: String?,
     var usuario: Usuario,
     var procedimento: Procedimento,

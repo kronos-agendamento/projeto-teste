@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 import sptech.projetojpa1.dominio.Usuario
 import sptech.projetojpa1.dto.usuario.UsuarioAtualizacaoRequest
 import sptech.projetojpa1.dto.usuario.UsuarioLoginRequest
@@ -163,15 +164,14 @@ class UsuarioController(
         value = ["/atualizacao-foto/{codigo}"],
         consumes = ["image/jpeg", "image/png", "image/gif", "image/jpg"]
     )
-    fun atualizarFotoUsuario(@PathVariable codigo: Int, @RequestBody foto: ByteArray): ResponseEntity<Usuario> {
-        val usuario = usuarioService.atualizarFotoUsuario(codigo, foto)
+    fun atualizarFotoUsuario(@PathVariable cpf: String, @RequestBody foto: ByteArray): ResponseEntity<Usuario> {
+        val usuario = usuarioService.atualizarFotoUsuario(cpf, foto)
         return if (usuario != null) {
             ResponseEntity.status(200).body(usuario)
         } else {
             ResponseEntity.status(404).body(null)
         }
     }
-
 
     @Operation(summary = "Buscar foto de usuário")
     @ApiResponses(
@@ -191,6 +191,31 @@ class UsuarioController(
             ResponseEntity.ok(foto)
         } else {
             ResponseEntity.status(404).body(null)
+        }
+    }
+
+    @Operation(summary = "Upload de foto do usuário")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Foto enviada com sucesso"),
+            ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
+    @PostMapping("/upload-foto/{cpf}")
+    fun uploadFoto(
+        @PathVariable cpf: String,
+        @RequestParam("file") file: MultipartFile
+    ): ResponseEntity<String> {
+        return try {
+            val usuario = usuarioService.atualizarFotoUsuario(cpf, file.bytes)
+            if (usuario != null) {
+                ResponseEntity.status(200).body("Foto enviada com sucesso")
+            } else {
+                ResponseEntity.status(404).body("Usuário não encontrado")
+            }
+        } catch (e: Exception) {
+            ResponseEntity.status(500).body("Erro ao enviar foto: ${e.message}")
         }
     }
 

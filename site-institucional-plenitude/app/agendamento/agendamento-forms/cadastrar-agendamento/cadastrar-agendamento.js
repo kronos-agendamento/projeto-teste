@@ -162,11 +162,30 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    // Combine data e horário
-    const dataHora = new Date(`${data}T${horario}:00:00Z`).toISOString();
+    // Calcule a duração do procedimento
+    let duracaoProcedimento;
+    switch (tipoAtendimento) {
+      case "Primeira Vez":
+        duracaoProcedimento = 3; // por exemplo, 3 horas
+        break;
+      case "Manutenção":
+        duracaoProcedimento = 2; // por exemplo, 2 horas
+        break;
+      case "Retirada":
+        duracaoProcedimento = 1; // por exemplo, 1 hora
+        break;
+      default:
+        duracaoProcedimento = 1;
+    }
+
+    // Combine data e horário e considere a duração do procedimento
+    const dataHoraInicio = new Date(`${data}T${horario}:00:00`);
+    const dataHoraFim = new Date(dataHoraInicio);
+    dataHoraFim.setHours(dataHoraFim.getHours() + duracaoProcedimento);
 
     const agendamento = {
-      dataHorario: dataHora, // Inclua a data e o horário combinados
+      dataHorarioInicio: dataHoraInicio.toISOString(),
+      dataHorarioFim: dataHoraFim.toISOString(),
       tipoAgendamento: tipoAtendimento,
       fk_usuario: parseInt(clienteId),
       fk_procedimento: parseInt(procedimentoId),
@@ -176,6 +195,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     criarAgendamento(agendamento);
   });
+
 
   carregarClientes();
   carregarProcedimentos();
