@@ -1,0 +1,46 @@
+
+
+.divDados {
+    background-color: FFF0F5;
+    justify-content: space-between;
+    background-color: #FFF0F5;
+    display: flex;
+    justify-content: space-around;
+    padding: 8px;
+    /* border-radius: 5px; */
+    
+}
+
+.divDados span{
+    color: black;
+
+
+}
+
+.titulo{
+    background-color: #e70069;
+    width: 98%;
+    border: solid black 0.5px;
+    border-radius: 5px;
+    margin-left: 2.1%; 
+    color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);     
+}
+
+
+.titulo span{
+    margin-left: 1%; 
+}
+
+
+#juntandoDiv{
+    display: flex;
+    flex-direction: column;
+
+}
+
+.center-content{
+    width: 100%;
+    margin-left: 0%;
+}
+
