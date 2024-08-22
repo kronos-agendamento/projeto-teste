@@ -281,3 +281,44 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("userEmail").textContent = email;
     }
 });
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Selecionando os elementos do formulário
+    const cepInput = document.querySelector('#cep');
+    const logradouroInput = document.querySelector('#logradouro');
+    const bairroInput = document.querySelector('#bairro');
+    const cidadeInput = document.querySelector('#cidade');
+    const estadoInput = document.querySelector('#estado');
+
+    // Função para buscar o endereço pelo CEP
+    const buscaEndereco = async (cep) => {
+        try {
+            const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+            const data = await response.json();
+
+            if (data.erro) {
+                alert('CEP não encontrado.');
+                return;
+            }
+
+            // Populando os campos com os dados recebidos
+            logradouroInput.value = data.logradouro;
+            bairroInput.value = data.bairro;
+            cidadeInput.value = data.localidade;
+            estadoInput.value = data.uf;
+        } catch (error) {
+            console.error('Erro ao buscar o endereço:', error);
+        }
+    };
+
+    // Evento que detecta quando o usuário terminou de digitar o CEP
+    cepInput.addEventListener('blur', () => {
+        const cep = cepInput.value.replace(/\D/g, ''); // Remove qualquer caractere que não seja número
+        if (cep.length === 8) { // Verifica se o CEP tem 8 dígitos
+            buscaEndereco(cep);
+        } else {
+            alert('Por favor, insira um CEP válido.');
+        }
+    });
+});
