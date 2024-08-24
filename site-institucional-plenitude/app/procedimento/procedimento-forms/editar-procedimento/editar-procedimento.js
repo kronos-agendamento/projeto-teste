@@ -48,10 +48,12 @@ document.addEventListener('DOMContentLoaded', async function () {
         };
 
         const tempoColocacao = `${formatTime(document.getElementById('duracao-horas').value)}:${formatTime(document.getElementById('duracao-minutos').value)}`;
+        const tempoManutencao = `${formatTime(document.getElementById('duracao-horas').value)}:${formatTime(document.getElementById('duracao-minutos').value)}`;
+        const tempoRetirada = `${formatTime(document.getElementById('duracao-horas').value)}:${formatTime(document.getElementById('duracao-minutos').value)}`;
         const tempoProcedimento = {
             tempoColocacao: tempoColocacao,
-            tempoManutencao: "00:00", // assuming default values
-            tempoRetirada: "00:00", // assuming default values
+            tempoManutencao: tempoManutencao,
+            tempoRetirada: tempoRetirada,
         };
 
         const updateEspecificacao = fetch(`${baseUrl}/especificacoes/atualizacao-especificacao/${procedimentoId}`, {
