@@ -1,5 +1,6 @@
 package sptech.projetojpa1.service
 
+import org.hibernate.validator.internal.util.logging.LoggerFactory
 import org.springframework.stereotype.Service
 import sptech.projetojpa1.dominio.Feedback
 import sptech.projetojpa1.dto.feedback.FeedbackRequestDTO
@@ -44,6 +45,12 @@ class FeedbackService(
             usuarioId = savedFeedback.usuario?.codigo ?: 0
         )
     }
+
+    fun buscarMediaNotas(): List<Double> {
+        return feedbackRepository.buscarMediaNotas()
+    }
+
+
 
     fun buscarFeedbackPorId(id: Int): FeedbackResponseDTO? {
         val feedback = feedbackRepository.findById(id).orElse(null) ?: return null

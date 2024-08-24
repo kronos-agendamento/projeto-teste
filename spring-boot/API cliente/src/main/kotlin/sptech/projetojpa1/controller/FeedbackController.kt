@@ -40,6 +40,12 @@ class FeedbackController(private val feedbackService: FeedbackService) {
         return ResponseEntity(feedbackResponseDTO, HttpStatus.OK)
     }
 
+    @GetMapping("/buscar-media-notas")
+    fun buscarMediaNotas(): ResponseEntity<List<Double>> {
+        val resultado = feedbackService.buscarMediaNotas()
+        return ResponseEntity(resultado, HttpStatus.OK)
+    }
+
     @Operation(summary = "Atualizar feedback")
     @ApiResponses(
         value = [

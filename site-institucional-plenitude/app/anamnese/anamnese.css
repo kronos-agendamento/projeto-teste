@@ -455,7 +455,7 @@ Inicio Respostas
 }
 
 .form-section {
-  width: 65vw;
+  /* width: 65vw; */
   background-color: #FFF0F5;
   margin-bottom: 20px;
   margin-left: 20px;
@@ -463,8 +463,8 @@ Inicio Respostas
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border: 1px solid #7b7b7b;
-  margin-left: 2.9%;
-  width: 150vh
+  margin-left: 2%;
+  width: 98%;
 }
 
 .content-form {
@@ -476,6 +476,7 @@ Inicio Respostas
   display: flex;
   align-items: center;
   padding: 2vh;
+  border-radius: 0px 0px 5px;
 }
 
 .form-section h2 {
