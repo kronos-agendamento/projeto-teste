@@ -106,7 +106,7 @@ class EmpresaController(
         @RequestParam novoCNPJ: String
     ): ResponseEntity<Any> {
         val dto = EmpresaUpdateDTO(
-            CNPJ = novoCNPJ,
+            cnpj = novoCNPJ,
             nome = null,
             contato = null,
             enderecoId = null,
@@ -132,7 +132,7 @@ class EmpresaController(
         val dto = EmpresaUpdateDTO(
             nome = novoNome,
             contato = null,
-            CNPJ = null,
+            cnpj = null,
             enderecoId = null,
             horarioFuncionamentoId = null
         )
@@ -156,7 +156,7 @@ class EmpresaController(
         @RequestParam(required = false) fechamento: String?
     ): ResponseEntity<Any> {
         val dto =
-            EmpresaUpdateDTO(nome = null, contato = null, CNPJ = null, enderecoId = null, horarioFuncionamentoId = null)
+            EmpresaUpdateDTO(nome = null, contato = null, cnpj = null, enderecoId = null, horarioFuncionamentoId = null)
         // Atualizar DTO conforme necessidade
         val empresa = empresaService.editarHorarioFuncionamento(cnpj, dto) ?: return ResponseEntity.status(404)
             .body("Empresa não encontrada pelo CNPJ fornecido.")
@@ -182,10 +182,29 @@ class EmpresaController(
         @RequestParam(required = false) novoComplemento: String?
     ): ResponseEntity<Any> {
         val dto =
-            EmpresaUpdateDTO(nome = null, contato = null, CNPJ = null, enderecoId = null, horarioFuncionamentoId = null)
+            EmpresaUpdateDTO(nome = null, contato = null, cnpj = null, enderecoId = null, horarioFuncionamentoId = null)
         // Atualizar DTO conforme necessidade
         val empresa = empresaService.editarEndereco(cnpj, dto) ?: return ResponseEntity.status(404)
             .body("Empresa não encontrada pelo CNPJ fornecido.")
         return ResponseEntity.status(200).body(empresa)
     }
+
+    @Operation(summary = "Atualiza todos os dados da empresa pelo CNPJ")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Dados da empresa atualizados com sucesso"),
+            ApiResponse(responseCode = "404", description = "Empresa não encontrada pelo CNPJ fornecido")
+        ]
+    )
+    @PatchMapping("/atualizar-todos-dados/{cnpj}")
+    fun atualizarTodosDadosEmpresa(
+        @PathVariable cnpj: String,
+        @RequestBody @Valid dto: EmpresaUpdateDTO
+    ): ResponseEntity<Any> {
+        val empresa = empresaService.atualizarTodosDadosEmpresa(cnpj, dto)
+            ?: return ResponseEntity.status(404).body("Empresa não encontrada pelo CNPJ fornecido.")
+
+        return ResponseEntity.status(200).body(empresa)
+    }
+
 }

@@ -56,4 +56,19 @@ class HorarioFuncionamentoService(
             false
         }
     }
+
+    fun atualizarHorarioFuncionamento(id: Int, request: HorarioFuncionamentoRequest): Boolean {
+        val horarioOptional = repository.findById(id)
+        return if (horarioOptional.isPresent) {
+            val horario = horarioOptional.get()
+            horario.diaInicio = request.diaInicio
+            horario.diaFim = request.diaFim
+            horario.horarioAbertura = request.horarioAbertura
+            horario.horarioFechamento = request.horarioFechamento
+            repository.save(horario)
+            true
+        } else {
+            false
+        }
+    }
 }

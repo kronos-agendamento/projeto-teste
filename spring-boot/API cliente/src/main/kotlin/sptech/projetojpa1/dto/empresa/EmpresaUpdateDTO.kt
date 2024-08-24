@@ -7,7 +7,8 @@ import java.time.LocalDateTime
 data class EmpresaUpdateDTO(
     @field:NotBlank(message = "Nome é obrigatório") val nome: String?,
     val contato: Char?,
-    @field:CNPJ(message = "CNPJ inválido") val CNPJ: String?,
+    @field:CNPJ(message = "CNPJ inválido")
+    val cnpj: String?,
     val enderecoId: Int?,
     val horarioFuncionamentoId: Int?
 )

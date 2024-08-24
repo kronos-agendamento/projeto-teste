@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c9aa186f-9967-4db8-8c3b-9368488dfc2b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../site-institucional-plenitude/app/index/agenda-semanal/agenda-semanal.css" beforeDir="false" afterPath="$PROJECT_DIR$/../../site-institucional-plenitude/app/index/agenda-semanal/agenda-semanal.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../site-institucional-plenitude/app/index/agenda-semanal/agenda-semanal.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../site-institucional-plenitude/app/index/agenda-semanal/agenda-semanal.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../site-institucional-plenitude/app/procedimento/procedimento-forms/cadastrar-procedimento/cadastrar-procedimento.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../site-institucional-plenitude/app/procedimento/procedimento-forms/cadastrar-procedimento/cadastrar-procedimento.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../site-institucional-plenitude/app/procedimento/procedimento-forms/editar-procedimento/editar-procedimento.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../site-institucional-plenitude/app/procedimento/procedimento-forms/editar-procedimento/editar-procedimento.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../site-institucional-plenitude/app/procedimento/procedimento.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../site-institucional-plenitude/app/procedimento/procedimento.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../API cliente - Yan.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../API cliente/src/main/kotlin/sptech/projetojpa1/controller/EmpresaController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../API cliente/src/main/kotlin/sptech/projetojpa1/controller/EmpresaController.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../API cliente/src/main/kotlin/sptech/projetojpa1/controller/EnderecoController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../API cliente/src/main/kotlin/sptech/projetojpa1/controller/EnderecoController.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../API cliente/src/main/kotlin/sptech/projetojpa1/controller/HorarioFuncionamentoController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../API cliente/src/main/kotlin/sptech/projetojpa1/controller/HorarioFuncionamentoController.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../API cliente/src/main/kotlin/sptech/projetojpa1/dominio/Endereco.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../API cliente/src/main/kotlin/sptech/projetojpa1/dominio/Endereco.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../API cliente/src/main/kotlin/sptech/projetojpa1/dto/empresa/EmpresaUpdateDTO.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../API cliente/src/main/kotlin/sptech/projetojpa1/dto/empresa/EmpresaUpdateDTO.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../API cliente/src/main/kotlin/sptech/projetojpa1/dto/endereco/EnderecoRequestDTO.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../API cliente/src/main/kotlin/sptech/projetojpa1/dto/endereco/EnderecoRequestDTO.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../API cliente/src/main/kotlin/sptech/projetojpa1/dto/endereco/EnderecoResponseDTO.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../API cliente/src/main/kotlin/sptech/projetojpa1/dto/endereco/EnderecoResponseDTO.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../API cliente/src/main/kotlin/sptech/projetojpa1/service/AgendamentoService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../API cliente/src/main/kotlin/sptech/projetojpa1/service/AgendamentoService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../API cliente/src/main/kotlin/sptech/projetojpa1/service/EmpresaService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../API cliente/src/main/kotlin/sptech/projetojpa1/service/EmpresaService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../API cliente/src/main/kotlin/sptech/projetojpa1/service/EnderecoService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../API cliente/src/main/kotlin/sptech/projetojpa1/service/EnderecoService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../API cliente/src/main/kotlin/sptech/projetojpa1/service/HorarioFuncionamentoService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../API cliente/src/main/kotlin/sptech/projetojpa1/service/HorarioFuncionamentoService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../API cliente/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../API cliente/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../API cliente/src/main/resources/data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../API cliente/src/main/resources/data.sql" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin Interface" />
+        <option value="Kotlin Class" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 6
+}]]></component>
+  <component name="ProjectId" id="2ktWR0o4dsfi38zwrVs8eZwBKoo" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Kotlin.TestaTributoKt.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/user/Documents/exemplo-tributavel/pom.xml",
+    "onboarding.tips.debug.path": "/home/user/Desktop/projeto-teste/spring-boot/exemplo-tributavel/src/main/kotlin/Main.kt",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="TestaTributoKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.example.TestaTributoKt" />
+      <module name="exemplo-tributavel" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Kotlin.TestaTributoKt" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c9aa186f-9967-4db8-8c3b-9368488dfc2b" name="Changes" comment="" />
+      <created>1724103344626</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1724103344626</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/main/kotlin/TestaTributo.kt</url>
+          <line>6</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
