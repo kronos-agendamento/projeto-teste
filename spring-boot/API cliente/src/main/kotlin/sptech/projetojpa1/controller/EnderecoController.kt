@@ -97,23 +97,6 @@ class EnderecoController(
         }
     }
 
-//    @Operation(summary = "Lista endereços por usuário")
-//    @ApiResponses(
-//        value = [
-//            ApiResponse(responseCode = "200", description = "Endereços encontrados"),
-//            ApiResponse(responseCode = "204", description = "Nenhum endereço encontrado para o usuário fornecido")
-//        ]
-//    )
-//    @GetMapping("/buscar-por-usuario/{usuario}")
-//    fun listarEnderecosPorUsuario(@PathVariable usuario: String): ResponseEntity<Any> {
-//        val lista = enderecoService.listarEnderecosPorUsuario(usuario)
-//        return if (lista.isNotEmpty()) {
-//            ResponseEntity.status(200).body(lista)
-//        } else {
-//            ResponseEntity.status(204).build()
-//        }
-//    }
-
     @Operation(summary = "Exclui um endereço pelo ID")
     @ApiResponses(
         value = [
@@ -125,6 +108,27 @@ class EnderecoController(
     fun excluirEnderecoExistente(@PathVariable id: Int): ResponseEntity<String> {
         return if (enderecoService.excluirEndereco(id)) {
             ResponseEntity.status(200).body("Endereço deletado com sucesso")
+        } else {
+            ResponseEntity.status(404).body("Endereço não encontrado para o ID fornecido")
+        }
+    }
+
+    @Operation(summary = "Atualizar todos os dados de um endereço por id")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Endereço atualizado com sucesso"),
+            ApiResponse(responseCode = "404", description = "Endereço não encontrado para o ID fornecido"),
+            ApiResponse(responseCode = "400", description = "Dados de entrada inválidos")
+        ]
+    )
+    @PatchMapping("/atualizar/{id}")
+    fun atualizarEndereco(
+        @PathVariable id: Int,
+        @RequestBody @Valid enderecoDTO: EnderecoRequestDTO
+    ): ResponseEntity<Any> {
+        val enderecoAtualizado = enderecoService.atualizarEndereco(id, enderecoDTO)
+        return if (enderecoAtualizado != null) {
+            ResponseEntity.status(200).body(enderecoAtualizado)
         } else {
             ResponseEntity.status(404).body("Endereço não encontrado para o ID fornecido")
         }

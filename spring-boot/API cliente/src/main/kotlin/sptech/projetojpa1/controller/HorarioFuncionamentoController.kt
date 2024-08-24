@@ -18,11 +18,16 @@ class HorarioFuncionamentoController(
 ) {
 
     @Operation(summary = "Cadastrar novo horário de funcionamento")
-    @ApiResponses(value = [
-        ApiResponse(responseCode = "201", description = "Recurso criado com sucesso. Retorna o horário de funcionamento cadastrado"),
-        ApiResponse(responseCode = "400", description = "Requisição inválida. Retorna uma mensagem de erro"),
-        ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
-    ])
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "201",
+                description = "Recurso criado com sucesso. Retorna o horário de funcionamento cadastrado"
+            ),
+            ApiResponse(responseCode = "400", description = "Requisição inválida. Retorna uma mensagem de erro"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
     @PostMapping("/cadastro")
     fun cadastrarHorarioFuncionamento(@RequestBody @Valid request: HorarioFuncionamentoRequest): ResponseEntity<HorarioFuncionamento> {
         val horarioSalvo = service.cadastrarHorarioFuncionamento(request)
@@ -30,11 +35,19 @@ class HorarioFuncionamentoController(
     }
 
     @Operation(summary = "Listar todos os horários de funcionamento.")
-    @ApiResponses(value = [
-        ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna uma lista de horários de funcionamento"),
-        ApiResponse(responseCode = "204", description = "Requisição bem-sucedida, mas não há conteúdo para ser exibido"),
-        ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
-    ])
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Operação bem-sucedida. Retorna uma lista de horários de funcionamento"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                description = "Requisição bem-sucedida, mas não há conteúdo para ser exibido"
+            ),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
     @GetMapping
     fun listarHorariosFuncionamento(): ResponseEntity<List<HorarioFuncionamentoRequest>> {
         val lista = service.listarHorariosFuncionamento()
@@ -55,11 +68,13 @@ class HorarioFuncionamentoController(
     }
 
     @Operation(summary = "Excluir horário de funcionamento por id")
-    @ApiResponses(value = [
-        ApiResponse(responseCode = "204", description = "Operação bem-sucedida. Recurso excluído"),
-        ApiResponse(responseCode = "404", description = "Horário de funcionamento não encontrado"),
-        ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
-    ])
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "204", description = "Operação bem-sucedida. Recurso excluído"),
+            ApiResponse(responseCode = "404", description = "Horário de funcionamento não encontrado"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
     @DeleteMapping("/{id}")
     fun excluirHorarioFuncionamento(@PathVariable id: Int): ResponseEntity<Void> {
         return if (service.excluirHorarioFuncionamento(id)) {
@@ -70,13 +85,21 @@ class HorarioFuncionamentoController(
     }
 
     @Operation(summary = "Atualizar horário de abertura por id")
-    @ApiResponses(value = [
-        ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o horário de abertura atualizado"),
-        ApiResponse(responseCode = "404", description = "Horário de funcionamento não encontrado"),
-        ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
-    ])
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Operação bem-sucedida. Retorna o horário de abertura atualizado"
+            ),
+            ApiResponse(responseCode = "404", description = "Horário de funcionamento não encontrado"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
     @PatchMapping("/{id}/abertura")
-    fun atualizarHorarioAbertura(@PathVariable id: Int, @RequestBody @Valid request: HorarioFuncionamentoAttRequest): ResponseEntity<String> {
+    fun atualizarHorarioAbertura(
+        @PathVariable id: Int,
+        @RequestBody @Valid request: HorarioFuncionamentoAttRequest
+    ): ResponseEntity<String> {
         return if (service.atualizarHorarioAbertura(id, request.horario)) {
             ResponseEntity.ok("Horário de abertura atualizado com sucesso")
         } else {
@@ -85,15 +108,46 @@ class HorarioFuncionamentoController(
     }
 
     @Operation(summary = "Atualizar horário de fechamento por id")
-    @ApiResponses(value = [
-        ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o horário de fechamento atualizado"),
-        ApiResponse(responseCode = "404", description = "Horário de funcionamento não encontrado"),
-        ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
-    ])
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Operação bem-sucedida. Retorna o horário de fechamento atualizado"
+            ),
+            ApiResponse(responseCode = "404", description = "Horário de funcionamento não encontrado"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
     @PatchMapping("/{id}/fechamento")
-    fun atualizarHorarioFechamento(@PathVariable id: Int, @RequestBody @Valid request: HorarioFuncionamentoAttRequest): ResponseEntity<String> {
+    fun atualizarHorarioFechamento(
+        @PathVariable id: Int,
+        @RequestBody @Valid request: HorarioFuncionamentoAttRequest
+    ): ResponseEntity<String> {
         return if (service.atualizarHorarioFechamento(id, request.horario)) {
             ResponseEntity.ok("Horário de fechamento atualizado com sucesso")
+        } else {
+            ResponseEntity.status(404).body("Horário de funcionamento não encontrado para o ID fornecido")
+        }
+    }
+
+    @Operation(summary = "Atualizar todos os dados de um horário de funcionamento por id")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Operação bem-sucedida. Retorna o horário de funcionamento atualizado"
+            ),
+            ApiResponse(responseCode = "404", description = "Horário de funcionamento não encontrado"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
+    @PatchMapping("/{id}")
+    fun atualizarHorarioFuncionamento(
+        @PathVariable id: Int,
+        @RequestBody @Valid request: HorarioFuncionamentoRequest
+    ): ResponseEntity<String> {
+        return if (service.atualizarHorarioFuncionamento(id, request)) {
+            ResponseEntity.ok("Horário de funcionamento atualizado com sucesso")
         } else {
             ResponseEntity.status(404).body("Horário de funcionamento não encontrado para o ID fornecido")
         }

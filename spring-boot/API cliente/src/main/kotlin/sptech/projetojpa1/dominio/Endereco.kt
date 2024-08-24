@@ -18,8 +18,6 @@ data class Endereco(
         max = 8,
         message = "CEP deve ter no máximo 8 caracteres"
     ) var cep: String,
-    // Número do endereço
-    @field:NotNull(message = "Número é obrigatório") var numero: Int,
     // Bairro do endereço
     var bairro: String?,
     // Cidade do endereço
@@ -27,4 +25,4 @@ data class Endereco(
     // Estado do endereço
     var estado: String?,
 
-)
+    )
