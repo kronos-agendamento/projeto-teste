@@ -76,9 +76,18 @@ function changeWeek(offset) {
   fetchAgendamentos(); // Chama a função para buscar e renderizar agendamentos da semana atualizada
 }
 
+// Voltar para a semana atual
+function voltarSemanaAtual() {
+  semanaAtual = 0;
+  fetchAgendamentos(); // Renderiza a semana atual
+}
+
 // Eventos de clique nos botões de navegação
 document.getElementById('prev-page-btn').addEventListener('click', () => changeWeek(-1));
 document.getElementById('next-page-btn').addEventListener('click', () => changeWeek(1));
+
+// Evento de clique no botão "Semana Atual"
+document.getElementById('btn-voltar-home').addEventListener('click', voltarSemanaAtual);
 
 // Chama o fetchAgendamentos ao carregar a página para exibir a semana atual
 fetchAgendamentos();
