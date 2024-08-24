@@ -130,47 +130,111 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
-
-function fillUserProfile(userData) {
-    if (!userData) {
-        console.error('Dados do usuário estão nulos ou indefinidos.');
-        return;
+document.addEventListener('DOMContentLoaded', function () {
+    // Função para capitalizar a primeira letra de cada palavra
+    function capitalizeWords(input) {
+        const words = input.split(' ');
+        for (let i = 0; i < words.length; i++) {
+            if (words[i].length > 0) {
+                words[i] = words[i][0].toUpperCase() + words[i].substr(1).toLowerCase();
+            }
+        }
+        return words.join(' ');
     }
 
-    document.getElementById('nome').value = userData.nome || '';
-    document.getElementById('nascimento').value = userData.dataNasc || '';
-    document.getElementById('telefone').value = userData.telefone || '';
-    document.getElementById('telefoneEmergencial').value = userData.telefoneEmergencial || '';
-    document.getElementById('genero').value = userData.genero || '';
-    document.getElementById('instagram').value = userData.instagram || '';
-    document.getElementById('indicacao').value = userData.indicacao || '';
-    document.getElementById('email').value = userData.email || '';
-    document.getElementById('senha').value = userData.senha || '';
-    document.getElementById('empresa').value = userData.empresa ? userData.empresa.nome : '';
-    document.getElementById('cnpj').value = userData.empresa ? userData.empresa.cnpj : '';
-    document.getElementById('endereco').value = userData.endereco ? userData.endereco.logradouro : '';
-
-    // Buscar e preencher os dados da empresa pelo CNPJ
-    const cnpj = userData.empresa ? userData.empresa.cnpj : null;
-    if (cnpj) {
-        fetch(`http://localhost:8080/api/empresas/filtrar-por-cnpj/${cnpj}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Empresa não encontrada pelo CNPJ fornecido.');
-                }
-                return response.json();
-            })
-            .then(data => {
-                populateSelect('diasInicio', data.horarioFuncionamento.diaInicio);
-                populateSelect('diasFim', data.horarioFuncionamento.diaFim);
-                populateSelect('horarioInicio', data.horarioFuncionamento.horarioInicio);
-                populateSelect('horarioFim', data.horarioFuncionamento.horarioFim);
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-            });
+    // Função para formatar CNPJ
+    function formatCNPJ(cnpj) {
+        cnpj = cnpj.replace(/[^\d]/g, ''); // Remove tudo que não é número
+        if (cnpj.length > 14) cnpj = cnpj.substr(0, 14); // Limita a 14 dígitos
+        return cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5');
     }
-}
+
+    // Função para formatar CEP
+    function formatCEP(cep) {
+        cep = cep.replace(/[^\d]/g, ''); // Remove tudo que não é número
+        if (cep.length > 8) cep = cep.substr(0, 8); // Limita a 8 dígitos
+        return cep.replace(/^(\d{5})(\d{3})$/, '$1-$2');
+    }
+
+    // Função para validar campos sem números
+    function removeNumbers(input) {
+        return input.replace(/\d/g, ''); // Remove todos os números
+    }
+
+    // Validação para o campo "Nome da Empresa"
+    const empresaInput = document.getElementById('empresa');
+    empresaInput.addEventListener('input', function () {
+        this.value = capitalizeWords(this.value);
+    });
+
+    // Validação para o campo "CNPJ"
+    const cnpjInput = document.getElementById('cnpj');
+    cnpjInput.addEventListener('input', function () {
+        this.value = formatCNPJ(this.value);
+    });
+
+    // Validação para o campo "CEP"
+    const cepInput = document.getElementById('cep');
+    cepInput.addEventListener('input', function () {
+        this.value = formatCEP(this.value);
+    });
+
+    // Validações para os campos "Logradouro", "Bairro", "Cidade", e "Estado"
+    const logradouroInput = document.getElementById('logradouro');
+    logradouroInput.addEventListener('input', function () {
+        this.value = capitalizeWords(removeNumbers(this.value));
+    });
+
+    const bairroInput = document.getElementById('bairro');
+    bairroInput.addEventListener('input', function () {
+        this.value = capitalizeWords(removeNumbers(this.value));
+    });
+
+    const cidadeInput = document.getElementById('cidade');
+    cidadeInput.addEventListener('input', function () {
+        this.value = capitalizeWords(removeNumbers(this.value));
+    });
+
+    const estadoInput = document.getElementById('estado');
+    estadoInput.addEventListener('input', function () {
+        this.value = capitalizeWords(removeNumbers(this.value));
+    });
+
+    // Mockar dias da semana no select
+    const dias = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+    dias.forEach(dia => {
+        populateSelect('diasInicio', dia);
+        populateSelect('diasFim', dia);
+    });
+
+    // Mockar horários de funcionamento no select
+    for (let i = 0; i < 24; i++) {
+        const hora = i < 10 ? `0${i}:00` : `${i}:00`;
+        populateSelect('horarioInicio', hora);
+        populateSelect('horarioFim', hora);
+    }
+
+    // Preenchimento de perfil de usuário
+    fillUserProfile({
+        nome: 'Exemplo Nome',
+        dataNasc: '01/01/2000',
+        telefone: '(11) 91234-5678',
+        telefoneEmergencial: '(11) 98765-4321',
+        genero: 'Feminino',
+        instagram: '@exemplo',
+        indicacao: 'Amigo',
+        email: 'exemplo@dominio.com',
+        senha: 'senhaSegura123',
+        empresa: {
+            nome: 'Nome da Empresa Exemplo',
+            cnpj: '12.345.678/0001-99'
+        },
+        endereco: {
+            logradouro: 'Rua Exemplo'
+        }
+    });
+});
+
 
 function populateSelect(selectId, value) {
     const select = document.getElementById(selectId);
@@ -280,4 +344,45 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("userName").textContent = nome;
         document.getElementById("userEmail").textContent = email;
     }
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Selecionando os elementos do formulário
+    const cepInput = document.querySelector('#cep');
+    const logradouroInput = document.querySelector('#logradouro');
+    const bairroInput = document.querySelector('#bairro');
+    const cidadeInput = document.querySelector('#cidade');
+    const estadoInput = document.querySelector('#estado');
+
+    // Função para buscar o endereço pelo CEP
+    const buscaEndereco = async (cep) => {
+        try {
+            const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+            const data = await response.json();
+
+            if (data.erro) {
+                alert('CEP não encontrado.');
+                return;
+            }
+
+            // Populando os campos com os dados recebidos
+            logradouroInput.value = data.logradouro;
+            bairroInput.value = data.bairro;
+            cidadeInput.value = data.localidade;
+            estadoInput.value = data.uf;
+        } catch (error) {
+            console.error('Erro ao buscar o endereço:', error);
+        }
+    };
+
+    // Evento que detecta quando o usuário terminou de digitar o CEP
+    cepInput.addEventListener('blur', () => {
+        const cep = cepInput.value.replace(/\D/g, ''); // Remove qualquer caractere que não seja número
+        if (cep.length === 8) { // Verifica se o CEP tem 8 dígitos
+            buscaEndereco(cep);
+        } else {
+            alert('Por favor, insira um CEP válido.');
+        }
+    });
 });

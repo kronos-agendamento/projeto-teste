@@ -31,7 +31,7 @@ class AgendamentoService(
         }
     }
 
-    fun agendamentosRealizadosTrimestre(): Int{
+    fun agendamentosRealizadosTrimestre(): Int {
         val agendamentos = agendamentoRepository.findAgendamentosConcluidosUltimoTrimestre()
 
         return agendamentos
