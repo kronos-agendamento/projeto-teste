@@ -31,7 +31,7 @@ class AgendamentoService(
         }
     }
 
-    fun agendamentosRealizadosTrimestre(): Int{
+    fun agendamentosRealizadosTrimestre(): Int {
         val agendamentos = agendamentoRepository.findAgendamentosConcluidosUltimoTrimestre()
 
         return agendamentos
@@ -43,7 +43,7 @@ class AgendamentoService(
         return agendamentos
     }
 
-    fun validarDia(dataHorario: Date): Boolean {
+    fun validarDia(dataHorario: LocalDateTime): Boolean {
         val agendamentos = agendamentoRepository.findByDataHorario(dataHorario)
         return agendamentos.isEmpty()
 
@@ -74,7 +74,7 @@ class AgendamentoService(
 
         val dataFim = dataInicio.plusHours(horas.toLong()).plusMinutes(minutos.toLong())
 
-        return validarDia(dataInicio, dataFim)
+        return validarDia(dataInicio)
     }
 
     fun criarAgendamento(agendamentoRequestDTO: AgendamentoRequestDTO): AgendamentoResponseDTO {
