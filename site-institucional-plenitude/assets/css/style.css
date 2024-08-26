@@ -122,12 +122,6 @@ h6 {
 /*--------------------------------------------------------------
 # Header
 --------------------------------------------------------------*/
-#header1 {
-  background: #C21256;
-  box-shadow: 0px 0px 25px 0 rgba(0, 0, 0, 0.08);
-  padding: 6px 0;
-  color: #fff;
-}
 
 #header2 {
   background: #fff;
@@ -687,7 +681,7 @@ section {
 #aboutple img{
   width: 80vh;
   position: relative;
-  bottom: 5vh;
+  bottom: 4.2vh;
 }
 
 

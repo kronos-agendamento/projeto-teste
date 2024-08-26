@@ -468,3 +468,26 @@ header p {
   color: #000000;
   text-decoration: none;
 }
+
+#btn-voltar-home {
+  background-color: #ffffff;
+  display: flex;
+  font-family: Poppins, sans-serif;
+  font-weight: 600;
+  height: 5vh;
+  justify-content: center;
+  margin: 1vh;
+  padding: 2vh;
+  align-items: center;
+  border-radius: 1vh;
+  border: 1px solid black;
+  cursor: pointer;
+   margin-top: 3.9vh;
+}
+
+.classe_linha_pagination{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-left: 4.2vw;
+}
