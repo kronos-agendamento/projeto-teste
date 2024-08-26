@@ -20,7 +20,7 @@ open class Agendamento(
 
     @field:NotNull(message = "Tipo de agendamento não pode ser nulo")
     @Column(name = "tipo_agendamento")
-    var tipoAgendamento: String?,  // Mudança para String
+    var tipoAgendamento: String?,
 
     @field:NotNull(message = "Usuário não pode ser nulo")
     @ManyToOne
@@ -35,7 +35,7 @@ open class Agendamento(
     @field:NotNull(message = "Especificação não pode ser nula")
     @ManyToOne
     @JoinColumn(name = "fk_especificacao_procedimento")
-    var especificacao: Especificacao,  // Novo campo
+    var especificacao: Especificacao,
 
     @field:NotNull(message = "Status do agendamento não pode ser nulo")
     @ManyToOne

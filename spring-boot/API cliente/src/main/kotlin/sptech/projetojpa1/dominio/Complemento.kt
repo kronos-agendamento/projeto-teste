@@ -11,13 +11,11 @@ import jakarta.validation.constraints.NotBlank
 
 @Entity
 class Complemento(
-    // Código do complemento
     @field:Id @field:GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_complemento")
     var codigo: Int?,
-    // Descrição do complemento
+
     @field:NotBlank(message = "Complemento é obrigatório") var complemento: String?,
-    // Endereço associado ao complemento
     @field:ManyToOne
     @JoinColumn(name = "fk_endereco")
     var endereco: Endereco?

@@ -24,7 +24,9 @@ class EnderecoService(
             cep = novoEnderecoDTO.cep,
             bairro = novoEnderecoDTO.bairro,
             cidade = novoEnderecoDTO.cidade,
-            estado = novoEnderecoDTO.estado
+            estado = novoEnderecoDTO.estado,
+            numero = novoEnderecoDTO.numero,
+            complemento = novoEnderecoDTO.complemento,
         )
         val enderecoSalvo = enderecoRepository.save(endereco)
         return toResponseDTO(enderecoSalvo)

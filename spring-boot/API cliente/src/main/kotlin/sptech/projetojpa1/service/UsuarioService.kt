@@ -2,6 +2,8 @@ package sptech.projetojpa1.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import sptech.projetojpa1.dominio.Cliente
+import sptech.projetojpa1.dominio.Profissional
 import sptech.projetojpa1.dominio.Usuario
 import sptech.projetojpa1.dto.usuario.UsuarioAtualizacaoRequest
 import sptech.projetojpa1.dto.usuario.UsuarioLoginRequest
@@ -20,25 +22,36 @@ class UsuarioService(
 ) {
 
     fun salvarUsuario(dto: UsuarioRequest): Usuario {
-        val usuario = Usuario(
-            codigo = dto.codigo,
-            nome = dto.nome,
-            email = dto.email,
-            senha = dto.senha,
-            instagram = dto.instagram,
-            cpf = dto.cpf,
-            telefone = dto.telefone,
-            telefoneEmergencial = dto.telefoneEmergencial,
-            dataNasc = dto.dataNasc,
-            genero = dto.genero,
-            indicacao = dto.indicacao,
-            foto = null,
-            status = dto.status,
-            nivelAcesso = dto.nivelAcessoId?.let { nivelAcessoRepository.findById(it).orElse(null) },
-            endereco = dto.enderecoId?.let { enderecoRepository.findById(it).orElse(null) },
-            empresa = dto.empresaId?.let { empresaRepository.findById(it).orElse(null) },
-            fichaAnamnese = dto.fichaAnamneseId?.let { fichaAnamneseRepository.findById(it).orElse(null) }
-        )
+        val usuario: Usuario = if (dto.nivelAcessoId == 1) {
+            Cliente(
+                codigo = dto.codigo,
+                nome = dto.nome,
+                email = dto.email,
+                instagram = dto.instagram
+            ) as Usuario
+        } else {
+            Profissional(
+                codigo = dto.codigo,
+                nome = dto.nome,
+                email = dto.email,
+                instagram = dto.instagram
+            ) as Usuario
+        }
+
+        usuario.senha = dto.senha
+        usuario.cpf = dto.cpf
+        usuario.telefone = dto.telefone
+        usuario.telefoneEmergencial = dto.telefoneEmergencial
+        usuario.dataNasc = dto.dataNasc
+        usuario.genero = dto.genero
+        usuario.indicacao = dto.indicacao
+        usuario.foto = null
+        usuario.status = dto.status
+        usuario.nivelAcesso = dto.nivelAcessoId?.let { nivelAcessoRepository.findById(it).orElse(null) }
+        usuario.endereco = dto.enderecoId?.let { enderecoRepository.findById(it).orElse(null) }
+        usuario.empresa = dto.empresaId?.let { empresaRepository.findById(it).orElse(null) }
+        usuario.fichaAnamnese = dto.fichaAnamneseId?.let { fichaAnamneseRepository.findById(it).orElse(null) }
+
         return usuarioRepository.save(usuario)
     }
 

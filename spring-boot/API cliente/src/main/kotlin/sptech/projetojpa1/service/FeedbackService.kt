@@ -34,7 +34,9 @@ class FeedbackService(
             anotacoes = feedbackRequestDTO.anotacoes,
             nota = feedbackRequestDTO.nota,
             agendamento = agendamento,
-            usuario = usuario
+            usuario = usuario,
+            avaliador = null,
+            servico = null
         )
         val savedFeedback = feedbackRepository.save(feedback)
         return FeedbackResponseDTO(

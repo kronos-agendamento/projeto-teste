@@ -12,5 +12,7 @@ data class EnderecoRequestDTO(
     ) val cep: String,
     val bairro: String?,
     val cidade: String?,
-    val estado: String?
+    val estado: String?,
+    val numero: Int?,
+    val complemento: String?
 )
