@@ -18,18 +18,15 @@ class EnderecoService(
 
     @Transactional
     fun cadastrarEndereco(novoEnderecoDTO: EnderecoRequestDTO): EnderecoResponseDTO {
-//        val complemento = novoEnderecoDTO.complementoId?.let { complementoRepository.findById(it).orElse(null) }
-//        val usuario = novoEnderecoDTO.usuarioId?.let { usuarioRepository.findById(it).orElse(null) }
         val endereco = Endereco(
             codigo = null,
             logradouro = novoEnderecoDTO.logradouro,
             cep = novoEnderecoDTO.cep,
-            numero = novoEnderecoDTO.numero,
             bairro = novoEnderecoDTO.bairro,
             cidade = novoEnderecoDTO.cidade,
-            estado = novoEnderecoDTO.estado
-//            complemento = complemento,
-//            usuario = usuario
+            estado = novoEnderecoDTO.estado,
+            numero = novoEnderecoDTO.numero,
+            complemento = novoEnderecoDTO.complemento,
         )
         val enderecoSalvo = enderecoRepository.save(endereco)
         return toResponseDTO(enderecoSalvo)
@@ -51,10 +48,6 @@ class EnderecoService(
         return enderecoRepository.findByBairroContainsIgnoreCase(bairro).map { toResponseDTO(it) }
     }
 
-//    fun listarEnderecosPorUsuario(usuario: String): List<EnderecoResponseDTO> {
-//        return enderecoRepository.findByUsuarioNomeContains(usuario).map { toResponseDTO(it) }
-//    }
-
     @Transactional
     fun excluirEndereco(id: Int): Boolean {
         return if (enderecoRepository.existsById(id)) {
@@ -70,12 +63,29 @@ class EnderecoService(
             codigo = endereco.codigo!!,
             logradouro = endereco.logradouro,
             cep = endereco.cep,
-            numero = endereco.numero,
             bairro = endereco.bairro,
             cidade = endereco.cidade,
             estado = endereco.estado
-//            complementoId = endereco.complemento?.codigo,
-//            usuarioId = endereco.usuario?.codigo
         )
     }
+
+    @Transactional
+    fun atualizarEndereco(id: Int, enderecoDTO: EnderecoRequestDTO): EnderecoResponseDTO? {
+        val enderecoOptional = enderecoRepository.findById(id)
+
+        return if (enderecoOptional.isPresent) {
+            val endereco = enderecoOptional.get()
+            endereco.logradouro = enderecoDTO.logradouro
+            endereco.cep = enderecoDTO.cep
+            endereco.bairro = enderecoDTO.bairro
+            endereco.cidade = enderecoDTO.cidade
+            endereco.estado = enderecoDTO.estado
+
+            val enderecoAtualizado = enderecoRepository.save(endereco)
+            toResponseDTO(enderecoAtualizado)
+        } else {
+            null
+        }
+    }
+
 }

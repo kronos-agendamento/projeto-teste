@@ -2,6 +2,7 @@ package sptech.projetojpa1.repository
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
+import sptech.projetojpa1.dominio.Cliente
 import sptech.projetojpa1.dominio.NivelAcesso
 import sptech.projetojpa1.dominio.Usuario
 
@@ -110,6 +111,12 @@ interface UsuarioRepository : JpaRepository<Usuario, Int> {
     ) fidelizados ON u.id_usuario = fidelizados.fk_usuario
     """
     )
+<<<<<<< HEAD
     fun findClientesFidelizadosUltimosTresMeses(): Int
 
+=======
+    fun findClientesFidelizadosUltimosTresMeses(): Double
+
+    abstract fun save(cliente: Cliente): Cliente
+>>>>>>> ce13b70fb4f3d365f0feefac5cbf0d7944abc318
 }

@@ -457,10 +457,16 @@ Inicio Agenda
   margin-top: 1vh;
 }
 
+.table-container a {
+  text-decoration: none;
+  color: black;
+}
+
 .weekly-schedule:hover {
   background-color: #e893b9;
   color: #dcf5f2;
   transition-duration: 500ms;
+  cursor: pointer;
 }
 
 .weekly-schedule h2 i {

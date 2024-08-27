@@ -10,10 +10,9 @@ data class EnderecoRequestDTO(
         max = 10,
         message = "CEP deve ter no máximo 10 caracteres"
     ) val cep: String,
-    @field:NotNull(message = "Número é obrigatório") val numero: Int,
     val bairro: String?,
     val cidade: String?,
-    val estado: String?
-//    val complementoId: Int?,
-//    @field:NotNull(message = "Id do usuário é obrigatório") val usuarioId: Int?
+    val estado: String?,
+    val numero: Int?,
+    val complemento: String?
 )

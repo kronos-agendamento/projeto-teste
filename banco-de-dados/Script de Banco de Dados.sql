@@ -73,7 +73,7 @@ CREATE TABLE usuario (
     id_usuario INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(100),
     email VARCHAR(100),
-    senha VARCHAR(10),
+    senha VARCHAR(50),
     instagram VARCHAR(50),
     cpf VARCHAR(11),
     telefone BIGINT,
@@ -161,11 +161,15 @@ CREATE TABLE agendamento (
 CREATE TABLE feedback (
     id_feedback INT PRIMARY KEY AUTO_INCREMENT,
     anotacoes VARCHAR(200),
-    nota INT,
+    nota INT CHECK(nota BETWEEN 1 AND 5),
     fk_agendamento INT,
     fk_usuario INT,
+    fk_avaliador INT,
+    fk_servico INT,
     FOREIGN KEY (fk_agendamento) REFERENCES agendamento(id_agendamento),
-    FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario)
+    FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario),
+    FOREIGN KEY (fk_avaliador) REFERENCES avaliador(id_avaliador),
+    FOREIGN KEY (fk_servico) REFERENCES servico(id_servico)
 );
 
 CREATE TABLE capacitacao (
@@ -177,6 +181,44 @@ CREATE TABLE capacitacao (
     carga_horaria VARCHAR(30),
     preco_capacitacao DOUBLE,
 	ativo boolean default true
+);
+
+CREATE TABLE servico (
+    id_servico INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100),
+    descricao TEXT
+);
+
+-- Tabela avaliador
+CREATE TABLE avaliador (
+    id_avaliador INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100),
+    email VARCHAR(100),
+    instagram VARCHAR(50)
+);
+
+-- Tabela cilios
+CREATE TABLE cilios (
+    id_servico INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100),
+    descricao TEXT,
+    FOREIGN KEY (id_servico) REFERENCES servico(id_servico)
+);
+
+-- Tabela sobrancelha
+CREATE TABLE sobrancelha (
+    id_servico INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100),
+    descricao TEXT,
+    FOREIGN KEY (id_servico) REFERENCES servico(id_servico)
+);
+
+-- Tabela make
+CREATE TABLE make (
+    id_servico INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100),
+    descricao TEXT,
+    FOREIGN KEY (id_servico) REFERENCES servico(id_servico)
 );
 
 -- Inserir endereços
