@@ -43,7 +43,7 @@ class AgendamentoService(
         return agendamentos
     }
 
-    fun validarDia(dataHorario: Date): Boolean {
+    fun validarDia(dataHorario: LocalDateTime, dataFim: LocalDateTime): Boolean {
         val agendamentos = agendamentoRepository.findByDataHorario(dataHorario)
         return agendamentos.isEmpty()
 

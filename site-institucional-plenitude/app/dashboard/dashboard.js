@@ -26,6 +26,10 @@ document.addEventListener('DOMContentLoaded', function () {
             clientesFidelizados: '/usuarios/clientes-fidelizados-ultimos-tres-meses',
             agendamentosRealizados:'/api/agendamentos/agendamentos-realizados',
 
+            // Gráfico 1
+            listarTop3Indicacoes: '/usuarios/buscar-top3-indicacoes',
+            listarNumeroIndicacoes: '/usuarios/buscar-numeros-indicacoes',
+
             // Gráfico 33
             listarProcedimentosBemAvaliados: '/api/procedimentos/listar-bem-avaliados',
             buscarMediaNotas: '/api/feedbacks/buscar-media-notas',
@@ -44,6 +48,10 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchData(endpoints.clientesInativos, updateClientesInativos);
         fetchData(endpoints.clientesFidelizados, updateClientesFidelizados);
         fetchData(endpoints.agendamentosRealizados, updateAgendamentosRealizados);
+
+        // Chamadas para atualizar os dados do gráfico 1
+        fetchData(endpoints.listarTop3Indicacoes, updateListarTop3Indicacoes);
+        fetchData(endpoints.listarNumeroIndicacoes, updateChart1)
 
         // Chamadas para atualizar os dados do gráfico 2
         fetchData(endpoints.receitaAcumuladaLabels, updateReceitaAcumuladaLabels);
@@ -95,10 +103,25 @@ document.addEventListener('DOMContentLoaded', function () {
     const ctx33 = document.getElementById('chart33').getContext('2d');
     let chart33;
 
+    let dataChart1 = null;
+    let labelsChart1 = null;
+    const ctx1 = document.getElementById('chart1').getContext('2d');
+    let chart1;
+
     // console.log(dataChart33)
     // console.log(labelsChart33)
 
 
+    function updateChart1(data) {
+        dataChart1 = data;
+        createChart1();
+    }
+    function updateListarTop3Indicacoes(data){
+        labelsChart1 = data
+        if(dataChart1) {
+            createChart1();
+        }
+    }
     function updateChart3(data) {
         dataChart3 = data;
         createChart3();
@@ -136,6 +159,37 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     // Criação de gráficos
+    function createChart1() {
+        if (!dataChart1 || !labelsChart1) return;
+
+        if (chart1) chart1.destroy();
+
+        chart1 = new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: labelsChart1,
+                datasets: [{
+                    label: 'oi tchau',
+                    data: dataChart1,
+                    backgroundColor: '#D2135D',
+                    borderColor: '#D2135D',
+                    fill: false
+                }]
+            },
+            options: {
+                plugins: {
+                    subtitle: {
+                        display: true,
+                        text: '',
+                        font: {
+                            size: 14
+                        }
+                    }
+                }
+            }
+        });
+    }
+
     function createChart3() {
         if (!dataChart3 || !labelsChart3) return;
 
