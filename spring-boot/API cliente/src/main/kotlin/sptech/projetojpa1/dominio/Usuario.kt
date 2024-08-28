@@ -80,7 +80,11 @@ class Cliente(
 
     @Column(name = "frequencia")
     var frequencia: Int? = null
-) : Usuario(codigo, nome, email, instagram)
+) : Usuario(codigo, nome, email, instagram){
+    override fun toString(): String {
+        return "Cliente(codigo=$codigo, nome=$nome, email=$email, instagram=$instagram, experienciaAvaliada=$experienciaAvaliada, frequencia=$frequencia)"
+    }
+}
 
 @Entity
 @Table(name = "profissional")
@@ -102,4 +106,8 @@ class Profissional(
 
     @Column(name = "especialidade")
     var especialidade: String? = null
-) : Usuario(codigo, nome, email, instagram)
+) : Usuario(codigo, nome, email, instagram){
+    override fun toString(): String {
+        return "Profissional(codigo=$codigo, nome=$nome, email=$email, instagram=$instagram, numeroAvaliacoes=$numeroAvaliacoes, mediaNota=$mediaNota, qualificacoes=$qualificacoes, especialidade=$especialidade)"
+    }
+}

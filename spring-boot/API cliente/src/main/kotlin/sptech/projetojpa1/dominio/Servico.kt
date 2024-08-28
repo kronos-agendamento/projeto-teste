@@ -15,13 +15,13 @@ open class Servico(
     @OneToMany(mappedBy = "servico", cascade = [CascadeType.ALL], orphanRemoval = true)
     val feedbacks: MutableList<Feedback> = mutableListOf()
 
-) : Avaliavel {
+) {
 
-    override fun getAvaliacao(): Double? {
+    fun getAvaliacao(): Double? {
         return feedbacks.lastOrNull()?.nota?.toDouble()
     }
 
-    override fun getMediaAvaliacao(): Double? {
+    fun getMediaAvaliacao(): Double? {
         return if (feedbacks.isNotEmpty()) {
             feedbacks.mapNotNull { it.nota?.toDouble() }.average()
         } else {
@@ -29,7 +29,7 @@ open class Servico(
         }
     }
 
-    override fun descricaoCompleta(): String? {
+    fun descricaoCompleta(): String? {
         return descricao
     }
 }
