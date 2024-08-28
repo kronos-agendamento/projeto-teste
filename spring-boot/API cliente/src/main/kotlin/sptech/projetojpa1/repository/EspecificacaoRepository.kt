@@ -18,19 +18,20 @@ interface EspecificacaoRepository : JpaRepository<Especificacao, Int> {
     @Query(
         value = """
         SELECT 
-SUM(ep.preco_colocacao + ep.preco_manutencao + ep.preco_retirada) AS receitaTotal 
+    SUM(ep.preco_colocacao + ep.preco_manutencao + ep.preco_retirada) AS receitaTotal 
 FROM 
-agendamento a 
+    agendamento a 
 INNER JOIN 
-especificacao_procedimento ep 
+    especificacao_procedimento ep 
 ON 
-a.fk_procedimento = ep.id_especificacao_procedimento 
+    a.fk_procedimento = ep.id_especificacao_procedimento 
 WHERE 
-a.data >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+    a.data >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
 GROUP BY 
-DATE_FORMAT(a.data, '%Y-%m')
+    DATE_FORMAT(a.data, '%Y-%m')
 ORDER BY 
-DATE_FORMAT(a.data, '%Y-%m');
+    DATE_FORMAT(a.data, '%Y-%m');
+ 
 
     """, nativeQuery = true
     )

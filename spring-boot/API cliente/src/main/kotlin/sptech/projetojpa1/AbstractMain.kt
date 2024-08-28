@@ -1,3 +1,5 @@
+package sptech.projetojpa1
+
 import sptech.projetojpa1.dominio.*
 
 fun main() {

@@ -7,6 +7,7 @@ import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 import sptech.projetojpa1.dominio.Usuario
 import sptech.projetojpa1.dto.usuario.UsuarioAtualizacaoRequest
 import sptech.projetojpa1.dto.usuario.UsuarioLoginRequest
@@ -131,6 +132,18 @@ class UsuarioController(
     fun listarTodosUsuarios(): ResponseEntity<List<Usuario>> {
         val usuarios = usuarioService.listarTodosUsuarios()
         return ResponseEntity.ok(usuarios)
+    }
+
+    @GetMapping("/buscar-top3-indicacoes")
+    fun buscarTop3Indicacoes(): ResponseEntity<List<String>>{
+        val resultado = usuarioService.findTop3Indicacoes()
+        return ResponseEntity.ok(resultado)
+    }
+
+    @GetMapping("/buscar-numeros-indicacoes")
+    fun buscarNumerosIndicacoes(): ResponseEntity<List<Int>>{
+        val resultado = usuarioService.buscarNumeroIndicacoes()
+        return ResponseEntity.ok(resultado)
     }
 
     @Operation(summary = "Listar usuários por descrição")
@@ -287,19 +300,19 @@ class UsuarioController(
     }
 
     @GetMapping("/clientes-ativos")
-    fun getClientesAtivosUltimosTresMeses(): ResponseEntity<Double> {
+    fun getClientesAtivosUltimosTresMeses(): ResponseEntity<Int> {
         val numeroClientes = usuarioService.getClientesAtivos()
         return ResponseEntity.ok(numeroClientes)
     }
 
     @GetMapping("/clientes-inativos")
-    fun getClientesInativos(): ResponseEntity<Double> {
+    fun getClientesInativos(): ResponseEntity<Int> {
         val clientes = usuarioService.getClientesInativos()
         return ResponseEntity.ok(clientes)
     }
 
     @GetMapping("/clientes-fidelizados-ultimos-tres-meses")
-    fun getClientesFidelizadosUltimosTresMeses(): ResponseEntity<Double> {
+    fun getClientesFidelizadosUltimosTresMeses(): ResponseEntity<Int> {
         val clientes = usuarioService.getClientesFidelizadosUltimosTresMeses()
         return ResponseEntity.ok(clientes)
     }

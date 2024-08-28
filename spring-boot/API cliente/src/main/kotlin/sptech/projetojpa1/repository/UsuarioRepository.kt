@@ -46,13 +46,43 @@ interface UsuarioRepository : JpaRepository<Usuario, Int> {
     fun findClientesPorOrigem(): List<Usuario>
 
     @Query(
+        nativeQuery = true, value = """
+    SELECT 
+        u.indicacao
+    FROM 
+        usuario u
+    GROUP BY 
+        u.indicacao
+    ORDER BY 
+        COUNT(u.indicacao) DESC
+    LIMIT 3
+    """
+    )
+    fun findTop3Indicacoes(): List<String>
+
+    @Query(
+        nativeQuery = true, value = """
+    SELECT  
+        COUNT(u.indicacao) AS frequencia
+    FROM 
+        usuario u
+    GROUP BY 
+        u.indicacao
+    ORDER BY 
+        frequencia DESC
+    LIMIT 3
+    """
+    )
+    fun buscarNumerosDivulgacao(): List<Int>
+
+    @Query(
         nativeQuery = true, value =
         "SELECT COUNT(DISTINCT u.id_usuario) AS total_clientes " +
                 "FROM usuario u " +
                 "JOIN agendamento a ON u.id_usuario = a.fk_usuario " +
                 "WHERE a.data BETWEEN DATE_SUB(NOW(), INTERVAL 3 MONTH) AND NOW()"
     )
-    fun findClientesAtivos(): Double
+    fun findClientesAtivos(): Int
 
     @Query(
         nativeQuery = true, value =
@@ -66,22 +96,27 @@ interface UsuarioRepository : JpaRepository<Usuario, Int> {
         )
         """
     )
-    fun findClientesInativos(): Double
+    fun findClientesInativos(): Int
 
     @Query(
         nativeQuery = true, value = """
-        SELECT COUNT(u.id_usuario) AS qtd_clientes_fidelizados
-        FROM usuario u
-        JOIN (
-            SELECT a.fk_usuario
-            FROM agendamento a
-            WHERE a.data BETWEEN DATE_SUB(NOW(), INTERVAL 3 MONTH) AND NOW()
-            GROUP BY a.fk_usuario
-            HAVING COUNT(DISTINCT MONTH(a.data)) = 3
-        ) fidelizados ON u.id_usuario = fidelizados.fk_usuario
-        """
+    SELECT COUNT(u.id_usuario) AS qtd_clientes_fidelizados
+    FROM usuario u
+    JOIN (
+        SELECT a.fk_usuario
+        FROM agendamento a
+        WHERE a.data BETWEEN DATE_SUB(NOW(), INTERVAL 3 MONTH) AND NOW()
+        GROUP BY a.fk_usuario
+        HAVING COUNT(DISTINCT MONTH(a.data)) = 3
+    ) fidelizados ON u.id_usuario = fidelizados.fk_usuario
+    """
     )
+<<<<<<< HEAD
+    fun findClientesFidelizadosUltimosTresMeses(): Int
+
+=======
     fun findClientesFidelizadosUltimosTresMeses(): Double
 
     abstract fun save(cliente: Cliente): Cliente
+>>>>>>> ce13b70fb4f3d365f0feefac5cbf0d7944abc318
 }

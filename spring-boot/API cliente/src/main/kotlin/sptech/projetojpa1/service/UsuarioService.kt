@@ -141,15 +141,22 @@ class UsuarioService(
 
     fun getIndicacoesFontes(): List<Usuario> = usuarioRepository.findClientesPorOrigem()
 
-    fun getClientesAtivos(): Double {
+    fun getClientesAtivos(): Int {
         return usuarioRepository.findClientesAtivos()
     }
 
-    fun getClientesInativos(): Double {
+    fun findTop3Indicacoes(): List<String> {
+        return usuarioRepository.findTop3Indicacoes()
+    }
+
+   fun buscarNumeroIndicacoes(): List<Int> {
+        return usuarioRepository.buscarNumerosDivulgacao()
+    }
+    fun getClientesInativos(): Int {
         return usuarioRepository.findClientesInativos()
     }
 
-    fun getClientesFidelizadosUltimosTresMeses(): Double {
+    fun getClientesFidelizadosUltimosTresMeses(): Int {
         return usuarioRepository.findClientesFidelizadosUltimosTresMeses()
     }
 
