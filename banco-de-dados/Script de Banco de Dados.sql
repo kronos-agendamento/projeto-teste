@@ -1,8 +1,10 @@
 -- Criação do banco de dados
+-- DROP DATABASE kronosbooking;
 CREATE DATABASE IF NOT EXISTS kronosbooking;
 USE kronosbooking;
 
 -- Dropando tabelas se existirem
+DROP TABLE IF EXISTS cliente;
 DROP TABLE IF EXISTS feedback;
 DROP TABLE IF EXISTS agendamento;
 DROP TABLE IF EXISTS especificacao_procedimento;
@@ -19,6 +21,8 @@ DROP TABLE IF EXISTS horario_funcionamento;
 DROP TABLE IF EXISTS complemento;
 DROP TABLE IF EXISTS endereco;
 DROP TABLE IF EXISTS capacitacao;
+DROP TABLE IF EXISTS servico;
+DROP TABLE IF EXISTS avaliador;
 
 -- Criação das tabelas
 CREATE TABLE endereco (
@@ -158,6 +162,20 @@ CREATE TABLE agendamento (
     FOREIGN KEY (fk_especificacao_procedimento) REFERENCES especificacao_procedimento(id_especificacao_procedimento)
 );
 
+CREATE TABLE servico (
+    id_servico INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100),
+    descricao TEXT
+);
+
+-- Tabela avaliador
+CREATE TABLE avaliador (
+    id_avaliador INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100),
+    email VARCHAR(100),
+    instagram VARCHAR(50)
+);
+
 CREATE TABLE feedback (
     id_feedback INT PRIMARY KEY AUTO_INCREMENT,
     anotacoes VARCHAR(200),
@@ -183,19 +201,9 @@ CREATE TABLE capacitacao (
 	ativo boolean default true
 );
 
-CREATE TABLE servico (
-    id_servico INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(100),
-    descricao TEXT
-);
 
--- Tabela avaliador
-CREATE TABLE avaliador (
-    id_avaliador INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(100),
-    email VARCHAR(100),
-    instagram VARCHAR(50)
-);
+
+
 
 -- Tabela cilios
 CREATE TABLE cilios (

@@ -111,12 +111,9 @@ interface UsuarioRepository : JpaRepository<Usuario, Int> {
     ) fidelizados ON u.id_usuario = fidelizados.fk_usuario
     """
     )
-<<<<<<< HEAD
     fun findClientesFidelizadosUltimosTresMeses(): Int
-
-=======
-    fun findClientesFidelizadosUltimosTresMeses(): Double
+ // ultimos 3 meses aí po
 
     abstract fun save(cliente: Cliente): Cliente
->>>>>>> ce13b70fb4f3d365f0feefac5cbf0d7944abc318
+
 }
