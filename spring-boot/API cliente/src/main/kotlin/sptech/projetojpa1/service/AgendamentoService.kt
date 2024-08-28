@@ -44,19 +44,24 @@ class AgendamentoService(
     }
 
 
-    fun validarDia(dataHorario: LocalDateTime, dataFim: LocalDateTime): Boolean {
 
-        fun validarDia1(dataHorario: LocalDateTime): Boolean {
 
+        fun validarDia(dataHorario: LocalDateTime): Boolean {
             val agendamentos = agendamentoRepository.findByDataHorario(dataHorario)
             return agendamentos.isEmpty()
 
-            // true: Não existem agendamentos na data especificada.
-            // false: Existe um agendamento na data especificada.
-        }
 
-        return validarDia1(dataHorario)
-    }
+            fun validarDia1(dataHorario: LocalDateTime): Boolean {
+
+                val agendamentos = agendamentoRepository.findByDataHorario(dataHorario)
+                return agendamentos.isEmpty()
+
+                // true: Não existem agendamentos na data especificada.
+                // false: Existe um agendamento na data especificada.
+            }
+
+            return validarDia1(dataHorario)
+        }
 
         fun validarAgendamento(agendamentoRequestDTO: AgendamentoRequestDTO): Boolean {
             val dataInicio = agendamentoRequestDTO.dataHorario
@@ -193,5 +198,7 @@ class AgendamentoService(
 
             agendamentoRepository.deleteById(id)
         }
+
     }
+
 

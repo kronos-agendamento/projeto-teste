@@ -70,14 +70,14 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchData(endpoints.clientesFidelizados, updateClientesFidelizados);
         fetchData(endpoints.agendamentosRealizados, updateAgendamentosRealizados);
 
-        // Chamadas para atualizar os dados do gráfico 1
-        fetchData(endpoints.clientesFidelizados, updateChart2)
-
         // Chamadas para atualizar os dados do gráfico 2
+        fetchData(endpoints.clientesFidelizados, updateChart2_1)
+
+        // Chamadas para atualizar os dados do gráfico 3
         fetchData(endpoints.receitaAcumuladaLabels, updateReceitaAcumuladaLabels);
         fetchData(endpoints.receitaAcumulada, updateChart3);
 
-        // Chamadas para atualizar os dados do gráfico 3
+        // Chamadas para atualizar os dados do gráfico 33
         fetchData(endpoints.listarProcedimentosBemAvaliados, updateChart33Labels)
         fetchData(endpoints.buscarMediaNotas, updateChart33);
 
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchData(endpoints.agendamentosProcedimentosLabels, updateChart4Labels);
         fetchData(endpoints.agendamentosProcedimentos, updateChart4);
 
-        // Chamadas para atualizar os dados do gráfico 5
+        // Chamadas para atualizar os dados do gráfico 1
         fetchData(endpoints.listarTop3Indicacoes, updateListarTop3Indicacoes);
         fetchData(endpoints.listarNumeroIndicacoes, updateChart1)
     }
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let chart1;
 
 
-    function updateChart2(data) {
+    function updateChart2_1(data) {
         dataChart2_1 = data;
         labelsChart2 = lastFiveMonths
         if (dataChart2_1) {

@@ -34,7 +34,8 @@ class UsuarioService(
                 codigo = dto.codigo,
                 nome = dto.nome,
                 email = dto.email,
-                instagram = dto.instagram
+                instagram = dto.instagram,
+                especialidade = "Especialidade Padrão"
             ) as Usuario
         }
 
@@ -54,6 +55,7 @@ class UsuarioService(
 
         return usuarioRepository.save(usuario)
     }
+
 
     fun fazerLogin(request: UsuarioLoginRequest): UsuarioLoginResponse? {
         val usuario = usuarioRepository.findByEmailIgnoreCase(request.email)
