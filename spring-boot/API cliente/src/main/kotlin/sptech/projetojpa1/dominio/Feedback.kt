@@ -26,7 +26,7 @@ data class Feedback(
 
     @ManyToOne
     @JoinColumn(name = "fk_avaliador")
-    val avaliador: Avaliador?,
+    val avaliador: Usuario?,
 
     @ManyToOne
     @JoinColumn(name = "fk_servico")

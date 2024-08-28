@@ -72,6 +72,7 @@ class Cliente(
     codigo: Int? = null,
     nome: String? = null,
     email: String? = null,
+    senha: String? = null,
     instagram: String? = null,
 
     @Column(name = "experiencia_avaliada")
@@ -79,7 +80,7 @@ class Cliente(
 
     @Column(name = "frequencia")
     var frequencia: Int? = null
-) : Avaliador(codigo, nome, email, instagram)
+) : Usuario(codigo, nome, email, instagram)
 
 @Entity
 @Table(name = "profissional")
@@ -87,6 +88,7 @@ class Profissional(
     codigo: Int? = null,
     nome: String? = null,
     email: String? = null,
+    senha: String? = null,
     instagram: String? = null,
 
     @Column(name = "numero_avaliacoes")
@@ -100,4 +102,4 @@ class Profissional(
 
     @Column(name = "especialidade")
     var especialidade: String? = null
-) : Avaliador(codigo, nome, email, instagram)
+) : Usuario(codigo, nome, email, instagram)

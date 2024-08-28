@@ -2,56 +2,26 @@ package sptech.projetojpa1.abstractmain
 
 import sptech.projetojpa1.dominio.*
 import javax.swing.JOptionPane
+import javax.swing.JPasswordField
+
+val clientesCadastrados = mutableListOf<Cliente>()
+val profissionaisCadastrados = mutableListOf<Profissional>()
+val feedbacks = mutableListOf<Feedback>()
 
 fun main() {
     while (true) {
         val escolhaInicial = JOptionPane.showInputDialog(
             null, "Bem-vindo ao Sistema de Avaliação da Kronos!\n" +
-                    "Você deseja entrar como:\n1. Cliente\n2. Profissional\n3. Sair"
+                    "1. Login\n2. Cadastrar como Profissional\n3. Cadastrar como Cliente\n4. Sair"
         )?.toIntOrNull()
 
         when (escolhaInicial) {
-            1 -> {
-                val nomeCliente = JOptionPane.showInputDialog("Digite seu nome:")
-                val emailCliente = JOptionPane.showInputDialog("Digite seu email:")
-                val instagramCliente = JOptionPane.showInputDialog("Digite seu Instagram:")
-
-                val cliente = Cliente(
-                    codigo = (1..1000).random(),
-                    nome = nomeCliente,
-                    email = emailCliente,
-                    instagram = instagramCliente
-                )
-
-                JOptionPane.showMessageDialog(
-                    null, "Cliente ${cliente.nome} cadastrado com sucesso!"
-                )
-
-                // Aqui você pode prosseguir para a avaliação
-                realizarAvaliacao(cliente)
-            }
-
-            2 -> {
-                val nomeProfissional = JOptionPane.showInputDialog("Digite seu nome:")
-                val especialidadeProfissional = JOptionPane.showInputDialog("Digite sua especialidade:")
-
-                val profissional = Profissional(
-                    codigo = (1..1000).random(),
-                    nome = nomeProfissional,
-                    especialidade = especialidadeProfissional,
-                )
-
-                JOptionPane.showMessageDialog(
-                    null, "Profissional ${profissional.nome} cadastrado com sucesso!"
-                )
-
-                // Aqui você pode permitir que o profissional avalie clientes
-                avaliarClientes(profissional)
-            }
-
-            3 -> {
+            1 -> login()
+            2 -> cadastrarProfissional()
+            3 -> cadastrarCliente()
+            4 -> {
                 JOptionPane.showMessageDialog(null, "Saindo do sistema...")
-                break
+                return
             }
 
             else -> JOptionPane.showMessageDialog(null, "Escolha inválida, tente novamente.")
@@ -59,7 +29,122 @@ fun main() {
     }
 }
 
-// Função para realizar a avaliação de serviços como cliente
+fun login() {
+    val email = JOptionPane.showInputDialog("Digite seu email:").trim()
+    val senha = JOptionPane.showInputDialog("Digite sua senha:").trim()
+
+    println("Tentando login com email: $email e senha: $senha")
+
+    val cliente = clientesCadastrados.find { it.email == email && it.senha == senha }
+    val profissional = profissionaisCadastrados.find { it.email == email && it.senha == senha }
+
+    println("Cliente encontrado: $cliente")
+    println("Profissional encontrado: $profissional")
+    println("Lista de profissionais cadastrados: $profissionaisCadastrados")
+
+    when {
+        cliente != null -> menuCliente(cliente)
+        profissional != null -> menuProfissional(profissional)
+        else -> JOptionPane.showMessageDialog(null, "Email ou senha inválidos.")
+    }
+}
+
+
+fun cadastrarCliente() {
+    val nomeCliente = JOptionPane.showInputDialog("Digite seu nome:").checkNotEmpty("Nome")
+    val emailCliente = JOptionPane.showInputDialog("Digite seu email:").checkNotEmpty("Email")
+    val senhaCliente = JOptionPane.showInputDialog("Digite sua senha:").checkNotEmpty("Senha")
+    val instagramCliente = JOptionPane.showInputDialog("Digite seu Instagram:").checkNotEmpty("Instagram")
+
+    val cliente = Cliente(
+        codigo = (1..1000).random(),
+        nome = nomeCliente,
+        email = emailCliente,
+        instagram = instagramCliente,
+        senha = senhaCliente
+    )
+
+    clientesCadastrados.add(cliente)
+    JOptionPane.showMessageDialog(null, "Cliente ${cliente.nome} cadastrado com sucesso!")
+}
+
+fun cadastrarProfissional() {
+    val nomeProfissional = JOptionPane.showInputDialog("Digite seu nome:").checkNotEmpty("Nome")
+    val emailProfissional = JOptionPane.showInputDialog("Digite seu email:").checkNotEmpty("Email")
+    val senhaProfissional = capturarSenha()
+
+    if (senhaProfissional.isBlank()) {
+        JOptionPane.showMessageDialog(null, "Senha não pode ser nula ou vazia!")
+        return
+    }
+
+    println("Senha capturada: $senhaProfissional")
+
+    val especialidadeProfissional =
+        JOptionPane.showInputDialog("Digite sua especialidade:").checkNotEmpty("Especialidade")
+
+    val profissional = Profissional(
+        codigo = (1..1000).random(),
+        nome = nomeProfissional,
+        email = emailProfissional,
+        especialidade = especialidadeProfissional,
+        senha = senhaProfissional
+    )
+
+    profissionaisCadastrados.add(profissional)
+
+    println("Profissional cadastrado: ${profissional.nome}")
+    println("Email: ${profissional.email}")
+    println("Senha: ${profissional.senha}")
+    println("Especialidade: ${profissional.especialidade}")
+    println("Lista de profissionais cadastrados: $profissionaisCadastrados")
+
+    JOptionPane.showMessageDialog(null, "Profissional ${profissional.nome} cadastrado com sucesso!")
+}
+
+
+fun capturarSenha(): String {
+    val passwordField = JPasswordField()
+    val result = JOptionPane.showConfirmDialog(null, passwordField, "Digite sua senha", JOptionPane.OK_CANCEL_OPTION)
+    return if (result == JOptionPane.OK_OPTION) {
+        String(passwordField.password).trim()
+    } else {
+        ""
+    }
+}
+
+fun menuCliente(cliente: Cliente) {
+    while (true) {
+        val escolha = JOptionPane.showInputDialog(
+            null, "Bem-vindo, ${cliente.nome}!\n" +
+                    "1. Avaliar Serviço\n2. Logout"
+        )?.toIntOrNull()
+
+        when (escolha) {
+            1 -> realizarAvaliacao(cliente)
+            2 -> return
+            else -> JOptionPane.showMessageDialog(null, "Escolha inválida, tente novamente.")
+        }
+    }
+}
+
+fun menuProfissional(profissional: Profissional) {
+    while (true) {
+        val escolha = JOptionPane.showInputDialog(
+            null, "Bem-vindo, ${profissional.nome}!\n" +
+                    "1. Avaliar Cliente\n2. Ver Clientes\n3. Ver Serviços\n4. Logout"
+        )?.toIntOrNull()
+
+        when (escolha) {
+            1 -> avaliarClientes(profissional)
+            2 -> verClientes()
+            3 -> verAvaliacoesServicos()
+            4 -> return
+            else -> JOptionPane.showMessageDialog(null, "Escolha inválida, tente novamente.")
+        }
+    }
+}
+
 fun realizarAvaliacao(cliente: Cliente) {
     val servicoEscolhido = JOptionPane.showInputDialog(
         null, "Escolha o serviço para avaliar:\n1. Cílios\n2. Sobrancelha\n3. Maquiagem"
@@ -80,37 +165,83 @@ fun realizarAvaliacao(cliente: Cliente) {
             anotacoes = anotacao,
             nota = nota,
             agendamento = null,
-            usuario = null,
+            usuario = cliente,
             avaliador = cliente,
             servico = servico
         )
 
-        JOptionPane.showMessageDialog(null, "Obrigado pela avaliação!")
+        feedbacks.add(feedback)
+        JOptionPane.showMessageDialog(null, "Avaliação bem-sucedida!")
     } else {
-        JOptionPane.showMessageDialog(null, "Serviço inválido, voltando ao menu principal.")
+        JOptionPane.showMessageDialog(null, "Serviço inválido, voltando ao menu.")
     }
 }
 
-// Função para o profissional avaliar os clientes
 fun avaliarClientes(profissional: Profissional) {
-    val clienteNome = JOptionPane.showInputDialog("Digite o nome do cliente a ser avaliado:")
-    val nota = JOptionPane.showInputDialog("Dê uma nota para o cliente (1 a 5):")?.toIntOrNull() ?: 0
-    val anotacao = JOptionPane.showInputDialog("Deixe uma observação sobre o cliente:")
+    if (clientesCadastrados.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Nenhum cliente cadastrado para avaliar.")
+        return
+    }
 
-    val feedback = Feedback(
-        anotacoes = anotacao,
-        nota = nota,
-        agendamento = null,
-        usuario = null,
-        avaliador = profissional,
-        clienteAvaliado = Cliente(
-            codigo = (1..1000).random(),
-            nome = clienteNome,
-            email = "email@exemplo.com",
-            instagram = "@exemplo"
-        ),
-        servico = null
-    )
+    val listaClientes = clientesCadastrados.joinToString("\n") { it.nome.toString() }
+    val clienteNome = JOptionPane.showInputDialog("Escolha um cliente para avaliar:\n$listaClientes")
+    val clienteAvaliado = clientesCadastrados.find { it.nome == clienteNome }
 
-    JOptionPane.showMessageDialog(null, "Avaliação do cliente $clienteNome realizada com sucesso!")
+    if (clienteAvaliado != null) {
+        val nota = JOptionPane.showInputDialog("Dê uma nota para o cliente (1 a 5):")?.toIntOrNull() ?: 0
+        val anotacao = JOptionPane.showInputDialog("Deixe uma observação sobre o cliente:")
+
+        val feedback = Feedback(
+            anotacoes = anotacao,
+            nota = nota,
+            agendamento = null,
+            usuario = profissional,
+            avaliador = profissional,
+            clienteAvaliado = clienteAvaliado,
+            servico = null
+        )
+
+        feedbacks.add(feedback)
+        JOptionPane.showMessageDialog(null, "Avaliação realizada com sucesso!")
+    } else {
+        JOptionPane.showMessageDialog(null, "Cliente não encontrado.")
+    }
+}
+
+fun verClientes() {
+    if (clientesCadastrados.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Nenhum cliente cadastrado.")
+    } else {
+        val listaClientes = clientesCadastrados.joinToString("\n") {
+            val media = calcularMediaAvaliacoesCliente(it)
+            "${it.nome} - Média de Avaliação: ${media ?: "Sem avaliações"}"
+        }
+        JOptionPane.showMessageDialog(null, "Clientes cadastrados:\n$listaClientes")
+    }
+}
+
+fun verAvaliacoesServicos() {
+    if (feedbacks.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Nenhuma avaliação registrada.")
+    } else {
+        val servicos = feedbacks.groupBy { it.servico?.nome }
+        val avaliacaoServicos = servicos.entries.joinToString("\n") { (servico, feedbacks) ->
+            val media = feedbacks.mapNotNull { it.nota }.average()
+            "$servico - Média de Avaliação: $media"
+        }
+        JOptionPane.showMessageDialog(null, "Avaliações de Serviços:\n$avaliacaoServicos")
+    }
+}
+
+fun calcularMediaAvaliacoesCliente(cliente: Cliente): Double? {
+    val feedbacksCliente = feedbacks.filter { it.clienteAvaliado == cliente }
+    return if (feedbacksCliente.isNotEmpty()) {
+        feedbacksCliente.mapNotNull { it.nota }.average()
+    } else {
+        null
+    }
+}
+
+fun String?.checkNotEmpty(fieldName: String): String {
+    return this?.takeIf { it.isNotBlank() } ?: throw IllegalArgumentException("$fieldName não pode ser vazio.")
 }

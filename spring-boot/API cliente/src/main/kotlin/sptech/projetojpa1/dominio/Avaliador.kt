@@ -16,6 +16,9 @@ abstract class Avaliador(
     @Column(name = "email")
     var email: String? = null,
 
+    @Column(name = "senha")
+    var senha: String? = null,
+
     @Column(name = "instagram")
     var instagram: String? = null
 ) {
