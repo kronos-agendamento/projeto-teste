@@ -1,4 +1,4 @@
-package sptech.projetojpa1
+package sptech.projetojpa1.abstractmain
 
 import sptech.projetojpa1.dominio.*
 
