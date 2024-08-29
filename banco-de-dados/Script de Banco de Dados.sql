@@ -2,6 +2,7 @@ CREATE DATABASE IF NOT EXISTS kronosbooking;
 USE kronosbooking;
 
 -- Dropando tabelas se existirem
+DROP TABLE IF EXISTS cliente;
 DROP TABLE IF EXISTS feedback;
 DROP TABLE IF EXISTS agendamento;
 DROP TABLE IF EXISTS especificacao_procedimento;
@@ -178,6 +179,20 @@ CREATE TABLE agendamento (
     FOREIGN KEY (fk_procedimento) REFERENCES procedimento(id_procedimento),
     FOREIGN KEY (fk_status) REFERENCES status_agendamento(id_status_agendamento),
     FOREIGN KEY (fk_especificacao_procedimento) REFERENCES especificacao_procedimento(id_especificacao_procedimento)
+);
+
+CREATE TABLE servico (
+    id_servico INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100),
+    descricao TEXT
+);
+
+-- Tabela avaliador
+CREATE TABLE avaliador (
+    id_avaliador INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100),
+    email VARCHAR(100),
+    instagram VARCHAR(50)
 );
 
 CREATE TABLE feedback (

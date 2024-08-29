@@ -113,6 +113,25 @@ interface UsuarioRepository : JpaRepository<Usuario, Int> {
     )
     fun findClientesFidelizadosUltimosTresMeses(): Int
 
+    @Query(
+        nativeQuery = true,
+        value = """
+        SELECT 
+            COUNT(DISTINCT u.id_usuario) AS qtd_clientes_concluidos
+        FROM 
+            usuario u
+        INNER JOIN 
+            agendamento a 
+        ON 
+            u.id_usuario = a.fk_usuario
+        WHERE 
+            a.data BETWEEN DATE_SUB(CURDATE(), INTERVAL 2 MONTH) AND CURDATE()
+            AND a.fk_status = (SELECT id_status_agendamento FROM statusAgendamento WHERE nome = 'Concluído')
+        """
+    )
+    fun countClientesConcluidosUltimosDoisMeses(): Int
+
+
     abstract fun save(cliente: Cliente): Cliente
 
 }
