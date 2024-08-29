@@ -1,10 +1,10 @@
-package sptech.projetojpa1.dominio
+package sptech.projetojpa1.domain
 
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 
 @Entity
-@Table(name = "statusAgendamento")
+@Table(name = "status_agendamento")
 data class Status(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "id_status_agendamento")
     var id: Int?,

@@ -10,7 +10,7 @@ import org.mockito.Mockito.any
 import org.mockito.MockitoAnnotations
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import sptech.projetojpa1.dominio.NivelAcesso
+import sptech.projetojpa1.domain.NivelAcesso
 import sptech.projetojpa1.dto.nivelacesso.NivelAcessoCreateDTO
 import sptech.projetojpa1.dto.nivelacesso.NivelAcessoResponseDTO
 import sptech.projetojpa1.dto.nivelacesso.NivelAcessoUpdateDTO

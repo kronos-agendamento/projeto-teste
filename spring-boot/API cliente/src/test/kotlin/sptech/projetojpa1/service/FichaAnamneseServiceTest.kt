@@ -8,11 +8,10 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.jupiter.MockitoExtension
-import sptech.projetojpa1.dominio.FichaAnamnese
+import sptech.projetojpa1.domain.FichaAnamnese
 import sptech.projetojpa1.dto.FichaRequest
 import sptech.projetojpa1.repository.FichaAnamneseRepository
 import java.time.LocalDateTime
-import java.util.*
 
 @ExtendWith(MockitoExtension::class)
 class FichaAnamneseServiceTest {

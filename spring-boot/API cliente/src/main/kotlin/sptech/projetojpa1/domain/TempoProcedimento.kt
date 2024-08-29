@@ -1,4 +1,4 @@
-package sptech.projetojpa1.dominio
+package sptech.projetojpa1.domain
 
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Pattern
 import java.sql.Time
 
 @Entity
-@Table(name = "tempoProcedimento")
+@Table(name = "tempo_procedimento")
 class TempoProcedimento(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_tempo_procedimento")

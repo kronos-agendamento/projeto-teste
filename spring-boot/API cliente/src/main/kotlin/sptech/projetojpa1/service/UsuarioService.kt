@@ -2,9 +2,9 @@ package sptech.projetojpa1.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import sptech.projetojpa1.dominio.usuario.Cliente
-import sptech.projetojpa1.dominio.usuario.Profissional
-import sptech.projetojpa1.dominio.Usuario
+import sptech.projetojpa1.domain.usuario.Cliente
+import sptech.projetojpa1.domain.usuario.Profissional
+import sptech.projetojpa1.domain.Usuario
 import sptech.projetojpa1.dto.usuario.UsuarioAtualizacaoRequest
 import sptech.projetojpa1.dto.usuario.UsuarioLoginRequest
 import sptech.projetojpa1.dto.usuario.UsuarioLoginResponse

@@ -1,39 +1,42 @@
-package sptech.projetojpa1.dominio
+package sptech.projetojpa1.domain
 
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 import org.hibernate.validator.constraints.br.CNPJ
-import java.time.LocalDateTime
 
 @Entity
+@Table(name = "empresa")
 class Empresa(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_empresa")
-    var codigo: Int,
+    var idEmpresa: Int? = null,
 
     @field:NotBlank(message = "Nome é obrigatório")
+    @Column(name = "nome")
     var nome: String,
 
-    @field:NotNull(message = "Contato é obrigatório")
-    @field:Size(max = 11)
-    var contato: Char,
+    @field:NotNull(message = "Telefone é obrigatório")
+    @field:Size(max = 11, message = "O telefone deve ter no máximo 11 dígitos")
+    @Column(name = "telefone")
+    var telefone: String,
 
     @field:CNPJ(message = "CNPJ inválido")
-    var CNPJ: String,
+    @Column(name = "cnpj")
+    var cnpj: String,
 
     @field:NotNull(message = "Endereço é obrigatório")
     @ManyToOne
-    @JoinColumn(name = "endereco_id_endereco")
+    @JoinColumn(name = "fk_endereco")
     var endereco: Endereco,
 
     @field:NotNull(message = "Horário de Funcionamento é obrigatório")
     @ManyToOne
     @JoinColumn(name = "fk_horario_funcionamento")
-    var horarioFuncionamento: HorarioFuncionamento?
+    var horarioFuncionamento: HorarioFuncionamento
 ) {
     override fun toString(): String {
-        return "Empresa(codigo=$codigo, nome='$nome', contato=$contato, CNPJ='$CNPJ', endereco=$endereco, horarioFuncionamento=$horarioFuncionamento)"
+        return "Empresa(idEmpresa=$idEmpresa, nome='$nome', telefone='$telefone', cnpj='$cnpj', endereco=$endereco, horarioFuncionamento=$horarioFuncionamento)"
     }
 }

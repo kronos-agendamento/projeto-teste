@@ -1,4 +1,4 @@
-package sptech.projetojpa1.dominio
+package sptech.projetojpa1.domain
 
 import jakarta.persistence.*
 

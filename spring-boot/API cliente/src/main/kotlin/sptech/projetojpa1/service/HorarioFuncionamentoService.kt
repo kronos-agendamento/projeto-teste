@@ -1,7 +1,7 @@
 package sptech.projetojpa1.service
 
 import org.springframework.stereotype.Service
-import sptech.projetojpa1.dominio.HorarioFuncionamento
+import sptech.projetojpa1.domain.HorarioFuncionamento
 import sptech.projetojpa1.dto.horario.HorarioFuncionamentoRequest
 import sptech.projetojpa1.repository.HorarioFuncionamentoRepository
 

@@ -7,8 +7,7 @@ import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
-import sptech.projetojpa1.dominio.Usuario
+import sptech.projetojpa1.domain.Usuario
 import sptech.projetojpa1.dto.usuario.UsuarioAtualizacaoRequest
 import sptech.projetojpa1.dto.usuario.UsuarioLoginRequest
 import sptech.projetojpa1.dto.usuario.UsuarioLoginResponse

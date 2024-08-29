@@ -1,9 +1,8 @@
-package sptech.projetojpa1.dominio
+package sptech.projetojpa1.domain
 
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotNull
 import java.time.LocalDateTime
-import java.util.*
 
 @Entity
 @Table(name = "agendamento")

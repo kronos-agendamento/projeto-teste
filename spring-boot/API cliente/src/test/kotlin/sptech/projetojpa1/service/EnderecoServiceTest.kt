@@ -8,10 +8,8 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.jupiter.MockitoExtension
-import sptech.projetojpa1.dominio.Endereco
+import sptech.projetojpa1.domain.Endereco
 import sptech.projetojpa1.dto.endereco.EnderecoRequestDTO
-import sptech.projetojpa1.dto.endereco.EnderecoResponseDTO
-import sptech.projetojpa1.repository.ComplementoRepository
 import sptech.projetojpa1.repository.EnderecoRepository
 import sptech.projetojpa1.repository.UsuarioRepository
 import java.util.*

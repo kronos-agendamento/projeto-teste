@@ -2,8 +2,7 @@ package sptech.projetojpa1.repository
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
-import sptech.projetojpa1.dominio.Especificacao
-import sptech.projetojpa1.dto.especificacao.EspecificacaoReceitaMensalDTO
+import sptech.projetojpa1.domain.Especificacao
 
 interface EspecificacaoRepository : JpaRepository<Especificacao, Int> {
     //    fun findByFkProcedimentoDescricao(descricao: String): List<Especificacao>

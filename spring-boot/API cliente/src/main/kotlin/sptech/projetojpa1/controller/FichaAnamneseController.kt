@@ -15,7 +15,6 @@ import sptech.projetojpa1.service.FichaAnamneseService
 class FichaAnamneseController(
     val fichaAnamneseService: FichaAnamneseService
 ) {
-    // Endpoint para cadastrar uma nova ficha de anamnese
 
     @Operation(summary = "Cadastrar nova ficha de anamnese")
     @ApiResponses(value = [
@@ -29,7 +28,6 @@ class FichaAnamneseController(
         return ResponseEntity.status(201).body(fichaAnamneseSalva)
     }
 
-    // Endpoint para listar todas as fichas de anamnese
     @Operation(summary = "Listar todas as fichas de anamnese")
     @ApiResponses(value = [
         ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna uma lista de fichas de anamnese"),

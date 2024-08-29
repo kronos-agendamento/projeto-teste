@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service
 import sptech.projetojpa1.dto.resposta.RespostaRequestDTO
 import sptech.projetojpa1.dto.resposta.RespostaResponseDTO
 import sptech.projetojpa1.dto.resposta.RespostaFilteredDTO
-import sptech.projetojpa1.dominio.Resposta
+import sptech.projetojpa1.domain.Resposta
 import sptech.projetojpa1.repository.RespostaRepository
 import sptech.projetojpa1.repository.PerguntaRepository
 import sptech.projetojpa1.repository.FichaAnamneseRepository
@@ -18,47 +18,83 @@ class RespostaService(
     private val usuarioRepository: UsuarioRepository
 ) {
 
-    fun cadastrarResposta(novaResposta: RespostaRequestDTO): RespostaResponseDTO {
-        val pergunta = perguntaRepository.findById(novaResposta.perguntaId)
+    fun criarResposta(request: RespostaRequestDTO): RespostaResponseDTO {
+        val pergunta = perguntaRepository.findById(request.idPergunta)
             .orElseThrow { IllegalArgumentException("Pergunta não encontrada") }
-        val ficha = fichaAnamneseRepository.findById(novaResposta.fichaId)
+        val fichaAnamnese = fichaAnamneseRepository.findById(request.idFichaAnamnese)
             .orElseThrow { IllegalArgumentException("Ficha não encontrada") }
-        val usuario = usuarioRepository.findById(novaResposta.usuarioId)
+        val usuario = usuarioRepository.findById(request.idUsuario)
             .orElseThrow { IllegalArgumentException("Usuário não encontrado") }
 
         val resposta = Resposta(
-            resposta = novaResposta.resposta,
+            resposta = request.resposta,
             pergunta = pergunta,
-            ficha = ficha,
+            fichaAnamnese = fichaAnamnese,
             usuario = usuario
         )
 
         val respostaSalva = respostaRepository.save(resposta)
 
         return RespostaResponseDTO(
-            id = respostaSalva.codigoRespostaFichaUsuario!!,
+            idResposta = respostaSalva.idResposta!!,
             resposta = respostaSalva.resposta,
-            perguntaDescricao = respostaSalva.pergunta.descricao,
-            perguntaTipo = respostaSalva.pergunta.tipo,
-            usuarioNome = respostaSalva.usuario.nome ?: "",
-            usuarioCpf = respostaSalva.usuario.cpf ?: "",
-            fichaDataPreenchimento = respostaSalva.ficha.dataPreenchimento.toString()
+            pergunta = respostaSalva.pergunta.pergunta,
+            usuario = respostaSalva.usuario.nome ?: "",
+            dataPreenchimento = respostaSalva.fichaAnamnese.dataPreenchimento.toString()
         )
     }
 
-    fun listarTodasRespostas(): List<RespostaResponseDTO> {
+    fun listarRespostas(): List<RespostaResponseDTO> {
         val respostas = respostaRepository.findAll()
         return respostas.map { resposta ->
             RespostaResponseDTO(
-                id = resposta.codigoRespostaFichaUsuario!!,
+                idResposta = resposta.idResposta!!,
                 resposta = resposta.resposta,
-                perguntaDescricao = resposta.pergunta.descricao,
-                perguntaTipo = resposta.pergunta.tipo,
-                usuarioNome = resposta.usuario.nome ?: "",
-                usuarioCpf = resposta.usuario.cpf ?: "",
-                fichaDataPreenchimento = resposta.ficha.dataPreenchimento.toString()
+                pergunta = resposta.pergunta.pergunta,
+                usuario = resposta.usuario.nome ?: "",
+                dataPreenchimento = resposta.fichaAnamnese.dataPreenchimento.toString()
             )
         }
+    }
+
+    fun buscarRespostaPorId(id: Int): RespostaResponseDTO {
+        val resposta = respostaRepository.findById(id)
+            .orElseThrow { IllegalArgumentException("Resposta não encontrada para o ID fornecido.") }
+
+        return RespostaResponseDTO(
+            idResposta = resposta.idResposta!!,
+            resposta = resposta.resposta,
+            pergunta = resposta.pergunta.pergunta,
+            usuario = resposta.usuario.nome ?: "",
+            dataPreenchimento = resposta.fichaAnamnese.dataPreenchimento.toString()
+        )
+    }
+
+    fun atualizarResposta(id: Int, request: RespostaRequestDTO): RespostaResponseDTO {
+        val resposta = respostaRepository.findById(id)
+            .orElseThrow { IllegalArgumentException("Resposta não encontrada para o ID fornecido.") }
+
+        val pergunta = perguntaRepository.findById(request.idPergunta)
+            .orElseThrow { IllegalArgumentException("Pergunta não encontrada") }
+        val ficha = fichaAnamneseRepository.findById(request.idFichaAnamnese)
+            .orElseThrow { IllegalArgumentException("Ficha não encontrada") }
+        val usuario = usuarioRepository.findById(request.idUsuario)
+            .orElseThrow { IllegalArgumentException("Usuário não encontrado") }
+
+        resposta.resposta = request.resposta
+        resposta.pergunta = pergunta
+        resposta.fichaAnamnese = ficha
+        resposta.usuario = usuario
+
+        val respostaAtualizada = respostaRepository.save(resposta)
+
+        return RespostaResponseDTO(
+            idResposta = respostaAtualizada.idResposta!!,
+            resposta = respostaAtualizada.resposta,
+            pergunta = respostaAtualizada.pergunta.pergunta,
+            usuario = respostaAtualizada.usuario.nome ?: "",
+            dataPreenchimento = respostaAtualizada.fichaAnamnese.dataPreenchimento.toString()
+        )
     }
 
     fun filtrarPorCpf(cpf: String): List<RespostaFilteredDTO> {
@@ -66,30 +102,15 @@ class RespostaService(
         return respostas.map { resposta ->
             RespostaFilteredDTO(
                 resposta = resposta.resposta,
-                nomeUsuario = resposta.usuario.nome ?: "",
-                cpfUsuario = resposta.usuario.cpf ?: "",
-                dataPreenchimentoFicha = resposta.ficha.dataPreenchimento.toString()
+                pergunta = resposta.pergunta.pergunta,
+                usuario = resposta.usuario.nome ?: "",
+                dataPreenchimento = resposta.fichaAnamnese.dataPreenchimento.toString()
             )
         }
     }
 
-    fun filtrarPorPergunta(descricao: String): List<RespostaFilteredDTO> {
-        val respostas = respostaRepository.findByPerguntaDescricao(descricao)
-        return respostas.map { resposta ->
-            RespostaFilteredDTO(
-                resposta = resposta.resposta,
-                descricaoPergunta = resposta.pergunta.descricao,
-                tipoPergunta = resposta.pergunta.tipo,
-                nomeUsuario = resposta.usuario.nome ?: "",
-                cpfUsuario = resposta.usuario.cpf ?: "",
-                dataPreenchimentoFicha = resposta.ficha.dataPreenchimento.toString()
-            )
-        }
-    }
-
-    fun excluirResposta(id: Int): Boolean {
-        val respostaOptional = respostaRepository.findById(id)
-        return if (respostaOptional.isPresent) {
+    fun deletarResposta(id: Int): Boolean {
+        return if (respostaRepository.existsById(id)) {
             respostaRepository.deleteById(id)
             true
         } else {

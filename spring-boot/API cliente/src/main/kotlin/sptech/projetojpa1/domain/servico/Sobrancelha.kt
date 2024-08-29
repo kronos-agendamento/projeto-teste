@@ -1,8 +1,8 @@
-package sptech.projetojpa1.dominio.servico
+package sptech.projetojpa1.domain.servico
 
 import jakarta.persistence.Entity
 import jakarta.persistence.Table
-import sptech.projetojpa1.dominio.Servico
+import sptech.projetojpa1.domain.Servico
 
 @Entity
 @Table(name = "sobrancelha")

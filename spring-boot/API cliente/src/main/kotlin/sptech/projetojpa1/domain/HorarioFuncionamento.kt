@@ -1,11 +1,11 @@
-package sptech.projetojpa1.dominio
+package sptech.projetojpa1.domain
 
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 
 @Entity
-@Table(name = "horario_funcionamento")
+@Table(name = "horarioFuncionamento")
 class HorarioFuncionamento(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_horario_funcionamento")

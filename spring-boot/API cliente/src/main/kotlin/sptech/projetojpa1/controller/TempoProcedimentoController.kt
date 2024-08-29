@@ -7,7 +7,7 @@ import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
-import sptech.projetojpa1.dominio.TempoProcedimento
+import sptech.projetojpa1.domain.TempoProcedimento
 import sptech.projetojpa1.dto.tempo.TempoProcedimentoRequest
 import sptech.projetojpa1.service.TempoProcedimentoService
 

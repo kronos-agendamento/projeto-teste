@@ -1,9 +1,9 @@
-package sptech.projetojpa1.dominio.usuario
+package sptech.projetojpa1.domain.usuario
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Table
-import sptech.projetojpa1.dominio.Usuario
+import sptech.projetojpa1.domain.Usuario
 
 @Entity
 @Table(name = "cliente")

@@ -25,231 +25,187 @@ DROP TABLE IF EXISTS cilios;
 DROP TABLE IF EXISTS sobrancelha;
 DROP TABLE IF EXISTS make;
 
--- Criação das tabelas
-CREATE TABLE endereco (
-    id_endereco INT PRIMARY KEY AUTO_INCREMENT,
-    logradouro VARCHAR(50),
-    cep VARCHAR(8),
-    numero INT,
-    bairro VARCHAR(50),
-    cidade VARCHAR(60),
-    estado VARCHAR(2)
+CREATE TABLE Endereco (
+    id_endereco INT AUTO_INCREMENT PRIMARY KEY,
+    logradouro VARCHAR(255) NOT NULL,
+    cep VARCHAR(8) NOT NULL,
+    bairro VARCHAR(255) NOT NULL,
+    cidade VARCHAR(255) NOT NULL,
+    estado VARCHAR(255) NOT NULL,
+    numero INT NOT NULL,
+    complemento VARCHAR(100)
 );
 
-CREATE TABLE complemento (
-    id_complemento INT PRIMARY KEY AUTO_INCREMENT,
-    complemento VARCHAR(70),
-    fk_endereco INT,
-    FOREIGN KEY (fk_endereco) REFERENCES endereco(id_endereco)
+CREATE TABLE NivelAcesso (
+    id_nivel_acesso INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    nivel INT NOT NULL,
+    descricao VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE horario_funcionamento (
-    id_horario_funcionamento INT PRIMARY KEY AUTO_INCREMENT,
-    dia_inicio VARCHAR(45),
-    dia_fim VARCHAR(45),
-    horario_abertura VARCHAR(5),
-    horario_fechamento VARCHAR(5)
+CREATE TABLE HorarioFuncionamento (
+    id_horario_funcionamento INT AUTO_INCREMENT PRIMARY KEY,
+    dia_inicio VARCHAR(10) NOT NULL,
+    dia_fim VARCHAR(10) NOT NULL,
+    horario_abertura VARCHAR(5) NOT NULL,
+    horario_fechamento VARCHAR(5) NOT NULL
 );
 
-CREATE TABLE empresa (
-    id_empresa INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(70),
-    contato CHAR(11),
-    cnpj VARCHAR(14),
-    endereco_id_endereco INT,
-    fk_horario_funcionamento INT,
-    FOREIGN KEY (endereco_id_endereco) REFERENCES endereco(id_endereco),
-    FOREIGN KEY (fk_horario_funcionamento) REFERENCES horario_funcionamento(id_horario_funcionamento)
+CREATE TABLE Empresa (
+    id_empresa INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    telefone VARCHAR(11) NOT NULL,
+    cnpj VARCHAR(18) NOT NULL,
+    fk_endereco INT NOT NULL,
+    fk_horario_funcionamento INT NOT NULL,
+    FOREIGN KEY (fk_endereco) REFERENCES Endereco(id_endereco),
+    FOREIGN KEY (fk_horario_funcionamento) REFERENCES HorarioFuncionamento(id_horario_funcionamento)
 );
 
-CREATE TABLE nivel_acesso (
-    id_nivel_acesso INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(30),
-    nivel INT,
-    descricao VARCHAR(255)
+CREATE TABLE FichaAnamnese (
+    id_ficha INT AUTO_INCREMENT PRIMARY KEY,
+    data_preenchimento DATETIME NOT NULL
 );
 
-CREATE TABLE ficha_anamnese (
-    id_ficha INT PRIMARY KEY AUTO_INCREMENT,
-    data_preenchimento DATETIME
-);
-
-CREATE TABLE usuario (
-    id_usuario INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL,
-    senha VARCHAR(50) NOT NULL,
-    instagram VARCHAR(50),
-    cpf VARCHAR(11),
-    telefone BIGINT,
-    telefone_emergencial BIGINT,
+CREATE TABLE Usuario (
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+    instagram VARCHAR(255) NOT NULL,
+    cpf VARCHAR(14) NOT NULL,
+    telefone BIGINT NOT NULL,
+    telefone_emergencial BIGINT NOT NULL,
     data_nasc DATE,
-    genero VARCHAR(100),
-    indicacao VARCHAR(100),
-    foto BLOB,
+    genero VARCHAR(50),
+    indicacao VARCHAR(255),
+    foto LONGBLOB,
     status BOOLEAN DEFAULT TRUE,
     fk_nivel_acesso INT,
     fk_endereco INT,
     fk_empresa INT,
     fk_ficha_anamnese INT,
-    FOREIGN KEY (fk_nivel_acesso) REFERENCES nivel_acesso(id_nivel_acesso),
-    FOREIGN KEY (fk_endereco) REFERENCES endereco(id_endereco),
-    FOREIGN KEY (fk_empresa) REFERENCES empresa(id_empresa),
-    FOREIGN KEY (fk_ficha_anamnese) REFERENCES ficha_anamnese(id_ficha)
+    FOREIGN KEY (fk_nivel_acesso) REFERENCES NivelAcesso(id_nivel_acesso),
+    FOREIGN KEY (fk_endereco) REFERENCES Endereco(id_endereco),
+    FOREIGN KEY (fk_empresa) REFERENCES Empresa(id_empresa),
+    FOREIGN KEY (fk_ficha_anamnese) REFERENCES FichaAnamnese(id_ficha)
 );
 
-CREATE TABLE cliente (
-    id_cliente INT PRIMARY KEY AUTO_INCREMENT,
-    experiencia_avaliada VARCHAR(255),
-    frequencia INT,
-    fk_usuario INT,
-    FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario)
+CREATE TABLE Servico (
+    id_servico INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    descricao VARCHAR(500) NOT NULL
 );
 
-CREATE TABLE profissional (
-    id_profissional INT PRIMARY KEY AUTO_INCREMENT,
-    numero_avaliacoes INT,
-    media_nota DOUBLE,
-    qualificacoes VARCHAR(255),
-    especialidade VARCHAR(100),
-    fk_usuario INT,
-    FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario)
+CREATE TABLE Procedimento (
+    id_procedimento INT AUTO_INCREMENT PRIMARY KEY,
+    tipo VARCHAR(100) NOT NULL,
+    descricao VARCHAR(500) NOT NULL
 );
 
-CREATE TABLE pergunta (
-    id_pergunta INT PRIMARY KEY AUTO_INCREMENT,
-    descricao VARCHAR(255),
-    tipo VARCHAR(45),
-    status BOOLEAN
+CREATE TABLE TempoProcedimento (
+    id_tempo_procedimento INT AUTO_INCREMENT PRIMARY KEY,
+    tempo_colocacao VARCHAR(5) NOT NULL,
+    tempo_manutencao VARCHAR(5) NOT NULL,
+    tempo_retirada VARCHAR(5) NOT NULL
 );
 
-CREATE TABLE resposta (
-    id_resposta INT PRIMARY KEY AUTO_INCREMENT,
-    fk_pergunta INT,
-    fk_ficha INT,
-    fk_usuario INT,
-    resposta_cliente VARCHAR(45),
-    FOREIGN KEY (fk_pergunta) REFERENCES pergunta(id_pergunta),
-    FOREIGN KEY (fk_ficha) REFERENCES ficha_anamnese(id_ficha),
-    FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario)
+CREATE TABLE Especificacao (
+    id_especificacao_procedimento INT AUTO_INCREMENT PRIMARY KEY,
+    especificacao VARCHAR(70) NOT NULL,
+    preco_colocacao DOUBLE NOT NULL,
+    preco_manutencao DOUBLE NOT NULL,
+    preco_retirada DOUBLE NOT NULL,
+    foto LONGBLOB,
+    fk_procedimento INT NOT NULL,
+    fk_tempo_procedimento INT NOT NULL,
+    FOREIGN KEY (fk_procedimento) REFERENCES Procedimento(id_procedimento),
+    FOREIGN KEY (fk_tempo_procedimento) REFERENCES TempoProcedimento(id_tempo_procedimento)
 );
 
-CREATE TABLE status_agendamento (
-    id_status_agendamento INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(30),
-    cor VARCHAR(10),
-    motivo VARCHAR(45)
+CREATE TABLE Pergunta (
+    id_pergunta INT AUTO_INCREMENT PRIMARY KEY,
+    pergunta VARCHAR(255) NOT NULL,
+    pergunta_ativa BOOLEAN NOT NULL
 );
 
-CREATE TABLE procedimento (
-    id_procedimento INT PRIMARY KEY AUTO_INCREMENT,
-    tipo VARCHAR(50),
-    descricao VARCHAR(255)
+CREATE TABLE Resposta (
+    id_resposta INT AUTO_INCREMENT PRIMARY KEY,
+    resposta VARCHAR(255) NOT NULL,
+    fk_pergunta INT NOT NULL,
+    fk_ficha_anamnese INT NOT NULL,
+    fk_usuario INT NOT NULL,
+    FOREIGN KEY (fk_pergunta) REFERENCES Pergunta(id_pergunta),
+    FOREIGN KEY (fk_ficha_anamnese) REFERENCES FichaAnamnese(id_ficha),
+    FOREIGN KEY (fk_usuario) REFERENCES Usuario(id_usuario)
 );
 
-CREATE TABLE tempo_procedimento (
-    id_tempo_procedimento INT PRIMARY KEY AUTO_INCREMENT,
-    tempo_colocacao VARCHAR(5),
-    tempo_manutencao VARCHAR(5),
-    tempo_retirada VARCHAR(5)
+CREATE TABLE Status (
+    id_status_agendamento INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(30) NOT NULL,
+    cor VARCHAR(200),
+    motivo VARCHAR(200)
 );
 
-CREATE TABLE especificacao_procedimento (
-    id_especificacao_procedimento INT PRIMARY KEY AUTO_INCREMENT,
-    especificacao VARCHAR(70),
-    preco_colocacao DOUBLE,
-    preco_manutencao DOUBLE,
-    preco_retirada DOUBLE,
-    foto BLOB,
-    fk_tempo_procedimento INT,
-    fk_procedimento INT,
-    FOREIGN KEY (fk_tempo_procedimento) REFERENCES tempo_procedimento(id_tempo_procedimento),
-    FOREIGN KEY (fk_procedimento) REFERENCES procedimento(id_procedimento)
+CREATE TABLE Agendamento (
+    id_agendamento INT AUTO_INCREMENT PRIMARY KEY,
+    data_horario DATETIME NOT NULL,
+    tipo_agendamento VARCHAR(255) NOT NULL,
+    fk_usuario INT NOT NULL,
+    fk_procedimento INT NOT NULL,
+    fk_especificacao_procedimento INT NOT NULL,
+    fk_status INT NOT NULL,
+    FOREIGN KEY (fk_usuario) REFERENCES Usuario(id_usuario),
+    FOREIGN KEY (fk_procedimento) REFERENCES Procedimento(id_procedimento),
+    FOREIGN KEY (fk_especificacao_procedimento) REFERENCES Especificacao(id_especificacao_procedimento),
+    FOREIGN KEY (fk_status) REFERENCES Status(id_status_agendamento)
 );
 
-CREATE TABLE agendamento (
-    id_agendamento INT PRIMARY KEY AUTO_INCREMENT,
-    data_horario DATETIME,
-    tipo_agendamento VARCHAR(45),
-    fk_usuario INT,
-    fk_procedimento INT,
-    fk_status INT,
-    fk_especificacao_procedimento INT,
-    FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario),
-    FOREIGN KEY (fk_procedimento) REFERENCES procedimento(id_procedimento),
-    FOREIGN KEY (fk_status) REFERENCES status_agendamento(id_status_agendamento),
-    FOREIGN KEY (fk_especificacao_procedimento) REFERENCES especificacao_procedimento(id_especificacao_procedimento)
-);
-
-CREATE TABLE servico (
-    id_servico INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(100),
-    descricao TEXT
-);
-
--- Tabela avaliador
-CREATE TABLE avaliador (
-    id_avaliador INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(100),
-    email VARCHAR(100),
-    instagram VARCHAR(50)
-);
-
-CREATE TABLE feedback (
-    id_feedback INT PRIMARY KEY AUTO_INCREMENT,
-    anotacoes VARCHAR(200),
-    nota INT CHECK(nota BETWEEN 1 AND 5),
+CREATE TABLE Feedback (
+    id_feedback INT AUTO_INCREMENT PRIMARY KEY,
+    anotacoes VARCHAR(255),
+    nota INT CHECK (nota BETWEEN 1 AND 5),
     fk_agendamento INT,
     fk_usuario INT,
     fk_avaliador INT,
     fk_servico INT,
     fk_cliente_avaliado INT,
-    FOREIGN KEY (fk_agendamento) REFERENCES agendamento(id_agendamento),
-    FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario),
-    FOREIGN KEY (fk_avaliador) REFERENCES usuario(id_usuario),
-    FOREIGN KEY (fk_servico) REFERENCES servico(id_servico),
-    FOREIGN KEY (fk_cliente_avaliado) REFERENCES cliente(id_cliente)
+    FOREIGN KEY (fk_agendamento) REFERENCES Agendamento(id_agendamento),
+    FOREIGN KEY (fk_usuario) REFERENCES Usuario(id_usuario),
+    FOREIGN KEY (fk_avaliador) REFERENCES Usuario(id_usuario),
+    FOREIGN KEY (fk_servico) REFERENCES Servico(id_servico),
+    FOREIGN KEY (fk_cliente_avaliado) REFERENCES Usuario(id_usuario)
 );
 
-CREATE TABLE capacitacao (
-    id_capacitacao INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(70),
-    descricao VARCHAR(100),
-    nivel VARCHAR(50),
-    modalidade VARCHAR(50),
-    carga_horaria VARCHAR(30),
-    preco_capacitacao DOUBLE,
-	ativo BOOLEAN DEFAULT TRUE
+CREATE TABLE Cliente (
+    id_usuario INT PRIMARY KEY,
+    experiencia_avaliada VARCHAR(255),
+    frequencia INT,
+    FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario)
 );
 
-CREATE TABLE servico (
-    id_servico INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(100),
-    descricao TEXT
+CREATE TABLE Profissional (
+    id_usuario INT PRIMARY KEY,
+    numero_avaliacoes INT,
+    media_nota DOUBLE,
+    qualificacoes VARCHAR(255),
+    especialidade VARCHAR(255),
+    FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario)
 );
 
-CREATE TABLE cilios (
-    id_cilios INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(100),
-    descricao TEXT,
-    fk_servico INT,
-    FOREIGN KEY (fk_servico) REFERENCES servico(id_servico)
+CREATE TABLE Cilios (
+    id_servico INT PRIMARY KEY,
+    FOREIGN KEY (id_servico) REFERENCES Servico(id_servico)
 );
 
-CREATE TABLE sobrancelha (
-    id_sobrancelha INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(100),
-    descricao TEXT,
-    fk_servico INT,
-    FOREIGN KEY (fk_servico) REFERENCES servico(id_servico)
+CREATE TABLE Make (
+    id_servico INT PRIMARY KEY,
+    FOREIGN KEY (id_servico) REFERENCES Servico(id_servico)
 );
 
-CREATE TABLE make (
-    id_make INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(100),
-    descricao TEXT,
-    fk_servico INT,
-    FOREIGN KEY (fk_servico) REFERENCES servico(id_servico)
+CREATE TABLE Sobrancelha (
+    id_servico INT PRIMARY KEY,
+    FOREIGN KEY (id_servico) REFERENCES Servico(id_servico)
 );
 
 -- Inserir endereços

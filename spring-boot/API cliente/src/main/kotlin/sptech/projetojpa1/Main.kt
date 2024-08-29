@@ -1,11 +1,11 @@
 package sptech.projetojpa1
 
-import sptech.projetojpa1.dominio.*
-import sptech.projetojpa1.dominio.servico.Cilios
-import sptech.projetojpa1.dominio.servico.Make
-import sptech.projetojpa1.dominio.servico.Sobrancelha
-import sptech.projetojpa1.dominio.usuario.Cliente
-import sptech.projetojpa1.dominio.usuario.Profissional
+import sptech.projetojpa1.domain.*
+import sptech.projetojpa1.domain.servico.Cilios
+import sptech.projetojpa1.domain.servico.Make
+import sptech.projetojpa1.domain.servico.Sobrancelha
+import sptech.projetojpa1.domain.usuario.Cliente
+import sptech.projetojpa1.domain.usuario.Profissional
 
 fun main() {
     println("=== Bem-vindo ao Sistema de Avaliação de Serviços Estéticos da Kronos ===\n")

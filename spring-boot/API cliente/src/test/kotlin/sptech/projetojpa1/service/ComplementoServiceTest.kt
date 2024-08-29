@@ -9,11 +9,8 @@ import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.junit.jupiter.MockitoExtension
 import sptech.projetojpa1.dto.complemento.ComplementoRequestDTO
-import sptech.projetojpa1.dto.complemento.ComplementoResponseDTO
 import sptech.projetojpa1.dto.complemento.ComplementoUpdateDTO
-import sptech.projetojpa1.dominio.Complemento
-import sptech.projetojpa1.dominio.Endereco
-import sptech.projetojpa1.repository.ComplementoRepository
+import sptech.projetojpa1.domain.Endereco
 import sptech.projetojpa1.repository.EnderecoRepository
 import java.util.*
 

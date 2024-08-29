@@ -1,7 +1,7 @@
 package sptech.projetojpa1.service
 
 import org.springframework.stereotype.Service
-import sptech.projetojpa1.dominio.FichaAnamnese
+import sptech.projetojpa1.domain.FichaAnamnese
 import sptech.projetojpa1.dto.FichaRequest
 import sptech.projetojpa1.dto.FichaResponse
 import sptech.projetojpa1.repository.FichaAnamneseRepository

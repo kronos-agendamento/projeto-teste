@@ -1,4 +1,4 @@
-package sptech.projetojpa1.dominio
+package sptech.projetojpa1.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
