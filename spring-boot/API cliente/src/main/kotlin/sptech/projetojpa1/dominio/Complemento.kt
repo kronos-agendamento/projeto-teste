@@ -19,4 +19,8 @@ class Complemento(
     @field:ManyToOne
     @JoinColumn(name = "fk_endereco")
     var endereco: Endereco?
-)
+) {
+    override fun toString(): String {
+        return "Complemento(codigo=$codigo, complemento=$complemento, endereco=$endereco)"
+    }
+}

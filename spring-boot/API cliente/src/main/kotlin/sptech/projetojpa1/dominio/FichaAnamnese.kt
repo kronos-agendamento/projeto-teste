@@ -11,4 +11,8 @@ class FichaAnamnese(
     var codigoFicha: Int?,
 
     var dataPreenchimento: LocalDateTime
-)
+) {
+    override fun toString(): String {
+        return "FichaAnamnese(codigoFicha=$codigoFicha, dataPreenchimento=$dataPreenchimento)"
+    }
+}

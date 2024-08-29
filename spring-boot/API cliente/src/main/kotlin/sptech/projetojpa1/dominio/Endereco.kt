@@ -27,4 +27,8 @@ data class Endereco(
     var numero: Int?,
 
     var complemento: String?
-)
+) {
+    override fun toString(): String {
+        return "Endereco(codigo=$codigo, logradouro='$logradouro', cep='$cep', bairro=$bairro, cidade=$cidade, estado=$estado, numero=$numero, complemento=$complemento)"
+    }
+}

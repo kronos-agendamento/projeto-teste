@@ -1,6 +1,11 @@
 package sptech.projetojpa1
 
 import sptech.projetojpa1.dominio.*
+import sptech.projetojpa1.dominio.servico.Cilios
+import sptech.projetojpa1.dominio.servico.Make
+import sptech.projetojpa1.dominio.servico.Sobrancelha
+import sptech.projetojpa1.dominio.usuario.Cliente
+import sptech.projetojpa1.dominio.usuario.Profissional
 import javax.swing.JOptionPane
 import javax.swing.JPasswordField
 

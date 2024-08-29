@@ -22,4 +22,8 @@ class NivelAcesso(
 
     @field:NotBlank(message = "Descrição é obrigatória")
     var descricao: String?
-)
+) {
+    override fun toString(): String {
+        return "NivelAcesso(codigo=$codigo, nome=$nome, nivel=$nivel, descricao=$descricao)"
+    }
+}

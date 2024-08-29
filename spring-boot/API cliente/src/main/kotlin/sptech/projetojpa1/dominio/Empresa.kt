@@ -32,4 +32,8 @@ class Empresa(
     @ManyToOne
     @JoinColumn(name = "fk_horario_funcionamento")
     var horarioFuncionamento: HorarioFuncionamento?
-)
+) {
+    override fun toString(): String {
+        return "Empresa(codigo=$codigo, nome='$nome', contato=$contato, CNPJ='$CNPJ', endereco=$endereco, horarioFuncionamento=$horarioFuncionamento)"
+    }
+}

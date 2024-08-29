@@ -29,28 +29,7 @@ open class Servico(
         }
     }
 
-    fun descricaoCompleta(): String? {
+    open fun descricaoCompleta(): String? {
         return descricao
     }
 }
-
-@Entity
-@Table(name = "cilios")
-class Cilios(
-    nome: String,
-    descricao: String
-) : Servico(nome = nome, descricao = descricao)
-
-@Entity
-@Table(name = "sobrancelha")
-class Sobrancelha(
-    nome: String,
-    descricao: String
-) : Servico(nome = nome, descricao = descricao)
-
-@Entity
-@Table(name = "make")
-class Make(
-    nome: String,
-    descricao: String
-) : Servico(nome = nome, descricao = descricao)

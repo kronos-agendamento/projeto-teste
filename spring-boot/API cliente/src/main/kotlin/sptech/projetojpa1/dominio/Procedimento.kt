@@ -18,5 +18,8 @@ open class Procedimento(
     @field:NotNull(message = "O campo descrição não pode ser nulo")
     @field:Size(min = 1, max = 500, message = "O campo descrição deve ter entre 1 e 500 caracteres")
     var descricao: String?
-
-)
+) {
+    override fun toString(): String {
+        return "Procedimento(idProcedimento=$idProcedimento, tipo=$tipo, descricao=$descricao)"
+    }
+}

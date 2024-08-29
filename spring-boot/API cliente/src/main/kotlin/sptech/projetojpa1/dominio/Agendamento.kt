@@ -41,4 +41,8 @@ open class Agendamento(
     @ManyToOne
     @JoinColumn(name = "fk_status")
     var statusAgendamento: Status
-)
+) {
+    override fun toString(): String {
+        return "Agendamento(idAgendamento=$idAgendamento, dataHorario=$dataHorario, tipoAgendamento=$tipoAgendamento, usuario=$usuario, procedimento=$procedimento, especificacao=$especificacao, statusAgendamento=$statusAgendamento)"
+    }
+}

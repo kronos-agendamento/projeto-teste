@@ -64,50 +64,8 @@ abstract class Usuario(
     @ManyToOne
     @JoinColumn(name = "fk_ficha_anamnese")
     var fichaAnamnese: FichaAnamnese? = null
-)
-
-@Entity
-@Table(name = "cliente")
-class Cliente(
-    codigo: Int? = null,
-    nome: String? = null,
-    email: String? = null,
-    senha: String? = null,
-    instagram: String? = null,
-
-    @Column(name = "experiencia_avaliada")
-    var experienciaAvaliada: String? = null,
-
-    @Column(name = "frequencia")
-    var frequencia: Int? = null
-) : Usuario(codigo, nome, email, instagram){
+) {
     override fun toString(): String {
-        return "Cliente(codigo=$codigo, nome=$nome, email=$email, instagram=$instagram, experienciaAvaliada=$experienciaAvaliada, frequencia=$frequencia)"
-    }
-}
-
-@Entity
-@Table(name = "profissional")
-class Profissional(
-    codigo: Int? = null,
-    nome: String? = null,
-    email: String? = null,
-    senha: String? = null,
-    instagram: String? = null,
-
-    @Column(name = "numero_avaliacoes")
-    var numeroAvaliacoes: Int? = null,
-
-    @Column(name = "media_nota")
-    var mediaNota: Double? = null,
-
-    @Column(name = "qualificacoes")
-    var qualificacoes: String? = null,
-
-    @Column(name = "especialidade")
-    var especialidade: String? = null
-) : Usuario(codigo, nome, email, instagram){
-    override fun toString(): String {
-        return "Profissional(codigo=$codigo, nome=$nome, email=$email, instagram=$instagram, numeroAvaliacoes=$numeroAvaliacoes, mediaNota=$mediaNota, qualificacoes=$qualificacoes, especialidade=$especialidade)"
+        return "Usuario(codigo=$codigo, nome=$nome, email=$email, senha=$senha, instagram=$instagram, cpf=$cpf, telefone=$telefone, telefoneEmergencial=$telefoneEmergencial, dataNasc=$dataNasc, genero=$genero, indicacao=$indicacao, foto=${foto?.contentToString()}, status=$status, nivelAcesso=$nivelAcesso, endereco=$endereco, empresa=$empresa, fichaAnamnese=$fichaAnamnese)"
     }
 }

@@ -3,6 +3,7 @@ package sptech.projetojpa1.dominio
 import jakarta.persistence.*
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
+import sptech.projetojpa1.dominio.usuario.Cliente
 
 @Entity
 @Table(name = "feedback")

@@ -28,4 +28,8 @@ class Resposta(
     @field:ManyToOne
     @JoinColumn(name="fk_usuario")
     var usuario: Usuario
-)
+) {
+    override fun toString(): String {
+        return "Resposta(codigoRespostaFichaUsuario=$codigoRespostaFichaUsuario, resposta='$resposta', pergunta=$pergunta, ficha=$ficha, usuario=$usuario)"
+    }
+}

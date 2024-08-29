@@ -20,4 +20,8 @@ class Pergunta(
     var tipo: String,
 
     var status: Boolean = false
-)
+) {
+    override fun toString(): String {
+        return "Pergunta(codigoPergunta=$codigoPergunta, descricao='$descricao', tipo='$tipo', status=$status)"
+    }
+}

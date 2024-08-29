@@ -13,6 +13,6 @@ data class AgendamentoResponseDTO(
     var tipoAgendamento: String?,
     var usuario: Usuario,
     var procedimento: Procedimento,
-    var especificacao: Especificacao,  // Novo campo
+    var especificacao: Especificacao,
     var statusAgendamento: Status
 )

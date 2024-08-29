@@ -35,4 +35,16 @@ class TempoProcedimento(
     @field:NotBlank(message = "O tempo de colocação é obrigatório")
     @Column(name = "tempo_retirada")
     var tempoRetirada: String
-)
+) {
+    fun getTempoColocacao(): Time {
+        return Time.valueOf(tempoColocacao + ":00")
+    }
+
+    fun getTempoManutencao(): Time {
+        return Time.valueOf(tempoManutencao + ":00")
+    }
+
+    fun getTempoRetirada(): Time {
+        return Time.valueOf(tempoRetirada + ":00")
+    }
+}
