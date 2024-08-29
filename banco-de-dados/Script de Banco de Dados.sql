@@ -1,29 +1,6 @@
+DROP DATABASE kronosbooking;
 CREATE DATABASE IF NOT EXISTS kronosbooking;
 USE kronosbooking;
-
--- Dropando tabelas se existirem
-DROP TABLE IF EXISTS cliente;
-DROP TABLE IF EXISTS feedback;
-DROP TABLE IF EXISTS agendamento;
-DROP TABLE IF EXISTS especificacao_procedimento;
-DROP TABLE IF EXISTS tempo_procedimento;
-DROP TABLE IF EXISTS procedimento;
-DROP TABLE IF EXISTS status_agendamento;
-DROP TABLE IF EXISTS resposta;
-DROP TABLE IF EXISTS pergunta;
-DROP TABLE IF EXISTS usuario;
-DROP TABLE IF EXISTS cliente;
-DROP TABLE IF EXISTS profissional;
-DROP TABLE IF EXISTS ficha_anamnese;
-DROP TABLE IF EXISTS nivel_acesso;
-DROP TABLE IF EXISTS empresa;
-DROP TABLE IF EXISTS horario_funcionamento;
-DROP TABLE IF EXISTS complemento;
-DROP TABLE IF EXISTS endereco;
-DROP TABLE IF EXISTS capacitacao;
-DROP TABLE IF EXISTS cilios;
-DROP TABLE IF EXISTS sobrancelha;
-DROP TABLE IF EXISTS make;
 
 CREATE TABLE Endereco (
     id_endereco INT AUTO_INCREMENT PRIMARY KEY,
@@ -208,161 +185,91 @@ CREATE TABLE Sobrancelha (
     FOREIGN KEY (id_servico) REFERENCES Servico(id_servico)
 );
 
--- Inserir endereços
-INSERT INTO endereco (logradouro, cep, numero, bairro, cidade, estado)
-VALUES 
-('Rua das Flores', '12345678', 100, 'Centro', 'São Paulo', 'SP'),
-('Avenida Paulista', '87654321', 1500, 'Bela Vista', 'São Paulo', 'SP'),
-('Rua das Palmeiras', '11223344', 500, 'Jardins', 'São Paulo', 'SP');
+-- Inserções na tabela Endereco
+INSERT INTO Endereco (logradouro, cep, bairro, cidade, estado, numero, complemento)
+VALUES ('Rua das Flores', '12345678', 'Centro', 'São Paulo', 'SP', 123, 'Apto 101'),
+       ('Av. Paulista', '87654321', 'Bela Vista', 'São Paulo', 'SP', 456, 'Sala 502');
 
--- Inserir complementos
-INSERT INTO complemento (complemento, fk_endereco)
-VALUES 
-('Apto 101', 1),
-('Sala 202', 2),
-('Casa 1', 3);
+-- Inserções na tabela NivelAcesso
+INSERT INTO NivelAcesso (nome, nivel, descricao)
+VALUES ('Administrador', 1, 'Acesso total'),
+       ('Usuário', 2, 'Acesso limitado');
 
--- Inserir horários de funcionamento
-INSERT INTO horario_funcionamento (dia_inicio, dia_fim, horario_abertura, horario_fechamento)
-VALUES 
-('Segunda-feira', 'Segunda-feira', '09:00', '18:00'),
-('Terça-feira', 'Terça-feira', '09:00', '18:00'),
-('Quarta-feira', 'Quarta-feira', '09:00', '18:00'),
-('Quinta-feira', 'Quinta-feira', '09:00', '18:00'),
-('Sexta-feira', 'Sexta-feira', '09:00', '18:00');
+-- Inserções na tabela HorarioFuncionamento
+INSERT INTO HorarioFuncionamento (dia_inicio, dia_fim, horario_abertura, horario_fechamento)
+VALUES ('Segunda', 'Sexta', '09:00', '18:00'),
+       ('Sábado', 'Domingo', '10:00', '14:00');
 
--- Inserir empresas
-INSERT INTO empresa (nome, contato, cnpj, endereco_id_endereco, fk_horario_funcionamento)
-VALUES 
-('Clínica Estética SP', '11999999999', '12345678000101', 1, 1),
-('Beleza Paulista', '11888888888', '87654321000199', 2, 2);
+-- Inserções na tabela Empresa
+INSERT INTO Empresa (nome, telefone, cnpj, fk_endereco, fk_horario_funcionamento)
+VALUES ('Estética Bella', '11987654321', '12.345.678/0001-99', 1, 1),
+       ('Clínica Estética VIP', '11234567890', '98.765.432/0001-88', 2, 2);
 
--- Inserir níveis de acesso
-INSERT INTO nivel_acesso (nome, nivel, descricao)
-VALUES 
-('Administrador', 1, 'Acesso total ao sistema'),
-('Recepcionista', 2, 'Acesso limitado a agendamentos e clientes'),
-('Esteticista', 3, 'Acesso aos procedimentos e clientes');
+-- Inserções na tabela FichaAnamnese
+INSERT INTO FichaAnamnese (data_preenchimento)
+VALUES (NOW()), (NOW());
 
--- Inserir fichas de anamnese
-INSERT INTO ficha_anamnese (data_preenchimento)
-VALUES 
-(NOW());
+-- Inserções na tabela Usuario
+INSERT INTO Usuario (nome, email, senha, instagram, cpf, telefone, telefone_emergencial, data_nasc, genero, indicacao, foto, status, fk_nivel_acesso, fk_endereco, fk_empresa, fk_ficha_anamnese)
+VALUES ('João Silva', 'joao@example.com', 'senha123', '@joaosilva', '123.456.789-00', 11987654321, 11912345678, '1985-01-01', 'Masculino', 'Amigo', NULL, TRUE, 2, 1, 1, 1),
+       ('Maria Souza', 'maria@example.com', 'senha123', '@mariasouza', '987.654.321-00', 11234567890, 11987654321, '1990-02-02', 'Feminino', 'Internet', NULL, TRUE, 2, 2, 2, 2);
 
--- Inserir usuários
-INSERT INTO usuario (nome, email, senha, instagram, cpf, telefone, telefone_emergencial, data_nasc, genero, indicacao, foto, status, fk_nivel_acesso, fk_endereco, fk_empresa, fk_ficha_anamnese)
-VALUES 
-('Maria Silva', 'maria@gmail.com', 'senha123', '@maria', '12345678901', '11999999999', '11988888888', '1990-01-01', 'Feminino', 'Amiga', NULL, TRUE, 1, 1, 1, 1),
-('João Pereira', 'joao@gmail.com', 'senha123', '@joao', '10987654321', '11977777777', '11966666666', '1985-05-15', 'Masculino', 'Internet', NULL, TRUE, 2, 2, 1, 1),
-('Ana Souza', 'ana@gmail.com', 'senha123', '@ana', '12345098765', '11955555555', '11944444444', '1992-07-21', 'Feminino', 'Cliente', NULL, TRUE, 3, 3, 2, 1);
+-- Inserções na tabela Servico
+INSERT INTO Servico (nome, descricao)
+VALUES ('Extensão de Cílios', 'Serviço de aplicação de extensão de cílios'),
+       ('Design de Sobrancelhas', 'Serviço de design de sobrancelhas');
 
--- Inserir clientes
-INSERT INTO cliente (experiencia_avaliada, frequencia, fk_usuario)
-VALUES 
-('Ótima', 5, 1),
-('Boa', 3, 2),
-('Regular', 2, 3);
+-- Inserções na tabela Procedimento
+INSERT INTO Procedimento (tipo, descricao)
+VALUES ('Cílios', 'Procedimento de aplicação de cílios'),
+       ('Sobrancelhas', 'Procedimento de design de sobrancelhas');
 
--- Inserir profissionais
-INSERT INTO profissional (numero_avaliacoes, media_nota, qualificacoes, especialidade, fk_usuario)
-VALUES 
-(10, 4.8, 'Especialista em Sobrancelhas', 'Sobrancelha', 1),
-(15, 4.9, 'Especialista em Cílios', 'Cílios', 2),
-(8, 4.7, 'Maquiadora Profissional', 'Maquiagem', 3);
+-- Inserções na tabela TempoProcedimento
+INSERT INTO TempoProcedimento (tempo_colocacao, tempo_manutencao, tempo_retirada)
+VALUES ('02:00', '01:00', '00:30'),
+       ('01:30', '01:00', '00:45');
 
--- Inserir perguntas
-INSERT INTO pergunta (descricao, tipo, status)
-VALUES 
-('Tem alergia a algum produto?', 'Sim/Não', TRUE),
-('Já fez algum procedimento estético antes?', 'Sim/Não', TRUE);
+-- Inserções na tabela Especificacao
+INSERT INTO Especificacao (especificacao, preco_colocacao, preco_manutencao, preco_retirada, foto, fk_procedimento, fk_tempo_procedimento)
+VALUES ('Cílios Volumosos', 150.00, 80.00, 50.00, NULL, 1, 1),
+       ('Sobrancelhas Henna', 100.00, 60.00, 40.00, NULL, 2, 2);
 
--- Inserir respostas
-INSERT INTO resposta (fk_pergunta, fk_ficha, fk_usuario, resposta_cliente)
-VALUES 
-(1, 1, 1, 'Não'),
-(2, 1, 1, 'Sim'),
-(1, 1, 2, 'Sim'),
-(2, 1, 2, 'Não');
+-- Inserções na tabela Pergunta
+INSERT INTO Pergunta (pergunta, pergunta_ativa)
+VALUES ('Você tem alguma alergia?', TRUE),
+       ('Você já fez algum procedimento estético antes?', TRUE);
 
--- Inserir status de agendamento
-INSERT INTO status_agendamento (nome, cor, motivo)
-VALUES 
-('Agendado', '#008000', 'Confirmado pelo cliente'),  -- Verde
-('Cancelado', '#FF0000', 'Cliente cancelou'),        -- Vermelho
-('Concluído', '#0000FF', 'Procedimento realizado');  -- Azul
+-- Inserções na tabela Resposta
+INSERT INTO Resposta (resposta, fk_pergunta, fk_ficha_anamnese, fk_usuario)
+VALUES ('Não', 1, 1, 1),
+       ('Sim', 2, 2, 2);
 
--- Inserir procedimentos
-INSERT INTO procedimento (tipo, descricao)
-VALUES 
-('Sobrancelha', 'Design e micropigmentação de sobrancelhas'),
-('Maquiagem', 'Maquiagem para diversas ocasiões'),
-('Cílios', 'Aplicação e manutenção de cílios');
+-- Inserções na tabela Status
+INSERT INTO Status (nome, cor, motivo)
+VALUES ('Agendado', 'Verde', 'Procedimento agendado'),
+       ('Cancelado', 'Vermelho', 'Procedimento cancelado pelo cliente');
 
--- Inserir tempos de procedimento
-INSERT INTO tempo_procedimento (tempo_colocacao, tempo_manutencao, tempo_retirada)
-VALUES 
-('01:00', '00:30', '00:30'),
-('01:30', '01:00', '00:45'),
-('02:00', '01:30', '01:00');
+-- Inserções na tabela Agendamento
+INSERT INTO Agendamento (data_horario, tipo_agendamento, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status)
+VALUES ('2024-09-01 09:00:00', 'Colocação', 1, 1, 1, 1),
+       ('2024-09-02 14:00:00', 'Manutenção', 2, 2, 2, 2);
 
--- Inserir especificações de procedimento
-INSERT INTO especificacao_procedimento (especificacao, preco_colocacao, preco_manutencao, preco_retirada, foto, fk_tempo_procedimento, fk_procedimento)
-VALUES 
-('Design de Sobrancelha', 100.00, 50.00, 30.00, NULL, 1, 1),
-('Micropigmentação de Sobrancelha', 300.00, 150.00, 100.00, NULL, 2, 1),
-('Maquiagem Social', 200.00, 100.00, 70.00, NULL, 3, 2),
-('Maquiagem para Noivas', 500.00, 250.00, 150.00, NULL, 2, 2),
-('Aplicação de Cílios', 150.00, 75.00, 50.00, NULL, 1, 3),
-('Manutenção de Cílios', 100.00, 50.00, 30.00, NULL, 1, 3);
+-- Inserções na tabela Feedback
+INSERT INTO Feedback (anotacoes, nota, fk_agendamento, fk_usuario, fk_avaliador, fk_servico, fk_cliente_avaliado)
+VALUES ('Ótimo atendimento!', 5, 1, 1, 2, 1, 1),
+       ('Satisfeita com o serviço.', 4, 2, 2, 1, 2, 2);
 
--- Inserir agendamentos
-INSERT INTO agendamento (data_horario, tipo_agendamento, fk_usuario, fk_procedimento, fk_status, fk_especificacao_procedimento)
-VALUES 
-('2024-08-01 09:00:00', 'Manutenção', 1, 1, 1, 1),
-('2024-08-02 10:00:00', 'Primeira vez', 1, 2, 1, 2),
-('2024-07-23 11:00:00', 'Retorno', 2, 3, 1, 3),
-('2024-07-22 12:00:00', 'Manutenção', 3, 1, 1, 4),
-('2024-08-05 13:00:00', 'Primeira vez', 2, 2, 2, 5),
-('2024-07-17 14:00:00', 'Retorno', 3, 3, 3, 6);
+-- Inserções na tabela Cliente
+INSERT INTO Cliente (id_usuario, experiencia_avaliada, frequencia)
+VALUES (1, 'Boa', 5),
+       (2, 'Excelente', 10);
 
--- Inserir feedbacks
-INSERT INTO feedback (anotacoes, nota, fk_agendamento, fk_usuario, fk_avaliador, fk_servico, fk_cliente_avaliado)
-VALUES 
-('Ótimo atendimento!', 5, 1, 1, 2, 1, 1),
-('Muito satisfeita com o serviço.', 5, 2, 2, 3, 2, 2),
-('Excelente profissional.', 5, 3, 3, 1, 3, 3);
+-- Inserções na tabela Profissional
+INSERT INTO Profissional (id_usuario, numero_avaliacoes, media_nota, qualificacoes, especialidade)
+VALUES (2, 50, 4.8, 'Certificação em extensão de cílios', 'Cílios'),
+       (1, 30, 4.5, 'Certificação em design de sobrancelhas', 'Sobrancelhas');
 
--- Inserir capacitações
-INSERT INTO capacitacao (nome, descricao, nivel, modalidade, carga_horaria, preco_capacitacao, ativo)
-VALUES 
-('Design de Sobrancelhas', 'Curso completo de design de sobrancelhas', 'Básico', 'Presencial', '20 horas', 500.00, TRUE),
-('Maquiagem Profissional', 'Curso de maquiagem profissional', 'Intermediário', 'Online', '30 horas', 700.00, TRUE),
-('Extensão de Cílios', 'Curso de extensão de cílios', 'Avançado', 'Presencial', '25 horas', 800.00, TRUE);
-
--- Inserir cílios
-INSERT INTO cilios (nome, descricao, preco, durabilidade, fk_procedimento)
-VALUES 
-('Cílios Fio a Fio', 'Aplicação de cílios fio a fio para um visual mais natural.', 150.00, '3 semanas', 3),
-('Cílios Volume Russo', 'Aplicação de cílios em volume russo para um visual mais intenso.', 200.00, '4 semanas', 3),
-('Cílios Híbridos', 'Aplicação de cílios híbridos, uma combinação de fio a fio e volume russo.', 180.00, '3-4 semanas', 3);
-
--- Inserir sobrancelhas
-INSERT INTO sobrancelha (nome, descricao, fk_servico)
-VALUES 
-('Design de Sobrancelha', 'Modelagem das sobrancelhas para realçar o olhar.', 1),
-('Micropigmentação de Sobrancelha', 'Técnica para pigmentar a sobrancelha de forma semi-permanente.', 1),
-('Henna para Sobrancelhas', 'Coloração temporária das sobrancelhas com henna.', 1);
-
--- Inserir maquiagem
-INSERT INTO make (nome, descricao, fk_servico)
-VALUES 
-('Maquiagem Social', 'Maquiagem para eventos sociais como festas e reuniões.', 2),
-('Maquiagem para Noivas', 'Maquiagem especial para noivas, com longa duração.', 2),
-('Maquiagem Artística', 'Maquiagem criativa para eventos temáticos e performances.', 2);
-
--- Inserir serviços
-INSERT INTO servico (nome, descricao)
-VALUES 
-('Cílios', 'Serviços relacionados à aplicação e manutenção de cílios.'),
-('Sobrancelha', 'Serviços relacionados ao design e pigmentação de sobrancelhas.'),
-('Maquiagem', 'Serviços relacionados à maquiagem para diversas ocasiões.');
+-- Inserções nas tabelas Cilios, Make, Sobrancelha
+INSERT INTO Cilios (id_servico) VALUES (1);
+INSERT INTO Make (id_servico) VALUES (1); -- Make não tem associação direta, mas inserido para completar
+INSERT INTO Sobrancelha (id_servico) VALUES (2);
