@@ -1,7 +1,7 @@
 package sptech.projetojpa1.service
 
 import org.springframework.stereotype.Service
-import sptech.projetojpa1.dominio.TempoProcedimento
+import sptech.projetojpa1.domain.TempoProcedimento
 import sptech.projetojpa1.dto.tempo.TempoProcedimentoRequest
 import sptech.projetojpa1.repository.TempoProcedimentoRepository
 

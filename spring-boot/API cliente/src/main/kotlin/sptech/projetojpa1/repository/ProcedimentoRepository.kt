@@ -2,8 +2,7 @@ package sptech.projetojpa1.repository
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
-import sptech.projetojpa1.dominio.Procedimento
-import sptech.projetojpa1.dto.procedimento.ProcedimentoTipoDTO
+import sptech.projetojpa1.domain.Procedimento
 
 interface ProcedimentoRepository : JpaRepository<Procedimento, Int> {
 

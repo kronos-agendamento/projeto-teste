@@ -17,6 +17,27 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
+    function getLastFiveMonths() {
+        const result = [];
+        const today = new Date();
+        
+        const monthNames = [
+            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", 
+            "Junho", "Julho", "Agosto", "Setembro", "Outubro", 
+            "Novembro", "Dezembro"
+        ];
+        
+        for (let i = 0; i < 5; i++) {
+            const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
+            const monthName = monthNames[date.getMonth()];  // Obtem o nome do mês
+            result.push(monthName);
+        }
+        
+        return result;
+    }
+    const lastFiveMonths = getLastFiveMonths();
+
+
     // Atualiza os KPIs dos clientes ativos, inativos e fidelizados
     function updateKPIs() {
         const endpoints = {
@@ -24,7 +45,11 @@ document.addEventListener('DOMContentLoaded', function () {
             clientesAtivos: '/usuarios/clientes-ativos',
             clientesInativos: '/usuarios/clientes-inativos',
             clientesFidelizados: '/usuarios/clientes-fidelizados-ultimos-tres-meses',
-            agendamentosRealizados:'/api/agendamentos/agendamentos-realizados',
+            agendamentosRealizados: '/api/agendamentos/agendamentos-realizados',
+
+            // Gráfico 1
+            listarTop3Indicacoes: '/usuarios/buscar-top3-indicacoes',
+            listarNumeroIndicacoes: '/usuarios/buscar-numeros-indicacoes',
 
             // Gráfico 33
             listarProcedimentosBemAvaliados: '/api/procedimentos/listar-bem-avaliados',
@@ -33,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Gráfico 4
             receitaAcumulada: '/especificacoes/receita-acumulada',
             receitaAcumuladaLabels: '/especificacoes/receita-acumulada-labels',
-            
+
             // Gráfico 2
             agendamentosProcedimentosLabels: '/especificacoes/nomes',
             agendamentosProcedimentos: '/api/procedimentos/quantidade-agendamentos-procedimentos',
@@ -46,10 +71,13 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchData(endpoints.agendamentosRealizados, updateAgendamentosRealizados);
 
         // Chamadas para atualizar os dados do gráfico 2
+        fetchData(endpoints.clientesFidelizados, updateChart2_1)
+
+        // Chamadas para atualizar os dados do gráfico 3
         fetchData(endpoints.receitaAcumuladaLabels, updateReceitaAcumuladaLabels);
         fetchData(endpoints.receitaAcumulada, updateChart3);
 
-        // Chamadas para atualizar os dados do gráfico 3
+        // Chamadas para atualizar os dados do gráfico 33
         fetchData(endpoints.listarProcedimentosBemAvaliados, updateChart33Labels)
         fetchData(endpoints.buscarMediaNotas, updateChart33);
 
@@ -57,7 +85,9 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchData(endpoints.agendamentosProcedimentosLabels, updateChart4Labels);
         fetchData(endpoints.agendamentosProcedimentos, updateChart4);
 
-
+        // Chamadas para atualizar os dados do gráfico 1
+        fetchData(endpoints.listarTop3Indicacoes, updateListarTop3Indicacoes);
+        fetchData(endpoints.listarNumeroIndicacoes, updateChart1)
     }
 
     // Funções que atualizam as KPI's
@@ -79,7 +109,12 @@ document.addEventListener('DOMContentLoaded', function () {
         agendamentosRealizadosCount.textContent = formatarNumero(data);
     }
 
-    // Funções que atualizam os gráficos
+    // Constantes dos gráficos
+    let dataChart2_1 = null;
+    let labelsChart2 = null;
+    const ctx2 = document.getElementById('chart2').getContext('2d');
+    let chart2;
+
     let dataChart3 = null;
     let labelsChart3 = null;
     const ctx3 = document.getElementById('chart3').getContext('2d');
@@ -95,10 +130,30 @@ document.addEventListener('DOMContentLoaded', function () {
     const ctx33 = document.getElementById('chart33').getContext('2d');
     let chart33;
 
-    // console.log(dataChart33)
-    // console.log(labelsChart33)
+    let dataChart1 = null;
+    let labelsChart1 = null;
+    const ctx1 = document.getElementById('chart1').getContext('2d');
+    let chart1;
 
 
+    function updateChart2_1(data) {
+        dataChart2_1 = data;
+        labelsChart2 = lastFiveMonths
+        if (dataChart2_1) {
+            createChart2();
+        }
+    }
+
+    function updateChart1(data) {
+        dataChart1 = data;
+        createChart1();
+    }
+    function updateListarTop3Indicacoes(data) {
+        labelsChart1 = data
+        if (dataChart1) {
+            createChart1();
+        }
+    }
     function updateChart3(data) {
         dataChart3 = data;
         createChart3();
@@ -136,6 +191,79 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     // Criação de gráficos
+    function createChart1() {
+        if (!dataChart1 || !labelsChart1) return;
+
+        if (chart1) chart1.destroy();
+
+        chart1 = new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: labelsChart1,
+                datasets: [{
+                    label: 'oi tchau',
+                    data: dataChart1,
+                    backgroundColor: '#D2135D',
+                    borderColor: '#D2135D',
+                    fill: false
+                }]
+            },
+            options: {
+                plugins: {
+                    subtitle: {
+                        display: true,
+                        text: '',
+                        font: {
+                            size: 14
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function createChart2() {
+        if (!dataChart2_1 || !dataChart2_2 || !labelsChart2) return;
+
+        if (chart2) chart2.destroy();
+
+        chart2 = new Chart(ctx2,
+            {
+                type: 'line',
+                data: {
+                    labels: labelsChart2,
+                    datasets: [{
+                        label: 'oi tchau',
+                        data: dataChart1,
+                        backgroundColor: '#D2135D',
+                        borderColor: '#D2135D',
+                        fill: false
+                    },
+                    {
+                        label: 'oi tchau',
+                        data: dataChart1,
+                        backgroundColor: '#D2135D',
+                        borderColor: '#D2135D',
+                        fill: false
+                    }
+                ]
+
+                },
+                options: {
+                    plugins: {
+                        subtitle: {
+                            display: true,
+                            text: '',
+                            font: {
+                                size: 14
+                            }
+                        }
+                    }
+                }
+            }
+        );
+    }
+
     function createChart3() {
         if (!dataChart3 || !labelsChart3) return;
 
@@ -167,7 +295,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function createChart33 () {
+    function createChart33() {
         if (!dataChart33 || !labelsChart33) return;
 
         if (chart33) chart33.destroy();
@@ -175,7 +303,7 @@ document.addEventListener('DOMContentLoaded', function () {
         chart33 = new Chart(ctx33, {
             type: 'bar',
             data: {
-                labels: labelsChart33, 
+                labels: labelsChart33,
                 datasets: [{
                     label: 'caiu sinal da tim',
                     data: dataChart33,
@@ -186,7 +314,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             options: {
                 indexAxis: 'y',
-            responsive: true,
+                responsive: true,
                 plugins: {
                     subtitle: {
                         display: true,
@@ -211,7 +339,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function createChart4 () {
+    function createChart4() {
         if (!dataChart4 || !labelsChart4) return;
 
         if (chart4) chart4.destroy();
@@ -219,7 +347,7 @@ document.addEventListener('DOMContentLoaded', function () {
         chart4 = new Chart(ctx4, {
             type: 'bar',
             data: {
-                labels: labelsChart4, 
+                labels: labelsChart4,
                 datasets: [{
                     label: 'Vezes Agendadas',
                     data: dataChart4,
@@ -230,7 +358,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             options: {
                 indexAxis: 'y',
-            responsive: true,
+                responsive: true,
                 plugins: {
                     subtitle: {
                         display: true,
@@ -264,7 +392,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Atualiza os KPIs e gráficos em intervalos regulares (opcional)
     setInterval(updateKPIs, 30000); // Exemplo de atualização a cada 30 segundos
 
-    
+
 });
 
 document.addEventListener('DOMContentLoaded', function () {

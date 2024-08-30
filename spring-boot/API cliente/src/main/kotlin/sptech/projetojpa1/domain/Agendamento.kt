@@ -1,9 +1,8 @@
-package sptech.projetojpa1.dominio
+package sptech.projetojpa1.domain
 
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotNull
 import java.time.LocalDateTime
-import java.util.*
 
 @Entity
 @Table(name = "agendamento")
@@ -20,7 +19,7 @@ open class Agendamento(
 
     @field:NotNull(message = "Tipo de agendamento não pode ser nulo")
     @Column(name = "tipo_agendamento")
-    var tipoAgendamento: String?,  // Mudança para String
+    var tipoAgendamento: String?,
 
     @field:NotNull(message = "Usuário não pode ser nulo")
     @ManyToOne
@@ -35,10 +34,14 @@ open class Agendamento(
     @field:NotNull(message = "Especificação não pode ser nula")
     @ManyToOne
     @JoinColumn(name = "fk_especificacao_procedimento")
-    var especificacao: Especificacao,  // Novo campo
+    var especificacao: Especificacao,
 
     @field:NotNull(message = "Status do agendamento não pode ser nulo")
     @ManyToOne
     @JoinColumn(name = "fk_status")
     var statusAgendamento: Status
-)
+) {
+    override fun toString(): String {
+        return "Agendamento(idAgendamento=$idAgendamento, dataHorario=$dataHorario, tipoAgendamento=$tipoAgendamento, usuario=$usuario, procedimento=$procedimento, especificacao=$especificacao, statusAgendamento=$statusAgendamento)"
+    }
+}

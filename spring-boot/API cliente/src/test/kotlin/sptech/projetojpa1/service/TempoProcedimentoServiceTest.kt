@@ -6,7 +6,7 @@ import io.mockk.verify
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import sptech.projetojpa1.dominio.TempoProcedimento
+import sptech.projetojpa1.domain.TempoProcedimento
 import sptech.projetojpa1.dto.tempo.TempoProcedimentoRequest
 import sptech.projetojpa1.repository.TempoProcedimentoRepository
 import java.util.*

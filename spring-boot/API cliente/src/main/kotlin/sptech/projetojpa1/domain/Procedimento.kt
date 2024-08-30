@@ -1,4 +1,4 @@
-package sptech.projetojpa1.dominio
+package sptech.projetojpa1.domain
 
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotNull
@@ -7,8 +7,9 @@ import jakarta.validation.constraints.Size
 @Entity
 @Table(name = "procedimento")
 open class Procedimento(
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val idProcedimento: Int = 0,
+    @Id
+    @Column(name = "id_procedimento")
+    var idProcedimento: Int = 0,
 
     @field:NotNull(message = "O campo tipo não pode ser nulo")
     @field:Size(min = 1, max = 100, message = "O campo tipo deve ter entre 1 e 100 caracteres")
@@ -17,4 +18,8 @@ open class Procedimento(
     @field:NotNull(message = "O campo descrição não pode ser nulo")
     @field:Size(min = 1, max = 500, message = "O campo descrição deve ter entre 1 e 500 caracteres")
     var descricao: String?
-)
+) {
+    override fun toString(): String {
+        return "Procedimento(idProcedimento=$idProcedimento, tipo=$tipo, descricao=$descricao)"
+    }
+}

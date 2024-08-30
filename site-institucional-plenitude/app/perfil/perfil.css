@@ -280,7 +280,6 @@ navbar  lateral
   box-shadow: 15px -15px 0 #ffffff;
 }
 
-
 /*--------------------------------------------------------------
 Final Nav
 
@@ -295,7 +294,7 @@ main {
 header {
   display: flex;
   justify-content: space-between;
-  background-color: #D2135D;
+  background-color: #d2135d;
   color: white;
   padding: 2vh;
   border-radius: 3vh;
@@ -335,7 +334,7 @@ Dados do usuário
   overflow: hidden;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border: 1px solid #000;
-  background-color: #FFF0F5;
+  background-color: #fff0f5;
 }
 
 .left-content {
@@ -349,7 +348,7 @@ Dados do usuário
   overflow: hidden;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border: 1px solid #000;
-  background-color: #FFF0F5;
+  background-color: #fff0f5;
 }
 
 .right-content {
@@ -360,21 +359,18 @@ Dados do usuário
   margin-top: 2vh;
   margin-left: 2vw;
   border-radius: 10px;
-  background-color: #FFF0F5;
+  background-color: #fff0f5;
   overflow: hidden;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border: 1px solid #000;
 }
 
-
-
 .content-box {
   display: flex;
   flex-direction: row;
-  background-color: #FFF0F5;
+  background-color: #fff0f5;
   align-items: center;
 }
-
 
 .content {
   margin: 1vh;
@@ -384,34 +380,31 @@ Dados do usuário
 .content-form-flex {
   padding: 1vw;
   display: flex;
-  background-color: #FFF0F5;
+  background-color: #fff0f5;
   width: 30vw;
-
 }
 
 .content2 {
   display: flex;
-  justify-content: space-around
+  justify-content: space-around;
 }
 
 .content-form2 {
   padding: 1.2vw;
-  background-color: #FFF0F5;
+  background-color: #fff0f5;
   width: 22vw;
 }
 
 .content-form {
   padding: 1.2vw;
-  background-color: #FFF0F5;
+  background-color: #fff0f5;
 }
 
 .content-form-flex-image {
   padding: 1vw;
   display: flex;
-  background-color: #FFF0F5;
-
+  background-color: #fff0f5;
 }
-
 
 .content-form-flex-image p {
   margin: 0;
@@ -472,23 +465,20 @@ Dados do usuário
   display: inline-block;
 }
 
-.form-group input[type="number"]+input[type="number"] {
+.form-group input[type="number"] + input[type="number"] {
   margin-left: 20px;
 }
-
 
 .button-container {
   display: flex;
   justify-content: flex-end;
   padding-top: 2vw;
   padding-right: 0.9vw;
-
 }
 
 .content-form-flex #button-alterar {
   justify-content: center;
   padding-top: 2.5vw;
-
 }
 
 .save-button {
@@ -503,7 +493,6 @@ Dados do usuário
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 
-
   svg {
     margin-right: 10px;
     width: 20px;
@@ -516,14 +505,13 @@ Dados do usuário
   transition-duration: 500ms;
 }
 
-
 .actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
 
 .actions button {
-  background-color: #FFF0F5;
+  background-color: #fff0f5;
   display: flex;
   font-family: Poppins, sans-serif;
   height: 10vh;
@@ -539,7 +527,7 @@ Dados do usuário
 }
 
 .actions button:hover {
-  background-color: #E893B9;
+  background-color: #e893b9;
   color: #dcf5f2;
   transition-duration: 500ms;
 }
@@ -553,7 +541,6 @@ Dados do usuário
   text-decoration: none;
 }
 
-
 /*--------------------------------------------------------------
 # Tables
 --------------------------------------------------------------*/
@@ -561,7 +548,7 @@ Dados do usuário
 .table-header {
   display: flex;
   align-items: center;
-  background-color: #D2135D;
+  background-color: #d2135d;
   padding: 2.5vh 2.5vw;
 }
 
@@ -579,7 +566,7 @@ table {
 }
 
 thead {
-  background-color: #FFF0F5;
+  background-color: #fff0f5;
 }
 
 th,
@@ -599,14 +586,9 @@ td {
   color: #000000;
 }
 
-
-
-
-
 /*--------------------------------------------------------------
 # Notification
 --------------------------------------------------------------*/
-
 
 .notification {
   position: fixed;
@@ -641,7 +623,6 @@ td {
   gap: 10px;
 }
 
-
 /*--------------------------------------------------------------
 # Footer
 --------------------------------------------------------------*/
@@ -659,7 +640,6 @@ td {
   text-decoration: none;
   color: #d63384;
   font-weight: bold;
-
 }
 
 #footer {
@@ -672,7 +652,6 @@ td {
 
 .footer_container {
   width: 100%;
-
 }
 
 .modal {

@@ -6,9 +6,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import sptech.projetojpa1.dominio.Especificacao
+import sptech.projetojpa1.domain.Especificacao
 import sptech.projetojpa1.dto.especificacao.EspecificacaoDTO
-import sptech.projetojpa1.dto.especificacao.EspecificacaoReceitaMensalDTO
 import sptech.projetojpa1.service.EspecificacaoService
 
 @RestController

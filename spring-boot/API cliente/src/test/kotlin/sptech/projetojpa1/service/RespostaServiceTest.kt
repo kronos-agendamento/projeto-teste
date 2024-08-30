@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import sptech.projetojpa1.dominio.*
+import sptech.projetojpa1.domain.*
 import sptech.projetojpa1.dto.resposta.RespostaRequestDTO
 import sptech.projetojpa1.repository.RespostaRepository
 import sptech.projetojpa1.repository.PerguntaRepository

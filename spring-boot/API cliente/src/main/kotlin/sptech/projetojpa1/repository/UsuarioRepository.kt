@@ -2,8 +2,9 @@ package sptech.projetojpa1.repository
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
-import sptech.projetojpa1.dominio.NivelAcesso
-import sptech.projetojpa1.dominio.Usuario
+import sptech.projetojpa1.domain.usuario.Cliente
+import sptech.projetojpa1.domain.NivelAcesso
+import sptech.projetojpa1.domain.Usuario
 
 interface UsuarioRepository : JpaRepository<Usuario, Int> {
 
@@ -45,13 +46,43 @@ interface UsuarioRepository : JpaRepository<Usuario, Int> {
     fun findClientesPorOrigem(): List<Usuario>
 
     @Query(
+        nativeQuery = true, value = """
+    SELECT 
+        u.indicacao
+    FROM 
+        usuario u
+    GROUP BY 
+        u.indicacao
+    ORDER BY 
+        COUNT(u.indicacao) DESC
+    LIMIT 3
+    """
+    )
+    fun findTop3Indicacoes(): List<String>
+
+    @Query(
+        nativeQuery = true, value = """
+    SELECT  
+        COUNT(u.indicacao) AS frequencia
+    FROM 
+        usuario u
+    GROUP BY 
+        u.indicacao
+    ORDER BY 
+        frequencia DESC
+    LIMIT 3
+    """
+    )
+    fun buscarNumerosDivulgacao(): List<Int>
+
+    @Query(
         nativeQuery = true, value =
         "SELECT COUNT(DISTINCT u.id_usuario) AS total_clientes " +
                 "FROM usuario u " +
                 "JOIN agendamento a ON u.id_usuario = a.fk_usuario " +
                 "WHERE a.data BETWEEN DATE_SUB(NOW(), INTERVAL 3 MONTH) AND NOW()"
     )
-    fun findClientesAtivos(): Double
+    fun findClientesAtivos(): Int
 
     @Query(
         nativeQuery = true, value =
@@ -65,20 +96,42 @@ interface UsuarioRepository : JpaRepository<Usuario, Int> {
         )
         """
     )
-    fun findClientesInativos(): Double
+    fun findClientesInativos(): Int
 
     @Query(
         nativeQuery = true, value = """
-        SELECT COUNT(u.id_usuario) AS qtd_clientes_fidelizados
-        FROM usuario u
-        JOIN (
-            SELECT a.fk_usuario
-            FROM agendamento a
-            WHERE a.data BETWEEN DATE_SUB(NOW(), INTERVAL 3 MONTH) AND NOW()
-            GROUP BY a.fk_usuario
-            HAVING COUNT(DISTINCT MONTH(a.data)) = 3
-        ) fidelizados ON u.id_usuario = fidelizados.fk_usuario
+    SELECT COUNT(u.id_usuario) AS qtd_clientes_fidelizados
+    FROM usuario u
+    JOIN (
+        SELECT a.fk_usuario
+        FROM agendamento a
+        WHERE a.data BETWEEN DATE_SUB(NOW(), INTERVAL 3 MONTH) AND NOW()
+        GROUP BY a.fk_usuario
+        HAVING COUNT(DISTINCT MONTH(a.data)) = 3
+    ) fidelizados ON u.id_usuario = fidelizados.fk_usuario
+    """
+    )
+    fun findClientesFidelizadosUltimosTresMeses(): Int
+
+    @Query(
+        nativeQuery = true,
+        value = """
+        SELECT 
+            COUNT(DISTINCT u.id_usuario) AS qtd_clientes_concluidos
+        FROM 
+            usuario u
+        INNER JOIN 
+            agendamento a 
+        ON 
+            u.id_usuario = a.fk_usuario
+        WHERE 
+            a.data BETWEEN DATE_SUB(CURDATE(), INTERVAL 2 MONTH) AND CURDATE()
+            AND a.fk_status = (SELECT id_status_agendamento FROM statusAgendamento WHERE nome = 'Concluído')
         """
     )
-    fun findClientesFidelizadosUltimosTresMeses(): Double
+    fun countClientesConcluidosUltimosDoisMeses(): Int
+
+
+    abstract fun save(cliente: Cliente): Cliente
+
 }

@@ -1,11 +1,9 @@
 package sptech.projetojpa1.repository
 
-import org.hibernate.validator.internal.util.logging.LoggerFactory
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
-import sptech.projetojpa1.dominio.Feedback
-import sptech.projetojpa1.service.FeedbackService
+import sptech.projetojpa1.domain.Feedback
 
 @Repository
 interface FeedbackRepository : JpaRepository<Feedback, Int> {

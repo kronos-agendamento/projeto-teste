@@ -1,7 +1,7 @@
 package sptech.projetojpa1.service
 
 import org.springframework.stereotype.Service
-import sptech.projetojpa1.dominio.Agendamento
+import sptech.projetojpa1.domain.Agendamento
 import sptech.projetojpa1.dto.agendamento.AgendamentoRequestDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoResponseDTO
 import sptech.projetojpa1.repository.*
@@ -43,16 +43,14 @@ class AgendamentoService(
         return agendamentos
     }
 
+
     fun validarDia(dataHorario: LocalDateTime): Boolean {
         val agendamentos = agendamentoRepository.findByDataHorario(dataHorario)
         return agendamentos.isEmpty()
-
-        // true: Não existem agendamentos na data especificada.
-        // false: Existe um agendamento na data especificada.
     }
 
     fun validarAgendamento(agendamentoRequestDTO: AgendamentoRequestDTO): Boolean {
-        val dataInicio = agendamentoRequestDTO.dataHorario
+        val dataHorario = agendamentoRequestDTO.dataHorario
             ?: throw IllegalArgumentException("Data do agendamento não pode ser nula")
 
         val especificacao = especificacaoRepository.findById(agendamentoRequestDTO.fk_especificacao)
@@ -72,10 +70,10 @@ class AgendamentoService(
         val horas = duracaoHorasMinutos[0].toInt()
         val minutos = duracaoHorasMinutos[1].toInt()
 
-        val dataFim = dataInicio.plusHours(horas.toLong()).plusMinutes(minutos.toLong())
-
-        return validarDia(dataInicio)
+        // Não precisamos mais calcular dataFim, pois só validaremos dataHorario
+        return validarDia(dataHorario)
     }
+
 
     fun criarAgendamento(agendamentoRequestDTO: AgendamentoRequestDTO): AgendamentoResponseDTO {
         if (!validarAgendamento(agendamentoRequestDTO)) {
@@ -186,4 +184,7 @@ class AgendamentoService(
 
         agendamentoRepository.deleteById(id)
     }
+
 }
+
+

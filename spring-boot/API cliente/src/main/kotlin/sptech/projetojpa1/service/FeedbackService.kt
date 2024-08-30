@@ -1,8 +1,7 @@
 package sptech.projetojpa1.service
 
-import org.hibernate.validator.internal.util.logging.LoggerFactory
 import org.springframework.stereotype.Service
-import sptech.projetojpa1.dominio.Feedback
+import sptech.projetojpa1.domain.Feedback
 import sptech.projetojpa1.dto.feedback.FeedbackRequestDTO
 import sptech.projetojpa1.dto.feedback.FeedbackResponseDTO
 import sptech.projetojpa1.repository.AgendamentoRepository
@@ -34,7 +33,9 @@ class FeedbackService(
             anotacoes = feedbackRequestDTO.anotacoes,
             nota = feedbackRequestDTO.nota,
             agendamento = agendamento,
-            usuario = usuario
+            usuario = usuario,
+            avaliador = null,
+            servico = null
         )
         val savedFeedback = feedbackRepository.save(feedback)
         return FeedbackResponseDTO(
