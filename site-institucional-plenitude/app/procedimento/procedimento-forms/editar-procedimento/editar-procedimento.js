@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async function () {
-    const baseUrl = 'http://localhost:8080';
+    const baseUrl = 'http://localhost:8080/api';
 
     const urlParams = new URLSearchParams(window.location.search);
     const procedimentoId = urlParams.get('id');
@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     try {
-        const response = await fetch(`${baseUrl}/especificacoes/listar-por-id/${procedimentoId}`);
+        const response = await fetch(`${baseUrl}/especificacoes/${procedimentoId}`);
         const procedimento = await response.json();
 
         document.getElementById('pesquisar').value = procedimento.fkProcedimento.tipo;
@@ -43,7 +43,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             precoColocacao: parseFloat(document.getElementById('valor-colocacao').value.replace('R$', '').replace(',', '.')),
             precoManutencao: parseFloat(document.getElementById('valor-manutencao').value.replace('R$', '').replace(',', '.')),
             precoRetirada: parseFloat(document.getElementById('valor-retirada').value.replace('R$', '').replace(',', '.')),
-            fkTempoProcedimentoId: procedimentoId,
             fkProcedimentoId: procedimentoId,
         };
 
@@ -68,7 +67,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             body: JSON.stringify(tempoProcedimento),
         });
 
-        const updateProcedimento = fetch(`${baseUrl}/api/procedimentos/atualizar/${procedimentoId}`, {
+        const updateProcedimento = fetch(`${baseUrl}/api/procedimentos/${procedimentoId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(procedimento),

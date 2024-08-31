@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", async function () {
     const apiUrlClientes = "http://localhost:8080/usuarios";
-    const apiUrlProcedimentos = "http://localhost:8080/api/procedimentos/listar";
-    const apiUrlEspecificacoes = "http://localhost:8080/especificacoes";
+    const apiUrlProcedimentos = "http://localhost:8080/api/procedimentos";
+    const apiUrlEspecificacoes = "http://localhost:8080/api/especificacoes";
 
     const clientesSelect = document.getElementById("clientes");
     const procedimentosSelect = document.getElementById("procedimentos");

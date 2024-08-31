@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Função para carregar procedimentos no dropdown
     function loadProcedimentos() {
-        fetch('http://localhost:8080/api/procedimentos/listar')
+        fetch('http://localhost:8080/api/procedimentos')
             .then(response => response.json())
             .then(data => {
                 const procedimentoDropdown = document.getElementById('procedimento-dropdown');
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
             descricao: descricao
         };
 
-        fetch('http://localhost:8080/api/procedimentos/criar', {
+        fetch('http://localhost:8080/api/procedimentos', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -61,7 +61,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 return response.json();
             })
             .then(data => {
-                console.log('Procedimento salvo com sucesso:', data);
                 showNotification('Procedimento salvo com sucesso!');
                 loadProcedimentos(); // Atualizar o dropdown após salvar o procedimento
             })
@@ -112,18 +111,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 return response.json();
             })
             .then(tempoResponse => {
-                console.log('Tempo salvo com sucesso:', tempoResponse);
 
                 const especificacaoData = {
                     especificacao: especificacao,
                     precoColocacao: parseFloat(document.getElementById('valor-colocacao').value),
                     precoManutencao: parseFloat(document.getElementById('valor-manutencao').value),
                     precoRetirada: parseFloat(document.getElementById('valor-retirada').value),
-                    fkTempoProcedimentoId: tempoResponse.idTempoProcedimento,
                     fkProcedimentoId: document.getElementById('procedimento-dropdown').value
                 };
 
-                return fetch('http://localhost:8080/especificacoes/cadastro-especificacao', {
+                return fetch('http://localhost:8080//api/especificacoes', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -138,7 +135,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 return response.json();
             })
             .then(especificacaoResponse => {
-                console.log('Especificação salva com sucesso:', especificacaoResponse);
                 showNotification('Especificação salva com sucesso!');
             })
             .catch(error => {

@@ -559,7 +559,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-  fetch('http://localhost:8080/api/procedimentos/listar')
+  fetch('http://localhost:8080/api/procedimentos')
     .then(response => response.json())
     .then(data => {
       const procedimentoSelect = document.getElementById('procedimento-filtro');
@@ -571,7 +571,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     });
 
-  fetch('http://localhost:8080/especificacoes')
+  fetch('http://localhost:8080/api/especificacoes')
     .then(response => response.json())
     .then(data => {
       const especificacaoSelect = document.getElementById('especificacao-filtro');

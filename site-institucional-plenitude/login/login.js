@@ -48,12 +48,11 @@ document.getElementById('registerForm').addEventListener('submit', async (event)
         instagram,
         senha,
         cpf,
-        telefoneEmergencial: null,
         dataNasc: null,
         genero: null,
         indicacao: null,
         status: true,
-        nivelAcessoId: null,
+        nivelAcessoId: 2,
         enderecoId: null,
         empresaId: null,
         fichaAnamneseId: null
@@ -75,7 +74,7 @@ document.getElementById('registerForm').addEventListener('submit', async (event)
             localStorage.setItem('cpf', cpf);
 
             showNotification('Cadastro realizado com sucesso!');
-            window.location.href = 'index/index.html';
+            window.location.href = '../app/index/index.html';
         } else {
             showNotification('Erro ao realizar cadastro.', true);
         }
@@ -114,7 +113,7 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
             localStorage.setItem('cpf', loginData.cpf);
 
             showNotification('Login realizado com sucesso!');
-            window.location.href = 'app/index/index.html';
+            window.location.href = '../app/index/index.html';
         } else {
             showNotification('Erro ao realizar login. Verifique suas credenciais.', true);
         }

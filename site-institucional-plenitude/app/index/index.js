@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  const apiBaseUrl = "http://localhost:8080";
+  const apiBaseUrl = "http://localhost:8080/api";
 
   const fetchEspecificacoes = async () => {
     try {
@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  const formatarDuracao = (tempoColocacao) => {
+  function formatarDuracao(tempoColocacao) {
     if (!tempoColocacao || tempoColocacao === "N/A") {
       return "N/A";
     }
@@ -79,40 +79,41 @@ document.addEventListener("DOMContentLoaded", () => {
     const horasFormatadas = parseInt(horas, 10);
     const minutosFormatados = parseInt(minutos, 10);
 
-    if (horasFormatadas === 0) {
-      return `${minutosFormatados}`;
-    } else {
-      return `${horasFormatadas}:${minutosFormatados < 10 ? "0" + minutosFormatados : minutosFormatados}`;
+    // Verifica se a conversão para número é válida
+    if (isNaN(horasFormatadas) || isNaN(minutosFormatados)) {
+      return "N/A";
     }
-  };
+
+    return horasFormatadas === 0
+      ? `${minutosFormatados} min`
+      : `${horasFormatadas}h ${minutosFormatados < 10 ? "0" + minutosFormatados : minutosFormatados} min`;
+  }
 
   const popularTabela = async () => {
-    const especificacoes = await fetchEspecificacoes();
+    try {
+      const especificacoes = await fetchEspecificacoes();
+      const tabela = document.querySelector("#procedimentos-cadastrados tbody");
+      tabela.innerHTML = "";
 
-    const tabela = document.querySelector("#procedimentos-cadastrados tbody");
-    tabela.innerHTML = ""; // Limpa a tabela antes de inserir novos dados
+      especificacoes.slice(0, 3).forEach((especificacao) => {
+        const procedimento = especificacao.fkProcedimento;
+        const tempo = especificacao;
+        const precoFormatado = `R$${especificacao.precoColocacao.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        const duracaoFormatada = tempo.tempoColocacao ? formatarDuracao(tempo.tempoColocacao) : "N/A";
 
-    // Limita a exibição aos primeiros 2 itens
-    especificacoes.slice(0, 3).forEach((especificacao) => {
-      const procedimento = especificacao.fkProcedimento;
-      const tempo = especificacao.fkTempoProcedimento;
-
-      // Formata o preço com "R$" antes do número e usa vírgula como separador decimal
-      const precoFormatado = `R$ ${especificacao.precoColocacao.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-
-      // Formata a duração (tempo) conforme especificado
-      const duracaoFormatada = tempo ? formatarDuracao(tempo.tempoColocacao) : "N/A";
-
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${procedimento.tipo}</td>
-        <td>${precoFormatado}</td>
-        <td>${duracaoFormatada}h</td>
-        <td>${especificacao.especificacao}</td>
-      `;
-      tabela.appendChild(row);
-    });
-  };
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${procedimento.tipo}</td>
+          <td>${precoFormatado}</td>
+          <td>${duracaoFormatada}</td>
+          <td>${especificacao.especificacao}</td>
+        `;
+        tabela.appendChild(row);
+      });
+    } catch (error) {
+      console.error("Erro ao buscar especificações:", error);
+    }
+  }
 
   popularTabela();
 

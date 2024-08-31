@@ -69,7 +69,6 @@ document.addEventListener("DOMContentLoaded", async () => {
           }
 
           const updatedUser = await response.json();
-          console.log("Dados atualizados com sucesso:", updatedUser);
 
           document.getElementById("notification-message").textContent =
             "Dados atualizados com sucesso!";
@@ -120,7 +119,6 @@ document.addEventListener("DOMContentLoaded", function () {
           }
 
           const updatedUser = await response.json();
-          console.log("Foto atualizada com sucesso:", updatedUser);
 
           document.getElementById("notification-message").textContent =
             "Foto atualizada com sucesso!";
@@ -245,158 +243,159 @@ document.addEventListener("DOMContentLoaded", function () {
     populateSelect("horarioFim", hora);
   }
 
-function populateSelect(selectId, value) {
-  const select = document.getElementById(selectId);
-  const option = document.createElement("option");
-  option.value = value;
-  option.textContent = value;
-  select.appendChild(option);
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-  const nomeInput = document.getElementById("nome");
-
-  nomeInput.addEventListener("input", function () {
-    const words = nomeInput.value.split(" ");
-    for (let i = 0; i < words.length; i++) {
-      if (words[i].length > 0) {
-        words[i] = words[i][0].toUpperCase() + words[i].substr(1).toLowerCase();
-      }
-    }
-    nomeInput.value = words.join(" ");
-  });
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  const telefoneInput = document.getElementById("telefone");
-  const telefoneEmergencialInput = document.getElementById(
-    "telefoneEmergencial"
-  );
-
-  const formatPhoneNumber = (value) => {
-    if (!value) return value;
-    const phoneNumber = value.replace(/[^\d]/g, "");
-    const phoneNumberLength = phoneNumber.length;
-
-    if (phoneNumberLength < 3) return phoneNumber;
-    if (phoneNumberLength < 7) {
-      return `(${phoneNumber.slice(0, 2)}) ${phoneNumber.slice(2)}`;
-    }
-    return `(${phoneNumber.slice(0, 2)}) ${phoneNumber.slice(
-      2,
-      7
-    )}-${phoneNumber.slice(7, 11)}`;
-  };
-
-  const handlePhoneNumberInput = (e) => {
-    e.target.value = formatPhoneNumber(e.target.value);
-  };
-
-  telefoneInput.addEventListener("input", handlePhoneNumberInput);
-  telefoneEmergencialInput.addEventListener("input", handlePhoneNumberInput);
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  const instagramInput = document.getElementById("instagram");
-
-  instagramInput.addEventListener("input", (event) => {
-    let value = event.target.value;
-
-    // Adicionar '@' no início se não estiver presente
-    if (!value.startsWith("@")) {
-      value = "@" + value;
-    }
-
-    // Substituir espaços por '_'
-    value = value.replace(/\s/g, "_");
-
-    // Remover caracteres inválidos
-    value = value.replace(/[^a-z0-9_@]/g, "");
-
-    // Garantir que não há letras maiúsculas
-    value = value.toLowerCase();
-
-    // Atualizar o campo de entrada com o valor formatado
-    event.target.value = value;
-  });
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  const emailInput = document.getElementById("email");
-
-  emailInput.addEventListener("input", (event) => {
-    let value = event.target.value;
-
-    // Converter todas as letras para minúsculas
-    value = value.toLowerCase();
-
-    // Remover caracteres especiais, exceto @ e .
-    value = value.replace(/[^a-z0-9@.]/g, "");
-
-    // Atualizar o campo de entrada com o valor formatado
-    event.target.value = value;
-  });
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  const senhaInput = document.getElementById("senha");
-
-  senhaInput.addEventListener("mouseover", () => {
-    senhaInput.type = "text";
-  });
-
-  senhaInput.addEventListener("mouseout", () => {
-    senhaInput.type = "password";
-  });
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-  const nome = localStorage.getItem("nome");
-  const email = localStorage.getItem("email");
-
-  if (nome && email) {
-    document.getElementById("userName").textContent = nome;
-    document.getElementById("userEmail").textContent = email;
+  function populateSelect(selectId, value) {
+    const select = document.getElementById(selectId);
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = value;
+    select.appendChild(option);
   }
-});
 
-document.addEventListener("DOMContentLoaded", () => {
-  // Selecionando os elementos do formulário
-  const cepInput = document.querySelector("#cep");
-  const logradouroInput = document.querySelector("#logradouro");
-  const bairroInput = document.querySelector("#bairro");
-  const cidadeInput = document.querySelector("#cidade");
-  const estadoInput = document.querySelector("#estado");
+  document.addEventListener("DOMContentLoaded", function () {
+    const nomeInput = document.getElementById("nome");
 
-  // Função para buscar o endereço pelo CEP
-  const buscaEndereco = async (cep) => {
-    try {
-      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-      const data = await response.json();
+    nomeInput.addEventListener("input", function () {
+      const words = nomeInput.value.split(" ");
+      for (let i = 0; i < words.length; i++) {
+        if (words[i].length > 0) {
+          words[i] = words[i][0].toUpperCase() + words[i].substr(1).toLowerCase();
+        }
+      }
+      nomeInput.value = words.join(" ");
+    });
+  });
 
-      if (data.erro) {
-        alert("CEP não encontrado.");
-        return;
+  document.addEventListener("DOMContentLoaded", () => {
+    const telefoneInput = document.getElementById("telefone");
+    const telefoneEmergencialInput = document.getElementById(
+      "telefoneEmergencial"
+    );
+
+    const formatPhoneNumber = (value) => {
+      if (!value) return value;
+      const phoneNumber = value.replace(/[^\d]/g, "");
+      const phoneNumberLength = phoneNumber.length;
+
+      if (phoneNumberLength < 3) return phoneNumber;
+      if (phoneNumberLength < 7) {
+        return `(${phoneNumber.slice(0, 2)}) ${phoneNumber.slice(2)}`;
+      }
+      return `(${phoneNumber.slice(0, 2)}) ${phoneNumber.slice(
+        2,
+        7
+      )}-${phoneNumber.slice(7, 11)}`;
+    };
+
+    const handlePhoneNumberInput = (e) => {
+      e.target.value = formatPhoneNumber(e.target.value);
+    };
+
+    telefoneInput.addEventListener("input", handlePhoneNumberInput);
+    telefoneEmergencialInput.addEventListener("input", handlePhoneNumberInput);
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const instagramInput = document.getElementById("instagram");
+
+    instagramInput.addEventListener("input", (event) => {
+      let value = event.target.value;
+
+      // Adicionar '@' no início se não estiver presente
+      if (!value.startsWith("@")) {
+        value = "@" + value;
       }
 
-      // Populando os campos com os dados recebidos
-      logradouroInput.value = data.logradouro;
-      bairroInput.value = data.bairro;
-      cidadeInput.value = data.localidade;
-      estadoInput.value = data.uf;
-    } catch (error) {
-      console.error("Erro ao buscar o endereço:", error);
-    }
-  };
+      // Substituir espaços por '_'
+      value = value.replace(/\s/g, "_");
 
-  // Evento que detecta quando o usuário terminou de digitar o CEP
-  cepInput.addEventListener("blur", () => {
-    const cep = cepInput.value.replace(/\D/g, ""); // Remove qualquer caractere que não seja número
-    if (cep.length === 8) {
-      // Verifica se o CEP tem 8 dígitos
-      buscaEndereco(cep);
-    } else {
-      alert("Por favor, insira um CEP válido.");
+      // Remover caracteres inválidos
+      value = value.replace(/[^a-z0-9_@]/g, "");
+
+      // Garantir que não há letras maiúsculas
+      value = value.toLowerCase();
+
+      // Atualizar o campo de entrada com o valor formatado
+      event.target.value = value;
+    });
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const emailInput = document.getElementById("email");
+
+    emailInput.addEventListener("input", (event) => {
+      let value = event.target.value;
+
+      // Converter todas as letras para minúsculas
+      value = value.toLowerCase();
+
+      // Remover caracteres especiais, exceto @ e .
+      value = value.replace(/[^a-z0-9@.]/g, "");
+
+      // Atualizar o campo de entrada com o valor formatado
+      event.target.value = value;
+    });
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const senhaInput = document.getElementById("senha");
+
+    senhaInput.addEventListener("mouseover", () => {
+      senhaInput.type = "text";
+    });
+
+    senhaInput.addEventListener("mouseout", () => {
+      senhaInput.type = "password";
+    });
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const nome = localStorage.getItem("nome");
+    const email = localStorage.getItem("email");
+
+    if (nome && email) {
+      document.getElementById("userName").textContent = nome;
+      document.getElementById("userEmail").textContent = email;
     }
   });
-});
+
+  document.addEventListener("DOMContentLoaded", () => {
+    // Selecionando os elementos do formulário
+    const cepInput = document.querySelector("#cep");
+    const logradouroInput = document.querySelector("#logradouro");
+    const bairroInput = document.querySelector("#bairro");
+    const cidadeInput = document.querySelector("#cidade");
+    const estadoInput = document.querySelector("#estado");
+
+    // Função para buscar o endereço pelo CEP
+    const buscaEndereco = async (cep) => {
+      try {
+        const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+        const data = await response.json();
+
+        if (data.erro) {
+          alert("CEP não encontrado.");
+          return;
+        }
+
+        // Populando os campos com os dados recebidos
+        logradouroInput.value = data.logradouro;
+        bairroInput.value = data.bairro;
+        cidadeInput.value = data.localidade;
+        estadoInput.value = data.uf;
+      } catch (error) {
+        console.error("Erro ao buscar o endereço:", error);
+      }
+    };
+
+    // Evento que detecta quando o usuário terminou de digitar o CEP
+    cepInput.addEventListener("blur", () => {
+      const cep = cepInput.value.replace(/\D/g, ""); // Remove qualquer caractere que não seja número
+      if (cep.length === 8) {
+        // Verifica se o CEP tem 8 dígitos
+        buscaEndereco(cep);
+      } else {
+        alert("Por favor, insira um CEP válido.");
+      }
+    });
+  });
+})();
