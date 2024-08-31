@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size
 import org.hibernate.validator.constraints.br.CNPJ
 
 @Entity
-@Table(name = "empresa")
+@Table(name = "Empresa")
 class Empresa(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_empresa")

@@ -3,7 +3,7 @@ package sptech.projetojpa1.domain
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "resposta")
+@Table(name = "Resposta")
 class Resposta(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_resposta")

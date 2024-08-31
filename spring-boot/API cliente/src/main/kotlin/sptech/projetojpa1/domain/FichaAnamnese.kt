@@ -4,7 +4,7 @@ import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "ficha_anamnese")
+@Table(name = "FichaAnamnese")
 class FichaAnamnese(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

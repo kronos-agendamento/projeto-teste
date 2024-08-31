@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "agendamento")
+@Table(name = "Agendamento")
 open class Agendamento(
 
     @Id

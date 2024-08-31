@@ -10,11 +10,9 @@ import org.mockito.Mockito
 import org.mockito.junit.jupiter.MockitoExtension
 import sptech.projetojpa1.domain.Especificacao
 import sptech.projetojpa1.domain.Procedimento
-import sptech.projetojpa1.domain.TempoProcedimento
 import sptech.projetojpa1.dto.especificacao.EspecificacaoDTO
 import sptech.projetojpa1.repository.EspecificacaoRepository
 import sptech.projetojpa1.repository.ProcedimentoRepository
-import sptech.projetojpa1.repository.TempoProcedimentoRepository
 import java.util.*
 
 @ExtendWith(MockitoExtension::class)

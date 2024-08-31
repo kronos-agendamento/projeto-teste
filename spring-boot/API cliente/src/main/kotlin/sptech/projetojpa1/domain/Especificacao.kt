@@ -2,13 +2,10 @@ package sptech.projetojpa1.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
-import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.NotNull
-import jakarta.validation.constraints.PositiveOrZero
-import jakarta.validation.constraints.Size
+import jakarta.validation.constraints.*
 
 @Entity
-@Table(name = "especificacao_procedimento")
+@Table(name = "Especificacao")
 data class Especificacao(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_especificacao_procedimento")
@@ -33,19 +30,40 @@ data class Especificacao(
     @Column(name = "preco_retirada")
     var precoRetirada: Double?,
 
+    @field:Pattern(
+        regexp = "^([0-1]\\d|2[0-3]):([0-5]\\d)$",
+        message = "O tempo de colocação deve estar no formato HH:MM"
+    )
+    @field:NotBlank(message = "O tempo de colocação é obrigatório")
+    @Column(name = "tempo_colocacao")
+    var tempoColocacao: String,
+
+    @field:Pattern(
+        regexp = "^([0-1]\\d|2[0-3]):([0-5]\\d)$",
+        message = "O tempo de manutenção deve estar no formato HH:MM"
+    )
+    @field:NotBlank(message = "O tempo de colocação é obrigatório")
+    @Column(name = "tempo_manutencao")
+    var tempoManutencao: String,
+
+    @field:Pattern(
+        regexp = "^([0-1]\\d|2[0-3]):([0-5]\\d)$",
+        message = "O tempo de retirada deve estar no formato HH:MM"
+    )
+    @field:NotBlank(message = "O tempo de colocação é obrigatório")
+    @Column(name = "tempo_retirada")
+    var tempoRetirada: String,
+
     @field:Column(length = 100 * 1024 * 1024)
     @JsonIgnore
     var foto: ByteArray?,
 
     @ManyToOne @field:NotNull(message = "Procedimento é obrigatório")
     @JoinColumn(name = "fk_procedimento")
-    var fkProcedimento: Procedimento?,
+    var fkProcedimento: Procedimento?
 
-    @ManyToOne @field:NotNull(message = "Tempo de procedimento é obrigatório")
-    @JoinColumn(name = "fk_tempo_procedimento")
-    var fkTempoProcedimento: TempoProcedimento?
 ) {
     override fun toString(): String {
-        return "Especificacao(idEspecificacaoProcedimento=$idEspecificacaoProcedimento, especificacao=$especificacao, precoColocacao=$precoColocacao, precoManutencao=$precoManutencao, precoRetirada=$precoRetirada, foto=${foto?.size}, fkProcedimento=$fkProcedimento, fkTempoProcedimento=$fkTempoProcedimento)"
+        return "Especificacao(idEspecificacaoProcedimento=$idEspecificacaoProcedimento, especificacao=$especificacao, precoColocacao=$precoColocacao, precoManutencao=$precoManutencao, precoRetirada=$precoRetirada, foto=${foto?.size}, fkProcedimento=$fkProcedimento, tempoColocacao='$tempoColocacao', tempoManutencao='$tempoManutencao', tempoRetirada='$tempoRetirada')"
     }
 }

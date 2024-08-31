@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 
 @Entity
-@Table(name = "nivelAcesso")
+@Table(name = "NivelAcessoZ")
 class NivelAcesso(
     @field:Id @field:GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_nivel_acesso")

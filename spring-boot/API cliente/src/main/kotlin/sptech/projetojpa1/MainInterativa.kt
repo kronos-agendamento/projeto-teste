@@ -65,8 +65,8 @@ fun cadastrarCliente() {
         codigo = (1..1000).random(),
         nome = nomeCliente,
         email = emailCliente,
+        senha = senhaCliente,
         instagram = instagramCliente,
-        senha = senhaCliente
     )
 
     clientesCadastrados.add(cliente)

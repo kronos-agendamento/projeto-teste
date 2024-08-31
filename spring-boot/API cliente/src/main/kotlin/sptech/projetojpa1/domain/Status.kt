@@ -4,7 +4,7 @@ import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 
 @Entity
-@Table(name = "status_agendamento")
+@Table(name = "status")
 data class Status(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "id_status_agendamento")
     var id: Int?,

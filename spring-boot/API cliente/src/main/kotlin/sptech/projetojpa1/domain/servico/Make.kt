@@ -5,7 +5,7 @@ import jakarta.persistence.Table
 import sptech.projetojpa1.domain.Servico
 
 @Entity
-@Table(name = "make")
+@Table(name = "Make")
 class Make(
     nome: String,
     descricao: String

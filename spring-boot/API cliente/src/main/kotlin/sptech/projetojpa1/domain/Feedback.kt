@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Min
 import sptech.projetojpa1.domain.usuario.Cliente
 
 @Entity
-@Table(name = "feedback")
+@Table(name = "Feedback")
 data class Feedback(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val idFeedback: Int = 0,

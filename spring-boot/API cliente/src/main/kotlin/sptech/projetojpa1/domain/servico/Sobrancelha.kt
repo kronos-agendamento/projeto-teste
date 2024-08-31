@@ -5,7 +5,7 @@ import jakarta.persistence.Table
 import sptech.projetojpa1.domain.Servico
 
 @Entity
-@Table(name = "sobrancelha")
+@Table(name = "Sobrancelha")
 class Sobrancelha(
     nome: String,
     descricao: String

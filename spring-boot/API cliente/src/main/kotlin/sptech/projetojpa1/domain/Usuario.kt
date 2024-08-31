@@ -6,7 +6,7 @@ import org.hibernate.validator.constraints.br.CPF
 import java.time.LocalDate
 
 @Entity
-@Table(name = "usuario")
+@Table(name = "Usuario")
 @Inheritance(strategy = InheritanceType.JOINED)
 abstract class Usuario(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,9 +34,6 @@ abstract class Usuario(
     @field:NotNull(message = "Telefone é obrigatório")
     var telefone: Long? = null,
 
-    @field:NotNull(message = "Telefone de emergência é obrigatório")
-    var telefoneEmergencial: Long? = null,
-
     @field:Past(message = "Data de nascimento deve estar no passado")
     var dataNasc: LocalDate? = null,
 
@@ -47,7 +44,7 @@ abstract class Usuario(
     @field:Column(length = 100 * 1024 * 1024)
     var foto: ByteArray? = null,
 
-    var status: Boolean = true,
+    var status: Boolean? = true,
 
     @ManyToOne
     @JoinColumn(name = "fk_nivel_acesso")
@@ -66,6 +63,6 @@ abstract class Usuario(
     var fichaAnamnese: FichaAnamnese? = null
 ) {
     override fun toString(): String {
-        return "Usuario(codigo=$codigo, nome=$nome, email=$email, senha=$senha, instagram=$instagram, cpf=$cpf, telefone=$telefone, telefoneEmergencial=$telefoneEmergencial, dataNasc=$dataNasc, genero=$genero, indicacao=$indicacao, foto=${foto?.contentToString()}, status=$status, nivelAcesso=$nivelAcesso, endereco=$endereco, empresa=$empresa, fichaAnamnese=$fichaAnamnese)"
+        return "Usuario(codigo=$codigo, nome=$nome, email=$email, senha=$senha, instagram=$instagram, cpf=$cpf, telefone=$telefone, dataNasc=$dataNasc, genero=$genero, indicacao=$indicacao, foto=${foto?.contentToString()}, status=$status, nivelAcesso=$nivelAcesso, endereco=$endereco, empresa=$empresa, fichaAnamnese=$fichaAnamnese)"
     }
 }

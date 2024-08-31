@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 
 @Entity
-@Table(name = "horarioFuncionamento")
+@Table(name = "HorarioFuncionamento")
 class HorarioFuncionamento(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_horario_funcionamento")

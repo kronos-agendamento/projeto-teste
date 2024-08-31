@@ -2,9 +2,9 @@ package sptech.projetojpa1.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import sptech.projetojpa1.domain.Usuario
 import sptech.projetojpa1.domain.usuario.Cliente
 import sptech.projetojpa1.domain.usuario.Profissional
-import sptech.projetojpa1.domain.Usuario
 import sptech.projetojpa1.dto.usuario.UsuarioAtualizacaoRequest
 import sptech.projetojpa1.dto.usuario.UsuarioLoginRequest
 import sptech.projetojpa1.dto.usuario.UsuarioLoginResponse
@@ -20,38 +20,47 @@ class UsuarioService(
     @Autowired private val fichaAnamneseRepository: FichaAnamneseRepository,
     @Autowired private val respostaRepository: RespostaRepository
 ) {
-
     fun salvarUsuario(dto: UsuarioRequest): Usuario {
         val usuario: Usuario = if (dto.nivelAcessoId == 1) {
             Cliente(
                 codigo = dto.codigo,
                 nome = dto.nome,
                 email = dto.email,
-                instagram = dto.instagram
-            ) as Usuario
+                senha = dto.senha,
+                instagram = dto.instagram,  // Certifique-se de que todos os campos obrigatórios estão preenchidos
+                cpf = dto.cpf,
+                telefone = dto.telefone,
+                dataNasc = dto.dataNasc,
+                genero = dto.genero,
+                indicacao = dto.indicacao,
+                foto = null,
+                status = dto.status,
+                nivelAcesso = dto.nivelAcessoId?.let { nivelAcessoRepository.findById(it).orElse(null) },
+                endereco = dto.enderecoId?.let { enderecoRepository.findById(it).orElse(null) },
+                empresa = dto.empresaId?.let { empresaRepository.findById(it).orElse(null) },
+                fichaAnamnese = dto.fichaAnamneseId?.let { fichaAnamneseRepository.findById(it).orElse(null) }
+            )
         } else {
             Profissional(
                 codigo = dto.codigo,
                 nome = dto.nome,
                 email = dto.email,
-                instagram = dto.instagram,
-                especialidade = "Especialidade Padrão"
-            ) as Usuario
+                senha = dto.senha,
+                instagram = dto.instagram,  // Verifique e atribua um valor válido ou padrão
+                cpf = dto.cpf,
+                telefone = dto.telefone,
+                dataNasc = dto.dataNasc,
+                genero = dto.genero,
+                indicacao = dto.indicacao,
+                foto = null,
+                status = dto.status,
+                nivelAcesso = dto.nivelAcessoId?.let { nivelAcessoRepository.findById(it).orElse(null) },
+                endereco = dto.enderecoId?.let { enderecoRepository.findById(it).orElse(null) },
+                empresa = dto.empresaId?.let { empresaRepository.findById(it).orElse(null) },
+                fichaAnamnese = dto.fichaAnamneseId?.let { fichaAnamneseRepository.findById(it).orElse(null) },
+                especialidade = ""
+            )
         }
-
-        usuario.senha = dto.senha
-        usuario.cpf = dto.cpf
-        usuario.telefone = dto.telefone
-        usuario.telefoneEmergencial = dto.telefoneEmergencial
-        usuario.dataNasc = dto.dataNasc
-        usuario.genero = dto.genero
-        usuario.indicacao = dto.indicacao
-        usuario.foto = null
-        usuario.status = dto.status
-        usuario.nivelAcesso = dto.nivelAcessoId?.let { nivelAcessoRepository.findById(it).orElse(null) }
-        usuario.endereco = dto.enderecoId?.let { enderecoRepository.findById(it).orElse(null) }
-        usuario.empresa = dto.empresaId?.let { empresaRepository.findById(it).orElse(null) }
-        usuario.fichaAnamnese = dto.fichaAnamneseId?.let { fichaAnamneseRepository.findById(it).orElse(null) }
 
         return usuarioRepository.save(usuario)
     }
@@ -93,7 +102,6 @@ class UsuarioService(
             instagram = dto.instagram ?: instagram
             dataNasc = dto.dataNasc ?: dataNasc
             telefone = dto.telefone ?: telefone
-            telefoneEmergencial = dto.telefoneEmergencial ?: telefoneEmergencial
             genero = dto.genero ?: genero
             indicacao = dto.indicacao ?: indicacao
             nivelAcesso = dto.nivelAcessoId?.let { nivelAcessoRepository.findById(it).orElse(nivelAcesso) }
@@ -149,9 +157,10 @@ class UsuarioService(
         return usuarioRepository.findTop3Indicacoes()
     }
 
-   fun buscarNumeroIndicacoes(): List<Int> {
+    fun buscarNumeroIndicacoes(): List<Int> {
         return usuarioRepository.buscarNumerosDivulgacao()
     }
+
     fun getClientesInativos(): Int {
         return usuarioRepository.findClientesInativos()
     }

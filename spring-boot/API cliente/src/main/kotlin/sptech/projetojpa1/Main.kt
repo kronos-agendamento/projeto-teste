@@ -32,21 +32,21 @@ fun main() {
         codigo = 1,
         nome = "Fernando Brandão",
         email = "fernando.brandao@sptech.school",
-        instagram = "@brandao"
+        instagram = "@brandao",
     )
 
     val cliente2 = Cliente(
         codigo = 2,
         nome = "Leonardo Marques",
         email = "leonardo.marques@sptech.school",
-        instagram = "@leo_marques"
+        instagram = "@leo_marques",
     )
 
     val cliente3 = Cliente(
         codigo = 3,
         nome = "Gerson Santos",
         email = "gerson.santos@sptech.school",
-        instagram = "@gerson_santos"
+        instagram = "@gerson_santos",
     )
 
     println(
