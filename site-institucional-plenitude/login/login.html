@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+
     <title>Acessar Conta | KronosBooking</title>
 
     <!-- Favicons -->
@@ -13,6 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="login.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;700&display=swap" rel="stylesheet">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
 
 </head>
 
@@ -21,6 +23,11 @@
         <!-- Start of HubSpot Embed Code -->
         <script type="text/javascript" id="hs-script-loader" async defer src="//js-na1.hs-scripts.com/47162770.js"></script>
         <!-- End of HubSpot Embed Code -->
+
+
+        <!-- API de conexão com google sign in -->
+        <!-- <meta name="google-signin-client_id" content="705135752671-0mi9jtlhlhilrt27q0gpuloiurh9lmtc.apps.googleusercontent.com">  -->
+        <!-- API de conexão com google sign in -->
 
         
         
@@ -46,6 +53,7 @@
                 <input type="text" id="senha" class="senha-visible" placeholder="Crie uma senha" required>
                 <input type="text" id="confirmarSenha" class="senha-visible" placeholder="Confirme sua senha" required>
                 <button type="submit">Cadastrar</button>
+
                 <div class="mobile-toggle">
                     <button type="button" id="mobileLoginBtn">Fazer login</button>
                 </div>
@@ -58,8 +66,13 @@
                 <input type="text" id="loginSenha" class="senha-visible" placeholder="Senha" required>
                 <a href="#">Esqueceu sua senha?</a>
                 <button type="submit">Entrar</button>
+                
+                <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                <!-- Entrar com google -->
+
                 <div class="mobile-toggle">
                     <button type="button" id="mobileRegisterBtn">Cadastrar</button>
+                    
                 </div>
             </form>
         </div>

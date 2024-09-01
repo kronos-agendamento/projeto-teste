@@ -1,11 +1,12 @@
-package sptech.projetojpa1.dominio
+package sptech.projetojpa1.domain
 
 import jakarta.persistence.*
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
+import sptech.projetojpa1.domain.usuario.Cliente
 
 @Entity
-@Table(name = "feedback")
+@Table(name = "Feedback")
 data class Feedback(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val idFeedback: Int = 0,
@@ -35,4 +36,8 @@ data class Feedback(
     @ManyToOne
     @JoinColumn(name = "fk_cliente_avaliado")
     val clienteAvaliado: Cliente? = null
-)
+) {
+    override fun toString(): String {
+        return "Feedback(idFeedback=$idFeedback, anotacoes=$anotacoes, nota=$nota, agendamento=$agendamento, usuario=$usuario, avaliador=$avaliador, servico=$servico, clienteAvaliado=$clienteAvaliado)"
+    }
+}

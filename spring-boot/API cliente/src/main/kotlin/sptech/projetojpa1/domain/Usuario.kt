@@ -1,4 +1,4 @@
-package sptech.projetojpa1.dominio
+package sptech.projetojpa1.domain
 
 import jakarta.persistence.*
 import jakarta.validation.constraints.*
@@ -6,7 +6,7 @@ import org.hibernate.validator.constraints.br.CPF
 import java.time.LocalDate
 
 @Entity
-@Table(name = "usuario")
+@Table(name = "Usuario")
 @Inheritance(strategy = InheritanceType.JOINED)
 abstract class Usuario(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,9 +34,6 @@ abstract class Usuario(
     @field:NotNull(message = "Telefone é obrigatório")
     var telefone: Long? = null,
 
-    @field:NotNull(message = "Telefone de emergência é obrigatório")
-    var telefoneEmergencial: Long? = null,
-
     @field:Past(message = "Data de nascimento deve estar no passado")
     var dataNasc: LocalDate? = null,
 
@@ -47,7 +44,7 @@ abstract class Usuario(
     @field:Column(length = 100 * 1024 * 1024)
     var foto: ByteArray? = null,
 
-    var status: Boolean = true,
+    var status: Boolean? = true,
 
     @ManyToOne
     @JoinColumn(name = "fk_nivel_acesso")
@@ -64,50 +61,8 @@ abstract class Usuario(
     @ManyToOne
     @JoinColumn(name = "fk_ficha_anamnese")
     var fichaAnamnese: FichaAnamnese? = null
-)
-
-@Entity
-@Table(name = "cliente")
-class Cliente(
-    codigo: Int? = null,
-    nome: String? = null,
-    email: String? = null,
-    senha: String? = null,
-    instagram: String? = null,
-
-    @Column(name = "experiencia_avaliada")
-    var experienciaAvaliada: String? = null,
-
-    @Column(name = "frequencia")
-    var frequencia: Int? = null
-) : Usuario(codigo, nome, email, instagram){
+) {
     override fun toString(): String {
-        return "Cliente(codigo=$codigo, nome=$nome, email=$email, instagram=$instagram, experienciaAvaliada=$experienciaAvaliada, frequencia=$frequencia)"
-    }
-}
-
-@Entity
-@Table(name = "profissional")
-class Profissional(
-    codigo: Int? = null,
-    nome: String? = null,
-    email: String? = null,
-    senha: String? = null,
-    instagram: String? = null,
-
-    @Column(name = "numero_avaliacoes")
-    var numeroAvaliacoes: Int? = null,
-
-    @Column(name = "media_nota")
-    var mediaNota: Double? = null,
-
-    @Column(name = "qualificacoes")
-    var qualificacoes: String? = null,
-
-    @Column(name = "especialidade")
-    var especialidade: String? = null
-) : Usuario(codigo, nome, email, instagram){
-    override fun toString(): String {
-        return "Profissional(codigo=$codigo, nome=$nome, email=$email, instagram=$instagram, numeroAvaliacoes=$numeroAvaliacoes, mediaNota=$mediaNota, qualificacoes=$qualificacoes, especialidade=$especialidade)"
+        return "Usuario(codigo=$codigo, nome=$nome, email=$email, senha=$senha, instagram=$instagram, cpf=$cpf, telefone=$telefone, dataNasc=$dataNasc, genero=$genero, indicacao=$indicacao, foto=${foto?.contentToString()}, status=$status, nivelAcesso=$nivelAcesso, endereco=$endereco, empresa=$empresa, fichaAnamnese=$fichaAnamnese)"
     }
 }

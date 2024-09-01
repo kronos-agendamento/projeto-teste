@@ -9,9 +9,8 @@ import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.any
 import org.mockito.Mockito.anyInt
-import org.mockito.Mockito.mock
 import org.mockito.MockitoAnnotations
-import sptech.projetojpa1.dominio.Procedimento
+import sptech.projetojpa1.domain.Procedimento
 import sptech.projetojpa1.dto.procedimento.ProcedimentoRequestDTO
 import sptech.projetojpa1.repository.ProcedimentoRepository
 import java.util.Optional

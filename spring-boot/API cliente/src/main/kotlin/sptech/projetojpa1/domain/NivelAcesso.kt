@@ -1,14 +1,11 @@
-package sptech.projetojpa1.dominio
+package sptech.projetojpa1.domain
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 
 @Entity
+@Table(name = "NivelAcessoZ")
 class NivelAcesso(
     @field:Id @field:GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_nivel_acesso")
@@ -22,4 +19,8 @@ class NivelAcesso(
 
     @field:NotBlank(message = "Descrição é obrigatória")
     var descricao: String?
-)
+) {
+    override fun toString(): String {
+        return "NivelAcesso(codigo=$codigo, nome=$nome, nivel=$nivel, descricao=$descricao)"
+    }
+}

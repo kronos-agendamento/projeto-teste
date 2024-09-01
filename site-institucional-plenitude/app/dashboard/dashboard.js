@@ -60,11 +60,11 @@ document.addEventListener('DOMContentLoaded', function () {
             buscarMediaNotas: '/api/feedbacks/buscar-media-notas',
 
             // Gráfico 4
-            receitaAcumulada: '/especificacoes/receita-acumulada',
-            receitaAcumuladaLabels: '/especificacoes/receita-acumulada-labels',
+            receitaAcumulada: '/api/especificacoes/receita-acumulada',
+            receitaAcumuladaLabels: '/api/especificacoes/receita-acumulada-labels',
 
-            // Gráfico 4
-            agendamentosProcedimentosLabels: '/especificacoes/nomes',
+            // Gráfico 2
+            agendamentosProcedimentosLabels: '/api/especificacoes/nomes',
             agendamentosProcedimentos: '/api/procedimentos/quantidade-agendamentos-procedimentos',
         };
 

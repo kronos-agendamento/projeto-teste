@@ -6,9 +6,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import sptech.projetojpa1.dominio.Especificacao
+import sptech.projetojpa1.domain.Especificacao
 import sptech.projetojpa1.dto.especificacao.EspecificacaoDTO
-import sptech.projetojpa1.dto.especificacao.EspecificacaoReceitaMensalDTO
 import sptech.projetojpa1.service.EspecificacaoService
 
 @RestController
@@ -16,8 +15,10 @@ import sptech.projetojpa1.service.EspecificacaoService
 class EspecificacaoController(
     private val service: EspecificacaoService
 ) {
-
-    @Operation(summary = "Listar todas as especificações")
+    @Operation(
+        summary = "Listar todas as especificações",
+        description = "Retorna uma lista de todas as especificações disponíveis no sistema."
+    )
     @ApiResponses(
         value = [
             ApiResponse(
@@ -32,8 +33,8 @@ class EspecificacaoController(
         ]
     )
     @GetMapping
-    fun listarTodos(): ResponseEntity<List<Especificacao>> {
-        val especificacoes = service.listarTodos()
+    fun listarEspecificacao(): ResponseEntity<List<Especificacao>> {
+        val especificacoes = service.listarEspecificacao()
         return if (especificacoes.isNotEmpty()) {
             ResponseEntity.ok(especificacoes)
         } else {
@@ -41,28 +42,7 @@ class EspecificacaoController(
         }
     }
 
-    @Operation(summary = "Listar especificação por descrição")
-    @ApiResponses(      
-        value = [
-            ApiResponse(
-                responseCode = "200",
-                description = "Operação bem-sucedida. Retorna a especificação encontrada"
-            ),
-            ApiResponse(responseCode = "404", description = "Especificação não encontrada"),
-            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
-        ]
-    )
-    @GetMapping("/listar-por-especificacao/{especificacao}")
-    fun listarPorEspecificacao(@RequestParam especificacao: String): ResponseEntity<Especificacao> {
-        val especificacaoEncontrada = service.listarPorEspecificacao(especificacao)
-        return if (especificacaoEncontrada != null) {
-            ResponseEntity.ok(especificacaoEncontrada)
-        } else {
-            ResponseEntity.status(404).build()
-        }
-    }
-
-    @Operation(summary = "Listar especificação por ID")
+    @Operation(summary = "Listar especificação por ID", description = "Busca uma especificação específica pelo seu ID.")
     @ApiResponses(
         value = [
             ApiResponse(
@@ -73,9 +53,9 @@ class EspecificacaoController(
             ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
         ]
     )
-    @GetMapping("/listar-por-id/{id}")
-    fun listarPorId(@PathVariable id: Int): ResponseEntity<Especificacao> {
-        val especificacao = service.listarPorId(id)
+    @GetMapping("/{id}")
+    fun listarEspecificacaoPorId(@PathVariable id: Int): ResponseEntity<Especificacao> {
+        val especificacao = service.listarEspecificacaoPorId(id)
         return if (especificacao != null) {
             ResponseEntity.ok(especificacao)
         } else {
@@ -83,7 +63,10 @@ class EspecificacaoController(
         }
     }
 
-    @Operation(summary = "Cadastrar nova especificação")
+    @Operation(
+        summary = "Cadastrar nova especificação",
+        description = "Cria uma nova especificação com base nos dados fornecidos."
+    )
     @ApiResponses(
         value = [
             ApiResponse(
@@ -94,32 +77,13 @@ class EspecificacaoController(
             ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
         ]
     )
-    @PostMapping("/cadastro-especificacao")
-    fun cadastrar(@Valid @RequestBody dto: EspecificacaoDTO): ResponseEntity<Especificacao> {
-        val especificacaoSalva = service.cadastrar(dto)
+    @PostMapping
+    fun criarEspecificacao(@Valid @RequestBody dto: EspecificacaoDTO): ResponseEntity<Especificacao> {
+        val especificacaoSalva = service.criarEspecificacao(dto)
         return ResponseEntity.status(201).body(especificacaoSalva)
     }
 
-    @Operation(summary = "Deletar especificação por ID")
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Operação bem-sucedida"),
-            ApiResponse(responseCode = "404", description = "Especificação não encontrada"),
-            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
-        ]
-    )
-    @DeleteMapping("/exclusao-por-id/{id}")
-    fun deletarPorId(@PathVariable id: Int): ResponseEntity<Void> {
-        val especificacaoEncontrada = service.listarPorId(id)
-        return if (especificacaoEncontrada != null) {
-            service.deletarPorId(id)
-            ResponseEntity.status(200).build()
-        } else {
-            ResponseEntity.status(404).build()
-        }
-    }
-
-    @Operation(summary = "Editar especificação")
+    @Operation(summary = "Editar especificação", description = "Atualiza os dados de uma especificação existente.")
     @ApiResponses(
         value = [
             ApiResponse(
@@ -130,12 +94,12 @@ class EspecificacaoController(
             ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
         ]
     )
-    @PatchMapping("/atualizacao-especificacao/{id}")
-    fun editarPorId(
+    @PatchMapping("/{id}")
+    fun atualizarEspecificacao(
         @PathVariable id: Int,
         @Valid @RequestBody dto: EspecificacaoDTO
     ): ResponseEntity<Especificacao> {
-        val especificacaoAtualizada = service.editarPorId(id, dto)
+        val especificacaoAtualizada = service.atualizarEspecificacao(id, dto)
         return if (especificacaoAtualizada != null) {
             ResponseEntity.ok(especificacaoAtualizada)
         } else {
@@ -143,60 +107,45 @@ class EspecificacaoController(
         }
     }
 
-
-    @Operation(summary = "Atualizar foto da especificação do procedimento")
+    @Operation(
+        summary = "Deletar especificação por ID",
+        description = "Remove uma especificação do sistema pelo seu ID."
+    )
     @ApiResponses(
         value = [
-            ApiResponse(
-                responseCode = "200",
-                description = "Operação bem-sucedida. Retorna a especificação atualizada"
-            ),
+            ApiResponse(responseCode = "200", description = "Operação bem-sucedida"),
             ApiResponse(responseCode = "404", description = "Especificação não encontrada"),
             ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
         ]
     )
-    @PatchMapping(
-        value = ["/atualizacao-foto/{codigo}"],
-        consumes = ["image/jpeg", "image/png", "image/gif", "image/jpg"]
-    )
-    fun atualizarFotoEspecificacao(
-        @PathVariable codigo: Int,
-        @RequestBody foto: ByteArray
-    ): ResponseEntity<Especificacao> {
-        val especificacao = service.atualizarFotoEspecificacao(codigo, foto)
-        return if (especificacao != null) {
-            ResponseEntity.status(200).body(especificacao)
+    @DeleteMapping("/{id}")
+    fun deletarEspecificacao(@PathVariable id: Int): ResponseEntity<Void> {
+        val especificacaoEncontrada = service.listarEspecificacaoPorId(id)
+        return if (especificacaoEncontrada != null) {
+            service.deletarEspecificacao(id)
+            ResponseEntity.status(200).build()
         } else {
-            ResponseEntity.status(404).body(null)
+            ResponseEntity.status(404).build()
         }
     }
 
-
-    @Operation(summary = "Buscar foto da especificação")
+    @Operation(
+        summary = "Obter receita acumulada",
+        description = "Retorna a receita acumulada de todas as especificações."
+    )
     @ApiResponses(
         value = [
             ApiResponse(
                 responseCode = "200",
-                description = "Operação bem-sucedida. Retorna a especificação encontrada"
+                description = "Operação bem-sucedida. Retorna a lista de receitas acumuladas"
             ),
-            ApiResponse(responseCode = "404", description = "Especificação não encontrada"),
+            ApiResponse(
+                responseCode = "204",
+                description = "Requisição bem-sucedida, mas não há conteúdo para ser exibido"
+            ),
             ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
         ]
     )
-
-    @GetMapping(
-        value = ["/busca-imagem-especificacao/{codigo}"],
-        produces = ["image/jpeg", "image/png", "image/gif", "image/jpg"]
-    )
-    fun getFoto(@PathVariable codigo: Int): ResponseEntity<ByteArray> {
-        val foto = service.getFoto(codigo)
-        return if (foto != null) {
-            ResponseEntity.ok(foto)
-        } else {
-            ResponseEntity.status(404).body(null)
-        }
-    }
-
     @GetMapping("/receita-acumulada")
     fun getReceitaAcumulada(): ResponseEntity<List<Double>> {
         val resultado = service.getReceitaAcumulada()
@@ -207,6 +156,23 @@ class EspecificacaoController(
         }
     }
 
+    @Operation(
+        summary = "Obter labels de receita acumulada",
+        description = "Retorna as labels das receitas acumuladas."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Operação bem-sucedida. Retorna a lista de labels"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                description = "Requisição bem-sucedida, mas não há conteúdo para ser exibido"
+            ),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
     @GetMapping("/receita-acumulada-labels")
     fun getReceitaAcumuladaLabels(): ResponseEntity<List<String>> {
         val labels = service.getReceitaAcumuladaLabels()
@@ -217,6 +183,23 @@ class EspecificacaoController(
         }
     }
 
+    @Operation(
+        summary = "Obter nomes das especificações",
+        description = "Retorna a lista de nomes de todas as especificações."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Operação bem-sucedida. Retorna a lista de nomes"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                description = "Requisição bem-sucedida, mas não há conteúdo para ser exibido"
+            ),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
     @GetMapping("/nomes")
     fun getEspecificacoes(): ResponseEntity<List<String>> {
         val especificacoes = service.getEspecificacoes()

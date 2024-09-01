@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 3000);
     }
 
-    const baseUrl = 'http://localhost:8080';
+    const baseUrl = 'http://localhost:8080/api';
     const proceduresTbody = document.getElementById('procedures-tbody');
     const prevPageBtn = document.getElementById('prev-page-btn');
     const nextPageBtn = document.getElementById('next-page-btn');
@@ -47,9 +47,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function updateKPIs() {
         const endpoints = {
-            maisAgendado: '/api/procedimentos/mais-agendado',
-            menosAgendado: '/api/procedimentos/menos-agendado',
-            melhorAvaliado: '/api/procedimentos/melhor-nota'
+            maisAgendado: '/procedimentos/mais-agendado',
+            menosAgendado: '/procedimentos/menos-agendado',
+            melhorAvaliado: '/procedimentos/melhor-nota'
         };
 
         const ids = {
@@ -64,18 +64,21 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     updateKPIs();
-    setInterval(updateKPIs, 5000);
 
     async function fetchProcedures() {
         try {
             const response = await fetch(`${baseUrl}/especificacoes`);
             const data = await response.json();
-            console.log('Dados recebidos da API:', data);
             return data;
         } catch (error) {
             console.error('Erro ao carregar procedimentos:', error);
             return [];
         }
+    }
+
+    function formatDuration(duration) {
+        const [hours, minutes] = duration.split(':').map(Number);
+        return `${hours}h ${minutes} min`;
     }
 
     function renderTable(procedures, page) {
@@ -86,17 +89,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
         paginatedProcedures.forEach(procedure => {
             const row = document.createElement('tr');
+
             const nome = procedure.fkProcedimento.tipo;
             const preco = `R$${procedure.precoColocacao.toFixed(2).replace('.', ',')}`;
-            const duracao = procedure.fkTempoProcedimento.tempoColocacao;
-            const duracaoFormatada = duracao.toString().padStart(2, '0'); // Garante que sempre tenha 2 dígitos
+            const duracao = formatDuration(procedure.tempoColocacao);
             const especificacao = procedure.especificacao;
             const procedimentoId = procedure.idEspecificacaoProcedimento;
 
             row.innerHTML = `
                 <td>${nome}</td>
                 <td>${preco}</td>
-                <td>${duracaoFormatada.replace(/^0/, '')}h</td>
+                <td>${duracao}</td>
                 <td>${especificacao}</td>
                 <td>
                     <button class="edit-btn" data-id="${procedimentoId}"><i class="fas fa-edit"></i></button>
@@ -106,7 +109,6 @@ document.addEventListener('DOMContentLoaded', function () {
             proceduresTbody.appendChild(row);
         });
 
-        // Atualiza a paginação
         currentPageSpan.textContent = page;
         const totalPages = Math.ceil(procedures.length / itemsPerPage);
         totalPagesSpan.textContent = totalPages;
@@ -114,11 +116,9 @@ document.addEventListener('DOMContentLoaded', function () {
         prevPageBtn.disabled = page === 1;
         nextPageBtn.disabled = page === totalPages;
 
-        // Eventos dos botões de deletar
         document.querySelectorAll('.delete-btn').forEach(button => {
             const id = button.getAttribute('data-id');
             const tipo = button.getAttribute('data-tipo');
-            console.log(`Delete button ID: ${id}, Tipo: ${tipo}`); // Debugging log
             button.addEventListener('click', (e) => {
                 procedimentoIdParaDeletar = e.currentTarget.getAttribute('data-id');
                 if (procedimentoIdParaDeletar) {
@@ -129,7 +129,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
 
-        // Eventos dos botões de editar
         document.querySelectorAll('.edit-btn').forEach(button => {
             button.addEventListener('click', (e) => {
                 const id = e.currentTarget.getAttribute('data-id');
@@ -159,7 +158,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         btnYes.addEventListener('click', async () => {
             if (procedimentoIdParaDeletar !== null) {
-                console.log(`Tentando deletar o ID: ${procedimentoIdParaDeletar}`);
                 await deleteProcedimento(procedimentoIdParaDeletar);
                 procedimentos = await fetchProcedures();
                 renderTable(procedimentos, currentPage);
@@ -170,20 +168,37 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function deleteProcedimento(id) {
         try {
-            const response = await fetch(`${baseUrl}/especificacoes/exclusao-por-id/${id}`, {
-                method: 'DELETE'
-            });
-            const response2 = await fetch(`${baseUrl}/api/procedimentos/deletar/${id}`, {
-                method: 'DELETE'
-            });
-            const response3 = await fetch(`${baseUrl}/api/tempos/exclusao-por-id/${id}`, {
+            const response = await fetch(`${baseUrl}/especificacoes/${id}`, {
                 method: 'DELETE'
             });
 
             if (!response.ok) {
+                // Se a resposta não for OK, obter o erro do servidor
+                const errorData = await response.json();
+                if (errorData.message) {
+                    showNotification(`Erro: ${errorData.message}`, true);
+                } else {
+                    showNotification('Erro ao deletar o procedimento. Tente novamente mais tarde.', true);
+                }
                 throw new Error('Erro ao deletar o procedimento.');
             }
-            console.log(`Procedimento ${id} deletado com sucesso.`);
+
+            // Tentar deletar no endpoint de procedimentos
+            const response2 = await fetch(`${baseUrl}/procedimentos/${id}`, {
+                method: 'DELETE'
+            });
+
+            if (!response2.ok) {
+                // Se a resposta não for OK, obter o erro do servidor
+                const errorData = await response2.json();
+                if (errorData.message) {
+                    showNotification(`Erro: ${errorData.message}`, true);
+                } else {
+                    showNotification('Erro ao deletar o procedimento. Tente novamente mais tarde.', true);
+                }
+                throw new Error('Erro ao deletar o procedimento.');
+            }
+
             showNotification('Procedimento deletado com sucesso!');
         } catch (error) {
             console.error('Erro ao deletar o procedimento:', error);

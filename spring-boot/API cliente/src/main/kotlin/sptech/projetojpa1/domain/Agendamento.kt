@@ -1,12 +1,11 @@
-package sptech.projetojpa1.dominio
+package sptech.projetojpa1.domain
 
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotNull
 import java.time.LocalDateTime
-import java.util.*
 
 @Entity
-@Table(name = "agendamento")
+@Table(name = "Agendamento")
 open class Agendamento(
 
     @Id
@@ -41,4 +40,8 @@ open class Agendamento(
     @ManyToOne
     @JoinColumn(name = "fk_status")
     var statusAgendamento: Status
-)
+) {
+    override fun toString(): String {
+        return "Agendamento(idAgendamento=$idAgendamento, dataHorario=$dataHorario, tipoAgendamento=$tipoAgendamento, usuario=$usuario, procedimento=$procedimento, especificacao=$especificacao, statusAgendamento=$statusAgendamento)"
+    }
+}

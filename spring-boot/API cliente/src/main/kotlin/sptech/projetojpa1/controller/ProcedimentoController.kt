@@ -6,34 +6,43 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import sptech.projetojpa1.dto.procedimento.*
+import sptech.projetojpa1.dto.procedimento.ProcedimentoDTO
+import sptech.projetojpa1.dto.procedimento.ProcedimentoEstatisticaDTO
+import sptech.projetojpa1.dto.procedimento.ProcedimentoRequestDTO
+import sptech.projetojpa1.dto.procedimento.ProcedimentoResponseDTO
 import sptech.projetojpa1.service.ProcedimentoService
 
 @RestController
 @RequestMapping("/api/procedimentos")
 class ProcedimentoController(private val procedimentoService: ProcedimentoService) {
 
-    @Operation(summary = "Criar um novo procedimento")
+    @Operation(
+        summary = "Criar um novo procedimento",
+        description = "Cria um novo procedimento com base nas informações fornecidas."
+    )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "201", description = "Procedimento criado com sucesso"),
-            ApiResponse(responseCode = "400", description = "Dados inválidos")
+            ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos para criação do procedimento")
         ]
     )
-    @PostMapping("/criar")
+    @PostMapping
     fun criarProcedimento(@RequestBody procedimentoRequestDTO: ProcedimentoRequestDTO): ResponseEntity<ProcedimentoDTO> {
         val procedimentoDTO = procedimentoService.criarProcedimento(procedimentoRequestDTO)
         return ResponseEntity(procedimentoDTO, HttpStatus.CREATED)
     }
 
-    @Operation(summary = "Buscar procedimento por ID")
+    @Operation(
+        summary = "Buscar procedimento por ID",
+        description = "Busca um procedimento específico com base no ID fornecido."
+    )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Operação bem sucedida"),
-            ApiResponse(responseCode = "404", description = "Procedimento não encontrado")
+            ApiResponse(responseCode = "200", description = "Procedimento encontrado com sucesso"),
+            ApiResponse(responseCode = "404", description = "Procedimento não encontrado com o ID fornecido")
         ]
     )
-    @GetMapping("/buscar/{id}")
+    @GetMapping("/{id}")
     fun buscarProcedimentoPorId(@PathVariable id: Int): ResponseEntity<ProcedimentoResponseDTO> {
         val procedimentoDTO = procedimentoService.buscarProcedimentoPorId(id)
         return if (procedimentoDTO != null) {
@@ -43,34 +52,64 @@ class ProcedimentoController(private val procedimentoService: ProcedimentoServic
         }
     }
 
-    @Operation(summary = "Buscar todos os procedimentos")
+    @Operation(
+        summary = "Buscar todos os procedimentos",
+        description = "Retorna uma lista de todos os procedimentos disponíveis."
+    )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Lista de procedimentos"),
+            ApiResponse(responseCode = "200", description = "Lista de procedimentos retornada com sucesso"),
             ApiResponse(responseCode = "204", description = "Nenhum procedimento encontrado")
         ]
     )
-    @GetMapping("/listar")
+    @GetMapping
     fun listarTodosProcedimentos(): ResponseEntity<List<ProcedimentoResponseDTO>> {
         val procedimentos = procedimentoService.listarTodosProcedimentos()
-        return ResponseEntity(procedimentos, HttpStatus.OK)
+        return if (procedimentos.isNotEmpty()) {
+            ResponseEntity(procedimentos, HttpStatus.OK)
+        } else {
+            ResponseEntity(HttpStatus.NO_CONTENT)
+        }
     }
 
+    @Operation(
+        summary = "Buscar procedimentos bem avaliados",
+        description = "Retorna uma lista de procedimentos que receberam boas avaliações."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Lista de procedimentos bem avaliados retornada com sucesso"
+            ),
+            ApiResponse(responseCode = "204", description = "Nenhum procedimento bem avaliado encontrado")
+        ]
+    )
     @GetMapping("/listar-bem-avaliados")
     fun listarProcedimentosBemAvaliados(): ResponseEntity<List<String>> {
         val procedimentos = procedimentoService.listarProcedimentosBemAvaliados()
-        return ResponseEntity(procedimentos, HttpStatus.OK)
+        return if (procedimentos.isNotEmpty()) {
+            ResponseEntity(procedimentos, HttpStatus.OK)
+        } else {
+            ResponseEntity(HttpStatus.NO_CONTENT)
+        }
     }
 
-    @Operation(summary = "Atualizar procedimento")
+    @Operation(
+        summary = "Atualizar procedimento",
+        description = "Atualiza as informações de um procedimento existente com base no ID fornecido e nos dados atualizados."
+    )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Procedimento atualizado com sucesso"),
-            ApiResponse(responseCode = "404", description = "Procedimento não encontrado"),
-            ApiResponse(responseCode = "400", description = "Dados inválidos")
+            ApiResponse(responseCode = "404", description = "Procedimento não encontrado com o ID fornecido"),
+            ApiResponse(
+                responseCode = "400",
+                description = "Dados inválidos fornecidos para atualização do procedimento"
+            )
         ]
     )
-    @PutMapping("/atualizar/{id}")
+    @PutMapping("/{id}")
     fun atualizarProcedimento(
         @PathVariable id: Int,
         @RequestBody procedimentoRequestDTO: ProcedimentoRequestDTO
@@ -83,14 +122,17 @@ class ProcedimentoController(private val procedimentoService: ProcedimentoServic
         }
     }
 
-    @Operation(summary = "Deletar procedimento")
+    @Operation(
+        summary = "Deletar procedimento",
+        description = "Deleta um procedimento existente com base no ID fornecido."
+    )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "204", description = "Procedimento deletado com sucesso"),
-            ApiResponse(responseCode = "404", description = "Procedimento não encontrado")
+            ApiResponse(responseCode = "404", description = "Procedimento não encontrado com o ID fornecido")
         ]
     )
-    @DeleteMapping("/deletar/{id}")
+    @DeleteMapping("/{id}")
     fun deletarProcedimento(@PathVariable id: Int): ResponseEntity<Any> {
         val deleted = procedimentoService.deletarProcedimento(id)
         return if (deleted) {
@@ -100,6 +142,16 @@ class ProcedimentoController(private val procedimentoService: ProcedimentoServic
         }
     }
 
+    @Operation(
+        summary = "Buscar procedimento mais agendado",
+        description = "Retorna o procedimento que mais foi agendado."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Procedimento mais agendado retornado com sucesso"),
+            ApiResponse(responseCode = "204", description = "Nenhum procedimento encontrado")
+        ]
+    )
     @GetMapping("/mais-agendado")
     fun getProcedimentoMaisAgendado(): ResponseEntity<ProcedimentoEstatisticaDTO> {
         val procedimento = procedimentoService.getProcedimentoMaisAgendado()
@@ -110,6 +162,16 @@ class ProcedimentoController(private val procedimentoService: ProcedimentoServic
         }
     }
 
+    @Operation(
+        summary = "Buscar procedimento menos agendado",
+        description = "Retorna o procedimento que menos foi agendado."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Procedimento menos agendado retornado com sucesso"),
+            ApiResponse(responseCode = "204", description = "Nenhum procedimento encontrado")
+        ]
+    )
     @GetMapping("/menos-agendado")
     fun getProcedimentoMenosAgendado(): ResponseEntity<ProcedimentoEstatisticaDTO> {
         val procedimento = procedimentoService.getProcedimentoMenosAgendado()
@@ -120,6 +182,16 @@ class ProcedimentoController(private val procedimentoService: ProcedimentoServic
         }
     }
 
+    @Operation(
+        summary = "Buscar procedimento com melhor nota",
+        description = "Retorna o procedimento que recebeu a melhor nota de avaliação."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Procedimento com a melhor nota retornado com sucesso"),
+            ApiResponse(responseCode = "204", description = "Nenhum procedimento encontrado")
+        ]
+    )
     @GetMapping("/melhor-nota")
     fun getProcedimentoComMelhorNota(): ResponseEntity<ProcedimentoEstatisticaDTO> {
         val procedimento = procedimentoService.getProcedimentoComMelhorNota()
@@ -130,9 +202,21 @@ class ProcedimentoController(private val procedimentoService: ProcedimentoServic
         }
     }
 
+    @Operation(
+        summary = "Buscar quantidade de agendamentos por procedimento",
+        description = "Retorna a quantidade de agendamentos para cada procedimento."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Quantidade de agendamentos por procedimento retornada com sucesso"
+            )
+        ]
+    )
     @GetMapping("/quantidade-agendamentos-procedimentos")
     fun getQuantidadeAgendamentos(): ResponseEntity<List<Int>> {
         val quantidadeAgendamentos = procedimentoService.getQuantidadeAgendamentosPorProcedimento()
         return ResponseEntity.ok(quantidadeAgendamentos)
     }
-}   
+}

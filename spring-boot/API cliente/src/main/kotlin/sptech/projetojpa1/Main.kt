@@ -1,6 +1,11 @@
 package sptech.projetojpa1
 
-import sptech.projetojpa1.dominio.*
+import sptech.projetojpa1.domain.*
+import sptech.projetojpa1.domain.servico.Cilios
+import sptech.projetojpa1.domain.servico.Make
+import sptech.projetojpa1.domain.servico.Sobrancelha
+import sptech.projetojpa1.domain.usuario.Cliente
+import sptech.projetojpa1.domain.usuario.Profissional
 
 fun main() {
     println("=== Bem-vindo ao Sistema de Avaliação de Serviços Estéticos da Kronos ===\n")
@@ -27,21 +32,21 @@ fun main() {
         codigo = 1,
         nome = "Fernando Brandão",
         email = "fernando.brandao@sptech.school",
-        instagram = "@brandao"
+        instagram = "@brandao",
     )
 
     val cliente2 = Cliente(
         codigo = 2,
         nome = "Leonardo Marques",
         email = "leonardo.marques@sptech.school",
-        instagram = "@leo_marques"
+        instagram = "@leo_marques",
     )
 
     val cliente3 = Cliente(
         codigo = 3,
         nome = "Gerson Santos",
         email = "gerson.santos@sptech.school",
-        instagram = "@gerson_santos"
+        instagram = "@gerson_santos",
     )
 
     println(

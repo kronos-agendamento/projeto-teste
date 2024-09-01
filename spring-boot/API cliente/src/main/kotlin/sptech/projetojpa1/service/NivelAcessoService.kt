@@ -2,7 +2,7 @@ package sptech.projetojpa1.service
 
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
-import sptech.projetojpa1.dominio.NivelAcesso
+import sptech.projetojpa1.domain.NivelAcesso
 import sptech.projetojpa1.dto.nivelacesso.NivelAcessoCreateDTO
 import sptech.projetojpa1.dto.nivelacesso.NivelAcessoResponseDTO
 import sptech.projetojpa1.dto.nivelacesso.NivelAcessoUpdateDTO

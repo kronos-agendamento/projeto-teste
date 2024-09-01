@@ -1,9 +1,9 @@
-package sptech.projetojpa1.dominio
+package sptech.projetojpa1.domain
 
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "servico")
+@Table(name = "Servico")
 open class Servico(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val idServico: Int = 0,
@@ -29,28 +29,7 @@ open class Servico(
         }
     }
 
-    fun descricaoCompleta(): String? {
+    open fun descricaoCompleta(): String? {
         return descricao
     }
 }
-
-@Entity
-@Table(name = "cilios")
-class Cilios(
-    nome: String,
-    descricao: String
-) : Servico(nome = nome, descricao = descricao)
-
-@Entity
-@Table(name = "sobrancelha")
-class Sobrancelha(
-    nome: String,
-    descricao: String
-) : Servico(nome = nome, descricao = descricao)
-
-@Entity
-@Table(name = "make")
-class Make(
-    nome: String,
-    descricao: String
-) : Servico(nome = nome, descricao = descricao)

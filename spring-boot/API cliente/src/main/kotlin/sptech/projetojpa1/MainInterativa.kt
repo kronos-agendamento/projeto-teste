@@ -1,6 +1,11 @@
 package sptech.projetojpa1
 
-import sptech.projetojpa1.dominio.*
+import sptech.projetojpa1.domain.*
+import sptech.projetojpa1.domain.servico.Cilios
+import sptech.projetojpa1.domain.servico.Make
+import sptech.projetojpa1.domain.servico.Sobrancelha
+import sptech.projetojpa1.domain.usuario.Cliente
+import sptech.projetojpa1.domain.usuario.Profissional
 import javax.swing.JOptionPane
 import javax.swing.JPasswordField
 
@@ -60,8 +65,8 @@ fun cadastrarCliente() {
         codigo = (1..1000).random(),
         nome = nomeCliente,
         email = emailCliente,
+        senha = senhaCliente,
         instagram = instagramCliente,
-        senha = senhaCliente
     )
 
     clientesCadastrados.add(cliente)

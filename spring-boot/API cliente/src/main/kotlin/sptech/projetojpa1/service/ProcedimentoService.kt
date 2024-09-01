@@ -1,8 +1,11 @@
 package sptech.projetojpa1.service
 
 import org.springframework.stereotype.Service
-import sptech.projetojpa1.dominio.Procedimento
-import sptech.projetojpa1.dto.procedimento.*
+import sptech.projetojpa1.domain.Procedimento
+import sptech.projetojpa1.dto.procedimento.ProcedimentoDTO
+import sptech.projetojpa1.dto.procedimento.ProcedimentoEstatisticaDTO
+import sptech.projetojpa1.dto.procedimento.ProcedimentoRequestDTO
+import sptech.projetojpa1.dto.procedimento.ProcedimentoResponseDTO
 import sptech.projetojpa1.repository.ProcedimentoRepository
 import java.util.stream.Collectors
 
@@ -77,9 +80,10 @@ class ProcedimentoService(private val procedimentoRepository: ProcedimentoReposi
         )
     }
 
-    fun listarProcedimentosBemAvaliados(): List<String>{
+    fun listarProcedimentosBemAvaliados(): List<String> {
         return procedimentoRepository.findProcedimentosBemAvaliados()
     }
+
     fun getProcedimentoComMelhorNota(): ProcedimentoEstatisticaDTO? {
         val result = procedimentoRepository.findProcedimentoComMelhorNota().firstOrNull() ?: return null
         return ProcedimentoEstatisticaDTO(

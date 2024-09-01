@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import sptech.projetojpa1.dominio.HorarioFuncionamento
+import sptech.projetojpa1.domain.HorarioFuncionamento
 import sptech.projetojpa1.dto.horario.HorarioFuncionamentoAttRequest
 import sptech.projetojpa1.dto.horario.HorarioFuncionamentoRequest
 import sptech.projetojpa1.service.HorarioFuncionamentoService

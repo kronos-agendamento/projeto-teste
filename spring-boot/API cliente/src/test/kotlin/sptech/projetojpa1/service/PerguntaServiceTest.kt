@@ -8,8 +8,8 @@ import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.any
 import org.mockito.MockitoAnnotations
-import sptech.projetojpa1.dominio.Pergunta
-import sptech.projetojpa1.dto.pergunta.PerguntaRequest
+import sptech.projetojpa1.domain.Pergunta
+import sptech.projetojpa1.dto.pergunta.PerguntaCreateRequest
 import sptech.projetojpa1.repository.PerguntaRepository
 
 class PerguntaServiceTest {
@@ -27,7 +27,7 @@ class PerguntaServiceTest {
 
     @Test
     fun `Teste cadastrarPergunta`() {
-        val perguntaRequest = PerguntaRequest(1, "Descrição da pergunta", "Tipo da pergunta", false)
+        val perguntaRequest = PerguntaCreateRequest(1, "Descrição da pergunta", "Tipo da pergunta", false)
         val pergunta = Pergunta(1, "Descrição da pergunta", "Tipo da pergunta", false)
 
         `when`(perguntaRepository.save(any())).thenReturn(pergunta)
