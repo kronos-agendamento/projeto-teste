@@ -26,11 +26,11 @@ INNER JOIN
 ON 
     a.fk_procedimento = ep.id_especificacao_procedimento 
 WHERE 
-    a.data >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+    a.data_horario >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
 GROUP BY 
-    DATE_FORMAT(a.data, '%Y-%m')
+    DATE_FORMAT(a.data_horario, '%Y-%m')
 ORDER BY 
-    DATE_FORMAT(a.data, '%Y-%m');
+    DATE_FORMAT(a.data_horario, '%Y-%m');
  
 
     """, nativeQuery = true

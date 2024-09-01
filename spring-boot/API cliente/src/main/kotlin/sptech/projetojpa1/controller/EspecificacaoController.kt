@@ -12,7 +12,7 @@ import sptech.projetojpa1.dto.especificacao.EspecificacaoReceitaMensalDTO
 import sptech.projetojpa1.service.EspecificacaoService
 
 @RestController
-@RequestMapping("/especificacoes")
+@RequestMapping("/api/especificacoes")
 class EspecificacaoController(
     private val service: EspecificacaoService
 ) {

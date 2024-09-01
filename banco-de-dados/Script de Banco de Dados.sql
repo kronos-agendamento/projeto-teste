@@ -1,8 +1,11 @@
 -- Criação do banco de dados
 -- DROP DATABASE kronosbooking;
 CREATE DATABASE IF NOT EXISTS kronosbooking;
-USE kronosbooking;
 
+USE kronosbooking;
+        
+        
+        
 -- Dropando tabelas se existirem
 DROP TABLE IF EXISTS cliente;
 DROP TABLE IF EXISTS feedback;
@@ -42,7 +45,7 @@ CREATE TABLE complemento (
     FOREIGN KEY (fk_endereco) REFERENCES endereco(id_endereco)
 );
 
-	CREATE TABLE horario_funcionamento (
+CREATE TABLE horario_funcionamento (
 		id_horario_funcionamento INT PRIMARY KEY AUTO_INCREMENT,
 		dia_inicio VARCHAR(45),
 		dia_fim VARCHAR(45),
@@ -274,7 +277,12 @@ INSERT INTO usuario (nome, email, senha, instagram, cpf, telefone, telefone_emer
 VALUES 
 ('Maria Silva', 'maria@gmail.com', 'senha123', '@maria', '12345678901', '11999999999', '11988888888', '1990-01-01', 'Feminino', 'Amiga', NULL, TRUE, 1, 1, 1, 1),
 ('João Pereira', 'joao@gmail.com', 'senha123', '@joao', '10987654321', '11977777777', '11966666666', '1985-05-15', 'Masculino', 'Internet', NULL, TRUE, 2, 2, 1, 1),
-('Ana Souza', 'ana@gmail.com', 'senha123', '@ana', '12345098765', '11955555555', '11944444444', '1992-07-21', 'Feminino', 'Cliente', NULL, TRUE, 3, 3, 2, 1);
+('Ana Souza', 'ana@gmail.com', 'senha123', '@ana', '12345098765', '11955555555', '11944444444', '1992-07-21', 'Feminino', 'Cliente', NULL, TRUE, 3, 3, 2, 1),
+('Maria Silva', 'maria1@gmail.com', 'senha123', '@maria', '12345678901', '11999999899', '11988887888', '1990-01-01', 'Feminino', 'facebook', NULL, TRUE, 1, 1, 1, 1),
+('João Pereira', 'joao2@gmail.com', 'senha123', '@joao', '10987654321', '11977777877', '11966667666', '1985-05-15', 'Masculino', 'facebook', NULL, TRUE, 2, 2, 1, 1),
+('Maria Silva', 'maria2@gmail.com', 'senha123', '@maria', '12345678901', '11999998999', '11988788888', '1990-01-01', 'Feminino', 'instagram', NULL, TRUE, 1, 1, 1, 1),
+('João Pereira', 'joao1@gmail.com', 'senha123', '@joao', '10987654321', '11977787777', '11966676666', '1985-05-15', 'Masculino', 'instagram', NULL, TRUE, 2, 2, 1, 1),
+('Ana Souza', 'ana1@gmail.com', 'senha123', '@ana', '12345098765', '11955558555', '11944744444', '1992-07-21', 'Feminino', 'instagram', NULL, TRUE, 3, 3, 2, 1);
 
 -- Inserir perguntas
 INSERT INTO pergunta (descricao, tipo, status)
@@ -296,6 +304,11 @@ VALUES
 ('Agendado', '#008000', 'Confirmado pelo cliente'),  -- Verde
 ('Cancelado', '#FF0000', 'Cliente cancelou'),        -- Vermelho
 ('Concluído', '#0000FF', 'Procedimento realizado');  -- Azul
+
+INSERT INTO usuario (nome, email, senha, instagram, cpf, telefone, telefone_emergencial, data_nasc, genero, indicacao, foto, status, fk_nivel_acesso, fk_endereco, fk_empresa, fk_ficha_anamnese)
+VALUES 
+('Cliente 1', 'cliente1@gmail.com', 'senha123', '@cliente1', '11111111111', '11990000001', '11980000001', '1980-01-01', 'Feminino', 'Indicação', NULL, TRUE, 1, 1, 1, 1),
+('Cliente 2', 'cliente2@gmail.com', 'senha123', '@cliente2', '22222222222', '11990000002', '11980000002', '1980-02-01', 'Masculino', 'Indicação', NULL, TRUE, 1, 1, 1, 1);
 
 
 -- Inserir procedimentos
@@ -331,7 +344,14 @@ VALUES
 ('2024-07-23 11:00:00', 'Retorno', 2, 3, 1, 3),
 ('2024-07-22 12:00:00', 'Manutenção', 3, 1, 1, 4),
 ('2024-08-05 13:00:00', 'Primeira vez', 2, 2, 2, 5),
-('2024-07-17 14:00:00', 'Retorno', 3, 3, 3, 6);
+('2024-07-17 14:00:00', 'Retorno', 3, 3, 3, 6),
+('2024-08-01 09:00:00', 'Manutenção', 1007, 1, 3, 1),
+('2024-08-02 10:00:00', 'Primeira vez', 1008, 2, 3, 2),
+('2024-07-23 11:00:00', 'Retorno', 1009, 3, 3, 3),
+('2024-07-22 12:00:00', 'Manutenção', 1010, 1, 3, 4),
+('2024-08-05 13:00:00', 'Primeira vez', 1011, 2, 3, 5),
+('2024-07-17 14:00:00', 'Retorno', 1012, 3, 3, 6);
+
 
 -- Inserir feedbacks
 INSERT INTO feedback (anotacoes, nota, fk_agendamento, fk_usuario)
@@ -347,4 +367,105 @@ VALUES
 ('Maquiagem Profissional', 'Curso de maquiagem profissional', 'Intermediário', 'Online', '30 horas', 700.00, TRUE),
 ('Extensão de Cílios', 'Curso de extensão de cílios', 'Avançado', 'Presencial', '25 horas', 800.00, TRUE);
 
-select * from usuario;
+
+DELIMITER $$
+
+CREATE PROCEDURE InsertUsuarios()
+BEGIN
+    DECLARE i INT DEFAULT 1;
+    
+    WHILE i <= 1000 DO
+        INSERT INTO usuario (nome, email, senha, instagram, cpf, telefone, telefone_emergencial, data_nasc, genero, indicacao, foto, status, fk_nivel_acesso, fk_endereco, fk_empresa, fk_ficha_anamnese)
+        VALUES 
+        (CONCAT('Cliente ', i), 
+         CONCAT('cliente', i, '@gmail.com'), 
+         'senha123', 
+         CONCAT('@cliente', i), 
+         LPAD(i, 11, '1'), 
+         CONCAT('1199', LPAD(i, 7, '0')), 
+         CONCAT('1198', LPAD(i, 7, '0')), 
+         '1980-01-01', 
+         'Feminino', 
+         'Indicação', 
+         NULL, 
+         TRUE, 
+         FLOOR(1 + RAND() * 3), -- Níveis de acesso aleatórios entre 1 e 3
+         FLOOR(1 + RAND() * 3), -- Endereços aleatórios entre 1 e 3
+         FLOOR(1 + RAND() * 2), -- Empresas aleatórias entre 1 e 2
+         FLOOR(1 + RAND() * 1)); -- Ficha de anamnese fixa
+        
+        SET i = i + 1;
+    END WHILE;
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE PROCEDURE InsertAgendamentos()
+BEGIN
+    DECLARE j INT DEFAULT 1;
+    
+    WHILE j <= 5000 DO
+        INSERT INTO agendamento (data_horario, tipo_agendamento, fk_usuario, fk_procedimento, fk_status, fk_especificacao_procedimento)
+        VALUES 
+        (DATE_ADD('2024-01-01', INTERVAL FLOOR(RAND() * 240) DAY), -- Datas variadas nos últimos 8 meses
+         CASE 
+             WHEN j % 3 = 0 THEN 'Manutenção' 
+             WHEN j % 3 = 1 THEN 'Primeira vez' 
+             ELSE 'Retorno' 
+         END, 
+         FLOOR(1 + RAND() * 1000), -- Usuários entre 1 e 1000
+         FLOOR(1 + RAND() * 3), -- Procedimentos entre 1 e 3
+         FLOOR(1 + RAND() * 3), -- Status entre 1 e 3 (Agendado, Cancelado, Concluído)
+         FLOOR(1 + RAND() * 6)); -- Especificação de procedimento entre 1 e 6
+        
+        SET j = j + 1;
+    END WHILE;
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE PROCEDURE InsertAgendamentosParaTeste()
+BEGIN
+    DECLARE i INT DEFAULT 1;
+    DECLARE start_date DATE DEFAULT DATE_SUB(CURDATE(), INTERVAL 5 MONTH);
+    DECLARE months INT DEFAULT 0;
+    
+    WHILE i <= 2 DO
+        SET months = 0;
+        
+        WHILE months < 5 DO
+            INSERT INTO agendamento (data_horario, tipo_agendamento, fk_usuario, fk_procedimento, fk_status, fk_especificacao_procedimento)
+            VALUES 
+            (DATE_ADD(start_date, INTERVAL months MONTH), -- Datas variando nos últimos 5 meses
+             CASE 
+                 WHEN months % 3 = 0 THEN 'Manutenção' 
+                 WHEN months % 3 = 1 THEN 'Primeira vez' 
+                 ELSE 'Retorno' 
+             END, 
+             i, -- Usuários 1 e 2
+             FLOOR(1 + RAND() * 3), -- Procedimentos entre 1 e 3
+             (SELECT id_status_agendamento FROM status_agendamento WHERE nome = 'Concluído'),
+             FLOOR(1 + RAND() * 6)); -- Especificação de procedimento entre 1 e 6
+
+            SET months = months + 1;
+        END WHILE;
+        
+        SET i = i + 1;
+    END WHILE;
+END$$
+
+DELIMITER ;
+
+CALL InsertAgendamentos();
+CALL InsertUsuarios();
+CALL InsertAgendamentosParaTeste();
+
+
+
+select*from agendamento;
+select*from usuario;
+

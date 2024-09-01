@@ -86,7 +86,7 @@ class AgendamentoService(
 
             val dataFim = dataInicio.plusHours(horas.toLong()).plusMinutes(minutos.toLong())
 
-            return validarDia(dataInicio, dataFim)
+            return validarDia(dataInicio)
         }
 
         fun criarAgendamento(agendamentoRequestDTO: AgendamentoRequestDTO): AgendamentoResponseDTO {

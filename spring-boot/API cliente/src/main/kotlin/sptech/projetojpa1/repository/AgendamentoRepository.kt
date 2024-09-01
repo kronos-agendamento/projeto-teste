@@ -14,16 +14,16 @@ interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
     fun findByDataHorario(@Param("dataHorario") dataHorario: LocalDateTime): List<Agendamento>
 
     @Query(
-        nativeQuery = true, value =
-        "SELECT " +
-                "    COUNT(a.id_agendamento) AS quantidade_concluidos " +
-                "FROM " +
-                "    agendamento a " +
-                "INNER JOIN " +
-                "    status_agendamento s ON a.fk_status = s.id_status_agendamento " +
-                "WHERE " +
-                "    s.nome = 'Concluído' " +
-                "    AND a.data >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)"
+        nativeQuery = true, value = """ 
+        SELECT
+                COUNT(a.id_agendamento) AS quantidade_concluidos
+                FROM
+                agendamento a
+                INNER JOIN
+                status_agendamento s ON a.fk_status = s.id_status_agendamento
+                WHERE
+                s.nome = 'Concluído'
+                AND a.data_horario >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH);"""
     )
     fun findAgendamentosConcluidosUltimoTrimestre(): Int
 

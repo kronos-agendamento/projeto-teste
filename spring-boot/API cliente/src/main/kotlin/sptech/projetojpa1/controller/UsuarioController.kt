@@ -317,6 +317,18 @@ class UsuarioController(
         return ResponseEntity.ok(clientes)
     }
 
+    @GetMapping("/clientes-fidelizados-ultimos-cinco-meses")
+    fun listarClientesFidelizadosUltimos5Meses(): ResponseEntity<List<Int>> {
+        val lista = usuarioService.getClientesFidelizadosUltimos5Meses()
+        return ResponseEntity.ok(lista)
+    }
+
+    @GetMapping("/clientes-concluidos-ultimos-cinco-meses")
+    fun listarClientesConcluidosUltimos5Meses(): ResponseEntity<List<Int>> {
+        val lista = usuarioService.getClientesConcluidosUltimos5Meses()
+        return ResponseEntity.ok(lista)
+    }
+
     @Operation(summary = "Listar usuário por CPF")
     @ApiResponses(
         value = [

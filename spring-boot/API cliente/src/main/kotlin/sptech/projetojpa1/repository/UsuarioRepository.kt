@@ -80,7 +80,7 @@ interface UsuarioRepository : JpaRepository<Usuario, Int> {
         "SELECT COUNT(DISTINCT u.id_usuario) AS total_clientes " +
                 "FROM usuario u " +
                 "JOIN agendamento a ON u.id_usuario = a.fk_usuario " +
-                "WHERE a.data BETWEEN DATE_SUB(NOW(), INTERVAL 3 MONTH) AND NOW()"
+                "WHERE a.data_horario BETWEEN DATE_SUB(NOW(), INTERVAL 3 MONTH) AND NOW()"
     )
     fun findClientesAtivos(): Int
 
@@ -92,8 +92,8 @@ interface UsuarioRepository : JpaRepository<Usuario, Int> {
         WHERE u.id_usuario NOT IN (
             SELECT DISTINCT a.fk_usuario
             FROM agendamento a
-            WHERE a.data BETWEEN DATE_SUB(NOW(), INTERVAL 3 MONTH) AND NOW()
-        )
+            WHERE a.data_horario BETWEEN DATE_SUB(NOW(), INTERVAL 3 MONTH) AND NOW()
+            );
         """
     )
     fun findClientesInativos(): Int
@@ -105,31 +105,58 @@ interface UsuarioRepository : JpaRepository<Usuario, Int> {
     JOIN (
         SELECT a.fk_usuario
         FROM agendamento a
-        WHERE a.data BETWEEN DATE_SUB(NOW(), INTERVAL 3 MONTH) AND NOW()
+        WHERE a.data_horario BETWEEN DATE_SUB(NOW(), INTERVAL 3 MONTH) AND NOW()
         GROUP BY a.fk_usuario
-        HAVING COUNT(DISTINCT MONTH(a.data)) = 3
-    ) fidelizados ON u.id_usuario = fidelizados.fk_usuario
+        HAVING COUNT(DISTINCT MONTH(a.data_horario)) = 3
+    ) fidelizados ON u.id_usuario = fidelizados.fk_usuario;
     """
     )
     fun findClientesFidelizadosUltimosTresMeses(): Int
 
     @Query(
+        nativeQuery = true, value = """
+    SELECT 
+    COUNT(DISTINCT a.fk_usuario) AS QTD_CLIENTES
+FROM 
+    agendamento a
+JOIN 
+    status_agendamento sa ON a.fk_status = sa.id_status_agendamento
+WHERE 
+    sa.nome = 'Concluído' 
+    AND a.data_horario BETWEEN DATE_SUB(CURDATE(), INTERVAL 5 MONTH) AND CURDATE()
+GROUP BY 
+    YEAR(a.data_horario), MONTH(a.data_horario), MONTHNAME(a.data_horario) -- Agrupar por ano, mês e nome do mês
+HAVING 
+    COUNT(a.id_agendamento) >= 2 -- Apenas meses com pelo menos 2 agendamentos concluídos
+ORDER BY 
+    YEAR(a.data_horario) DESC, MONTH(a.data_horario) DESC;
+
+    """
+    )
+    fun findClientesFidelizados5Meses(): List<Int>
+
+    @Query(
         nativeQuery = true,
         value = """
-        SELECT 
-            COUNT(DISTINCT u.id_usuario) AS qtd_clientes_concluidos
-        FROM 
-            usuario u
-        INNER JOIN 
-            agendamento a 
-        ON 
-            u.id_usuario = a.fk_usuario
-        WHERE 
-            a.data BETWEEN DATE_SUB(CURDATE(), INTERVAL 2 MONTH) AND CURDATE()
-            AND a.fk_status = (SELECT id_status_agendamento FROM statusAgendamento WHERE nome = 'Concluído')
+        WITH UserAgendamentos AS (
+            SELECT a.fk_usuario, 
+                   YEAR(a.data_horario) AS ano, 
+                   MONTH(a.data_horario) AS mes
+            FROM agendamento a
+            JOIN status_agendamento sa ON a.fk_status = sa.id_status_agendamento
+            WHERE sa.nome = 'Concluído'
+              AND a.data_horario BETWEEN DATE_SUB(CURDATE(), INTERVAL 5 MONTH) AND CURDATE()
+            GROUP BY a.fk_usuario, YEAR(a.data_horario), MONTH(a.data_horario)
+            HAVING COUNT(a.id_agendamento) = 1
+        )
+        SELECT  
+            COUNT(DISTINCT fk_usuario) AS QTD_CLIENTES
+        FROM UserAgendamentos
+        GROUP BY ano, mes
+        ORDER BY ano DESC, mes DESC;
         """
     )
-    fun countClientesConcluidosUltimosDoisMeses(): Int
+    fun findClientesConcluidos5Meses(): List<Int>
 
 
     abstract fun save(cliente: Cliente): Cliente
