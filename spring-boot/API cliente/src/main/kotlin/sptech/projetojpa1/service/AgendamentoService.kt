@@ -70,9 +70,6 @@ class AgendamentoService(
             val especificacao = especificacaoRepository.findById(agendamentoRequestDTO.fk_especificacao)
                 .orElseThrow { IllegalArgumentException("Especificação não encontrada") }
 
-            val tempoProcedimento = especificacaoRepository.fkTempoProcedimento
-                ?: throw IllegalArgumentException("Tempo do procedimento não pode ser nulo")
-
             val duracao = when (agendamentoRequestDTO.tipoAgendamento) {
                 "Colocação" -> especificacao.tempoColocacao
                 "Manutenção" -> especificacao.tempoManutencao
