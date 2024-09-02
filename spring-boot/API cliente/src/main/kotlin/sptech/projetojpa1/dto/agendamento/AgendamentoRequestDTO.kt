@@ -26,5 +26,4 @@ data class AgendamentoRequestDTO(
 
     @field:NotNull(message = "Id do status não pode ser nulo")
     @field:Min(value = 1, message = "Id do status deve ser maior que 0")
-    var fk_status: Int
-)
+    var fk_status: Int)
