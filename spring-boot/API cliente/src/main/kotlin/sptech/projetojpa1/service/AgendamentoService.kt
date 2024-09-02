@@ -74,9 +74,9 @@ class AgendamentoService(
                 ?: throw IllegalArgumentException("Tempo do procedimento não pode ser nulo")
 
             val duracao = when (agendamentoRequestDTO.tipoAgendamento) {
-                "Colocação" -> tempoProcedimento.tempoColocacao
-                "Manutenção" -> tempoProcedimento.tempoManutencao
-                "Retirada" -> tempoProcedimento.tempoRetirada
+                "Colocação" -> especificacao.tempoColocacao
+                "Manutenção" -> especificacao.tempoManutencao
+                "Retirada" -> especificacao.tempoRetirada
                 else -> throw IllegalArgumentException("Tipo de agendamento inválido")
             }
 
