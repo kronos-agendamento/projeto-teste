@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const response = await fetch(`${baseUrl}/especificacoes/${procedimentoId}`);
         const procedimento = await response.json();
 
-        document.getElementById('pesquisar').value = procedimento.fkProcedimento.tipo;
+        document.getElementById('pesquisar').value = procedimento.procedimento.tipo;
         document.getElementById('especificacao').value = procedimento.especificacao;
         document.getElementById('valor-colocacao').value = `R$ ${procedimento.precoColocacao.toFixed(2).replace('.', ',')}`;
         document.getElementById('valor-retirada').value = `R$ ${procedimento.precoRetirada.toFixed(2).replace('.', ',')}`;
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             precoColocacao: parseFloat(document.getElementById('valor-colocacao').value.replace('R$', '').replace(',', '.')),
             precoManutencao: parseFloat(document.getElementById('valor-manutencao').value.replace('R$', '').replace(',', '.')),
             precoRetirada: parseFloat(document.getElementById('valor-retirada').value.replace('R$', '').replace(',', '.')),
-            fkProcedimentoId: procedimentoId,
+            procedimento: procedimentoId,
         };
 
         const tempoColocacao = `${formatTime(document.getElementById('duracao-horas').value)}:${formatTime(document.getElementById('duracao-minutos').value)}`;

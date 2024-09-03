@@ -13,8 +13,8 @@ class EspecificacaoService(
     @Autowired private val procedimentoRepository: ProcedimentoRepository
 ) {
     fun criarEspecificacao(dto: EspecificacaoDTO): Especificacao {
-        val procedimento = procedimentoRepository.findById(dto.fkProcedimentoId!!)
-            .orElseThrow { IllegalArgumentException("Procedimento não encontrado com o ID: ${dto.fkProcedimentoId}") }
+        val procedimento = procedimentoRepository.findById(dto.procedimento!!)
+            .orElseThrow { IllegalArgumentException("Procedimento não encontrado com o ID: ${dto.procedimento}") }
 
         val especificacao = Especificacao(
             especificacao = dto.especificacao,
@@ -25,7 +25,7 @@ class EspecificacaoService(
             tempoManutencao = dto.tempoManutencao!!,
             tempoRetirada = dto.tempoRetirada!!,
             foto = null,
-            fkProcedimento = procedimento
+            procedimento = procedimento
         )
 
         return repository.save(especificacao)
@@ -45,9 +45,11 @@ class EspecificacaoService(
         dto.tempoColocacao?.let { especificacaoExistente.tempoColocacao = it }
         dto.tempoManutencao?.let { especificacaoExistente.tempoManutencao = it }
         dto.tempoRetirada?.let { especificacaoExistente.tempoRetirada = it }
-        dto.fkProcedimentoId?.let {
-            especificacaoExistente.fkProcedimento = procedimentoRepository.findById(it).orElseThrow {
-                IllegalArgumentException("Procedimento não encontrado com o ID: $it")
+        dto.procedimento.let {
+            especificacaoExistente.procedimento = it?.let { it1 ->
+                procedimentoRepository.findById(it1).orElseThrow {
+                    IllegalArgumentException("Procedimento não encontrado com o ID: $it")
+                }
             }
         }
 

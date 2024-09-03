@@ -54,7 +54,7 @@ class HorarioFuncionamentoController(
         return if (lista.isNotEmpty()) {
             val dtoList = lista.map { horario ->
                 HorarioFuncionamentoRequest(
-                    id = horario.id,
+                    id = horario.id!!,
                     diaInicio = horario.diaInicio,
                     diaFim = horario.diaFim,
                     horarioAbertura = horario.horarioAbertura,

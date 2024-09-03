@@ -39,9 +39,12 @@ open class Agendamento(
     @field:NotNull(message = "Status do agendamento não pode ser nulo")
     @ManyToOne
     @JoinColumn(name = "fk_status")
-    var statusAgendamento: Status
+    var statusAgendamento: Status,
+
+    @OneToOne(mappedBy = "agendamento", cascade = [CascadeType.ALL], orphanRemoval = true)
+    var feedback: Feedback? = null
 ) {
     override fun toString(): String {
-        return "Agendamento(idAgendamento=$idAgendamento, dataHorario=$dataHorario, tipoAgendamento=$tipoAgendamento, usuario=$usuario, procedimento=$procedimento, especificacao=$especificacao, statusAgendamento=$statusAgendamento)"
+        return "Agendamento(idAgendamento=$idAgendamento, dataHorario=$dataHorario, tipoAgendamento=$tipoAgendamento, usuario=$usuario, procedimento=$procedimento, especificacao=$especificacao, statusAgendamento=$statusAgendamento, feedback=$feedback)"
     }
 }

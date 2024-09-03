@@ -27,7 +27,7 @@ class UsuarioService(
                 nome = dto.nome,
                 email = dto.email,
                 senha = dto.senha,
-                instagram = dto.instagram,  // Certifique-se de que todos os campos obrigatórios estão preenchidos
+                instagram = dto.instagram,
                 cpf = dto.cpf,
                 telefone = dto.telefone,
                 dataNasc = dto.dataNasc,
@@ -46,7 +46,7 @@ class UsuarioService(
                 nome = dto.nome,
                 email = dto.email,
                 senha = dto.senha,
-                instagram = dto.instagram,  // Verifique e atribua um valor válido ou padrão
+                instagram = dto.instagram,
                 cpf = dto.cpf,
                 telefone = dto.telefone,
                 dataNasc = dto.dataNasc,

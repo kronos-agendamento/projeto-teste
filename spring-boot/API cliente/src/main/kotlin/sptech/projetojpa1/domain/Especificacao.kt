@@ -60,10 +60,10 @@ data class Especificacao(
 
     @ManyToOne @field:NotNull(message = "Procedimento é obrigatório")
     @JoinColumn(name = "fk_procedimento")
-    var fkProcedimento: Procedimento?
+    var procedimento: Procedimento?
 
 ) {
     override fun toString(): String {
-        return "Especificacao(idEspecificacaoProcedimento=$idEspecificacaoProcedimento, especificacao=$especificacao, precoColocacao=$precoColocacao, precoManutencao=$precoManutencao, precoRetirada=$precoRetirada, foto=${foto?.size}, fkProcedimento=$fkProcedimento, tempoColocacao='$tempoColocacao', tempoManutencao='$tempoManutencao', tempoRetirada='$tempoRetirada')"
+        return "Especificacao(idEspecificacaoProcedimento=$idEspecificacaoProcedimento, especificacao=$especificacao, precoColocacao=$precoColocacao, precoManutencao=$precoManutencao, precoRetirada=$precoRetirada, foto=${foto?.size}, procedimento=$procedimento, tempoColocacao='$tempoColocacao', tempoManutencao='$tempoManutencao', tempoRetirada='$tempoRetirada')"
     }
 }

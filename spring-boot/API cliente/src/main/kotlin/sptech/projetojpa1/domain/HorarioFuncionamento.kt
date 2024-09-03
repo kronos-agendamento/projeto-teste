@@ -5,11 +5,12 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 
 @Entity
-@Table(name = "HorarioFuncionamento")
+@Table(name = "horarioFuncionamento")
 class HorarioFuncionamento(
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_horario_funcionamento")
-    var id: Int = 0,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_horario_funcionamento") // Atualize para o nome correto
+    var id: Int? = null,
 
     @NotBlank(message = "O dia de início é obrigatório")
     @Column(name = "dia_inicio")

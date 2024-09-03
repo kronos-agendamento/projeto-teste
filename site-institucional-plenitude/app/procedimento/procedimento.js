@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
         paginatedProcedures.forEach(procedure => {
             const row = document.createElement('tr');
 
-            const nome = procedure.fkProcedimento.tipo;
+            const nome = procedure.procedimento.tipo;
             const preco = `R$${procedure.precoColocacao.toFixed(2).replace('.', ',')}`;
             const duracao = formatDuration(procedure.tempoColocacao);
             const especificacao = procedure.especificacao;

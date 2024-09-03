@@ -4,16 +4,12 @@ USE kronosbooking;
 DROP TABLE IF EXISTS Feedback;
 DROP TABLE IF EXISTS Cliente;
 DROP TABLE IF EXISTS Profissional;
-DROP TABLE IF EXISTS Cilios;
-DROP TABLE IF EXISTS Make;
-DROP TABLE IF EXISTS Sobrancelha;
 DROP TABLE IF EXISTS Agendamento;
 DROP TABLE IF EXISTS Resposta;
 DROP TABLE IF EXISTS Pergunta;
-DROP TABLE IF EXISTS Especificacao; -- Drop this before Procedimento
+DROP TABLE IF EXISTS Especificacao;
 DROP TABLE IF EXISTS TempoProcedimento;
-DROP TABLE IF EXISTS Procedimento; -- Drop after Especificacao
-DROP TABLE IF EXISTS Servico;
+DROP TABLE IF EXISTS Procedimento;
 DROP TABLE IF EXISTS Usuario;
 DROP TABLE IF EXISTS FichaAnamnese;
 DROP TABLE IF EXISTS Empresa;
@@ -21,7 +17,6 @@ DROP TABLE IF EXISTS HorarioFuncionamento;
 DROP TABLE IF EXISTS NivelAcesso;
 DROP TABLE IF EXISTS Endereco;
 DROP TABLE IF EXISTS Status;
-
 
 CREATE TABLE Endereco (
     id_endereco INT AUTO_INCREMENT PRIMARY KEY,
@@ -49,6 +44,8 @@ CREATE TABLE HorarioFuncionamento (
     horario_fechamento VARCHAR(5) NOT NULL
 );
 
+select * from horarioFuncionamento where id_horario_funcionamento =1;
+
 CREATE TABLE Empresa (
     id_empresa INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
@@ -59,6 +56,9 @@ CREATE TABLE Empresa (
     FOREIGN KEY (fk_endereco) REFERENCES Endereco(id_endereco),
     FOREIGN KEY (fk_horario_funcionamento) REFERENCES HorarioFuncionamento(id_horario_funcionamento)
 );
+
+SELECT * FROM Empresa WHERE fk_horario_funcionamento = 1;
+SELECT * FROM HorarioFuncionamento WHERE id = 1;
 
 CREATE TABLE FichaAnamnese (
     id_ficha INT AUTO_INCREMENT PRIMARY KEY,
@@ -86,12 +86,6 @@ CREATE TABLE Usuario (
     FOREIGN KEY (fk_endereco) REFERENCES Endereco(id_endereco),
     FOREIGN KEY (fk_empresa) REFERENCES Empresa(id_empresa),
     FOREIGN KEY (fk_ficha_anamnese) REFERENCES FichaAnamnese(id_ficha)
-);
-
-CREATE TABLE Servico (
-    id_servico INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
-    descricao VARCHAR(500) NOT NULL
 );
 
 CREATE TABLE Procedimento (
@@ -156,15 +150,11 @@ CREATE TABLE Feedback (
     id_feedback INT AUTO_INCREMENT PRIMARY KEY,
     anotacoes VARCHAR(255),
     nota INT CHECK (nota BETWEEN 1 AND 5),
-    fk_agendamento INT,
+    fk_agendamento INT UNIQUE,
     fk_usuario INT,
-    fk_avaliador INT,
-    fk_servico INT,
     fk_cliente_avaliado INT,
     FOREIGN KEY (fk_agendamento) REFERENCES Agendamento(id_agendamento),
     FOREIGN KEY (fk_usuario) REFERENCES Usuario(id_usuario),
-    FOREIGN KEY (fk_avaliador) REFERENCES Usuario(id_usuario),
-    FOREIGN KEY (fk_servico) REFERENCES Servico(id_servico),
     FOREIGN KEY (fk_cliente_avaliado) REFERENCES Usuario(id_usuario)
 );
 
@@ -182,21 +172,6 @@ CREATE TABLE Profissional (
     qualificacoes VARCHAR(255),
     especialidade VARCHAR(255),
     FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario)
-);
-
-CREATE TABLE Cilios (
-    id_servico INT PRIMARY KEY,
-    FOREIGN KEY (id_servico) REFERENCES Servico(id_servico)
-);
-
-CREATE TABLE Make (
-    id_servico INT PRIMARY KEY,
-    FOREIGN KEY (id_servico) REFERENCES Servico(id_servico)
-);
-
-CREATE TABLE Sobrancelha (
-    id_servico INT PRIMARY KEY,
-    FOREIGN KEY (id_servico) REFERENCES Servico(id_servico)
 );
 
 INSERT INTO Endereco (logradouro, cep, bairro, cidade, estado, numero, complemento)
@@ -245,19 +220,6 @@ VALUES ('Priscila Plenitude', 'pri@gmail.com', 'senha123', '@plenitude_no_olhar'
        ('Fernanda Martins', 'fernanda@example.com', 'senha123', '@fernandamartins', '012.345.678-00', 11890123456, '1980-08-08', 'Feminino', 'Internet', NULL, TRUE, 2, 8, NULL, 8),
        ('Marcos Pereira', 'marcos@example.com', 'senha123', '@marcospereira', '123.456.789-01', 11901234567, '1991-09-09', 'Masculino', 'Amigo', NULL, TRUE, 2, 9, NULL, 9),
        ('Camila Rocha', 'camila@example.com', 'senha123', '@camilarocha', '234.567.890-12', 12012345678, '1994-10-10', 'Feminino', 'Internet', NULL, TRUE, 2, 10, NULL, 10);
-
-
-INSERT INTO Servico (nome, descricao)
-VALUES ('Extensão de Cílios', 'Serviço de aplicação de extensão de cílios'),
-       ('Design de Sobrancelhas', 'Serviço de design de sobrancelhas'),
-       ('Limpeza de Pele', 'Tratamento para limpeza profunda da pele'),
-       ('Massagem Relaxante', 'Massagem para relaxamento e alívio do estresse'),
-       ('Tratamento Facial', 'Tratamento completo para rejuvenescimento facial'),
-       ('Peeling', 'Tratamento esfoliante para melhorar a textura da pele'),
-       ('Depilação', 'Serviço de remoção de pelos com cera ou laser'),
-       ('Tratamento Capilar', 'Tratamento especializado para cuidados com os cabelos'),
-       ('Maquiagem', 'Serviço de maquiagem para eventos e ocasiões especiais'),
-       ('Design de Unhas', 'Serviço de cuidados e embelezamento das unhas');
 
 INSERT INTO Procedimento (tipo, descricao)
 VALUES ('Cílios', 'Procedimento de aplicação de cílios'),
@@ -314,9 +276,6 @@ VALUES ('Agendado', '#008000', 'Procedimento agendado'), -- Verde
        ('Cancelado', '#FF0000', 'Procedimento cancelado pelo cliente'), -- Vermelho
        ('Concluído', '#0000FF', 'Procedimento realizado com sucesso'); -- Azul
 
--- Definindo o dia atual para os agendamentos
--- Você pode substituir '2024-08-31' pela data atual ou utilizar a função CURRENT_DATE em seu banco de dados se suportado
-
 INSERT INTO Agendamento (data_horario, tipo_agendamento, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status)
 VALUES 
     ('2024-09-01 09:00:00', 'Colocação', 10, 1, 1, 1),
@@ -366,17 +325,22 @@ VALUES
     (@inicioSemana + INTERVAL (@dias + 4) DAY + INTERVAL '14:00:00' HOUR_SECOND, 'Maquiagem', 9, 9, 9, 3),
     (@inicioSemana + INTERVAL (@dias + 4) DAY + INTERVAL '16:00:00' HOUR_SECOND, 'Design de Unhas', 10, 10, 10, 1);
 
-INSERT INTO Feedback (anotacoes, nota, fk_agendamento, fk_usuario, fk_avaliador, fk_servico, fk_cliente_avaliado)
-VALUES ('Ótimo atendimento!', 5, 1, 1, 2, 1, 1),
-       ('Satisfeita com o serviço.', 4, 2, 2, 1, 2, 2),
-       ('Muito bom, recomendo.', 5, 3, 3, 4, 3, 3),
-       ('Serviço excelente!', 5, 4, 4, 5, 4, 4),
-       ('Amei o resultado.', 5, 5, 5, 6, 5, 5),
-       ('Bom atendimento, mas pode melhorar.', 3, 6, 6, 7, 6, 6),
-       ('Não gostei, o serviço foi demorado.', 2, 7, 7, 8, 7, 7),
-       ('Atendimento regular, serviço razoável.', 3, 8, 8, 9, 8, 8),
-       ('Excelente, voltarei mais vezes.', 5, 9, 9, 10, 9, 9),
-       ('Muito bom, mas o preço é alto.', 4, 10, 10, 1, 10, 10);
+INSERT INTO Feedback (anotacoes, nota, fk_agendamento, fk_usuario, fk_cliente_avaliado)
+VALUES 
+    -- Feedback para agendamento (cliente avaliado é NULL)
+    ('Ótimo atendimento!', 5, 1, 1, NULL),
+    ('Satisfeita com o serviço.', 4, 2, 1, NULL),
+    ('Muito bom, recomendo.', 5, 3, 1, NULL),
+    ('Serviço excelente!', 5, 4, 1, NULL),
+    ('Amei o resultado.', 5, 5, 1, NULL),
+    
+    -- Feedback para cliente (agendamento é NULL)
+    ('Bom atendimento, mas pode melhorar.', 3, NULL, 6, 6),
+    ('Não gostei, o serviço foi demorado.', 2, NULL, 7, 7),
+    ('Atendimento regular, serviço razoável.', 3, NULL, 8, 8),
+    ('Excelente, voltarei mais vezes.', 5, NULL, 9, 9),
+    ('Muito bom, mas o preço é alto.', 4, NULL, 10, 10);
+
 
 INSERT INTO Cliente (id_usuario, experiencia_avaliada, frequencia)
 VALUES (1, 'Boa', 5),
@@ -402,7 +366,4 @@ VALUES (2, 50, 4.8, 'Certificação em extensão de cílios', 'Cílios'),
        (9, 18, 4.8, 'Maquiadora profissional', 'Maquiagem'),
        (10, 22, 4.6, 'Especialista em design de unhas', 'Unhas');
 
-INSERT INTO Cilios (id_servico) VALUES (1);
-INSERT INTO Make (id_servico) VALUES (1);
-INSERT INTO Sobrancelha (id_servico) VALUES (2);
-
+select * from Usuario;

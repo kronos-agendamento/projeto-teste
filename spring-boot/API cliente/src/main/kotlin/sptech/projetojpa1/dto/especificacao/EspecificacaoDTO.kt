@@ -40,10 +40,7 @@ data class EspecificacaoDTO(
     @field:NotBlank(message = "O tempo de retirada é obrigatório")
     val tempoRetirada: String? = null,
 
-    @field:NotNull(message = "Tempo de procedimento é obrigatório")
-    val fkTempoProcedimentoId: Int? = null,
-
     @field:NotNull(message = "Procedimento é obrigatório")
-    val fkProcedimentoId: Int? = null
+    val procedimento: Int? = null
 )
 

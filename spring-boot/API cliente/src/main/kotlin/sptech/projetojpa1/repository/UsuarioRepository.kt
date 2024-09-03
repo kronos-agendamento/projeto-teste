@@ -2,7 +2,6 @@ package sptech.projetojpa1.repository
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
-import sptech.projetojpa1.domain.usuario.Cliente
 import sptech.projetojpa1.domain.NivelAcesso
 import sptech.projetojpa1.domain.Usuario
 
@@ -130,8 +129,4 @@ interface UsuarioRepository : JpaRepository<Usuario, Int> {
         """
     )
     fun countClientesConcluidosUltimosDoisMeses(): Int
-
-
-    abstract fun save(cliente: Cliente): Cliente
-
 }

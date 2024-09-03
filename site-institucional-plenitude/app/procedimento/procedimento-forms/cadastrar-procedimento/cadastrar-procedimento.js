@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     precoColocacao: parseFloat(document.getElementById('valor-colocacao').value),
                     precoManutencao: parseFloat(document.getElementById('valor-manutencao').value),
                     precoRetirada: parseFloat(document.getElementById('valor-retirada').value),
-                    fkProcedimentoId: document.getElementById('procedimento-dropdown').value
+                    procedimento: document.getElementById('procedimento-dropdown').value
                 };
 
                 return fetch('http://localhost:8080//api/especificacoes', {
