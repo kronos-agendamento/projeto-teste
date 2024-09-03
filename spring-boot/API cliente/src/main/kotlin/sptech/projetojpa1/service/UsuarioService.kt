@@ -169,5 +169,13 @@ class UsuarioService(
         return usuarioRepository.findClientesFidelizadosUltimosTresMeses()
     }
 
+    fun getClientesConcluidosUltimos5Meses(): List<Int> {
+        return usuarioRepository.findClientesConcluidos5Meses()
+    }
+
+    fun getClientesFidelizadosUltimos5Meses(): List<Int> {
+        return usuarioRepository.findClientesFidelizados5Meses()
+    }
+
     fun getByCpf(cpf: String): Usuario? = usuarioRepository.findByCpf(cpf)
 }
