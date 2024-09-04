@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.validation.Valid
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import sptech.projetojpa1.dto.endereco.EnderecoRequestDTO
@@ -80,6 +81,20 @@ class EnderecoController(
         }
     }
 
+    @GetMapping("/buscar-por-tudo/{logradouro}/{numero}/{cep}")
+    fun buscarEndereco(
+        @PathVariable logradouro: String,
+        @PathVariable numero: Int,
+        @PathVariable cep: String
+    ): ResponseEntity<Int> {
+        val endereco = enderecoService.buscarEndereco(logradouro, numero, cep)
+        return if (endereco != null) {
+            ResponseEntity(endereco.codigo, HttpStatus.OK)  // Retorna apenas o ID do endereço
+        } else {
+            ResponseEntity(HttpStatus.NOT_FOUND)
+        }
+    }
+
     @Operation(summary = "Lista endereços por bairro")
     @ApiResponses(
         value = [
@@ -129,4 +144,5 @@ class EnderecoController(
             ResponseEntity.status(404).body("Endereço não encontrado para o ID fornecido")
         }
     }
+
 }

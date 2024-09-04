@@ -14,4 +14,6 @@ interface EnderecoRepository : JpaRepository<Endereco, Int> {
 
     // Método para encontrar endereços por nome de usuário
 //    fun findByUsuarioNomeContains(nomeUsuario: String): List<Endereco>
+    fun findByLogradouroAndNumeroAndCep(logradouro: String, numero: Int, cep: String): Endereco?
+
 }

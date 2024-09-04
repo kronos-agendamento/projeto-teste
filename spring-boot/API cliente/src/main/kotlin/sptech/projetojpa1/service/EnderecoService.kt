@@ -35,8 +35,13 @@ class EnderecoService(
         return toResponseDTO(enderecoSalvo)
     }
 
+
     fun listarTodosEnderecos(): List<EnderecoResponseDTO> {
         return enderecoRepository.findAll().map { toResponseDTO(it) }
+    }
+
+    fun buscarEndereco(logradouro: String, numero: Int, cep: String): Endereco? {
+        return enderecoRepository.findByLogradouroAndNumeroAndCep(logradouro, numero, cep)
     }
 
     fun buscarEnderecoPorCodigo(codigo: Int): EnderecoResponseDTO? {
@@ -74,8 +79,6 @@ class EnderecoService(
             bairro = endereco.bairro,
             cidade = endereco.cidade,
             estado = endereco.estado
-//            complementoId = endereco.complemento?.codigo,
-//            usuarioId = endereco.usuario?.codigo
         )
     }
 }

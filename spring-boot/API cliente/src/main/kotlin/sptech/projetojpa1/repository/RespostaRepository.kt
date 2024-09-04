@@ -2,6 +2,7 @@ package sptech.projetojpa1.repository
 
 import org.springframework.data.jpa.repository.JpaRepository
 import sptech.projetojpa1.dominio.Resposta
+import sptech.projetojpa1.dominio.Usuario
 
 // Interface para acesso aos dados da entidade Resposta
 interface RespostaRepository : JpaRepository<Resposta, Int> {
@@ -11,4 +12,6 @@ interface RespostaRepository : JpaRepository<Resposta, Int> {
 
     // Método para encontrar respostas por descrição da pergunta
     fun findByPerguntaDescricao(descricao: String): List<Resposta>
+
+    fun deleteAllByUsuario(usuario: Usuario)
 }

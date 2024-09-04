@@ -40,11 +40,11 @@ VALUES ('2024-06-01'),
 -- Inserções aleatórias na tabela usuario
 INSERT INTO usuario (nome, email, senha, instagram, cpf, telefone, telefone_emergencial, data_nasc, genero, indicacao,
                      foto, status, fk_nivel_acesso, fk_endereco, fk_empresa, fk_ficha_anamnese)
-VALUES ('Maria Silva', 'maria@example.com', 'senha123', '@mariasilva', '12345678901', '11999999999', '11988888888',
+VALUES ('Maria Silva', 'maria@example.com', 'senha123', '@mariasilva', '84599900010', '11999999999', '11988888888',
         '1985-01-15', 'Feminino', 'Instagram', NULL, true, 3, 1, 1, 1),
-       ('João Souza', 'joao@example.com', 'senha456', '@joaosouza', '98765432109', '21999999999', '21988888888',
+       ('João Souza', 'joao@example.com', 'senha456', '@joaosouza', '79975400086', '21999999999', '21988888888',
         '1990-05-20', 'Masculino', 'Indicação de amigo', NULL, true, 3, 2, 2, 2),
-       ('Ana Costa', 'ana@example.com', 'senha789', '@anacosta', '45678901234', '31999999999', '31988888888',
+       ('Ana Costa', 'ana@example.com', 'senha789', '@anacosta', '58672659007', '31999999999', '31988888888',
         '1992-10-30', 'Feminino', 'Facebook', NULL, true, 3, 3, 3, 3);
 
 -- Inserções aleatórias na tabela pergunta

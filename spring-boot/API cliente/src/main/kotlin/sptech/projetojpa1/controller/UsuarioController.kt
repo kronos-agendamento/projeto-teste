@@ -4,9 +4,13 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.validation.Valid
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import sptech.projetojpa1.dominio.Complemento
+import sptech.projetojpa1.dominio.Endereco
 import sptech.projetojpa1.dominio.Usuario
+import sptech.projetojpa1.dto.endereco.EnderecoAtualizacaoRequest
 import sptech.projetojpa1.dto.usuario.UsuarioAtualizacaoRequest
 import sptech.projetojpa1.dto.usuario.UsuarioLoginRequest
 import sptech.projetojpa1.dto.usuario.UsuarioLoginResponse
@@ -17,6 +21,7 @@ import sptech.projetojpa1.service.UsuarioService
 @RequestMapping("/usuarios")
 class UsuarioController(
     val usuarioService: UsuarioService
+
 ) {
 
     @Operation(summary = "Fazer login")
@@ -278,5 +283,48 @@ class UsuarioController(
         val clientes = usuarioService.getClientesFidelizadosUltimosTresMeses()
         return ResponseEntity.ok(clientes)
     }
+    @PatchMapping("/inativar/{cpf}")
+    fun inativarUsuario(@PathVariable cpf: String): ResponseEntity<Any> {
+        return try {
+            val usuarioAtualizado = usuarioService.atualizarStatusParaInativo(cpf)
+            if (usuarioAtualizado != null) {
+                ResponseEntity.ok(usuarioAtualizado)
+            } else {
+                ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado")
+            }
+        } catch (e: Exception) {
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao inativar usuário")
+        }
+    }
+
+    @PatchMapping("/ativar/{cpf}")
+    fun ativarUsuario(@PathVariable cpf: String): ResponseEntity<Any> {
+        return try {
+            val usuarioAtualizado = usuarioService.atualizarStatusParaAtivo(cpf)
+            if (usuarioAtualizado != null) {
+                ResponseEntity.ok(usuarioAtualizado)
+            } else {
+                ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado")
+            }
+        } catch (e: Exception) {
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao ativar usuário")
+        }
+    }
+
+//    @PatchMapping("/atualizacao-endereco/{cpf}")
+//    fun atualizarEndereco(
+//        @PathVariable cpf: String,
+//        @Valid @RequestBody dto: EnderecoAtualizacaoRequest
+//    ): ResponseEntity<Endereco> {
+//        val enderecoAtualizado = usuarioService.atualizarEndereco(cpf, dto)
+//        return if (enderecoAtualizado != null) {
+//            ResponseEntity.status(200).body(enderecoAtualizado)
+//        } else {
+//            ResponseEntity.status(404).body(null)
+//        }
+//    }
+
+
+
 }
 

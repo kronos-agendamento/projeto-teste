@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import sptech.projetojpa1.dominio.Complemento
 import sptech.projetojpa1.dto.complemento.ComplementoRequestDTO
 import sptech.projetojpa1.dto.complemento.ComplementoResponseDTO
 import sptech.projetojpa1.dto.complemento.ComplementoUpdateDTO
@@ -50,9 +51,9 @@ class ComplementoController(
             ApiResponse(responseCode = "404", description = "Nenhum complemento encontrado para o endereço fornecido")
         ]
     )
-    @GetMapping("/buscar-por-endereco/{enderecoId}")
-    fun obterComplementosPorIdEndereco(@PathVariable enderecoId: Int): ResponseEntity<List<ComplementoResponseDTO>> {
-        val complementos = complementoService.obterComplementosPorIdEndereco(enderecoId)
+    @GetMapping("/buscar-por-endereco-complemento/{enderecoId}/{complemento}")
+    fun obterComplementosPorIdEndereco(@PathVariable enderecoId: Int, complemento: String): ResponseEntity<List<ComplementoResponseDTO>> {
+        val complementos = complementoService.obterComplementosPorIdEndereco(enderecoId, complemento)
         return if (complementos.isEmpty()) {
             ResponseEntity.status(404).body(complementos)
         } else {

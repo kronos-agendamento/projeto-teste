@@ -31,10 +31,11 @@ class ComplementoService(
         return ComplementoResponseDTO(complemento.codigo!!, complemento.complemento!!, complemento.endereco!!.codigo!!)
     }
 
-    fun obterComplementosPorIdEndereco(enderecoId: Int): List<ComplementoResponseDTO> {
-        val complementos = complementoRepository.findByEnderecoId(enderecoId)
+    fun obterComplementosPorIdEndereco(enderecoId: Int, complemento: String): List<ComplementoResponseDTO> {
+        val complementos = complementoRepository.findByEnderecoIdAndComplemento(enderecoId, complemento)
         return complementos.map { ComplementoResponseDTO(it.codigo!!, it.complemento!!, it.endereco!!.codigo!!) }
     }
+
 
     fun editarComplemento(id: Int, dto: ComplementoUpdateDTO): ComplementoResponseDTO {
         val complemento =

@@ -164,3 +164,21 @@ CREATE TABLE feedback (
     FOREIGN KEY (fk_agendamento) REFERENCES agendamento(id_agendamento),
     FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario)
 );
+
+select * from usuario u join endereco e on u.fk_endereco=e.id_endereco join complemento c on e.id_endereco = c.fk_endereco;
+select * from endereco;
+select * from complemento;
+delete from usuario where id_usuario > 8 and id_usuario < 8
+delete from endereco where id_endereco  > 30 and id_usuario <= 12
+delete from complemento where fk_endereco != 8
+update usuario set cpf= 31726299880 where id_usuario = 1
+
+
+CREATE TABLE feedbacks (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255),
+    email VARCHAR(255),
+    feedback VARCHAR(1255)
+);
+
+select * from feedbacks;

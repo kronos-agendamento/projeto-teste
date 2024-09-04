@@ -14,6 +14,4 @@ data class EnderecoRequestDTO(
     val bairro: String?,
     val cidade: String?,
     val estado: String?
-//    val complementoId: Int?,
-//    @field:NotNull(message = "Id do usuário é obrigatório") val usuarioId: Int?
 )

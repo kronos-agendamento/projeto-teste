@@ -81,4 +81,6 @@ interface UsuarioRepository : JpaRepository<Usuario, Int> {
         """
     )
     fun findClientesFidelizadosUltimosTresMeses(): Double
+
+
 }
