@@ -14,6 +14,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const horariosContainer = document.getElementById("horarios-disponiveis");
   const saveButton = document.getElementById("save-agendamento-button");
 
+  let especificacoes = []; // Array para armazenar todas as especificações
+
   async function carregarClientes() {
     try {
       const response = await fetch(apiUrlClientes);
@@ -56,13 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       const response = await fetch(apiUrlEspecificacoes);
       if (response.ok) {
-        const especificacoes = await response.json();
-        especificacoes.forEach((especificacao) => {
-          const option = document.createElement("option");
-          option.value = especificacao.idEspecificacaoProcedimento;
-          option.text = especificacao.especificacao;
-          especificacoesSelect.appendChild(option);
-        });
+        especificacoes = await response.json(); // Armazena todas as especificações
       } else {
         console.error("Erro ao buscar especificações: " + response.statusText);
       }
@@ -70,6 +66,69 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("Erro ao buscar especificações: ", error);
     }
   }
+
+  // Função para filtrar as especificações com base no procedimento selecionado
+  function filtrarEspecificacoesPorProcedimento(procedimentoId) {
+    especificacoesSelect.innerHTML =
+      '<option value="">Selecione uma especificação</option>'; // Reseta as opções
+
+    const especificacoesFiltradas = especificacoes.filter(
+      (especificacao) =>
+        especificacao.procedimento.idProcedimento == procedimentoId
+    );
+
+    especificacoesFiltradas.forEach((especificacao) => {
+      const option = document.createElement("option");
+      option.value = especificacao.idEspecificacaoProcedimento;
+      option.text = especificacao.especificacao;
+      especificacoesSelect.appendChild(option);
+    });
+
+    if (especificacoesFiltradas.length > 0) {
+      especificacoesSelect.removeAttribute("disabled");
+      especificacoesSelect.classList.remove("disabled-select");
+    } else {
+      especificacoesSelect.setAttribute("disabled", "disabled");
+      especificacoesSelect.classList.add("disabled-select");
+    }
+  }
+
+  // Event listener para habilitar e filtrar especificações com base no procedimento selecionado
+  procedimentosSelect.addEventListener("change", function () {
+    const procedimentoId = procedimentosSelect.value;
+    if (procedimentoId) {
+      filtrarEspecificacoesPorProcedimento(procedimentoId);
+    } else {
+      especificacoesSelect.setAttribute("disabled", "disabled");
+      especificacoesSelect.classList.add("disabled-select");
+    }
+  });
+
+  dataInput.addEventListener("change", function () {
+    const dataSelecionada = new Date(dataInput.value + "T00:00:00");
+    if (!isNaN(dataSelecionada)) {
+      const dia = dataSelecionada.getDate();
+      const mes = dataSelecionada.toLocaleString("default", { month: "long" });
+      const diaSemana = dataSelecionada.toLocaleString("default", {
+        weekday: "long",
+      });
+      dataSelecionadaP.textContent = `Dia ${dia} de ${mes} - ${diaSemana}`;
+
+      const procedimentoId = procedimentosSelect.value;
+      const especificacaoId = especificacoesSelect.value;
+      const tipoAtendimento = tipoAgendamentoSelect.value;
+
+      carregarHorariosDisponiveis(
+        dataInput.value,
+        procedimentoId,
+        especificacaoId,
+        tipoAtendimento
+      );
+    } else {
+      dataSelecionadaP.textContent = "";
+      horariosContainer.innerHTML = "";
+    }
+  });
 
   async function carregarHorariosDisponiveis(
     data,
@@ -111,32 +170,6 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("Erro ao buscar horários disponíveis: ", error);
     }
   }
-
-  dataInput.addEventListener("change", function () {
-    const dataSelecionada = new Date(dataInput.value + "T00:00:00");
-    if (!isNaN(dataSelecionada)) {
-      const dia = dataSelecionada.getDate();
-      const mes = dataSelecionada.toLocaleString("default", { month: "long" });
-      const diaSemana = dataSelecionada.toLocaleString("default", {
-        weekday: "long",
-      });
-      dataSelecionadaP.textContent = `Dia ${dia} de ${mes} - ${diaSemana}`;
-
-      const procedimentoId = procedimentosSelect.value;
-      const especificacaoId = especificacoesSelect.value;
-      const tipoAtendimento = tipoAgendamentoSelect.value;
-
-      carregarHorariosDisponiveis(
-        dataInput.value,
-        procedimentoId,
-        especificacaoId,
-        tipoAtendimento
-      );
-    } else {
-      dataSelecionadaP.textContent = "";
-      horariosContainer.innerHTML = "";
-    }
-  });
 
   async function criarAgendamento(agendamento) {
     try {
@@ -228,7 +261,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   carregarClientes();
   carregarProcedimentos();
-  carregarEspecificacoes();
+  carregarEspecificacoes(); // Carrega todas as especificações no início
 });
 
 function showNotification(message, isError = false) {
