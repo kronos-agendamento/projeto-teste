@@ -2,8 +2,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const apiUrlClientes = "http://localhost:8080/usuarios";
   const apiUrlProcedimentos = "http://localhost:8080/api/procedimentos";
   const apiUrlEspecificacoes = "http://localhost:8080/api/especificacoes";
-  const apiUrlAgendamentos = "http://localhost:8080/api/agendamentos/listar";
-  const apiUrlCriarAgendamento = "http://localhost:8080/api/agendamentos/criar";
+  const apiUrlAgendamentos = "http://localhost:8080/api/agendamentos";
+  const apiUrlCriarAgendamento = "http://localhost:8080/api/agendamentos";
 
   const clientesSelect = document.getElementById("clientes");
   const procedimentosSelect = document.getElementById("procedimentos");
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
         procedimentos.forEach((procedimento) => {
           const option = document.createElement("option");
           option.value = procedimento.idProcedimento;
-          option.text = procedimento.tipo; // Atualize para exibir a descrição
+          option.text = procedimento.tipo;
           procedimentosSelect.appendChild(option);
         });
       } else {
@@ -71,51 +71,67 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  async function carregarHorariosDisponiveis(data) {
+  async function carregarHorariosDisponiveis(
+    data,
+    procedimentoId,
+    especificacaoId,
+    tipoAgendamento
+  ) {
     try {
-      const response = await fetch(apiUrlAgendamentos);
+      const empresaId = localStorage.getItem("empresa");
+
+      const url = new URL(apiUrlAgendamentos + "/horarios-disponiveis");
+      url.searchParams.append("empresaId", empresaId);
+      url.searchParams.append("data", data);
+
+      const response = await fetch(url);
       if (response.ok) {
-        const agendamentos = await response.json();
-        const horariosOcupados = agendamentos
-          .filter(agendamento => agendamento.data && agendamento.data.startsWith(data))
-          .map(agendamento => new Date(agendamento.horario).getHours());
-
-        const horariosDisponiveis = [];
-        for (let i = 9; i <= 18; i++) {
-          if (!horariosOcupados.includes(i)) {
-            horariosDisponiveis.push(i);
-          }
-        }
-
+        const horariosDisponiveis = await response.json();
         horariosContainer.innerHTML = "";
-        horariosDisponiveis.forEach(horario => {
+
+        horariosDisponiveis.forEach((horario) => {
           const button = document.createElement("button");
-          button.textContent = `${horario}:00`;
+          button.textContent = horario;
           button.classList.add("horario-button");
           horariosContainer.appendChild(button);
 
           button.addEventListener("click", function () {
-            document.querySelectorAll(".horario-button").forEach(btn => btn.classList.remove("selected"));
+            document
+              .querySelectorAll(".horario-button")
+              .forEach((btn) => btn.classList.remove("selected"));
             button.classList.add("selected");
           });
         });
       } else {
-        console.error("Erro ao buscar agendamentos: " + response.statusText);
+        console.error(
+          "Erro ao buscar horários disponíveis: " + response.statusText
+        );
       }
     } catch (error) {
-      console.error("Erro ao buscar agendamentos: ", error);
+      console.error("Erro ao buscar horários disponíveis: ", error);
     }
   }
 
   dataInput.addEventListener("change", function () {
-    const dataSelecionada = new Date(dataInput.value + 'T00:00:00');
+    const dataSelecionada = new Date(dataInput.value + "T00:00:00");
     if (!isNaN(dataSelecionada)) {
       const dia = dataSelecionada.getDate();
-      const mes = dataSelecionada.toLocaleString('default', { month: 'long' });
-      const diaSemana = dataSelecionada.toLocaleString('default', { weekday: 'long' });
+      const mes = dataSelecionada.toLocaleString("default", { month: "long" });
+      const diaSemana = dataSelecionada.toLocaleString("default", {
+        weekday: "long",
+      });
       dataSelecionadaP.textContent = `Dia ${dia} de ${mes} - ${diaSemana}`;
 
-      carregarHorariosDisponiveis(dataInput.value);
+      const procedimentoId = procedimentosSelect.value;
+      const especificacaoId = especificacoesSelect.value;
+      const tipoAtendimento = tipoAgendamentoSelect.value;
+
+      carregarHorariosDisponiveis(
+        dataInput.value,
+        procedimentoId,
+        especificacaoId,
+        tipoAtendimento
+      );
     } else {
       dataSelecionadaP.textContent = "";
       horariosContainer.innerHTML = "";
@@ -125,9 +141,9 @@ document.addEventListener("DOMContentLoaded", function () {
   async function criarAgendamento(agendamento) {
     try {
       const response = await fetch(apiUrlCriarAgendamento, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(agendamento),
       });
@@ -139,7 +155,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 1000);
       } else {
         console.error("Erro ao criar agendamento: " + response.statusText);
-        showNotification("Já existe um agendamento para essa data e horário", true);
+        showNotification(
+          "Já existe um agendamento para essa data e horário",
+          true
+        );
       }
     } catch (error) {
       console.error("Erro ao criar agendamento: ", error);
@@ -147,55 +166,65 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-
-  saveButton.addEventListener("click", function () {
+  saveButton.addEventListener("click", async function () {
     const clienteId = clientesSelect.value;
     const procedimentoId = procedimentosSelect.value;
     const tipoAtendimento = tipoAgendamentoSelect.value;
     const especificacaoId = especificacoesSelect.value;
     const data = dataInput.value;
     const horarioButton = document.querySelector(".horario-button.selected");
-    const horario = horarioButton ? horarioButton.textContent.split(":")[0] : null;
+    const horario = horarioButton ? horarioButton.textContent : null;
 
-    if (!clienteId || !procedimentoId || !tipoAtendimento || !especificacaoId || !data || !horario) {
+    if (
+      !clienteId ||
+      !procedimentoId ||
+      !tipoAtendimento ||
+      !especificacaoId ||
+      !data ||
+      !horario
+    ) {
       showNotification("Todos os campos são obrigatórios", true);
       return;
     }
 
-    // Calcule a duração do procedimento
-    let duracaoProcedimento;
-    switch (tipoAtendimento) {
-      case "Primeira Vez":
-        duracaoProcedimento = 3; // por exemplo, 3 horas
-        break;
-      case "Manutenção":
-        duracaoProcedimento = 2; // por exemplo, 2 horas
-        break;
-      case "Retirada":
-        duracaoProcedimento = 1; // por exemplo, 1 hora
-        break;
-      default:
-        duracaoProcedimento = 1;
-    }
-
-    // Combine data e horário e considere a duração do procedimento
-    const dataHoraInicio = new Date(`${data}T${horario}:00:00`);
-    const dataHoraFim = new Date(dataHoraInicio);
-    dataHoraFim.setHours(dataHoraFim.getHours() + duracaoProcedimento);
+    const dataHorario = new Date(`${data}T${horario}.000Z`).toISOString();
 
     const agendamento = {
-      dataHorarioInicio: dataHoraInicio.toISOString(),
-      dataHorarioFim: dataHoraFim.toISOString(),
-      tipoAgendamento: tipoAtendimento,
-      fk_usuario: parseInt(clienteId),
-      fk_procedimento: parseInt(procedimentoId),
-      fk_especificacao: parseInt(especificacaoId),
+      fk_usuario: parseInt(clienteId, 10),
+      fk_procedimento: parseInt(procedimentoId, 10),
+      fk_especificacao: parseInt(especificacaoId, 10),
       fk_status: 1,
+      tipoAgendamento: tipoAtendimento,
+      dataHorario: dataHorario,
     };
 
-    criarAgendamento(agendamento);
-  });
+    try {
+      const response = await fetch(apiUrlCriarAgendamento, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(agendamento),
+      });
 
+      if (response.ok) {
+        showNotification("Agendamento criado com sucesso!");
+        setTimeout(() => {
+          window.location.href = "../../agendamento.html";
+        }, 1000);
+      } else {
+        const errorMsg = await response.text();
+        console.error("Erro ao criar agendamento: " + errorMsg);
+        showNotification(
+          "Já existe um agendamento para essa data e horário",
+          true
+        );
+      }
+    } catch (error) {
+      console.error("Erro ao criar agendamento: ", error);
+      showNotification("Erro ao criar agendamento", true);
+    }
+  });
 
   carregarClientes();
   carregarProcedimentos();

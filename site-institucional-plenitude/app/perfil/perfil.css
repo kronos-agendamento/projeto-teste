@@ -481,6 +481,11 @@ Dados do usuário
   padding-top: 2.5vw;
 }
 
+#button-alterar-empresa {
+  justify-content: center;
+  padding-top: 2.5vw;
+}
+
 .save-button {
   display: flex;
   align-items: center;
@@ -643,7 +648,6 @@ td {
 }
 
 #footer {
-  padding: 4vh 0;
   color: #222222;
   font-size: 14px;
   text-align: center;
@@ -652,6 +656,7 @@ td {
 
 .footer_container {
   width: 100%;
+  margin-top: 200px;
 }
 
 .modal {
