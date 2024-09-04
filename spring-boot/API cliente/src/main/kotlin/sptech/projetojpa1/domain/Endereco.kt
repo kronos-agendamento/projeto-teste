@@ -35,7 +35,7 @@ class Endereco(
 
     @field:NotNull(message = "Número é obrigatório")
     @Column(name = "numero")
-    var numero: Int,
+    var numero: String,
 
     @field:Size(max = 100, message = "Complemento deve ter no máximo 100 caracteres")
     @Column(name = "complemento")

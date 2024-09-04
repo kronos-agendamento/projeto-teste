@@ -75,7 +75,9 @@ class UsuarioService(
                 mensagem = "Login realizado com sucesso.",
                 nome = usuario.nome ?: "",
                 email = usuario.email ?: "",
-                cpf = usuario.cpf ?: ""
+                cpf = usuario.cpf ?: "",
+                instagram = usuario.instagram ?: "",
+                empresa = usuario.empresa ?: null
             )
         } else {
             null

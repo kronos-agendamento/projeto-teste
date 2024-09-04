@@ -29,6 +29,12 @@ class EmpresaService(
         return empresa.toResponseDTO()
     }
 
+    fun listarPorId(id: Int): EmpresaResponseDTO? {
+        val empresa = empresaRepository.findById(id)
+            .orElseThrow { IllegalArgumentException("Empresa com ID $id não encontrada") }
+        return empresa.toResponseDTO()
+    }
+
     fun criarEmpresa(dto: EmpresaRequestDTO): EmpresaResponseDTO {
         val endereco = enderecoRepository.findById(dto.endereco)
             .orElseThrow { IllegalArgumentException("Endereço não encontrado") }
@@ -37,7 +43,7 @@ class EmpresaService(
             .orElseThrow { IllegalArgumentException("Horário de funcionamento não encontrado") }
 
         val empresa = Empresa(
-            idEmpresa = 0,
+            idEmpresa = null,
             nome = dto.nome,
             telefone = dto.telefone,
             cnpj = dto.cnpj,

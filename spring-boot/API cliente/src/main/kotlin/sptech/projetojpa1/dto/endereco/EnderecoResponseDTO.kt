@@ -3,7 +3,7 @@ package sptech.projetojpa1.dto.endereco
 data class EnderecoResponseDTO(
     val idEndereco: Int?,
     val logradouro: String,
-    val numero: Int,
+    val numero: String,
     val cep: String,
     val bairro: String,
     val cidade: String,

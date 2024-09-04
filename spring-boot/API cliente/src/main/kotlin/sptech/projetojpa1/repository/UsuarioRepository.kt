@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import sptech.projetojpa1.domain.NivelAcesso
 import sptech.projetojpa1.domain.Usuario
+import sptech.projetojpa1.domain.usuario.Cliente
 
 interface UsuarioRepository : JpaRepository<Usuario, Int> {
 
