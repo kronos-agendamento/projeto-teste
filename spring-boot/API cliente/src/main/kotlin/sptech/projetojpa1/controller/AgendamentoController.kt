@@ -75,8 +75,6 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
         return ResponseEntity.ok(agendamentoResponseDTO)
     }
 
-    // Adicione o método abaixo na classe AgendamentoController
-
     @Operation(summary = "Atualiza o status de um agendamento pelo ID")
     @ApiResponses(
         value = [

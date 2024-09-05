@@ -24,7 +24,6 @@ class Profissional(
     nivelAcesso: NivelAcesso? = null,
     endereco: Endereco? = null,
     empresa: Empresa? = null,
-    fichaAnamnese: FichaAnamnese? = null,
     @Column(name = "numero_avaliacoes")
     var numeroAvaliacoes: Int? = null,
     @Column(name = "media_nota")
@@ -49,7 +48,6 @@ class Profissional(
     nivelAcesso,
     endereco,
     empresa,
-    fichaAnamnese
 ) {
     override fun toString(): String {
         return "Profissional(codigo=$codigo, nome=$nome, email=$email, instagram=$instagram, numeroAvaliacoes=$numeroAvaliacoes, mediaNota=$mediaNota, qualificacoes=$qualificacoes, especialidade=$especialidade)"
