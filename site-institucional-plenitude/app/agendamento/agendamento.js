@@ -176,7 +176,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  function showDetalhesModal(id) {
+  function showDetalhesModal(id){
     const agendamento = agendamentos.find(a => a.idAgendamento === id);
 
     if (agendamento) {
@@ -505,6 +505,9 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("edit-modal").style.display = "none";
     editStatusId = null;
   };
+  
+
+
 
   document.getElementById('open-save-modal-btn').addEventListener('click', () => {
     document.getElementById('save-modal').style.display = 'block';

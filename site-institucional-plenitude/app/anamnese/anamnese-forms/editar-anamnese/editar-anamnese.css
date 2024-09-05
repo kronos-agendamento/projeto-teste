@@ -1,0 +1,28 @@
+.divVoltar{
+    display: flex;
+    margin-left: 12%;
+    
+}
+
+
+.divVoltar img{
+    width: 25px;
+    height: 25px;
+}
+
+a{
+    text-decoration: none;
+}
+
+a:active{
+    color: black;
+}
+
+a:link{
+    color: black;
+}
+
+a:visited{
+    color: black;
+}
+

@@ -1,5 +1,3 @@
-
-
 .divDados {
     background-color: FFF0F5;
     justify-content: space-between;
@@ -8,39 +6,64 @@
     justify-content: space-around;
     padding: 8px;
     /* border-radius: 5px; */
-    
+
 }
 
-.divDados span{
+.divDados span {
     color: black;
 
 
 }
 
-.titulo{
+.titulo {
     background-color: #e70069;
     width: 98%;
     border: solid black 0.5px;
     border-radius: 5px;
-    margin-left: 2.1%; 
+    margin-left: 2.1%;
     color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);     
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 
-.titulo span{
-    margin-left: 1%; 
+.titulo span {
+    margin-left: 1%;
 }
 
 
-#juntandoDiv{
+#juntandoDiv {
     display: flex;
     flex-direction: column;
 
 }
 
-.center-content{
+.center-content {
     width: 100%;
     margin-left: 0%;
 }
 
+#juntandoDiv img {
+    width: 30px;
+    margin-left: 8%;
+
+}
+
+
+a:link {
+    text-decoration: none;
+    color: black;
+}
+
+a:active {
+    text-decoration: none;
+    color: black
+}
+
+a:visited {
+    text-decoration: none;
+    color: black;
+}
+
+.spanVoltar {
+    margin-bottom: 5%;
+}
