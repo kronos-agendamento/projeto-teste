@@ -57,7 +57,6 @@ class UsuarioService(
                 nivelAcesso = dto.nivelAcessoId?.let { nivelAcessoRepository.findById(it).orElse(null) },
                 endereco = dto.enderecoId?.let { enderecoRepository.findById(it).orElse(null) },
                 empresa = dto.empresaId?.let { empresaRepository.findById(it).orElse(null) },
-                fichaAnamnese = dto.fichaAnamneseId?.let { fichaAnamneseRepository.findById(it).orElse(null) },
                 especialidade = ""
             )
         }

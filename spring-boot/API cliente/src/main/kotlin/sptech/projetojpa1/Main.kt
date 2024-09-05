@@ -141,7 +141,6 @@ fun main() {
         nivelAcesso = null,
         endereco = null,
         empresa = null,
-        fichaAnamnese = null,
         especialidade = "Cílios, Sobrancelha e Maquiagem"
     )
 

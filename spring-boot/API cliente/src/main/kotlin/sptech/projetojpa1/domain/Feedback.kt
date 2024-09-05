@@ -27,7 +27,7 @@ data class Feedback(
 
     @ManyToOne
     @JoinColumn(name = "fk_cliente_avaliado")
-    val clienteAvaliado: Cliente? = null
+    val clienteAvaliado: Usuario? = null
 ) {
     override fun toString(): String {
         return "Feedback(idFeedback=$idFeedback, anotacoes=$anotacoes, nota=$nota, usuario=$usuario, agendamento=$agendamento, clienteAvaliado=$clienteAvaliado)"
