@@ -12,6 +12,7 @@ class HorarioFuncionamentoService(
 
     fun cadastrarHorarioFuncionamento(request: HorarioFuncionamentoRequest): HorarioFuncionamento {
         val horario = HorarioFuncionamento(
+            id = null,
             diaInicio = request.diaInicio,
             diaFim = request.diaFim,
             horarioAbertura = request.horarioAbertura,

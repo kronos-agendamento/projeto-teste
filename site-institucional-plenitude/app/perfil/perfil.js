@@ -27,60 +27,243 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+  function fillUserProfile(userData) {
+    document.getElementById("nome").value = userData.nome || "";
+    document.getElementById("nascimento").value = userData.dataNasc || "";
+    document.getElementById("telefone").value =
+      formatPhoneNumber(userData.telefone) || "";
+    document.getElementById("genero").value = userData.genero || "";
+    document.getElementById("instagram").value = userData.instagram || "";
+    document.getElementById("indicacao").value = userData.indicacao || "";
+    document.getElementById("email").value = userData.email || "";
+    document.getElementById("senha").value = userData.senha || "";
+  }
+
+  function formatPhoneNumber(phoneNumber) {
+    if (!phoneNumber) return "";
+    const cleaned = ("" + phoneNumber).replace(/\D/g, "");
+    const match = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/);
+    if (match) {
+      return `(${match[1]}) ${match[2]}-${match[3]}`;
+    }
+    return phoneNumber;
+  }
+
   // Adiciona o event listener após o DOM estar carregado
   document
     .getElementById("save-usuario-button")
     .addEventListener("click", async function () {
       const cpf = localStorage.getItem("cpf");
+      const userData = await fetchUserDataByCpf(cpf);
 
-      if (cpf) {
-        const userData = {
-          nome: document.getElementById("nome").value,
-          email: document.getElementById("email").value,
-          senha: document.getElementById("senha").value,
-          dataNasc: document.getElementById("nascimento").value,
-          instagram: document.getElementById("instagram").value,
-          telefone: parseInt(
-            document.getElementById("telefone").value.replace(/\D/g, "")
-          ),
-          telefoneEmergencial: parseInt(
-            document
-              .getElementById("telefoneEmergencial")
-              .value.replace(/\D/g, "")
-          ),
-          genero: document.getElementById("genero").value,
-          indicacao: document.getElementById("indicacao").value,
-        };
+      console.log(userData);
 
-        try {
-          const response = await fetch(
-            `http://localhost:8080/usuarios/atualizacao-usuario-por-cpf/${cpf}`,
-            {
-              method: "PATCH",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(userData),
-            }
-          );
-
-          if (!response.ok) {
-            throw new Error(`Erro ao atualizar usuário: ${response.status}`);
-          }
-
-          const updatedUser = await response.json();
-
-          document.getElementById("notification-message").textContent =
-            "Dados atualizados com sucesso!";
-          document.getElementById("notification").style.display = "block";
-        } catch (error) {
-          console.error("Erro ao atualizar usuário:", error);
-          alert("Erro ao atualizar usuário.");
+      if (userData) {
+        if (!userData.empresa) {
+          // Se a empresa for null, criar uma nova
+          await criarNovaEmpresa();
+        } else {
+          // Se a empresa já existir, atualizar os dados
+          await atualizarDadosEmpresa(userData.empresa.idEmpresa);
         }
       } else {
-        alert("CPF não encontrado.");
+        console.error("Usuário não encontrado.");
       }
     });
+
+  async function criarNovaEmpresa() {
+    try {
+      // Criar o endereço
+      const novoEndereco = await criarEndereco();
+      if (!novoEndereco) {
+        throw new Error("Erro ao criar endereço.");
+      }
+
+      // Criar horário de funcionamento
+      const novoHorario = await cadastrarHorarioFuncionamento();
+      if (!novoHorario) {
+        throw new Error("Erro ao cadastrar horário de funcionamento.");
+      }
+
+      // Criar a empresa com o ID do endereço e do horário de funcionamento
+      const novaEmpresa = await criarEmpresa(novoEndereco.id, novoHorario.id);
+      if (!novaEmpresa) {
+        throw new Error("Erro ao criar empresa.");
+      }
+
+      // Atualizar o usuário com o ID da nova empresa
+      await atualizarUsuarioEmpresa(novaEmpresa.idEmpresa);
+    } catch (error) {
+      console.error("Erro ao criar nova empresa:", error);
+    }
+  }
+
+  async function criarEndereco() {
+    try {
+      let cep = document.getElementById("cep").value;
+      cep = cep.replace("-", ""); // Remover o hífen
+
+      const enderecoDTO = {
+        logradouro: document.getElementById("logradouro").value,
+        numero: document.getElementById("numero").value,
+        complemento: document.getElementById("complemento").value,
+        cep: cep,
+        bairro: document.getElementById("bairro").value,
+        cidade: document.getElementById("cidade").value,
+        estado: document.getElementById("estado").value,
+      };
+
+      const response = await fetch("http://localhost:8080/api/enderecos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(enderecoDTO),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erro ao criar endereço: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error("Erro ao criar endereço:", error);
+      return null;
+    }
+  }
+
+  async function cadastrarHorarioFuncionamento() {
+    try {
+      const horarioDTO = {
+        diaInicio: document.getElementById("diaInicio").value,
+        diaFim: document.getElementById("diaFim").value,
+        horarioAbertura: document.getElementById("horarioAbertura").value,
+        horarioFechamento: document.getElementById("horarioFechamento").value,
+      };
+
+      const response = await fetch(
+        "http://localhost:8080/api/horario-funcionamento/cadastro",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(horarioDTO),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          `Erro ao cadastrar horário de funcionamento: ${response.status}`
+        );
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error("Erro ao cadastrar horário de funcionamento:", error);
+      return null;
+    }
+  }
+
+  async function criarEmpresa(idEndereco, idHorario) {
+    try {
+      const empresaDTO = {
+        nome: document.getElementById("empresa").value,
+        cnpj: document.getElementById("cnpj").value,
+        telefone: document.getElementById("telefone").value,
+        endereco: idEndereco,
+        horarioFuncionamento: idHorario,
+      };
+
+      const response = await fetch("http://localhost:8080/api/empresas", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(empresaDTO),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erro ao criar empresa: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error("Erro ao criar empresa:", error);
+      return null;
+    }
+  }
+
+  async function atualizarUsuarioEmpresa(idEmpresa) {
+    try {
+      const cpf = localStorage.getItem("cpf");
+
+      const usuarioDTO = {
+        empresa: idEmpresa,
+      };
+
+      const usuarioResponse = await fetch(
+        `http://localhost:8080/api/usuarios/${cpf}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(usuarioDTO),
+        }
+      );
+
+      if (!usuarioResponse.ok) {
+        throw new Error(`Erro ao atualizar usuário: ${usuarioResponse.status}`);
+      }
+
+      console.log("Usuário atualizado com sucesso!");
+    } catch (error) {
+      console.error(
+        "Erro ao atualizar o usuário com o ID da nova empresa:",
+        error
+      );
+    }
+  }
+
+  // Selecionando os elementos do formulário
+  const cepInput = document.querySelector("#cep");
+  const logradouroInput = document.querySelector("#logradouro");
+  const bairroInput = document.querySelector("#bairro");
+  const cidadeInput = document.querySelector("#cidade");
+  const estadoInput = document.querySelector("#estado");
+
+  // Função para buscar o endereço pelo CEP
+  const buscaEndereco = async (cep) => {
+    try {
+      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      const data = await response.json();
+
+      if (data.erro) {
+        alert("CEP não encontrado.");
+        return;
+      }
+
+      // Populando os campos com os dados recebidos
+      logradouroInput.value = data.logradouro;
+      bairroInput.value = data.bairro;
+      cidadeInput.value = data.localidade;
+      estadoInput.value = data.uf;
+    } catch (error) {
+      console.error("Erro ao buscar o endereço:", error);
+    }
+  };
+
+  // Evento que detecta quando o usuário terminou de digitar o CEP
+  cepInput.addEventListener("blur", () => {
+    const cep = cepInput.value.replace(/\D/g, ""); // Remove qualquer caractere que não seja número
+    if (cep.length === 8) {
+      // Verifica se o CEP tem 8 dígitos
+      buscaEndereco(cep);
+    } else {
+      alert("Por favor, insira um CEP válido.");
+    }
+  });
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -258,7 +441,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const words = nomeInput.value.split(" ");
       for (let i = 0; i < words.length; i++) {
         if (words[i].length > 0) {
-          words[i] = words[i][0].toUpperCase() + words[i].substr(1).toLowerCase();
+          words[i] =
+            words[i][0].toUpperCase() + words[i].substr(1).toLowerCase();
         }
       }
       nomeInput.value = words.join(" ");
@@ -267,9 +451,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.addEventListener("DOMContentLoaded", () => {
     const telefoneInput = document.getElementById("telefone");
-    const telefoneEmergencialInput = document.getElementById(
-      "telefoneEmergencial"
-    );
 
     const formatPhoneNumber = (value) => {
       if (!value) return value;
@@ -291,7 +472,6 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     telefoneInput.addEventListener("input", handlePhoneNumberInput);
-    telefoneEmergencialInput.addEventListener("input", handlePhoneNumberInput);
   });
 
   document.addEventListener("DOMContentLoaded", () => {
@@ -357,45 +537,5 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("userEmail").textContent = email;
     }
   });
-
-  document.addEventListener("DOMContentLoaded", () => {
-    // Selecionando os elementos do formulário
-    const cepInput = document.querySelector("#cep");
-    const logradouroInput = document.querySelector("#logradouro");
-    const bairroInput = document.querySelector("#bairro");
-    const cidadeInput = document.querySelector("#cidade");
-    const estadoInput = document.querySelector("#estado");
-
-    // Função para buscar o endereço pelo CEP
-    const buscaEndereco = async (cep) => {
-      try {
-        const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-        const data = await response.json();
-
-        if (data.erro) {
-          alert("CEP não encontrado.");
-          return;
-        }
-
-        // Populando os campos com os dados recebidos
-        logradouroInput.value = data.logradouro;
-        bairroInput.value = data.bairro;
-        cidadeInput.value = data.localidade;
-        estadoInput.value = data.uf;
-      } catch (error) {
-        console.error("Erro ao buscar o endereço:", error);
-      }
-    };
-
-    // Evento que detecta quando o usuário terminou de digitar o CEP
-    cepInput.addEventListener("blur", () => {
-      const cep = cepInput.value.replace(/\D/g, ""); // Remove qualquer caractere que não seja número
-      if (cep.length === 8) {
-        // Verifica se o CEP tem 8 dígitos
-        buscaEndereco(cep);
-      } else {
-        alert("Por favor, insira um CEP válido.");
-      }
-    });
-  });
 })();
+

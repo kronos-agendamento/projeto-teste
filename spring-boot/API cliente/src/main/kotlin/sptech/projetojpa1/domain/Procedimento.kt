@@ -6,14 +6,16 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
 
 @Entity
 @Table(name = "Procedimento")
 open class Procedimento(
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_procedimento")
-    var idProcedimento: Int = 0,
-
+    var idProcedimento: Int? = null,
     @field:NotNull(message = "O campo tipo não pode ser nulo")
     @field:Size(min = 1, max = 100, message = "O campo tipo deve ter entre 1 e 100 caracteres")
     var tipo: String?,

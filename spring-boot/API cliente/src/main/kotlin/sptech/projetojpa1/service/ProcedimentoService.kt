@@ -13,13 +13,19 @@ import java.util.stream.Collectors
 class ProcedimentoService(private val procedimentoRepository: ProcedimentoRepository) {
 
     fun criarProcedimento(procedimentoRequestDTO: ProcedimentoRequestDTO): ProcedimentoDTO {
-        val procedimento = procedimentoRepository.save(
-            Procedimento(
-                tipo = procedimentoRequestDTO.tipo,
-                descricao = procedimentoRequestDTO.descricao
-            )
+        val procedimento = Procedimento(
+            idProcedimento = generateId(), // Ensure ID is assigned
+            tipo = procedimentoRequestDTO.tipo,
+            descricao = procedimentoRequestDTO.descricao
         )
-        return procedimento.toDTO()
+        val savedProcedimento = procedimentoRepository.save(procedimento)
+        return savedProcedimento.toDTO()
+    }
+
+    private fun generateId(): Int {
+        // Implement ID generation logic here
+        // This could be a sequence from the database or any other logic
+        return (procedimentoRepository.findMaxId() ?: 0) + 1
     }
 
     fun buscarProcedimentoPorId(id: Int): ProcedimentoResponseDTO? {

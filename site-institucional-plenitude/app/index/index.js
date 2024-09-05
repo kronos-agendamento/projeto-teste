@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
       tabela.innerHTML = "";
 
       especificacoes.slice(0, 3).forEach((especificacao) => {
-        const procedimento = especificacao.fkProcedimento;
+        const procedimento = especificacao.procedimento;
         const tempo = especificacao;
         const precoFormatado = `R$${especificacao.precoColocacao.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         const duracaoFormatada = tempo.tempoColocacao ? formatarDuracao(tempo.tempoColocacao) : "N/A";

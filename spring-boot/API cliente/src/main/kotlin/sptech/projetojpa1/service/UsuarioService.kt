@@ -27,7 +27,7 @@ class UsuarioService(
                 nome = dto.nome,
                 email = dto.email,
                 senha = dto.senha,
-                instagram = dto.instagram,  // Certifique-se de que todos os campos obrigatórios estão preenchidos
+                instagram = dto.instagram,
                 cpf = dto.cpf,
                 telefone = dto.telefone,
                 dataNasc = dto.dataNasc,
@@ -46,7 +46,7 @@ class UsuarioService(
                 nome = dto.nome,
                 email = dto.email,
                 senha = dto.senha,
-                instagram = dto.instagram,  // Verifique e atribua um valor válido ou padrão
+                instagram = dto.instagram,
                 cpf = dto.cpf,
                 telefone = dto.telefone,
                 dataNasc = dto.dataNasc,
@@ -57,7 +57,6 @@ class UsuarioService(
                 nivelAcesso = dto.nivelAcessoId?.let { nivelAcessoRepository.findById(it).orElse(null) },
                 endereco = dto.enderecoId?.let { enderecoRepository.findById(it).orElse(null) },
                 empresa = dto.empresaId?.let { empresaRepository.findById(it).orElse(null) },
-                fichaAnamnese = dto.fichaAnamneseId?.let { fichaAnamneseRepository.findById(it).orElse(null) },
                 especialidade = ""
             )
         }
@@ -75,7 +74,9 @@ class UsuarioService(
                 mensagem = "Login realizado com sucesso.",
                 nome = usuario.nome ?: "",
                 email = usuario.email ?: "",
-                cpf = usuario.cpf ?: ""
+                cpf = usuario.cpf ?: "",
+                instagram = usuario.instagram ?: "",
+                empresa = usuario.empresa ?: null
             )
         } else {
             null

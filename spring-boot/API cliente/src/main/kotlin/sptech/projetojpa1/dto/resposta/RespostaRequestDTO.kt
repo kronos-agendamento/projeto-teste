@@ -13,19 +13,19 @@ data class RespostaRequestDTO(
         value = 1,
         message = "Id da pergunta deve ser maior que 0"
     )
-    val idPergunta: Int,
+    val pergunta: Int,
 
     @field:NotNull(message = "Id da ficha é obrigatório")
     @field:Min(
         value = 1,
         message = "Id da ficha deve ser maior que 0"
     )
-    val idFichaAnamnese: Int,
+    val fichaAnamnese: Int,
 
     @field:NotNull(message = "Id do usuário é obrigatório")
     @field:Min(
         value = 1,
         message = "Id do usuário deve ser maior que 0"
     )
-    val idUsuario: Int
+    val usuario: Int
 )

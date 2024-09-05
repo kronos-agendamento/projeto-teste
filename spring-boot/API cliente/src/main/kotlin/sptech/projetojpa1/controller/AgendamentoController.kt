@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*
 import sptech.projetojpa1.dto.agendamento.AgendamentoRequestDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoResponseDTO
 import sptech.projetojpa1.service.AgendamentoService
+import java.time.LocalDate
+import java.time.LocalTime
 
 @RestController
 @RequestMapping("/api/agendamentos")
@@ -21,7 +23,7 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
             ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos")
         ]
     )
-    @PostMapping("/criar")
+    @PostMapping
     fun criarNovoAgendamento(@Valid @RequestBody agendamentoRequestDTO: AgendamentoRequestDTO): ResponseEntity<*> {
         try {
             val agendamentoResponseDTO = agendamentoService.criarAgendamento(agendamentoRequestDTO)
@@ -73,8 +75,6 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
         return ResponseEntity.ok(agendamentoResponseDTO)
     }
 
-    // Adicione o método abaixo na classe AgendamentoController
-
     @Operation(summary = "Atualiza o status de um agendamento pelo ID")
     @ApiResponses(
         value = [
@@ -112,4 +112,13 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
         return ResponseEntity.ok(quantidadeConcluidos)
     }
 
+    @GetMapping("/horarios-disponiveis")
+    fun listarHorariosDisponiveis(
+        @RequestParam empresaId: Int,
+        @RequestParam data: String
+    ): ResponseEntity<List<LocalTime>> {
+        val dataFormatada = LocalDate.parse(data)
+        val horariosDisponiveis = agendamentoService.listarHorariosDisponiveis(empresaId, dataFormatada)
+        return ResponseEntity.ok(horariosDisponiveis)
+    }
 }

@@ -2,6 +2,8 @@ package sptech.projetojpa1.service
 
 import org.springframework.stereotype.Service
 import sptech.projetojpa1.domain.Feedback
+import sptech.projetojpa1.domain.usuario.Cliente
+import sptech.projetojpa1.domain.usuario.Profissional
 import sptech.projetojpa1.dto.feedback.FeedbackRequestDTO
 import sptech.projetojpa1.dto.feedback.FeedbackResponseDTO
 import sptech.projetojpa1.repository.AgendamentoRepository
@@ -16,7 +18,7 @@ class FeedbackService(
 ) {
 
     fun criarFeedback(feedbackRequestDTO: FeedbackRequestDTO): FeedbackResponseDTO {
-        val usuario = usuarioRepository.findById(feedbackRequestDTO.usuarioId)
+        val usuario = usuarioRepository.findById(feedbackRequestDTO.usuario)
             .orElseThrow { IllegalArgumentException("Usuário não encontrado") }
         val agendamento = agendamentoRepository.findById(feedbackRequestDTO.agendamentoId)
             .orElseThrow { IllegalArgumentException("Agendamento não encontrado") }
@@ -29,29 +31,41 @@ class FeedbackService(
             throw IllegalArgumentException("Nota deve ser entre 1 e 5")
         }
 
+        val clienteAvaliado = when (usuario) {
+            is Profissional -> {
+                val cliente = usuarioRepository.findById(feedbackRequestDTO.clienteAvaliado!!)
+                    .orElseThrow { IllegalArgumentException("Cliente avaliado não encontrado") }
+                if (cliente !is Cliente) {
+                    throw IllegalArgumentException("Somente clientes podem ser avaliados por profissionais")
+                }
+                cliente
+            }
+            is Cliente -> null // Clientes não avaliam outros clientes.
+            else -> throw IllegalArgumentException("Tipo de usuário não suportado para avaliação")
+        }
+
         val feedback = Feedback(
             anotacoes = feedbackRequestDTO.anotacoes,
             nota = feedbackRequestDTO.nota,
             agendamento = agendamento,
             usuario = usuario,
-            avaliador = null,
-            servico = null
+            clienteAvaliado = clienteAvaliado
         )
+
         val savedFeedback = feedbackRepository.save(feedback)
         return FeedbackResponseDTO(
             idFeedback = savedFeedback.idFeedback,
             anotacoes = savedFeedback.anotacoes,
             nota = savedFeedback.nota,
-            agendamentoId = savedFeedback.agendamento?.idAgendamento ?: 0,
-            usuarioId = savedFeedback.usuario?.codigo ?: 0
+            agendamento = savedFeedback.agendamento?.idAgendamento ?: 0,
+            usuario = savedFeedback.usuario?.codigo ?: 0
         )
     }
+
 
     fun buscarMediaNotas(): List<Double> {
         return feedbackRepository.buscarMediaNotas()
     }
-
-
 
     fun buscarFeedbackPorId(id: Int): FeedbackResponseDTO? {
         val feedback = feedbackRepository.findById(id).orElse(null) ?: return null
@@ -59,24 +73,31 @@ class FeedbackService(
             idFeedback = feedback.idFeedback,
             anotacoes = feedback.anotacoes,
             nota = feedback.nota,
-            agendamentoId = feedback.agendamento?.idAgendamento ?: 0,
-            usuarioId = feedback.usuario?.codigo ?: 0
+            agendamento = feedback.agendamento?.idAgendamento ?: 0,
+            usuario = feedback.usuario?.codigo ?: 0
         )
     }
 
     fun atualizarFeedback(id: Int, feedbackRequestDTO: FeedbackRequestDTO): FeedbackResponseDTO? {
         val feedbackExistente = feedbackRepository.findById(id).orElse(null) ?: return null
 
-        val usuario = usuarioRepository.findById(feedbackRequestDTO.usuarioId)
+        val usuario = usuarioRepository.findById(feedbackRequestDTO.usuario)
             .orElseThrow { IllegalArgumentException("Usuário não encontrado") }
         val agendamento = agendamentoRepository.findById(feedbackRequestDTO.agendamentoId)
             .orElseThrow { IllegalArgumentException("Agendamento não encontrado") }
+
+        val clienteAvaliado = when (usuario) {
+            is Profissional -> null // Profissionais avaliam procedimentos, não clientes.
+            is Cliente -> usuario  // Cliente avaliado.
+            else -> throw IllegalArgumentException("Tipo de usuário não suportado para avaliação")
+        }
 
         val feedbackAtualizado = feedbackExistente.copy(
             anotacoes = feedbackRequestDTO.anotacoes,
             nota = feedbackRequestDTO.nota,
             agendamento = agendamento,
-            usuario = usuario
+            usuario = usuario,
+            clienteAvaliado = clienteAvaliado
         )
 
         val savedFeedback = feedbackRepository.save(feedbackAtualizado)
@@ -84,8 +105,8 @@ class FeedbackService(
             idFeedback = savedFeedback.idFeedback,
             anotacoes = savedFeedback.anotacoes,
             nota = savedFeedback.nota,
-            agendamentoId = savedFeedback.agendamento?.idAgendamento ?: 0,
-            usuarioId = savedFeedback.usuario?.codigo ?: 0
+            agendamento = savedFeedback.agendamento?.idAgendamento ?: 0,
+            usuario = savedFeedback.usuario?.codigo ?: 0
         )
     }
 
@@ -94,5 +115,20 @@ class FeedbackService(
             throw IllegalArgumentException("Feedback não encontrado")
         }
         feedbackRepository.deleteById(id)
+    }
+
+    fun calcularMediaAvaliacoesCliente(clienteId: Int): Double? {
+        val cliente =
+            usuarioRepository.findById(clienteId).orElseThrow { IllegalArgumentException("Cliente não encontrado") }
+        return if (cliente is Cliente) {
+            val feedbacks = feedbackRepository.findAllByClienteAvaliado(cliente)
+            if (feedbacks.isNotEmpty()) {
+                feedbacks.mapNotNull { it.nota }.average()
+            } else {
+                null
+            }
+        } else {
+            throw IllegalArgumentException("O usuário especificado não é um cliente")
+        }
     }
 }
