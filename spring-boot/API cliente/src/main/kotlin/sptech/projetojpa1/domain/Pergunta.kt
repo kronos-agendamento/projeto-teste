@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
 
 @Entity
-@Table(name = "Pergunta")
+@Table(name = "pergunta")
 class Pergunta(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_pergunta")
@@ -17,8 +17,4 @@ class Pergunta(
 
     @Column(name = "pergunta_ativa")
     var ativa: Boolean = false
-) {
-    override fun toString(): String {
-        return "Pergunta(idPergunta=$idPergunta, pergunta='$pergunta', ativa=$ativa)"
-    }
-}
+)

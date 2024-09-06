@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size
 import org.hibernate.validator.constraints.br.CNPJ
 
 @Entity
-@Table(name = "Empresa")
+@Table(name = "empresa")
 class Empresa(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_empresa")
@@ -35,8 +35,4 @@ class Empresa(
     @ManyToOne
     @JoinColumn(name = "fk_horario_funcionamento", referencedColumnName = "id_horario_funcionamento")
     var horarioFuncionamento: HorarioFuncionamento
-) {
-    override fun toString(): String {
-        return "Empresa(idEmpresa=$idEmpresa, nome='$nome', telefone='$telefone', cnpj='$cnpj', endereco=$endereco, horarioFuncionamento=$horarioFuncionamento)"
-    }
-}
+)

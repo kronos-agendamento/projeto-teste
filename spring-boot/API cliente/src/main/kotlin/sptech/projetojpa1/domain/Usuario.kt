@@ -6,63 +6,59 @@ import org.hibernate.validator.constraints.br.CPF
 import java.time.LocalDate
 
 @Entity
-@Table(name = "Usuario")
+@Table(name = "usuario")
 @Inheritance(strategy = InheritanceType.JOINED)
-abstract class Usuario(
+open class Usuario(  // Marque a classe como open
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario")
-    var codigo: Int? = null,
+    open var codigo: Int? = null,  // Marque a propriedade como open
 
     @field:NotBlank(message = "Nome é obrigatório")
-    var nome: String? = null,
+    open var nome: String? = null,  // Marque a propriedade como open
 
-    @field:NotBlank(message = "Email é obrigatório") @field:Email(message = "Email deve ser válido")
-    var email: String? = null,
+    @field:NotBlank(message = "Email é obrigatório")
+    @field:Email(message = "Email deve ser válido")
+    open var email: String? = null,  // Marque a propriedade como open
 
-    @field:NotBlank(message = "Senha é obrigatória") @field:Size(
-        min = 6,
-        message = "A senha deve conter pelo menos 6 caracteres"
-    )
-    var senha: String? = null,
+    @field:NotBlank(message = "Senha é obrigatória")
+    @field:Size(min = 6, message = "A senha deve conter pelo menos 6 caracteres")
+    open var senha: String? = null,  // Marque a propriedade como open
 
     @field:NotBlank(message = "Instagram é obrigatório")
-    var instagram: String? = null,
+    open var instagram: String? = null,  // Marque a propriedade como open
 
-    @field:NotBlank(message = "CPF é obrigatório") @field:CPF(message = "CPF inválido")
-    var cpf: String? = null,
+    @field:NotBlank(message = "CPF é obrigatório")
+    @field:CPF(message = "CPF inválido")
+    open var cpf: String? = null,  // Marque a propriedade como open
 
     @field:NotNull(message = "Telefone é obrigatório")
-    var telefone: Long? = null,
+    open var telefone: Long? = null,  // Marque a propriedade como open
 
     @field:Past(message = "Data de nascimento deve estar no passado")
-    var dataNasc: LocalDate? = null,
+    open var dataNasc: LocalDate? = null,  // Marque a propriedade como open
 
-    var genero: String? = null,
+    open var genero: String? = null,  // Marque a propriedade como open
 
-    var indicacao: String? = null,
+    open var indicacao: String? = null,  // Marque a propriedade como open
 
     @field:Column(length = 100 * 1024 * 1024)
-    var foto: ByteArray? = null,
+    open var foto: ByteArray? = null,  // Marque a propriedade como open
 
-    var status: Boolean? = true,
+    open var status: Boolean? = true,  // Marque a propriedade como open
 
     @ManyToOne
     @JoinColumn(name = "fk_nivel_acesso")
-    var nivelAcesso: NivelAcesso? = null,
+    open var nivelAcesso: NivelAcesso? = null,  // Marque a propriedade como open
 
     @ManyToOne
     @JoinColumn(name = "fk_endereco")
-    var endereco: Endereco? = null,
+    open var endereco: Endereco? = null,  // Marque a propriedade como open
 
     @ManyToOne
     @JoinColumn(name = "fk_empresa")
-    var empresa: Empresa? = null,
+    open var empresa: Empresa? = null,  // Marque a propriedade como open
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "fk_ficha_anamnese")
-    var fichaAnamnese: FichaAnamnese? = null
-) {
-    override fun toString(): String {
-        return "Usuario(codigo=$codigo, nome=$nome, email=$email, senha=$senha, instagram=$instagram, cpf=$cpf, telefone=$telefone, dataNasc=$dataNasc, genero=$genero, indicacao=$indicacao, foto=${foto?.contentToString()}, status=$status, nivelAcesso=$nivelAcesso, endereco=$endereco, empresa=$empresa, fichaAnamnese=$fichaAnamnese)"
-    }
-}
+    open var fichaAnamnese: FichaAnamnese? = null  // Marque a propriedade como open
+)

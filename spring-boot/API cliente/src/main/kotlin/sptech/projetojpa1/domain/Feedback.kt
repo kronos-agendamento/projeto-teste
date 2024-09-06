@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Min
 import sptech.projetojpa1.domain.usuario.Cliente
 
 @Entity
-@Table(name = "Feedback")
+@Table(name = "feedback")
 data class Feedback(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val idFeedback: Int = 0,
@@ -28,8 +28,4 @@ data class Feedback(
     @ManyToOne
     @JoinColumn(name = "fk_cliente_avaliado")
     val clienteAvaliado: Usuario? = null
-) {
-    override fun toString(): String {
-        return "Feedback(idFeedback=$idFeedback, anotacoes=$anotacoes, nota=$nota, usuario=$usuario, agendamento=$agendamento, clienteAvaliado=$clienteAvaliado)"
-    }
-}
+)

@@ -12,8 +12,4 @@ data class Mensagem (
     @Column(name = "descricao", length = 100) @NotBlank(message = "Descrição é obrigatória")
     var descricao: String?,
 
-){
-    override fun toString(): String {
-        return "Mensagem(descrição=$descricao)"
-    }
-}
+)
