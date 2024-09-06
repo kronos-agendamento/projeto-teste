@@ -4,7 +4,7 @@ import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "FichaAnamnese")
+@Table(name = "ficha_anamnese")
 class FichaAnamnese(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,8 +18,4 @@ class FichaAnamnese(
 
     @OneToMany(mappedBy = "fichaAnamnese", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var respostas: List<Resposta> = mutableListOf()
-) {
-    override fun toString(): String {
-        return "FichaAnamnese(codigoFicha=$codigoFicha, dataPreenchimento=$dataPreenchimento, usuario=$usuario, respostas=$respostas)"
-    }
-}
+)

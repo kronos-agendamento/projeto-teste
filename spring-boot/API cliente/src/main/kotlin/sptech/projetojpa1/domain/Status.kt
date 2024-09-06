@@ -17,8 +17,4 @@ data class Status(
 
     @Column(name = "motivo", length = 200)
     var motivo: String?
-) {
-    override fun toString(): String {
-        return "Status(id=$id, nome=$nome, cor=$cor, motivo=$motivo)"
-    }
-}
+)

@@ -1,30 +1,25 @@
 package sptech.projetojpa1.domain
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
 
 @Entity
-@Table(name = "Procedimento")
+@Table(name = "procedimento")
 open class Procedimento(
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_procedimento")
-    var idProcedimento: Int? = null,
+    open var idProcedimento: Int? = null,  // Mark this property as open
+
     @field:NotNull(message = "O campo tipo não pode ser nulo")
     @field:Size(min = 1, max = 100, message = "O campo tipo deve ter entre 1 e 100 caracteres")
-    var tipo: String?,
+    @Column(name = "tipo")
+    open var tipo: String?,  // Mark this property as open
 
     @field:NotNull(message = "O campo descrição não pode ser nulo")
     @field:Size(min = 1, max = 500, message = "O campo descrição deve ter entre 1 e 500 caracteres")
-    var descricao: String?,
-) {
-    override fun toString(): String {
-        return "Procedimento(idProcedimento=$idProcedimento, tipo=$tipo, descricao=$descricao)"
-    }
-}
+    @Column(name = "descricao")
+    open var descricao: String?  // Mark this property as open
+)

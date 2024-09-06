@@ -46,8 +46,4 @@ class Cliente(
     endereco,
     empresa,
     fichaAnamnese
-) {
-    override fun toString(): String {
-        return "Cliente(codigo=$codigo, nome=$nome, email=$email, instagram=$instagram, experienciaAvaliada=$experienciaAvaliada, frequencia=$frequencia)"
-    }
-}
+)

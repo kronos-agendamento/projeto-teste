@@ -5,7 +5,7 @@ import jakarta.persistence.*
 import jakarta.validation.constraints.*
 
 @Entity
-@Table(name = "Especificacao")
+@Table(name = "especificacao")
 data class Especificacao(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_especificacao_procedimento")
@@ -62,8 +62,4 @@ data class Especificacao(
     @JoinColumn(name = "fk_procedimento")
     var procedimento: Procedimento?
 
-) {
-    override fun toString(): String {
-        return "Especificacao(idEspecificacaoProcedimento=$idEspecificacaoProcedimento, especificacao=$especificacao, precoColocacao=$precoColocacao, precoManutencao=$precoManutencao, precoRetirada=$precoRetirada, foto=${foto?.size}, procedimento=$procedimento, tempoColocacao='$tempoColocacao', tempoManutencao='$tempoManutencao', tempoRetirada='$tempoRetirada')"
-    }
-}
+)

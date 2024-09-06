@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 
 @Entity
-@Table(name = "horarioFuncionamento")
+@Table(name = "horario_funcionamento")
 class HorarioFuncionamento(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,8 +29,4 @@ class HorarioFuncionamento(
     @NotBlank(message = "O horário de fechamento é obrigatório")
     @Column(name = "horario_fechamento")
     var horarioFechamento: String
-) {
-    override fun toString(): String {
-        return "HorarioFuncionamento(id=$id, diaInicio='$diaInicio', diaFim='$diaFim', horarioAbertura='$horarioAbertura', horarioFechamento='$horarioFechamento')"
-    }
-}
+)

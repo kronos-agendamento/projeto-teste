@@ -23,8 +23,6 @@ class ProcedimentoService(private val procedimentoRepository: ProcedimentoReposi
     }
 
     private fun generateId(): Int {
-        // Implement ID generation logic here
-        // This could be a sequence from the database or any other logic
         return (procedimentoRepository.findMaxId() ?: 0) + 1
     }
 

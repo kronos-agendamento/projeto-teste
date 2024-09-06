@@ -48,8 +48,4 @@ class Profissional(
     nivelAcesso,
     endereco,
     empresa,
-) {
-    override fun toString(): String {
-        return "Profissional(codigo=$codigo, nome=$nome, email=$email, instagram=$instagram, numeroAvaliacoes=$numeroAvaliacoes, mediaNota=$mediaNota, qualificacoes=$qualificacoes, especialidade=$especialidade)"
-    }
-}
+)

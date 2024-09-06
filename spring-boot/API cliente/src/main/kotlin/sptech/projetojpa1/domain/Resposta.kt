@@ -3,7 +3,7 @@ package sptech.projetojpa1.domain
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "Resposta")
+@Table(name = "resposta")
 class Resposta(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_resposta")
@@ -23,8 +23,4 @@ class Resposta(
     @ManyToOne
     @JoinColumn(name = "fk_usuario", nullable = false)
     var usuario: Usuario
-) {
-    override fun toString(): String {
-        return "Resposta(idResposta=$idResposta, resposta='$resposta', pergunta=$pergunta, fichaAnamnese=$fichaAnamnese, usuario=$usuario)"
-    }
-}
+)
