@@ -457,7 +457,7 @@ img {
     margin: 7.5% auto;
     padding: 30px;
     border: 1px solid #888;
-    width: 40%;
+    width: 55%;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
     text-align: center;
@@ -534,7 +534,7 @@ img {
 .modal-pesquisa .modal-content .close {
     position: absolute;
     top: 110px;
-    right: 400px;
+    right: 300px;
     font-size: 24px;
     cursor: pointer;
 }
@@ -635,7 +635,37 @@ img {
 .modal-avaliacao .modal-content .close {
     position: absolute;
     top: 110px;
-    right: 400px;
+    left: 1700px;
     font-size: 24px;
     cursor: pointer;
+}
+
+
+.procedures-table-pesquisa {
+    width: 75vh;
+    max-width: 170vh;
+    border-collapse: collapse;
+    margin-top: 30px;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-left: 2.5%;
+    margin-right: auto;
+    border: 1px solid black;
+}
+
+.procedures-table-pesquisa thead {
+    background-color: #D2135D;
+    color: #fff;
+}
+
+.procedures-table-pesquisa th,
+.procedures-table-pesquisa td {
+    padding: 15px;
+    text-align: left;
+}
+
+.procedures-table-pesquisa tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
 }

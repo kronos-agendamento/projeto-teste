@@ -300,15 +300,57 @@ function mostrarResultado(data) {
     if (!data || data.length === 0) {
         resultadoDiv.innerHTML = "<p>Nenhum cliente encontrado.</p>";
     } else if (Array.isArray(data)) {
-        resultadoDiv.innerHTML = data.map(usuario => `
-            <p>Nome: ${usuario.nome} | CPF: ${usuario.cpf} | Código: ${usuario.codigo}</p>
-        `).join("");
+        let tableHTML = `
+            <table id="procedures-table-pesquisa" class="procedures-table-pesquisa">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Instagram</th>
+                        <th>Telefone</th>
+                        <th>CPF</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+        
+        data.forEach(usuario => {
+            tableHTML += `
+                <tr>
+                    <td>${usuario.nome}</td>
+                    <td>${usuario.instagram}</td>
+                    <td>${usuario.telefone}</td>
+                    <td>${usuario.cpf}</td>
+                    <td>
+                        <button class="ver-mais-btn" data-id="${usuario.cpf}" style="border: none; background: transparent; cursor: pointer;" title="Ver mais">
+                            <img src="../../assets/icons/mais-tres-pontos-indicador.png" alt="Ver mais" style="width: 20px; height: 20px; margin-top:18px; margin-left:15px;">
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+        
+        tableHTML += `</tbody></table>`;
+        
+        resultadoDiv.innerHTML = tableHTML;
+
+        // Adicionar event listener para o botão "Ver mais"
+        document.querySelectorAll('.ver-mais-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const cpf = this.getAttribute('data-id');
+                // Redirecionar para a página de edição com o CPF na URL
+                window.location.href = `../clientes/clienteForms/editar-cliente.html?cpf=${cpf}`;
+            });
+        });
     } else {
         resultadoDiv.innerHTML = `
-            <p>Nome: ${data.nome} | CPF: ${data.cpf} | Código: ${data.codigo}</p>
+            <p>Nome: ${data.nome} | CPF: ${data.cpf} | Instagram: ${data.instagram} | Telefone: ${data.telefone}</p>
         `;
     }
 }
+
+
+
 
 function mostrarErro(mensagem) {
     const resultadoDiv = document.getElementById('resultado');
