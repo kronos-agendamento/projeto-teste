@@ -1,8 +1,9 @@
 import mysql.connector
 import pandas as pd
+import numpy as np  # Certifique-se de importar o numpy
 
 # Caminho do arquivo Excel
-file_path = 'C:/Users/gyuli/Downloads/novo_relatrio_05-09-2024 (2).xlsx'
+file_path = 'C:/Users/gyuli/Downloads/novo_relatrio.xlsx'
 
 # Carregar os dados da planilha
 df = pd.read_excel(file_path, sheet_name='Report')
@@ -18,17 +19,8 @@ df.columns = [
 df_cleaned = df[['nome', 'data_preenchimento', 'conforto_visita', 'nota_experiencia', 'facilidade_agendamento',
                  'recomendacao_servicos', 'sugestao_melhoria', 'relato_experiencia', 'codigo_cliente']]
 
-# Substituir NaN por None (equivalente a NULL no MySQL)
-df_cleaned = df_cleaned.where(pd.notnull(df_cleaned), None)
-
-# Verificar se há NaNs antes de prosseguir
-print(df_cleaned.isna().sum())  # Isso imprimirá a contagem de valores NaN por coluna
-
-# Converter para uma lista de tuplas para facilitar a inserção
-data_to_insert = df_cleaned.values.tolist()
-
-# Imprimir os dados a serem inseridos para verificar
-print("Dados a serem inseridos:", data_to_insert)
+# Substituir NaN por None (equivalente a NULL no MySQL) e garantir que 'None' seja inserido corretamente
+df_cleaned = df_cleaned.replace({np.nan: None})
 
 # Configurar a conexão com o MySQL
 connection = mysql.connector.connect(
@@ -40,7 +32,7 @@ connection = mysql.connector.connect(
 
 cursor = connection.cursor()
 
-# Script SQL para criar a tabela
+# Script SQL para criar a tabela, caso ainda não exista
 create_table_query = """
 CREATE TABLE IF NOT EXISTS feedback_estetica (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -52,12 +44,17 @@ CREATE TABLE IF NOT EXISTS feedback_estetica (
     recomendacao_servicos VARCHAR(3),
     sugestao_melhoria TEXT,
     relato_experiencia TEXT,
-    codigo_cliente VARCHAR(15)
+    codigo_cliente VARCHAR(15) UNIQUE
 );
 """
 
 # Executa a criação da tabela
 cursor.execute(create_table_query)
+
+# Script SQL para verificar se o codigo_cliente já existe
+check_exists_query = """
+SELECT COUNT(*) FROM feedback_estetica WHERE codigo_cliente = %s;
+"""
 
 # Script SQL para inserir os dados
 insert_query = """
@@ -66,11 +63,17 @@ INSERT INTO feedback_estetica
 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);
 """
 
-# Verifique se os dados estão formatados corretamente
-print("Inserindo dados...")
-
-# Insere os dados na tabela
-cursor.executemany(insert_query, data_to_insert)
+# Loop para verificar se o registro já existe e inserir caso contrário
+for row in df_cleaned.itertuples(index=False, name=None):
+    codigo_cliente = row[8]  # O código do cliente é o 9º campo
+    cursor.execute(check_exists_query, (codigo_cliente,))
+    result = cursor.fetchone()
+    
+    if result[0] == 0:
+        cursor.execute(insert_query, row)
+        print(f"Inserido o código cliente: {codigo_cliente}")
+    else:
+        print(f"Registro com o código cliente {codigo_cliente} já existe. Não inserido.")
 
 # Confirma a transação
 connection.commit()
@@ -79,4 +82,4 @@ connection.commit()
 cursor.close()
 connection.close()
 
-print("Dados inseridos com sucesso!")
+print("Processo de inserção concluído!")
