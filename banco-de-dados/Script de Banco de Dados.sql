@@ -154,21 +154,21 @@ CREATE TABLE feedback (
     FOREIGN KEY (fk_cliente_avaliado) REFERENCES usuario(id_usuario)
 );
 
-CREATE TABLE cliente (
-    id_usuario INT PRIMARY KEY,
-    experiencia_avaliada VARCHAR(255),
-    frequencia INT,
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
-);
+	CREATE TABLE cliente (
+		id_usuario INT PRIMARY KEY,
+		experiencia_avaliada VARCHAR(255),
+		frequencia INT,
+		FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
+	);
 
-CREATE TABLE profissional (
-    id_usuario INT PRIMARY KEY,
-    numero_avaliacoes INT,
-    media_nota DOUBLE,
-    qualificacoes VARCHAR(255),
-    especialidade VARCHAR(255),
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
-);
+	CREATE TABLE profissional (
+		id_usuario INT PRIMARY KEY,
+		numero_avaliacoes INT,
+		media_nota DOUBLE,
+		qualificacoes VARCHAR(255),
+		especialidade VARCHAR(255),
+		FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
+	);
 
 INSERT INTO endereco (logradouro, cep, bairro, cidade, estado, numero, complemento)
 VALUES 
@@ -244,14 +244,7 @@ INSERT INTO procedimento (tipo, descricao)
 VALUES 
 ('Maquiagem', 'Diversos tipos de maquiagem para eventos'),
 ('Sobrancelha', 'Modelagem e tratamento de sobrancelhas'),
-('Cílios', 'Alongamento e volume de cílios'),
-('Maquiagem Artística', 'Técnicas de maquiagem para eventos temáticos'),
-('Sobrancelha Henna', 'Coloração e definição de sobrancelhas com henna'),
-('Lifting de Cílios', 'Levantamento natural dos cílios'),
-('Maquiagem para Noivas', 'Maquiagem especializada para noivas'),
-('Micropigmentação de Sobrancelha', 'Pigmentação semi-permanente para sobrancelhas'),
-('Extensão de Cílios Volume Russo', 'Extensão com volume máximo para cílios'),
-('Design de Sobrancelha', 'Design personalizado de sobrancelhas');	
+('Cílios', 'Alongamento e volume de cílios');
 
 INSERT INTO especificacao (especificacao, preco_colocacao, preco_manutencao, preco_retirada, tempo_colocacao, tempo_manutencao, tempo_retirada, fk_procedimento)
 VALUES 
@@ -355,3 +348,14 @@ VALUES
 (8, 6, 4.4, 'Técnica em Henna para Sobrancelhas', 'Sobrancelhas'),
 (9, 11, 4.8, 'Designer de Sobrancelhas', 'Sobrancelhas'),
 (10, 5, 4.3, 'Maquiadora Social', 'Maquiagem');
+
+UPDATE usuario 
+SET dtype = 'Cliente' 
+WHERE fk_nivel_acesso = 2;
+
+UPDATE usuario 
+SET dtype = 'Profissional' 
+WHERE fk_nivel_acesso = 1;
+
+SELECT id_usuario, dtype FROM usuario;
+SELECT * FROM usuario;

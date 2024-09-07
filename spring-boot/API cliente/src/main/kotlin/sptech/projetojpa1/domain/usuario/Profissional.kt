@@ -1,13 +1,13 @@
 package sptech.projetojpa1.domain.usuario
 
 import jakarta.persistence.Column
+import jakarta.persistence.DiscriminatorValue
 import jakarta.persistence.Entity
-import jakarta.persistence.Table
 import sptech.projetojpa1.domain.*
 import java.time.LocalDate
 
 @Entity
-@Table(name = "profissional")
+@DiscriminatorValue("Profissional")
 class Profissional(
     codigo: Int? = null,
     nome: String? = null,

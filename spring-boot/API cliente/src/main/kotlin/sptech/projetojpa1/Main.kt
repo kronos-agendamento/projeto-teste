@@ -1,7 +1,9 @@
-package sptech.projetojpa1.domain.usuario
+package sptech.projetojpa1
 
 import sptech.projetojpa1.domain.Feedback
 import sptech.projetojpa1.domain.Procedimento
+import sptech.projetojpa1.domain.usuario.Cliente
+import sptech.projetojpa1.domain.usuario.Profissional
 import java.time.LocalDate
 
 fun main() {

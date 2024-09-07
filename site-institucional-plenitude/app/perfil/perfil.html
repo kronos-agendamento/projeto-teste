@@ -17,7 +17,7 @@
 
 <body>
 
-  
+
   <div class="corpo">
     <div class="navigation">
       <div class="perfil">
@@ -222,11 +222,27 @@
 
                   <div class="content-box">
                     <p>De:</p>
-                    <select name="" id="diaInicio" required></select>
+                    <select name="" id="diaInicio" required>
+                      <option value="Domingo">Terça</option>
+                      <option value="Segunda">Terça</option>
+                      <option value="Terça">Terça</option>
+                      <option value="Quarta">Quarta</option>
+                      <option value="Quinta">Quinta</option>
+                      <option value="Sexta">Sexta</option>
+                      <option value="Sábado">Sábado</option>
+                    </select>
                   </div>
                   <div class="content-box">
                     <p>Ate:</p>
-                    <select name="" id="diaFim" required></select>
+                    <select name="" id="diaFim" required>
+                      <option value="Domingo">Terça</option>
+                      <option value="Segunda">Terça</option>
+                      <option value="Terça">Terça</option>
+                      <option value="Quarta">Quarta</option>
+                      <option value="Quinta">Quinta</option>
+                      <option value="Sexta">Sexta</option>
+                      <option value="Sábado">Sábado</option>
+                    </select>
 
                   </div>
                 </div>
@@ -234,16 +250,13 @@
               </div>
               <div class="form-group form-mr form-input">
                 <div class="label">
-                  <p>Horários de funcionamento:</p>
+                  <p>Horários de funcionamento:</p><br>
 
-                  <div class="content-box">
-                    <p>De:</p>
-                    <select name="" id="diaFim" required></select>
-                  </div>
-                  <div class="content-box">
-                    <p>Ate:</p>
-                    <select name="" id="diaInicio" required></select>
-                  </div>
+                  <label for="horaInicio">Hora de Início:</label>
+                  <input type="time" id="horaInicio" name="horaInicio" required><br><br>
+
+                  <label for="horaFim">Hora de Fim:</label>
+                  <input type="time" id="horaFim" name="horaFim" required>
                 </div>
               </div>
 
@@ -286,7 +299,7 @@
               <div class="form-group form-mr form-input">
                 <div class="label">
                   <p>Bairro:</p>
-                  <input type="text" id="bairro"  name="bairro" placeholder="São João Clímaco">
+                  <input type="text" id="bairro" name="bairro" placeholder="São João Clímaco">
                 </div>
               </div>
 
@@ -300,10 +313,10 @@
               <div class="form-group form-mr form-input">
                 <div class="label">
                   <p>Estado:</p>
-                  <input type="text" id="estado"  name="estado" placeholder="São Paulo" required>
+                  <input type="text" id="estado" name="estado" placeholder="São Paulo" required>
                 </div>
               </div>
-              
+
             </div>
           </div>
         </div>

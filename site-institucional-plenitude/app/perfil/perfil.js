@@ -37,6 +37,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("indicacao").value = userData.indicacao || "";
     document.getElementById("email").value = userData.email || "";
     document.getElementById("senha").value = userData.senha || "";
+    document.getElementById("empresa").value = userData.empresa.nome || "";
+    document.getElementById("cnpj").value = userData.empresa.cnpj || "";
+    document.getElementById("telefone-empresa").value = userData.empresa.telefone || "";
+    document.getElementById("cep").value = userData.empresa.endereco.cep || "";
+    document.getElementById("logradouro").value = userData.empresa.endereco.logradouro || "";
+    document.getElementById("numero").value = userData.empresa.endereco.numero || "";
+    document.getElementById("bairro").value = userData.empresa.endereco.bairro || "";
+    document.getElementById("complemento").value = userData.empresa.endereco.complemento || "";
+    document.getElementById("cidade").value = userData.empresa.endereco.cidade || "";
+    document.getElementById("estado").value = userData.empresa.endereco.estado || "";
+
+    document.getElementById('diaInicio').value = userData.empresa.horarioFuncionamento.diaInicio;
+    document.getElementById('diaFim').value = userData.empresa.horarioFuncionamento.diaFim;
+    document.getElementById('horaInicio').value = userData.empresa.horarioFuncionamento.horarioAbertura;
+    document.getElementById('horaFim').value = userData.empresa.horarioFuncionamento.horarioFechamento;
   }
 
   function formatPhoneNumber(phoneNumber) {
@@ -54,156 +69,33 @@ document.addEventListener("DOMContentLoaded", async () => {
     .getElementById("save-usuario-button")
     .addEventListener("click", async function () {
       const cpf = localStorage.getItem("cpf");
-      const userData = await fetchUserDataByCpf(cpf);
+      await atualizarUsuario();
 
-      console.log(userData);
-
-      if (userData) {
-        if (!userData.empresa) {
-          // Se a empresa for null, criar uma nova
-          await criarNovaEmpresa();
-        } else {
-          // Se a empresa já existir, atualizar os dados
-          await atualizarDadosEmpresa(userData.empresa.idEmpresa);
-        }
-      } else {
-        console.error("Usuário não encontrado.");
-      }
     });
 
-  async function criarNovaEmpresa() {
-    try {
-      // Criar o endereço
-      const novoEndereco = await criarEndereco();
-      if (!novoEndereco) {
-        throw new Error("Erro ao criar endereço.");
-      }
-
-      // Criar horário de funcionamento
-      const novoHorario = await cadastrarHorarioFuncionamento();
-      if (!novoHorario) {
-        throw new Error("Erro ao cadastrar horário de funcionamento.");
-      }
-
-      // Criar a empresa com o ID do endereço e do horário de funcionamento
-      const novaEmpresa = await criarEmpresa(novoEndereco.id, novoHorario.id);
-      if (!novaEmpresa) {
-        throw new Error("Erro ao criar empresa.");
-      }
-
-      // Atualizar o usuário com o ID da nova empresa
-      await atualizarUsuarioEmpresa(novaEmpresa.idEmpresa);
-    } catch (error) {
-      console.error("Erro ao criar nova empresa:", error);
-    }
+  function formatPhoneNumberToLong(phoneNumber) {
+    if (!phoneNumber) return null;
+    const cleaned = phoneNumber.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+    return parseInt(cleaned, 10); // Converte para número
   }
 
-  async function criarEndereco() {
-    try {
-      let cep = document.getElementById("cep").value;
-      cep = cep.replace("-", ""); // Remover o hífen
-
-      const enderecoDTO = {
-        logradouro: document.getElementById("logradouro").value,
-        numero: document.getElementById("numero").value,
-        complemento: document.getElementById("complemento").value,
-        cep: cep,
-        bairro: document.getElementById("bairro").value,
-        cidade: document.getElementById("cidade").value,
-        estado: document.getElementById("estado").value,
-      };
-
-      const response = await fetch("http://localhost:8080/api/enderecos", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(enderecoDTO),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Erro ao criar endereço: ${response.status}`);
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error("Erro ao criar endereço:", error);
-      return null;
-    }
-  }
-
-  async function cadastrarHorarioFuncionamento() {
-    try {
-      const horarioDTO = {
-        diaInicio: document.getElementById("diaInicio").value,
-        diaFim: document.getElementById("diaFim").value,
-        horarioAbertura: document.getElementById("horarioAbertura").value,
-        horarioFechamento: document.getElementById("horarioFechamento").value,
-      };
-
-      const response = await fetch(
-        "http://localhost:8080/api/horario-funcionamento/cadastro",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(horarioDTO),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(
-          `Erro ao cadastrar horário de funcionamento: ${response.status}`
-        );
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error("Erro ao cadastrar horário de funcionamento:", error);
-      return null;
-    }
-  }
-
-  async function criarEmpresa(idEndereco, idHorario) {
-    try {
-      const empresaDTO = {
-        nome: document.getElementById("empresa").value,
-        cnpj: document.getElementById("cnpj").value,
-        telefone: document.getElementById("telefone").value,
-        endereco: idEndereco,
-        horarioFuncionamento: idHorario,
-      };
-
-      const response = await fetch("http://localhost:8080/api/empresas", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(empresaDTO),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Erro ao criar empresa: ${response.status}`);
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error("Erro ao criar empresa:", error);
-      return null;
-    }
-  }
-
-  async function atualizarUsuarioEmpresa(idEmpresa) {
+  async function atualizarUsuario(cpf) {
     try {
       const cpf = localStorage.getItem("cpf");
 
       const usuarioDTO = {
-        empresa: idEmpresa,
+        nome: document.getElementById("nome").value,
+        dataNasc: document.getElementById("nascimento").value,
+        telefone: formatPhoneNumberToLong(document.getElementById("telefone").value),
+        genero: document.getElementById("genero").value,
+        instagram: document.getElementById("instagram").value,
+        indicacao: document.getElementById("indicacao").value,
+        email: document.getElementById("email").value,
+        senha: document.getElementById("senha").value
       };
 
       const usuarioResponse = await fetch(
-        `http://localhost:8080/api/usuarios/${cpf}`,
+        `http://localhost:8080/usuarios/atualizacao-usuario-por-cpf/${cpf}`,
         {
           method: "PATCH",
           headers: {
@@ -539,3 +431,4 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 })();
 
+    

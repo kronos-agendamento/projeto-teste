@@ -1,5 +1,6 @@
 package sptech.projetojpa1.domain
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
@@ -39,5 +40,5 @@ class Endereco(
 
     @field:Size(max = 100, message = "Complemento deve ter no máximo 100 caracteres")
     @Column(name = "complemento")
-    var complemento: String? = null
+    var complemento: String? = null,
 )

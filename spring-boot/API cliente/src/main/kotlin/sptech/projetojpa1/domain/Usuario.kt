@@ -1,5 +1,6 @@
 package sptech.projetojpa1.domain
 
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*
 import jakarta.validation.constraints.*
 import org.hibernate.validator.constraints.br.CPF
@@ -7,58 +8,63 @@ import java.time.LocalDate
 
 @Entity
 @Table(name = "usuario")
-@Inheritance(strategy = InheritanceType.JOINED)
-open class Usuario(  // Marque a classe como open
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "dtype")
+abstract class Usuario(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario")
-    open var codigo: Int? = null,  // Marque a propriedade como open
+    open var codigo: Int? = null,
 
     @field:NotBlank(message = "Nome é obrigatório")
-    open var nome: String? = null,  // Marque a propriedade como open
+    var nome: String? = null,
 
     @field:NotBlank(message = "Email é obrigatório")
     @field:Email(message = "Email deve ser válido")
-    open var email: String? = null,  // Marque a propriedade como open
+    var email: String? = null,
 
     @field:NotBlank(message = "Senha é obrigatória")
     @field:Size(min = 6, message = "A senha deve conter pelo menos 6 caracteres")
-    open var senha: String? = null,  // Marque a propriedade como open
+    var senha: String? = null,
 
     @field:NotBlank(message = "Instagram é obrigatório")
-    open var instagram: String? = null,  // Marque a propriedade como open
+    var instagram: String? = null,
 
     @field:NotBlank(message = "CPF é obrigatório")
     @field:CPF(message = "CPF inválido")
-    open var cpf: String? = null,  // Marque a propriedade como open
+    var cpf: String? = null,
 
     @field:NotNull(message = "Telefone é obrigatório")
-    open var telefone: Long? = null,  // Marque a propriedade como open
+    var telefone: Long? = null,
 
     @field:Past(message = "Data de nascimento deve estar no passado")
-    open var dataNasc: LocalDate? = null,  // Marque a propriedade como open
+    var dataNasc: LocalDate? = null,
 
-    open var genero: String? = null,  // Marque a propriedade como open
+    var genero: String? = null,
 
-    open var indicacao: String? = null,  // Marque a propriedade como open
+    var indicacao: String? = null,
 
     @field:Column(length = 100 * 1024 * 1024)
-    open var foto: ByteArray? = null,  // Marque a propriedade como open
+    var foto: ByteArray? = null,
 
-    open var status: Boolean? = true,  // Marque a propriedade como open
+    var status: Boolean? = true,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_nivel_acesso")
-    open var nivelAcesso: NivelAcesso? = null,  // Marque a propriedade como open
+    @JsonManagedReference
+    var nivelAcesso: NivelAcesso? = null,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_endereco")
-    open var endereco: Endereco? = null,  // Marque a propriedade como open
+    @JsonManagedReference
+    var endereco: Endereco? = null,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_empresa")
-    open var empresa: Empresa? = null,  // Marque a propriedade como open
+    @JsonManagedReference
+    var empresa: Empresa? = null,
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_ficha_anamnese")
-    open var fichaAnamnese: FichaAnamnese? = null  // Marque a propriedade como open
+    @JsonManagedReference
+    var fichaAnamnese: FichaAnamnese? = null
 )
