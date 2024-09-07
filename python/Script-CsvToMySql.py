@@ -1,6 +1,6 @@
 import csv
 import mysql.connector
-
+from datetime import datetime
 
 # Função para mostrar notificações
 def show_notification(message, is_error=False):
@@ -9,21 +9,10 @@ def show_notification(message, is_error=False):
     else:
         print(f"Sucesso: {message}")
 
-# Função para formatar CPF
-def format_cpf(cpf):
-    cpf = cpf.replace('.', '').replace('-', '')  # Remove pontos e traços
-    if len(cpf) == 11:
-        formatted_cpf = f"{cpf[:3]}.{cpf[3:6]}.{cpf[6:9]}-{cpf[9:]}"
-        print(f"CPF: {formatted_cpf}")
-        return formatted_cpf
-    else:
-        show_notification("CPF inválido!", True)
-        return None
-
-# Função para formatar telefone (remover formatação)
+# Função para remover formatação de telefone (mantendo apenas números)
 def format_phone(phone):
     phone = phone.replace('(', '').replace(')', '').replace('-', '').replace(' ', '')  # Remove formatação
-    if len(phone) == 11:
+    if phone.isdigit() and len(phone) >= 10:
         print(f"Telefone: {phone}")
         return phone
     else:
@@ -44,35 +33,19 @@ def capitalize_name(name):
     print(f"Nome: {capitalized_name}")
     return capitalized_name
 
-# Abre o arquivo CSV e lê os dados
-with open('dados.csv', mode='r') as csvfile:
-    reader = csv.DictReader(csvfile)
-
 # Configuração do banco de dados MySQL
 cnx = mysql.connector.connect(
     user='root',
-    password='#Gf47148790816',
+    password='#Gf47148790816',  # Sua senha do MySQL
     host='localhost',
-    database='kronosbooking'
+    database='kronosbooking'  # Nome do banco de dados
 )
 cursor = cnx.cursor()
 
-# Comando SQL para inserir dados no usuário
-comando_insert_usuario = """
-INSERT INTO usuario (nome, email, cpf, telefone, instagram, senha)
+# Comando SQL para inserir dados na tabela Leads
+comando_insert_lead = """
+INSERT INTO Leads (nome, email, telefone, instagram, mensagem, data_criacao)
 VALUES (%s, %s, %s, %s, %s, %s)
-"""
-
-# Comando SQL para inserir dados na tabela Usuario
-comando_insert_usuario = """
-INSERT INTO usuario (nome, email, cpf, telefone, instagram, senha)
-VALUES (%s, %s, %s, %s, %s, %s)
-"""
-
-# Comando SQL para inserir mensagem na tabela Mensagem
-comando_insert_mensagem = """
-INSERT INTO mensagem (descricao, id_usuario)
-VALUES (%s, %s)
 """
 
 # Abre o arquivo CSV e lê os dados
@@ -83,28 +56,27 @@ with open('dados.csv', mode='r') as csvfile:
         # Formatação dos dados
         nome = capitalize_name(linha['nome_completo'])
         email = linha['email'].lower()
-        cpf = format_cpf(linha['cpf'])
         telefone = format_phone(linha['telefone'])
         instagram = format_instagram(linha['instagram'])
-        senha = linha['senha']  # Supondo que a senha já está devidamente tratada
-        mensagem = linha['mensagem']  # Nova coluna para mensagem
+        mensagem = linha['mensagem']
+
+        # Data de criação (vindo do Pipefy ou outra fonte)
+        data_criacao_str = linha['data_criacao']  # Exemplo: '2024-09-06 12:34:56'
+        try:
+            data_criacao = datetime.strptime(data_criacao_str, '%Y-%m-%d %H:%M:%S')
+        except ValueError:
+            show_notification(f"Formato de data inválido para {nome}: {data_criacao_str}", True)
+            continue
 
         # Verifica se todos os dados estão formatados corretamente antes de inserir
-        if cpf and telefone:
-            # Inserir dados na tabela Usuario
-            dados_usuario = (nome, email, cpf, telefone, instagram, senha)
-            cursor.execute(comando_insert_usuario, dados_usuario)
+        if telefone:
+            # Inserir dados na tabela Leads
+            dados_lead = (nome, email, telefone, instagram, mensagem, data_criacao)
+            cursor.execute(comando_insert_lead, dados_lead)
 
-            # Pegar o último id_usuario inserido
-            id_usuario = cursor.lastrowid
-
-            # Inserir mensagem na tabela Mensagem associada ao id_usuario
-            dados_mensagem = (mensagem, id_usuario)
-            cursor.execute(comando_insert_mensagem, dados_mensagem)
-
-            print(f"Usuário {nome} e mensagem inseridos com sucesso!")
+            print(f"Lead {nome} inserido com sucesso!")
         else:
-            print(f"Falha ao inserir o usuário {nome}.")
+            print(f"Falha ao inserir o lead {nome}.")
 
 # Confirma as mudanças e fecha a conexão
 cnx.commit()
@@ -112,3 +84,4 @@ cursor.close()
 cnx.close()
 
 print("Dados importados com sucesso!")
+
