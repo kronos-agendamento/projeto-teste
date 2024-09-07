@@ -84,7 +84,7 @@
     </div>
     <div class="main-content" style="margin-top: 1%;">
         <header id="cliente-header" style="height: 12vh; width: 152vh; margin-left: 4.3%;">
-            <h1>Mais informações de: </h1>
+            <h1 style="margin-top: 10px;">Mais informações de: </h1>
         </header>
         <div class="back">
             <a href="../clientes.html" class="back-link" style="margin-left: 11vh;">← Voltar para página de
@@ -102,29 +102,36 @@
         <div class="actions" style="margin-left: 8vh;">
             <button class="filter-btn" style="height: 7vh; margin-left: 2.6%; width: 33vh; background-color:#d81b60;
              color: #fff;border: none;" onclick="openModalPesquisa()">
-                <img style="height: 5vh; width: 25h; margin-top: 10%; border-radius: 0px;" src="../../../assets/icons/usuario.png" alt="filter">Dados Gerais
+                <img style="height: 4vh; width: 25h; margin-top: 10%; border-radius: 0px;" src="../../../assets/icons/usuario.png" alt="filter">Dados Gerais
             </button>
             <div class="right-actions">
                 <!-- <button class="arquivados-btn" style="height: 7vh; margin-left: 26%;" onclick="redirectToArchived()">
                     <img style="height: 4.5vh; width: 4.5vh; margin-top: 19%;" src="../../assets/icons/pasta-aberta.png" alt="spreadsheet">
                     Anotações
                 </button> -->
-                <button class="avaliar-btn" style="height: 7vh; margin-left: -519px;" onclick="openModalAvaliar()"><img
-                        style="height: 4.5vh; width: 4.5vh; margin-top: 19%;" src="../../assets/icons/estrela.png"
+                <button class="avaliar-btn" style="height: 7vh; margin-left: 5px;" onclick="openModalAvaliar()"><img
+                        style="height: 4.5vh; width: 4.5vh; margin-top: 14%; border-radius: 0%;" src="../../../assets/icons/agendar.preto.png"
                         alt="spreadsheet">Agendamentos</button>
-                <button class="criar-btn" onclick="showForm()" style="height: 7vh; width: 37vh;"><a
+                <button class="criar-btn" onclick="showForm()" style="height: 7vh; width: 37vh; margin-left: 5px;"><a
                         style="width: max-content;" href="../clientes/clienteForms/cadastrar-cliente.html">
-                        <img style="height: 4vh; margin-top: 17%;" src="../../assets/icons/createNew.png"
+                        <img style="height: 4vh; margin-top: 13%; border-radius: 0%;" src="../../../assets/icons/ficha.preta.png"
                             alt="createNew"><span>Ficha de Anamnese</span>
                     </a></button>
-                    <button type="button" class="pipefy-btn" id="enviarEmailButton">Enviar Email</button>
+                    <button type="button" class="pipefy-btn" id="enviarEmailButton" style="margin-left: 87px; width: 150px;">Solicitar Feedback</button>
             </div>
         </div>
 
           
         <section class="form-section" id="personalInfoForm">
-            <h2>Dados Pessoais
-                <button class="edit-icon-btn" id="editIcon" aria-label="Editar Dados Pessoais" onclick="enableEditing()">✏️</button>
+            
+            <h2> 
+                <div class="form-group-row" style="height: 10px;">
+                    &nbsp;&nbsp;&nbsp; Dados Pessoais
+                  <button class="edit-icon-btn" id="editIcon" aria-label="Editar Dados Pessoais" onclick="enableEditing()" >
+                    <img src="../../../assets/icons/editar.branco.png" alt="Editar" style="width: 20px; height: 20px; border-radius: 0px;">
+                </button>  
+                </div> 
+                
             </h2>
             <form id="personalForm" class="form">
                 <div class="form-group-row">
@@ -206,8 +213,13 @@
         </section>
     
         <section class="form-section" id="addressInfoForm">
-            <h2>Dados de Endereço
-                <button class="edit-icon-btn" id="editIcon" aria-label="Editar Dados Pessoais" onclick="enableEditing()">✏️</button>
+            <h2>
+                <div class="form-group-row" style="height: 10px;">
+                    &nbsp;&nbsp;&nbsp; Dados de Endereço
+                  <button class="edit-icon-btn" id="editIcon" aria-label="Editar Dados Pessoais" onclick="enableEditing()" >
+                    <img src="../../../assets/icons/editar.branco.png" alt="Editar" style="width: 20px; height: 20px; border-radius: 0px;">
+                </button>  
+                </div> 
             </h2>
             <form id="addressForm" class="form">
                 <div class="form-group-row">

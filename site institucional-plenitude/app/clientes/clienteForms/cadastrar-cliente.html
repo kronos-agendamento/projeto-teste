@@ -134,8 +134,17 @@
                 <div class="form-group-row">
                     <div class="form-group">
                         <label for="genero">Gênero:</label>
-                        <input type="text" id="genero" name="genero" required>
+                        <select id="genero" name="genero" required>
+                            <option value="">Selecione</option>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Feminino">Feminino</option>
+                            <option value="Transgênero">Transgênero</option>
+                            <option value="Gênero neutro">Gênero neutro</option>
+                            <option value="Não-binário">Não-binário</option>
+                            <option value="Não prefiro informar">Prefiro não informar</option>
+                        </select>
                     </div>
+    
                     <div class="form-group">
                         <label for="email">Email:</label>
                         <input type="email" id="email" name="email" required>
@@ -152,7 +161,7 @@
                     </div>
                     <div class="form-group">
                         <label for="senha">Senha:</label>
-                        <input type="password" id="senha" name="senha" required>
+                        <input type="text" id="senha" name="senha" required>
                     </div>
                 </div>
                 <h2>Dados de Endereço</h2>

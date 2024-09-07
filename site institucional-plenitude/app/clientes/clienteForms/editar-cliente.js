@@ -216,10 +216,10 @@ document.addEventListener('DOMContentLoaded', async function () {
                     showNotification('Email enviado com sucesso!');
                     window.enableEditing();
                 } else {
-                    showNotification('Erro ao enviar o email', true);
+                    showNotification('Erro ao enviar email', true);
                 }
             } catch (error) {
-                showNotification('Erro ao enviar o email', true);
+                console.error('Erro ao enviar email:', error);
             }
         } else {
             alert('Por favor, insira um email válido.');
