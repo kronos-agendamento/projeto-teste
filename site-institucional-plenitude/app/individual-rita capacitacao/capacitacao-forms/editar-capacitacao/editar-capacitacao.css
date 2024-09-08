@@ -1,0 +1,127 @@
+.back-link {
+    margin-left: 30px;
+    color: #000000;
+    text-decoration: none;
+
+}
+
+.form-section {
+    width: 65vw;
+    background-color: #FFF0F5;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-top: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #7b7b7b;
+    margin-left: 2.9%;
+    width: 150vh
+}
+
+.content-form {
+    padding: 20px;
+}
+
+.form-title {
+    background-color: #e70069;
+    display: flex;
+    align-items: center;
+    padding: 2vh;
+}
+
+.form-section h2 {
+    font-size: 18px;
+    color: #fff;
+
+}
+
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="file"],
+.form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.form-group input[type="file"] {
+    padding: 0;
+}
+
+.form-group input[type="number"] {
+    width: calc(50% - 10px);
+    display: inline-block;
+}
+
+.form-group input[type="number"]+input[type="number"] {
+    margin-left: 20px;
+}
+
+.form-mr {
+    margin-right: 24px;
+}
+
+.form-flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px;
+}
+
+.save-button {
+    display: flex;
+    align-items: center;
+    background-color: #e70069;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.save-button svg {
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+}
+
+.save-button:hover {
+    background-color: #d6005c;
+}
+
+.form-input {
+    width: 50%
+}
+
+.form-section span {
+    display: flex;
+    align-items: center;
+}
+
+.form-group label {
+    font-size: 15px;
+}
+
+#data-selecionada {
+    font-size: 1.1em;
+    margin-top: 10px;
+    color: #555;
+}

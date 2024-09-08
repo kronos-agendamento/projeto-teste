@@ -7,7 +7,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 
 data class EspecificacaoFotoRequest(
-    @field:Column(length = 100 * 1024 * 1024) //name = "musica_foto")
+    @field:Column(length = 100 * 1024 * 1024)
     @JsonIgnore
     var foto: ByteArray
 )

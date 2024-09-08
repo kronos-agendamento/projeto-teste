@@ -1,0 +1,493 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Poppins, sans-serif;
+
+  margin: 0;
+  padding: 0;
+}
+
+.corpo {
+  display: flex;
+  background-color: #ffffff;
+  height: 140vh;
+  width: 97vw;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+}
+
+aside {
+  background-color: #d9006c;
+  color: white;
+  width: 250px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (max-width: 992px) {
+  #main {
+    margin-top: 30px;
+  }
+}
+
+#main {
+  margin-top: 50px;
+}
+
+@media (max-width: 992px) {
+  #main {
+    margin-top: 30px;
+  }
+}
+
+/*--------------------------------------------------------------
+# Preloader
+--------------------------------------------------------------*/
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  overflow: hidden;
+  background: #fff;
+}
+
+#preloader:before {
+  content: "";
+  position: fixed;
+  top: calc(50% - 30px);
+  left: calc(50% - 30px);
+  border: 6px solid #cda582;
+  border-top-color: #dcf5f2;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: animate-preloader 1s linear infinite;
+}
+
+@keyframes animate-preloader {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/*--------------------------------------------------------------
+Inicio Nav
+--------------------------------------------------------------*/
+
+.profile img {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+}
+
+.profile h2 {
+  margin: 10px 0 5px;
+}
+
+.profile p {
+  margin: 0;
+  font-size: 0.9em;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  width: 100%;
+}
+
+nav ul li {
+  padding: 10px;
+  text-align: center;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+}
+
+/*--------------------------------------------------------------
+navbar  lateral
+--------------------------------------------------------------*/
+
+.navigation {
+  height: auto;
+  background: #d2135d;
+  width: 19vw;
+  top: 2vh;
+  margin-left: 3vw;
+  border-radius: 3vh;
+  margin-bottom: 2vh;
+  box-shadow: 10px 0 0 #ffffff;
+  border-left: 10px solid #d2135d;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.perfil {
+  padding: 5vh;
+}
+
+.navigation .perfil .imagem-perfil {
+  width: 20vh;
+  height: 20vh;
+  border-radius: 300px;
+  display: flex;
+  justify-content: center;
+  list-style: none;
+}
+
+.navigation .perfil .imagem-perfil img {
+  margin: 1vh;
+  width: 53vh;
+  height: 23vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+}
+
+.perfil #userName {
+  display: flex;
+  list-style: none;
+  color: white;
+  font-weight: 600;
+  margin-top: 6vh;
+  justify-content: center;
+}
+
+.perfil #userEmail {
+  list-style: none;
+  color: white;
+  font-weight: 200;
+  font-size: 12px;
+  margin-top: 0.5vh;
+  display: flex;
+  justify-content: center;
+}
+
+/*--------------------------------------------------------------
+# Links
+--------------------------------------------------------------*/
+
+.navigation ul {
+  position: absolute !important;
+  top: 30vh;
+  left: 0;
+  width: 100%;
+  padding-left: 1vw;
+  padding-top: 10vh;
+}
+
+.navigation ul li {
+  position: relative;
+  list-style: none;
+  width: 100%;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.navigation ul li a {
+  position: relative;
+  display: flex;
+  width: 100%;
+  text-decoration: none;
+  color: #fff;
+  height: 8vh;
+  margin-bottom: 2.5vh;
+}
+
+.navigation ul li a .icon {
+  position: relative;
+  display: block;
+  min-width: 3vw;
+  height: 3vh;
+  text-align: center;
+  line-height: 70px;
+}
+
+.navigation ul li a .icon ion-icon {
+  position: relative;
+  font-size: 1.5rem;
+  z-index: 1;
+}
+
+.navigation ul li a .title {
+  position: relative;
+  display: block;
+  padding-left: 1.5vw;
+  height: 60px;
+  line-height: 60px;
+  white-space: nowrap;
+  font-size: 15px;
+}
+
+.navigation ul li.active {
+  color: black;
+  background: #ffffff;
+}
+
+.navigation ul li.active a {
+  color: black;
+  /* Cor do texto quando ativo */
+}
+
+.navigation ul li.active a .icon ion-icon {
+  color: black;
+  /* Cor do ícone quando ativo */
+}
+
+.navigation ul li.active a::before {
+  content: "";
+  position: absolute;
+  bottom: 8vh;
+  right: 0;
+  width: 5vh;
+  height: 5vh;
+  background: #d2135d;
+  border-radius: 50%;
+  box-shadow: 15px 15px 0 #ffffff;
+  color: black;
+}
+
+.navigation ul li.active a::after {
+  content: "";
+  position: absolute;
+  top: 8vh;
+  right: 0;
+  width: 5vh;
+  height: 5vh;
+  background: #d2135d;
+  border-radius: 50%;
+  box-shadow: 15px -15px 0 #ffffff;
+}
+
+main {
+  background-color: #ffffff;
+  width: 75vw;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  background-color: #d2135d;
+  color: white;
+  padding: 2vh;
+  border-radius: 3vh;
+  margin-bottom: 2vh;
+  margin-top: 2vh;
+  margin-left: 2%;
+  height: 14vh;
+}
+
+header h1 {
+  margin: 1vh 0vh 0vh 2vh;
+  font-size: 3vh;
+}
+
+header p {
+  margin: 0vh 0vh 0vh 2vh;
+  font-size: 2vh;
+}
+
+.main-content {
+  display: flex;
+}
+
+.left-content {
+  display: flex;
+  flex-direction: column;
+  width: 45vw;
+  height: auto;
+  margin-top: 1vh;
+  margin-left: 2vw;
+}
+
+.right-content {
+  display: flex;
+  flex-direction: column;
+  width: 15vw;
+  height: auto;
+  margin-top: 1vh;
+  margin-left: 2vw;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.actions button {
+  background-color: #fff0f5;
+  display: flex;
+  font-family: Poppins, sans-serif;
+  height: 10vh;
+  width: 21vw;
+  justify-content: center;
+  margin: 1vh;
+  padding: 2vh;
+  align-items: center;
+  font-size: 16px;
+  border-radius: 2vh;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.actions button:hover {
+  background-color: #e893b9;
+  color: #dcf5f2;
+  transition-duration: 500ms;
+}
+
+.actions button i {
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+.actions a {
+  text-decoration: none;
+}
+
+.procedures-table {
+  width: 150vh;
+  max-width: 150vh;
+  border-collapse: collapse;
+  margin-top: 30px;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-left: 4.5%;
+  margin-right: auto;
+}
+
+.procedures-table thead {
+  background-color: #d2135d;
+  color: #fff;
+}
+
+.procedures-table th,
+.procedures-table td {
+  padding: 15px;
+}
+
+.procedures-table tbody tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 3vh;
+}
+
+.pagination button {
+  background-color: #ffffff;
+  display: flex;
+  font-family: Poppins, sans-serif;
+  font-weight: 600;
+  height: 5vh;
+  justify-content: center;
+  margin: 1vh;
+  padding: 2vh;
+  align-items: center;
+  border-radius: 1vh;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.pagination span {
+  display: flex;
+  font-family: Poppins, sans-serif;
+  font-weight: 600;
+  justify-content: center;
+  padding: 1vh;
+  align-items: center;
+  color: #ffffff;
+  cursor: pointer;
+  background-color: #d2135d;
+  border-radius: 1vw;
+}
+
+.agenda {
+  width: 90%;
+  border-collapse: collapse;
+
+  margin: 40px 0 0 5vw;
+}
+
+.agenda th {
+  background-color: #d90461;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  font-weight: normal;
+}
+
+.agenda td {
+  padding: 20px;
+  text-align: center;
+  border: 1px solid #f1f1f1;
+  position: relative;
+  width: 180px;
+  vertical-align: top;
+}
+
+.appointment {
+  background-color: #fcdfe7;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.appointment p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.back-link {
+  margin-left: 30px;
+  color: #000000;
+  text-decoration: none;
+}
+
+#btn-voltar-home {
+  background-color: #ffffff;
+  display: flex;
+  font-family: Poppins, sans-serif;
+  font-weight: 600;
+  height: 5vh;
+  justify-content: center;
+  margin: 1vh;
+  padding: 2vh;
+  align-items: center;
+  border-radius: 1vh;
+  border: 1px solid black;
+  cursor: pointer;
+   margin-top: 3.9vh;
+}
+
+.classe_linha_pagination{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-left: 4.2vw;
+}

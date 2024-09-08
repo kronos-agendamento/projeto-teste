@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agendamentos | KronosBooking</title>
+
+  <!-- Favicons -->
+  <link href="../assets/favicon.png" rel="icon">
+
+  <link rel="stylesheet" href="agendamento.css" />
+  <script src="agendamento.js" defer></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.2/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</head>
+
+<body>
+  <div class="corpo">
+    <div class="navigation">
+      <div class="perfil">
+        <div class="imagem-perfil">
+          <img src="../assets/Foto de Perfil.png">
+        </div>
+        <li id="userName"></li>
+        <li id="userEmail"></li>
+      </div>
+
+      <ul>
+        <li class="list">
+          <a href="../index/index.html">
+            <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+            <span class="title">Início </span>
+          </a>
+        </li>
+        <li class="list">
+          <a href="../perfil/perfil.html">
+            <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
+            <span class="title">Perfil</span>
+          </a>
+        </li>
+        <li class="list active">
+          <a href="agendamento.html">
+            <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
+            <span class="title">Agendamentos</span>
+          </a>
+        </li>
+        <li class="list">
+          <a href="../anamnese/anamnese.html">
+            <span class="icon"><ion-icon name="document-text-outline"></ion-icon></span>
+            <span class="title">Anamneses</span>
+          </a>
+        </li>
+        <li class="list">
+          <a href="../cliente/cliente.html">
+            <span class="icon"><ion-icon name="person-add-outline"></ion-icon></span>
+            <span class="title">Clientes</span>
+          </a>
+        </li>
+        <li class="list">
+          <a href="../procedimento/procedimento.html">
+            <span class="icon"><ion-icon name="brush-outline"></ion-icon></span>
+            <span class="title">Procedimentos</span>
+          </a>
+        </li>
+        <li class="list">
+          <a href="../dashboard/dashboard.html">
+            <span class="icon"><ion-icon name="stats-chart-outline"></ion-icon></span>
+            <span class="title">Dashboard</span>
+          </a>
+        </li>
+        <li class="list">
+          <a href="../../index.html">
+            <span class="icon"><ion-icon name="exit-outline"></ion-icon></span>
+            <span class="title">Sair</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <main>
+
+      <header>
+        <div>
+          <h1>Agendamentos</h1>
+          <p>
+            Esta página permite a visualização, cadastro, edição e exclusão de
+            agendamentos.
+          </p>
+        </div>
+        <div id="notification" class="notification">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill"
+            viewBox="0 0 16 16">
+            <path
+              d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
+          </svg>
+          <span id="notification-message"></span>
+        </div>
+      </header>
+      <div class="main-content">
+        <div class="center-content">
+          <section class="actions">
+            <button id="open-filter-modal-btn" class="filter-btn">
+              <img src="../../assets/icons/filter.png" alt="filter" />
+              Filtro
+            </button>
+            <div class="right-actions">
+              <!-- Botões para abrir os modais -->
+              <button class="btn btn-create" id="open-save-modal-btn">
+                <img src="../../assets/icons/createNew.png" alt="createNew" /><span>Criar Status</span>
+              </button>
+              <button class="planilha-btn" id="open-status-modal-btn">
+                <img src="../../assets/icons/createNew.png" alt="spreadsheet" />Status Cadastrados
+              </button>
+              <button class="criar-btn" onclick="showForm()">
+                <img src="../../assets/icons/createNew.png" alt="createNew" />
+                <a href="agendamento-forms/cadastrar-agendamento/cadastrar-agendamento.html"><span>Criar Novo
+                    Agendamento</span></a>
+              </button>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <div class="progress-container">
+        <span id="progress-label">Atendimentos Realizados</span>
+        <div class="progress-bar">
+          <div id="progress" class="progress"></div>
+        </div>
+        <span id="total-label">Atendimentos Totais</span>
+      </div>
+      <div class="tabs">
+        <button class="tab-button" id="todos-agendamentos">Todos</button>
+        <button class="tab-button" id="hoje-agendamentos">Hoje</button>
+      </div>
+      <table id="procedures-table" class="procedures-table">
+        <thead>
+          <tr>
+            <th>Data/Hora</th>
+            <th>Cliente</th>
+            <th>Procedimento</th>
+            <th>Especificação</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="procedures-tbody"></tbody>
+      </table>
+
+      <div class="pagination">
+        <button class="button-page" id="prev-page-btn" disabled>
+          Página Anterior
+        </button>
+        <span>
+          <span class="current-page" id="current-page">1</span> /
+          <span id="total-pages">1</span></span>
+        <button class="button-page" id="next-page-btn">Próxima Página</button>
+      </div>
+    </main>
+  </div>
+
+  <div id="modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <p>Tem certeza que deseja excluir o agendamento?</p>
+      <p id="procedimento"></p>
+      <button class="btn btn-yes" onclick="confirmDeletion()">SIM</button>
+      <button class="btn btn-no" onclick="closeModal()">NÃO</button>
+    </div>
+  </div>
+
+  <div id="save-modal" class="modal">
+    <div class="modal-content2">
+      <h3>Criar Status</h3>
+      <div>
+        <label for="filter-from">Descrição:</label>
+        <input type="text" id="edit-nome" placeholder="Nome do Status"><br>
+        <label for="filter-from">Cor:</label>
+        <input type="color" id="edit-cor" placeholder="Cor do Status">
+      </div>
+      <div>
+        <button id="save-button" class="btn btn-save">Salvar</button>
+        <button id="close-save-modal" class="btn btn-no">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="filter-modal" class="modal">
+    <div class="modal-content">
+      <h3>Filtro de Agendamentos</h3>
+      <div>
+        <label for="filter-from">De:</label>
+        <input type="date" id="filter-from">
+        <label for="filter-to">Até:</label>
+        <input type="date" id="filter-to"><br>
+        <label for="filter-client">Cliente:</label>
+        <select id="cliente-filtro">
+          <!-- Options will be populated dynamically -->
+        </select><br>
+        <label for="procedimento">Procedimento:</label>
+        <select id="procedimento-filtro">
+          <!-- Options will be populated dynamically -->
+        </select><br>
+        <label for="filter-specification">Especificação:</label>
+        <select id="especificacao-filtro">
+          <!-- Options will be populated dynamically -->
+        </select><br>
+      </div>
+      <div>
+        <button class="btn btn-save" id="apply-filter-button" onclick="applyFilters()">Aplicar Filtros</button>
+        <button id="close-filter-modal" class="btn btn-no">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="status-modal" class="modal">
+    <div class="modal-content2">
+      <div class="table-container">
+        <div class="table-header">
+          <h1>Status Cadastrados</h1>
+          <div><button id="close-status-modal" class="close-button">&times;</button></div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Cor</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="status-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="delete-modal" class="modal">
+    <div class="modal-content">
+      <p>Tem certeza que deseja excluir o status?</p>
+      <p id="status-name"></p>
+      <button class="btn btn-yes" onclick="confirmDeletion2()">SIM</button>
+      <button class="btn btn-no" onclick="closeDeleteModal()">NÃO</button>
+    </div>
+  </div>
+
+  <div id="edit-modal" class="modal">
+    <div class="modal-content2">
+      <h3>Editar Status</h3>
+      <div>
+        <input type="text" id="edit-nome2" placeholder="Nome" />
+        <input type="color" id="edit-cor2" placeholder="Cor do Status">
+      </div>
+      <div>
+        <button class="btn btn-save" onclick="salvarStatusEditado()">Salvar</button>
+        <button class="btn btn-no" onclick="closeEditModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="detalhes-modal" class="modal">
+    <div class="modal-content2">
+      <h3>Detalhes do Agendamento</h3>
+      <div style="margin-left: 25vw;"><button onclick="closeDetalhesModal()" id="close-status-modal"
+          class="detalhes-button">&times;</button></div>
+      <div>
+        <div class="label">
+          <label for="detalhe-cliente">Cliente:</label>
+          <input class="disabled-input" type="text" id="detalhe-cliente" placeholder="Cliente">
+        </div>
+        <div class="label">
+          <label for="detalhe-celular">Celular:</label>
+          <input class="disabled-input" type="text" id="detalhe-celular" placeholder="Celular">
+        </div>
+        <div class="label">
+          <label for="detalhe-data">Data:</label>
+          <input class="disabled-input" type="text" id="detalhe-data" placeholder="Data">
+        </div>
+        <div class="label">
+          <label for="detalhe-inicio">Inicio:</label>
+          <input class="disabled-input" type="text" id="detalhe-inicio" placeholder="Inicio">
+        </div>
+        <div class="label">
+          <label for="detalhe-fim">Fim:</label>
+          <input class="disabled-input" type="text" id="detalhe-fim" placeholder="Fim">
+        </div>
+        <div class="label">
+          <label for="detalhe-procedimento">Procedimento:</label>
+          <input class="disabled-input" type="text" id="detalhe-procedimento" placeholder="Procedimento">
+        </div>
+        <div class="label">
+          <label for="detalhe-status">Status:</label>
+          <input class="disabled-input" type="text" id="detalhe-status" placeholder="Status">
+        </div>
+      </div>
+      <div>
+        <button class="btn btn-no" id="clienteFaltou" onclick="clienteFaltou()">Cliente Faltou</button>
+        <button class="btn btn-save" id="atendimentoConcluido" onclick="atendimentoConcluido()">Atendimento
+          Concluído</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+  <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.2/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</body>
+
+</html>

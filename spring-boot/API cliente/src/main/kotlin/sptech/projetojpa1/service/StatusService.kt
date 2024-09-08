@@ -1,7 +1,7 @@
 package sptech.projetojpa1.service
 
 import org.springframework.stereotype.Service
-import sptech.projetojpa1.dominio.Status
+import sptech.projetojpa1.domain.Status
 import sptech.projetojpa1.dto.status.StatusRequest
 import sptech.projetojpa1.dto.status.StatusResponse
 import sptech.projetojpa1.repository.StatusRepository
@@ -40,12 +40,13 @@ class StatusService(private val repository: StatusRepository) {
         }
     }
 
-    fun updateStatus(id: Int, motivo: String?): StatusResponse? {
+    fun updateStatus(id: Int, statusUpdateDTO: StatusRequest): StatusResponse? {
         val status = repository.findById(id).orElse(null) ?: return null
-        if (motivo.isNullOrBlank()) {
-            throw IllegalArgumentException("O campo 'motivo' é obrigatório.")
-        }
-        status.motivo = motivo
+
+        status.nome = statusUpdateDTO.nome
+        status.cor = statusUpdateDTO.cor
+        status.motivo = statusUpdateDTO.motivo
+
         val updatedStatus = repository.save(status)
         return StatusResponse(updatedStatus.id, updatedStatus.nome, updatedStatus.cor, updatedStatus.motivo)
     }

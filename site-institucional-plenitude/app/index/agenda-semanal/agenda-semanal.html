@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Início | KronosBooking</title>
+
+    <link href="../../assets/favicon.png" rel="icon" />
+
+    <link rel="stylesheet" href="agenda-semanal.css" />
+    
+    
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <div class="corpo">
+      <div class="navigation">
+        <div class="perfil">
+          <div class="imagem-perfil">
+            <img src="../../assets/Foto de Perfil.png" />
+          </div>
+          <li id="userName"></li>
+          <li id="userEmail"></li>
+        </div>
+        <ul>
+          <li class="list active">
+            <a href="index.html">
+              <span class="icon"
+                ><ion-icon name="home-outline"></ion-icon
+              ></span>
+              <span class="title">Início </span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../../perfil/perfil.html">
+              <span class="icon"
+                ><ion-icon name="people-outline"></ion-icon
+              ></span>
+              <span class="title">Perfil</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../../agendamento/agendamento.html">
+              <span class="icon"
+                ><ion-icon name="calendar-outline"></ion-icon
+              ></span>
+              <span class="title">Agendamentos</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../../anamnese/anamnese.html">
+              <span class="icon"
+                ><ion-icon name="document-text-outline"></ion-icon
+              ></span>
+              <span class="title">Anamneses</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../../cliente/cliente.html">
+              <span class="icon"
+                ><ion-icon name="person-add-outline"></ion-icon
+              ></span>
+              <span class="title">Clientes</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../../procedimento/procedimento.html">
+              <span class="icon"
+                ><ion-icon name="brush-outline"></ion-icon
+              ></span>
+              <span class="title">Procedimentos</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../../dashboard/dashboard.html">
+              <span class="icon"
+                ><ion-icon name="stats-chart-outline"></ion-icon
+              ></span>
+              <span class="title">Dashboard</span>
+            </a>
+          </li>
+
+          <li class="list">
+            <a href="../../index.html">
+              <span class="icon"
+                ><ion-icon name="exit-outline"></ion-icon
+              ></span>
+              <span class="title">Sair</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <main>
+        <header>
+          <div>
+            <h1>Bom dia <span id="userNameSpan">Usuário</span>!</h1>
+            <p>Tenha uma ótima Segunda-feira!</p>
+          </div>
+        </header>
+        <div id="notification" class="notification">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="white"
+            class="bi bi-check-circle-fill"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z"
+            />
+          </svg>
+          <span id="notification-message"></span>
+        </div>
+        <a href="../../index/index.html" class="back-link"
+          >← Voltar para página de visualização do menu inicial</a
+        >
+         <div class="classe_linha_pagination">
+          
+          <div class="pagination">
+            <button id="prev-page-btn"><</button>
+            <span class="current-page" id="current-page"
+              ></span>
+            <button id="next-page-btn">></button>
+          </div>
+
+          <button id="btn-voltar-home">Semana Atual</button>
+         </div>
+        
+
+        
+
+        <table class="agenda">
+          <thead>
+            <tr>
+              <th>Terça-feira<br />17/04</th>
+              <th>Quarta-feira<br />18/04</th>
+              <th>Quinta-feira<br />19/04</th>
+              <th>Sexta-feira<br />20/04</th>
+              <th>Sábado<br />21/04</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </main>
+    </div>
+    <script src="agenda-semanal.js"></script>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
+  </body>
+</html>

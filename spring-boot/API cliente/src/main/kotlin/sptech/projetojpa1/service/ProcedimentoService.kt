@@ -1,7 +1,7 @@
 package sptech.projetojpa1.service
 
 import org.springframework.stereotype.Service
-import sptech.projetojpa1.dominio.Procedimento
+import sptech.projetojpa1.domain.Procedimento
 import sptech.projetojpa1.dto.procedimento.ProcedimentoDTO
 import sptech.projetojpa1.dto.procedimento.ProcedimentoEstatisticaDTO
 import sptech.projetojpa1.dto.procedimento.ProcedimentoRequestDTO
@@ -13,13 +13,17 @@ import java.util.stream.Collectors
 class ProcedimentoService(private val procedimentoRepository: ProcedimentoRepository) {
 
     fun criarProcedimento(procedimentoRequestDTO: ProcedimentoRequestDTO): ProcedimentoDTO {
-        val procedimento = procedimentoRepository.save(
-            Procedimento(
-                tipo = procedimentoRequestDTO.tipo,
-                descricao = procedimentoRequestDTO.descricao
-            )
+        val procedimento = Procedimento(
+            idProcedimento = generateId(), // Ensure ID is assigned
+            tipo = procedimentoRequestDTO.tipo,
+            descricao = procedimentoRequestDTO.descricao
         )
-        return procedimento.toDTO()
+        val savedProcedimento = procedimentoRepository.save(procedimento)
+        return savedProcedimento.toDTO()
+    }
+
+    private fun generateId(): Int {
+        return (procedimentoRepository.findMaxId() ?: 0) + 1
     }
 
     fun buscarProcedimentoPorId(id: Int): ProcedimentoResponseDTO? {
@@ -80,6 +84,10 @@ class ProcedimentoService(private val procedimentoRepository: ProcedimentoReposi
         )
     }
 
+    fun listarProcedimentosBemAvaliados(): List<String> {
+        return procedimentoRepository.findProcedimentosBemAvaliados()
+    }
+
     fun getProcedimentoComMelhorNota(): ProcedimentoEstatisticaDTO? {
         val result = procedimentoRepository.findProcedimentoComMelhorNota().firstOrNull() ?: return null
         return ProcedimentoEstatisticaDTO(
@@ -87,5 +95,9 @@ class ProcedimentoService(private val procedimentoRepository: ProcedimentoReposi
             tipo = result["tipo"] as String,
             mediaNotas = (result["mediaNotas"] as Double)
         )
+    }
+
+    fun getQuantidadeAgendamentosPorProcedimento(): List<Int> {
+        return procedimentoRepository.findQuantidadeAgendamentosPorProcedimento()
     }
 }

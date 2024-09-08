@@ -17,131 +17,100 @@ class EnderecoController(
     private val enderecoService: EnderecoService
 ) {
 
-    @Operation(summary = "Cadastra um novo endereço")
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "201", description = "Endereço cadastrado com sucesso"),
-            ApiResponse(responseCode = "400", description = "Dados de entrada inválidos")
-        ]
+    @Operation(
+        summary = "Lista todos os endereços",
+        description = "Retorna uma lista de todos os endereços cadastrados no sistema."
     )
-    @PostMapping("/cadastrar")
-    fun cadastrarNovoEndereco(@RequestBody @Valid novoEnderecoDTO: EnderecoRequestDTO): ResponseEntity<EnderecoResponseDTO> {
-        val enderecoSalvo = enderecoService.cadastrarEndereco(novoEnderecoDTO)
-        return ResponseEntity.status(201).body(enderecoSalvo)
-    }
-
-    @Operation(summary = "Lista todos os endereços")
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Endereços listados com sucesso"),
             ApiResponse(responseCode = "204", description = "Nenhum endereço encontrado")
         ]
     )
-    @GetMapping("/listar")
-    fun listarTodosEnderecos(): ResponseEntity<Any> {
-        val lista = enderecoService.listarTodosEnderecos()
-        return if (lista.isNotEmpty()) {
-            ResponseEntity.status(200).body(lista)
+    @GetMapping
+    fun listarEnderecos(): ResponseEntity<List<EnderecoResponseDTO>> {
+        val enderecos = enderecoService.listarEnderecos()
+        return if (enderecos.isNotEmpty()) {
+            ResponseEntity.ok(enderecos)
         } else {
-            ResponseEntity.status(204).body("Nenhum endereço foi encontrado.")
+            ResponseEntity.noContent().build()
         }
     }
 
-    @Operation(summary = "Lista endereço por código")
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Endereço encontrado"),
-            ApiResponse(responseCode = "404", description = "Endereço não encontrado para o código fornecido")
-        ]
+    @Operation(
+        summary = "Busca endereços por CEP",
+        description = "Retorna uma lista de endereços que correspondem ao CEP fornecido."
     )
-    @GetMapping("/buscar-por-codigo/{codigo}")
-    fun buscarEnderecoPorCodigo(@PathVariable codigo: Int): ResponseEntity<Any> {
-        val endereco = enderecoService.buscarEnderecoPorCodigo(codigo)
-        return if (endereco != null) {
-            ResponseEntity.status(200).body(endereco)
-        } else {
-            ResponseEntity.status(404).body("Endereço não encontrado para o ID fornecido")
-        }
-    }
-
-    @Operation(summary = "Lista endereços por CEP")
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Endereços encontrados"),
-            ApiResponse(responseCode = "204", description = "Nenhum endereço encontrado para o CEP fornecido")
+            ApiResponse(responseCode = "204", description = "Nenhum endereço encontrado")
         ]
     )
-    @GetMapping("/buscar-por-cep/{cep}")
-    fun listarEnderecosPorCEP(@PathVariable cep: String): ResponseEntity<Any> {
-        val lista = enderecoService.listarEnderecosPorCEP(cep)
-        return if (lista.isNotEmpty()) {
-            ResponseEntity.status(200).body(lista)
+    @GetMapping("/{cep}")
+    fun buscarEnderecosPorCEP(@PathVariable cep: String): ResponseEntity<List<EnderecoResponseDTO>> {
+        val enderecos = enderecoService.buscarEnderecosPorCep(cep)
+        return if (enderecos.isNotEmpty()) {
+            ResponseEntity.ok(enderecos)
         } else {
-            ResponseEntity.status(204).body("Nenhum endereço encontrado para o CEP fornecido")
+            ResponseEntity.noContent().build()
         }
     }
 
-    @GetMapping("/buscar-por-tudo/{logradouro}/{numero}/{cep}")
-    fun buscarEndereco(
-        @PathVariable logradouro: String,
-        @PathVariable numero: Int,
-        @PathVariable cep: String
-    ): ResponseEntity<Int> {
-        val endereco = enderecoService.buscarEndereco(logradouro, numero, cep)
-        return if (endereco != null) {
-            ResponseEntity(endereco.codigo, HttpStatus.OK)  // Retorna apenas o ID do endereço
-        } else {
-            ResponseEntity(HttpStatus.NOT_FOUND)
-        }
-    }
-
-    @Operation(summary = "Lista endereços por bairro")
+    @Operation(
+        summary = "Cria um novo endereço",
+        description = "Cria um novo endereço com base nos dados fornecidos."
+    )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Endereços encontrados"),
-            ApiResponse(responseCode = "204", description = "Nenhum endereço encontrado para o bairro fornecido")
+            ApiResponse(responseCode = "201", description = "Endereço criado com sucesso"),
+            ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos para criar o endereço")
         ]
     )
-    @GetMapping("/buscar-por-bairro/{bairro}")
-    fun listarEnderecosPorBairro(@PathVariable bairro: String): ResponseEntity<Any> {
-        val lista = enderecoService.listarEnderecosPorBairro(bairro)
-        return if (lista.isNotEmpty()) {
-            ResponseEntity.status(200).body(lista)
-        } else {
-            ResponseEntity.status(204).body("Nenhum endereço encontrado para o bairro fornecido")
-        }
+    @PostMapping
+    fun criarEndereco(@RequestBody @Valid enderecoDTO: EnderecoRequestDTO): ResponseEntity<EnderecoResponseDTO> {
+        val novoEndereco = enderecoService.criarEndereco(enderecoDTO)
+        return ResponseEntity.status(201).body(novoEndereco)
     }
 
-//    @Operation(summary = "Lista endereços por usuário")
-//    @ApiResponses(
-//        value = [
-//            ApiResponse(responseCode = "200", description = "Endereços encontrados"),
-//            ApiResponse(responseCode = "204", description = "Nenhum endereço encontrado para o usuário fornecido")
-//        ]
-//    )
-//    @GetMapping("/buscar-por-usuario/{usuario}")
-//    fun listarEnderecosPorUsuario(@PathVariable usuario: String): ResponseEntity<Any> {
-//        val lista = enderecoService.listarEnderecosPorUsuario(usuario)
-//        return if (lista.isNotEmpty()) {
-//            ResponseEntity.status(200).body(lista)
-//        } else {
-//            ResponseEntity.status(204).build()
-//        }
-//    }
-
-    @Operation(summary = "Exclui um endereço pelo ID")
+    @Operation(
+        summary = "Atualiza um endereço existente",
+        description = "Atualiza os dados de um endereço existente com base no ID fornecido."
+    )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Endereço deletado com sucesso"),
-            ApiResponse(responseCode = "404", description = "Endereço não encontrado para o ID fornecido")
+            ApiResponse(responseCode = "200", description = "Endereço atualizado com sucesso"),
+            ApiResponse(responseCode = "404", description = "Endereço não encontrado"),
+            ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos para atualizar o endereço")
         ]
     )
-    @DeleteMapping("/excluir/{id}")
-    fun excluirEnderecoExistente(@PathVariable id: Int): ResponseEntity<String> {
-        return if (enderecoService.excluirEndereco(id)) {
-            ResponseEntity.status(200).body("Endereço deletado com sucesso")
+    @PutMapping("/{id}")
+    fun atualizarEndereco(
+        @PathVariable id: Int,
+        @RequestBody @Valid enderecoDTO: EnderecoRequestDTO
+    ): ResponseEntity<EnderecoResponseDTO> {
+        val enderecoAtualizado = enderecoService.atualizarEndereco(id, enderecoDTO)
+        return enderecoAtualizado?.let {
+            ResponseEntity.ok(it)
+        } ?: ResponseEntity.notFound().build()
+    }
+
+    @Operation(
+        summary = "Exclui um endereço pelo ID",
+        description = "Exclui um endereço existente com base no ID fornecido."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Endereço excluído com sucesso"),
+            ApiResponse(responseCode = "404", description = "Endereço não encontrado")
+        ]
+    )
+    @DeleteMapping("/{id}")
+    fun excluirEndereco(@PathVariable id: Int): ResponseEntity<Void> {
+        return if (enderecoService.deletarEndereco(id)) {
+            ResponseEntity.ok().build()
         } else {
-            ResponseEntity.status(404).body("Endereço não encontrado para o ID fornecido")
+            ResponseEntity.notFound().build()
         }
     }
 

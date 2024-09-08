@@ -1,9 +1,8 @@
 package sptech.projetojpa1.repository
 
 import org.springframework.data.jpa.repository.JpaRepository
-import sptech.projetojpa1.dominio.Endereco
+import sptech.projetojpa1.domain.Endereco
 
-// Interface que estende JpaRepository para operações de persistência do Endereço
 interface EnderecoRepository : JpaRepository<Endereco, Int> {
 
     // Método para encontrar endereços por CEP

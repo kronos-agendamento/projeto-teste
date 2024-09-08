@@ -1,92 +1,89 @@
 package sptech.projetojpa1.service
 
 import org.springframework.stereotype.Service
-import sptech.projetojpa1.dominio.Pergunta
-import sptech.projetojpa1.dto.pergunta.PerguntaAttRequest
-import sptech.projetojpa1.dto.pergunta.PerguntaRequest
+import sptech.projetojpa1.domain.Pergunta
+import sptech.projetojpa1.dto.pergunta.PerguntaCreateRequest
+import sptech.projetojpa1.dto.pergunta.PerguntaResponse
+import sptech.projetojpa1.dto.pergunta.PerguntaUpdateRequest
 import sptech.projetojpa1.repository.PerguntaRepository
+import java.util.NoSuchElementException
 
 @Service
 class PerguntaService(
-    val perguntaRepository: PerguntaRepository
+    private val perguntaRepository: PerguntaRepository
 ) {
-    fun cadastrarPergunta(novaPerguntaDTO: PerguntaRequest): PerguntaRequest {
+    fun criarPergunta(request: PerguntaCreateRequest): PerguntaResponse {
         val novaPergunta = Pergunta(
-            codigoPergunta = 0,
-            descricao = novaPerguntaDTO.descricao,
-            tipo = novaPerguntaDTO.tipo,
-            status = false
+            pergunta = request.pergunta,
+            ativa = request.ativa
         )
         val perguntaSalva = perguntaRepository.save(novaPergunta)
-        return PerguntaRequest(
-            codigoPergunta = perguntaSalva.codigoPergunta,
-            descricao = perguntaSalva.descricao,
-            tipo = perguntaSalva.tipo,
-            status = perguntaSalva.status
+        return PerguntaResponse(
+            idPergunta = perguntaSalva.idPergunta,
+            pergunta = perguntaSalva.pergunta,
+            ativa = perguntaSalva.ativa
         )
     }
 
-    fun listarTodasPerguntas(): List<PerguntaRequest> {
+    fun listarPerguntas(): List<PerguntaResponse> {
         return perguntaRepository.findAll().map { pergunta ->
-            PerguntaRequest(
-                codigoPergunta = pergunta.codigoPergunta,
-                descricao = pergunta.descricao,
-                tipo = pergunta.tipo,
-                status = pergunta.status
+            PerguntaResponse(
+                idPergunta = pergunta.idPergunta,
+                pergunta = pergunta.pergunta,
+                ativa = pergunta.ativa
             )
         }
     }
 
-    fun buscarPorDescricao(descricao: String): List<PerguntaRequest> {
-        return perguntaRepository.findByDescricaoContainsIgnoreCase(descricao).map { pergunta ->
-            PerguntaRequest(
-                codigoPergunta = pergunta.codigoPergunta,
-                descricao = pergunta.descricao,
-                tipo = pergunta.tipo,
-                status = pergunta.status
+    fun listarPerguntasAtivas(ativa: Boolean): List<PerguntaResponse> {
+        return perguntaRepository.findByAtiva(ativa).map { pergunta ->
+            PerguntaResponse(
+                idPergunta = pergunta.idPergunta,
+                pergunta = pergunta.pergunta,
+                ativa = pergunta.ativa
             )
         }
     }
 
-    fun listarPerguntasAtivas(status: Boolean): List<PerguntaRequest> {
-        return perguntaRepository.findByStatus(status).map { pergunta ->
-            PerguntaRequest(
-                codigoPergunta = pergunta.codigoPergunta,
-                descricao = pergunta.descricao,
-                tipo = pergunta.tipo,
-                status = pergunta.status
+    fun listarPerguntasDesativadas(): List<PerguntaResponse> {
+        return perguntaRepository.findByAtiva(false).map { pergunta ->
+            PerguntaResponse(
+                idPergunta = pergunta.idPergunta,
+                pergunta = pergunta.pergunta,
+                ativa = pergunta.ativa
             )
         }
     }
 
-    fun alterarStatusPergunta(id: Int, novoStatus: Boolean): PerguntaRequest? {
-        val perguntaOptional = perguntaRepository.findById(id)
-        if (perguntaOptional.isPresent) {
-            val pergunta = perguntaOptional.get()
-            pergunta.status = novoStatus
-            val perguntaSalva = perguntaRepository.save(pergunta)
-            return PerguntaRequest(
-                codigoPergunta = perguntaSalva.codigoPergunta,
-                descricao = perguntaSalva.descricao,
-                tipo = perguntaSalva.tipo,
-                status = perguntaSalva.status
-            )
-        }
-        return null
+    fun listarPerguntaPorId(id: Int): PerguntaResponse {
+        val pergunta = perguntaRepository.findById(id)
+            .orElseThrow { NoSuchElementException("Pergunta com id $id não encontrada") }
+        return PerguntaResponse(
+            idPergunta = pergunta.idPergunta,
+            pergunta = pergunta.pergunta,
+            ativa = pergunta.ativa
+        )
     }
 
-    fun editarDescricaoPergunta(id: Int, novaDescricao: String): PerguntaAttRequest? {
-        val perguntaOptional = perguntaRepository.findById(id)
-        if (perguntaOptional.isPresent) {
-            val pergunta = perguntaOptional.get()
-            pergunta.descricao = novaDescricao
-            val perguntaSalva = perguntaRepository.save(pergunta)
-            return PerguntaAttRequest(
-                descricao = perguntaSalva.descricao,
-                tipo = perguntaSalva.tipo,
-            )
-        }
-        return null
+    fun atualizarPergunta(id: Int, request: PerguntaUpdateRequest): PerguntaResponse {
+        val pergunta = perguntaRepository.findById(id)
+            .orElseThrow { NoSuchElementException("Pergunta com id $id não encontrada") }
+
+        pergunta.pergunta = request.pergunta
+        pergunta.ativa = request.ativa
+
+        val perguntaAtualizada = perguntaRepository.save(pergunta)
+        return PerguntaResponse(
+            idPergunta = perguntaAtualizada.idPergunta,
+            pergunta = perguntaAtualizada.pergunta,
+            ativa = perguntaAtualizada.ativa
+        )
     }
 
+    fun excluirPergunta(id: Int) {
+        if (!perguntaRepository.existsById(id)) {
+            throw NoSuchElementException("Pergunta com id $id não encontrada")
+        }
+        perguntaRepository.deleteById(id)
+    }
 }

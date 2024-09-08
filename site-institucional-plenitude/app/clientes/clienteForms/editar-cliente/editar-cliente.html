@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procedimento | KronosBooking</title>
+    <link rel="stylesheet" href="editar-cliente.css">
+    <link href="" rel="icon">
+    <link href="../procedimento/image.png" rel="apple-touch-icon">
+    <script src="editar-cliente.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.2/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</head>
+
+<body>
+    <div class="navigation">
+
+        <li class="list"
+            style="width: 30px; height: 30px; list-style: none;; display: flex; justify-content: center; margin-top: 5vh;">
+            <div class="imagem-perfil"
+                style="width: 20vh; height: 20vh; border-radius: 300px; display: flex; justify-content: center;">
+                <img src="../.././index/Foto de Perfil.png"
+                    style="width: 53vh; height: 23vh;  display: flex; justify-content: center; align-items: center;">
+            </div>
+        </li>
+        <li id="userName" style="margin-top: 20vh;list-style: none; color: white; font-weight: 600;">
+        </li>
+        <li id="userEmail" style="list-style: none; color: white; font-weight: 200; font-size: 12px;">
+        </li>
+
+        <ul style="margin-top: 80%; position:absolute;">
+            <li class="list">
+                <a href="../index/index.html">
+                    <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                    <span class="title">Início
+                    </span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="#">
+                    <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
+                    <span class="title">Perfil</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="#">
+                    <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
+                    <span class="title">Agendamentos</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="#">
+                    <span class="icon"><ion-icon name="document-text-outline"></ion-icon></span>
+                    <span class="title">Anamneses</span>
+                </a>
+            </li>
+            <li class="list active">
+                <a href="../clientes/clientes.html">
+                    <span class="icon"><ion-icon name="person-add-outline"></ion-icon></span>
+                    <span class="title">Clientes</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="../procedimento/procedimento.html">
+                    <span class="icon"><ion-icon name="brush-outline"></ion-icon></span>
+                    <span class="title">Procedimentos</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="../dashboard/dashboard.html">
+                    <span class="icon"><ion-icon name="stats-chart-outline"></ion-icon></span>
+                    <span class="title">Dashboard</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="../../index.html">
+                    <span class="icon"><ion-icon name="exit-outline"></ion-icon></span>
+                    <span class="title">Sair</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="main-content" style="margin-top: 1%;">
+        <header id="cliente-header" style="height: 12vh; width: 152vh; margin-left: 4.3%;">
+            <h1>Mais informações de: </h1>
+        </header>
+        <div class="back">
+            <a href="../clientes.html" class="back-link" style="margin-left: 11vh;">← Voltar para página de
+                visualização dos
+                clientes </a>
+        </div>
+        <div id="notification" class="notification">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill"
+                viewBox="0 0 16 16">
+                <path
+                    d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
+            </svg>
+            <span id="notification-message"></span>
+        </div>
+        <div class="actions" style="margin-left: 8vh;">
+            <button class="filter-btn" style="height: 7vh; margin-left: 2.6%; width: 33vh; background-color:#d81b60;
+             color: #fff;border: none;" onclick="openModalPesquisa()">
+                <img style="height: 5vh; width: 25h; margin-top: 10%; border-radius: 0px;" src="../../../assets/icons/usuario.png" alt="filter">Dados Gerais
+            </button>
+            <div class="right-actions">
+                <!-- <button class="arquivados-btn" style="height: 7vh; margin-left: 26%;" onclick="redirectToArchived()">
+                    <img style="height: 4.5vh; width: 4.5vh; margin-top: 19%;" src="../../assets/icons/pasta-aberta.png" alt="spreadsheet">
+                    Anotações
+                </button>                 -->
+                <button class="avaliar-btn" style="height: 7vh; margin-left: -519px;" onclick="openModalAvaliar()"><img
+                        style="height: 4.5vh; width: 4.5vh; margin-top: 19%;" src="../../assets/icons/estrela.png"
+                        alt="spreadsheet">Agendamentos</button>
+                <button class="criar-btn" onclick="showForm()" style="height: 7vh; width: 37vh;"><a
+                        style="width: max-content;" href="../clientes/clienteForms/cadastrar-cliente.html">
+                        <img style="height: 4vh; margin-top: 17%;" src="../../assets/icons/createNew.png"
+                            alt="createNew"><span>Ficha de Anamnese</span>
+                    </a></button>
+            </div>
+        </div>
+
+          
+        <section class="form-section" id="personalInfoForm">
+            <h2>Dados Pessoais
+                <button class="edit-icon-btn" id="editIcon" aria-label="Editar Dados Pessoais" onclick="enableEditing()">✏️</button>
+            </h2>
+            <form id="personalForm" class="form">
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="nome">Nome:</label>
+                        <div style="display: flex; align-items: center;">
+                            <input type="text" id="nome" name="nome" required disabled>
+                            <span class="lock-icon" id="nome-lock">🔓</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="nascimento">Data de Nascimento:</label>
+                        <div style="display: flex; align-items: center;">
+                            <input type="date" id="nascimento" name="nascimento" required disabled>
+                            <span class="lock-icon" id="nascimento-lock">🔒</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="instagram">Instagram:</label>
+                        <div style="display: flex; align-items: center;">
+                            <input type="text" id="instagram" name="instagram" required disabled>
+                            <span class="lock-icon" id="instagram-lock">🔓</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="cpf">CPF:</label>
+                        <div style="display: flex; align-items: center;">
+                            <input type="text" id="cpf" name="cpf" required disabled>
+                            <span class="lock-icon" id="cpf-lock">🔒</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="telefone">Celular:</label>
+                        <div style="display: flex; align-items: center;">
+                            <input type="text" id="telefone" name="telefone" required disabled>
+                            <span class="lock-icon" id="telefone-lock">🔓</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="genero">Gênero:</label>
+                        <div style="display: flex; align-items: center;">
+                            <input type="text" id="genero" name="genero" required disabled>
+                            <span class="lock-icon" id="genero-lock">🔓</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <div style="display: flex; align-items: center;">
+                            <input type="email" id="email" name="email" required disabled>
+                            <span class="lock-icon" id="email-lock">🔓</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="indicacao">Indicação:</label>
+                        <div style="display: flex; align-items: center;">
+                            <input type="text" id="indicacao" name="indicacao" required disabled>
+                            <span class="lock-icon" id="indicacao-lock">🔓</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="emergencia">Contato Emergencial:</label>
+                        <div style="display: flex; align-items: center;">
+                            <input type="text" id="emergencia" name="emergencia" required disabled>
+                            <span class="lock-icon" id="emergencia-lock">🔓</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="button-container" >
+                    <button type="submit" class="save-button" id="saveButton" disabled>Salvar Dados Pessoais</button>
+                </div>
+            </form>
+        </section>
+    
+        <section class="form-section" id="addressInfoForm">
+            <h2>Dados de Endereço
+                <button class="edit-icon-btn" id="editIcon" aria-label="Editar Dados Pessoais" onclick="enableEditing()">✏️</button>
+            </h2>
+            <form id="addressForm" class="form">
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="logradouro">Logradouro:</label>
+                        <div style="display: flex; align-items: center;">
+                            <input type="text" id="logradouro" name="logradouro" required disabled>
+                            <span class="lock-icon" id="logradouro-lock">🔓</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="numero">Número:</label>
+                        <div style="display: flex; align-items: center;">
+                            <input type="text" id="numero" name="numero" required disabled>
+                            <span class="lock-icon" id="numero-lock">🔓</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cep">CEP:</label>
+                        <div style="display: flex; align-items: center;">
+                            <input type="text" id="cep" name="cep" required disabled>
+                            <span class="lock-icon" id="cep-lock">🔓</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="bairro">Bairro:</label>
+                        <div style="display: flex; align-items: center;">
+                            <input type="text" id="bairro" name="bairro" required disabled>
+                            <span class="lock-icon" id="bairro-lock">🔓</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cidade">Cidade:</label>
+                        <div style="display: flex; align-items: center;">
+                            <input type="text" id="cidade" name="cidade" required disabled>
+                            <span class="lock-icon" id="cidade-lock">🔓</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="estado">Estado:</label>
+                        <div style="display: flex; align-items: center;">
+                            <input type="text" id="estado" name="estado" required disabled>
+                            <span class="lock-icon" id="estado-lock">🔓</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="complemento">Complemento:</label>
+                        <div style="display: flex; align-items: center;">
+                            <input type="text" id="complemento" name="complemento" disabled>
+                            <span class="lock-icon" id="complemento-lock">🔓</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <button type="submit" class="save-button" id="saveButtonAddress" disabled>Salvar Endereço</button>
+                </div>
+            </form>
+        </section>
+
+    <div id="modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <p>Tem certeza que deseja excluir o cliente?</p>
+            <p id="usu"></p>
+            <button id="btnYes" class="btn btn-yes">SIM</button>
+            <button class="btn btn-no" onclick="closeModal()">NÃO</button>
+        </div>
+    </div>
+
+
+    <div id="modal-pesquisa" class="modal-pesquisa" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModalPesquisa()">&times;</span>
+            <p><b>Pesquisa de Clientes</b></p>
+            <div class="form-group">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome">
+            </div>
+            <div class="form-group-row">
+                <div class="form-group">
+                    <label for="cpf">CPF:</label>
+                    <input type="text" id="cpf" name="cpf">
+                </div>
+                <div class="form-group">
+                    <label for="codigo">Código:</label>
+                    <input type="text" id="codigo" name="codigo">
+                </div>
+            </div>
+            <button class="btn-pesquisar" onclick="pesquisarCliente()">Pesquisar</button>
+
+            <!-- Área para exibir o resultado -->
+            <div id="resultado" style="margin-top: 20px;"></div>
+        </div>
+    </div>
+
+
+
+    <div id="modal-avaliacao" class="modal-avaliacao" style="display: none;">
+
+        <div class="modal-content">
+            <span class="close" onclick="closeModalAvaliar()">&times;</span>
+            <p><b>Enviar avaliação do último atendimento</b></p>
+            <div class="form-group">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome">
+            </div>
+            <div class="form-group-row">
+                <div class="form-group">
+                    <label for="cpf">CPF:</label>
+                    <input type="text" id="cpf" name="cpf">
+                </div>
+            </div>
+            <button class="btn-avaliar">Pesquisar</button>
+        </div>
+    </div>
+
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>

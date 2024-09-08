@@ -4,64 +4,48 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import sptech.projetojpa1.dto.endereco.EnderecoRequestDTO
 import sptech.projetojpa1.dto.endereco.EnderecoResponseDTO
-import sptech.projetojpa1.dominio.Endereco
-import sptech.projetojpa1.repository.ComplementoRepository
+import sptech.projetojpa1.domain.Endereco
 import sptech.projetojpa1.repository.EnderecoRepository
-import sptech.projetojpa1.repository.UsuarioRepository
 
 @Service
 class EnderecoService(
-    private val enderecoRepository: EnderecoRepository,
-    private val complementoRepository: ComplementoRepository,
-    private val usuarioRepository: UsuarioRepository
+    private val enderecoRepository: EnderecoRepository
 ) {
 
-    @Transactional
-    fun cadastrarEndereco(novoEnderecoDTO: EnderecoRequestDTO): EnderecoResponseDTO {
-//        val complemento = novoEnderecoDTO.complementoId?.let { complementoRepository.findById(it).orElse(null) }
-//        val usuario = novoEnderecoDTO.usuarioId?.let { usuarioRepository.findById(it).orElse(null) }
-        val endereco = Endereco(
-            codigo = null,
-            logradouro = novoEnderecoDTO.logradouro,
-            cep = novoEnderecoDTO.cep,
-            numero = novoEnderecoDTO.numero,
-            bairro = novoEnderecoDTO.bairro,
-            cidade = novoEnderecoDTO.cidade,
-            estado = novoEnderecoDTO.estado
-//            complemento = complemento,
-//            usuario = usuario
-        )
-        val enderecoSalvo = enderecoRepository.save(endereco)
-        return toResponseDTO(enderecoSalvo)
+    fun listarEnderecos(): List<EnderecoResponseDTO> {
+        return enderecoRepository.findAll().map { it.toResponseDTO() }
     }
 
-
-    fun listarTodosEnderecos(): List<EnderecoResponseDTO> {
-        return enderecoRepository.findAll().map { toResponseDTO(it) }
+    fun buscarEnderecosPorCep(cep: String): List<EnderecoResponseDTO> {
+        return enderecoRepository.findByCepContaining(cep).map { it.toResponseDTO() }
     }
-
-    fun buscarEndereco(logradouro: String, numero: Int, cep: String): Endereco? {
-        return enderecoRepository.findByLogradouroAndNumeroAndCep(logradouro, numero, cep)
-    }
-
-    fun buscarEnderecoPorCodigo(codigo: Int): EnderecoResponseDTO? {
-        return enderecoRepository.findById(codigo).map { toResponseDTO(it) }.orElse(null)
-    }
-
-    fun listarEnderecosPorCEP(cep: String): List<EnderecoResponseDTO> {
-        return enderecoRepository.findByCepContains(cep).map { toResponseDTO(it) }
-    }
-
-    fun listarEnderecosPorBairro(bairro: String): List<EnderecoResponseDTO> {
-        return enderecoRepository.findByBairroContainsIgnoreCase(bairro).map { toResponseDTO(it) }
-    }
-
-//    fun listarEnderecosPorUsuario(usuario: String): List<EnderecoResponseDTO> {
-//        return enderecoRepository.findByUsuarioNomeContains(usuario).map { toResponseDTO(it) }
-//    }
 
     @Transactional
-    fun excluirEndereco(id: Int): Boolean {
+    fun criarEndereco(enderecoDTO: EnderecoRequestDTO): EnderecoResponseDTO {
+        val endereco = enderecoDTO.toEntity()
+        return enderecoRepository.save(endereco).toResponseDTO()
+    }
+
+
+    @Transactional
+    fun atualizarEndereco(id: Int, enderecoDTO: EnderecoRequestDTO): EnderecoResponseDTO? {
+        return enderecoRepository.findById(id).map { endereco ->
+            endereco.apply {
+                logradouro = enderecoDTO.logradouro
+                numero = enderecoDTO.numero
+                cep = enderecoDTO.cep
+                bairro = enderecoDTO.bairro
+                cidade = enderecoDTO.cidade
+                estado = enderecoDTO.estado
+                complemento = enderecoDTO.complemento
+            }
+            enderecoRepository.save(endereco).toResponseDTO()
+        }.orElse(null)
+    }
+
+
+    @Transactional
+    fun deletarEndereco(id: Int): Boolean {
         return if (enderecoRepository.existsById(id)) {
             enderecoRepository.deleteById(id)
             true
@@ -70,15 +54,23 @@ class EnderecoService(
         }
     }
 
-    private fun toResponseDTO(endereco: Endereco): EnderecoResponseDTO {
-        return EnderecoResponseDTO(
-            codigo = endereco.codigo!!,
-            logradouro = endereco.logradouro,
-            cep = endereco.cep,
-            numero = endereco.numero,
-            bairro = endereco.bairro,
-            cidade = endereco.cidade,
-            estado = endereco.estado
-        )
-    }
+    private fun Endereco.toResponseDTO() = EnderecoResponseDTO(
+        idEndereco = this.idEndereco!!,
+        logradouro = this.logradouro,
+        numero = this.numero,
+        cep = this.cep,
+        bairro = this.bairro,
+        cidade = this.cidade,
+        estado = this.estado
+    )
+
+    private fun EnderecoRequestDTO.toEntity() = Endereco(
+        logradouro = this.logradouro,
+        numero = this.numero,
+        cep = this.cep,
+        bairro = this.bairro,
+        cidade = this.cidade,
+        estado = this.estado,
+        complemento = this.complemento
+    )
 }

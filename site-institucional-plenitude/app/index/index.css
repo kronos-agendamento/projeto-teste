@@ -1,0 +1,876 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Poppins, sans-serif;
+
+  margin: 0;
+  padding: 0;
+}
+
+.corpo {
+  display: flex;
+  background-color: #ffffff;
+  height: 140vh;
+  width: 97vw;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+}
+
+aside {
+  background-color: #d9006c;
+  color: white;
+  width: 250px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (max-width: 992px) {
+  #main {
+    margin-top: 30px;
+  }
+}
+
+#main {
+  margin-top: 50px;
+}
+
+@media (max-width: 992px) {
+  #main {
+    margin-top: 30px;
+  }
+}
+
+/*--------------------------------------------------------------
+# Preloader
+--------------------------------------------------------------*/
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  overflow: hidden;
+  background: #fff;
+}
+
+#preloader:before {
+  content: "";
+  position: fixed;
+  top: calc(50% - 30px);
+  left: calc(50% - 30px);
+  border: 6px solid #cda582;
+  border-top-color: #dcf5f2;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: animate-preloader 1s linear infinite;
+}
+
+@keyframes animate-preloader {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/*--------------------------------------------------------------
+Inicio Nav
+--------------------------------------------------------------*/
+
+.profile img {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+}
+
+.profile h2 {
+  margin: 10px 0 5px;
+}
+
+.profile p {
+  margin: 0;
+  font-size: 0.9em;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  width: 100%;
+}
+
+nav ul li {
+  padding: 10px;
+  text-align: center;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+}
+
+/*--------------------------------------------------------------
+navbar  lateral
+--------------------------------------------------------------*/
+
+.navigation {
+  height: auto;
+  background: #d2135d;
+  width: 19vw;
+  top: 2vh;
+  margin-left: 3vw;
+  border-radius: 3vh;
+  margin-bottom: 2vh;
+  box-shadow: 10px 0 0 #ffffff;
+  border-left: 10px solid #d2135d;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.perfil {
+  padding: 5vh;
+}
+
+.navigation .perfil .imagem-perfil {
+  width: 20vh;
+  height: 20vh;
+  border-radius: 300px;
+  display: flex;
+  justify-content: center;
+  list-style: none;
+}
+
+.navigation .perfil .imagem-perfil img {
+  margin: 1vh;
+  width: 53vh;
+  height: 23vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+}
+
+.perfil #userName {
+  display: flex;
+  list-style: none;
+  color: white;
+  font-weight: 600;
+  margin-top: 6vh;
+  justify-content: center;
+}
+
+.perfil #userEmail {
+  list-style: none;
+  color: white;
+  font-weight: 200;
+  font-size: 12px;
+  margin-top: 0.5vh;
+  display: flex;
+  justify-content: center;
+}
+
+/*--------------------------------------------------------------
+# Links
+--------------------------------------------------------------*/
+
+.navigation ul {
+  position: absolute !important;
+  top: 30vh;
+  left: 0;
+  width: 100%;
+  padding-left: 1vw;
+  padding-top: 10vh;
+}
+
+.navigation ul li {
+  position: relative;
+  list-style: none;
+  width: 100%;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.navigation ul li a {
+  position: relative;
+  display: flex;
+  width: 100%;
+  text-decoration: none;
+  color: #fff;
+  height: 8vh;
+  margin-bottom: 2.5vh;
+}
+
+.navigation ul li a .icon {
+  position: relative;
+  display: block;
+  min-width: 3vw;
+  height: 3vh;
+  text-align: center;
+  line-height: 70px;
+}
+
+.navigation ul li a .icon ion-icon {
+  position: relative;
+  font-size: 1.5rem;
+  z-index: 1;
+}
+
+.navigation ul li a .title {
+  position: relative;
+  display: block;
+  padding-left: 1.5vw;
+  height: 60px;
+  line-height: 60px;
+  white-space: nowrap;
+  font-size: 15px;
+}
+
+.navigation ul li.active {
+  color: black;
+  background: #ffffff;
+}
+
+.navigation ul li.active a {
+  color: black;
+  /* Cor do texto quando ativo */
+}
+
+.navigation ul li.active a .icon ion-icon {
+  color: black;
+  /* Cor do ícone quando ativo */
+}
+
+.navigation ul li.active a::before {
+  content: "";
+  position: absolute;
+  bottom: 8vh;
+  right: 0;
+  width: 5vh;
+  height: 5vh;
+  background: #d2135d;
+  border-radius: 50%;
+  box-shadow: 15px 15px 0 #ffffff;
+  color: black;
+}
+
+.navigation ul li.active a::after {
+  content: "";
+  position: absolute;
+  top: 8vh;
+  right: 0;
+  width: 5vh;
+  height: 5vh;
+  background: #d2135d;
+  border-radius: 50%;
+  box-shadow: 15px -15px 0 #ffffff;
+}
+
+/*--------------------------------------------------------------
+Final Nav
+
+
+Inicio Main
+--------------------------------------------------------------*/
+
+main {
+  background-color: #ffffff;
+  width: 75vw;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  background-color: #d2135d;
+  color: white;
+  padding: 2vh;
+  border-radius: 3vh;
+  margin-bottom: 2vh;
+  margin-top: 2vh;
+  margin-left: 2%;
+  height: 14vh;
+}
+
+header h1 {
+  margin: 1vh 0vh 0vh 2vh;
+  font-size: 3vh;
+}
+
+header p {
+  margin: 0vh 0vh 0vh 2vh;
+  font-size: 2vh;
+}
+
+.main-content {
+  display: flex;
+}
+
+.left-content {
+  display: flex;
+  flex-direction: column;
+  width: 45vw;
+  height: auto;
+  margin-top: 1vh;
+  margin-left: 2vw;
+}
+
+.right-content {
+  display: flex;
+  flex-direction: column;
+  width: 15vw;
+  height: auto;
+  margin-top: 1vh;
+  margin-left: 2vw;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.actions button {
+  background-color: #fff0f5;
+  display: flex;
+  font-family: Poppins, sans-serif;
+  height: 10vh;
+  width: 21vw;
+  justify-content: center;
+  margin: 1vh;
+  padding: 2vh;
+  align-items: center;
+  font-size: 16px;
+  border-radius: 2vh;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.actions button:hover {
+  background-color: #e893b9;
+  color: #dcf5f2;
+  transition-duration: 500ms;
+}
+
+.actions button i {
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+.actions a {
+  text-decoration: none;
+}
+
+/*--------------------------------------------------------------
+
+Tabelas individuais
+
+Inicio Agenda
+--------------------------------------------------------------*/
+
+.agenda {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border: 1px solid black;
+  width: 25vw;
+  margin: 1vh;
+}
+
+.agenda h1 {
+  text-align: center;
+  margin-bottom: 8px;
+  font-size: 20px;
+}
+
+.day {
+  text-align: center;
+  margin-bottom: 1vh;
+}
+
+.day h2 {
+  font-size: 1em;
+  margin: 0;
+}
+
+.day span {
+  font-size: 1em;
+  color: #d2135d;
+}
+
+.appointment {
+  display: flex;
+  justify-content: space-between;
+  padding: 1vh 0;
+  border-bottom: 1px solid #494747;
+}
+
+.appointment:last-child {
+  border-bottom: none;
+}
+
+.time {
+  font-size: 1.2em;
+  color: #333;
+  display: flex;
+  margin: 2vh 2vw 0 2vw;
+}
+
+.details h3 {
+  margin: 0;
+  font-size: 1em;
+  color: #333;
+  margin: 0.5vh 2vw 0 0;
+}
+
+.details p {
+  text-align: start;
+  margin: 0.5vh 2vw 0 0;
+  color: #777;
+  font-size: 15px;
+}
+
+.table-container .weekly-schedule {
+  background-color: rgb(255, 255, 255);
+  padding: 20px;
+  height: 12vh;
+}
+
+.weekly-schedule h2 {
+  font-size: 3vh;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin-top: 1vh;
+}
+
+.table-container a {
+  text-decoration: none;
+  color: black;
+}
+
+.weekly-schedule:hover {
+  background-color: #e893b9;
+  color: #dcf5f2;
+  transition-duration: 500ms;
+  cursor: pointer;
+}
+
+.weekly-schedule h2 i {
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+.registered-procedures,
+.frequent-clients,
+.status,
+.birthdays {
+  background-color: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table,
+th,
+td {
+  border: 1px solid #ddd;
+}
+
+.table-container {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #000;
+  margin: 2vh;
+}
+
+/*--------------------------------------------------------------
+Status Cadastrados
+--------------------------------------------------------------*/
+
+.right-content .table-container {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #000;
+  width: 25vw;
+  margin: 1vh;
+}
+
+.table-header {
+  display: flex;
+  align-items: center;
+  background-color: #d2135d;
+  padding: 2.5vh 2.5vw;
+}
+
+.table-header h1 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.1em;
+  width: 100%;
+  /* Define a largura do título para 50% */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background-color: #fff0f5;
+}
+
+th,
+td {
+  padding: 15px;
+  text-align: center;
+  border: 1px solid #000;
+}
+
+th {
+  font-size: 0.9em;
+  color: #333;
+}
+
+td {
+  font-size: 0.8em;
+  color: #000000;
+}
+
+/*--------------------------------------------------------------
+Aniversariantes
+--------------------------------------------------------------*/
+
+.birthday-card {
+  background-color: #d2135d;
+  color: white;
+  padding: 0 2vw;
+  border-radius: 10px;
+  text-align: center;
+  height: auto;
+  /* Ajusta a altura automática para o conteúdo */
+  margin-bottom: 1vh;
+  /* Espaço entre cartões */
+}
+
+.birthday-card h1 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.birthday-card hr {
+  border: none;
+  border-top: 1px solid white;
+  margin: 10px 0;
+}
+
+.birthday-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  /* Permite a quebra de linha para dispositivos menores */
+  padding: 10px;
+}
+
+.birthday-info .icon {
+  flex: 0 0 auto;
+  /* Não permitir que o ícone se expanda */
+  margin-right: 10px;
+}
+
+.birthday-info .icon img {
+  width: 50px;
+  height: 50px;
+}
+
+.birthday-info .info {
+  flex: 1;
+  /* Permite que o texto ocupe o restante do espaço */
+  text-align: left;
+  margin: 0;
+}
+
+.birthday-info .info h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.birthday-info .info p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.birthday-info .date p {
+  margin: 0;
+  font-size: 18px;
+}
+
+/* Responsividade para dispositivos menores */
+@media (max-width: 600px) {
+  .birthday-info {
+    flex-direction: column;
+    /* Coloca os itens em coluna para telas menores */
+    text-align: center;
+    /* Centraliza o texto para melhor visualização */
+  }
+
+  .birthday-info .icon {
+    margin-bottom: 10px;
+    /* Espaço abaixo do ícone */
+  }
+
+  .birthday-info .info {
+    margin: 10px 0;
+    /* Espaço entre o texto e a data */
+  }
+}
+
+/*--------------------------------------------------------------
+Botão Ver todos / Ver menos
+--------------------------------------------------------------*/
+.footer {
+  text-decoration: none;
+  color: #d63384;
+  font-weight: bold;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.5vh 1vw 0.5vh 0;
+}
+
+.footer a {
+  text-decoration: none;
+  color: #d63384;
+  font-weight: bold;
+}
+
+#footer {
+  padding: 4vh 0;
+  color: #222222;
+  font-size: 14px;
+  text-align: center;
+  position: relative;
+  margin-top: 100px;
+}
+
+.footer_container {
+  width: 100%;
+}
+
+.footer-aniversario {
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: bold;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.5vh 1vw 0.5vh 0;
+}
+
+.footer-aniversario a {
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+/* Modal styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 30%;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+
+.modal-content p {
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.modal-content .btn {
+  margin: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.modal-content .btn-yes,
+.btn-save {
+  background-color: #28a745;
+  color: white;
+}
+
+.modal-content .btn-no {
+  background-color: #dc3545;
+  color: white;
+}
+
+.modal-content .btn-yes:hover {
+  background-color: #218838;
+}
+
+.modal-content .btn-no:hover {
+  background-color: #c82333;
+}
+
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.notification.show {
+  opacity: 1;
+}
+
+.notification.error {
+  background-color: #dc3545;
+}
+
+.notification svg {
+  margin-right: 10px;
+}
+
+.modal-content2 {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 30%;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-content2 p {
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.modal-content2 .btn {
+  margin: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.modal-content2 .btn-yes,
+.btn-save {
+  background-color: #28a745;
+  color: white;
+}
+
+.modal-content2 .btn-no {
+  background-color: #dc3545;
+  color: white;
+}
+
+.modal-content2 .btn-yes:hover {
+  background-color: #218838;
+}
+
+.modal-content2 .btn-no:hover {
+  background-color: #c82333;
+}
+
+#edit-nome {
+  width: 30%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-top: 3vh;
+  margin-bottom: 2vh;
+}
+
+#edit-cor {
+  width: 30%;
+  height: 33px;
+  padding: 8px 20px 8px 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-top: 3vh;
+  margin-bottom: 2vh;
+}
+
+.edit-btn,
+.delete-btn,
+.more-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.edit-btn:hover,
+.delete-btn:hover,
+.more-btn:hover {
+  color: #d81b60;
+}
+
+.color-box {
+  width: 20px;
+  /* Largura do quadrado */
+  height: 20px;
+  /* Altura do quadrado */
+  border: 1px solid #000;
+  /* Borda para destacar a cor */
+  display: inline-block;
+  /* Para que o div se comporte como um elemento inline */
+  border-radius: 100px;
+}

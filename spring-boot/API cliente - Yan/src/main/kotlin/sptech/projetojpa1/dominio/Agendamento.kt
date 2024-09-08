@@ -40,4 +40,5 @@ data class Agendamento(
     @ManyToOne
     @JoinColumn(name= "fk_status")
     var statusAgendamento: Status
+
 )

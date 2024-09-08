@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*
 import sptech.projetojpa1.dto.agendamento.AgendamentoRequestDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoResponseDTO
 import sptech.projetojpa1.service.AgendamentoService
+import java.time.LocalDate
+import java.time.LocalTime
 
 @RestController
 @RequestMapping("/api/agendamentos")
@@ -21,18 +23,14 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
             ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos")
         ]
     )
-    @PostMapping("/criar")
+    @PostMapping
     fun criarNovoAgendamento(@Valid @RequestBody agendamentoRequestDTO: AgendamentoRequestDTO): ResponseEntity<*> {
-
-        val validacao = agendamentoService.validarAgendamento(agendamentoRequestDTO)
-
-        if (validacao == true) {
+        try {
             val agendamentoResponseDTO = agendamentoService.criarAgendamento(agendamentoRequestDTO)
-
             return ResponseEntity.ok(agendamentoResponseDTO)
+        } catch (ex: IllegalArgumentException) {
+            return ResponseEntity.badRequest().body(ex.message)
         }
-
-        return ResponseEntity.badRequest().body("Já existe um agendamento para essa data e horário")
     }
 
     @Operation(summary = "Lista todos os agendamentos")
@@ -77,6 +75,24 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
         return ResponseEntity.ok(agendamentoResponseDTO)
     }
 
+    @Operation(summary = "Atualiza o status de um agendamento pelo ID")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Status do agendamento atualizado com sucesso"),
+            ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos"),
+            ApiResponse(responseCode = "404", description = "Agendamento ou status não encontrado")
+        ]
+    )
+    @PutMapping("/atualizar-status/{id}")
+    fun atualizarStatusAgendamento(
+        @PathVariable id: Int,
+        @RequestParam statusId: Int
+    ): ResponseEntity<*> {
+        val agendamentoResponseDTO = agendamentoService.atualizarStatusAgendamento(id, statusId)
+        return ResponseEntity.ok(agendamentoResponseDTO)
+    }
+
+
     @Operation(summary = "Exclui um agendamento pelo ID")
     @ApiResponses(
         value = [
@@ -89,7 +105,20 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
         agendamentoService.excluirAgendamento(id)
         return ResponseEntity.ok().build<Any>()
     }
-    
 
+    @GetMapping("/agendamentos-realizados")
+    fun agendamentosRealizadosUltimoTrimestre(): ResponseEntity<Int> {
+        val quantidadeConcluidos = agendamentoService.agendamentosRealizadosTrimestre()
+        return ResponseEntity.ok(quantidadeConcluidos)
+    }
+
+    @GetMapping("/horarios-disponiveis")
+    fun listarHorariosDisponiveis(
+        @RequestParam empresaId: Int,
+        @RequestParam data: String
+    ): ResponseEntity<List<LocalTime>> {
+        val dataFormatada = LocalDate.parse(data)
+        val horariosDisponiveis = agendamentoService.listarHorariosDisponiveis(empresaId, dataFormatada)
+        return ResponseEntity.ok(horariosDisponiveis)
+    }
 }
-

@@ -4,6 +4,6 @@ data class FeedbackResponseDTO(
     val idFeedback: Int,
     val anotacoes: String?,
     val nota: Int?,
-    val agendamentoId: Int,
-    val usuarioId: Int
+    val agendamento: Int,
+    val usuario: Int
 )

@@ -1,14 +1,11 @@
 package sptech.projetojpa1.dto.endereco
 
 data class EnderecoResponseDTO(
-    val codigo: Int,
+    val idEndereco: Int?,
     val logradouro: String,
+    val numero: String,
     val cep: String,
-    val numero: Int,
-    val bairro: String?,
-    val cidade: String?,
-    val estado: String?,
-    //val complemento: String
-//   val complementoId: Int?,
-//    val usuarioId: Int?
+    val bairro: String,
+    val cidade: String,
+    val estado: String
 )
