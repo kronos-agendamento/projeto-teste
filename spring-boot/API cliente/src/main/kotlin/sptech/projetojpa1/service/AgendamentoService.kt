@@ -22,24 +22,24 @@ class AgendamentoService(
     fun listarTodosAgendamentos(): List<AgendamentoResponseDTO> {
         val agendamentos = agendamentoRepository.findAll()
         return agendamentos.map { agendamento ->
+            val usuario = agendamento.usuario
             AgendamentoResponseDTO(
                 idAgendamento = agendamento.idAgendamento,
                 dataHorario = agendamento.dataHorario,
                 tipoAgendamento = agendamento.tipoAgendamento,
-                usuario = agendamento.usuario,
-                procedimento = agendamento.procedimento,
-                especificacao = agendamento.especificacao,
+                usuario = usuario.nome,
+                usuarioTelefone = usuario.telefone?.toString(),
+                usuarioCpf = usuario.cpf ?: "CPF não disponível", // Verifica se o CPF está vazio
+                procedimento = agendamento.procedimento.tipo,
+                especificacao = agendamento.especificacao.especificacao,
                 statusAgendamento = agendamento.statusAgendamento
             )
         }
     }
 
+
     fun agendamentosRealizadosTrimestre(): Int {
         return agendamentoRepository.findAgendamentosConcluidosUltimoTrimestre()
-    }
-
-    fun listarAgendamento(): List<Agendamento> {
-        return agendamentoRepository.findAll()
     }
 
     fun listarHorariosDisponiveis(
@@ -127,10 +127,10 @@ class AgendamentoService(
             idAgendamento = savedAgendamento.idAgendamento,
             dataHorario = savedAgendamento.dataHorario,
             tipoAgendamento = savedAgendamento.tipoAgendamento,
-            usuario = savedAgendamento.usuario,
-            procedimento = savedAgendamento.procedimento,
-            especificacao = savedAgendamento.especificacao,
-            statusAgendamento = savedAgendamento.statusAgendamento
+            usuario = agendamento.usuario.nome,
+            procedimento = agendamento.procedimento.tipo,
+            especificacao = agendamento.especificacao.especificacao,
+            statusAgendamento = agendamento.statusAgendamento
         )
     }
 
@@ -142,9 +142,9 @@ class AgendamentoService(
             idAgendamento = agendamento.idAgendamento,
             dataHorario = agendamento.dataHorario,
             tipoAgendamento = agendamento.tipoAgendamento,
-            usuario = agendamento.usuario,
-            procedimento = agendamento.procedimento,
-            especificacao = agendamento.especificacao,
+            usuario = agendamento.usuario.nome,
+            procedimento = agendamento.procedimento.tipo,
+            especificacao = agendamento.especificacao.especificacao,
             statusAgendamento = agendamento.statusAgendamento
         )
     }
@@ -172,10 +172,10 @@ class AgendamentoService(
             idAgendamento = updatedAgendamento.idAgendamento,
             dataHorario = updatedAgendamento.dataHorario,
             tipoAgendamento = updatedAgendamento.tipoAgendamento,
-            usuario = updatedAgendamento.usuario,
-            procedimento = updatedAgendamento.procedimento,
-            especificacao = updatedAgendamento.especificacao,
-            statusAgendamento = updatedAgendamento.statusAgendamento
+            usuario = agendamento.usuario.nome,
+            procedimento = agendamento.procedimento.tipo,
+            especificacao = agendamento.especificacao.especificacao,
+            statusAgendamento = agendamento.statusAgendamento
         )
     }
 
@@ -194,10 +194,10 @@ class AgendamentoService(
             idAgendamento = updatedAgendamento.idAgendamento,
             dataHorario = updatedAgendamento.dataHorario,
             tipoAgendamento = updatedAgendamento.tipoAgendamento,
-            usuario = updatedAgendamento.usuario,
-            procedimento = updatedAgendamento.procedimento,
-            especificacao = updatedAgendamento.especificacao,
-            statusAgendamento = updatedAgendamento.statusAgendamento
+            usuario = agendamento.usuario.nome,
+            procedimento = agendamento.procedimento.tipo,
+            especificacao = agendamento.especificacao.especificacao,
+            statusAgendamento = agendamento.statusAgendamento
         )
     }
 

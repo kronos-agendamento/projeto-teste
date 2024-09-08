@@ -61,7 +61,7 @@ function renderAgenda(agendamentos) {
         
         const horarioFormatado = `${data.getHours().toString().padStart(2, '0')}h${data.getMinutes().toString().padStart(2, '0')}`;
         appointment.innerHTML = `
-          <p>${horarioFormatado} - ${horarioFormatado}<br />${agendamento.usuario.nome}<br />${agendamento.especificacao.especificacao}</p>
+          <p>${horarioFormatado}<br />${agendamento.usuario}<br />${agendamento.especificacao}</p>
         `;
   
         diaElement.appendChild(appointment);

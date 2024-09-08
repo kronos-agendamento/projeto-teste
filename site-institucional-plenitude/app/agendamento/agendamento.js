@@ -34,25 +34,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Filtrar agendamentos
-  function filterAgendamentos() {
-    const procedimentoValue = document.getElementById('procedimento-filter').value;
-    const especificacaoValue = document.getElementById('especificacao-filter').value;
-    const clienteValue = document.getElementById('cliente-filter').value;
-    const dataValue = document.getElementById('data-filter').value;
-
-    const filteredAgendamentos = agendamentos.filter(agendamento => {
-      const matchProcedimento = procedimentoValue === "" || agendamento.procedimento.tipo === procedimentoValue;
-      const matchEspecificacao = especificacaoValue === "" || agendamento.especificacao.especificacao === especificacaoValue;
-      const matchCliente = clienteValue === "" || agendamento.usuario.nome === clienteValue;
-      const matchData = dataValue === "" || agendamento.dataHorario.startsWith(dataValue);
-
-      return matchProcedimento && matchEspecificacao && matchCliente && matchData;
-    });
-
-    renderTable(filteredAgendamentos);
-  }
-
   function renderTable(filtro = 'todos') {
     const tbody = document.getElementById("procedures-tbody");
     tbody.innerHTML = "";
@@ -80,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const dataAgendamentoFormatada = `${dataAgendamento.getUTCFullYear()}-${String(dataAgendamento.getUTCMonth() + 1).padStart(2, '0')}-${String(dataAgendamento.getUTCDate()).padStart(2, '0')}`;
 
         const isWithinDateRange = (!from || dataAgendamentoFormatada >= from) && (!to || dataAgendamentoFormatada <= to);
-        const matchesClient = !client || agendamento.usuario.nome.toLowerCase().includes(client);
+        const matchesClient = !client || agendamento.usuario.toLowerCase().includes(client);
         const matchesProcedure = !procedure || agendamento.procedimento.tipo.toLowerCase().includes(procedure);
         const matchesSpecification = !specification || agendamento.especificacao.especificacao.toLowerCase().includes(specification);
 
@@ -102,28 +83,29 @@ document.addEventListener("DOMContentLoaded", function () {
       const tr = document.createElement("tr");
       tr.classList.add("clickable-row");
 
-      // Ajustar para UTC
+      // Ajustar para o horário local
       const dataHora = new Date(agendamento.dataHorario);
-      const dia = String(dataHora.getUTCDate()).padStart(2, '0');
-      const mes = String(dataHora.getUTCMonth() + 1).padStart(2, '0');
-      const horas = String(dataHora.getUTCHours()).padStart(2, '0');
-      const minutos = String(dataHora.getUTCMinutes()).padStart(2, '0');
+      const dia = String(dataHora.getDate()).padStart(2, '0');
+      const mes = String(dataHora.getMonth() + 1).padStart(2, '0');
+      const horas = String(dataHora.getHours()).padStart(2, '0');
+      const minutos = String(dataHora.getMinutes()).padStart(2, '0');
       const dataHoraFormatada = `${dia}/${mes} - ${horas}:${minutos}`;
+
 
       const dataHoraTd = document.createElement("td");
       dataHoraTd.textContent = dataHoraFormatada;
       tr.appendChild(dataHoraTd);
 
       const clienteTd = document.createElement("td");
-      clienteTd.textContent = agendamento.usuario.nome;
+      clienteTd.textContent = agendamento.usuario;
       tr.appendChild(clienteTd);
 
       const procedimentoTd = document.createElement("td");
-      procedimentoTd.textContent = agendamento.procedimento.tipo;
+      procedimentoTd.textContent = agendamento.procedimento;
       tr.appendChild(procedimentoTd);
 
       const especificacaoTd = document.createElement("td");
-      especificacaoTd.textContent = agendamento.especificacao.especificacao;
+      especificacaoTd.textContent = agendamento.especificacao;
       tr.appendChild(especificacaoTd);
 
       // Cria uma td para o status
@@ -181,13 +163,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (agendamento) {
       selectedAgendamentoId = id; // Define o ID selecionado
-      document.getElementById('detalhe-cliente').value = agendamento.usuario.nome;
-      document.getElementById('detalhe-celular').value = agendamento.usuario.telefone;
+      document.getElementById('detalhe-cliente').value = agendamento.usuario;
+      document.getElementById('detalhe-celular').value = agendamento.usuarioTelefone;
       const dataHora = new Date(agendamento.dataHorario);
       document.getElementById('detalhe-data').value = `${dataHora.getUTCFullYear()}-${String(dataHora.getUTCMonth() + 1).padStart(2, '0')}-${String(dataHora.getUTCDate()).padStart(2, '0')}`;
       document.getElementById('detalhe-inicio').value = `${String(dataHora.getUTCHours()).padStart(2, '0')}:${String(dataHora.getUTCMinutes()).padStart(2, '0')}`;
       document.getElementById('detalhe-fim').value = `${String(dataHora.getUTCHours() + 1).padStart(2, '0')}:${String(dataHora.getUTCMinutes()).padStart(2, '0')}`; // Ajuste conforme necessário
-      document.getElementById('detalhe-procedimento').value = agendamento.procedimento.tipo;
+      document.getElementById('detalhe-procedimento').value = agendamento.procedimento;
       document.getElementById('detalhe-status').value = agendamento.statusAgendamento.nome;
 
       // Verifica o status do agendamento

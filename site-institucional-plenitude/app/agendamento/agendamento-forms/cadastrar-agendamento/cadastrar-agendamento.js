@@ -19,19 +19,17 @@ document.addEventListener("DOMContentLoaded", function () {
   async function carregarClientes() {
     try {
       const response = await fetch(apiUrlClientes);
-      if (response.ok) {
-        const clientes = await response.json();
-        clientes.forEach((cliente) => {
-          const option = document.createElement("option");
-          option.value = cliente.codigo;
-          option.text = cliente.nome;
-          clientesSelect.appendChild(option);
-        });
-      } else {
-        console.error("Erro ao buscar clientes: " + response.statusText);
-      }
+      const clientes = await response.json();
+
+      const clientesSelect = document.getElementById("clientes");
+      clientes.forEach(cliente => {
+        const option = document.createElement("option");
+        option.value = cliente.idUsuario;
+        option.textContent = cliente.nome;
+        clientesSelect.appendChild(option);
+      });
     } catch (error) {
-      console.error("Erro ao buscar clientes: ", error);
+      console.error("Erro ao obter clientes: ", error);
     }
   }
 
@@ -201,7 +199,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   saveButton.addEventListener("click", async function () {
     const clienteId = clientesSelect.value;
+    console.log(clienteId);
     const procedimentoId = procedimentosSelect.value;
+    console.log(procedimentoId);
     const tipoAtendimento = tipoAgendamentoSelect.value;
     const especificacaoId = especificacoesSelect.value;
     const data = dataInput.value;

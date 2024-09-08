@@ -5,11 +5,10 @@ import org.springframework.stereotype.Service
 import sptech.projetojpa1.domain.Usuario
 import sptech.projetojpa1.domain.usuario.Cliente
 import sptech.projetojpa1.domain.usuario.Profissional
-import sptech.projetojpa1.dto.usuario.UsuarioAtualizacaoRequest
-import sptech.projetojpa1.dto.usuario.UsuarioLoginRequest
-import sptech.projetojpa1.dto.usuario.UsuarioLoginResponse
-import sptech.projetojpa1.dto.usuario.UsuarioRequest
+import sptech.projetojpa1.dto.agendamento.AgendamentoResponseDTO
+import sptech.projetojpa1.dto.usuario.*
 import sptech.projetojpa1.repository.*
+import java.util.*
 
 @Service
 class UsuarioService(
@@ -76,7 +75,7 @@ class UsuarioService(
                 email = usuario.email ?: "",
                 cpf = usuario.cpf ?: "",
                 instagram = usuario.instagram ?: "",
-                empresa = usuario.empresa ?: null
+                empresa = usuario.empresa
             )
         } else {
             null
@@ -105,10 +104,6 @@ class UsuarioService(
             telefone = dto.telefone ?: telefone
             genero = dto.genero ?: genero
             indicacao = dto.indicacao ?: indicacao
-            nivelAcesso = dto.nivelAcessoId?.let { nivelAcessoRepository.findById(it).orElse(nivelAcesso) }
-            endereco = dto.enderecoId?.let { enderecoRepository.findById(it).orElse(endereco) }
-            empresa = dto.empresaId?.let { empresaRepository.findById(it).orElse(empresa) }
-            fichaAnamnese = dto.fichaAnamneseId?.let { fichaAnamneseRepository.findById(it).orElse(fichaAnamnese) }
         }
         return usuarioRepository.save(usuario)
     }
@@ -121,9 +116,16 @@ class UsuarioService(
 
     fun listarUsuariosAtivos(): List<Usuario> = usuarioRepository.findByStatusTrue()
 
-    fun listarTodosUsuarios(): List<Usuario> = usuarioRepository.findAll()
-
-    fun buscarUsuarioPorCodigo(codigo: Int): Usuario? = usuarioRepository.findById(codigo).orElse(null)
+    fun listarTodosUsuarios(): List<UsuarioResponseDTO> {
+        val usuarios = usuarioRepository.findAll()
+        return usuarios.map { usuario ->
+            UsuarioResponseDTO(
+                idUsuario = usuario.codigo,
+                nome = usuario.nome,
+                dataNasc = usuario.dataNasc,
+            )
+        }
+    }
 
     fun atualizarFotoUsuario(cpf: String, imagem: ByteArray): Usuario? {
         val usuario = usuarioRepository.findByCpf(cpf) ?: return null
@@ -132,10 +134,6 @@ class UsuarioService(
     }
 
     fun getFoto(codigo: Int): ByteArray? = usuarioRepository.findFotoByCodigo(codigo)
-
-    fun getById(id: Int): Usuario? = usuarioRepository.findById(id).orElse(null)
-
-    fun getByNomeContains(nome: String): List<Usuario> = usuarioRepository.findByNomeContainsIgnoreCase(nome)
 
     fun getUsuariosByNivelAcesso(codigo: Int): List<Usuario> {
         val nivelAcesso = nivelAcessoRepository.findById(codigo).orElse(null)

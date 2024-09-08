@@ -3,6 +3,7 @@ package sptech.projetojpa1.domain.usuario
 import jakarta.persistence.Column
 import jakarta.persistence.DiscriminatorValue
 import jakarta.persistence.Entity
+import jakarta.validation.constraints.Pattern
 import sptech.projetojpa1.domain.*
 import java.time.LocalDate
 

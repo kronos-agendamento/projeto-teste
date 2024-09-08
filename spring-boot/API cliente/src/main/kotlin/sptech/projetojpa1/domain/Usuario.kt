@@ -13,7 +13,7 @@ import java.time.LocalDate
 abstract class Usuario(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario")
-    open var codigo: Int? = null,
+    var codigo: Int? = null,
 
     @field:NotBlank(message = "Nome é obrigatório")
     var nome: String? = null,
@@ -29,6 +29,7 @@ abstract class Usuario(
     @field:NotBlank(message = "Instagram é obrigatório")
     var instagram: String? = null,
 
+    @Column(name = "cpf")
     @field:NotBlank(message = "CPF é obrigatório")
     @field:CPF(message = "CPF inválido")
     var cpf: String? = null,

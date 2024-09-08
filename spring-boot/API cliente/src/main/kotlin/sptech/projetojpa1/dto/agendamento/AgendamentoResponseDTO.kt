@@ -1,17 +1,16 @@
 package sptech.projetojpa1.dto.agendamento
 
-import sptech.projetojpa1.domain.Especificacao
-import sptech.projetojpa1.domain.Procedimento
 import sptech.projetojpa1.domain.Status
-import sptech.projetojpa1.domain.Usuario
 import java.time.LocalDateTime
 
 data class AgendamentoResponseDTO(
     var idAgendamento: Int?,
     var dataHorario: LocalDateTime?,
     var tipoAgendamento: String?,
-    var usuario: Usuario,
-    var procedimento: Procedimento,
-    var especificacao: Especificacao,
+    var usuario: String?,
+    var usuarioTelefone: String? = null,
+    var usuarioCpf: String? = null,
+    var procedimento: String?,
+    var especificacao: String?,
     var statusAgendamento: Status
 )

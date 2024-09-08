@@ -176,10 +176,10 @@ document.addEventListener("DOMContentLoaded", () => {
         // Itera pelos dois agendamentos mais recentes
         sortedData.slice(0, 3).forEach((agendamento) => {
           const row = frequentClientsTable.insertRow();
-          const nome = agendamento.usuario.nome;
-          const cpfFormatado = formatarCPF(agendamento.usuario.cpf);
+          const nome = agendamento.usuario;
+          const cpfFormatado = formatarCPF(agendamento.usuarioCpf);
           const ultimaAparicao = formatarData(agendamento.dataHorario);
-          const ultimoProcedimento = agendamento.procedimento.tipo;
+          const ultimoProcedimento = agendamento.procedimento;
 
           row.insertCell(0).innerText = nome;
           row.insertCell(1).innerText = cpfFormatado;
@@ -229,17 +229,15 @@ function renderizarAgendaDiaria(agendamentos) {
     // Ajusta a data e hora para o fuso horário local
     const dataUTC = new Date(agendamento.dataHorario);
 
-    // Adiciona 3 horas ao horário UTC
-    dataUTC.setHours(dataUTC.getHours() + 3);
-
+    // Não adicionar horas ao horário UTC
     const horarioLocal = dataUTC.toLocaleTimeString("pt-BR", {
       hour: "2-digit",
       minute: "2-digit",
       hour12: false // Use o formato 24 horas
     });
 
-    const cliente = agendamento.usuario.nome;
-    const procedimento = agendamento.procedimento.descricao;
+    const cliente = agendamento.usuario;
+    const procedimento = agendamento.procedimento;
 
     const appointmentElement = document.createElement("div");
     appointmentElement.className = "appointment";
@@ -254,7 +252,6 @@ function renderizarAgendaDiaria(agendamentos) {
     appointmentsContainer.appendChild(appointmentElement);
   });
 }
-
 // Função para carregar a agenda diária
 async function carregarAgendaDiaria() {
   const agendamentos = await fetchAgendamentos();
