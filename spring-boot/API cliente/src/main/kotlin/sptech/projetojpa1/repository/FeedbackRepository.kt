@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
 import sptech.projetojpa1.domain.Feedback
 import sptech.projetojpa1.domain.usuario.Cliente
+import sptech.projetojpa1.dominio.Usuario
 
 @Repository
 interface FeedbackRepository : JpaRepository<Feedback, Int> {
@@ -31,4 +32,7 @@ interface FeedbackRepository : JpaRepository<Feedback, Int> {
     fun buscarMediaNotas(): List<Double>
 
     fun findAllByClienteAvaliado(cliente: Cliente): List<Feedback>
+}
+{
+    fun deleteAllByUsuario(usuario: Usuario)
 }

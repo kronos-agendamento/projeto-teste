@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d35af601-708d-4cac-8c6c-99c4dd3df842" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../site institucional-plenitude/assets/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/../site institucional-plenitude/assets/css/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../site institucional-plenitude/assets/img/servicos/Educacao/exten cilios.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../site institucional-plenitude/assets/img/servicos/sobrancelha - design com henna copia.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../site institucional-plenitude/services.html" beforeDir="false" afterPath="$PROJECT_DIR$/../site institucional-plenitude/services.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../site institucional-plenitude/app/dashboard/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/../site institucional-plenitude/app/dashboard/dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../site institucional-plenitude/app/index/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../site institucional-plenitude/app/index/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../site institucional-plenitude/app/procedimento/procedimento.html" beforeDir="false" afterPath="$PROJECT_DIR$/../site institucional-plenitude/app/procedimento/procedimento.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API cliente/src/main/kotlin/sptech/projetojpa1/config/corsConfigurer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/API cliente/src/main/kotlin/sptech/projetojpa1/config/corsConfigurer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API cliente/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/API cliente/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,20 +26,20 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Andreia/Documents/KRONOS Sprint 2SISA/projeto-teste/spring-boot/API cliente - Yan/pom.xml&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/gyuli/OneDrive/Documentos/Sistemas de Informação/Att SP3/projeto-teste/spring-boot/API cliente",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>

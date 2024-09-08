@@ -1,8 +1,12 @@
 package sptech.projetojpa1.service
 
+import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import sptech.projetojpa1.dominio.Complemento
+import sptech.projetojpa1.dominio.Endereco
 import sptech.projetojpa1.domain.Usuario
+import sptech.projetojpa1.dto.endereco.EnderecoAtualizacaoRequest
 import sptech.projetojpa1.domain.usuario.Cliente
 import sptech.projetojpa1.domain.usuario.Profissional
 import sptech.projetojpa1.dto.agendamento.AgendamentoResponseDTO
@@ -17,7 +21,10 @@ class UsuarioService(
     @Autowired private val enderecoRepository: EnderecoRepository,
     @Autowired private val empresaRepository: EmpresaRepository,
     @Autowired private val fichaAnamneseRepository: FichaAnamneseRepository,
-    @Autowired private val respostaRepository: RespostaRepository
+    @Autowired private val respostaRepository: RespostaRepository,
+    @Autowired private val feedbackRepository: FeedbackRepository,
+    @Autowired private val agendamentoRepository: AgendamentoRepository,
+    @Autowired private val complementoRepository: ComplementoRepository
 ) {
     fun salvarUsuario(dto: UsuarioRequest): Usuario {
         val usuario: Usuario = if (dto.nivelAcessoId == 1) {
@@ -98,7 +105,7 @@ class UsuarioService(
         usuario.apply {
             nome = dto.nome ?: nome
             email = dto.email ?: email
-            senha = dto.senha ?: senha
+//            senha = dto.senha ?: senha
             instagram = dto.instagram ?: instagram
             dataNasc = dto.dataNasc ?: dataNasc
             telefone = dto.telefone ?: telefone
@@ -108,11 +115,27 @@ class UsuarioService(
         return usuarioRepository.save(usuario)
     }
 
+    @Transactional
     fun deletarUsuarioPorId(id: Int): Boolean {
         val usuario = usuarioRepository.findById(id).orElse(null) ?: return false
+
+        // Excluindo Feedbacks relacionados ao Usuário
+        feedbackRepository.deleteAllByUsuario(usuario)
+
+        // Excluindo Agendamentos relacionados ao Usuário
+        agendamentoRepository.deleteAllByUsuario(usuario)
+
+        // Excluindo Respostas relacionadas ao Usuário
+        respostaRepository.deleteAllByUsuario(usuario)
+
+        // Excluindo outras entidades associadas (se necessário)
+        // Adicione aqui outras exclusões necessárias, seguindo o padrão acima
+
+        // Por fim, excluir o próprio Usuário
         usuarioRepository.delete(usuario)
         return true
     }
+
 
     fun listarUsuariosAtivos(): List<Usuario> = usuarioRepository.findByStatusTrue()
 
@@ -167,6 +190,61 @@ class UsuarioService(
     fun getClientesFidelizadosUltimosTresMeses(): Int {
         return usuarioRepository.findClientesFidelizadosUltimosTresMeses()
     }
+
+    fun atualizarStatusParaInativo(cpf: String): Usuario? {
+        val usuario = usuarioRepository.findByCpf(cpf)
+        return if (usuario != null) {
+            println("Usuário encontrado: $usuario")
+            usuario.status = false
+            usuarioRepository.save(usuario)
+            println("Status atualizado para: ${usuario.status}")
+            usuario
+        } else {
+            println("Usuário não encontrado para o CPF: $cpf")
+            null
+        }
+    }
+
+    fun atualizarStatusParaAtivo(cpf: String): Usuario? {
+        val usuario = usuarioRepository.findByCpf(cpf)
+        return if (usuario != null) {
+            println("Usuário encontrado: $usuario")
+            usuario.status = true
+            usuarioRepository.save(usuario)
+            println("Status atualizado para: ${usuario.status}")
+            usuario
+        } else {
+            println("Usuário não encontrado para o CPF: $cpf")
+            null
+        }
+    }
+
+//    fun atualizarEndereco(cpf: String, dto: EnderecoAtualizacaoRequest): Endereco? {
+//        val usuario = usuarioRepository.findByCpf(cpf)
+//            ?: return null // Retorna null se o usuário não for encontrado
+//
+//        val endereco = usuario.endereco
+//            ?: return null // Retorna null se o endereço não for encontrado
+//
+//        // Atualiza os campos do endereço apenas se eles não forem nulos na requisição
+//        dto.logradouro?.let { endereco.logradouro = it }
+//        dto.cep?.let { endereco.cep = it }
+//        dto.numero?.let { endereco.numero = it }
+//        dto.bairro?.let { endereco.bairro = it }
+//        dto.cidade?.let { endereco.cidade = it }
+//        dto.estado?.let { endereco.estado = it }
+//
+//        // Atualiza ou cria o complemento
+//        dto.complemento?.let { complementoDescricao ->
+//            val complementoExistente = complementoRepository.findByEnderecoId(endereco.codigo!!)
+//                ?: Complemento(codigo = null, complemento = complementoDescricao, endereco = endereco)
+//            complementoExistente.complemento = complementoDescricao
+//            complementoRepository.save(complementoExistente)
+//        }
+//
+//        return enderecoRepository.save(endereco) // Salva o endereço atualizado
+//    }
+
 
     fun getClientesConcluidosUltimos5Meses(): List<Int> {
         return usuarioRepository.findClientesConcluidos5Meses()

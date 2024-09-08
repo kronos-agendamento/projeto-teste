@@ -4,18 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Procedimento | KronosBooking</title>
-<<<<<<< HEAD:site institucional-plenitude/app/procedimento/procedimento.html
-    <link rel="stylesheet" href="procedimento.css">
-    <link href="" rel="icon">
-    <link href="../procedimento/image.png" rel="apple-touch-icon">
-    <script src="procedimento.js" defer></script>
-=======
+    <title>Clientes | KronosBooking</title>
     <link rel="stylesheet" href="clientes.css">
     <link href="" rel="icon">
     <link href="../procedimento/image.png" rel="apple-touch-icon">
-    <script src="clientes-arquivados.js" defer></script>
->>>>>>> 30dfac8fc6931a102a10d18dd51d77bb68aaef46:site-institucional-plenitude/app/clientes/clienteForms/arquivar-cliente/clientes-arquivados.html
+    <script src="clientes.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.2/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
@@ -63,11 +56,7 @@
                     <span class="title">Anamneses</span>
                 </a>
             </li>
-<<<<<<< HEAD:site institucional-plenitude/app/procedimento/procedimento.html
-            <li class="list">
-=======
             <li class="list active">
->>>>>>> 30dfac8fc6931a102a10d18dd51d77bb68aaef46:site-institucional-plenitude/app/clientes/clienteForms/arquivar-cliente/clientes-arquivados.html
                 <a href="../clientes/clientes.html">
                     <span class="icon"><ion-icon name="person-add-outline"></ion-icon></span>
                     <span class="title">Clientes</span>
@@ -95,8 +84,8 @@
     </div>
     <div class="main-content" style="margin-top: 1%;">
         <header style="height: 14vh; width: 152vh; margin-left: 4.3%;">
-            <h1>Clientes Arquivados</h1>
-            <p>Essa página é destinada para visualização de clientes arquivados.</p>
+            <h1>Clientes</h1>
+            <p>Essa página é destinada para visualização, cadastro, edição ou exclusão de clientes.</p>
         </header>
         <div id="notification" class="notification">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill"
@@ -111,22 +100,28 @@
                 <img style="height: 4vh; margin-top: 12%;" src="../../assets/icons/lupa.png" alt="filter">Pesquisar Clientes
             </button>
             <div class="right-actions">
+                <button class="arquivados-btn" style="height: 7vh; margin-left: 26%;" onclick="redirectToArchived()">
+                    <img style="height: 4.5vh; width: 4.5vh; margin-top: 19%;" src="../../assets/icons/pasta-aberta.png" alt="spreadsheet">
+                    Arquivados
+                </button>                
+                <button class="avaliar-btn" style="height: 7vh; margin-left: 0%;" onclick="openModalAvaliar()"><img
+                    style="height: 4.5vh; width: 4.5vh; margin-top: 19%;" src="../../assets/icons/estrela.png"
+                    alt="spreadsheet">Avaliar</button>
                 <button class="planilha-btn" style="height: 7vh; margin-left:0%;"><img
                         style="height: 4.5vh; width: 4.5vh; margin-top: 19%;" src="../../assets/icons/spreadsheet.png"
                         alt="spreadsheet">Planilha</button>
-            
+                <button class="criar-btn" onclick="showForm()" style="height: 7vh; width: 37vh;"><a
+                        style="width: max-content;"
+                        href="../clientes/clienteForms/cadastrar-cliente.html">
+                        <img style="height: 4vh; margin-top: 17%;" src="../../assets/icons/createNew.png"
+                            alt="createNew"><span>Criar Novo</span>
+                    </a></button>
             </div>
-        </div>
-        <div class="back">
-            <a href="../clientes/clientes.html" class="back-link">← Voltar para página de
-                visualização dos
-                clientes ativos</a>
         </div>
         <table id="procedures-table" class="procedures-table" >
             <thead>
                 <tr>
                     <th>Nome</th>
-                    <th>Nascimento</th>
                     <th>Instagram</th>
                     <th>Telefone</th>
                     <th>CPF</th>
@@ -165,38 +160,50 @@
         </div>
     </div>
 
-
-<div id="modal" class="modal" style="display: none;">
-    <div class="modal-content">
-        <p>Tem certeza que deseja excluir o cliente?</p>
-        <p id="usu"></p>
-        <button class="btn btn-yes">SIM</button>
-        <button class="btn btn-no" onclick="closeModal()">NÃO</button>
-    </div>
-</div>
-
-<div id="modal-pesquisa" class="modal-pesquisa" style="display: none;">
-   
-    <div class="modal-content">
-        <span class="close" onclick="closeModalPesquisa()">&times;</span>
-        <p><b>Pesquisa de Clientes</b></p>
-        <div class="form-group">
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome">
+    <div id="modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <p>Tem certeza que deseja <b>excluir</b> o cliente?</p>
+            <p id="usu"></p>
+            <button id="btnYes" class="btn btn-yes">SIM</button>
+            <button class="btn btn-no" onclick="closeModal()">NÃO</button>
         </div>
-        <div class="form-group-row">
-            <div class="form-group">
-                <label for="cpf">CPF:</label>
-                <input type="text" id="cpf" name="cpf">
-            </div>
-            <div class="form-group">
-                <label for="codigo">Código:</label>
-                <input type="text" id="codigo" name="codigo">
-            </div>
-        </div>
-        <button class="btn-pesquisar">Pesquisar</button>
     </div>
-</div>
+
+    <div id="modal-archive" class="modal" style="display: none;">
+        <div class="modal-content">
+            <p>Você tem certeza que deseja <b>arquivar</b> o usuário?</p>
+            <p id="usu-archive"></p>
+            <button id="btnYesArchive" class="btn btn-yes">SIM</button>
+            <button class="btn btn-no" onclick="closeModalArchive()">NÃO</button>
+        </div>
+    </div>
+    
+
+    <div id="modal-pesquisa" class="modal-pesquisa" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModalPesquisa()">&times;</span>
+            <p><b>Pesquisa de Clientes</b></p>
+            <div class="form-group">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome">
+            </div>
+            <div class="form-group-row">
+                <div class="form-group">
+                    <label for="cpf">CPF:</label>
+                    <input type="text" id="cpf" name="cpf">
+                </div>
+                <div class="form-group">
+                    <label for="codigo">Código:</label>
+                    <input type="text" id="codigo" name="codigo">
+                </div>
+            </div>
+            <button class="btn-pesquisar" onclick="pesquisarCliente()">Pesquisar</button>
+    
+            <!-- Área para exibir o resultado -->
+            <div id="resultado" style="margin-top: 20px;"></div>
+        </div>
+    </div>
+    
 
 
 <div id="modal-avaliacao" class="modal-avaliacao" style="display: none;">

@@ -5,5 +5,14 @@ import sptech.projetojpa1.domain.Endereco
 
 interface EnderecoRepository : JpaRepository<Endereco, Int> {
 
-    fun findByCepContaining(cep: String): List<Endereco>
+    // Método para encontrar endereços por CEP
+    fun findByCepContains(cep: String): List<Endereco>
+
+    // Método para encontrar endereços por bairro, ignorando maiúsculas e minúsculas
+    fun findByBairroContainsIgnoreCase(bairro: String): List<Endereco>
+
+    // Método para encontrar endereços por nome de usuário
+//    fun findByUsuarioNomeContains(nomeUsuario: String): List<Endereco>
+    fun findByLogradouroAndNumeroAndCep(logradouro: String, numero: Int, cep: String): Endereco?
+
 }
