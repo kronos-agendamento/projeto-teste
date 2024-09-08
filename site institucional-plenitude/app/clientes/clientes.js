@@ -106,13 +106,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${cpf}</td>
                 <td>
                     <button class="edit-btn" data-id="${cpf}" style="border: none; background: transparent; cursor: pointer;" title="Editar Cliente">
-                            <img src="../../assets/icons/editar.png" alt="Editar" style="width: 30px; height: 30px; margin-top:8px; margin-left:5px;">
+                            <img src="../../assets/icons/editar.png" alt="Editar" style="width: 25px; height: 25px; margin-top:8px; margin-left:5px;">
                     </button>
                     <button class="delete-btn" data-id="${cpf}" style="border: none; background: transparent; cursor: pointer;" title="Excluir Cliente">
-                            <img src="../../assets/icons/excluir.png" alt="Excluir" style="width: 30px; height: 30px; margin-top:8px; margin-left:2px;">
+                            <img src="../../assets/icons/excluir.png" alt="Excluir" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
                     </button>
                     <button class="archive-btn" data-id="${cpf}" style="border: none; background: transparent; cursor: pointer;" title="Arquivar Cliente">
-                            <img src="../../assets/icons/arquivar.png" alt="Arquivar" style="width: 30px; height: 30px; margin-top:8px; margin-left:2px;">
+                            <img src="../../assets/icons/arquivar.png" alt="Arquivar" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
                     </button>
                 </td>
             `;
@@ -137,17 +137,17 @@ document.addEventListener('DOMContentLoaded', function () {
         // Event listener para o botão de deletar
         document.querySelectorAll('.delete-btn').forEach(button => {
             const id = button.getAttribute('data-id');
-            const tipo = button.getAttribute('data-tipo');
+            const nome = button.closest('tr').querySelector('td:nth-child(1)').textContent; // Captura o nome corretamente
             button.addEventListener('click', () => {
                 cpfParaDeletar = id;
                 if (cpfParaDeletar) {
-                    showModal(tipo);
+                    showModal(nome); // Passa o nome correto para o modal
                 } else {
                     console.error('ID do usuário é indefinido.');
                 }
             });
         });
-
+        
         // Event listener para o botão de arquivar (📁)
         document.querySelectorAll('.archive-btn').forEach(button => {
             const cpf = button.getAttribute('data-id');

@@ -59,10 +59,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${telefone}</td>
                 <td>${cpf}</td>
                 <td>
-                    <button class="edit-btn" data-id="${cpf}">✏️</button>
-                    <button class="delete-btn" data-id="${cpf}" data-tipo="${nome}">🗑️</button>
+        
+                    <button class="edit-btn" data-id="${cpf}" style="border: none; background: transparent; cursor: pointer;" title="Editar Cliente">
+                            <img src="../../assets/icons/editar.png" alt="Editar" style="width: 25px; height: 25px; margin-top:18px; margin-left:2px;">
+                    </button>
+                    <button class="delete-btn" data-id="${cpf}" data-tipo="${nome}" style="border: none; background: transparent; cursor: pointer;" title="Excluir Cliente">
+                            <img src="../../assets/icons/excluir.png" alt="Excluir" style="width: 25px; height: 25px; margin-top:18px; margin-left:2px;">
+                    </button>
                     <button class="activate-btn" data-id="${cpf}" style="border: none; background: transparent; cursor: pointer;" title="Desarquivar Cliente">
-                            <img src="../../assets/icons/desarquivar.png" alt="Arquivar" style="width: 30px; height: 30px; margin-top:18px; margin-left:15px;">
+                            <img src="../../assets/icons/desarquivar.png" alt="Arquivar" style="width: 25px; height: 25px; margin-top:18px; margin-left:2px;">
                     </button>
                 </td>
             `;
