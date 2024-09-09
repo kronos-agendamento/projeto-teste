@@ -95,27 +95,32 @@ document.addEventListener("DOMContentLoaded", function () {
     paginatedUsers.forEach((user) => {
       const row = document.createElement("tr");
       const nome = user.nome;
-      const instagram = user.instagram;
+      const instagram = user.instagram.replace("@", ""); // Remove o "@" do início
       const telefone = user.telefone;
       const cpf = user.cpf;
 
       row.innerHTML = `
-                <td>${nome}</td>
-                <td>${instagram}</td>
-                <td>${telefone}</td>
-                <td>${cpf}</td>
-                <td>
-                    <button class="edit-btn" data-id="${cpf}" style="border: none; background: transparent; cursor: pointer;" title="Editar Cliente">
-                            <img src="../../assets/icons/editar.png" alt="Editar" style="width: 25px; height: 25px; margin-top:8px; margin-left:5px;">
-                    </button>
-                    <button class="delete-btn" data-id="${cpf}" style="border: none; background: transparent; cursor: pointer;" title="Excluir Cliente">
-                            <img src="../../assets/icons/excluir.png" alt="Excluir" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
-                    </button>
-                    <button class="archive-btn" data-id="${cpf}" style="border: none; background: transparent; cursor: pointer;" title="Arquivar Cliente">
-                            <img src="../../assets/icons/arquivar.png" alt="Arquivar" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
-                    </button>
-                </td>
-            `;
+      <td>${nome}</td>
+      <td>
+          <a href="https://www.instagram.com/${instagram}" target="_blank" class="instagram-link" style="display: flex; align-items: center;">
+              <img src="../../assets/icons/instagram-icon.png" alt="Instagram" style="width: 20px; height: 20px; margin-right: 8px; margin-top: 20px">
+              ${user.instagram}
+          </a>
+      </td>
+      <td>${telefone}</td>
+      <td>${cpf}</td>
+      <td>
+          <button class="edit-btn" data-id="${cpf}" style="border: none; background: transparent; cursor: pointer;" title="Editar Cliente">
+              <img src="../../assets/icons/editar.png" alt="Editar" style="width: 25px; height: 25px; margin-top:8px; margin-left:5px;">
+          </button>
+          <button class="delete-btn" data-id="${cpf}" style="border: none; background: transparent; cursor: pointer;" title="Excluir Cliente">
+              <img src="../../assets/icons/excluir.png" alt="Excluir" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
+          </button>
+          <button class="archive-btn" data-id="${cpf}" style="border: none; background: transparent; cursor: pointer;" title="Arquivar Cliente">
+              <img src="../../assets/icons/arquivar.png" alt="Arquivar" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
+          </button>
+      </td>
+  `;
       proceduresTbody.appendChild(row);
     });
 

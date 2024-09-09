@@ -658,3 +658,14 @@ img {
 .procedures-table-pesquisa tbody tr:nth-child(odd) {
   background-color: #f9f9f9;
 }
+
+.instagram-link {
+  /* Adicione os estilos desejados aqui */
+  color: #000; /* Exemplo: cor do texto */
+  text-decoration: none; /* Exemplo: remover sublinhado */
+}
+
+.instagram-link:hover {
+  /* Estilos para o estado de hover */
+  text-decoration: underline; /* Exemplo: adicionar sublinhado ao passar o mouse */
+}
