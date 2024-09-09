@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function () {
             data: {
                 labels: labelsChart1,
                 datasets: [{
-                    label: 'oi tchau',
+                    label: 'Quantidade',
                     data: dataChart1,
                     backgroundColor: '#D2135D',
                     borderColor: '#D2135D',
@@ -317,7 +317,7 @@ document.addEventListener('DOMContentLoaded', function () {
             data: {
                 labels: labelsChart33,
                 datasets: [{
-                    label: 'caiu sinal da tim',
+                    label: '-',
                     data: dataChart33,
                     backgroundColor: ['#D2135D', '#E84E8A', '#F59DBF'],
                     borderColor: '#D2135D',
