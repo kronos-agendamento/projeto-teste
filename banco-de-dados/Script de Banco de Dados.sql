@@ -230,7 +230,7 @@ VALUES
 
 INSERT INTO usuario (nome, email, senha, instagram, cpf, telefone, data_nasc, genero, indicacao, status, fk_nivel_acesso, fk_endereco, fk_empresa, fk_ficha_anamnese)
 VALUES 
-('Priscila Plenitude', 'priscila@plenitude.com', 'senhaAdmin', '@plenitude', '111.111.111-11', 11987654321, '1980-01-01', 'Feminino', 'Instagram', TRUE, 1, 1, 1, NULL),
+('Priscila Plenitude', 'priscila@plenitude.com', 'senhaAdmin', '@plenitudenoolhar', '111.111.111-11', 11987654321, '1980-01-01', 'Feminino', 'Instagram', TRUE, 1, 1, 1, NULL),
 ('Ana Paula', 'ana@beleza.com', 'senha123', '@anabeauty', '222.222.222-22', 21987654321, '1992-02-02', 'Feminino', 'Indicação de Amiga', TRUE, 2, 2, 2, 2),
 ('Carlos Eduardo', 'carlos@olharperfeito.com', 'senha123', '@carlosedu', '333.333.333-33', 31987654322, '1995-03-03', 'Masculino', 'Facebook', TRUE, 2, 3, 3, 3),
 ('Juliana Costa', 'juliana@glamour.com', 'senha123', '@jucosta', '444.444.444-44', 41987654323, '1990-04-04', 'Feminino', 'Google', TRUE, 2, 4, 4, 4),
