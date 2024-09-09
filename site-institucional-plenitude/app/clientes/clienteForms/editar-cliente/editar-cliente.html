@@ -21,16 +21,16 @@
             style="width: 30px; height: 30px; list-style: none;; display: flex; justify-content: center; margin-top: 5vh;">
             <div class="imagem-perfil"
                 style="width: 20vh; height: 20vh; border-radius: 300px; display: flex; justify-content: center;">
-                <img src="../.././index/Foto de Perfil.png"
+                <img src="../../../index/Foto de Perfil.png"
                     style="width: 53vh; height: 23vh;  display: flex; justify-content: center; align-items: center;">
             </div>
         </li>
         <li id="userName" style="margin-top: 20vh;list-style: none; color: white; font-weight: 600;">
         </li>
-        <li id="userEmail" style="list-style: none; color: white; font-weight: 200; font-size: 12px;">
+        <li id="userInsta" style="list-style: none; color: white; font-weight: 200; font-size: 12px;">
         </li>
 
-        <ul style="margin-top: 80%; position:absolute;">
+        <ul style="margin-top: 100%; position:absolute;">
             <li class="list">
                 <a href="../index/index.html">
                     <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
@@ -39,43 +39,43 @@
                 </a>
             </li>
             <li class="list">
-                <a href="#">
+                <a href="../../../perfil/perfil.html">
                     <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
                     <span class="title">Perfil</span>
                 </a>
             </li>
             <li class="list">
-                <a href="#">
+                <a href="../../../agendamento/agendamento.html">
                     <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
                     <span class="title">Agendamentos</span>
                 </a>
             </li>
             <li class="list">
-                <a href="#">
+                <a href="../../../anamnese/anamnese.html">
                     <span class="icon"><ion-icon name="document-text-outline"></ion-icon></span>
                     <span class="title">Anamneses</span>
                 </a>
             </li>
             <li class="list active">
-                <a href="../clientes/clientes.html">
+                <a href="../../clientes.html">
                     <span class="icon"><ion-icon name="person-add-outline"></ion-icon></span>
                     <span class="title">Clientes</span>
                 </a>
             </li>
             <li class="list">
-                <a href="../procedimento/procedimento.html">
+                <a href="../../../procedimento/procedimento.html">
                     <span class="icon"><ion-icon name="brush-outline"></ion-icon></span>
                     <span class="title">Procedimentos</span>
                 </a>
             </li>
             <li class="list">
-                <a href="../dashboard/dashboard.html">
+                <a href="../../../dashboard/dashboard.html">
                     <span class="icon"><ion-icon name="stats-chart-outline"></ion-icon></span>
                     <span class="title">Dashboard</span>
                 </a>
             </li>
             <li class="list">
-                <a href="../../index.html">
+                <a href="../../../../index.html">
                     <span class="icon"><ion-icon name="exit-outline"></ion-icon></span>
                     <span class="title">Sair</span>
                 </a>
@@ -87,7 +87,7 @@
             <h1 style="margin-top: 10px;">Mais informações de: </h1>
         </header>
         <div class="back">
-            <a href="../clientes.html" class="back-link" style="margin-left: 11vh;">← Voltar para página de
+            <a href="../../clientes.html    " class="back-link" style="margin-left: 11vh;">← Voltar para página de
                 visualização dos
                 clientes </a>
         </div>
@@ -102,36 +102,37 @@
         <div class="actions" style="margin-left: 8vh;">
             <button class="filter-btn" style="height: 7vh; margin-left: 2.6%; width: 33vh; background-color:#d81b60;
              color: #fff;border: none;" onclick="openModalPesquisa()">
-                <img style="height: 4vh; width: 25h; margin-top: 10%; border-radius: 0px;" src="../../../assets/icons/usuario.png" alt="filter">Dados Gerais
+                <img style="height: 4vh; width: 25h; margin-top: 10%; border-radius: 0px;"
+                    src="../../../../assets/icons/usuario.png" alt="filter">Dados Gerais
             </button>
             <div class="right-actions">
-                <!-- <button class="arquivados-btn" style="height: 7vh; margin-left: 26%;" onclick="redirectToArchived()">
-                    <img style="height: 4.5vh; width: 4.5vh; margin-top: 19%;" src="../../assets/icons/pasta-aberta.png" alt="spreadsheet">
-                    Anotações
-                </button> -->
                 <button class="avaliar-btn" style="height: 7vh; margin-left: 5px;" onclick="openModalAvaliar()"><img
-                        style="height: 4.5vh; width: 4.5vh; margin-top: 14%; border-radius: 0%;" src="../../../assets/icons/agendar.preto.png"
-                        alt="spreadsheet">Agendamentos</button>
+                        style="height: 4.5vh; width: 4.5vh; margin-top: 14%; border-radius: 0%;"
+                        src="../../../../assets/icons/agendar.preto.png" alt="spreadsheet">Agendamentos</button>
                 <button class="criar-btn" onclick="showForm()" style="height: 7vh; width: 37vh; margin-left: 5px;"><a
                         style="width: max-content;" href="../clientes/clienteForms/cadastrar-cliente.html">
-                        <img style="height: 4vh; margin-top: 13%; border-radius: 0%;" src="../../../assets/icons/ficha.preta.png"
-                            alt="createNew"><span>Ficha de Anamnese</span>
+                        <img style="height: 4vh; margin-top: 13%; border-radius: 0%;"
+                            src="../../../../assets/icons/ficha.preta.png" alt="createNew"><span>Ficha de
+                            Anamnese</span>
                     </a></button>
-                    <button type="button" class="pipefy-btn" id="enviarEmailButton" style="margin-left: 87px; width: 150px;">Solicitar Feedback</button>
+                <button type="button" class="pipefy-btn" id="enviarEmailButton"
+                    style="margin-left: 87px; width: 150px;">Solicitar Feedback</button>
             </div>
         </div>
 
-          
+
         <section class="form-section" id="personalInfoForm">
-            
-            <h2> 
+
+            <h2>
                 <div class="form-group-row" style="height: 10px;">
                     &nbsp;&nbsp;&nbsp; Dados Pessoais
-                  <button class="edit-icon-btn" id="editIcon" aria-label="Editar Dados Pessoais" onclick="enableEditing()" >
-                    <img src="../../../assets/icons/editar.branco.png" alt="Editar" style="width: 20px; height: 20px; border-radius: 0px;">
-                </button>  
-                </div> 
-                
+                    <button class="edit-icon-btn" id="editIcon" aria-label="Editar Dados Pessoais"
+                        onclick="enableEditing()">
+                        <img src="../../../assets/icons/editar.branco.png" alt="Editar"
+                            style="width: 20px; height: 20px; border-radius: 0px;">
+                    </button>
+                </div>
+
             </h2>
             <form id="personalForm" class="form">
                 <div class="form-group-row">
@@ -165,7 +166,7 @@
                             <span class="lock-icon" id="cpf-lock">🔒</span>
                         </div>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="telefone">Celular:</label>
                         <div style="display: flex; align-items: center;">
@@ -206,20 +207,22 @@
                         </div>
                     </div>
                 </div>
-                <div class="button-container" >
+                <div class="button-container">
                     <button type="submit" class="save-button" id="saveButton" disabled>Salvar Dados Pessoais</button>
                 </div>
             </form>
         </section>
-    
+
         <section class="form-section" id="addressInfoForm">
             <h2>
                 <div class="form-group-row" style="height: 10px;">
                     &nbsp;&nbsp;&nbsp; Dados de Endereço
-                  <button class="edit-icon-btn" id="editIcon" aria-label="Editar Dados Pessoais" onclick="enableEditing()" >
-                    <img src="../../../assets/icons/editar.branco.png" alt="Editar" style="width: 20px; height: 20px; border-radius: 0px;">
-                </button>  
-                </div> 
+                    <button class="edit-icon-btn" id="editIcon" aria-label="Editar Dados Pessoais"
+                        onclick="enableEditing()">
+                        <img src="../../../assets/icons/editar.branco.png" alt="Editar"
+                            style="width: 20px; height: 20px; border-radius: 0px;">
+                    </button>
+                </div>
             </h2>
             <form id="addressForm" class="form">
                 <div class="form-group-row">
@@ -283,65 +286,65 @@
             </form>
         </section>
 
-    <div id="modal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <p>Tem certeza que deseja excluir o cliente?</p>
-            <p id="usu"></p>
-            <button id="btnYes" class="btn btn-yes">SIM</button>
-            <button class="btn btn-no" onclick="closeModal()">NÃO</button>
+        <div id="modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <p>Tem certeza que deseja excluir o cliente?</p>
+                <p id="usu"></p>
+                <button id="btnYes" class="btn btn-yes">SIM</button>
+                <button class="btn btn-no" onclick="closeModal()">NÃO</button>
+            </div>
         </div>
-    </div>
 
 
-    <div id="modal-pesquisa" class="modal-pesquisa" style="display: none;">
-        <div class="modal-content">
-            <span class="close" onclick="closeModalPesquisa()">&times;</span>
-            <p><b>Pesquisa de Clientes</b></p>
-            <div class="form-group">
-                <label for="nome">Nome:</label>
-                <input type="text" id="nome" name="nome">
-            </div>
-            <div class="form-group-row">
+        <div id="modal-pesquisa" class="modal-pesquisa" style="display: none;">
+            <div class="modal-content">
+                <span class="close" onclick="closeModalPesquisa()">&times;</span>
+                <p><b>Pesquisa de Clientes</b></p>
                 <div class="form-group">
-                    <label for="cpf">CPF:</label>
-                    <input type="text" id="cpf" name="cpf">
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome">
                 </div>
-                <div class="form-group">
-                    <label for="codigo">Código:</label>
-                    <input type="text" id="codigo" name="codigo">
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="cpf">CPF:</label>
+                        <input type="text" id="cpf" name="cpf">
+                    </div>
+                    <div class="form-group">
+                        <label for="codigo">Código:</label>
+                        <input type="text" id="codigo" name="codigo">
+                    </div>
                 </div>
-            </div>
-            <button class="btn-pesquisar" onclick="pesquisarCliente()">Pesquisar</button>
+                <button class="btn-pesquisar" onclick="pesquisarCliente()">Pesquisar</button>
 
-            <!-- Área para exibir o resultado -->
-            <div id="resultado" style="margin-top: 20px;"></div>
+                <!-- Área para exibir o resultado -->
+                <div id="resultado" style="margin-top: 20px;"></div>
+            </div>
         </div>
-    </div>
 
 
 
-    <div id="modal-avaliacao" class="modal-avaliacao" style="display: none;">
+        <div id="modal-avaliacao" class="modal-avaliacao" style="display: none;">
 
-        <div class="modal-content">
-            <span class="close" onclick="closeModalAvaliar()">&times;</span>
-            <p><b>Enviar avaliação do último atendimento</b></p>
-            <div class="form-group">
-                <label for="nome">Nome:</label>
-                <input type="text" id="nome" name="nome">
-            </div>
-            <div class="form-group-row">
+            <div class="modal-content">
+                <span class="close" onclick="closeModalAvaliar()">&times;</span>
+                <p><b>Enviar avaliação do último atendimento</b></p>
                 <div class="form-group">
-                    <label for="cpf">CPF:</label>
-                    <input type="text" id="cpf" name="cpf">
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome">
                 </div>
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="cpf">CPF:</label>
+                        <input type="text" id="cpf" name="cpf">
+                    </div>
+                </div>
+                <button class="btn-avaliar">Pesquisar</button>
             </div>
-            <button class="btn-avaliar">Pesquisar</button>
         </div>
-    </div>
 
 
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 
 </html>

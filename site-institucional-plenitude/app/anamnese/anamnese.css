@@ -438,6 +438,7 @@ Inicio Filtros
 .actions img {
   height: 5vh;
 }
+
 .right-actions img {
   height: 5vh;
 }
@@ -576,18 +577,18 @@ Inicio Respostas
   color: #555;
 }
 
-.form-section .direcionamento{
+.form-section .direcionamento {
   margin: 3vh;
   width: 63vw;
 }
 
-.form-section .direcionamento img{
+.form-section .direcionamento img {
   width: 3vw;
   margin-right: 1vw;
 }
 
 
-.content-box{
+.content-box {
   display: flex;
   flex-direction: row;
   width: 65vw;
@@ -597,21 +598,42 @@ Inicio Respostas
   margin-left: 5vw;
 }
 
-.content{
+.content {
   height: 20vh;
   margin: 3vh;
 }
 
-.content img{
+.content img {
   width: 1vw;
   margin: 0.8vh;
   cursor: pointer;
 }
 
-#openStatusModalBtn2{
+#openStatusModalBtn2 {
   border: none;
   background-color: #FFF0F5;
 }
-.input-content{
+
+.input-content {
   display: flex;
+}
+
+#userName {
+  display: flex;
+  list-style: none;
+  color: white;
+  font-weight: 600;
+  margin-top: 6vh;
+  justify-content: center;
+  margin-top: 20vh;
+}
+
+#userInsta {
+  list-style: none;
+  color: white;
+  font-weight: 200;
+  font-size: 12px;
+  margin-top: 0.5vh;
+  display: flex;
+  justify-content: center;
 }

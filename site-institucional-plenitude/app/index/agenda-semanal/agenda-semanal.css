@@ -482,10 +482,10 @@ header p {
   border-radius: 1vh;
   border: 1px solid black;
   cursor: pointer;
-   margin-top: 3.9vh;
+  margin-top: 3.9vh;
 }
 
-.classe_linha_pagination{
+.classe_linha_pagination {
   display: flex;
   width: 100%;
   justify-content: center;

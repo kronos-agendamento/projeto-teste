@@ -12,15 +12,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Função para abrir o novo modal de status
   function openCustomStatusModal() {
-    const modal = document.getElementById('custom-status-modal');
-    modal.style.display = 'flex';
+    const modal = document.getElementById("custom-status-modal");
+    modal.style.display = "flex";
     carregarStatusParaModal(); // Carrega os status quando o modal é aberto
   }
 
   // Função para carregar os status no modal
   function carregarStatusParaModal() {
-    fetch('http://localhost:8080/status-agendamento')
-      .then(response => {
+    fetch("http://localhost:8080/status-agendamento")
+      .then((response) => {
         if (response.ok) {
           return response.json();
         } else if (response.status === 204) {
@@ -29,11 +29,11 @@ document.addEventListener("DOMContentLoaded", function () {
           throw new Error("Erro ao buscar os status.");
         }
       })
-      .then(data => {
+      .then((data) => {
         const tbody = document.getElementById("custom-status-tbody");
         tbody.innerHTML = ""; // Limpa o conteúdo existente
 
-        data.forEach(status => {
+        data.forEach((status) => {
           const row = document.createElement("tr");
           row.innerHTML = `
             <td>${status.nome}</td>
@@ -44,15 +44,15 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         // Adiciona event listeners aos botões de seleção
-        document.querySelectorAll('.select-btn').forEach(button => {
-          button.addEventListener('click', function () {
-            const id = this.getAttribute('data-id');
-            const nome = this.getAttribute('data-nome');
+        document.querySelectorAll(".select-btn").forEach((button) => {
+          button.addEventListener("click", function () {
+            const id = this.getAttribute("data-id");
+            const nome = this.getAttribute("data-nome");
             selecionarStatus(id, nome);
           });
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Erro:", error.message);
         alert(error.message);
       });
@@ -60,32 +60,37 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Função para selecionar um status e atualizar
   function selecionarStatus(id, nome) {
-    fetch(`http://localhost:8080/api/agendamentos/atualizar-status/${selectedAgendamentoId}?statusId=${id}`, {
-      method: 'PUT'
-    })
-      .then(response => {
-        if (!response.ok) throw new Error('Erro ao atualizar o status.');
+    fetch(
+      `http://localhost:8080/api/agendamentos/atualizar-status/${selectedAgendamentoId}?statusId=${id}`,
+      {
+        method: "PUT",
+      }
+    )
+      .then((response) => {
+        if (!response.ok) throw new Error("Erro ao atualizar o status.");
         return response.json();
       })
-      .then(data => {
+      .then((data) => {
         showNotification(`Status atualizado para "${nome}" com sucesso!`);
         fetchAgendamentos(); // Atualizar a lista de agendamentos
         closeCustomStatusModal(); // Fechar o modal
       })
-      .catch(error => {
-        console.error('Erro ao atualizar o status:', error);
-        showNotification('Erro ao atualizar o status!', true);
+      .catch((error) => {
+        console.error("Erro ao atualizar o status:", error);
+        showNotification("Erro ao atualizar o status!", true);
       });
   }
 
   // Função para fechar o modal de seleção de status
   function closeCustomStatusModal() {
-    const modal = document.getElementById('custom-status-modal');
-    modal.style.display = 'none';
+    const modal = document.getElementById("custom-status-modal");
+    modal.style.display = "none";
   }
 
   // Adiciona um botão para abrir o modal de seleção de status
-  document.getElementById('select-status-btn').addEventListener('click', carregarStatusParaModal);
+  document
+    .getElementById("select-status-btn")
+    .addEventListener("click", carregarStatusParaModal);
 
   totalAgendamentos = agendamentos.filter(
     (agendamento) => agendamento.statusAgendamento.nome !== "Cancelado"
@@ -108,7 +113,9 @@ document.addEventListener("DOMContentLoaded", function () {
       agendamentos = data;
 
       // Ordenar agendamentos por data, do mais recente ao mais antigo
-      agendamentos.sort((a, b) => new Date(b.dataHorario) - new Date(a.dataHorario));
+      agendamentos.sort(
+        (a, b) => new Date(b.dataHorario) - new Date(a.dataHorario)
+      );
 
       // Exclui os agendamentos cancelados do total
       totalAgendamentos = agendamentos.filter(
@@ -130,38 +137,70 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function renderTable(filtro = 'todos') {
+  function renderTable(filtro = "todos") {
     const tbody = document.getElementById("procedures-tbody");
     tbody.innerHTML = "";
 
     const hoje = new Date();
-    const dataHoje = `${hoje.getFullYear()}-${String(hoje.getMonth() + 1).padStart(2, '0')}-${String(hoje.getDate()).padStart(2, '0')}`;
+    const dataHoje = `${hoje.getFullYear()}-${String(
+      hoje.getMonth() + 1
+    ).padStart(2, "0")}-${String(hoje.getDate()).padStart(2, "0")}`;
 
     let agendamentosFiltrados = agendamentos;
 
-    if (filtro === 'hoje') {
-      agendamentosFiltrados = agendamentos.filter(agendamento => {
+    if (filtro === "hoje") {
+      agendamentosFiltrados = agendamentos.filter((agendamento) => {
         const dataAgendamento = new Date(agendamento.dataHorario);
-        const dataAgendamentoFormatada = `${dataAgendamento.getFullYear()}-${String(dataAgendamento.getMonth() + 1).padStart(2, '0')}-${String(dataAgendamento.getDate()).padStart(2, '0')}`;
+        const dataAgendamentoFormatada = `${dataAgendamento.getFullYear()}-${String(
+          dataAgendamento.getMonth() + 1
+        ).padStart(2, "0")}-${String(dataAgendamento.getDate()).padStart(
+          2,
+          "0"
+        )}`;
         return dataAgendamentoFormatada === dataHoje;
       });
-    } else if (filtro === 'custom') {
+    } else if (filtro === "custom") {
       const from = document.getElementById("filter-from").value;
       const to = document.getElementById("filter-to").value;
-      const client = document.getElementById("filter-client").value.toLowerCase();
-      const procedure = document.getElementById("filter-procedure").value.toLowerCase();
-      const specification = document.getElementById("filter-specification").value.toLowerCase();
+      const client = document
+        .getElementById("filter-client")
+        .value.toLowerCase();
+      const procedure = document
+        .getElementById("filter-procedure")
+        .value.toLowerCase();
+      const specification = document
+        .getElementById("filter-specification")
+        .value.toLowerCase();
 
-      agendamentosFiltrados = agendamentos.filter(agendamento => {
+      agendamentosFiltrados = agendamentos.filter((agendamento) => {
         const dataAgendamento = new Date(agendamento.dataHorario);
-        const dataAgendamentoFormatada = `${dataAgendamento.getFullYear()}-${String(dataAgendamento.getMonth() + 1).padStart(2, '0')}-${String(dataAgendamento.getDate()).padStart(2, '0')}`;
+        const dataAgendamentoFormatada = `${dataAgendamento.getFullYear()}-${String(
+          dataAgendamento.getMonth() + 1
+        ).padStart(2, "0")}-${String(dataAgendamento.getDate()).padStart(
+          2,
+          "0"
+        )}`;
 
-        const isWithinDateRange = (!from || dataAgendamentoFormatada >= from) && (!to || dataAgendamentoFormatada <= to);
-        const matchesClient = !client || agendamento.usuario.toLowerCase().includes(client);
-        const matchesProcedure = !procedure || agendamento.procedimento.tipo.toLowerCase().includes(procedure);
-        const matchesSpecification = !specification || agendamento.especificacao.especificacao.toLowerCase().includes(specification);
+        const isWithinDateRange =
+          (!from || dataAgendamentoFormatada >= from) &&
+          (!to || dataAgendamentoFormatada <= to);
+        const matchesClient =
+          !client || agendamento.usuario.toLowerCase().includes(client);
+        const matchesProcedure =
+          !procedure ||
+          agendamento.procedimento.tipo.toLowerCase().includes(procedure);
+        const matchesSpecification =
+          !specification ||
+          agendamento.especificacao.especificacao
+            .toLowerCase()
+            .includes(specification);
 
-        return isWithinDateRange && matchesClient && matchesProcedure && matchesSpecification;
+        return (
+          isWithinDateRange &&
+          matchesClient &&
+          matchesProcedure &&
+          matchesSpecification
+        );
       });
     }
 
@@ -170,7 +209,8 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("total-pages").textContent = totalPages;
 
     document.getElementById("prev-page-btn").disabled = currentPage === 1;
-    document.getElementById("next-page-btn").disabled = currentPage === totalPages;
+    document.getElementById("next-page-btn").disabled =
+      currentPage === totalPages;
 
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -181,12 +221,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Ajustar para o horário local
       const dataHora = new Date(agendamento.dataHorario);
-      const dia = String(dataHora.getDate()).padStart(2, '0');
-      const mes = String(dataHora.getMonth() + 1).padStart(2, '0');
-      const horas = String(dataHora.getHours()).padStart(2, '0');
-      const minutos = String(dataHora.getMinutes()).padStart(2, '0');
+      const dia = String(dataHora.getDate()).padStart(2, "0");
+      const mes = String(dataHora.getMonth() + 1).padStart(2, "0");
+      const horas = String(dataHora.getHours()).padStart(2, "0");
+      const minutos = String(dataHora.getMinutes()).padStart(2, "0");
       const dataHoraFormatada = `${dia}/${mes} - ${horas}:${minutos}`;
-
 
       const dataHoraTd = document.createElement("td");
       dataHoraTd.textContent = dataHoraFormatada;
@@ -248,161 +287,204 @@ document.addEventListener("DOMContentLoaded", function () {
       acoesTd.appendChild(deleteButton);
       tr.appendChild(acoesTd);
 
-      tr.addEventListener("click", () => showDetalhesModal(agendamento.idAgendamento));
+      tr.addEventListener("click", () =>
+        showDetalhesModal(agendamento.idAgendamento)
+      );
 
       tbody.appendChild(tr);
     });
   }
 
-  document.getElementById('exportar-planilha').addEventListener('click', () => {
-    document.getElementById('export-modal').style.display = 'flex';
+  document.getElementById("exportar-planilha").addEventListener("click", () => {
+    document.getElementById("export-modal").style.display = "flex";
   });
 
-  document.getElementById('export-all').addEventListener('click', () => {
-    exportarParaExcel('todos');
+  document.getElementById("export-all").addEventListener("click", () => {
+    exportarParaExcel("todos");
     fecharModal();
   });
 
-  document.getElementById('export-today').addEventListener('click', () => {
-    exportarParaExcel('hoje');
+  document.getElementById("export-today").addEventListener("click", () => {
+    exportarParaExcel("hoje");
     fecharModal();
   });
 
-  document.getElementById('cancel-export').addEventListener('click', fecharModal);
+  document
+    .getElementById("cancel-export")
+    .addEventListener("click", fecharModal);
 
   function fecharModal() {
-    document.getElementById('export-modal').style.display = 'none';
+    document.getElementById("export-modal").style.display = "none";
   }
 
-  function exportarParaExcel(filtroAtivo = 'todos') {
+  function exportarParaExcel(filtroAtivo = "todos") {
     let agendamentosParaExportar = agendamentos;
-    let nomeArquivo = 'Agendamentos.xlsx';
+    let nomeArquivo = "Agendamentos.xlsx";
 
-    if (filtroAtivo === 'hoje') {
+    if (filtroAtivo === "hoje") {
       const hoje = new Date();
-      const dataHoje = `${hoje.getFullYear()}-${String(hoje.getMonth() + 1).padStart(2, '0')}-${String(hoje.getDate()).padStart(2, '0')}`;
-      const dia = String(hoje.getDate()).padStart(2, '0');
-      const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+      const dataHoje = `${hoje.getFullYear()}-${String(
+        hoje.getMonth() + 1
+      ).padStart(2, "0")}-${String(hoje.getDate()).padStart(2, "0")}`;
+      const dia = String(hoje.getDate()).padStart(2, "0");
+      const mes = String(hoje.getMonth() + 1).padStart(2, "0");
       nomeArquivo = `Agendamentos - ${dia}-${mes}.xlsx`;
 
-      agendamentosParaExportar = agendamentos.filter(agendamento => {
+      agendamentosParaExportar = agendamentos.filter((agendamento) => {
         const dataAgendamento = new Date(agendamento.dataHorario);
-        const dataAgendamentoFormatada = `${dataAgendamento.getFullYear()}-${String(dataAgendamento.getMonth() + 1).padStart(2, '0')}-${String(dataAgendamento.getDate()).padStart(2, '0')}`;
+        const dataAgendamentoFormatada = `${dataAgendamento.getFullYear()}-${String(
+          dataAgendamento.getMonth() + 1
+        ).padStart(2, "0")}-${String(dataAgendamento.getDate()).padStart(
+          2,
+          "0"
+        )}`;
         return dataAgendamentoFormatada === dataHoje;
       });
     }
 
     // Prepara os dados para exportação
-    const dados = agendamentosParaExportar.map(agendamento => ({
-      'Data e Hora': new Date(agendamento.dataHorario).toLocaleString(),
+    const dados = agendamentosParaExportar.map((agendamento) => ({
+      "Data e Hora": new Date(agendamento.dataHorario).toLocaleString(),
       Cliente: agendamento.usuario,
       Procedimento: agendamento.procedimento,
       Especificação: agendamento.especificacao,
-      Status: agendamento.statusAgendamento.nome
+      Status: agendamento.statusAgendamento.nome,
     }));
 
     // Cria uma nova planilha
     const ws = XLSX.utils.json_to_sheet(dados);
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Agendamentos');
+    XLSX.utils.book_append_sheet(wb, ws, "Agendamentos");
 
     // Exporta o arquivo Excel
     XLSX.writeFile(wb, nomeArquivo);
   }
 
   // Adiciona um botão para abrir o modal de seleção de status
-  document.getElementById('select-status-btn').addEventListener('click', openCustomStatusModal);
+  document
+    .getElementById("select-status-btn")
+    .addEventListener("click", openCustomStatusModal);
 
   function showDetalhesModal(id) {
-    const agendamento = agendamentos.find(a => a.idAgendamento === id);
+    const agendamento = agendamentos.find((a) => a.idAgendamento === id);
 
     if (agendamento) {
       selectedAgendamentoId = id; // Define o ID selecionado
-      document.getElementById('detalhe-cliente').value = agendamento.usuario;
-      document.getElementById('detalhe-celular').value = agendamento.usuarioTelefone;
+      document.getElementById("detalhe-cliente").value = agendamento.usuario;
+      document.getElementById("detalhe-celular").value =
+        agendamento.usuarioTelefone;
       const dataHora = new Date(agendamento.dataHorario);
-      document.getElementById('detalhe-data').value = `${dataHora.getUTCFullYear()}-${String(dataHora.getUTCMonth() + 1).padStart(2, '0')}-${String(dataHora.getUTCDate()).padStart(2, '0')}`;
-      document.getElementById('detalhe-inicio').value = `${String(dataHora.getUTCHours()).padStart(2, '0')}:${String(dataHora.getUTCMinutes()).padStart(2, '0')}`;
-      document.getElementById('detalhe-fim').value = `${String(dataHora.getUTCHours() + 1).padStart(2, '0')}:${String(dataHora.getUTCMinutes()).padStart(2, '0')}`; // Ajuste conforme necessário
-      document.getElementById('detalhe-procedimento').value = agendamento.procedimento;
-      document.getElementById('detalhe-status').value = agendamento.statusAgendamento.nome;
+      document.getElementById(
+        "detalhe-data"
+      ).value = `${dataHora.getUTCFullYear()}-${String(
+        dataHora.getUTCMonth() + 1
+      ).padStart(2, "0")}-${String(dataHora.getUTCDate()).padStart(2, "0")}`;
+      document.getElementById("detalhe-inicio").value = `${String(
+        dataHora.getUTCHours()
+      ).padStart(2, "0")}:${String(dataHora.getUTCMinutes()).padStart(2, "0")}`;
+      document.getElementById("detalhe-fim").value = `${String(
+        dataHora.getUTCHours() + 1
+      ).padStart(2, "0")}:${String(dataHora.getUTCMinutes()).padStart(2, "0")}`; // Ajuste conforme necessário
+      document.getElementById("detalhe-procedimento").value =
+        agendamento.procedimento;
+      document.getElementById("detalhe-status").value =
+        agendamento.statusAgendamento.nome;
 
       // Verifica o status do agendamento
       const statusId = agendamento.statusAgendamento.id; // Assumindo que você tem o id no objeto de status
-      const clienteFaltouButton = document.getElementById('clienteFaltou');
-      const atendimentoConcluidoButton = document.getElementById('atendimentoConcluido');
+      const clienteFaltouButton = document.getElementById("clienteFaltou");
+      const atendimentoConcluidoButton = document.getElementById(
+        "atendimentoConcluido"
+      );
 
       // Desabilita ou habilita os botões conforme o status
-      if (statusId === 1) { // Status Agendado
+      if (statusId === 1) {
+        // Status Agendado
         clienteFaltouButton.disabled = false;
         atendimentoConcluidoButton.disabled = false;
-        clienteFaltouButton.classList.remove('btn-disabled');
-        atendimentoConcluidoButton.classList.remove('btn-disabled');
+        clienteFaltouButton.classList.remove("btn-disabled");
+        atendimentoConcluidoButton.classList.remove("btn-disabled");
       } else {
         clienteFaltouButton.disabled = true;
         atendimentoConcluidoButton.disabled = true;
-        clienteFaltouButton.classList.add('btn-disabled');
-        atendimentoConcluidoButton.classList.add('btn-disabled');
+        clienteFaltouButton.classList.add("btn-disabled");
+        atendimentoConcluidoButton.classList.add("btn-disabled");
       }
 
-      document.getElementById('detalhes-modal').style.display = 'block';
+      document.getElementById("detalhes-modal").style.display = "block";
     }
   }
 
   window.closeDetalhesModal = function () {
     selectedAgendamentoId = null; // Redefinir o ID selecionado
-    document.getElementById('detalhes-modal').style.display = 'none';
+    document.getElementById("detalhes-modal").style.display = "none";
   };
 
   window.clienteFaltou = async function () {
     if (!selectedAgendamentoId) {
-      showNotification('Nenhum agendamento selecionado!', true);
+      showNotification("Nenhum agendamento selecionado!", true);
       return;
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/api/agendamentos/atualizar-status/${selectedAgendamentoId}?statusId=2`, {
-        method: 'PUT'
-      });
+      const response = await fetch(
+        `http://localhost:8080/api/agendamentos/atualizar-status/${selectedAgendamentoId}?statusId=2`,
+        {
+          method: "PUT",
+        }
+      );
 
-      if (!response.ok) throw new Error('Erro ao atualizar o status para "Cliente Faltou".');
+      if (!response.ok)
+        throw new Error('Erro ao atualizar o status para "Cliente Faltou".');
       await fetchAgendamentos(); // Atualizar a lista de agendamentos
       closeDetalhesModal(); // Fechar o modal de detalhes
       showNotification('Status atualizado para "Cliente Faltou" com sucesso!');
     } catch (error) {
-      console.error('Erro ao atualizar o status:', error);
-      showNotification('Erro ao atualizar o status!', true);
+      console.error("Erro ao atualizar o status:", error);
+      showNotification("Erro ao atualizar o status!", true);
     }
-  }
+  };
 
   window.atendimentoConcluido = async function () {
     if (!selectedAgendamentoId) {
-      showNotification('Nenhum agendamento selecionado!', true);
+      showNotification("Nenhum agendamento selecionado!", true);
       return;
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/api/agendamentos/atualizar-status/${selectedAgendamentoId}?statusId=3`, {
-        method: 'PUT'
-      });
+      const response = await fetch(
+        `http://localhost:8080/api/agendamentos/atualizar-status/${selectedAgendamentoId}?statusId=3`,
+        {
+          method: "PUT",
+        }
+      );
 
-      if (!response.ok) throw new Error('Erro ao atualizar o status para "Atendimento Concluído".');
+      if (!response.ok)
+        throw new Error(
+          'Erro ao atualizar o status para "Atendimento Concluído".'
+        );
       await fetchAgendamentos(); // Atualizar a lista de agendamentos
       closeDetalhesModal(); // Fechar o modal de detalhes
-      showNotification('Status atualizado para "Atendimento Concluído" com sucesso!');
+      showNotification(
+        'Status atualizado para "Atendimento Concluído" com sucesso!'
+      );
     } catch (error) {
-      console.error('Erro ao atualizar o status:', error);
-      showNotification('Erro ao atualizar o status!', true);
+      console.error("Erro ao atualizar o status:", error);
+      showNotification("Erro ao atualizar o status!", true);
     }
-  }
+  };
 
   function atualizarProgressBar(confirmados, total) {
     const progress = document.getElementById("progress");
     const percentage = total === 0 ? 0 : (confirmados / total) * 100;
     progress.style.width = `${percentage}%`;
 
-    document.getElementById("progress-label").textContent = `Atendimentos Concluídos: ${confirmados}`;
-    document.getElementById("total-label").textContent = `Atendimentos Totais: ${total}`;
+    document.getElementById(
+      "progress-label"
+    ).textContent = `Atendimentos Concluídos: ${confirmados}`;
+    document.getElementById(
+      "total-label"
+    ).textContent = `Atendimentos Totais: ${total}`;
   }
 
   document.getElementById("prev-page-btn").addEventListener("click", () => {
@@ -426,7 +508,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   window.excluirAgendamento = function (id) {
     agendamentoIdToDelete = id;
-    document.getElementById("procedimento").textContent = `ID do agendamento: ${id}`;
+    document.getElementById(
+      "procedimento"
+    ).textContent = `ID do agendamento: ${id}`;
     document.getElementById("modal").style.display = "block";
   };
 
@@ -437,34 +521,37 @@ document.addEventListener("DOMContentLoaded", function () {
   window.confirmDeletion = async function () {
     if (agendamentoIdToDelete !== null) {
       try {
-        const response = await fetch(`http://localhost:8080/api/agendamentos/excluir/${agendamentoIdToDelete}`, {
-          method: 'DELETE'
-        });
+        const response = await fetch(
+          `http://localhost:8080/api/agendamentos/excluir/${agendamentoIdToDelete}`,
+          {
+            method: "DELETE",
+          }
+        );
 
-        if (!response.ok) throw new Error('Erro ao excluir o agendamento.');
+        if (!response.ok) throw new Error("Erro ao excluir o agendamento.");
         await fetchAgendamentos();
         agendamentoIdToDelete = null;
         closeModal();
         showNotification("Agendamento excluído com sucesso!");
       } catch (error) {
-        console.error('Erro ao excluir o agendamento:', error);
-        showNotification('Erro ao excluir o agendamento!', true);
+        console.error("Erro ao excluir o agendamento:", error);
+        showNotification("Erro ao excluir o agendamento!", true);
       }
     }
   };
 
   function showNotification(message, isError = false) {
-    const notification = document.getElementById('notification');
-    const notificationMessage = document.getElementById('notification-message');
+    const notification = document.getElementById("notification");
+    const notificationMessage = document.getElementById("notification-message");
     notificationMessage.textContent = message;
     if (isError) {
-      notification.classList.add('error');
+      notification.classList.add("error");
     } else {
-      notification.classList.remove('error');
+      notification.classList.remove("error");
     }
-    notification.classList.add('show');
+    notification.classList.add("show");
     setTimeout(() => {
-      notification.classList.remove('show');
+      notification.classList.remove("show");
     }, 3000);
   }
 
@@ -472,8 +559,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   window.salvarStatus = function () {
     // Obter os valores dos inputs
-    const nome = document.getElementById('edit-nome').value;
-    const cor = document.getElementById('edit-cor').value;
+    const nome = document.getElementById("edit-nome").value;
+    const cor = document.getElementById("edit-cor").value;
 
     // Validar os dados antes de enviar
     if (!nome || !cor) {
@@ -485,41 +572,41 @@ document.addEventListener("DOMContentLoaded", function () {
     const statusData = {
       nome: nome,
       cor: cor,
-      motivo: '' // Enviar motivo vazio por enquanto
+      motivo: "", // Enviar motivo vazio por enquanto
     };
 
     // Fazer a requisição POST
-    fetch('http://localhost:8080/status-agendamento/cadastro-status', {
-      method: 'POST',
+    fetch("http://localhost:8080/status-agendamento/cadastro-status", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(statusData)
+      body: JSON.stringify(statusData),
     })
-      .then(response => {
+      .then((response) => {
         // Verificar o tipo de conteúdo da resposta
-        const contentType = response.headers.get('Content-Type');
+        const contentType = response.headers.get("Content-Type");
 
-        if (contentType && contentType.includes('application/json')) {
+        if (contentType && contentType.includes("application/json")) {
           return response.json(); // Se for JSON, parse como JSON
         } else {
           return response.text(); // Caso contrário, trate como texto
         }
       })
-      .then(data => {
+      .then((data) => {
         // Exibir a mensagem de sucesso retornada pelo servidor
         showNotification("Status cadastrado com sucesso!");
-        document.getElementById('save-modal').style.display = 'none'; // Fechar o modal após o sucesso
+        document.getElementById("save-modal").style.display = "none"; // Fechar o modal após o sucesso
       })
-      .catch(error => {
-        console.error('Erro ao salvar o status:', error);
+      .catch((error) => {
+        console.error("Erro ao salvar o status:", error);
         showNotification("Ocorreu um erro ao salvar o status!", true);
       });
-  }
+  };
 
   window.carregarStatus = function () {
-    fetch('http://localhost:8080/status-agendamento')
-      .then(response => {
+    fetch("http://localhost:8080/status-agendamento")
+      .then((response) => {
         if (response.ok) {
           return response.json();
         } else if (response.status === 204) {
@@ -528,12 +615,12 @@ document.addEventListener("DOMContentLoaded", function () {
           throw new Error("Erro ao buscar os status.");
         }
       })
-      .then(data => {
+      .then((data) => {
         allStatuses = data; // Guardar os status carregados
         const tbody = document.getElementById("status-tbody");
         tbody.innerHTML = ""; // Limpa o conteúdo existente
 
-        data.forEach(status => {
+        data.forEach((status) => {
           const row = document.createElement("tr");
           row.innerHTML = `
               <td>${status.nome}</td>
@@ -548,7 +635,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         attachEventListeners(); // Reanexar os event listeners
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Erro:", error.message);
         alert(error.message);
       });
@@ -557,69 +644,77 @@ document.addEventListener("DOMContentLoaded", function () {
   window.confirmDeletion2 = async function () {
     if (deleteStatusId) {
       try {
-        const response = await fetch(`http://localhost:8080/status-agendamento/exclusao-por-id/${deleteStatusId}`, {
-          method: 'DELETE'
-        });
-        if (!response.ok) throw new Error('Erro ao excluir o status.');
+        const response = await fetch(
+          `http://localhost:8080/status-agendamento/exclusao-por-id/${deleteStatusId}`,
+          {
+            method: "DELETE",
+          }
+        );
+        if (!response.ok) throw new Error("Erro ao excluir o status.");
         await carregarStatus();
         deleteStatusId = null;
         closeDeleteModal();
-        showNotification('Status excluído com sucesso!');
+        showNotification("Status excluído com sucesso!");
       } catch (error) {
-        console.error('Erro ao excluir o status:', error);
-        showNotification('Erro ao excluir o status!', true);
+        console.error("Erro ao excluir o status:", error);
+        showNotification("Erro ao excluir o status!", true);
       }
     }
   };
 
   window.salvarStatusEditado = async function () {
     if (editStatusId) {
-      const nome = document.getElementById('edit-nome2').value;
-      const cor = document.getElementById('edit-cor2').value;
+      const nome = document.getElementById("edit-nome2").value;
+      const cor = document.getElementById("edit-cor2").value;
       const statusData = {
         nome: nome,
-        cor: cor
+        cor: cor,
       };
 
       try {
-        const response = await fetch(`http://localhost:8080/status-agendamento/atualizacao-status/${editStatusId}`, {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(statusData)
-        });
-        if (!response.ok) throw new Error('Erro ao editar o status.');
+        const response = await fetch(
+          `http://localhost:8080/status-agendamento/atualizacao-status/${editStatusId}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(statusData),
+          }
+        );
+        if (!response.ok) throw new Error("Erro ao editar o status.");
         await carregarStatus();
         await fetchAgendamentos(); // Adicione esta linha para atualizar a tabela de agendamentos
         editStatusId = null;
         closeEditModal();
-        showNotification('Status editado com sucesso!');
+        showNotification("Status editado com sucesso!");
       } catch (error) {
-        console.error('Erro ao editar o status:', error);
-        showNotification('Erro ao editar o status!', true);
+        console.error("Erro ao editar o status:", error);
+        showNotification("Erro ao editar o status!", true);
       }
     }
   };
 
   function attachEventListeners() {
-    const deleteButtons = document.querySelectorAll('.delete-btn');
-    deleteButtons.forEach(button => {
-      button.addEventListener('click', e => {
-        deleteStatusId = e.target.closest('button').getAttribute('data-id');
-        const status = allStatuses.find(status => status.id == deleteStatusId);
-        document.getElementById('status-name').innerText = status.nome;
+    const deleteButtons = document.querySelectorAll(".delete-btn");
+    deleteButtons.forEach((button) => {
+      button.addEventListener("click", (e) => {
+        deleteStatusId = e.target.closest("button").getAttribute("data-id");
+        const status = allStatuses.find(
+          (status) => status.id == deleteStatusId
+        );
+        document.getElementById("status-name").innerText = status.nome;
         openDeleteModal();
       });
     });
 
-    const editButtons = document.querySelectorAll('.edit-btn');
-    editButtons.forEach(button => {
-      button.addEventListener('click', e => {
-        editStatusId = e.target.closest('button').getAttribute('data-id');
-        const status = allStatuses.find(status => status.id == editStatusId);
-        document.getElementById('edit-nome2').value = status.nome;
-        document.getElementById('edit-cor2').value = status.cor;
+    const editButtons = document.querySelectorAll(".edit-btn");
+    editButtons.forEach((button) => {
+      button.addEventListener("click", (e) => {
+        editStatusId = e.target.closest("button").getAttribute("data-id");
+        const status = allStatuses.find((status) => status.id == editStatusId);
+        document.getElementById("edit-nome2").value = status.nome;
+        document.getElementById("edit-cor2").value = status.cor;
         openEditModal();
       });
     });
@@ -643,89 +738,105 @@ document.addEventListener("DOMContentLoaded", function () {
     editStatusId = null;
   };
 
-  document.getElementById('open-save-modal-btn').addEventListener('click', () => {
-    document.getElementById('save-modal').style.display = 'block';
-  });
+  document
+    .getElementById("open-save-modal-btn")
+    .addEventListener("click", () => {
+      document.getElementById("save-modal").style.display = "block";
+    });
 
   function setActiveTab(tabId) {
     // Remove a classe active de todos os botões
-    document.querySelectorAll('.tab-button').forEach(button => {
-      button.classList.remove('active');
+    document.querySelectorAll(".tab-button").forEach((button) => {
+      button.classList.remove("active");
     });
 
     // Adiciona a classe active ao botão clicado
-    document.getElementById(tabId).classList.add('active');
+    document.getElementById(tabId).classList.add("active");
   }
 
-  setActiveTab('todos-agendamentos');
+  setActiveTab("todos-agendamentos");
 
-  document.getElementById("todos-agendamentos").addEventListener("click", () => {
-    currentPage = 1;
-    setActiveTab('todos-agendamentos');
-    renderTable('todos');
-  });
+  document
+    .getElementById("todos-agendamentos")
+    .addEventListener("click", () => {
+      currentPage = 1;
+      setActiveTab("todos-agendamentos");
+      renderTable("todos");
+    });
 
   document.getElementById("hoje-agendamentos").addEventListener("click", () => {
     currentPage = 1;
-    setActiveTab('hoje-agendamentos');
-    renderTable('hoje');
+    setActiveTab("hoje-agendamentos");
+    renderTable("hoje");
   });
 
-  document.getElementById('save-button').addEventListener('click', salvarStatus);
+  document
+    .getElementById("save-button")
+    .addEventListener("click", salvarStatus);
 
-  document.getElementById('open-status-modal-btn').addEventListener('click', () => {
-    carregarStatus();
-    document.getElementById('status-modal').style.display = 'block';
+  document
+    .getElementById("open-status-modal-btn")
+    .addEventListener("click", () => {
+      carregarStatus();
+      document.getElementById("status-modal").style.display = "block";
+    });
+
+  document
+    .getElementById("open-filter-modal-btn")
+    .addEventListener("click", () => {
+      document.getElementById("filter-modal").style.display = "block";
+    });
+
+  document.getElementById("close-save-modal").addEventListener("click", () => {
+    document.getElementById("save-modal").style.display = "none";
   });
 
-  document.getElementById('open-filter-modal-btn').addEventListener('click', () => {
-    document.getElementById('filter-modal').style.display = 'block';
-  });
+  document
+    .getElementById("close-status-modal")
+    .addEventListener("click", () => {
+      document.getElementById("status-modal").style.display = "none";
+    });
 
-  document.getElementById('close-save-modal').addEventListener('click', () => {
-    document.getElementById('save-modal').style.display = 'none';
-  });
-
-  document.getElementById('close-status-modal').addEventListener('click', () => {
-    document.getElementById('status-modal').style.display = 'none';
-  });
-
-  document.getElementById('close-filter-modal').addEventListener('click', () => {
-    document.getElementById('filter-modal').style.display = 'none';
-  });
+  document
+    .getElementById("close-filter-modal")
+    .addEventListener("click", () => {
+      document.getElementById("filter-modal").style.display = "none";
+    });
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-  fetch('http://localhost:8080/api/procedimentos')
-    .then(response => response.json())
-    .then(data => {
-      const procedimentoSelect = document.getElementById('procedimento-filtro');
-      data.forEach(item => {
-        const option = document.createElement('option');
+document.addEventListener("DOMContentLoaded", function () {
+  fetch("http://localhost:8080/api/procedimentos")
+    .then((response) => response.json())
+    .then((data) => {
+      const procedimentoSelect = document.getElementById("procedimento-filtro");
+      data.forEach((item) => {
+        const option = document.createElement("option");
         option.value = item.idProcedimento;
         option.textContent = item.tipo;
         procedimentoSelect.appendChild(option);
       });
     });
 
-  fetch('http://localhost:8080/api/especificacoes')
-    .then(response => response.json())
-    .then(data => {
-      const especificacaoSelect = document.getElementById('especificacao-filtro');
-      data.forEach(item => {
-        const option = document.createElement('option');
+  fetch("http://localhost:8080/api/especificacoes")
+    .then((response) => response.json())
+    .then((data) => {
+      const especificacaoSelect = document.getElementById(
+        "especificacao-filtro"
+      );
+      data.forEach((item) => {
+        const option = document.createElement("option");
         option.value = item.idEspecificacao;
         option.textContent = item.especificacao;
         especificacaoSelect.appendChild(option);
       });
     });
 
-  fetch('http://localhost:8080/usuarios')
-    .then(response => response.json())
-    .then(data => {
-      const clienteSelect = document.getElementById('cliente-filtro');
-      data.forEach(item => {
-        const option = document.createElement('option');
+  fetch("http://localhost:8080/usuarios")
+    .then((response) => response.json())
+    .then((data) => {
+      const clienteSelect = document.getElementById("cliente-filtro");
+      data.forEach((item) => {
+        const option = document.createElement("option");
         option.value = item.idCliente;
         option.textContent = item.nome;
         clienteSelect.appendChild(option);

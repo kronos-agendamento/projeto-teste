@@ -420,7 +420,4 @@ UPDATE usuario
 SET dtype = 'Profissional' 
 WHERE fk_nivel_acesso = 1;
 
-SELECT id_usuario, dtype FROM usuario;
-
 SELECT * FROM usuario;
-SELECT * FROM agendamento;

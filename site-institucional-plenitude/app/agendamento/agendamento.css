@@ -914,7 +914,6 @@ table tr.clickable-row:hover {
   cursor: pointer;
 }
 
-
 #custom-status-table button:hover {
   background-color: #d9006c;
   color: #dcf5f2;

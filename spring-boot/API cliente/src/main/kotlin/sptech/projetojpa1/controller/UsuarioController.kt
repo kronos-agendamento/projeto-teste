@@ -114,7 +114,6 @@ class UsuarioController(
         return ResponseEntity.ok(usuarios)
     }
 
-
     @Operation(summary = "Listar todos usuários")
     @ApiResponses(
         value = [
@@ -212,7 +211,6 @@ class UsuarioController(
         }
     }
 
-
     @Operation(summary = "Listar usuários por nível de acesso")
     @ApiResponses(
         value = [
@@ -237,7 +235,7 @@ class UsuarioController(
         ]
     )
     @GetMapping("/buscar-por-status/{status}")
-    fun getByStatus(@PathVariable status: Boolean): ResponseEntity<List<Usuario>> {
+    fun getByStatus(@PathVariable status: Boolean): ResponseEntity<List<UsuarioResponseDTO>> {
         val usuarios = usuarioService.getByStatus(status)
         return ResponseEntity.ok(usuarios)
     }
@@ -287,7 +285,7 @@ class UsuarioController(
         ]
     )
     @GetMapping("/buscar-por-cpf/{cpf}")
-    fun getByCpf(@PathVariable cpf: String): ResponseEntity<Usuario> {
+    fun getByCpf(@PathVariable cpf: String): ResponseEntity<UsuarioResponseDTO> {
         val usuario = usuarioService.getByCpf(cpf)
         return if (usuario != null) {
             ResponseEntity.ok(usuario)
@@ -295,6 +293,7 @@ class UsuarioController(
             ResponseEntity.status(404).body(null)
         }
     }
+
     @PatchMapping("/inativar/{cpf}")
     fun inativarUsuario(@PathVariable cpf: String): ResponseEntity<Any> {
         return try {
@@ -322,21 +321,5 @@ class UsuarioController(
             ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao ativar usuário")
         }
     }
-
-//    @PatchMapping("/atualizacao-endereco/{cpf}")
-//    fun atualizarEndereco(
-//        @PathVariable cpf: String,
-//        @Valid @RequestBody dto: EnderecoAtualizacaoRequest
-//    ): ResponseEntity<Endereco> {
-//        val enderecoAtualizado = usuarioService.atualizarEndereco(cpf, dto)
-//        return if (enderecoAtualizado != null) {
-//            ResponseEntity.status(200).body(enderecoAtualizado)
-//        } else {
-//            ResponseEntity.status(404).body(null)
-//        }
-//    }
-
-
-
 }
 

@@ -118,6 +118,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+  const nome = localStorage.getItem("nome");
+  const instagram = localStorage.getItem("instagram");
+
+
+  if (nome && instagram) {
+    document.getElementById("userName").textContent = nome;
+    document.getElementById("userInsta").textContent = instagram;
+  }
+
   // Selecionando os elementos do formulário
   const cepInput = document.querySelector("#cep");
   const logradouroInput = document.querySelector("#logradouro");
@@ -419,14 +428,4 @@ document.addEventListener("DOMContentLoaded", function () {
       senhaInput.type = "password";
     });
   });
-
-  document.addEventListener("DOMContentLoaded", function () {
-    const nome = localStorage.getItem("nome");
-    const instagram = localStorage.getItem("instagram");
-
-    if (nome && instagram) {
-      document.getElementById("userName").textContent = nome;
-      document.getElementById("userInsta").textContent = instagram;
-    }
-  });
-})();
+});

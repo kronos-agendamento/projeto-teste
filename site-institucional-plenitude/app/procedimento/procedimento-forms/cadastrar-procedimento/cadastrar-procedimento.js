@@ -76,20 +76,32 @@ document.addEventListener("DOMContentLoaded", function () {
           showNotification("Erro ao salvar procedimento!", true);
         });
     });
-    
+
   document
     .getElementById("save-especificacao-button")
     .addEventListener("click", function () {
       const especificacao = document.getElementById("especificacao").value;
 
-      let duracaoColocacaoHoras = document.getElementById("duracao-colocacao-horas").value;
-      let duracaoColocacaoMinutos = document.getElementById("duracao-colocacao-minutos").value;
+      let duracaoColocacaoHoras = document.getElementById(
+        "duracao-colocacao-horas"
+      ).value;
+      let duracaoColocacaoMinutos = document.getElementById(
+        "duracao-colocacao-minutos"
+      ).value;
 
-      let duracaoManutencaoHoras = document.getElementById("duracao-manutencao-horas").value;
-      let duracaoManutencaoMinutos = document.getElementById("duracao-manutencao-minutos").value;
+      let duracaoManutencaoHoras = document.getElementById(
+        "duracao-manutencao-horas"
+      ).value;
+      let duracaoManutencaoMinutos = document.getElementById(
+        "duracao-manutencao-minutos"
+      ).value;
 
-      let duracaoRetiradaHoras = document.getElementById("duracao-retirada-horas").value;
-      let duracaoRetiradaMinutos = document.getElementById("duracao-retirada-minutos").value;
+      let duracaoRetiradaHoras = document.getElementById(
+        "duracao-retirada-horas"
+      ).value;
+      let duracaoRetiradaMinutos = document.getElementById(
+        "duracao-retirada-minutos"
+      ).value;
 
       // Padronizar horas e minutos para dois dígitos
       duracaoColocacaoHoras = duracaoColocacaoHoras.padStart(2, "0");
@@ -103,9 +115,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const especificacaoData = {
         especificacao: especificacao,
-        precoColocacao: parseFloat(document.getElementById("valor-colocacao").value),
-        precoManutencao: parseFloat(document.getElementById("valor-manutencao").value),
-        precoRetirada: parseFloat(document.getElementById("valor-retirada").value),
+        precoColocacao: parseFloat(
+          document.getElementById("valor-colocacao").value
+        ),
+        precoManutencao: parseFloat(
+          document.getElementById("valor-manutencao").value
+        ),
+        precoRetirada: parseFloat(
+          document.getElementById("valor-retirada").value
+        ),
         procedimento: document.getElementById("procedimento-dropdown").value,
         tempoColocacao: `${duracaoColocacaoHoras}:${duracaoColocacaoMinutos}`,
         tempoManutencao: `${duracaoManutencaoHoras}:${duracaoManutencaoMinutos}`,

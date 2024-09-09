@@ -121,8 +121,8 @@ document.addEventListener("DOMContentLoaded", function () {
     totalPagesSpan.textContent = totalPages;
 
     // Desativar ou ativar botões de página
-    prevPageBtn.classList.toggle('button-disabled', page === 1);
-    nextPageBtn.classList.toggle('button-disabled', page === totalPages);
+    prevPageBtn.classList.toggle("button-disabled", page === 1);
+    nextPageBtn.classList.toggle("button-disabled", page === totalPages);
 
     prevPageBtn.disabled = page === 1;
     nextPageBtn.disabled = page === totalPages;
@@ -136,7 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
       button.addEventListener("click", (e) => {
         procedimentoParaDeletar = {
           idEspecificacao: especificacaoId,
-          idProcedimento: procedimentoId
+          idProcedimento: procedimentoId,
         };
         if (procedimentoParaDeletar.idEspecificacao) {
           showModal(tipo, especificacao);
@@ -149,8 +149,12 @@ document.addEventListener("DOMContentLoaded", function () {
     // Atualização da função de clique no botão de edição
     document.querySelectorAll(".edit-btn").forEach((button) => {
       button.addEventListener("click", (e) => {
-        const especificacaoId = e.currentTarget.getAttribute("data-id-especificacao");
-        const procedimentoId = e.currentTarget.getAttribute("data-id-procedimento");
+        const especificacaoId = e.currentTarget.getAttribute(
+          "data-id-especificacao"
+        );
+        const procedimentoId = e.currentTarget.getAttribute(
+          "data-id-procedimento"
+        );
         // Corrigir a URL para enviar ambos os IDs
         window.location.href = `procedimento-forms/editar-procedimento/editar-procedimento.html?idEspecificacao=${especificacaoId}&idProcedimento=${procedimentoId}`;
       });
@@ -178,7 +182,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     btnYes.addEventListener("click", async () => {
       if (procedimentoParaDeletar !== null) {
-        await deleteProcedimento(procedimentoParaDeletar.idEspecificacao, procedimentoParaDeletar.idProcedimento);
+        await deleteProcedimento(
+          procedimentoParaDeletar.idEspecificacao,
+          procedimentoParaDeletar.idProcedimento
+        );
         procedimentos = await fetchProcedures();
         renderTable(procedimentos, currentPage);
         closeModal();
@@ -191,25 +198,38 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log(`Tentando deletar especificação com ID: ${idEspecificacao}`);
 
       // Tentar deletar a especificação primeiro
-      const response = await fetch(`${baseUrl}/especificacoes/${idEspecificacao}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `${baseUrl}/especificacoes/${idEspecificacao}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
-        showNotification(`Erro ao deletar a especificação: ${errorData.message}`, true);
+        showNotification(
+          `Erro ao deletar a especificação: ${errorData.message}`,
+          true
+        );
         throw new Error("Erro ao deletar a especificação.");
       }
 
-      console.log(`Especificação com ID: ${idEspecificacao} deletada com sucesso`);
+      console.log(
+        `Especificação com ID: ${idEspecificacao} deletada com sucesso`
+      );
 
       // Agora tentar deletar o procedimento
-      const response2 = await fetch(`${baseUrl}/procedimentos/${idProcedimento}`, {
-        method: "DELETE",
-      });
+      const response2 = await fetch(
+        `${baseUrl}/procedimentos/${idProcedimento}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       if (response2.ok) {
-        console.log(`Procedimento com ID: ${idProcedimento} deletado com sucesso`);
+        console.log(
+          `Procedimento com ID: ${idProcedimento} deletado com sucesso`
+        );
         showNotification("Procedimento e especificação deletados com sucesso!");
       } else {
         const errorData = await response2.json();
@@ -222,18 +242,26 @@ document.addEventListener("DOMContentLoaded", function () {
           );
         } else {
           // Outros erros
-          showNotification(`Erro ao deletar o procedimento: ${errorData.message}`, true);
+          showNotification(
+            `Erro ao deletar o procedimento: ${errorData.message}`,
+            true
+          );
         }
       }
     } catch (error) {
       console.error("Erro ao deletar o procedimento:", error);
-      showNotification("Erro ao deletar o procedimento. Tente novamente mais tarde.", true);
+      showNotification(
+        "Erro ao deletar o procedimento. Tente novamente mais tarde.",
+        true
+      );
     }
   }
 
   function showModal(tipoProcedimento, especificacao) {
     modalProcedimento.textContent = `Procedimento: ${tipoProcedimento}`;
-    document.getElementById('especificacao').textContent = `Especificação: ${especificacao}`;
+    document.getElementById(
+      "especificacao"
+    ).textContent = `Especificação: ${especificacao}`;
     modal.style.display = "block";
   }
 

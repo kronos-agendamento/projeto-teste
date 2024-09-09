@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const clientes = await response.json();
 
       const clientesSelect = document.getElementById("clientes");
-      clientes.forEach(cliente => {
+      clientes.forEach((cliente) => {
         const option = document.createElement("option");
         option.value = cliente.idUsuario;
         option.textContent = cliente.nome;

@@ -5,5 +5,9 @@ import java.time.LocalDate
 data class UsuarioResponseDTO(
     var idUsuario: Int?,
     var nome: String?,
-    var dataNasc: LocalDate?,
+    var dataNasc: LocalDate? = null,
+    var instagram: String? = null,
+    var telefone: Long? = null,
+    var cpf: String? = null,
+    var status: Boolean? = null,
 )

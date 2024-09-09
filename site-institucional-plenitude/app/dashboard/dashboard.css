@@ -174,11 +174,13 @@ header p {
 }
 
 .legend-color.clientes {
-    background-color: #e62762; /* rosa para Clientes */
+    background-color: #e62762;
+    /* rosa para Clientes */
 }
 
 .legend-color.leads {
-    background-color: #ff5ba3; /* rosa claro para Leads */
+    background-color: #ff5ba3;
+    /* rosa claro para Leads */
 }
 
 .card {
@@ -204,11 +206,11 @@ header p {
 
 .caixa-grafico {
     width: 90%;
-    
+
 }
 
 
-.card-graficos p{
+.card-graficos p {
     display: flex;
     flex-direction: row;
     color: black;
@@ -216,10 +218,10 @@ header p {
     margin-right: 20px;
     font-weight: 550;
     font-size: smaller;
-    width:400px
+    width: 400px
 }
 
-.card p{
+.card p {
     display: flex;
     flex-direction: row;
     color: black;
@@ -242,13 +244,13 @@ header p {
     align-items: center;
 }
 
-.card-content-2 h1{
+.card-content-2 h1 {
     font-size: x-large;
-width: 300px;
-font-weight:1400;
+    width: 300px;
+    font-weight: 1400;
 }
 
-.card-content-2 p{
+.card-content-2 p {
     display: flex;
     justify-content: center;
     border: 2px solid rgb(0, 0, 0);
@@ -257,7 +259,7 @@ font-weight:1400;
     /* padding: 5px 10px; */
     margin-right: 23px;
     margin-left: 0px;
-    
+
     font-size: 14px;
     color: rgb(0, 0, 0);
     cursor: pointer;
@@ -269,11 +271,12 @@ font-weight:1400;
 .indicator {
     height: 110px;
     width: 4px;
-    background-color: #e62762; /* rosa */
+    background-color: #e62762;
+    /* rosa */
     /* position: absolute;
     left: 0;
     top: 0;*/
-    border-radius: 10px 10px 10px 10px; 
+    border-radius: 10px 10px 10px 10px;
 }
 
 .card-content p {
@@ -291,12 +294,14 @@ font-weight:1400;
     height: 0;
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
-    border-bottom: 10px solid #e62762; /* rosa */
+    border-bottom: 10px solid #e62762;
+    /* rosa */
     margin-left: 5px;
 }
 
 .growth {
-    color: #e62762; /* rosa */
+    color: #e62762;
+    /* rosa */
     font-size: 17px;
     display: flex;
     height: 100%;
@@ -331,7 +336,8 @@ font-weight:1400;
 .square {
     width: 478px;
     height: 369px;
-    border-radius: 10px; /* Bordas arredondadas */
+    border-radius: 10px;
+    /* Bordas arredondadas */
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
@@ -384,7 +390,7 @@ font-weight:1400;
     width: 50%;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    
+
 }
 
 .search-section {
@@ -417,7 +423,7 @@ font-weight:1400;
     flex-wrap: wrap;
     /* width: 146vh; */
     width: fit-content;
-    border: 2.5px solid #D2135D; 
+    border: 2.5px solid #D2135D;
     border-radius: 10px 0 10px 10px;
     justify-content: center;
     background-color: #fdd9e5;
@@ -431,7 +437,7 @@ font-weight:1400;
 .chart-container {
     background-color: #fff;
     border-radius: 10px;
-    
+
     width: 45%;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -444,7 +450,8 @@ font-weight:1400;
 .chart-container canvas {
     max-width: 100%;
     height: 300px;
-    padding-bottom: 30px; /* Altura fixa para os gráficos */
+    padding-bottom: 30px;
+    /* Altura fixa para os gráficos */
 }
 
 .modal {
@@ -612,4 +619,24 @@ img {
     height: 60px;
     border-radius: 600px;
     margin-bottom: 20px;
+}
+
+#userName {
+    display: flex;
+    list-style: none;
+    color: white;
+    font-weight: 600;
+    margin-top: 6vh;
+    justify-content: center;
+    margin-top: 20vh;
+}
+
+#userInsta {
+    list-style: none;
+    color: white;
+    font-weight: 200;
+    font-size: 12px;
+    margin-top: 0.5vh;
+    display: flex;
+    justify-content: center;
 }

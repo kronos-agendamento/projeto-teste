@@ -20,19 +20,19 @@ document.addEventListener('DOMContentLoaded', function () {
     function getLastFiveMonths() {
         const result = [];
         const today = new Date();
-        
+
         const monthNames = [
-            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", 
-            "Junho", "Julho", "Agosto", "Setembro", "Outubro", 
+            "Janeiro", "Fevereiro", "Março", "Abril", "Maio",
+            "Junho", "Julho", "Agosto", "Setembro", "Outubro",
             "Novembro", "Dezembro"
         ];
-        
+
         for (let i = 0; i < 5; i++) {
             const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
             const monthName = monthNames[date.getMonth()];  // Obtem o nome do mês
             result.push(monthName);
         }
-        
+
         return result;
     }
     const lastFiveMonths = getLastFiveMonths();
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchData(endpoints.agendamentosProcedimentosLabels, updateChart4Labels);
         fetchData(endpoints.agendamentosProcedimentos, updateChart4);
 
-        
+
     }
 
     // Funções que atualizam as KPI's
@@ -147,14 +147,14 @@ document.addEventListener('DOMContentLoaded', function () {
     // Funções para atualização
     function updateChart2_1(data) {
         dataChart2_1 = data;
-        
+
         if (dataChart2_1) {
             createChart2();
         }
     }
     function updateChart2_2(data) {
         dataChart2_2 = data;
-        
+
         if (dataChart2_2) {
             createChart2();
         }
@@ -258,7 +258,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         borderColor: '#F59DBF',
                         fill: false
                     }
-                ]
+                    ]
 
                 },
                 options: {
@@ -408,11 +408,12 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-    const nome = localStorage.getItem('nome');
-    const email = localStorage.getItem('email');
+    const nome = localStorage.getItem("nome");
+    const instagram = localStorage.getItem("instagram");
 
-    if (nome && email) {
-        document.getElementById('userName').textContent = nome;
-        document.getElementById('userEmail').textContent = email;
+
+    if (nome && instagram) {
+        document.getElementById("userName").textContent = nome;
+        document.getElementById("userInsta").textContent = instagram;
     }
 });

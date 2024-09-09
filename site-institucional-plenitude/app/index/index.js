@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const buttons = document.querySelectorAll("button");
   buttons.forEach((button) => {
-    button.addEventListener("click", () => { });
+    button.addEventListener("click", () => {});
   });
 });
 
@@ -86,7 +86,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     return horasFormatadas === 0
       ? `${minutosFormatados} min`
-      : `${horasFormatadas}h ${minutosFormatados < 10 ? "0" + minutosFormatados : minutosFormatados} min`;
+      : `${horasFormatadas}h ${
+          minutosFormatados < 10 ? "0" + minutosFormatados : minutosFormatados
+        } min`;
   }
 
   const popularTabela = async () => {
@@ -98,8 +100,13 @@ document.addEventListener("DOMContentLoaded", () => {
       especificacoes.slice(0, 3).forEach((especificacao) => {
         const procedimento = especificacao.procedimento;
         const tempo = especificacao;
-        const precoFormatado = `R$${especificacao.precoColocacao.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-        const duracaoFormatada = tempo.tempoColocacao ? formatarDuracao(tempo.tempoColocacao) : "N/A";
+        const precoFormatado = `R$${especificacao.precoColocacao.toLocaleString(
+          "pt-BR",
+          { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+        )}`;
+        const duracaoFormatada = tempo.tempoColocacao
+          ? formatarDuracao(tempo.tempoColocacao)
+          : "N/A";
 
         const row = document.createElement("tr");
         row.innerHTML = `
@@ -113,10 +120,9 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
       console.error("Erro ao buscar especificações:", error);
     }
-  }
+  };
 
   popularTabela();
-
 });
 
 async function fetchAgendamentos() {
@@ -152,7 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return dataObj.toLocaleDateString("pt-BR", {
         day: "2-digit",
         month: "2-digit",
-        year: "numeric"
+        year: "numeric",
       });
     }
     return "Data inválida";
@@ -204,7 +210,9 @@ function filtrarAgendamentosDoDia(agendamentos) {
 
 // Função para ordenar os agendamentos por horário
 function ordenarAgendamentosPorHorario(agendamentos) {
-  return agendamentos.sort((a, b) => new Date(a.dataHorario) - new Date(b.dataHorario));
+  return agendamentos.sort(
+    (a, b) => new Date(a.dataHorario) - new Date(b.dataHorario)
+  );
 }
 
 // Função para renderizar a agenda diária
@@ -218,14 +226,15 @@ function renderizarAgendaDiaria(agendamentos) {
   const diaSemana = hoje.toLocaleDateString("pt-BR", { weekday: "long" });
   const data = hoje.toLocaleDateString("pt-BR");
 
-  dayElement.textContent = diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1);
+  dayElement.textContent =
+    diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1);
   dateElement.textContent = data;
 
   appointmentsContainer.innerHTML = "";
 
   const agendamentosOrdenados = ordenarAgendamentosPorHorario(agendamentos);
 
-  agendamentosOrdenados.forEach(agendamento => {
+  agendamentosOrdenados.forEach((agendamento) => {
     // Ajusta a data e hora para o fuso horário local
     const dataUTC = new Date(agendamento.dataHorario);
 
@@ -233,7 +242,7 @@ function renderizarAgendaDiaria(agendamentos) {
     const horarioLocal = dataUTC.toLocaleTimeString("pt-BR", {
       hour: "2-digit",
       minute: "2-digit",
-      hour12: false // Use o formato 24 horas
+      hour12: false, // Use o formato 24 horas
     });
 
     const cliente = agendamento.usuario;
@@ -261,8 +270,6 @@ async function carregarAgendaDiaria() {
 
 // Chama a função para carregar a agenda diária quando a página é carregada
 document.addEventListener("DOMContentLoaded", carregarAgendaDiaria);
-
-
 
 // Função para buscar os usuários do backend
 async function fetchUsuarios() {

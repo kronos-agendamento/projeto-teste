@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const clientes = await response.json();
 
       const clientesSelect = document.getElementById("clientes");
-      clientes.forEach(cliente => {
+      clientes.forEach((cliente) => {
         const option = document.createElement("option");
         option.value = cliente.idUsuario;
         option.textContent = cliente.nome;
@@ -188,7 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
       showNotification("Todos os campos são obrigatórios", true);
       return;
     }
-    console.log(`${data}T${horario}.000Z`)
+    console.log(`${data}T${horario}.000Z`);
     const dataHorario = new Date(`${data}T${horario}.000Z`).toISOString();
 
     const agendamento = {
@@ -203,12 +203,12 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       // Realiza a requisição PUT para atualizar o agendamento
       const params = new URLSearchParams(window.location.search);
-      const agendamentoId = params.get('id'); // Pega o ID do agendamento da URL
+      const agendamentoId = params.get("id"); // Pega o ID do agendamento da URL
       const apiUrlEditarAgendamento = `http://localhost:8080/api/agendamentos/atualizar/${agendamentoId}`;
       const response = await fetch(apiUrlEditarAgendamento, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(agendamento),
       });
@@ -262,13 +262,13 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener("DOMContentLoaded", function () {
   // Captura o ID do agendamento da URL
   const params = new URLSearchParams(window.location.search);
-  const agendamentoId = params.get('id'); // Pega o ID da URL
+  const agendamentoId = params.get("id"); // Pega o ID da URL
 
   if (!agendamentoId) {
-    console.error('ID do agendamento não encontrado na URL');
+    console.error("ID do agendamento não encontrado na URL");
     return;
   }
 
@@ -277,44 +277,44 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Realiza a requisição GET para obter os dados do agendamento
   fetch(url)
-    .then(response => {
+    .then((response) => {
       if (!response.ok) {
-        throw new Error('Agendamento não encontrado');
+        throw new Error("Agendamento não encontrado");
       }
       return response.json();
     })
-    .then(data => {
+    .then((data) => {
       preencherFormulario(data);
     })
-    .catch(error => {
-      console.error('Erro ao buscar agendamento:', error);
+    .catch((error) => {
+      console.error("Erro ao buscar agendamento:", error);
     });
 
   // Função para preencher os campos do formulário com os dados recebidos
   function preencherFormulario(data) {
     // Preencher o select de clientes com o nome do usuário
-    const clientesSelect = document.getElementById('clientes');
-    const optionCliente = document.createElement('option');
+    const clientesSelect = document.getElementById("clientes");
+    const optionCliente = document.createElement("option");
     optionCliente.value = data.fk_usuario; // Usar o ID do usuário
     optionCliente.text = data.usuario; // Mostrar o nome
     optionCliente.selected = true;
     clientesSelect.appendChild(optionCliente);
 
     // Preencher o select de procedimentos
-    const procedimentosSelect = document.getElementById('procedimentos');
-    const optionProcedimento = document.createElement('option');
+    const procedimentosSelect = document.getElementById("procedimentos");
+    const optionProcedimento = document.createElement("option");
     optionProcedimento.value = data.fk_procedimento; // Usar o ID do procedimento
     optionProcedimento.text = data.procedimento; // Mostrar o nome
     optionProcedimento.selected = true;
     procedimentosSelect.appendChild(optionProcedimento);
 
     // Preencher o select de tipo de atendimento
-    const tipoAtendimentoSelect = document.getElementById('tipo-atendimento');
+    const tipoAtendimentoSelect = document.getElementById("tipo-atendimento");
     tipoAtendimentoSelect.value = data.tipoAgendamento;
 
     // Preencher o select de especificações
-    const especificacoesSelect = document.getElementById('especificacoes');
-    const optionEspecificacao = document.createElement('option');
+    const especificacoesSelect = document.getElementById("especificacoes");
+    const optionEspecificacao = document.createElement("option");
     optionEspecificacao.value = data.fk_especificacao; // Usar o ID da especificação
     optionEspecificacao.text = data.especificacao; // Mostrar o nome
     optionEspecificacao.selected = true;
@@ -322,15 +322,15 @@ document.addEventListener('DOMContentLoaded', function () {
     especificacoesSelect.disabled = false;
 
     // Preencher o campo de data
-    const dataInput = document.getElementById('data');
-    dataInput.value = data.dataHorario.split('T')[0];
+    const dataInput = document.getElementById("data");
+    dataInput.value = data.dataHorario.split("T")[0];
 
     // Exibir horários disponíveis (simulando com o horário do agendamento)
-    const horariosDisponiveis = document.getElementById('horarios-disponiveis');
+    const horariosDisponiveis = document.getElementById("horarios-disponiveis");
     horariosDisponiveis.innerHTML = ""; // Limpar container
 
     // Formatar o horário do agendamento
-    const horarioAgendamento = data.dataHorario.split('T')[1].substring(0, 5); // Mostra no formato HH:MM
+    const horarioAgendamento = data.dataHorario.split("T")[1].substring(0, 5); // Mostra no formato HH:MM
 
     // Criar um botão para o horário do agendamento e marcá-lo como selecionado
     const button = document.createElement("button");

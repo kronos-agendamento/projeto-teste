@@ -1,5 +1,6 @@
 package sptech.projetojpa1.service
 
+import jakarta.persistence.EntityManager
 import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -20,6 +21,7 @@ class UsuarioService(
     @Autowired private val respostaRepository: RespostaRepository,
     @Autowired private val feedbackRepository: FeedbackRepository,
     @Autowired private val agendamentoRepository: AgendamentoRepository,
+    @Autowired private val entityManager: EntityManager
 ) {
     fun salvarUsuario(dto: UsuarioRequest): Usuario {
         val usuario: Usuario = if (dto.nivelAcessoId == 1) {
@@ -36,7 +38,7 @@ class UsuarioService(
                 indicacao = dto.indicacao,
                 foto = null,
                 status = dto.status,
-                nivelAcesso = dto.nivelAcessoId?.let { nivelAcessoRepository.findById(it).orElse(null) },
+                nivelAcesso = dto.nivelAcessoId.let { nivelAcessoRepository.findById(it).orElse(null) },
                 endereco = dto.enderecoId?.let { enderecoRepository.findById(it).orElse(null) },
                 empresa = dto.empresaId?.let { empresaRepository.findById(it).orElse(null) },
                 fichaAnamnese = dto.fichaAnamneseId?.let { fichaAnamneseRepository.findById(it).orElse(null) }
@@ -141,6 +143,38 @@ class UsuarioService(
                 idUsuario = usuario.codigo,
                 nome = usuario.nome,
                 dataNasc = usuario.dataNasc,
+                instagram = usuario.instagram,
+                telefone = usuario.telefone,
+                cpf = usuario.cpf,
+                status = usuario.status
+            )
+        }
+    }
+
+    fun getByCpf(cpf: String): UsuarioResponseDTO? {
+        val usuario = usuarioRepository.findByCpf(cpf) ?: return null
+        return UsuarioResponseDTO(
+            idUsuario = usuario.codigo,
+            nome = usuario.nome,
+            instagram = usuario.instagram,
+            telefone = usuario.telefone,
+            cpf = usuario.cpf,
+            dataNasc = usuario.dataNasc,
+            status = usuario.status
+        )
+    }
+
+    fun getByStatus(status: Boolean): List<UsuarioResponseDTO> {
+        val usuarios = usuarioRepository.findByStatus(status)
+        return usuarios.map { usuario ->
+            UsuarioResponseDTO(
+                idUsuario = usuario.codigo,
+                nome = usuario.nome,
+                instagram = usuario.instagram,
+                telefone = usuario.telefone,
+                cpf = usuario.cpf,
+                dataNasc = usuario.dataNasc,
+                status = usuario.status
             )
         }
     }
@@ -161,8 +195,6 @@ class UsuarioService(
             emptyList()
         }
     }
-
-    fun getByStatus(status: Boolean): List<Usuario> = usuarioRepository.findByStatus(status)
 
     fun getIndicacoesFontes(): List<Usuario> = usuarioRepository.findClientesPorOrigem()
 
@@ -186,60 +218,71 @@ class UsuarioService(
         return usuarioRepository.findClientesFidelizadosUltimosTresMeses()
     }
 
-    fun atualizarStatusParaInativo(cpf: String): Usuario? {
+    @Transactional
+    fun atualizarStatusParaInativo(cpf: String): UsuarioResponseDTO? {
         val usuario = usuarioRepository.findByCpf(cpf)
         return if (usuario != null) {
             println("Usuário encontrado: $usuario")
+            if (usuario.status == false) {
+                println("Usuário já está inativo.")
+                return UsuarioResponseDTO(
+                    idUsuario = usuario.codigo,
+                    nome = usuario.nome,
+                    instagram = usuario.instagram,
+                    telefone = usuario.telefone,
+                    cpf = usuario.cpf,
+                    dataNasc = usuario.dataNasc,
+                    status = usuario.status
+                )
+            }
             usuario.status = false
             usuarioRepository.save(usuario)
+            entityManager.flush() // Garantir que a transação seja sincronizada com o banco
             println("Status atualizado para: ${usuario.status}")
-            usuario
+            return UsuarioResponseDTO(
+                idUsuario = usuario.codigo,
+                nome = usuario.nome,
+                instagram = usuario.instagram,
+                telefone = usuario.telefone,
+                cpf = usuario.cpf,
+                dataNasc = usuario.dataNasc,
+                status = usuario.status
+            )
         } else {
             println("Usuário não encontrado para o CPF: $cpf")
             null
         }
     }
 
-    fun atualizarStatusParaAtivo(cpf: String): Usuario? {
+    @Transactional
+    fun atualizarStatusParaAtivo(cpf: String): UsuarioResponseDTO? {
         val usuario = usuarioRepository.findByCpf(cpf)
         return if (usuario != null) {
             println("Usuário encontrado: $usuario")
+            if (usuario.status == true) {
+                println("Usuário já está ativo.")
+                return UsuarioResponseDTO(
+                    idUsuario = usuario.codigo,
+                    cpf = usuario.cpf,
+                    nome = usuario.nome,
+                    status = usuario.status
+                )
+            }
             usuario.status = true
             usuarioRepository.save(usuario)
+            entityManager.flush() // Garantir que a transação seja sincronizada com o banco
             println("Status atualizado para: ${usuario.status}")
-            usuario
+            return UsuarioResponseDTO(
+                idUsuario = usuario.codigo,
+                cpf = usuario.cpf,
+                nome = usuario.nome,
+                status = usuario.status
+            )
         } else {
             println("Usuário não encontrado para o CPF: $cpf")
             null
         }
     }
-
-//    fun atualizarEndereco(cpf: String, dto: EnderecoAtualizacaoRequest): Endereco? {
-//        val usuario = usuarioRepository.findByCpf(cpf)
-//            ?: return null // Retorna null se o usuário não for encontrado
-//
-//        val endereco = usuario.endereco
-//            ?: return null // Retorna null se o endereço não for encontrado
-//
-//        // Atualiza os campos do endereço apenas se eles não forem nulos na requisição
-//        dto.logradouro?.let { endereco.logradouro = it }
-//        dto.cep?.let { endereco.cep = it }
-//        dto.numero?.let { endereco.numero = it }
-//        dto.bairro?.let { endereco.bairro = it }
-//        dto.cidade?.let { endereco.cidade = it }
-//        dto.estado?.let { endereco.estado = it }
-//
-//        // Atualiza ou cria o complemento
-//        dto.complemento?.let { complementoDescricao ->
-//            val complementoExistente = complementoRepository.findByEnderecoId(endereco.codigo!!)
-//                ?: Complemento(codigo = null, complemento = complementoDescricao, endereco = endereco)
-//            complementoExistente.complemento = complementoDescricao
-//            complementoRepository.save(complementoExistente)
-//        }
-//
-//        return enderecoRepository.save(endereco) // Salva o endereço atualizado
-//    }
-
 
     fun getClientesConcluidosUltimos5Meses(): List<Int> {
         return usuarioRepository.findClientesConcluidos5Meses()
@@ -248,6 +291,4 @@ class UsuarioService(
     fun getClientesFidelizadosUltimos5Meses(): List<Int> {
         return usuarioRepository.findClientesFidelizados5Meses()
     }
-
-    fun getByCpf(cpf: String): Usuario? = usuarioRepository.findByCpf(cpf)
 }
