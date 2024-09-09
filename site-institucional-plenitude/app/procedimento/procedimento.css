@@ -445,3 +445,10 @@ header p {
     border-radius: 50%;
     box-shadow: 15px -15px 0 #ffffff;
 }
+
+.button-disabled {
+    background-color: #d3d3d3; /* Cor cinza claro */
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+  

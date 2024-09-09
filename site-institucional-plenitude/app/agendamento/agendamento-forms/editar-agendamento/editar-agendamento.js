@@ -170,9 +170,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   saveButton.addEventListener("click", async function () {
     const clienteId = clientesSelect.value;
-    console.log(clienteId);
     const procedimentoId = procedimentosSelect.value;
-    console.log(procedimentoId);
     const tipoAtendimento = tipoAgendamentoSelect.value;
     const especificacaoId = especificacoesSelect.value;
     const data = dataInput.value;
@@ -190,7 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
       showNotification("Todos os campos são obrigatórios", true);
       return;
     }
-
+    console.log(`${data}T${horario}.000Z`)
     const dataHorario = new Date(`${data}T${horario}.000Z`).toISOString();
 
     const agendamento = {
@@ -256,11 +254,11 @@ function showNotification(message, isError = false) {
 
 document.addEventListener("DOMContentLoaded", function () {
   const nome = localStorage.getItem("nome");
-  const email = localStorage.getItem("email");
+  const instagram = localStorage.getItem("instagram");
 
-  if (nome && email) {
+  if (nome && instagram) {
     document.getElementById("userName").textContent = nome;
-    document.getElementById("userEmail").textContent = email;
+    document.getElementById("userInsta").textContent = instagram;
   }
 });
 
@@ -297,16 +295,16 @@ document.addEventListener('DOMContentLoaded', function () {
     // Preencher o select de clientes com o nome do usuário
     const clientesSelect = document.getElementById('clientes');
     const optionCliente = document.createElement('option');
-    optionCliente.value = data.usuario;
-    optionCliente.text = data.usuario;
+    optionCliente.value = data.fk_usuario; // Usar o ID do usuário
+    optionCliente.text = data.usuario; // Mostrar o nome
     optionCliente.selected = true;
     clientesSelect.appendChild(optionCliente);
 
     // Preencher o select de procedimentos
     const procedimentosSelect = document.getElementById('procedimentos');
     const optionProcedimento = document.createElement('option');
-    optionProcedimento.value = data.procedimento;
-    optionProcedimento.text = data.procedimento;
+    optionProcedimento.value = data.fk_procedimento; // Usar o ID do procedimento
+    optionProcedimento.text = data.procedimento; // Mostrar o nome
     optionProcedimento.selected = true;
     procedimentosSelect.appendChild(optionProcedimento);
 
@@ -317,8 +315,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Preencher o select de especificações
     const especificacoesSelect = document.getElementById('especificacoes');
     const optionEspecificacao = document.createElement('option');
-    optionEspecificacao.value = data.especificacao;
-    optionEspecificacao.text = data.especificacao;
+    optionEspecificacao.value = data.fk_especificacao; // Usar o ID da especificação
+    optionEspecificacao.text = data.especificacao; // Mostrar o nome
     optionEspecificacao.selected = true;
     especificacoesSelect.appendChild(optionEspecificacao);
     especificacoesSelect.disabled = false;
@@ -329,8 +327,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Exibir horários disponíveis (simulando com o horário do agendamento)
     const horariosDisponiveis = document.getElementById('horarios-disponiveis');
-    const horario = document.createElement('div');
-    horario.textContent = data.dataHorario.split('T')[1]; // Mostra o horário no formato HH:MM:SS
-    horariosDisponiveis.appendChild(horario);
+    horariosDisponiveis.innerHTML = ""; // Limpar container
+
+    // Formatar o horário do agendamento
+    const horarioAgendamento = data.dataHorario.split('T')[1].substring(0, 5); // Mostra no formato HH:MM
+
+    // Criar um botão para o horário do agendamento e marcá-lo como selecionado
+    const button = document.createElement("button");
+    button.textContent = horarioAgendamento;
+    button.classList.add("horario-button", "selected"); // Marca como selecionado
+    horariosDisponiveis.appendChild(button);
+
+    // Adicionar comportamento de seleção de horário ao botão
+    button.addEventListener("click", function () {
+      document
+        .querySelectorAll(".horario-button")
+        .forEach((btn) => btn.classList.remove("selected"));
+      button.classList.add("selected");
+    });
   }
 });

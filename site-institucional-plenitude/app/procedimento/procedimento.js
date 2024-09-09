@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  function showNotification(message, isError = false) {
+  function showNotification(message, isError = false, duration = 3000) {
     const notification = document.getElementById("notification");
     const notificationMessage = document.getElementById("notification-message");
     notificationMessage.textContent = message;
@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
     notification.classList.add("show");
     setTimeout(() => {
       notification.classList.remove("show");
-    }, 3000);
+    }, duration);
   }
 
   const baseUrl = "http://localhost:8080/api";
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let currentPage = 1;
   const itemsPerPage = 5;
   let procedimentos = [];
-  let procedimentoIdParaDeletar = null;
+  let procedimentoParaDeletar = null;
 
   function fetchData(endpoint, id) {
     fetch(baseUrl + endpoint)
@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <button class="edit-btn" data-id-especificacao="${especificacaoId}" data-id-procedimento="${procedimentoId}">
                         <i class="fas fa-edit"></i>
                     </button>
-                    <button class="delete-btn" data-id="${especificacaoId}" data-tipo="${nome}">
+                    <button class="delete-btn" data-id-especificacao="${especificacaoId}" data-id-procedimento="${procedimentoId}" data-tipo="${nome}" data-especificacao="${especificacao}">
                         <i class="fas fa-trash"></i>
                     </button>
                 </td>
@@ -120,16 +120,26 @@ document.addEventListener("DOMContentLoaded", function () {
     const totalPages = Math.ceil(procedures.length / itemsPerPage);
     totalPagesSpan.textContent = totalPages;
 
+    // Desativar ou ativar botões de página
+    prevPageBtn.classList.toggle('button-disabled', page === 1);
+    nextPageBtn.classList.toggle('button-disabled', page === totalPages);
+
     prevPageBtn.disabled = page === 1;
     nextPageBtn.disabled = page === totalPages;
 
     document.querySelectorAll(".delete-btn").forEach((button) => {
-      const id = button.getAttribute("data-id");
+      const especificacaoId = button.getAttribute("data-id-especificacao");
+      const procedimentoId = button.getAttribute("data-id-procedimento");
       const tipo = button.getAttribute("data-tipo");
+      const especificacao = button.getAttribute("data-especificacao");
+
       button.addEventListener("click", (e) => {
-        procedimentoIdParaDeletar = e.currentTarget.getAttribute("data-id");
-        if (procedimentoIdParaDeletar) {
-          showModal(tipo);
+        procedimentoParaDeletar = {
+          idEspecificacao: especificacaoId,
+          idProcedimento: procedimentoId
+        };
+        if (procedimentoParaDeletar.idEspecificacao) {
+          showModal(tipo, especificacao);
         } else {
           console.error("ID do procedimento é indefinido.");
         }
@@ -139,12 +149,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Atualização da função de clique no botão de edição
     document.querySelectorAll(".edit-btn").forEach((button) => {
       button.addEventListener("click", (e) => {
-        const especificacaoId = e.currentTarget.getAttribute(
-          "data-id-especificacao"
-        );
-        const procedimentoId = e.currentTarget.getAttribute(
-          "data-id-procedimento"
-        );
+        const especificacaoId = e.currentTarget.getAttribute("data-id-especificacao");
+        const procedimentoId = e.currentTarget.getAttribute("data-id-procedimento");
         // Corrigir a URL para enviar ambos os IDs
         window.location.href = `procedimento-forms/editar-procedimento/editar-procedimento.html?idEspecificacao=${especificacaoId}&idProcedimento=${procedimentoId}`;
       });
@@ -171,8 +177,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     btnYes.addEventListener("click", async () => {
-      if (procedimentoIdParaDeletar !== null) {
-        await deleteProcedimento(procedimentoIdParaDeletar);
+      if (procedimentoParaDeletar !== null) {
+        await deleteProcedimento(procedimentoParaDeletar.idEspecificacao, procedimentoParaDeletar.idProcedimento);
         procedimentos = await fetchProcedures();
         renderTable(procedimentos, currentPage);
         closeModal();
@@ -180,53 +186,54 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  async function deleteProcedimento(id) {
+  async function deleteProcedimento(idEspecificacao, idProcedimento) {
     try {
-      const response = await fetch(`${baseUrl}/especificacoes/${id}`, {
+      console.log(`Tentando deletar especificação com ID: ${idEspecificacao}`);
+
+      // Tentar deletar a especificação primeiro
+      const response = await fetch(`${baseUrl}/especificacoes/${idEspecificacao}`, {
         method: "DELETE",
       });
 
       if (!response.ok) {
-        // Se a resposta não for OK, obter o erro do servidor
         const errorData = await response.json();
-        if (errorData.message) {
-          showNotification(`Erro: ${errorData.message}`, true);
-        } else {
-          showNotification(
-            "Erro ao deletar o procedimento. Tente novamente mais tarde.",
-            true
-          );
-        }
-        throw new Error("Erro ao deletar o procedimento.");
+        showNotification(`Erro ao deletar a especificação: ${errorData.message}`, true);
+        throw new Error("Erro ao deletar a especificação.");
       }
 
-      // Tentar deletar no endpoint de procedimentos
-      const response2 = await fetch(`${baseUrl}/procedimentos/${id}`, {
+      console.log(`Especificação com ID: ${idEspecificacao} deletada com sucesso`);
+
+      // Agora tentar deletar o procedimento
+      const response2 = await fetch(`${baseUrl}/procedimentos/${idProcedimento}`, {
         method: "DELETE",
       });
 
-      if (!response2.ok) {
-        // Se a resposta não for OK, obter o erro do servidor
+      if (response2.ok) {
+        console.log(`Procedimento com ID: ${idProcedimento} deletado com sucesso`);
+        showNotification("Procedimento e especificação deletados com sucesso!");
+      } else {
         const errorData = await response2.json();
-        if (errorData.message) {
-          showNotification(`Erro: ${errorData.message}`, true);
-        } else {
+        if (response2.status === 500) {
+          // Se o procedimento não for deletado devido a outras especificações, mostrar mensagem adequada
           showNotification(
-            "Erro ao deletar o procedimento. Tente novamente mais tarde.",
-            true
+            "Especificação deletada com sucesso, mas o procedimento não pôde ser deletado pois ainda está associado a outras especificações.",
+            false,
+            5000 // Duração maior para esta notificação específica
           );
+        } else {
+          // Outros erros
+          showNotification(`Erro ao deletar o procedimento: ${errorData.message}`, true);
         }
-        throw new Error("Erro ao deletar o procedimento.");
       }
-
-      showNotification("Procedimento deletado com sucesso!");
     } catch (error) {
       console.error("Erro ao deletar o procedimento:", error);
+      showNotification("Erro ao deletar o procedimento. Tente novamente mais tarde.", true);
     }
   }
 
-  function showModal(tipoProcedimento) {
+  function showModal(tipoProcedimento, especificacao) {
     modalProcedimento.textContent = `Procedimento: ${tipoProcedimento}`;
+    document.getElementById('especificacao').textContent = `Especificação: ${especificacao}`;
     modal.style.display = "block";
   }
 
@@ -242,11 +249,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.addEventListener("DOMContentLoaded", function () {
   const nome = localStorage.getItem("nome");
-  const email = localStorage.getItem("email");
+  const instagram = localStorage.getItem("instagram");
 
-  if (nome && email) {
+  if (nome && instagram) {
     document.getElementById("userName").textContent = nome;
-    document.getElementById("userEmail").textContent = email;
+    document.getElementById("userInsta").textContent = instagram;
   }
 });
 

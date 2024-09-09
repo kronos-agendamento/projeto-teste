@@ -355,3 +355,20 @@ img {
 .notification svg {
     margin-right: 10px;
 }
+
+.input-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.currency-symbol {
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+.value-input {
+    border: 1px solid #ccc;
+    padding: 5px;
+    width: 100px;
+    /* Ajuste conforme necessário */
+}

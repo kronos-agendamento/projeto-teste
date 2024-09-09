@@ -10,6 +10,94 @@ document.addEventListener("DOMContentLoaded", function () {
   let editStatusId = null;
   let selectedAgendamentoId = null;
 
+  // Função para abrir o novo modal de status
+  function openCustomStatusModal() {
+    const modal = document.getElementById('custom-status-modal');
+    modal.style.display = 'flex';
+    carregarStatusParaModal(); // Carrega os status quando o modal é aberto
+  }
+
+  // Função para carregar os status no modal
+  function carregarStatusParaModal() {
+    fetch('http://localhost:8080/status-agendamento')
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else if (response.status === 204) {
+          throw new Error("Nenhum status cadastrado ainda.");
+        } else {
+          throw new Error("Erro ao buscar os status.");
+        }
+      })
+      .then(data => {
+        const tbody = document.getElementById("custom-status-tbody");
+        tbody.innerHTML = ""; // Limpa o conteúdo existente
+
+        data.forEach(status => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${status.nome}</td>
+            <td><div class="color-box" style="background-color: ${status.cor}; width: 20px; height: 20px; border-radius: 100px;"></div></td>
+            <td><button class="select-btn" data-id="${status.id}" data-nome="${status.nome}">Selecionar</button></td>
+          `;
+          tbody.appendChild(row);
+        });
+
+        // Adiciona event listeners aos botões de seleção
+        document.querySelectorAll('.select-btn').forEach(button => {
+          button.addEventListener('click', function () {
+            const id = this.getAttribute('data-id');
+            const nome = this.getAttribute('data-nome');
+            selecionarStatus(id, nome);
+          });
+        });
+      })
+      .catch(error => {
+        console.error("Erro:", error.message);
+        alert(error.message);
+      });
+  }
+
+  // Função para selecionar um status e atualizar
+  function selecionarStatus(id, nome) {
+    fetch(`http://localhost:8080/api/agendamentos/atualizar-status/${selectedAgendamentoId}?statusId=${id}`, {
+      method: 'PUT'
+    })
+      .then(response => {
+        if (!response.ok) throw new Error('Erro ao atualizar o status.');
+        return response.json();
+      })
+      .then(data => {
+        showNotification(`Status atualizado para "${nome}" com sucesso!`);
+        fetchAgendamentos(); // Atualizar a lista de agendamentos
+        closeCustomStatusModal(); // Fechar o modal
+      })
+      .catch(error => {
+        console.error('Erro ao atualizar o status:', error);
+        showNotification('Erro ao atualizar o status!', true);
+      });
+  }
+
+  // Função para fechar o modal de seleção de status
+  function closeCustomStatusModal() {
+    const modal = document.getElementById('custom-status-modal');
+    modal.style.display = 'none';
+  }
+
+  // Adiciona um botão para abrir o modal de seleção de status
+  document.getElementById('select-status-btn').addEventListener('click', carregarStatusParaModal);
+
+  totalAgendamentos = agendamentos.filter(
+    (agendamento) => agendamento.statusAgendamento.nome !== "Cancelado"
+  ).length;
+
+  confirmados = agendamentos.filter(
+    (agendamento) =>
+      agendamento.statusAgendamento.nome === "Concluído" &&
+      agendamento.statusAgendamento.nome !== "Cancelado"
+  ).length;
+
+  // Atualiza a contagem de agendamentos e barra de progresso
   async function fetchAgendamentos() {
     try {
       const response = await fetch(url);
@@ -22,11 +110,19 @@ document.addEventListener("DOMContentLoaded", function () {
       // Ordenar agendamentos por data, do mais recente ao mais antigo
       agendamentos.sort((a, b) => new Date(b.dataHorario) - new Date(a.dataHorario));
 
-      totalAgendamentos = agendamentos.length;
-      confirmados = agendamentos.filter(
-        (agendamento) => agendamento.statusAgendamento.nome === "Concluído"
+      // Exclui os agendamentos cancelados do total
+      totalAgendamentos = agendamentos.filter(
+        (agendamento) => agendamento.statusAgendamento.nome !== "Cancelado"
       ).length;
 
+      // Conta somente os agendamentos concluídos, excluindo os cancelados
+      confirmados = agendamentos.filter(
+        (agendamento) =>
+          agendamento.statusAgendamento.nome === "Concluído" &&
+          agendamento.statusAgendamento.nome !== "Cancelado"
+      ).length;
+
+      // Atualiza a barra de progresso com os dados corretos
       atualizarProgressBar(confirmados, totalAgendamentos);
       renderTable();
     } catch (error) {
@@ -39,14 +135,14 @@ document.addEventListener("DOMContentLoaded", function () {
     tbody.innerHTML = "";
 
     const hoje = new Date();
-    const dataHoje = `${hoje.getUTCFullYear()}-${String(hoje.getUTCMonth() + 1).padStart(2, '0')}-${String(hoje.getUTCDate()).padStart(2, '0')}`;
+    const dataHoje = `${hoje.getFullYear()}-${String(hoje.getMonth() + 1).padStart(2, '0')}-${String(hoje.getDate()).padStart(2, '0')}`;
 
     let agendamentosFiltrados = agendamentos;
 
     if (filtro === 'hoje') {
       agendamentosFiltrados = agendamentos.filter(agendamento => {
         const dataAgendamento = new Date(agendamento.dataHorario);
-        const dataAgendamentoFormatada = `${dataAgendamento.getUTCFullYear()}-${String(dataAgendamento.getUTCMonth() + 1).padStart(2, '0')}-${String(dataAgendamento.getUTCDate()).padStart(2, '0')}`;
+        const dataAgendamentoFormatada = `${dataAgendamento.getFullYear()}-${String(dataAgendamento.getMonth() + 1).padStart(2, '0')}-${String(dataAgendamento.getDate()).padStart(2, '0')}`;
         return dataAgendamentoFormatada === dataHoje;
       });
     } else if (filtro === 'custom') {
@@ -58,7 +154,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       agendamentosFiltrados = agendamentos.filter(agendamento => {
         const dataAgendamento = new Date(agendamento.dataHorario);
-        const dataAgendamentoFormatada = `${dataAgendamento.getUTCFullYear()}-${String(dataAgendamento.getUTCMonth() + 1).padStart(2, '0')}-${String(dataAgendamento.getUTCDate()).padStart(2, '0')}`;
+        const dataAgendamentoFormatada = `${dataAgendamento.getFullYear()}-${String(dataAgendamento.getMonth() + 1).padStart(2, '0')}-${String(dataAgendamento.getDate()).padStart(2, '0')}`;
 
         const isWithinDateRange = (!from || dataAgendamentoFormatada >= from) && (!to || dataAgendamentoFormatada <= to);
         const matchesClient = !client || agendamento.usuario.toLowerCase().includes(client);
@@ -157,6 +253,65 @@ document.addEventListener("DOMContentLoaded", function () {
       tbody.appendChild(tr);
     });
   }
+
+  document.getElementById('exportar-planilha').addEventListener('click', () => {
+    document.getElementById('export-modal').style.display = 'flex';
+  });
+
+  document.getElementById('export-all').addEventListener('click', () => {
+    exportarParaExcel('todos');
+    fecharModal();
+  });
+
+  document.getElementById('export-today').addEventListener('click', () => {
+    exportarParaExcel('hoje');
+    fecharModal();
+  });
+
+  document.getElementById('cancel-export').addEventListener('click', fecharModal);
+
+  function fecharModal() {
+    document.getElementById('export-modal').style.display = 'none';
+  }
+
+  function exportarParaExcel(filtroAtivo = 'todos') {
+    let agendamentosParaExportar = agendamentos;
+    let nomeArquivo = 'Agendamentos.xlsx';
+
+    if (filtroAtivo === 'hoje') {
+      const hoje = new Date();
+      const dataHoje = `${hoje.getFullYear()}-${String(hoje.getMonth() + 1).padStart(2, '0')}-${String(hoje.getDate()).padStart(2, '0')}`;
+      const dia = String(hoje.getDate()).padStart(2, '0');
+      const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+      nomeArquivo = `Agendamentos - ${dia}-${mes}.xlsx`;
+
+      agendamentosParaExportar = agendamentos.filter(agendamento => {
+        const dataAgendamento = new Date(agendamento.dataHorario);
+        const dataAgendamentoFormatada = `${dataAgendamento.getFullYear()}-${String(dataAgendamento.getMonth() + 1).padStart(2, '0')}-${String(dataAgendamento.getDate()).padStart(2, '0')}`;
+        return dataAgendamentoFormatada === dataHoje;
+      });
+    }
+
+    // Prepara os dados para exportação
+    const dados = agendamentosParaExportar.map(agendamento => ({
+      'Data e Hora': new Date(agendamento.dataHorario).toLocaleString(),
+      Cliente: agendamento.usuario,
+      Procedimento: agendamento.procedimento,
+      Especificação: agendamento.especificacao,
+      Status: agendamento.statusAgendamento.nome
+    }));
+
+    // Cria uma nova planilha
+    const ws = XLSX.utils.json_to_sheet(dados);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Agendamentos');
+
+    // Exporta o arquivo Excel
+    XLSX.writeFile(wb, nomeArquivo);
+  }
+
+  // Adiciona um botão para abrir o modal de seleção de status
+  document.getElementById('select-status-btn').addEventListener('click', openCustomStatusModal);
 
   function showDetalhesModal(id) {
     const agendamento = agendamentos.find(a => a.idAgendamento === id);
@@ -580,10 +735,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
 document.addEventListener("DOMContentLoaded", function () {
   const nome = localStorage.getItem("nome");
-  const email = localStorage.getItem("email");
+  const instagram = localStorage.getItem("instagram");
 
-  if (nome && email) {
+  if (nome && instagram) {
     document.getElementById("userName").textContent = nome;
-    document.getElementById("userEmail").textContent = email;
+    document.getElementById("userInsta").textContent = instagram;
   }
 });

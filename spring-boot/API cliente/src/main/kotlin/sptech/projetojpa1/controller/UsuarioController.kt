@@ -8,14 +8,9 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import sptech.projetojpa1.dominio.Complemento
-import sptech.projetojpa1.dominio.Endereco
 import sptech.projetojpa1.domain.Usuario
-import sptech.projetojpa1.dto.endereco.EnderecoAtualizacaoRequest
-import sptech.projetojpa1.dto.agendamento.AgendamentoResponseDTO
 import sptech.projetojpa1.dto.usuario.*
 import sptech.projetojpa1.service.UsuarioService
-import java.util.*
 
 @RestController
 @RequestMapping("/usuarios")

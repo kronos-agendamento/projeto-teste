@@ -27,11 +27,8 @@
             border-radius: 300px;
             display: flex;
             justify-content: center;
-          "
-        >
-          <img
-            src="../../../assets/Foto de Perfil.png"
-            style="
+          ">
+        <img src="../../../assets/Foto de Perfil.png" style="
               width: 53vh;
               height: 23vh;
               display: flex;
@@ -79,7 +76,7 @@
         </a>
       </li>
       <li class="list">
-        <a href="../../../cliente/cliente.html">
+        <a href="../../../clientes/cliente.html">
           <span class="icon"><ion-icon name="person-add-outline"></ion-icon></span>
           <span class="title">Clientes</span>
         </a>
@@ -129,51 +126,60 @@
         <div class="forms-esquerda">
           <div class="form-group">
             <label for="procedimento">Procedimento:</label>
-            <input type="text" id="procedimento" name="procedimento" />
+            <input type="text" id="procedimento" name="procedimento" placeholder="Ex: Alongamento de Unhas" />
           </div>
           <div class="form-group">
             <label for="descricao">Descrição:</label>
-            <input type="text" id="descricao" name="descricao" />
+            <input type="text" id="descricao" name="descricao"
+              placeholder="Ex: Alongamento com gel de alta resistência" />
           </div>
           <div class="form-group">
             <label for="especificacao">Especificação:</label>
-            <input type="text" id="especificacao" name="especificacao" />
+            <input type="text" id="especificacao" name="especificacao" placeholder="Ex: Técnica Fio a Fio" />
           </div>
           <div class="forms-valores">
             <div class="form-group">
               <label for="valor-colocacao" id="texto-valor-colocacao">Valor colocação:</label>
-              <input type="text" id="valor-colocacao" name="valor-colocacao" />
+              <div class="input-wrapper">
+                <span class="currency-symbol">R$</span>
+                <input id="valor-colocacao" class="value-input" type="text" placeholder="Ex: R$ 150,00" />
+              </div>
             </div>
             <div class="form-group">
               <label for="valor-retirada" id="texto-valor-retirada">Valor retirada:</label>
-              <input type="text" id="valor-retirada" name="valor-retirada" />
+              <div class="input-wrapper">
+                <span class="currency-symbol">R$</span>
+                <input id="valor-retirada" class="value-input" type="text" placeholder="Ex: R$ 50,00" />
+              </div>
             </div>
             <div class="form-group">
               <label for="valor-manutencao" id="texto-valor-manutencao">Valor manutenção:</label>
-              <input type="text" id="valor-manutencao" name="valor-manutencao" />
+              <div class="input-wrapper">
+                <span class="currency-symbol">R$</span>
+                <input id="valor-manutencao" class="value-input" type="text" placeholder="Ex: R$ 100,00" />
+              </div>
             </div>
           </div>
         </div>
         <div class="forms-direita">
           <label for="duracao-colocacao-horas"><strong>Duração Colocação:</strong></label>
           <div class="form-group forms-horarios">
-            <input type="number" id="duracao-colocacao-horas" name="duracao-colocacao-horas" placeholder="Horas" />
+            <input type="number" id="duracao-colocacao-horas" name="duracao-colocacao-horas" placeholder="Ex: 02" />
             <span>:</span>
-            <input type="number" id="duracao-colocacao-minutos" name="duracao-colocacao-minutos"
-              placeholder="Minutos" />
+            <input type="number" id="duracao-colocacao-minutos" name="duracao-colocacao-minutos" placeholder="Ex: 30" />
           </div>
           <label for="duracao-manutencao-horas"><strong>Duração Manutenção:</strong></label>
           <div class="form-group forms-horarios">
-            <input type="number" id="duracao-manutencao-horas" name="duracao-manutencao-horas" placeholder="Horas" />
+            <input type="number" id="duracao-manutencao-horas" name="duracao-manutencao-horas" placeholder="Ex: 01" />
             <span>:</span>
             <input type="number" id="duracao-manutencao-minutos" name="duracao-manutencao-minutos"
-              placeholder="Minutos" />
+              placeholder="Ex: 15" />
           </div>
           <label for="duracao-retirada-horas"><strong>Duração Retirada:</strong></label>
           <div class="form-group forms-horarios">
-            <input type="number" id="duracao-retirada-horas" name="duracao-retirada-horas" placeholder="Horas" />
+            <input type="number" id="duracao-retirada-horas" name="duracao-retirada-horas" placeholder="Ex: 01" />
             <span>:</span>
-            <input type="number" id="duracao-retirada-minutos" name="duracao-retirada-minutos" placeholder="Minutos" />
+            <input type="number" id="duracao-retirada-minutos" name="duracao-retirada-minutos" placeholder="Ex: 00" />
           </div>
         </div>
       </form>

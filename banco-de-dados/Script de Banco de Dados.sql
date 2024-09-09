@@ -1,6 +1,6 @@
 CREATE DATABASE IF NOT EXISTS kronosbooking;
 USE kronosbooking;
--- Dropping existing tables and procedures
+
 DROP TABLE IF EXISTS feedback;
 DROP TABLE IF EXISTS cliente;
 DROP TABLE IF EXISTS profissional;

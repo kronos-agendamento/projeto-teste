@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
 import sptech.projetojpa1.domain.Agendamento
-import sptech.projetojpa1.dominio.Usuario
+import sptech.projetojpa1.domain.Usuario
 import java.time.LocalDateTime
 
 @Repository
@@ -33,4 +33,6 @@ interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
         @Param("dataInicio") dataInicio: LocalDateTime,
         @Param("dataFim") dataFim: LocalDateTime
     ): List<Agendamento>
+
+    fun deleteAllByUsuario(usuario: Usuario)
 }

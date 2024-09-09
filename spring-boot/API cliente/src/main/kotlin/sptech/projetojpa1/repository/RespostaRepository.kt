@@ -2,7 +2,7 @@ package sptech.projetojpa1.repository
 
 import org.springframework.data.jpa.repository.JpaRepository
 import sptech.projetojpa1.domain.Resposta
-import sptech.projetojpa1.dominio.Usuario
+import sptech.projetojpa1.domain.Usuario
 
 interface RespostaRepository : JpaRepository<Resposta, Int> {
 

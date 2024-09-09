@@ -21,7 +21,7 @@ async function fetchAgendamentos() {
   try {
     const response = await fetch('http://localhost:8080/api/agendamentos/listar');
     if (!response.ok) throw new Error('Erro ao buscar os agendamentos');
-    
+
     const agendamentos = await response.json();
     renderAgenda(agendamentos);
   } catch (error) {
@@ -32,7 +32,7 @@ async function fetchAgendamentos() {
 // Renderizar a agenda para a semana selecionada
 function renderAgenda(agendamentos) {
   const diasSemana = calcularDatasSemana(semanaAtual);
-  
+
   // Atualiza as datas na interface
   const thElements = document.querySelectorAll('thead th');
   thElements.forEach((th, index) => {
@@ -52,18 +52,18 @@ function renderAgenda(agendamentos) {
 
   agendamentos.forEach(agendamento => {
     const data = new Date(agendamento.dataHorario);
-    
+
     diasSemana.forEach((dia, index) => {
       if (data.toDateString() === dia.toDateString()) { // Verifica se o agendamento está no dia correspondente
         const diaElement = diasElements[index];
         const appointment = document.createElement('div');
         appointment.classList.add('appointment');
-        
+
         const horarioFormatado = `${data.getHours().toString().padStart(2, '0')}h${data.getMinutes().toString().padStart(2, '0')}`;
         appointment.innerHTML = `
           <p>${horarioFormatado}<br />${agendamento.usuario}<br />${agendamento.especificacao}</p>
         `;
-  
+
         diaElement.appendChild(appointment);
       }
     });
@@ -93,12 +93,11 @@ document.getElementById('btn-voltar-home').addEventListener('click', voltarSeman
 fetchAgendamentos();
 
 document.addEventListener("DOMContentLoaded", function () {
-    const nome = localStorage.getItem("nome");
-    const email = localStorage.getItem("email");
-  
-    if (nome && email) {
-      document.getElementById("userName").textContent = nome;
-      document.getElementById("userNameSpan").textContent = nome;
-      document.getElementById("userEmail").textContent = email;
-    }
-  });
+  const nome = localStorage.getItem("nome");
+  const instagram = localStorage.getItem("instagram");
+
+  if (nome && instagram) {
+    document.getElementById("userName").textContent = nome;
+    document.getElementById("userInsta").textContent = instagram;
+  }
+});

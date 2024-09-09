@@ -24,7 +24,7 @@
           <img src="../assets/Foto de Perfil.png">
         </div>
         <li id="userName"></li>
-        <li id="userEmail"></li>
+        <li id="userInsta"></li>
       </div>
 
       <ul>
@@ -53,7 +53,7 @@
           </a>
         </li>
         <li class="list">
-          <a href="../cliente/cliente.html">
+          <a href="../clientes/cliente.html">
             <span class="icon"><ion-icon name="person-add-outline"></ion-icon></span>
             <span class="title">Clientes</span>
           </a>
@@ -105,7 +105,10 @@
               Filtro
             </button>
             <div class="right-actions">
-              <!-- Botões para abrir os modais -->
+              <button id="exportar-planilha" class="planilha-btn" style="height: 7vh; margin-left: 35%">
+                <img style="height: 5vh; margin-top: 19%" src="../../assets/icons/spreadsheet.png"
+                  alt="spreadsheet" />Planilha
+              </button>
               <button class="btn btn-create" id="open-save-modal-btn">
                 <img src="../../assets/icons/createNew.png" alt="createNew" /><span>Criar Status</span>
               </button>
@@ -259,8 +262,9 @@
   <div id="detalhes-modal" class="modal">
     <div class="modal-content2">
       <h3>Detalhes do Agendamento</h3>
-      <div style="margin-left: 25vw;"><button onclick="closeDetalhesModal()" id="close-status-modal"
-          class="detalhes-button">&times;</button></div>
+      <div style="margin-left: 25vw;">
+        <button onclick="closeDetalhesModal()" id="close-status-modal" class="detalhes-button">&times;</button>
+      </div>
       <div>
         <div class="label">
           <label for="detalhe-cliente">Cliente:</label>
@@ -295,6 +299,51 @@
         <button class="btn btn-no" id="clienteFaltou" onclick="clienteFaltou()">Cliente Faltou</button>
         <button class="btn btn-save" id="atendimentoConcluido" onclick="atendimentoConcluido()">Atendimento
           Concluído</button>
+        <button id="select-status-btn" class="btn btn-select">Selecionar Status</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Novo Modal para Seleção de Status -->
+  <div id="custom-status-modal" class="modal">
+    <div class="modal-content3">
+      <h3>Selecione um Status</h3>
+      <div style="margin-left: 25vw;">
+        <button onclick="closeCustomStatusModal()" id="close-custom-status-modal"
+          class="detalhes-button">&times;</button>
+      </div>
+      <table id="custom-status-table" class="status-table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Cor</th>
+            <th>Ação</th>
+          </tr>
+        </thead>
+        <tbody id="custom-status-tbody">
+          <!-- Status será carregado aqui -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script>
+    // Função para fechar o modal de seleção de status
+    function closeCustomStatusModal() {
+      const modal = document.getElementById('custom-status-modal');
+      modal.style.display = 'none';
+    }
+  </script>
+
+  <div id="export-modal" class="modal">
+    <div class="modal-content">
+      <h2>Exportar Agendamentos</h2>
+      <p>Escolha quais agendamentos deseja exportar:</p>
+      <div class="export-buttons">
+        <button id="export-all" class="btn btn-yes">Exportar Todos</button>
+        <button id="export-today" class="btn btn-yes">Exportar os de Hoje</button>
+      </div>
+      <div class="cancel-button">
+        <button id="cancel-export" class="btn btn-no">Cancelar</button>
       </div>
     </div>
   </div>

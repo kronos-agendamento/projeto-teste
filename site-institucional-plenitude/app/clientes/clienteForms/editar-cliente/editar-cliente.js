@@ -198,4 +198,31 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     document.getElementById('personalForm').addEventListener('submit', updatePersonalData);
     document.getElementById('addressForm').addEventListener('submit', updateAddressData);
+
+    document.getElementById('enviarEmailButton').addEventListener('click', async function () {
+        const email = document.getElementById('email').value;
+        
+        if (email) {
+            try {
+                const response = await fetch('http://localhost:5000/enviar-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email: email }),
+                });
+
+                if (response.ok) {
+                    showNotification('Email enviado com sucesso!');
+                    window.enableEditing();
+                } else {
+                    showNotification('Erro ao enviar email', true);
+                }
+            } catch (error) {
+                console.error('Erro ao enviar email:', error);
+            }
+        } else {
+            alert('Por favor, insira um email válido.');
+        }
+    });
 });

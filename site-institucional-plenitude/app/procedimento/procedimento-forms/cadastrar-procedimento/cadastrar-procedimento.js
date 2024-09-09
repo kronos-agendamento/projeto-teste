@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   // Função para exibir notificação
-  function showNotification(message, isError = false) {
+  function showNotification(message, isError = false, duration = 3000) {
     const notification = document.getElementById("notification");
     const notificationMessage = document.getElementById("notification-message");
     notificationMessage.textContent = message;
@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     notification.classList.add("show");
     setTimeout(() => {
       notification.classList.remove("show");
-    }, 3000);
+    }, duration);
   }
 
   // Função para carregar procedimentos no dropdown
@@ -76,31 +76,20 @@ document.addEventListener("DOMContentLoaded", function () {
           showNotification("Erro ao salvar procedimento!", true);
         });
     });
+    
   document
     .getElementById("save-especificacao-button")
     .addEventListener("click", function () {
       const especificacao = document.getElementById("especificacao").value;
 
-      let duracaoColocacaoHoras = document.getElementById(
-        "duracao-colocacao-horas"
-      ).value;
-      let duracaoColocacaoMinutos = document.getElementById(
-        "duracao-colocacao-minutos"
-      ).value;
+      let duracaoColocacaoHoras = document.getElementById("duracao-colocacao-horas").value;
+      let duracaoColocacaoMinutos = document.getElementById("duracao-colocacao-minutos").value;
 
-      let duracaoManutencaoHoras = document.getElementById(
-        "duracao-manutencao-horas"
-      ).value;
-      let duracaoManutencaoMinutos = document.getElementById(
-        "duracao-manutencao-minutos"
-      ).value;
+      let duracaoManutencaoHoras = document.getElementById("duracao-manutencao-horas").value;
+      let duracaoManutencaoMinutos = document.getElementById("duracao-manutencao-minutos").value;
 
-      let duracaoRetiradaHoras = document.getElementById(
-        "duracao-retirada-horas"
-      ).value;
-      let duracaoRetiradaMinutos = document.getElementById(
-        "duracao-retirada-minutos"
-      ).value;
+      let duracaoRetiradaHoras = document.getElementById("duracao-retirada-horas").value;
+      let duracaoRetiradaMinutos = document.getElementById("duracao-retirada-minutos").value;
 
       // Padronizar horas e minutos para dois dígitos
       duracaoColocacaoHoras = duracaoColocacaoHoras.padStart(2, "0");
@@ -114,15 +103,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const especificacaoData = {
         especificacao: especificacao,
-        precoColocacao: parseFloat(
-          document.getElementById("valor-colocacao").value
-        ),
-        precoManutencao: parseFloat(
-          document.getElementById("valor-manutencao").value
-        ),
-        precoRetirada: parseFloat(
-          document.getElementById("valor-retirada").value
-        ),
+        precoColocacao: parseFloat(document.getElementById("valor-colocacao").value),
+        precoManutencao: parseFloat(document.getElementById("valor-manutencao").value),
+        precoRetirada: parseFloat(document.getElementById("valor-retirada").value),
         procedimento: document.getElementById("procedimento-dropdown").value,
         tempoColocacao: `${duracaoColocacaoHoras}:${duracaoColocacaoMinutos}`,
         tempoManutencao: `${duracaoManutencaoHoras}:${duracaoManutencaoMinutos}`,
@@ -135,20 +118,20 @@ document.addEventListener("DOMContentLoaded", function () {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(especificacaoData),
-      });
-    })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then((especificacaoResponse) => {
-      showNotification("Especificação salva com sucesso!");
-    })
-    .catch((error) => {
-      console.error("Erro ao salvar especificação:", error);
-      showNotification("Erro ao salvar especificação!", true);
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((especificacaoResponse) => {
+          showNotification("Especificação salva com sucesso!", false, 5000); // Notificação de sucesso com duração maior
+        })
+        .catch((error) => {
+          console.error("Erro ao salvar especificação:", error);
+          showNotification("Erro ao salvar especificação!", true);
+        });
     });
 });
 
@@ -189,10 +172,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.addEventListener("DOMContentLoaded", function () {
   const nome = localStorage.getItem("nome");
-  const email = localStorage.getItem("email");
+  const instagram = localStorage.getItem("instagram");
 
-  if (nome && email) {
+  if (nome && instagram) {
     document.getElementById("userName").textContent = nome;
-    document.getElementById("userEmail").textContent = email;
+    document.getElementById("userInsta").textContent = instagram;
   }
 });

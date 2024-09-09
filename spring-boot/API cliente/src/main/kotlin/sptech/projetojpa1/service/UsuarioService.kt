@@ -3,13 +3,9 @@ package sptech.projetojpa1.service
 import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import sptech.projetojpa1.dominio.Complemento
-import sptech.projetojpa1.dominio.Endereco
 import sptech.projetojpa1.domain.Usuario
-import sptech.projetojpa1.dto.endereco.EnderecoAtualizacaoRequest
 import sptech.projetojpa1.domain.usuario.Cliente
 import sptech.projetojpa1.domain.usuario.Profissional
-import sptech.projetojpa1.dto.agendamento.AgendamentoResponseDTO
 import sptech.projetojpa1.dto.usuario.*
 import sptech.projetojpa1.repository.*
 import java.util.*
@@ -24,7 +20,6 @@ class UsuarioService(
     @Autowired private val respostaRepository: RespostaRepository,
     @Autowired private val feedbackRepository: FeedbackRepository,
     @Autowired private val agendamentoRepository: AgendamentoRepository,
-    @Autowired private val complementoRepository: ComplementoRepository
 ) {
     fun salvarUsuario(dto: UsuarioRequest): Usuario {
         val usuario: Usuario = if (dto.nivelAcessoId == 1) {
