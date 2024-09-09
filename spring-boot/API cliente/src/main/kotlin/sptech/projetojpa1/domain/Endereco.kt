@@ -1,12 +1,13 @@
 package sptech.projetojpa1.domain
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 
 @Entity
-@Table(name = "enderecos")
+@Table(name = "endereco")
 class Endereco(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_endereco")
@@ -35,13 +36,9 @@ class Endereco(
 
     @field:NotNull(message = "Número é obrigatório")
     @Column(name = "numero")
-    var numero: Int,
+    var numero: String,
 
     @field:Size(max = 100, message = "Complemento deve ter no máximo 100 caracteres")
     @Column(name = "complemento")
-    var complemento: String? = null
-) {
-    override fun toString(): String {
-        return "Endereco(id=$idEndereco, logradouro='$logradouro', cep='$cep', bairro=$bairro, cidade=$cidade, estado=$estado, numero=$numero, complemento=$complemento)"
-    }
-}
+    var complemento: String? = null,
+)

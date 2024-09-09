@@ -29,15 +29,21 @@ class EmpresaService(
         return empresa.toResponseDTO()
     }
 
+    fun listarPorId(id: Int): EmpresaResponseDTO? {
+        val empresa = empresaRepository.findById(id)
+            .orElseThrow { IllegalArgumentException("Empresa com ID $id não encontrada") }
+        return empresa.toResponseDTO()
+    }
+
     fun criarEmpresa(dto: EmpresaRequestDTO): EmpresaResponseDTO {
-        val endereco = enderecoRepository.findById(dto.enderecoId)
+        val endereco = enderecoRepository.findById(dto.endereco)
             .orElseThrow { IllegalArgumentException("Endereço não encontrado") }
 
-        val horarioFuncionamento = horarioFuncionamentoRepository.findById(dto.horarioFuncionamentoId)
+        val horarioFuncionamento = horarioFuncionamentoRepository.findById(dto.horarioFuncionamento)
             .orElseThrow { IllegalArgumentException("Horário de funcionamento não encontrado") }
 
         val empresa = Empresa(
-            idEmpresa = 0,
+            idEmpresa = null,
             nome = dto.nome,
             telefone = dto.telefone,
             cnpj = dto.cnpj,
@@ -59,12 +65,12 @@ class EmpresaService(
         dto.nome?.let { empresa.nome = it }
         dto.telefone?.let { empresa.telefone = it }
         dto.cnpj?.let { empresa.cnpj = it }
-        dto.idEndereco?.let {
+        dto.endereco?.let {
             val endereco = enderecoRepository.findById(it)
                 .orElseThrow { IllegalArgumentException("Endereço não encontrado") }
             empresa.endereco = endereco
         }
-        dto.idHorarioFuncionamento?.let {
+        dto.horarioFuncionamento?.let {
             val horarioFuncionamento = horarioFuncionamentoRepository.findById(it)
                 .orElseThrow { IllegalArgumentException("Horário de funcionamento não encontrado") }
             empresa.horarioFuncionamento = horarioFuncionamento

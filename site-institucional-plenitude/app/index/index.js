@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const buttons = document.querySelectorAll("button");
   buttons.forEach((button) => {
-    button.addEventListener("click", () => { });
+    button.addEventListener("click", () => {});
   });
 });
 
@@ -28,12 +28,12 @@ function scrollDown() {
 
 document.addEventListener("DOMContentLoaded", function () {
   const nome = localStorage.getItem("nome");
-  const email = localStorage.getItem("email");
+  const instagram = localStorage.getItem("instagram");
 
-  if (nome && email) {
+  if (nome && instagram) {
     document.getElementById("userName").textContent = nome;
     document.getElementById("userNameSpan").textContent = nome;
-    document.getElementById("userEmail").textContent = email;
+    document.getElementById("userInsta").textContent = instagram;
   }
 });
 
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  const apiBaseUrl = "http://localhost:8080";
+  const apiBaseUrl = "http://localhost:8080/api";
 
   const fetchEspecificacoes = async () => {
     try {
@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  const formatarDuracao = (tempoColocacao) => {
+  function formatarDuracao(tempoColocacao) {
     if (!tempoColocacao || tempoColocacao === "N/A") {
       return "N/A";
     }
@@ -79,43 +79,50 @@ document.addEventListener("DOMContentLoaded", () => {
     const horasFormatadas = parseInt(horas, 10);
     const minutosFormatados = parseInt(minutos, 10);
 
-    if (horasFormatadas === 0) {
-      return `${minutosFormatados}`;
-    } else {
-      return `${horasFormatadas}:${minutosFormatados < 10 ? "0" + minutosFormatados : minutosFormatados}`;
+    // Verifica se a conversão para número é válida
+    if (isNaN(horasFormatadas) || isNaN(minutosFormatados)) {
+      return "N/A";
+    }
+
+    return horasFormatadas === 0
+      ? `${minutosFormatados} min`
+      : `${horasFormatadas}h ${
+          minutosFormatados < 10 ? "0" + minutosFormatados : minutosFormatados
+        } min`;
+  }
+
+  const popularTabela = async () => {
+    try {
+      const especificacoes = await fetchEspecificacoes();
+      const tabela = document.querySelector("#procedimentos-cadastrados tbody");
+      tabela.innerHTML = "";
+
+      especificacoes.slice(0, 3).forEach((especificacao) => {
+        const procedimento = especificacao.procedimento;
+        const tempo = especificacao;
+        const precoFormatado = `R$${especificacao.precoColocacao.toLocaleString(
+          "pt-BR",
+          { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+        )}`;
+        const duracaoFormatada = tempo.tempoColocacao
+          ? formatarDuracao(tempo.tempoColocacao)
+          : "N/A";
+
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${procedimento.tipo}</td>
+          <td>${precoFormatado}</td>
+          <td>${duracaoFormatada}</td>
+          <td>${especificacao.especificacao}</td>
+        `;
+        tabela.appendChild(row);
+      });
+    } catch (error) {
+      console.error("Erro ao buscar especificações:", error);
     }
   };
 
-  const popularTabela = async () => {
-    const especificacoes = await fetchEspecificacoes();
-
-    const tabela = document.querySelector("#procedimentos-cadastrados tbody");
-    tabela.innerHTML = ""; // Limpa a tabela antes de inserir novos dados
-
-    // Limita a exibição aos primeiros 2 itens
-    especificacoes.slice(0, 3).forEach((especificacao) => {
-      const procedimento = especificacao.fkProcedimento;
-      const tempo = especificacao.fkTempoProcedimento;
-
-      // Formata o preço com "R$" antes do número e usa vírgula como separador decimal
-      const precoFormatado = `R$ ${especificacao.precoColocacao.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-
-      // Formata a duração (tempo) conforme especificado
-      const duracaoFormatada = tempo ? formatarDuracao(tempo.tempoColocacao) : "N/A";
-
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${procedimento.tipo}</td>
-        <td>${precoFormatado}</td>
-        <td>${duracaoFormatada}h</td>
-        <td>${especificacao.especificacao}</td>
-      `;
-      tabela.appendChild(row);
-    });
-  };
-
   popularTabela();
-
 });
 
 async function fetchAgendamentos() {
@@ -151,7 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return dataObj.toLocaleDateString("pt-BR", {
         day: "2-digit",
         month: "2-digit",
-        year: "numeric"
+        year: "numeric",
       });
     }
     return "Data inválida";
@@ -175,10 +182,10 @@ document.addEventListener("DOMContentLoaded", () => {
         // Itera pelos dois agendamentos mais recentes
         sortedData.slice(0, 3).forEach((agendamento) => {
           const row = frequentClientsTable.insertRow();
-          const nome = agendamento.usuario.nome;
-          const cpfFormatado = formatarCPF(agendamento.usuario.cpf);
+          const nome = agendamento.usuario;
+          const cpfFormatado = formatarCPF(agendamento.usuarioCpf);
           const ultimaAparicao = formatarData(agendamento.dataHorario);
-          const ultimoProcedimento = agendamento.procedimento.tipo;
+          const ultimoProcedimento = agendamento.procedimento;
 
           row.insertCell(0).innerText = nome;
           row.insertCell(1).innerText = cpfFormatado;
@@ -203,7 +210,9 @@ function filtrarAgendamentosDoDia(agendamentos) {
 
 // Função para ordenar os agendamentos por horário
 function ordenarAgendamentosPorHorario(agendamentos) {
-  return agendamentos.sort((a, b) => new Date(a.dataHorario) - new Date(b.dataHorario));
+  return agendamentos.sort(
+    (a, b) => new Date(a.dataHorario) - new Date(b.dataHorario)
+  );
 }
 
 // Função para renderizar a agenda diária
@@ -217,28 +226,27 @@ function renderizarAgendaDiaria(agendamentos) {
   const diaSemana = hoje.toLocaleDateString("pt-BR", { weekday: "long" });
   const data = hoje.toLocaleDateString("pt-BR");
 
-  dayElement.textContent = diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1);
+  dayElement.textContent =
+    diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1);
   dateElement.textContent = data;
 
   appointmentsContainer.innerHTML = "";
 
   const agendamentosOrdenados = ordenarAgendamentosPorHorario(agendamentos);
 
-  agendamentosOrdenados.forEach(agendamento => {
+  agendamentosOrdenados.forEach((agendamento) => {
     // Ajusta a data e hora para o fuso horário local
     const dataUTC = new Date(agendamento.dataHorario);
 
-    // Adiciona 3 horas ao horário UTC
-    dataUTC.setHours(dataUTC.getHours() + 3);
-
+    // Não adicionar horas ao horário UTC
     const horarioLocal = dataUTC.toLocaleTimeString("pt-BR", {
       hour: "2-digit",
       minute: "2-digit",
-      hour12: false // Use o formato 24 horas
+      hour12: false, // Use o formato 24 horas
     });
 
-    const cliente = agendamento.usuario.nome;
-    const procedimento = agendamento.procedimento.descricao;
+    const cliente = agendamento.usuario;
+    const procedimento = agendamento.procedimento;
 
     const appointmentElement = document.createElement("div");
     appointmentElement.className = "appointment";
@@ -253,7 +261,6 @@ function renderizarAgendaDiaria(agendamentos) {
     appointmentsContainer.appendChild(appointmentElement);
   });
 }
-
 // Função para carregar a agenda diária
 async function carregarAgendaDiaria() {
   const agendamentos = await fetchAgendamentos();
@@ -263,8 +270,6 @@ async function carregarAgendaDiaria() {
 
 // Chama a função para carregar a agenda diária quando a página é carregada
 document.addEventListener("DOMContentLoaded", carregarAgendaDiaria);
-
-
 
 // Função para buscar os usuários do backend
 async function fetchUsuarios() {

@@ -17,8 +17,4 @@ class Pergunta(
 
     @Column(name = "pergunta_ativa")
     var ativa: Boolean = false
-) {
-    override fun toString(): String {
-        return "Pergunta(idPergunta=$idPergunta, pergunta='$pergunta', ativa=$ativa)"
-    }
-}
+)

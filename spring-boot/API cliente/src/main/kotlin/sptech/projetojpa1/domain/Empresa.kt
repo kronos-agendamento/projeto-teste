@@ -33,10 +33,6 @@ class Empresa(
 
     @field:NotNull(message = "Horário de Funcionamento é obrigatório")
     @ManyToOne
-    @JoinColumn(name = "fk_horario_funcionamento")
+    @JoinColumn(name = "fk_horario_funcionamento", referencedColumnName = "id_horario_funcionamento")
     var horarioFuncionamento: HorarioFuncionamento
-) {
-    override fun toString(): String {
-        return "Empresa(idEmpresa=$idEmpresa, nome='$nome', telefone='$telefone', cnpj='$cnpj', endereco=$endereco, horarioFuncionamento=$horarioFuncionamento)"
-    }
-}
+)

@@ -23,8 +23,4 @@ class Resposta(
     @ManyToOne
     @JoinColumn(name = "fk_usuario", nullable = false)
     var usuario: Usuario
-) {
-    override fun toString(): String {
-        return "Resposta(idResposta=$idResposta, resposta='$resposta', pergunta=$pergunta, fichaAnamnese=$fichaAnamnese, usuario=$usuario)"
-    }
-}
+)

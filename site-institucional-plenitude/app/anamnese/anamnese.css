@@ -439,6 +439,7 @@ Inicio Filtros
   height: 5vh;
 }
 
+
 .right-actions img {
   height: 5vh;
 }
@@ -578,16 +579,19 @@ Inicio Respostas
 }
 
 .form-section .direcionamento {
+.form-section .direcionamento {
   margin: 3vh;
   width: 63vw;
 }
 
+.form-section .direcionamento img {
 .form-section .direcionamento img {
   width: 3vw;
   margin-right: 1vw;
 }
 
 
+.content-box {
 .content-box {
   display: flex;
   flex-direction: row;
@@ -599,10 +603,12 @@ Inicio Respostas
 }
 
 .content {
+.content {
   height: 20vh;
   margin: 3vh;
 }
 
+.content img {
 .content img {
   width: 1vw;
   margin: 0.8vh;
@@ -610,9 +616,12 @@ Inicio Respostas
 }
 
 #openStatusModalBtn2 {
+#openStatusModalBtn2 {
   border: none;
   background-color: #FFF0F5;
 }
+
+.input-content {
 
 .input-content {
   display: flex;

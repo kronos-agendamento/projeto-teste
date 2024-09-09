@@ -174,7 +174,7 @@ navbar  lateral
   justify-content: center;
 }
 
-.perfil #userEmail {
+.perfil #userInsta {
   list-style: none;
   color: white;
   font-weight: 200;
@@ -372,6 +372,18 @@ Dados do usuário
   align-items: center;
 }
 
+.content-box2 {
+  display: flex;
+  flex-direction: row;
+  background-color: #fff0f5;
+  flex-direction: column;
+}
+
+.content-box2 input {
+  margin-left: 10px;
+  width: 100%;
+}
+
 .content {
   margin: 1vh;
   font-weight: 600;
@@ -465,18 +477,31 @@ Dados do usuário
   display: inline-block;
 }
 
-.form-group input[type="number"] + input[type="number"] {
+.form-group input[type="number"]+input[type="number"] {
   margin-left: 20px;
 }
 
 .button-container {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   padding-top: 2vw;
   padding-right: 0.9vw;
 }
 
+.button-container2 {
+  display: flex;
+  justify-content: center;
+  padding-top: 2vw;
+  padding-right: 0.9vw;
+  margin-left: 40px;
+}
+
 .content-form-flex #button-alterar {
+  justify-content: center;
+  padding-top: 2.5vw;
+}
+
+#button-alterar-empresa {
   justify-content: center;
   padding-top: 2.5vw;
 }
@@ -643,7 +668,6 @@ td {
 }
 
 #footer {
-  padding: 4vh 0;
   color: #222222;
   font-size: 14px;
   text-align: center;
@@ -652,6 +676,7 @@ td {
 
 .footer_container {
   width: 100%;
+  margin-top: 200px;
 }
 
 .modal {
@@ -688,4 +713,26 @@ td {
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+
+
+#horaInicio,
+#horaFim,
+#horaInicioBlock,
+#horaFimBlock {
+  width: 100%;
+  padding: 0.3vw;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin: 0.2vw;
+  width: 100%;
+  justify-content: center;
+}
+
+#button-alterar-empresa {
+  margin-top: -30px;
+}
+
+#horarioBlock{
+  margin-top: -20px;
 }

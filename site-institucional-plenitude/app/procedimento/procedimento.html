@@ -49,24 +49,8 @@
           />
         </div>
       </li>
-      <li
-        id="userName"
-        style="
-          margin-top: 20vh;
-          list-style: none;
-          color: white;
-          font-weight: 600;
-        "
-      ></li>
-      <li
-        id="userEmail"
-        style="
-          list-style: none;
-          color: white;
-          font-weight: 200;
-          font-size: 12px;
-        "
-      ></li>
+      <li id="userName"></li>
+      <li id="userInsta"></li>
 
       <ul>
         <li class="list">
@@ -100,7 +84,7 @@
           </a>
         </li>
         <li class="list">
-          <a href="../cliente/cliente.html">
+          <a href="../clientes/clientes.html">
             <span class="icon"
               ><ion-icon name="person-add-outline"></ion-icon
             ></span>
@@ -234,7 +218,8 @@
     <div id="modal" class="modal">
       <div class="modal-content">
         <p>Tem certeza que deseja excluir o procedimento?</p>
-        <p id="procedimento"></p>
+        <p id="procedimento">Procedimento:</p>
+        <p id="especificacao">Especificação:</p>
         <button class="btn btn-yes">SIM</button>
         <button class="btn btn-no" onclick="closeModal()">NÃO</button>
       </div>

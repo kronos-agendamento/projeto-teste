@@ -7,19 +7,19 @@ import jakarta.validation.constraints.Size
 @Entity
 @Table(name = "procedimento")
 open class Procedimento(
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_procedimento")
-    var idProcedimento: Int = 0,
+    open var idProcedimento: Int? = null,  // Mark this property as open
 
     @field:NotNull(message = "O campo tipo não pode ser nulo")
     @field:Size(min = 1, max = 100, message = "O campo tipo deve ter entre 1 e 100 caracteres")
-    var tipo: String?,
+    @Column(name = "tipo")
+    open var tipo: String?,  // Mark this property as open
 
     @field:NotNull(message = "O campo descrição não pode ser nulo")
     @field:Size(min = 1, max = 500, message = "O campo descrição deve ter entre 1 e 500 caracteres")
-    var descricao: String?
-) {
-    override fun toString(): String {
-        return "Procedimento(idProcedimento=$idProcedimento, tipo=$tipo, descricao=$descricao)"
-    }
-}
+    @Column(name = "descricao")
+    open var descricao: String?  // Mark this property as open
+)

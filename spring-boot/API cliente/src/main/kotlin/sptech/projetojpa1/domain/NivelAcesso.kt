@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 
 @Entity
-@Table(name = "nivelAcesso")
+@Table(name = "nivel_acesso")
 class NivelAcesso(
     @field:Id @field:GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_nivel_acesso")
@@ -19,8 +19,4 @@ class NivelAcesso(
 
     @field:NotBlank(message = "Descrição é obrigatória")
     var descricao: String?
-) {
-    override fun toString(): String {
-        return "NivelAcesso(codigo=$codigo, nome=$nome, nivel=$nivel, descricao=$descricao)"
-    }
-}
+)

@@ -1,40 +1,41 @@
-document.addEventListener('DOMContentLoaded', function () {
-    // Captura o evento de envio do formulário do HubSpot
-    hbspt.forms.create({
-        region: "na1",
-        portalId: "47162770",
-        formId: "153aefaf-9256-4337-8cbb-54c7c9d720e0",
-        onFormSubmit: function($form) {
-            // Extrai os dados do formulário
-            const formData = new FormData($form.get(0));
-            const payload = {};
+document
+  .getElementById("contactForm")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
 
-            formData.forEach((value, key) => {
-                payload[key] = value; // Adiciona os dados ao payload
-            });
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const instagram = document.getElementById("instagram").value;
+    const telefone = document.getElementById("telefone").value;
+    const message = document.querySelector('[name="message"]').value;
 
-            // Envia os dados para o servidor
-            enviarDadosParaBanco(payload);
-        }
-    });
-});
+    // Armazena os dados no localStorage
+    localStorage.setItem("name", name);
+    localStorage.setItem("email", email);
+    localStorage.setItem("instagram", instagram);
+    localStorage.setItem("telefone", telefone);
 
-async function enviarDadosParaBanco(payload) {
-    try {
-        const response = await fetch('http://localhost:8080/salvar-dados', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        });
+    // Envia a mensagem para o banco de dados
+    fetch("http://localhost:8080/mensagem/cadastro-mensagem", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        message,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Sucesso:", data);
+        alert("Formulário enviado com sucesso!");
+        document.getElementById("contactForm").reset();
 
-        if (response.ok) {
-            console.log('Dados enviados com sucesso!');
-        } else {
-            console.error('Erro ao enviar os dados.');
-        }
-    } catch (error) {
-        console.error('Erro na requisição:', error);
-    }
-}
+        // Redireciona para a página de login
+        window.location.href = "login.html";
+      })
+      .catch((error) => {
+        console.error("Erro:", error);
+        alert("Ocorreu um erro ao enviar o formulário.");
+      });
+  });

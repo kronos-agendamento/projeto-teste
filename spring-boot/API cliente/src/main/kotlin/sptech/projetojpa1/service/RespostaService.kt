@@ -19,11 +19,11 @@ class RespostaService(
 ) {
 
     fun criarResposta(request: RespostaRequestDTO): RespostaResponseDTO {
-        val pergunta = perguntaRepository.findById(request.idPergunta)
+        val pergunta = perguntaRepository.findById(request.pergunta)
             .orElseThrow { IllegalArgumentException("Pergunta não encontrada") }
-        val fichaAnamnese = fichaAnamneseRepository.findById(request.idFichaAnamnese)
+        val fichaAnamnese = fichaAnamneseRepository.findById(request.fichaAnamnese)
             .orElseThrow { IllegalArgumentException("Ficha não encontrada") }
-        val usuario = usuarioRepository.findById(request.idUsuario)
+        val usuario = usuarioRepository.findById(request.usuario)
             .orElseThrow { IllegalArgumentException("Usuário não encontrado") }
 
         val resposta = Resposta(
@@ -74,11 +74,11 @@ class RespostaService(
         val resposta = respostaRepository.findById(id)
             .orElseThrow { IllegalArgumentException("Resposta não encontrada para o ID fornecido.") }
 
-        val pergunta = perguntaRepository.findById(request.idPergunta)
+        val pergunta = perguntaRepository.findById(request.pergunta)
             .orElseThrow { IllegalArgumentException("Pergunta não encontrada") }
-        val ficha = fichaAnamneseRepository.findById(request.idFichaAnamnese)
+        val ficha = fichaAnamneseRepository.findById(request.fichaAnamnese)
             .orElseThrow { IllegalArgumentException("Ficha não encontrada") }
-        val usuario = usuarioRepository.findById(request.idUsuario)
+        val usuario = usuarioRepository.findById(request.usuario)
             .orElseThrow { IllegalArgumentException("Usuário não encontrado") }
 
         resposta.resposta = request.resposta

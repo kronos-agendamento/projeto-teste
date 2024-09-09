@@ -40,10 +40,6 @@
 <body>
 
 
-  <!-- Start of HubSpot Embed Code -->
-  <script type="text/javascript" id="hs-script-loader" async defer src="//js-na1.hs-scripts.com/47162770.js"></script>
-  <!-- End of HubSpot Embed Code -->
-
 
   <!-- ======= Header 2 Fixo ======= -->
   <section id="header2" class="fixed-top">
@@ -495,19 +491,20 @@
             em um cantinho acolhedor de São Paulo, nosso espaço foi criado para proporcionar momentos de beleza e
             bem-estar. Seja para agendar um serviço, tirar dúvidas ou apenas conhecer um pouco mais sobre nosso
             trabalho, estamos à disposição.</p>
+
+
+          <div>
+            <iframe style="border:0; width: 100%; height: 250px;"
+              src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3656.2258252249444!2d-46.556372499999995!3d-23.596232699999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1spt-BR!2sbr!4v1718730557113!5m2!1spt-BR!2sbr"
+              frameborder="0" allowfullscreen></iframe>
+          </div>
         </div>
-
-        <div>
-          <iframe style="border:0; width: 100%; height: 270px;"
-            src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3656.2258252249444!2d-46.556372499999995!3d-23.596232699999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1spt-BR!2sbr!4v1718730557113!5m2!1spt-BR!2sbr"
-            frameborder="0" allowfullscreen></iframe>
-        </div>
-
-        <div class="row mt-5">
-
+        <div class="row mt-10">
           <div class="col-lg-4">
+
             <div class="info">
-              <div class="address">
+
+              <div class="adress">
                 <i class="bi bi-geo-alt"></i>
                 <h4>Localização:</h4>
                 <p>Vila Prudente, São Paulo - SP</p>
@@ -525,45 +522,75 @@
                 <p>+55 11 94931-2005</p>
               </div>
 
-            </div>
-            <div class="col-lg-8 mt-5 mt-lg-0">
-              <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
+              <div class="phone">
+                <i class="bi bi-instagram"></i>
+                <h4>Instagram Plenitude:</h4>
+                <p>@plenitudenoolhar</p>
+              </div>
 
-              <script>
-                hbspt.forms.create({
-                  region: "na1",
-                  portalId: "47162770",
-                  formId: "153aefaf-9256-4337-8cbb-54c7c9d720e0",
-                  target: '#hubspot-form',
-                  onFormSubmit: function ($form) {
-                    // Captura dos dados do formulário
-                    const formData = $form.serializeArray();
-                    const data = {};
-                    formData.forEach(field => {
-                      data[field.name] = field.value;
-                    });
+              <div class="phone">
+                <i class="bi bi-facebook"></i>
+                <h4>Facebook:</h4>
+                <p>www.facebook.com/plenitudenoolhar</p>
+              </div>
 
-                    // Envio dos dados para o backend
-                    fetch('/save-form-data', {
-                      method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/json'
-                      },
-                      body: JSON.stringify(data)
-                    })
-                      .then(response => response.json())
-                      .then(result => {
-                        console.log('Dados salvos com sucesso:', result);
-                      })
-                      .catch(error => {
-                        console.error('Erro ao salvar os dados:', error);
-                      });
-                  }
-                });
-              </script>
+
+              <div>
+                <center>
+                  <div class="phone">
+                    <a href="https://www.kronosbooking.com">
+                      <img src="../site-institucional-kronos/assets/img/logos/logo-branca-sem-fundo.png" alt="Kronos"
+                        style="width: 100px; height: 100px;  ">
+                    </a>
+                    <h3>A Kronos agradece a sua confiança</h3>
+                    <spam>
+                      O KronosBooking, um sistema de agendamento integrado
+                      especialmente pensado para atender às necessidades da área de estética. <br><br>Obrigado pela preferência.</spam>
+                  </div>
+                </center>
+              </div>
             </div>
           </div>
+          <div class="col-lg-8 mt-5 mt-lg-0">
+
+            <h2>Formulario de Contato</h2>
+            <iframe width='800' height='750' src='https://app.pipefy.com/public/form/TnP1A_5c?embedded=true'
+              frameborder='0'></iframe>
+
+
+            <!-- <form id="pipefyForm" role="form" class="php-email-form">
+              <div class="row">
+                <div class="col-md-6 form-group">
+                  <input type="text" name="name" class="form-control" id="name" placeholder="Seu Nome" required>
+                </div>
+                <div class="col-md-6 form-group mt-3 mt-md-0">
+                  <input type="email" class="form-control" name="email" id="email" placeholder="Seu Email" required>
+                </div>
+                <div class="col-md-6 form-group mt-3 mt-md-0">
+                  <input type="text" name="instagram" class="form-control" id="instagram" placeholder="Seu Instagram"
+                    required>
+                </div>
+                <div class="col-md-6 form-group mt-3 mt-md-0">
+                  <input type="tel" class="form-control" name="telefone" id="telefone" placeholder="Seu Telefone"
+                    required>
+                </div>
+              </div>
+              <div class="form-group mt-3">
+                <textarea class="form-control" name="message" rows="5" placeholder="Sua Mensagem" required></textarea>
+              </div>
+              <div class="my-3">
+                <div class="loading">Carregando</div>
+                <div class="error-message"></div>
+                <div class="sent-message">Sua mensagem será enviada. Obrigada!</div>
+              </div>
+              <div class="text-center"><button type="submit">Enviar Mensagem</button></div>
+            </form> -->
+          </div>
+
+          <script src="form.js"></script>
+
         </div>
+
       </div>
 
     </section><!-- End Contact Section -->
@@ -627,7 +654,6 @@
           let customHeaderExtension = document.getElementById('custom');
           if (target && customHeaderExtension) {
             target.appendChild(customHeaderExtension);
-            console.log(KommunicateGlobal.document.querySelector('.km-conversation-header-title-container'));
           }
         }
       };

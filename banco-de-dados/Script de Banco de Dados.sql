@@ -1,26 +1,43 @@
-DROP DATABASE kronosbooking;
 CREATE DATABASE IF NOT EXISTS kronosbooking;
 USE kronosbooking;
 
-CREATE TABLE Endereco (
+DROP TABLE IF EXISTS feedback;
+DROP TABLE IF EXISTS cliente;
+DROP TABLE IF EXISTS profissional;
+DROP TABLE IF EXISTS agendamento;
+DROP TABLE IF EXISTS resposta;
+DROP TABLE IF EXISTS pergunta;
+DROP TABLE IF EXISTS especificacao;
+DROP TABLE IF EXISTS tempo_procedimento;
+DROP TABLE IF EXISTS procedimento;
+DROP TABLE IF EXISTS usuario;
+DROP TABLE IF EXISTS ficha_anamnese;
+DROP TABLE IF EXISTS empresa;
+DROP TABLE IF EXISTS horario_funcionamento;
+DROP TABLE IF EXISTS nivel_acesso;
+DROP TABLE IF EXISTS endereco;
+DROP TABLE IF EXISTS status;
+DROP PROCEDURE IF EXISTS gerar_agendamentos_aleatorios;
+
+CREATE TABLE endereco (
     id_endereco INT AUTO_INCREMENT PRIMARY KEY,
     logradouro VARCHAR(255) NOT NULL,
     cep VARCHAR(8) NOT NULL,
     bairro VARCHAR(255) NOT NULL,
     cidade VARCHAR(255) NOT NULL,
     estado VARCHAR(255) NOT NULL,
-    numero INT NOT NULL,
+    numero VARCHAR(255) NOT NULL,
     complemento VARCHAR(100)
 );
 
-CREATE TABLE NivelAcesso (
+CREATE TABLE nivel_acesso (
     id_nivel_acesso INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     nivel INT NOT NULL,
     descricao VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE HorarioFuncionamento (
+CREATE TABLE horario_funcionamento (
     id_horario_funcionamento INT AUTO_INCREMENT PRIMARY KEY,
     dia_inicio VARCHAR(10) NOT NULL,
     dia_fim VARCHAR(10) NOT NULL,
@@ -28,23 +45,23 @@ CREATE TABLE HorarioFuncionamento (
     horario_fechamento VARCHAR(5) NOT NULL
 );
 
-CREATE TABLE Empresa (
+CREATE TABLE empresa (
     id_empresa INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     telefone VARCHAR(11) NOT NULL,
     cnpj VARCHAR(18) NOT NULL,
     fk_endereco INT NOT NULL,
     fk_horario_funcionamento INT NOT NULL,
-    FOREIGN KEY (fk_endereco) REFERENCES Endereco(id_endereco),
-    FOREIGN KEY (fk_horario_funcionamento) REFERENCES HorarioFuncionamento(id_horario_funcionamento)
+    FOREIGN KEY (fk_endereco) REFERENCES endereco(id_endereco),
+    FOREIGN KEY (fk_horario_funcionamento) REFERENCES horario_funcionamento(id_horario_funcionamento)
 );
 
-CREATE TABLE FichaAnamnese (
+CREATE TABLE ficha_anamnese (
     id_ficha INT AUTO_INCREMENT PRIMARY KEY,
     data_preenchimento DATETIME NOT NULL
 );
 
-CREATE TABLE Usuario (
+CREATE TABLE usuario (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
@@ -52,79 +69,67 @@ CREATE TABLE Usuario (
     instagram VARCHAR(255) NOT NULL,
     cpf VARCHAR(14) NOT NULL,
     telefone BIGINT NOT NULL,
-    telefone_emergencial BIGINT NOT NULL,
     data_nasc DATE,
     genero VARCHAR(50),
     indicacao VARCHAR(255),
     foto LONGBLOB,
     status BOOLEAN DEFAULT TRUE,
+	dtype VARCHAR(31),  -- Adiciona o campo dtype para o discriminador
     fk_nivel_acesso INT,
     fk_endereco INT,
     fk_empresa INT,
     fk_ficha_anamnese INT,
-    FOREIGN KEY (fk_nivel_acesso) REFERENCES NivelAcesso(id_nivel_acesso),
-    FOREIGN KEY (fk_endereco) REFERENCES Endereco(id_endereco),
-    FOREIGN KEY (fk_empresa) REFERENCES Empresa(id_empresa),
-    FOREIGN KEY (fk_ficha_anamnese) REFERENCES FichaAnamnese(id_ficha)
+    FOREIGN KEY (fk_nivel_acesso) REFERENCES nivel_acesso(id_nivel_acesso),
+    FOREIGN KEY (fk_endereco) REFERENCES endereco(id_endereco),
+    FOREIGN KEY (fk_empresa) REFERENCES empresa(id_empresa),
+    FOREIGN KEY (fk_ficha_anamnese) REFERENCES ficha_anamnese(id_ficha)
 );
 
-CREATE TABLE Servico (
-    id_servico INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
-    descricao VARCHAR(500) NOT NULL
-);
-
-CREATE TABLE Procedimento (
+CREATE TABLE procedimento (
     id_procedimento INT AUTO_INCREMENT PRIMARY KEY,
     tipo VARCHAR(100) NOT NULL,
     descricao VARCHAR(500) NOT NULL
 );
 
-CREATE TABLE TempoProcedimento (
-    id_tempo_procedimento INT AUTO_INCREMENT PRIMARY KEY,
-    tempo_colocacao VARCHAR(5) NOT NULL,
-    tempo_manutencao VARCHAR(5) NOT NULL,
-    tempo_retirada VARCHAR(5) NOT NULL
-);
-
-CREATE TABLE Especificacao (
+CREATE TABLE especificacao (
     id_especificacao_procedimento INT AUTO_INCREMENT PRIMARY KEY,
     especificacao VARCHAR(70) NOT NULL,
     preco_colocacao DOUBLE NOT NULL,
     preco_manutencao DOUBLE NOT NULL,
     preco_retirada DOUBLE NOT NULL,
+    tempo_colocacao VARCHAR(5) NOT NULL,
+    tempo_manutencao VARCHAR(5) NOT NULL,
+    tempo_retirada VARCHAR(5) NOT NULL,
     foto LONGBLOB,
     fk_procedimento INT NOT NULL,
-    fk_tempo_procedimento INT NOT NULL,
-    FOREIGN KEY (fk_procedimento) REFERENCES Procedimento(id_procedimento),
-    FOREIGN KEY (fk_tempo_procedimento) REFERENCES TempoProcedimento(id_tempo_procedimento)
+    FOREIGN KEY (fk_procedimento) REFERENCES procedimento(id_procedimento)
 );
 
-CREATE TABLE Pergunta (
+CREATE TABLE pergunta (
     id_pergunta INT AUTO_INCREMENT PRIMARY KEY,
     pergunta VARCHAR(255) NOT NULL,
     pergunta_ativa BOOLEAN NOT NULL
 );
 
-CREATE TABLE Resposta (
+CREATE TABLE resposta (
     id_resposta INT AUTO_INCREMENT PRIMARY KEY,
     resposta VARCHAR(255) NOT NULL,
     fk_pergunta INT NOT NULL,
     fk_ficha_anamnese INT NOT NULL,
     fk_usuario INT NOT NULL,
-    FOREIGN KEY (fk_pergunta) REFERENCES Pergunta(id_pergunta),
-    FOREIGN KEY (fk_ficha_anamnese) REFERENCES FichaAnamnese(id_ficha),
-    FOREIGN KEY (fk_usuario) REFERENCES Usuario(id_usuario)
+    FOREIGN KEY (fk_pergunta) REFERENCES pergunta(id_pergunta),
+    FOREIGN KEY (fk_ficha_anamnese) REFERENCES ficha_anamnese(id_ficha),
+    FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario)
 );
 
-CREATE TABLE Status (
+CREATE TABLE status (
     id_status_agendamento INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(30) NOT NULL,
     cor VARCHAR(200),
     motivo VARCHAR(200)
 );
 
-CREATE TABLE Agendamento (
+CREATE TABLE agendamento (
     id_agendamento INT AUTO_INCREMENT PRIMARY KEY,
     data_horario DATETIME NOT NULL,
     tipo_agendamento VARCHAR(255) NOT NULL,
@@ -132,144 +137,287 @@ CREATE TABLE Agendamento (
     fk_procedimento INT NOT NULL,
     fk_especificacao_procedimento INT NOT NULL,
     fk_status INT NOT NULL,
-    FOREIGN KEY (fk_usuario) REFERENCES Usuario(id_usuario),
-    FOREIGN KEY (fk_procedimento) REFERENCES Procedimento(id_procedimento),
-    FOREIGN KEY (fk_especificacao_procedimento) REFERENCES Especificacao(id_especificacao_procedimento),
-    FOREIGN KEY (fk_status) REFERENCES Status(id_status_agendamento)
+    FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario),
+    FOREIGN KEY (fk_procedimento) REFERENCES procedimento(id_procedimento),
+    FOREIGN KEY (fk_especificacao_procedimento) REFERENCES especificacao(id_especificacao_procedimento),
+    FOREIGN KEY (fk_status) REFERENCES status(id_status_agendamento)
 );
 
-CREATE TABLE Feedback (
+CREATE TABLE feedback (
     id_feedback INT AUTO_INCREMENT PRIMARY KEY,
     anotacoes VARCHAR(255),
     nota INT CHECK (nota BETWEEN 1 AND 5),
-    fk_agendamento INT,
+    fk_agendamento INT UNIQUE,
     fk_usuario INT,
-    fk_avaliador INT,
-    fk_servico INT,
     fk_cliente_avaliado INT,
-    FOREIGN KEY (fk_agendamento) REFERENCES Agendamento(id_agendamento),
-    FOREIGN KEY (fk_usuario) REFERENCES Usuario(id_usuario),
-    FOREIGN KEY (fk_avaliador) REFERENCES Usuario(id_usuario),
-    FOREIGN KEY (fk_servico) REFERENCES Servico(id_servico),
-    FOREIGN KEY (fk_cliente_avaliado) REFERENCES Usuario(id_usuario)
+    FOREIGN KEY (fk_agendamento) REFERENCES agendamento(id_agendamento),
+    FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario),
+    FOREIGN KEY (fk_cliente_avaliado) REFERENCES usuario(id_usuario)
 );
 
-CREATE TABLE Cliente (
-    id_usuario INT PRIMARY KEY,
-    experiencia_avaliada VARCHAR(255),
-    frequencia INT,
-    FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario)
-);
+	CREATE TABLE cliente (
+		id_usuario INT PRIMARY KEY,
+		experiencia_avaliada VARCHAR(255),
+		frequencia INT,
+		FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
+	);
 
-CREATE TABLE Profissional (
-    id_usuario INT PRIMARY KEY,
-    numero_avaliacoes INT,
-    media_nota DOUBLE,
-    qualificacoes VARCHAR(255),
-    especialidade VARCHAR(255),
-    FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario)
-);
+	CREATE TABLE profissional (
+		id_usuario INT PRIMARY KEY,
+		numero_avaliacoes INT,
+		media_nota DOUBLE,
+		qualificacoes VARCHAR(255),
+		especialidade VARCHAR(255),
+		FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
+	);
 
-CREATE TABLE Cilios (
-    id_servico INT PRIMARY KEY,
-    FOREIGN KEY (id_servico) REFERENCES Servico(id_servico)
-);
+INSERT INTO endereco (logradouro, cep, bairro, cidade, estado, numero, complemento)
+VALUES 
+('Rua das Flores', '12345678', 'Vila Prudente', 'São Paulo', 'SP', '100', 'Apto 101'),
+('Avenida Brasil', '87654321', 'Centro', 'Rio de Janeiro', 'RJ', '200', 'Bloco B'),
+('Rua do Sol', '13579246', 'Bela Vista', 'Belo Horizonte', 'MG', '300', 'Sala 10'),
+('Avenida Paulista', '98765432', 'Paulista', 'São Paulo', 'SP', '400', NULL),
+('Rua das Orquídeas', '19283746', 'Moema', 'São Paulo', 'SP', '500', 'Casa'),
+('Rua Jardim das Acácias', '10293847', 'Jardim Europa', 'São Paulo', 'SP', '600', 'Cobertura'),
+('Rua dos Girassóis', '56473829', 'Tatuapé', 'São Paulo', 'SP', '700', 'Apto 702'),
+('Rua das Magnólias', '90817263', 'Morumbi', 'São Paulo', 'SP', '800', NULL),
+('Avenida Sapopemba', '28374659', 'Sapopemba', 'São Paulo', 'SP', '900', 'Sala 905'),
+('Rua dos Lírios', '38492047', 'Centro', 'Guarulhos', 'SP', '1000', 'Apto 1001');
 
-CREATE TABLE Make (
-    id_servico INT PRIMARY KEY,
-    FOREIGN KEY (id_servico) REFERENCES Servico(id_servico)
-);
+INSERT INTO nivel_acesso (nome, nivel, descricao)
+VALUES 
+('Administrador', 1, 'Acesso total ao sistema'),
+('Profissional', 2, 'Acesso para gerenciar procedimentos e agendamentos');
 
-CREATE TABLE Sobrancelha (
-    id_servico INT PRIMARY KEY,
-    FOREIGN KEY (id_servico) REFERENCES Servico(id_servico)
-);
+INSERT INTO horario_funcionamento (dia_inicio, dia_fim, horario_abertura, horario_fechamento)
+VALUES 
+('Segunda', 'Sexta', '09:00', '18:00'),
+('Sábado', 'Sábado', '10:00', '14:00'),
+('Segunda', 'Sexta', '08:00', '17:00'),
+('Segunda', 'Quinta', '09:30', '19:30'),
+('Terça', 'Sábado', '08:30', '17:30'),
+('Segunda', 'Sábado', '08:00', '20:00'),
+('Quarta', 'Domingo', '10:00', '16:00'),
+('Terça', 'Sexta', '09:00', '18:00'),
+('Quarta', 'Sábado', '08:00', '18:00'),
+('Segunda', 'Quinta', '09:00', '17:00');
 
--- Inserções na tabela Endereco
-INSERT INTO Endereco (logradouro, cep, bairro, cidade, estado, numero, complemento)
-VALUES ('Rua das Flores', '12345678', 'Centro', 'São Paulo', 'SP', 123, 'Apto 101'),
-       ('Av. Paulista', '87654321', 'Bela Vista', 'São Paulo', 'SP', 456, 'Sala 502');
+INSERT INTO empresa (nome, telefone, cnpj, fk_endereco, fk_horario_funcionamento)
+VALUES 
+('Plenitude no Olhar', '11987654321', '12.345.678/0001-90', 1, 1),
+('Beleza Suprema', '21987654322', '98.765.432/0002-10', 2, 2),
+('Olhar Perfeito', '31987654323', '22.333.444/0001-11', 3, 3),
+('Glamour Sobrancelhas', '41987654324', '44.555.666/0001-12', 4, 4),
+('Cílios de Diva', '51987654325', '55.666.777/0001-13', 5, 5),
+('Makeup Studio', '61987654326', '66.777.888/0001-14', 6, 6),
+('Estética Refinada', '71987654327', '77.888.999/0001-15', 7, 7),
+('Sobrancelhas de Ouro', '81987654328', '88.999.000/0001-16', 8, 8),
+('Cílios e Sobrancelhas', '91987654329', '99.000.111/0001-17', 9, 9),
+('Sobrancelhas Elegantes', '11987654330', '11.111.222/0001-18', 10, 10);
 
--- Inserções na tabela NivelAcesso
-INSERT INTO NivelAcesso (nome, nivel, descricao)
-VALUES ('Administrador', 1, 'Acesso total'),
-       ('Usuário', 2, 'Acesso limitado');
+INSERT INTO ficha_anamnese (data_preenchimento)
+VALUES 
+(NOW()), 
+(NOW()), 
+(NOW()), 
+(NOW()), 
+(NOW()), 
+(NOW()), 
+(NOW()), 
+(NOW()), 
+(NOW()), 
+(NOW());
 
--- Inserções na tabela HorarioFuncionamento
-INSERT INTO HorarioFuncionamento (dia_inicio, dia_fim, horario_abertura, horario_fechamento)
-VALUES ('Segunda', 'Sexta', '09:00', '18:00'),
-       ('Sábado', 'Domingo', '10:00', '14:00');
+INSERT INTO usuario (nome, email, senha, instagram, cpf, telefone, data_nasc, genero, indicacao, status, fk_nivel_acesso, fk_endereco, fk_empresa, fk_ficha_anamnese)
+VALUES 
+('Priscila Plenitude', 'priscila@plenitude.com', 'senhaAdmin', '@plenitudenoolhar', '111.111.111-11', 11987654321, '1980-01-01', 'Feminino', 'Instagram', TRUE, 1, 1, 1, NULL),
+('Ana Paula', 'ana@beleza.com', 'senha123', '@anabeauty', '222.222.222-22', 21987654321, '1992-02-02', 'Feminino', 'Indicação de Amiga', TRUE, 2, 2, 2, 2),
+('Carlos Eduardo', 'carlos@olharperfeito.com', 'senha123', '@carlosedu', '333.333.333-33', 31987654322, '1995-03-03', 'Masculino', 'Facebook', TRUE, 2, 3, 3, 3),
+('Juliana Costa', 'juliana@glamour.com', 'senha123', '@jucosta', '444.444.444-44', 41987654323, '1990-04-04', 'Feminino', 'Google', TRUE, 2, 4, 4, 4),
+('Roberta Silva', 'roberta@ciliosdiva.com', 'senha123', '@robdiva', '555.555.555-55', 51987654324, '1993-05-05', 'Feminino', 'Instagram', TRUE, 2, 5, 5, 5),
+('Daniel Souza', 'daniel@makeup.com', 'senha123', '@danmake', '666.666.666-66', 61987654325, '1991-06-06', 'Masculino', 'Indicação de Influencer', TRUE, 2, 6, 6, 6),
+('Larissa Nunes', 'larissa@refinada.com', 'senha123', '@larissarefinada', '777.777.777-77', 71987654326, '1987-07-07', 'Feminino', 'Instagram', TRUE, 2, 7, 7, 7),
+('Tatiana Melo', 'tatiana@ouro.com', 'senha123', '@tatiouro', '888.888.888-88', 81987654327, '1985-08-08', 'Feminino', 'Indicação de Amiga', TRUE, 2, 8, 8, 8),
+('Paula Gomes', 'paula@cilios.com', 'senha123', '@paulagomes', '999.999.999-99', 91987654328, '1982-09-09', 'Feminino', 'Indicação Familiar', TRUE, 2, 9, 9, 9),
+('Cecília Costa', 'cecilia@elegantes.com', 'senha123', '@ceciliaelegantes', '101.010.101-10', 11987654329, '1989-10-10', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10),
+('Cecília Costa', 'cecilia@elegantes.com', 'senha123', '@ceciliaelegantes', '101.010.101-10', 11987654329, '1989-10-10', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10),
+('Lucas Lima', 'lucas@novidade.com', 'senha123', '@lucaslima', '111.111.111-12', 11987654322, '1981-11-01', 'Masculino', 'Instagram', TRUE, 1, 1, 1, NULL),
+('Fernanda Santos', 'fernanda@novidade.com', 'senha123', '@fernandasantos', '222.222.222-23', 22987654323, '1982-11-15', 'Feminino', 'Indicação Familiar', TRUE, 2, 2, 2, 2),
+('Jorge Almeida', 'jorge@novidade.com', 'senha123', '@jorgealmeida', '333.333.333-34', 33987654324, '1983-12-20', 'Masculino', 'Facebook', TRUE, 2, 3, 3, 3),
+('Camila Rocha', 'camila@novidade.com', 'senha123', '@camilarocha', '444.444.444-45', 44987654325, '1984-12-25', 'Feminino', 'Google', TRUE, 2, 4, 4, 4),
+('Renato Costa', 'renato@novidade.com', 'senha123', '@renatocosta', '555.555.555-56', 55987654326, '1985-01-30', 'Masculino', 'Instagram', TRUE, 2, 5, 5, 5),
+('Mariana Ferreira', 'mariana@novidade.com', 'senha123', '@marianaferreira', '666.666.666-67', 66987654327, '1986-01-15', 'Feminino', 'Indicação de Influencer', TRUE, 2, 6, 6, 6),
+('Ricardo Martins', 'ricardo@novidade.com', 'senha123', '@ricardomartins', '777.777.777-78', 77987654328, '1987-02-10', 'Masculino', 'Instagram', TRUE, 2, 7, 7, 7),
+('Letícia Silva', 'leticia@novidade.com', 'senha123', '@leticiasilva', '888.888.888-89', 88987654329, '1988-02-25', 'Feminino', 'Indicação de Amiga', TRUE, 2, 8, 8, 8),
+('Vinícius Oliveira', 'vinicius@novidade.com', 'senha123', '@viniciusoliveira', '999.999.999-00', 99987654321, '1989-03-05', 'Masculino', 'Indicação Familiar', TRUE, 2, 9, 9, 9),
+('Amanda Castro', 'amanda@novidade.com', 'senha123', '@amandacastro', '101.010.101-11', 10198765432, '1990-03-20', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10);
 
--- Inserções na tabela Empresa
-INSERT INTO Empresa (nome, telefone, cnpj, fk_endereco, fk_horario_funcionamento)
-VALUES ('Estética Bella', '11987654321', '12.345.678/0001-99', 1, 1),
-       ('Clínica Estética VIP', '11234567890', '98.765.432/0001-88', 2, 2);
+INSERT INTO procedimento (tipo, descricao)
+VALUES 
+('Maquiagem', 'Diversos tipos de maquiagem para eventos'),
+('Sobrancelha', 'Modelagem e tratamento de sobrancelhas'),
+('Cílios', 'Alongamento e volume de cílios');
 
--- Inserções na tabela FichaAnamnese
-INSERT INTO FichaAnamnese (data_preenchimento)
-VALUES (NOW()), (NOW());
+INSERT INTO especificacao (especificacao, preco_colocacao, preco_manutencao, preco_retirada, tempo_colocacao, tempo_manutencao, tempo_retirada, fk_procedimento)
+VALUES 
+('Extensão de Cílios Fio a Fio', 150.00, 100.00, 50.00, '02:00', '01:30', '01:00', 3),
+('Extensão de Cílios Volume Russo', 200.00, 120.00, 70.00, '02:30', '01:40', '01:10', 3),
+('Design de Sobrancelhas', 80.00, 50.00, 30.00, '00:40', '00:30', '00:20', 2),
+('Micropigmentação de Sobrancelhas', 250.00, 150.00, 80.00, '03:00', '02:00', '01:30', 2),
+('Henna para Sobrancelhas', 70.00, 40.00, 20.00, '01:00', '00:45', '00:30', 2),
+('Maquiagem Social', 100.00, 0.00, 0.00, '01:30', '00:00', '00:00', 1),
+('Maquiagem para Noivas', 300.00, 0.00, 0.00, '03:00', '00:00', '00:00', 1),
+('Lifting de Cílios', 120.00, 80.00, 40.00, '01:30', '01:00', '00:45', 3),
+('Maquiagem Artística', 200.00, 0.00, 0.00, '02:00', '00:00', '00:00', 1),
+('Maquiagem para Eventos', 150.00, 0.00, 0.00, '02:00', '00:00', '00:00', 1);
 
--- Inserções na tabela Usuario
-INSERT INTO Usuario (nome, email, senha, instagram, cpf, telefone, telefone_emergencial, data_nasc, genero, indicacao, foto, status, fk_nivel_acesso, fk_endereco, fk_empresa, fk_ficha_anamnese)
-VALUES ('João Silva', 'joao@example.com', 'senha123', '@joaosilva', '123.456.789-00', 11987654321, 11912345678, '1985-01-01', 'Masculino', 'Amigo', NULL, TRUE, 2, 1, 1, 1),
-       ('Maria Souza', 'maria@example.com', 'senha123', '@mariasouza', '987.654.321-00', 11234567890, 11987654321, '1990-02-02', 'Feminino', 'Internet', NULL, TRUE, 2, 2, 2, 2);
 
--- Inserções na tabela Servico
-INSERT INTO Servico (nome, descricao)
-VALUES ('Extensão de Cílios', 'Serviço de aplicação de extensão de cílios'),
-       ('Design de Sobrancelhas', 'Serviço de design de sobrancelhas');
+INSERT INTO pergunta (pergunta, pergunta_ativa)
+VALUES 
+('Você tem alergia a algum produto?', TRUE),
+('Já teve reações adversas em algum procedimento anterior?', TRUE),
+('Você faz uso de medicamentos?', TRUE),
+('Você está grávida ou amamentando?', TRUE),
+('Você tem problemas de pele?', TRUE),
+('Você já fez micropigmentação antes?', TRUE),
+('Você usa produtos específicos nos cílios ou sobrancelhas?', TRUE),
+('Você já fez algum procedimento estético nos últimos 6 meses?', TRUE),
+('Tem alguma doença crônica que deveríamos saber?', TRUE),
+('Está utilizando algum tratamento dermatológico?', TRUE);
 
--- Inserções na tabela Procedimento
-INSERT INTO Procedimento (tipo, descricao)
-VALUES ('Cílios', 'Procedimento de aplicação de cílios'),
-       ('Sobrancelhas', 'Procedimento de design de sobrancelhas');
+INSERT INTO resposta (resposta, fk_pergunta, fk_ficha_anamnese, fk_usuario)
+VALUES 
+('Não', 1, 1, 2),
+('Sim, a produtos de amônia', 2, 1, 2),
+('Não', 3, 2, 3),
+('Sim, estou amamentando', 4, 2, 3),
+('Sim, tenho dermatite', 5, 3, 4),
+('Sim, já fiz micropigmentação', 6, 3, 4),
+('Não', 7, 4, 5),
+('Sim, fiz alongamento de cílios', 8, 4, 5),
+('Não', 9, 5, 6),
+('Sim, uso produtos dermatológicos', 10, 5, 6);
 
--- Inserções na tabela TempoProcedimento
-INSERT INTO TempoProcedimento (tempo_colocacao, tempo_manutencao, tempo_retirada)
-VALUES ('02:00', '01:00', '00:30'),
-       ('01:30', '01:00', '00:45');
+INSERT INTO status (nome, cor, motivo)
+VALUES 
+('Agendado', '#00FF00', 'Cliente agendado com sucesso'),
+('Cancelado', '#FF0000', 'Cliente cancelou o agendamento'),
+('Concluído', '#0000FF', 'Procedimento realizado com sucesso'),
+('Não Compareceu', '#FF9900', 'Cliente não compareceu ao agendamento'),
+('Em Espera', '#FFFF00', 'Aguardando confirmação do cliente'),
+('Remarcado', '#FF00FF', 'Agendamento remarcado pelo cliente'),
+('Confirmado', '#00FFFF', 'Cliente confirmou o agendamento'),
+('Em Andamento', '#009900', 'Procedimento está sendo realizado'),
+('Atrasado', '#CC3300', 'Cliente está atrasado para o procedimento'),
+('Finalizado', '#3366CC', 'Atendimento finalizado com sucesso');
 
--- Inserções na tabela Especificacao
-INSERT INTO Especificacao (especificacao, preco_colocacao, preco_manutencao, preco_retirada, foto, fk_procedimento, fk_tempo_procedimento)
-VALUES ('Cílios Volumosos', 150.00, 80.00, 50.00, NULL, 1, 1),
-       ('Sobrancelhas Henna', 100.00, 60.00, 40.00, NULL, 2, 2);
+DELIMITER //
 
--- Inserções na tabela Pergunta
-INSERT INTO Pergunta (pergunta, pergunta_ativa)
-VALUES ('Você tem alguma alergia?', TRUE),
-       ('Você já fez algum procedimento estético antes?', TRUE);
+CREATE PROCEDURE gerar_agendamentos_aleatorios()
+BEGIN
+  -- Define os dias da semana que queremos: de segunda a sábado
+  DECLARE dia_atual DATE;
+  DECLARE fim DATE;
+  DECLARE qtd_agendamentos INT;
+  DECLARE hora_aleatoria TIME;
 
--- Inserções na tabela Resposta
-INSERT INTO Resposta (resposta, fk_pergunta, fk_ficha_anamnese, fk_usuario)
-VALUES ('Não', 1, 1, 1),
-       ('Sim', 2, 2, 2);
+  -- Se hoje for domingo, começamos na segunda-feira desta semana
+  -- Caso contrário, começamos na segunda-feira da próxima semana
+  IF WEEKDAY(CURDATE()) = 0 THEN 
+    SET dia_atual = DATE_ADD(CURDATE(), INTERVAL 1 DAY);  -- Segunda-feira desta semana
+  ELSE 
+    SET dia_atual = DATE_ADD(CURDATE(), INTERVAL (8 - WEEKDAY(CURDATE())) DAY);  -- Segunda-feira da próxima semana
+  END IF;
 
--- Inserções na tabela Status
-INSERT INTO Status (nome, cor, motivo)
-VALUES ('Agendado', 'Verde', 'Procedimento agendado'),
-       ('Cancelado', 'Vermelho', 'Procedimento cancelado pelo cliente');
+  -- Calcula o sábado correspondente (5 dias após a segunda)
+  SET fim = DATE_ADD(dia_atual, INTERVAL 5 DAY);
 
--- Inserções na tabela Agendamento
-INSERT INTO Agendamento (data_horario, tipo_agendamento, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status)
-VALUES ('2024-09-01 09:00:00', 'Colocação', 1, 1, 1, 1),
-       ('2024-09-02 14:00:00', 'Manutenção', 2, 2, 2, 2);
+  -- Quantidade aleatória de agendamentos entre 2 a 6 por dia
+  SET @min_agendamentos = 2;
+  SET @max_agendamentos = 6;
 
--- Inserções na tabela Feedback
-INSERT INTO Feedback (anotacoes, nota, fk_agendamento, fk_usuario, fk_avaliador, fk_servico, fk_cliente_avaliado)
-VALUES ('Ótimo atendimento!', 5, 1, 1, 2, 1, 1),
-       ('Satisfeita com o serviço.', 4, 2, 2, 1, 2, 2);
+  -- Loop para cada dia de segunda a sábado
+  WHILE dia_atual <= fim DO
+    -- Define uma quantidade aleatória de agendamentos para o dia atual
+    SET qtd_agendamentos = @min_agendamentos + FLOOR(RAND() * (@max_agendamentos - @min_agendamentos + 1));
 
--- Inserções na tabela Cliente
-INSERT INTO Cliente (id_usuario, experiencia_avaliada, frequencia)
-VALUES (1, 'Boa', 5),
-       (2, 'Excelente', 10);
+    -- Loop para inserir os agendamentos aleatórios para o dia atual
+    WHILE qtd_agendamentos > 0 DO
+      -- Gera uma hora aleatória entre 08:00 e 18:00 (trabalho diurno)
+      SET hora_aleatoria = SEC_TO_TIME(FLOOR(RAND() * (10 * 3600)) + 8 * 3600);
 
--- Inserções na tabela Profissional
-INSERT INTO Profissional (id_usuario, numero_avaliacoes, media_nota, qualificacoes, especialidade)
-VALUES (2, 50, 4.8, 'Certificação em extensão de cílios', 'Cílios'),
-       (1, 30, 4.5, 'Certificação em design de sobrancelhas', 'Sobrancelhas');
+      -- Insere os agendamentos aleatórios para o dia atual
+      INSERT INTO agendamento (data_horario, tipo_agendamento, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status)
+      SELECT 
+        CONCAT(dia_atual, ' ', hora_aleatoria) AS data_horario, -- Data e hora aleatórias
+        CASE FLOOR(RAND() * 2) 
+          WHEN 0 THEN 'Colocação'
+          ELSE 'Manutenção'
+        END AS tipo_agendamento, -- Tipo aleatório entre Colocação e Manutenção
+        FLOOR(2 + (RAND() * 9)) AS fk_usuario, -- Usuários aleatórios (ajuste a faixa conforme necessário)
+        FLOOR(1 + (RAND() * 3)) AS fk_procedimento, -- Procedimentos aleatórios
+        FLOOR(1 + (RAND() * 10)) AS fk_especificacao_procedimento, -- Especificações aleatórias
+        1 AS fk_status -- Status fixo como '1' (ou altere se necessário)
+      FROM (SELECT 1) AS dummy; -- Necessário para gerar múltiplas linhas
 
--- Inserções nas tabelas Cilios, Make, Sobrancelha
-INSERT INTO Cilios (id_servico) VALUES (1);
-INSERT INTO Make (id_servico) VALUES (1); -- Make não tem associação direta, mas inserido para completar
-INSERT INTO Sobrancelha (id_servico) VALUES (2);
+      -- Decrementa a quantidade de agendamentos para o dia
+      SET qtd_agendamentos = qtd_agendamentos - 1;
+    END WHILE;
+
+    -- Incrementa para o próximo dia
+    SET dia_atual = DATE_ADD(dia_atual, INTERVAL 1 DAY);
+
+  END WHILE;
+
+END //
+
+DELIMITER ;
+
+CALL gerar_agendamentos_aleatorios();
+
+INSERT INTO feedback (anotacoes, nota, fk_agendamento, fk_usuario, fk_cliente_avaliado)
+VALUES 
+('Ótimo atendimento, super recomendo!', 5, 1, 2, 3),
+('Satisfeita com o resultado!', 4, 2, 3, 4),
+('Procedimento excelente, volto sempre!', 5, 4, 5, 6),
+('Gostei do atendimento, mas acho que poderia melhorar a pontualidade.', 3, 5, 6, 7),
+('Muito bom, fiquei satisfeita com o serviço!', 5, 6, 7, 8),
+('Atendimento ótimo, o profissional foi muito atencioso.', 5, 8, 9, 10),
+('Sobrancelha perfeita! Adorei o resultado.', 5, 9, 10, 2),
+('Ótimo trabalho, mas o tempo de espera foi um pouco longo.', 4, 3, 4, 6),
+('Profissional muito educado e atencioso.', 5, 7, 8, 3),
+('Adorei o resultado final! Super recomendo.', 5, 10, 2, 5);
+
+INSERT INTO cliente (id_usuario, experiencia_avaliada, frequencia)
+VALUES 
+(2, 'Positiva', 5),
+(3, 'Positiva', 4),
+(4, 'Negativa', 1),
+(5, 'Positiva', 6),
+(6, 'Positiva', 3),
+(7, 'Negativa', 1),
+(8, 'Positiva', 2),
+(9, 'Positiva', 4),
+(10, 'Positiva', 5);
+
+INSERT INTO profissional (id_usuario, numero_avaliacoes, media_nota, qualificacoes, especialidade)
+VALUES 
+(2, 10, 4.9, 'Especialista em Extensão de Cílios', 'Cílios'),
+(3, 12, 4.8, 'Especialista em Design de Sobrancelhas', 'Sobrancelhas'),
+(4, 9, 4.7, 'Micropigmentadora', 'Sobrancelhas'),
+(5, 15, 5.0, 'Especialista em Maquiagem para Noivas', 'Maquiagem'),
+(6, 8, 4.6, 'Maquiadora Artística', 'Maquiagem'),
+(7, 7, 4.5, 'Especialista em Lifting de Cílios', 'Cílios'),
+(8, 6, 4.4, 'Técnica em Henna para Sobrancelhas', 'Sobrancelhas'),
+(9, 11, 4.8, 'Designer de Sobrancelhas', 'Sobrancelhas'),
+(10, 5, 4.3, 'Maquiadora Social', 'Maquiagem');
+
+UPDATE usuario 
+SET dtype = 'Cliente' 
+WHERE fk_nivel_acesso = 2;
+
+UPDATE usuario 
+SET dtype = 'Profissional' 
+WHERE fk_nivel_acesso = 1;
+
+SELECT * FROM usuario;

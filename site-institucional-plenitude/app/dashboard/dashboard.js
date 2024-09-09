@@ -20,19 +20,19 @@ document.addEventListener('DOMContentLoaded', function () {
     function getLastFiveMonths() {
         const result = [];
         const today = new Date();
-        
+
         const monthNames = [
-            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", 
-            "Junho", "Julho", "Agosto", "Setembro", "Outubro", 
+            "Janeiro", "Fevereiro", "Março", "Abril", "Maio",
+            "Junho", "Julho", "Agosto", "Setembro", "Outubro",
             "Novembro", "Dezembro"
         ];
-        
+
         for (let i = 0; i < 5; i++) {
             const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
             const monthName = monthNames[date.getMonth()];  // Obtem o nome do mês
             result.push(monthName);
         }
-        
+
         return result;
     }
     const lastFiveMonths = getLastFiveMonths();
@@ -50,6 +50,10 @@ document.addEventListener('DOMContentLoaded', function () {
             // Gráfico 1
             listarTop3Indicacoes: '/usuarios/buscar-top3-indicacoes',
             listarNumeroIndicacoes: '/usuarios/buscar-numeros-indicacoes',
+
+            // Gráfico 2
+            listarClientesConcluidosUltimosCincoMeses: '/usuarios/clientes-concluidos-ultimos-cinco-meses',
+            listarClientesFidelizadosUltimosCincoMeses: '/usuarios/clientes-fidelizados-ultimos-cinco-meses',
 
             // Gráfico 33
             listarProcedimentosBemAvaliados: '/api/procedimentos/listar-bem-avaliados',
@@ -70,8 +74,13 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchData(endpoints.clientesFidelizados, updateClientesFidelizados);
         fetchData(endpoints.agendamentosRealizados, updateAgendamentosRealizados);
 
+        // Chamadas para atualizar os dados do gráfico 1
+        fetchData(endpoints.listarTop3Indicacoes, updateListarTop3Indicacoes);
+        fetchData(endpoints.listarNumeroIndicacoes, updateChart1)
+
         // Chamadas para atualizar os dados do gráfico 2
-        fetchData(endpoints.clientesFidelizados, updateChart2_1)
+        fetchData(endpoints.listarClientesConcluidosUltimosCincoMeses, updateChart2_1);
+        fetchData(endpoints.listarClientesFidelizadosUltimosCincoMeses, updateChart2_2);
 
         // Chamadas para atualizar os dados do gráfico 3
         fetchData(endpoints.receitaAcumuladaLabels, updateReceitaAcumuladaLabels);
@@ -85,9 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchData(endpoints.agendamentosProcedimentosLabels, updateChart4Labels);
         fetchData(endpoints.agendamentosProcedimentos, updateChart4);
 
-        // Chamadas para atualizar os dados do gráfico 1
-        fetchData(endpoints.listarTop3Indicacoes, updateListarTop3Indicacoes);
-        fetchData(endpoints.listarNumeroIndicacoes, updateChart1)
+
     }
 
     // Funções que atualizam as KPI's
@@ -110,8 +117,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Constantes dos gráficos
+    let dataChart2_2 = null
     let dataChart2_1 = null;
-    let labelsChart2 = null;
+    let labelsChart2 = lastFiveMonths;
     const ctx2 = document.getElementById('chart2').getContext('2d');
     let chart2;
 
@@ -136,14 +144,21 @@ document.addEventListener('DOMContentLoaded', function () {
     let chart1;
 
 
+    // Funções para atualização
     function updateChart2_1(data) {
         dataChart2_1 = data;
-        labelsChart2 = lastFiveMonths
+
         if (dataChart2_1) {
             createChart2();
         }
     }
+    function updateChart2_2(data) {
+        dataChart2_2 = data;
 
+        if (dataChart2_2) {
+            createChart2();
+        }
+    }
     function updateChart1(data) {
         dataChart1 = data;
         createChart1();
@@ -164,19 +179,16 @@ document.addEventListener('DOMContentLoaded', function () {
             createChart3();
         }
     }
-
     function updateChart33(data) {
         dataChart33 = data;
         createChart33();
     }
-
     function updateChart33Labels(data) {
         labelsChart33 = data;
         if (dataChart33) {
             createChart33();
         }
     }
-
     function updateChart4(data) {
         dataChart4 = data;
         createChart4();
@@ -233,20 +245,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 data: {
                     labels: labelsChart2,
                     datasets: [{
-                        label: 'oi tchau',
-                        data: dataChart1,
+                        label: 'Clientes',
+                        data: dataChart2_1,
                         backgroundColor: '#D2135D',
                         borderColor: '#D2135D',
                         fill: false
                     },
                     {
-                        label: 'oi tchau',
-                        data: dataChart1,
-                        backgroundColor: '#D2135D',
-                        borderColor: '#D2135D',
+                        label: 'Clientes fidelizados',
+                        data: dataChart2_2,
+                        backgroundColor: '#F59DBF',
+                        borderColor: '#F59DBF',
                         fill: false
                     }
-                ]
+                    ]
 
                 },
                 options: {
@@ -396,11 +408,12 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-    const nome = localStorage.getItem('nome');
-    const email = localStorage.getItem('email');
+    const nome = localStorage.getItem("nome");
+    const instagram = localStorage.getItem("instagram");
 
-    if (nome && email) {
-        document.getElementById('userName').textContent = nome;
-        document.getElementById('userEmail').textContent = email;
+
+    if (nome && instagram) {
+        document.getElementById("userName").textContent = nome;
+        document.getElementById("userInsta").textContent = instagram;
     }
 });

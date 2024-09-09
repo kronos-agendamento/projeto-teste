@@ -147,7 +147,7 @@ navbar  lateral
   justify-content: center;
 }
 
-.perfil #userEmail {
+.perfil #userInsta {
   list-style: none;
   color: white;
   font-weight: 200;
@@ -401,6 +401,7 @@ Inicio Filtros
 
 .right-actions {
   display: flex;
+  width: 5%;
 }
 
 .right-actions button {
@@ -525,6 +526,20 @@ Inicio Tabela de procedimentos
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
   text-align: center;
+}
+
+.modal-content3 {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 30%;
+  height: fit-content;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .modal-content p {
@@ -851,4 +866,56 @@ table tr.clickable-row {
 table tr.clickable-row:hover {
   background-color: #f1f1f1;
   /* Cor de fundo ao passar o mouse (opcional) */
+}
+
+.export-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  /* Espaçamento entre os botões */
+  margin-bottom: 20px;
+  /* Espaçamento abaixo dos botões de exportação */
+}
+
+.cancel-button {
+  text-align: center;
+}
+
+.color-box {
+  width: 20px;
+  height: 20px;
+  border-radius: 100px;
+  display: inline-block;
+}
+
+#custom-status-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 5%;
+}
+
+#custom-status-table th,
+#custom-status-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#custom-status-table button {
+  background-color: #ffffff;
+  font-family: Poppins, sans-serif;
+  font-weight: 600;
+  height: 5vh;
+  justify-content: center;
+  margin: 1vh;
+  padding: 1vh;
+  align-items: center;
+  border-radius: 1vh;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+#custom-status-table button:hover {
+  background-color: #d9006c;
+  color: #dcf5f2;
+  transition-duration: 100ms;
 }

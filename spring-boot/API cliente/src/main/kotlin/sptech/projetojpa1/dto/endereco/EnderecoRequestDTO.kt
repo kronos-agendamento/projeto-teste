@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 
 data class EnderecoRequestDTO(
+    val idEndereco: Int? = null,
+
     @field:NotBlank(message = "Logradouro é obrigatório")
     val logradouro: String,
 
@@ -22,7 +24,7 @@ data class EnderecoRequestDTO(
     val estado: String,
 
     @field:NotNull(message = "Número é obrigatório")
-    val numero: Int,
+    val numero: String,
 
     @field:Size(max = 100, message = "Complemento deve ter no máximo 100 caracteres")
     val complemento: String?

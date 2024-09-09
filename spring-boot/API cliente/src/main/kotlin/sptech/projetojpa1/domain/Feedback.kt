@@ -18,26 +18,14 @@ data class Feedback(
     val nota: Int?,
 
     @ManyToOne
-    @JoinColumn(name = "fk_agendamento")
-    val agendamento: Agendamento?,
-
-    @ManyToOne
     @JoinColumn(name = "fk_usuario")
     val usuario: Usuario?,
 
-    @ManyToOne
-    @JoinColumn(name = "fk_avaliador")
-    val avaliador: Usuario?,
-
-    @ManyToOne
-    @JoinColumn(name = "fk_servico")
-    val servico: Servico?,
+    @OneToOne
+    @JoinColumn(name = "fk_agendamento", unique = true)
+    val agendamento: Agendamento? = null,
 
     @ManyToOne
     @JoinColumn(name = "fk_cliente_avaliado")
-    val clienteAvaliado: Cliente? = null
-) {
-    override fun toString(): String {
-        return "Feedback(idFeedback=$idFeedback, anotacoes=$anotacoes, nota=$nota, agendamento=$agendamento, usuario=$usuario, avaliador=$avaliador, servico=$servico, clienteAvaliado=$clienteAvaliado)"
-    }
-}
+    val clienteAvaliado: Usuario? = null
+)

@@ -5,11 +5,12 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 
 @Entity
-@Table(name = "horarioFuncionamento")
+@Table(name = "horario_funcionamento")
 class HorarioFuncionamento(
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_horario_funcionamento")
-    var id: Int = 0,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_horario_funcionamento") // Atualize para o nome correto
+    var id: Int? = null,
 
     @NotBlank(message = "O dia de início é obrigatório")
     @Column(name = "dia_inicio")
@@ -28,8 +29,4 @@ class HorarioFuncionamento(
     @NotBlank(message = "O horário de fechamento é obrigatório")
     @Column(name = "horario_fechamento")
     var horarioFechamento: String
-) {
-    override fun toString(): String {
-        return "HorarioFuncionamento(id=$id, diaInicio='$diaInicio', diaFim='$diaFim', horarioAbertura='$horarioAbertura', horarioFechamento='$horarioFechamento')"
-    }
-}
+)

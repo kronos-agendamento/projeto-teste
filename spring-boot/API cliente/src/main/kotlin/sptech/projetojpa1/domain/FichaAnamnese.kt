@@ -18,8 +18,4 @@ class FichaAnamnese(
 
     @OneToMany(mappedBy = "fichaAnamnese", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var respostas: List<Resposta> = mutableListOf()
-) {
-    override fun toString(): String {
-        return "FichaAnamnese(codigoFicha=$codigoFicha, dataPreenchimento=$dataPreenchimento, usuario=$usuario, respostas=$respostas)"
-    }
-}
+)

@@ -64,4 +64,7 @@ interface ProcedimentoRepository : JpaRepository<Procedimento, Int> {
     """
     )
     fun findProcedimentosBemAvaliados(): List<String>
+
+    @Query("SELECT MAX(p.idProcedimento) FROM Procedimento p")
+    fun findMaxId(): Int?
 }

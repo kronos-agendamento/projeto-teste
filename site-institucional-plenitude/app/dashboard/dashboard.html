@@ -19,8 +19,8 @@
                     style="width: 53vh; height: 23vh; display: flex; justify-content: center; align-items: center;">
             </div>
         </li>
-        <li id="userName" style="margin-top: 20vh;list-style: none; color: white; font-weight: 600;"></li>
-        <li id="userEmail" style="list-style: none; color: white; font-weight: 200; font-size: 12px;"></li>
+        <li id="userName"></li>
+        <li id="userInsta"></li>
         <ul style="margin-top: 80%; position:absolute;">
             <li class="list">
                 <a href="../index/index.html">
@@ -47,7 +47,7 @@
                 </a>
             </li>
             <li class="list">
-                <a href="../../app/cliente/cliente.html">
+                <a href="../../app/clientes/clientes.html">
                     <span class="icon"><ion-icon name="person-add-outline"></ion-icon></span>
                     <span class="title">Clientes</span>
                 </a>
@@ -131,7 +131,6 @@
                                         <p>Clientes Fidelizados</p>
                                         <h2 id="clientes-fidelizados-count">Carregando...</h2>
                                         <p>Último trimestre</p>
-
                                     </div>
                                     <div class="growth">+ 2% <i class="arrow-up"></i></div>
                                 </div>
@@ -145,6 +144,9 @@
                                 <p>Últimos 5 meses</p>
                             </div>
                             <p>Comparação de leads e clientes gerados.</p>
+                            <div class="caixa-grafico">
+                                <canvas id="chart2"></canvas>
+                            </div>
                         </div>
                     </div>
 

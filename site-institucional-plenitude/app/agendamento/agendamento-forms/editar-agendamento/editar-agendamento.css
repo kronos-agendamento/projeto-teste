@@ -124,30 +124,40 @@
 }
 
 .horarios-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  
-  .horario-button {
-    padding: 10px;
-    border: none;
-    border-radius: 50%;
-    background-color: #f0f0f0;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .horario-button:hover {
-    background-color: #ddd;
-  }
-  
-  .horario-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.horario-button {
+  padding: 10px;
+  border: none;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.horario-button:hover {
+  background-color: #ddd;
+}
+
+.horario-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
 .horario-button.selected {
   background-color: #e70069; /* Cor para o horário selecionado */
   color: white;
+}
+
+.disabled-select {
+  opacity: 0.5;
+  pointer-events: none; /* Não permite clicar no select */
+}
+
+.disabled-select:not([disabled]) {
+  opacity: 1;
+  pointer-events: auto;
 }

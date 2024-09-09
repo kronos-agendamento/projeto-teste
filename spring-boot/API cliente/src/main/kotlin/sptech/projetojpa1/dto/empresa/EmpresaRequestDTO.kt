@@ -15,8 +15,8 @@ data class EmpresaRequestDTO(
     val cnpj: String,
 
     @field:NotNull(message = "Id do endereço é obrigatório")
-    val enderecoId: Int,
+    val endereco: Int,
 
     @field:NotNull(message = "Id do horario de funcionamento é obrigatório")
-    val horarioFuncionamentoId: Int
+    val horarioFuncionamento: Int
 )

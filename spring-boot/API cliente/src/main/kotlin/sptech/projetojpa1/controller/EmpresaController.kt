@@ -1,6 +1,5 @@
 package sptech.projetojpa1.controller
 
-import io.swagger.v3.oas.annotations.ExternalDocumentation
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
@@ -49,9 +48,25 @@ class EmpresaController(
             ApiResponse(responseCode = "404", description = "Empresa não encontrada")
         ]
     )
-    @GetMapping("/{cnpj}")
+    @GetMapping("/cnpj/{cnpj}")
     fun buscarEmpresasPorCNPJ(@PathVariable cnpj: String): ResponseEntity<EmpresaResponseDTO> {
         val empresa = empresaService.listarPorCnpj(cnpj)
+        return ResponseEntity.ok(empresa)
+    }
+
+    @Operation(
+        summary = "Buscar empresa por ID",
+        description = "Retorna os detalhes de uma empresa específica com base no ID."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Empresa encontrada"),
+            ApiResponse(responseCode = "404", description = "Empresa não encontrada")
+        ]
+    )
+    @GetMapping("/id/{id}")
+    fun listarPorId(@PathVariable id: Int): ResponseEntity<EmpresaResponseDTO> {
+        val empresa = empresaService.listarPorId(id)
         return ResponseEntity.ok(empresa)
     }
 
