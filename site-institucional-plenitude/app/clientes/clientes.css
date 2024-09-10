@@ -669,3 +669,8 @@ img {
   /* Estilos para o estado de hover */
   text-decoration: underline; /* Exemplo: adicionar sublinhado ao passar o mouse */
 }
+
+.disabled {
+  opacity: 0.3; /* Deixa o botão mais transparente */
+  transition: opacity 0.3s ease; /* Adiciona uma transição suave ao estado desabilitado */
+}

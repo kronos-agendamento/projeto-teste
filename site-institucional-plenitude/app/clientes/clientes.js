@@ -71,12 +71,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Função para buscar usuário por CPF
-  async function fetchUsuarioPorCpf(cpf) {
+  // Função para buscar usuário por idUsuario
+  async function fetchUsuarioPorId(idUsuario) {
     try {
-      const response = await fetch(`${baseUrl}/usuarios/buscar-por-cpf/${cpf}`);
+      const response = await fetch(`${baseUrl}/usuarios/${idUsuario}`);
       if (!response.ok) {
-        throw new Error(`Erro ao buscar usuário com CPF: ${cpf}`);
+        throw new Error("Erro ao buscar usuário.");
       }
       return await response.json();
     } catch (error) {
@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Função para renderizar a tabela
+  // Função para renderizar a tabela e atualizar os controles de paginação
   function renderTable(users, page) {
     proceduresTbody.innerHTML = "";
     const start = (page - 1) * itemsPerPage;
@@ -95,9 +95,10 @@ document.addEventListener("DOMContentLoaded", function () {
     paginatedUsers.forEach((user) => {
       const row = document.createElement("tr");
       const nome = user.nome;
-      const instagram = user.instagram.replace("@", ""); // Remove o "@" do início
+      const instagram = user.instagram.replace("@", "");
       const telefone = user.telefone;
       const cpf = user.cpf;
+      const idEndereco = user.endereco.idEndereco;
 
       row.innerHTML = `
       <td>${nome}</td>
@@ -110,52 +111,96 @@ document.addEventListener("DOMContentLoaded", function () {
       <td>${telefone}</td>
       <td>${cpf}</td>
       <td>
-          <button class="edit-btn" data-id="${cpf}" style="border: none; background: transparent; cursor: pointer;" title="Editar Cliente">
+          <button class="edit-btn" data-id="${user.idUsuario}" data-endereco="${idEndereco}" style="border: none; background: transparent; cursor: pointer;" title="Editar Cliente">
               <img src="../../assets/icons/editar.png" alt="Editar" style="width: 25px; height: 25px; margin-top:8px; margin-left:5px;">
           </button>
-          <button class="delete-btn" data-id="${cpf}" style="border: none; background: transparent; cursor: pointer;" title="Excluir Cliente">
+          <button class="delete-btn" data-id="${user.idUsuario}" style="border: none; background: transparent; cursor: pointer;" title="Excluir Cliente">
               <img src="../../assets/icons/excluir.png" alt="Excluir" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
           </button>
-          <button class="archive-btn" data-id="${cpf}" style="border: none; background: transparent; cursor: pointer;" title="Arquivar Cliente">
+          <button class="archive-btn" data-id="${user.idUsuario}" style="border: none; background: transparent; cursor: pointer;" title="Arquivar Cliente">
               <img src="../../assets/icons/arquivar.png" alt="Arquivar" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
           </button>
       </td>
-  `;
+    `;
       proceduresTbody.appendChild(row);
     });
 
-    // Event listener para o botão de especificação
+    // Atualizar a exibição de página atual e total de páginas
+    const totalPages = Math.ceil(users.length / itemsPerPage);
+    currentPageSpan.textContent = currentPage;
+    totalPagesSpan.textContent = totalPages;
+
+    // Desabilitar ou habilitar botões de navegação conforme a página atual
+    prevPageBtn.disabled = currentPage === 1;
+    nextPageBtn.disabled = currentPage === totalPages;
+
+    // Adicionar eventos aos botões de ação (editar, excluir, arquivar)
+    adicionarEventosBotoes();
+    updatePaginationButtons();
+  }
+
+  function updatePaginationButtons() {
+    const totalPages = Math.ceil(usuarios.length / itemsPerPage);
+
+    // Desabilita o botão "Anterior" na primeira página
+    if (currentPage === 1) {
+      prevPageBtn.classList.add("disabled");
+      prevPageBtn.style.cursor = "not-allowed";
+      prevPageBtn.disabled = true;
+    } else {
+      prevPageBtn.classList.remove("disabled");
+      prevPageBtn.style.cursor = "pointer";
+      prevPageBtn.disabled = false;
+    }
+
+    // Desabilita o botão "Próximo" na última página
+    if (currentPage === totalPages) {
+      nextPageBtn.classList.add("disabled");
+      nextPageBtn.style.cursor = "not-allowed";
+      nextPageBtn.disabled = true;
+    } else {
+      nextPageBtn.classList.remove("disabled");
+      nextPageBtn.style.cursor = "pointer";
+      nextPageBtn.disabled = false;
+    }
+
+    // Atualiza a informação de páginas
+    currentPageSpan.textContent = currentPage;
+    totalPagesSpan.textContent = totalPages;
+  }
+
+  // Função para adicionar eventos aos botões de ação
+  function adicionarEventosBotoes() {
     document.querySelectorAll(".edit-btn").forEach((button) => {
       button.addEventListener("click", async function () {
-        const cpf = this.getAttribute("data-id");
-        const cliente = await fetchUsuarioPorCpf(cpf);
+        const idUsuario = this.getAttribute("data-id");
+        const idEndereco = this.getAttribute("data-endereco");
+        const cliente = await fetchUsuarioPorId(idUsuario);
 
         if (cliente) {
           localStorage.setItem("clienteNome", cliente.nome);
-          window.location.href = `../clientes/clienteForms/editar-cliente/editar-cliente.html?cpf=${cpf}`;
+          window.location.href = `../clientes/clienteForms/editar-cliente/editar-cliente.html?idUsuario=${idUsuario}&idEndereco=${idEndereco}`;
         } else {
           console.error("Cliente não encontrado.");
         }
       });
     });
 
-    // Event listener para o botão de deletar
     document.querySelectorAll(".delete-btn").forEach((button) => {
       const id = button.getAttribute("data-id");
       const nome = button
         .closest("tr")
-        .querySelector("td:nth-child(1)").textContent; // Captura o nome corretamente
+        .querySelector("td:nth-child(1)").textContent;
       button.addEventListener("click", () => {
         cpfParaDeletar = id;
         if (cpfParaDeletar) {
-          showModal(nome); // Passa o nome correto para o modal
+          showModal(nome);
         } else {
           console.error("ID do usuário é indefinido.");
         }
       });
     });
 
-    // Event listener para o botão de arquivar (📁)
     document.querySelectorAll(".archive-btn").forEach((button) => {
       const cpf = button.getAttribute("data-id");
       const nome = button.closest("tr").querySelector("td").textContent;
@@ -193,11 +238,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Função para deletar usuário
-  async function deleteUser(cpf) {
+  async function deleteUser(id) {
     try {
       const response = await fetch(
-        `${baseUrl}/usuarios/exclusao-usuario/${cpf}`,
+        `${baseUrl}/usuarios/exclusao-usuario/${id}`,
         {
           method: "DELETE",
         }
@@ -285,12 +329,12 @@ function pesquisarCliente() {
   const nome = document.getElementById("nome").value;
   const cpf = document.getElementById("cpf").value;
   const codigo = document.getElementById("codigo").value;
-
+  const idUsuario = document.getElementById("idUsuario").value;
   let url = "";
   if (codigo) {
     url = `http://localhost:8080/usuarios/buscar-usuario-por-codigo/${codigo}`;
-  } else if (cpf) {
-    url = `http://localhost:8080/usuarios/buscar-por-cpf/${cpf}`;
+  } else if (idUsuario) {
+    url = `http://localhost:8080/usuarios/${idUsuario}`;
   } else if (nome) {
     url = `http://localhost:8080/usuarios/buscar-por-nome/${nome}`;
   } else {
