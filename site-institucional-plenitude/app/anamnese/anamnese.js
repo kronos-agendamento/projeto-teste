@@ -1,9 +1,8 @@
-var btn = document.getElementsByClassName("planilha-btn")[0];
-var modal = document.getElementsByTagName("dialog")[0];
-
-btn.onclick = function () {
- modal.showModal();
-};
+// var btn = document.getElementsByClassName("planilha-btn")[0];
+// var modal = document.getElementsByTagName("dialog")[0];
+// btn.onclick = function () {
+//  modal.showModal();
+// };
 
 const cirurgia = document.getElementById("cirugia").value;
 const descricao = document.getElementById("descricao").value;
@@ -15,7 +14,7 @@ const requestData = {
 };
 
 //Fazendo a requisição POST
-fetch("http://localhost:8080/api/agendamentos", {
+fetch("http://localhost:8080/api/anamnese", {
  method: "POST",
  headers: {
    "Content-Type": "application/json",
@@ -25,10 +24,10 @@ fetch("http://localhost:8080/api/agendamentos", {
  .then((data) => {
    // Exibe mensagem de sucesso
    document.getElementById("notification-message").textContent =
-     "Agendamento salvo com sucesso!";
+     "Ficha de anamnese salva com sucesso!";
  })
  .catch((error) => {
-   console.error("Erro ao salvar agendamento:", error);
+   console.error("Erro ao salvar ficha:", error);
    document.getElementById("notification-message").textContent =
      "Erro ao salvar agendamento. Tente novamente";
  });

@@ -95,13 +95,13 @@
      <div class="main-content">
        <div class="center-content">
          <section class="actions">
-           <a href="../anamnese/anamnese-forms/filtrar-anamnese/filtrar-anamnese.html"><button id="openFilterModalBtn" class="filter-btn">
+           <a href="../anamnese/anamnese.html"><button id="openFilterModalBtn" class="filter-btn">
              <img src="../../assets/icons/search.webp " alt="filter"/>
              Pesquisar Ficha Por Cliente
            </button></a>
            <div class="right-actions">
-             <button class="planilha-btn" onclick="showForm2()">
-              <img src="../../assets/icons/createNew.png" alt="spreadsheet" />Perguntas Desativadas
+             <button class="planilha-btn" onclick="showForm()">
+               <img src="../../assets/icons/createNew.png" alt="spreadsheet" />Perguntas Desativadas
              </button>
              <button class="criar-btn" onclick="showForm()">
                <img src="../../assets/icons/createNew.png" alt="createNew" />
@@ -212,27 +212,22 @@
      <div id="modalDesativadas" class="modal">
       <div class="modal-content">
         <div class="divTopoModal">
-          <h3>Perguntas Desativadas: </h3>
+          <h3>Perguntas Desativadas:</h3>
         </div>
         <div>
-          <table id="tabelaModal">
-            <tr>
-              <th id="tabelaDescricao">Descrição</th>
-              <th id="tabelaTipo">Tipo</th>
-            </tr>
-              
-            <tr>
-              <th>Tem hipertireoidismo?</th> 
-              <th>Sim/Não</th>
-            </tr>
-          </table>
+          <label for="descricao">Descrição:</label>
+          <input type="text" id="descricao" placeholder="Descrição da Pergunta"><br>
+          <label for="tipo">Tipo de Resposta:</label>
+          <input type="text" id="tipo" placeholder="Tipo de Resposta">
         </div>
         <div>
           <button id="save-button" class="btn btn-save">Salvar</button>
-          <button onclick="closeModal2()" class="btn btn-no">Cancelar</button>
+          <button onclick="closeModal()" class="btn btn-no">Cancelar</button>
         </div>
       </div>
     </div>
+
+
 
      <div>
        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
