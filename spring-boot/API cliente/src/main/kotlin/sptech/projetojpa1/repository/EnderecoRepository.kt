@@ -6,4 +6,6 @@ import sptech.projetojpa1.domain.Endereco
 interface EnderecoRepository : JpaRepository<Endereco, Int> {
 
     fun findByCepContaining(cep: String): List<Endereco>
+
+    fun findTopByOrderByIdEnderecoDesc(): Endereco?
 }

@@ -90,6 +90,45 @@ class UsuarioController(
         }
     }
 
+    @Operation(summary = "Atualizar usuário por ID")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o usuário atualizado"),
+            ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
+    @PatchMapping("/{id}")
+    fun atualizarUsuarioPorId(
+        @PathVariable id: Int,
+        @Valid @RequestBody dto: UsuarioAtualizacaoRequest
+    ): ResponseEntity<Usuario> {
+        val usuarioAtualizado = usuarioService.atualizarUsuarioPorId(id, dto)
+        return if (usuarioAtualizado != null) {
+            ResponseEntity.status(200).body(usuarioAtualizado)
+        } else {
+            ResponseEntity.status(404).body(null)
+        }
+    }
+
+    @Operation(summary = "Buscar usuário por ID")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o usuário encontrado"),
+            ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
+    @GetMapping("/{id}")
+    fun buscarUsuarioPorId(@PathVariable id: Int): ResponseEntity<out UsuarioResponseDTO> {
+        val usuario = usuarioService.getById(id)
+        return if (usuario != null) {
+            ResponseEntity.ok(usuario)
+        } else {
+            ResponseEntity.status(404).body(null)
+        }
+    }
+
     @Operation(summary = "Deletar usuário por CPF")
     @ApiResponses(
         value = [
@@ -143,6 +182,41 @@ class UsuarioController(
         return ResponseEntity.ok(resultado)
     }
 
+    @Operation(summary = "Atualizar status de usuário ativo por ID")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o usuário atualizado"),
+            ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
+    @PatchMapping("/atualizacao-status-usuario-ativo/{id}")
+    fun atualizarStatusUsuarioAtivoPorId(@PathVariable id: Int): ResponseEntity<UsuarioResponseDTO> {
+        val usuario = usuarioService.atualizarStatusUsuarioAtivoPorId(id)
+        return if (usuario != null) {
+            ResponseEntity.ok(usuario)
+        } else {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+        }
+    }
+
+    @Operation(summary = "Atualizar status de usuário inativo por ID")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o usuário atualizado"),
+            ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
+    @PatchMapping("/atualizacao-status-usuario-inativo/{id}")
+    fun atualizarStatusUsuarioInativoPorId(@PathVariable id: Int): ResponseEntity<UsuarioResponseDTO> {
+        val usuario = usuarioService.atualizarStatusUsuarioInativoPorId(id)
+        return if (usuario != null) {
+            ResponseEntity.ok(usuario)
+        } else {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+        }
+    }
 
     @Operation(summary = "Atualizar foto de usuário")
     @ApiResponses(

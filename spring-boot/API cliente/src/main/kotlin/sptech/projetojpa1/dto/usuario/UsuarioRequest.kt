@@ -8,7 +8,7 @@ data class UsuarioRequest(
     val email: String?,
     val senha: String?,
     val instagram: String?,
-    val cpf: String?,
+    var cpf: String?,
     val telefone: Long?,
     val dataNasc: LocalDate?,
     val genero: String?,

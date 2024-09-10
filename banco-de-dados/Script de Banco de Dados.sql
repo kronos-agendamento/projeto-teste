@@ -182,7 +182,8 @@ VALUES
 ('Rua dos Girassóis', '56473829', 'Tatuapé', 'São Paulo', 'SP', '700', 'Apto 702'),
 ('Rua das Magnólias', '90817263', 'Morumbi', 'São Paulo', 'SP', '800', NULL),
 ('Avenida Sapopemba', '28374659', 'Sapopemba', 'São Paulo', 'SP', '900', 'Sala 905'),
-('Rua dos Lírios', '38492047', 'Centro', 'Guarulhos', 'SP', '1000', 'Apto 1001');
+('Rua dos Lírios', '38492047', 'Centro', 'Guarulhos', 'SP', '1000', 'Apto 1001'),
+('Rua Haddock Lobo', '01414001', 'Consolação', 'São Paulo', 'SP', '595', 'Faculdade');
 
 INSERT INTO nivel_acesso (nome, nivel, descricao)
 VALUES 
@@ -200,7 +201,8 @@ VALUES
 ('Quarta', 'Domingo', '10:00', '16:00'),
 ('Terça', 'Sexta', '09:00', '18:00'),
 ('Quarta', 'Sábado', '08:00', '18:00'),
-('Segunda', 'Quinta', '09:00', '17:00');
+('Segunda', 'Quinta', '09:00', '17:00'),
+('Segunda', 'Sexta', '16:30', '21:30');
 
 INSERT INTO empresa (nome, telefone, cnpj, fk_endereco, fk_horario_funcionamento)
 VALUES 
@@ -213,7 +215,8 @@ VALUES
 ('Estética Refinada', '71987654327', '77.888.999/0001-15', 7, 7),
 ('Sobrancelhas de Ouro', '81987654328', '88.999.000/0001-16', 8, 8),
 ('Cílios e Sobrancelhas', '91987654329', '99.000.111/0001-17', 9, 9),
-('Sobrancelhas Elegantes', '11987654330', '11.111.222/0001-18', 10, 10);
+('Sobrancelhas Elegantes', '11987654330', '11.111.222/0001-18', 10, 10),
+('Kronos', '11987654330', '10.101.222/0001-18', 11, 11);
 
 INSERT INTO ficha_anamnese (data_preenchimento)
 VALUES 
@@ -226,6 +229,7 @@ VALUES
 (NOW()), 
 (NOW()), 
 (NOW()), 
+(NOW()),
 (NOW());
 
 INSERT INTO usuario (nome, email, senha, instagram, cpf, telefone, data_nasc, genero, indicacao, status, fk_nivel_acesso, fk_endereco, fk_empresa, fk_ficha_anamnese)
@@ -250,7 +254,8 @@ VALUES
 ('Ricardo Martins', 'ricardo@novidade.com', 'senha123', '@ricardomartins', '777.777.777-78', 77987654328, '1987-02-10', 'Masculino', 'Instagram', TRUE, 2, 7, 7, 7),
 ('Letícia Silva', 'leticia@novidade.com', 'senha123', '@leticiasilva', '888.888.888-89', 88987654329, '1988-02-25', 'Feminino', 'Indicação de Amiga', TRUE, 2, 8, 8, 8),
 ('Vinícius Oliveira', 'vinicius@novidade.com', 'senha123', '@viniciusoliveira', '999.999.999-00', 99987654321, '1989-03-05', 'Masculino', 'Indicação Familiar', TRUE, 2, 9, 9, 9),
-('Amanda Castro', 'amanda@novidade.com', 'senha123', '@amandacastro', '101.010.101-11', 10198765432, '1990-03-20', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10);
+('Amanda Castro', 'amanda@novidade.com', 'senha123', '@amandacastro', '101.010.101-11', 10198765432, '1990-03-20', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10),
+('Ruan Cardozo', 'ruancrdz2004@gmail.com', 'ruancrdz2004', '@ruan_crdz', '526.107.418-55', 11944415361, '2004-10-02', 'Masculino', 'Instagram', TRUE, 1, 11, 11, 11);
 
 INSERT INTO procedimento (tipo, descricao)
 VALUES 
@@ -421,3 +426,4 @@ SET dtype = 'Profissional'
 WHERE fk_nivel_acesso = 1;
 
 SELECT * FROM usuario;
+select * from endereco;

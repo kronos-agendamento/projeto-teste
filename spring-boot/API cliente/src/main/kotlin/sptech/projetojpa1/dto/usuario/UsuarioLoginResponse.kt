@@ -7,7 +7,7 @@ data class UsuarioLoginResponse(
     val mensagem: String,
     val nome: String,
     val email: String,
-    val cpf: String,
+    var cpf: String,
     val instagram: String,
     val empresa: Empresa?
 )

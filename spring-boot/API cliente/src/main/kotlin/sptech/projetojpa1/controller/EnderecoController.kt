@@ -114,4 +114,22 @@ class EnderecoController(
         }
     }
 
+
+    @Operation(
+        summary = "Busca apenas o último endereço",
+        description = "Retorna o último endereço cadastrado no sistema."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Endereço encontrado"),
+            ApiResponse(responseCode = "404", description = "Nenhum endereço encontrado")
+        ]
+    )
+    @GetMapping("/ultimo")
+    fun buscarApenasUltimoEndereco(): ResponseEntity<Int> {
+        val endereco = enderecoService.buscarApenasUltimoEndereco()
+        return endereco?.let {
+            ResponseEntity.ok(it)
+        } ?: ResponseEntity.notFound().build()
+    }
 }
