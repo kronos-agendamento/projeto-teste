@@ -51,7 +51,7 @@ interface ProcedimentoRepository : JpaRepository<Procedimento, Int> {
         FROM 
             procedimento p
         INNER JOIN 
-            especificacao_procedimento ep ON p.id_procedimento = ep.fk_procedimento
+            especificacao ep ON p.id_procedimento = ep.fk_procedimento
         INNER JOIN 
             agendamento a ON p.id_procedimento = a.fk_procedimento
         INNER JOIN 

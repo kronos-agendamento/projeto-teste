@@ -21,7 +21,7 @@ interface EspecificacaoRepository : JpaRepository<Especificacao, Int> {
 FROM 
     agendamento a 
 INNER JOIN 
-    especificacao_procedimento ep 
+    especificacao ep 
 ON 
     a.fk_procedimento = ep.id_especificacao_procedimento 
 WHERE 
@@ -59,7 +59,7 @@ ORDER BY
             SELECT 
                 ep.especificacao
             FROM 
-                especificacao_procedimento ep
+                especificacao ep
         """
         )
         fun findEspecificacoes(): List<String>
