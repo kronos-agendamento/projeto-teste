@@ -410,4 +410,13 @@ class UsuarioService(
 
     fun buscarUsuarioPorCodigo(codigo: Int): Usuario? = usuarioRepository.findById(codigo).orElse(null)
 
+    fun countUsuariosWithStatusZero(): Int {
+        return usuarioRepository.countByStatus(false)
+    }
+
+    fun countUsuariosWithStatusUm(): Int {
+        return usuarioRepository.countByStatus(true)
+    }
+
+
 }

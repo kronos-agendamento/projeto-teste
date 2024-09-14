@@ -195,3 +195,38 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("userInsta").textContent = instagram;
   }
 });
+
+// Função para buscar dados de clientes arquivados (status 0)
+async function fetchArquivados() {
+  const response = await fetch('http://localhost:8080/usuarios/count/arquivados'); // Ajuste a URL conforme necessário
+  if (!response.ok) {
+      throw new Error('Erro ao buscar clientes arquivados');
+  }
+  return await response.json(); // Retorna o número de clientes arquivados
+}
+
+// Função para buscar dados de clientes ativos (status 1)
+async function fetchAtivos() {
+  const response = await fetch('http://localhost:8080/usuarios/count/ativos'); // Ajuste a URL conforme necessário
+  if (!response.ok) {
+      throw new Error('Erro ao buscar clientes ativos');
+  }
+  return await response.json(); // Retorna o número de clientes ativos
+}
+
+// Função para atualizar os KPIs
+async function updateKpiData() {
+  try {
+      const clientesAtivos = await fetchAtivos();
+      const clientesArquivados = await fetchArquivados();
+      
+      // Atualizar o valor dos KPIs no HTML
+      document.getElementById('mais-agendado').textContent = clientesAtivos;
+      document.getElementById('menos-agendado').textContent = clientesArquivados;
+  } catch (error) {
+      console.error('Erro ao buscar dados dos KPIs:', error);
+  }
+}
+
+// Chama a função para atualizar os KPIs ao carregar a página
+window.onload = updateKpiData;

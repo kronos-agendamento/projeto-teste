@@ -208,4 +208,12 @@ class AgendamentoService(
 
         agendamentoRepository.deleteById(id)
     }
+
+    fun countUsuariosWithStatusZero(): Int {
+        return usuarioRepository.countByStatus(false)
+    }
+
+    fun countUsuariosWithStatusUm(): Int {
+        return usuarioRepository.countByStatus(true)
+    }
 }

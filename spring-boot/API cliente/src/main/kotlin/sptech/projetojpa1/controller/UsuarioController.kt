@@ -428,6 +428,15 @@ class UsuarioController(
         }
     }
 
+    @GetMapping("/count/arquivados")
+    fun countUsuariossWithStatusZero(): Int {
+        return usuarioService.countUsuariosWithStatusZero()
+    }
+
+    @GetMapping("/count/ativos")
+    fun countUsuariossWithStatusUm(): Int {
+        return usuarioService.countUsuariosWithStatusUm()
+    }
 
 }
 

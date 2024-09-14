@@ -1,4 +1,4 @@
--- drop database kronosbooking;
+  -- drop database kronosbooking;
 CREATE DATABASE IF NOT EXISTS kronosbooking;
 USE kronosbooking;
 
@@ -428,6 +428,5 @@ WHERE fk_nivel_acesso = 1;
 
 SELECT * FROM usuario;
 select * from endereco;
-
-
+select * from agendamento;
 

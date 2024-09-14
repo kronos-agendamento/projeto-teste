@@ -121,4 +121,14 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
         val horariosDisponiveis = agendamentoService.listarHorariosDisponiveis(empresaId, dataFormatada)
         return ResponseEntity.ok(horariosDisponiveis)
     }
+
+    @GetMapping("/count/arquivados")
+    fun countUsuariossWithStatusZero(): Int {
+        return agendamentoService.countUsuariosWithStatusZero()
+    }
+
+    @GetMapping("/count/ativos")
+    fun countUsuariossWithStatusUm(): Int {
+        return agendamentoService.countUsuariosWithStatusUm()
+    }
 }
