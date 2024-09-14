@@ -121,7 +121,7 @@ interface UsuarioRepository : JpaRepository<Usuario, Int> {
 FROM 
     agendamento a
 JOIN 
-    status_agendamento sa ON a.fk_status = sa.id_status_agendamento
+    status sa ON a.fk_status = sa.id_status_agendamento
 WHERE 
     sa.nome = 'Concluído' 
     AND a.data_horario BETWEEN DATE_SUB(CURDATE(), INTERVAL 5 MONTH) AND CURDATE()
@@ -144,7 +144,7 @@ ORDER BY
                    YEAR(a.data_horario) AS ano, 
                    MONTH(a.data_horario) AS mes
             FROM agendamento a
-            JOIN status_agendamento sa ON a.fk_status = sa.id_status_agendamento
+            JOIN status sa ON a.fk_status = sa.id_status_agendamento
             WHERE sa.nome = 'Concluído'
               AND a.data_horario BETWEEN DATE_SUB(CURDATE(), INTERVAL 5 MONTH) AND CURDATE()
             GROUP BY a.fk_usuario, YEAR(a.data_horario), MONTH(a.data_horario)

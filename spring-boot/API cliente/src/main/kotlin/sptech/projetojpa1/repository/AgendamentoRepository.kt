@@ -21,7 +21,7 @@ interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
                 FROM
                 agendamento a
                 INNER JOIN
-                status_agendamento s ON a.fk_status = s.id_status_agendamento
+                status s ON a.fk_status = s.id_status_agendamento
                 WHERE
                 s.nome = 'Concluído'
                 AND a.data_horario >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH);"""
