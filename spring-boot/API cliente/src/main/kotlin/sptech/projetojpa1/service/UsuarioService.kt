@@ -418,5 +418,24 @@ class UsuarioService(
         return usuarioRepository.countByStatus(true)
     }
 
+    fun buscarClientesFidel(): List<UsuarioResponseDTO> {
+        val clientes = usuarioRepository.findClientesFidel()
+        return clientes.map { row ->
+            UsuarioResponseDTO(
+                idUsuario = (row["idUsuario"] as Number).toInt(),
+                nome = row["nome"] as String?,
+                dataNasc = (row["dataNasc"] as java.sql.Date)?.toLocalDate(),
+                instagram = row["instagram"] as String?,
+                telefone = (row["telefone"] as Number)?.toLong(),
+                cpf = row["cpf"] as String?,
+                status = row["status"] as Boolean?,
+                email = row["email"] as String?,
+                genero = row["genero"] as String?,
+                indicacao = row["indicacao"] as String?,
+                endereco = null // Ajuste conforme necessário
+            )
+        }
+    }
+
 
 }

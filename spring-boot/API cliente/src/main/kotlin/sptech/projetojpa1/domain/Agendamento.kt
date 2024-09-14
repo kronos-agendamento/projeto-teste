@@ -39,5 +39,5 @@ class Agendamento(
     @field:NotNull(message = "Status do agendamento não pode ser nulo")
     @ManyToOne
     @JoinColumn(name = "fk_status")
-    var statusAgendamento: Status,
+    var statusAgendamento: Status
 )

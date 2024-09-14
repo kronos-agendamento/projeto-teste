@@ -59,19 +59,17 @@ document.addEventListener("DOMContentLoaded", function () {
       .querySelector("#modal-archive .btn-no")
       .addEventListener("click", closeModalArchive);
   
-    // Função para buscar usuários inativos
-    async function fetchClientesInativos() {
-        try {
-          // O status 0 indica clientes inativos
-          const response = await fetch(`${baseUrl}/usuarios/buscar-por-status/0`);
-          const data = await response.json();
-          console.log("Dados recebidos da API (clientes inativos):", data);
-          return data;
-        } catch (error) {
-          console.error("Erro ao carregar clientes inativos:", error);
-          return [];
-        }
+    // Função para buscar usuários ativos
+    async function fetchUsuariosFidelizados() {
+      try {
+        const response = await fetch(`http://localhost:8080/usuarios/fidelizados`);
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error("Erro ao carregar usuários ativos:", error);
+        return [];
       }
+    }
   
     // Função para buscar usuário por idUsuario
     async function fetchUsuarioPorId(idUsuario) {
@@ -118,8 +116,8 @@ document.addEventListener("DOMContentLoaded", function () {
             <button class="delete-btn" data-id="${user.idUsuario}" style="border: none; background: transparent; cursor: pointer;" title="Excluir Cliente">
                 <img src="../../../../assets/icons/excluir.png" alt="Excluir" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
             </button>
-            <button class="activate-btn" data-id="${user.cpf}" style="border: none; background: transparent; cursor: pointer;" title="Ativar Cliente">
-                <img src="../../../../assets/icons/desarquivar.png" alt="Arquivar" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
+            <button class="archive-btn" data-id="${user.cpf}" style="border: none; background: transparent; cursor: pointer;" title="Inativar Cliente">
+                <img src="../../../../assets/icons/arquivar.png" alt="Arquivar" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
             </button>
         </td>
       `;
@@ -202,34 +200,11 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       });
   
-    // Configura os eventos dos botões de ativação
-    document.querySelectorAll(".activate-btn").forEach((button) => {
+      document.querySelectorAll(".archive-btn").forEach((button) => {
         const cpf = button.getAttribute("data-id");
-        button.addEventListener("click", async (e) => {
-          console.log(`Iniciando ativação do usuário com CPF: ${cpf}`);
-          try {
-            const response = await fetch(`${baseUrl}/usuarios/ativar/${cpf}`, {
-              method: "PATCH",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            });
-  
-            if (response.ok) {
-              console.log("Usuário ativado com sucesso.");
-              showNotification("Usuário ativado com sucesso!");
-              // Recarrega a lista de usuários
-              usuarios = await fetchClientesInativos();
-              renderTable(usuarios, currentPage);
-            } else {
-              const errorText = await response.text();
-              console.error("Erro ao ativar o usuário:", errorText);
-              throw new Error("Erro ao ativar o usuário: " + errorText);
-            }
-          } catch (error) {
-            console.error("Erro geral:", error);
-            showNotification(error.message, true);
-          }
+        const nome = button.closest("tr").querySelector("td").textContent;
+        button.addEventListener("click", function () {
+          showModalArchive(nome, cpf);
         });
       });
     }
@@ -240,6 +215,27 @@ document.addEventListener("DOMContentLoaded", function () {
       modal.style.display = "block";
     }
   
+    // Função para arquivar usuário
+    async function arquivarUsuario(cpf) {
+      try {
+        const response = await fetch(`${baseUrl}/usuarios/inativar/${cpf}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error("Erro ao inativar o usuário.");
+        }
+  
+        const data = await response.json();
+        showNotification("Usuário inativado com sucesso!");
+      } catch (error) {
+        console.error("Erro ao inativar o usuário:", error);
+        showNotification("Erro ao inativar o usuário.", true);
+      }
+    }
   
     async function deleteUser(id) {
       try {
@@ -267,7 +263,7 @@ document.addEventListener("DOMContentLoaded", function () {
   
     // Inicialização dos dados e tabela
     async function init() {
-      usuarios = await fetchClientesInativos();
+      usuarios = await fetchUsuariosFidelizados();
       renderTable(usuarios, currentPage);
   
       prevPageBtn.addEventListener("click", () => {

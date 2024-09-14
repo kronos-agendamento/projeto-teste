@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <button class="delete-btn" data-id="${user.idUsuario}" style="border: none; background: transparent; cursor: pointer;" title="Excluir Cliente">
               <img src="../../assets/icons/excluir.png" alt="Excluir" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
           </button>
-          <button class="archive-btn" data-id="${user.cpf}" style="border: none; background: transparent; cursor: pointer;" title="Arquivar Cliente">
+          <button class="archive-btn" data-id="${user.cpf}" style="border: none; background: transparent; cursor: pointer;" title="Inativar Cliente">
               <img src="../../assets/icons/arquivar.png" alt="Arquivar" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
           </button>
       </td>
@@ -227,14 +227,14 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       if (!response.ok) {
-        throw new Error("Erro ao arquivar o usuário.");
+        throw new Error("Erro ao inativar o usuário.");
       }
 
       const data = await response.json();
-      showNotification("Usuário arquivado com sucesso!");
+      showNotification("Usuário inativado com sucesso!");
     } catch (error) {
-      console.error("Erro ao arquivar o usuário:", error);
-      showNotification("Erro ao arquivar o usuário.", true);
+      console.error("Erro ao inativar o usuário:", error);
+      showNotification("Erro ao inativar o usuário.", true);
     }
   }
 
@@ -500,15 +500,27 @@ async function fetchAtivos() {
   return await response.json(); // Retorna o número de clientes ativos
 }
 
+// Função para buscar dados de clientes fidelizados (agendamentos nos ultimos 3 meses)
+async function fetchFidelizados() {
+  const response = await fetch('http://localhost:8080/usuarios/clientes-fidelizados-ultimos-tres-meses'); // Ajuste a URL conforme necessário
+  if (!response.ok) {
+      throw new Error('Erro ao buscar clientes ativos');
+  }
+  return await response.json(); // Retorna o número de clientes fidelizados
+}
+
 // Função para atualizar os KPIs
 async function updateKpiData() {
   try {
       const clientesAtivos = await fetchAtivos();
       const clientesArquivados = await fetchArquivados();
+      const clientesFidelizados = await fetchFidelizados();
       
       // Atualizar o valor dos KPIs no HTML
       document.getElementById('mais-agendado').textContent = clientesAtivos;
       document.getElementById('menos-agendado').textContent = clientesArquivados;
+      document.getElementById('fidelizado').textContent = clientesFidelizados
+
   } catch (error) {
       console.error('Erro ao buscar dados dos KPIs:', error);
   }

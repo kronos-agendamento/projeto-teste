@@ -438,5 +438,11 @@ class UsuarioController(
         return usuarioService.countUsuariosWithStatusUm()
     }
 
+    @GetMapping("/fidelizados")
+    fun getClientesFidelUltimosTresMeses(): ResponseEntity<List<UsuarioResponseDTO>> {
+        val clientesFidelizados = usuarioService.buscarClientesFidel()
+        return ResponseEntity.ok(clientesFidelizados)
+    }
+
 }
 
