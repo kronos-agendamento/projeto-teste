@@ -8,6 +8,7 @@ import sptech.projetojpa1.domain.usuario.Cliente
 
 interface UsuarioRepository : JpaRepository<Usuario, Int> {
 
+
     // Encontra usuários pelo nome
     fun findByNome(nome: String): List<Usuario>
 

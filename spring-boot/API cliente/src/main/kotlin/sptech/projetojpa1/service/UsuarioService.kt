@@ -394,4 +394,20 @@ class UsuarioService(
     fun getClientesFidelizadosUltimos5Meses(): List<Int> {
         return usuarioRepository.findClientesFidelizados5Meses()
     }
+
+    fun getByNomeContains(nome: String): List<UsuarioDTO> {
+        return usuarioRepository.findByNomeContainsIgnoreCase(nome)
+            .map { usuario ->
+                UsuarioDTO(
+                    codigo = usuario.codigo!!,
+                    nome = usuario.nome.toString(),
+                    instagram = usuario.instagram.toString(),
+                    telefone = usuario.telefone.toString(),
+                    cpf = usuario.cpf.toString()
+                )
+            }
+    }
+
+    fun buscarUsuarioPorCodigo(codigo: Int): Usuario? = usuarioRepository.findById(codigo).orElse(null)
+
 }

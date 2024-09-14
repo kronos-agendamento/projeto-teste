@@ -1,3 +1,4 @@
+-- drop database kronosbooking;
 CREATE DATABASE IF NOT EXISTS kronosbooking;
 USE kronosbooking;
 
@@ -119,7 +120,7 @@ CREATE TABLE resposta (
     fk_usuario INT NOT NULL,
     FOREIGN KEY (fk_pergunta) REFERENCES pergunta(id_pergunta),
     FOREIGN KEY (fk_ficha_anamnese) REFERENCES ficha_anamnese(id_ficha),
-    FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario)
+    FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
 );
 
 CREATE TABLE status (
@@ -137,7 +138,7 @@ CREATE TABLE agendamento (
     fk_procedimento INT NOT NULL,
     fk_especificacao_procedimento INT NOT NULL,
     fk_status INT NOT NULL,
-    FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario),
+    FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
     FOREIGN KEY (fk_procedimento) REFERENCES procedimento(id_procedimento),
     FOREIGN KEY (fk_especificacao_procedimento) REFERENCES especificacao(id_especificacao_procedimento),
     FOREIGN KEY (fk_status) REFERENCES status(id_status_agendamento)
@@ -150,17 +151,17 @@ CREATE TABLE feedback (
     fk_agendamento INT UNIQUE,
     fk_usuario INT,
     fk_cliente_avaliado INT,
-    FOREIGN KEY (fk_agendamento) REFERENCES agendamento(id_agendamento),
-    FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario),
-    FOREIGN KEY (fk_cliente_avaliado) REFERENCES usuario(id_usuario)
+    FOREIGN KEY (fk_agendamento) REFERENCES agendamento(id_agendamento) ON DELETE CASCADE,
+    FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
+    FOREIGN KEY (fk_cliente_avaliado) REFERENCES usuario(id_usuario) ON DELETE CASCADE
 );
 
 	CREATE TABLE cliente (
-		id_usuario INT PRIMARY KEY,
-		experiencia_avaliada VARCHAR(255),
-		frequencia INT,
-		FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
-	);
+    id_usuario INT PRIMARY KEY,
+    experiencia_avaliada VARCHAR(255),
+    frequencia INT,
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
+);
 
 	CREATE TABLE profissional (
 		id_usuario INT PRIMARY KEY,
@@ -168,7 +169,7 @@ CREATE TABLE feedback (
 		media_nota DOUBLE,
 		qualificacoes VARCHAR(255),
 		especialidade VARCHAR(255),
-		FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
+		FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
 	);
 
 INSERT INTO endereco (logradouro, cep, bairro, cidade, estado, numero, complemento)
@@ -235,8 +236,8 @@ VALUES
 INSERT INTO usuario (nome, email, senha, instagram, cpf, telefone, data_nasc, genero, indicacao, status, fk_nivel_acesso, fk_endereco, fk_empresa, fk_ficha_anamnese)
 VALUES 
 ('Priscila Plenitude', 'priscila@plenitude.com', 'senhaAdmin', '@plenitudenoolhar', '111.111.111-11', 11987654321, '1980-01-01', 'Feminino', 'Instagram', TRUE, 1, 1, 1, NULL),
-('Ana Paula', 'ana@beleza.com', 'senha123', '@anabeauty', '222.222.222-22', 21987654321, '1992-02-02', 'Feminino', 'Indicação de Amiga', TRUE, 2, 2, 2, 2),
-('Carlos Eduardo', 'carlos@olharperfeito.com', 'senha123', '@carlosedu', '333.333.333-33', 31987654322, '1995-03-03', 'Masculino', 'Facebook', TRUE, 2, 3, 3, 3),
+('Ana Paula', 'ana@beleza.com', 'senha123', '@anabeauty', '469.674.588-09', 21987654321, '1992-02-02', 'Feminino', 'Indicação de Amiga', TRUE, 2, 2, 2, 2),
+('Carlos Eduardo', 'carlos@olharperfeito.com', 'senha123', '@carlosedu', '317.262.998-80', 31987654322, '1995-03-03', 'Masculino', 'Facebook', TRUE, 2, 3, 3, 3),
 ('Juliana Costa', 'juliana@glamour.com', 'senha123', '@jucosta', '444.444.444-44', 41987654323, '1990-04-04', 'Feminino', 'Google', TRUE, 2, 4, 4, 4),
 ('Roberta Silva', 'roberta@ciliosdiva.com', 'senha123', '@robdiva', '555.555.555-55', 51987654324, '1993-05-05', 'Feminino', 'Instagram', TRUE, 2, 5, 5, 5),
 ('Daniel Souza', 'daniel@makeup.com', 'senha123', '@danmake', '666.666.666-66', 61987654325, '1991-06-06', 'Masculino', 'Indicação de Influencer', TRUE, 2, 6, 6, 6),
@@ -427,3 +428,6 @@ WHERE fk_nivel_acesso = 1;
 
 SELECT * FROM usuario;
 select * from endereco;
+
+
+

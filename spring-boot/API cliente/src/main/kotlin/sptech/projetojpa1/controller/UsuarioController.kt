@@ -395,5 +395,39 @@ class UsuarioController(
             ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao ativar usuário")
         }
     }
+
+    @Operation(summary = "Listar usuários por nome")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o usuário encontrado"),
+            ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
+    @GetMapping("/buscar-por-nome/{nome}")
+    fun getByNomeContains(@PathVariable nome: String): ResponseEntity<List<UsuarioDTO>> {
+        val usuarios = usuarioService.getByNomeContains(nome)
+        return ResponseEntity.ok(usuarios)
+    }
+
+    @Operation(summary = "Listar usuários por descrição")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o usuário encontrado"),
+            ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
+    @GetMapping("/buscar-usuario-por-codigo/{codigo}")
+    fun buscarUsuarioPorCodigo(@PathVariable codigo: Int): ResponseEntity<Usuario> {
+        val usuario = usuarioService.buscarUsuarioPorCodigo(codigo)
+        return if (usuario != null) {
+            ResponseEntity.ok(usuario)
+        } else {
+            ResponseEntity.status(404).body(null)
+        }
+    }
+
+
 }
 

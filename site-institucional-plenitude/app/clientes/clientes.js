@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <button class="delete-btn" data-id="${user.idUsuario}" style="border: none; background: transparent; cursor: pointer;" title="Excluir Cliente">
               <img src="../../assets/icons/excluir.png" alt="Excluir" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
           </button>
-          <button class="archive-btn" data-id="${user.idUsuario}" style="border: none; background: transparent; cursor: pointer;" title="Arquivar Cliente">
+          <button class="archive-btn" data-id="${user.cpf}" style="border: none; background: transparent; cursor: pointer;" title="Arquivar Cliente">
               <img src="../../assets/icons/arquivar.png" alt="Arquivar" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
           </button>
       </td>
@@ -326,92 +326,108 @@ window.onclick = function (event) {
 };
 
 function pesquisarCliente() {
-  const nome = document.getElementById("nome").value;
-  const cpf = document.getElementById("cpf").value;
-  const codigo = document.getElementById("codigo").value;
-  const idUsuario = document.getElementById("idUsuario").value;
-  let url = "";
+  const nome = document.getElementById('nome').value;
+  const cpf = document.getElementById('cpf').value;
+  const codigo = document.getElementById('codigo').value;
+
+  let url = '';
   if (codigo) {
-    url = `http://localhost:8080/usuarios/buscar-usuario-por-codigo/${codigo}`;
-  } else if (idUsuario) {
-    url = `http://localhost:8080/usuarios/${idUsuario}`;
-  } else if (nome) {
-    url = `http://localhost:8080/usuarios/buscar-por-nome/${nome}`;
-  } else {
-    alert("Por favor, preencha ao menos um dos campos.");
-    return;
+      url = `http://localhost:8080/usuarios/${codigo}`;
+  } else if (cpf) {
+      url = `http://localhost:8080/usuarios/buscar-por-cpf/${cpf}`;
+  }
+  // } else if (nome) {
+  //     url = `http://localhost:8080/usuarios/buscar-por-nome/${nome}`;
+  else {
+      alert("Por favor, preencha ao menos um dos campos.");
+      return;
   }
 
-  console.log("URL gerada:", url);
+  console.log('URL gerada:', url);
 
   fetch(url)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`Erro: ${response.status} - ${response.statusText}`);
-      }
-      return response.json();
-    })
-    .then((data) => mostrarResultado(data))
-    .catch((error) => {
-      console.error("Erro ao buscar cliente:", error);
-      mostrarErro("Erro ao buscar cliente. Por favor, tente novamente.");
-    });
+      .then(response => {
+          if (!response.ok) {
+              throw new Error(`Erro: ${response.status} - ${response.statusText}`);
+          }
+          return response.json();
+      })
+      .then(data => mostrarResultado(data))
+      .catch(error => {
+          console.error('Erro ao buscar cliente:', error);
+          mostrarErro("Erro ao buscar cliente. Por favor, tente novamente.");
+      });
 }
 
 function mostrarResultado(data) {
-  const resultadoDiv = document.getElementById("resultado");
+  const resultadoDiv = document.getElementById('resultado');
 
-  if (!data || data.length === 0) {
-    resultadoDiv.innerHTML = "<p>Nenhum cliente encontrado.</p>";
-  } else if (Array.isArray(data)) {
-    let tableHTML = `
-            <table id="procedures-table-pesquisa" class="procedures-table-pesquisa">
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Instagram</th>
-                        <th>Telefone</th>
-                        <th>CPF</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-        `;
-
-    data.forEach((usuario) => {
-      tableHTML += `
-                <tr>
-                    <td>${usuario.nome}</td>
-                    <td>${usuario.instagram}</td>
-                    <td>${usuario.telefone}</td>
-                    <td>${usuario.cpf}</td>
-                    <td>
-                        <button class="ver-mais-btn" data-id="${usuario.cpf}" style="border: none; background: transparent; cursor: pointer;" title="Ver mais">
-                            <img src="../../assets/icons/mais-tres-pontos-indicador.png" alt="Ver mais" style="width: 20px; height: 20px; margin-top:18px; margin-left:15px;">
-                        </button>
-                    </td>
-                </tr>
-            `;
-    });
-
-    tableHTML += `</tbody></table>`;
-
-    resultadoDiv.innerHTML = tableHTML;
-
-    // Adicionar event listener para o botão "Ver mais"
-    document.querySelectorAll(".edit-btn").forEach((button) => {
-      button.addEventListener("click", function () {
-        const cpf = this.getAttribute("data-id");
-        // Redirecionar para a página de edição com o CPF na URL
-        window.location.href = `../clientes/clienteForms/editar-cliente.html?cpf=${cpf}`;
-      });
-    });
+  if (!data || (Array.isArray(data) && data.length === 0)) {
+      resultadoDiv.innerHTML = "<p>Nenhum cliente encontrado.</p>";
   } else {
-    resultadoDiv.innerHTML = `
-            <p>Nome: ${data.nome} | CPF: ${data.cpf} | Instagram: ${data.instagram} | Telefone: ${data.telefone}</p>
-        `;
+      // Se o retorno for um único objeto, transforme-o em um array para que a tabela funcione
+      const usuarios = Array.isArray(data) ? data : [data];
+
+      let tableHTML = `
+          <table id="procedures-table-pesquisa" class="procedures-table-pesquisa">
+              <thead>
+                  <tr>
+                      <th>Nome</th>
+                      <th>Instagram</th>
+                      <th>Telefone</th>
+                      <th>CPF</th>
+                      <th>Ações</th>
+                  </tr>
+              </thead>
+              <tbody>
+      `;
+
+      usuarios.forEach(usuario => {
+          tableHTML += `
+              <tr>
+                  <td>${usuario.nome}</td>
+                  <td>${usuario.instagram}</td>
+                  <td>${usuario.telefone}</td>
+                  <td>${usuario.cpf}</td>
+                  <td>
+                      <button class="ver-mais-btn" data-id="${usuario.idUsuario}" style="border: none; background: transparent; cursor: pointer;" title="Ver mais">
+                          <img src="../../assets/icons/mais-tres-pontos-indicador.png" alt="Ver mais" style="width: 20px; height: 20px; margin-top:18px; margin-left:15px;">
+                      </button>
+                  </td>
+              </tr>
+          `;
+      });
+
+      tableHTML += `</tbody></table>`;
+      resultadoDiv.innerHTML = tableHTML;
+
+      // Adicionar event listener para o botão "Ver mais"
+      document.querySelectorAll('.ver-mais-btn').forEach(button => {
+          button.addEventListener('click', function() {
+              const idUsuario = this.getAttribute("data-id");
+              window.location.href = `../clientes/clienteForms/editar-cliente/editar-cliente.html?idUsuario=${idUsuario}`;
+          });
+      });
   }
 }
+
+
+async function fetchUsuarioPorIdUsuario(idUsuario) {
+  try {
+      const response = await fetch(`http://localhost:8080/usuarios/${idUsuario}`);
+      if (!response.ok) {
+          throw new Error(`Erro ao buscar cliente: ${response.statusText}`);
+      }
+      const cliente = await response.json();
+      return cliente;
+  } catch (error) {
+      console.error("Erro na requisição:", error);
+      return null;
+  }
+}
+
+
+
 
 function mostrarErro(mensagem) {
   const resultadoDiv = document.getElementById("resultado");

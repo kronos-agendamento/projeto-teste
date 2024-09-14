@@ -672,3 +672,22 @@ Inicio Respostas
 .modal-content .btn-no:hover {
  background-color: #c82333;
 }
+
+.perfil #userName {
+  display: flex;
+  list-style: none;
+  color: white;
+  font-weight: 600;
+  margin-top: 6vh;
+  justify-content: center;
+}
+
+.perfil #userInsta {
+  list-style: none;
+  color: white;
+  font-weight: 200;
+  font-size: 12px;
+  margin-top: 0.5vh;
+  display: flex;
+  justify-content: center;
+}

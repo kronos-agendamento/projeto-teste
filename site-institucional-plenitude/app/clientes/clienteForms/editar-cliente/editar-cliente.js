@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       clienteData = await fetchUsuarioPorId(idUsuario);
       if (clienteData) {
         // Preenchendo os campos do formulário de dados pessoais
+        setFieldValue("codigo", clienteData.idUsuario)
         setFieldValue("nome", clienteData.nome);
         setFieldValue("nascimento", formatDate(clienteData.dataNasc));
         setFieldValue("instagram", clienteData.instagram);
