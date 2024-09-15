@@ -335,6 +335,14 @@ header p {
     row-gap: 33px;
 }
 
+.tab-content {
+    display: none; /* Esconde todo o conteúdo inicialmente */
+}
+
+.tab-content.active {
+    display: block; /* Mostra o conteúdo ativo */
+}
+
 .square {
     width: 478px;
     height: 369px;
@@ -347,7 +355,7 @@ header p {
     align-items: center;
 }
 
-.main-content {
+.chartContainer {
     flex: 1;
     padding: 20px;
     display: flex;
@@ -358,23 +366,37 @@ header p {
 .tabs {
     display: flex;
     width: 146vh;
+    height: auto;
     justify-content: flex-end;
 }
 
 .tab-button {
+    border: 2px solid #D2135D;
     background-color: #D2135D;
     color: #fff;
-    border: none;
     border-radius: 12px 12px 0 0;
     padding: 10px 20px;
     cursor: pointer;
     width: 130px;
+    transition: background-color 0.3s ease, border 0.3s ease;
 }
 
-.tab-button.active,
+.tab-button.selected {
+    background-color: #e62762; /* Cor mais escura para o botão ativo */
+    border: 5px solid #ffffff; /* Contorno ao redor do botão ativo */
+    height: 110%;
+    border-radius: 12px 12px 12px 12px;
+  }
+
 .tab-button:hover {
-    background-color: #d81b60;
-}
+    background-color: #ff3e78; /* Muda a cor ao passar o mouse */
+    border: 2px solid #4e0c2a; /* Adiciona uma borda no hover */
+    border-radius: 12px 12px 0 0;
+  }
+
+  .tab-button:last-child {
+    margin-right: 0;
+  }
 
 .summary-cards {
     display: flex;
@@ -642,4 +664,12 @@ img {
     margin-top: 0.5vh;
     display: flex;
     justify-content: center;
+}
+
+.conteudo {
+
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-end;
 }
