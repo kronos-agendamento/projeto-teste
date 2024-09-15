@@ -73,6 +73,79 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     });
 
+    document.getElementById("save-empresa-button").addEventListener("click", function() {
+      // Capturar os valores dos inputs
+      console.log("Passei por aqui")
+      const nomeEmpresa = document.getElementById("empresa").value;
+      const cnpj = document.getElementById("cnpj").value;
+      const telefone = document.getElementById("telefone-empresa").value;
+      const cep = document.getElementById("cep").value;
+      const logradouro = document.getElementById("logradouro").value;
+      const numero = document.getElementById("numero").value;
+      const complemento = document.getElementById("complemento").value;
+      const bairro = document.getElementById("bairro").value;
+      const cidade = document.getElementById("cidade").value;
+      const estado = document.getElementById("estado").value;
+      const diaInicio = document.getElementById("diaInicio").value;
+      const diaFim = document.getElementById("diaFim").value;
+      const horaInicio = document.getElementById("horaInicio").value;
+      const horaFim = document.getElementById("horaFim").value;
+    
+      // Montar o objeto para enviar para a API
+      const empresaData = {
+          nome: nomeEmpresa,
+          telefone: telefone,
+          cnpj: cnpj,
+          endereco: {
+              logradouro: logradouro,
+              cep: cep,
+              bairro: bairro,
+              cidade: cidade,
+              estado: estado,
+              numero: numero,
+              complemento: complemento
+          },
+          horarioFuncionamento: {
+              diaInicio: diaInicio,
+              diaFim: diaFim,
+              horaInicio: horaInicio,
+              horaFim: horaFim
+          }
+      };
+    
+      // Recuperar o CPF do localStorage
+      const cpf = localStorage.getItem("cpf");
+    
+      if (!cpf) {
+          alert("CPF não encontrado no localStorage.");
+          return;
+      }
+    
+      // Fazer requisição PUT para o endpoint de atualização de empresa no localhost
+      fetch(`http://localhost:8080/api/empresas/${cpf}`, {
+          method: "PUT",
+          headers: {
+              "Content-Type": "application/json"
+          },
+          body: JSON.stringify(empresaData)
+      })
+      .then(response => {
+          if (response.ok) {
+              return response.json();
+          } else {
+              throw new Error("Erro ao atualizar empresa");
+          }
+      })
+      .then(data => {
+          alert("Empresa atualizada com sucesso!");
+          console.log(data); // Aqui você pode processar a resposta, se necessário
+      })
+      .catch(error => {
+          console.error("Erro:", error);
+          alert("Erro ao atualizar a empresa.");
+      });
+    });
+
   function formatPhoneNumberToLong(phoneNumber) {
     if (!phoneNumber) return null;
     const cleaned = phoneNumber.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
@@ -429,3 +502,4 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
