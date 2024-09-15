@@ -17,6 +17,7 @@
     span,
     button {
         transition: font-size 0.3s ease;
+        border: none;
     }
 
     /* Font size adjustment for responsiveness */
@@ -102,6 +103,10 @@
         padding: 0;
     }
 
+    #titulo-saudacao{
+        margin-left: 2rem ;
+    }
+
     .corpo {
         display: flex;
         height: 140vh;
@@ -118,11 +123,6 @@
         box-shadow: 10px 0 0 #ffffff;
     }
 
-    h1,
-    h2,
-    span {
-        margin-left: 2rem;
-    }
 
     .acessibilidade {
         display: flex;
@@ -154,5 +154,47 @@
         margin: 2rem
     }
 
+    #titulo-formulario {
+        margin: 2rem;
+    }
 
+    #titulo-flex{
+        display: flex;
+        margin-bottom: 1rem;
+
+    }
+
+    #icon-alert {
+        width: 2rem;
+        height: 2rem;
+    }
+
+    #destaque{
+        font-weight: bold;
+    }
+    
+    .content {
+        margin: 2rem;
+    }
+    .input-content{
+        margin-bottom: 1rem;
+        height: 3rem;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .input-content input{
+        border: none;
+        background-color: #ffeceb;
+        height: 70%;
+        width: 80%;
+        border-radius: 2vh;
+
+    }
+
+    #icon-create{
+        width: 2rem;
+        height: 2rem;
+    }
 }
