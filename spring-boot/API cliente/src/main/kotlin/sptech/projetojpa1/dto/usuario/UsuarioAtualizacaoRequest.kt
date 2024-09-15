@@ -8,12 +8,7 @@ data class UsuarioAtualizacaoRequest(
     var instagram: String?,
     var dataNasc: LocalDate?,
     var telefone: Long?,
-    var telefoneEmergencial: Long?,
     var genero: String?,
     var indicacao: String?,
-    var nivelAcessoId: Int?,
-    var enderecoId: Int?,
-    var empresaId: Int?,
-    var fichaAnamneseId: Int?,
-    var cpf: String?
+
 )

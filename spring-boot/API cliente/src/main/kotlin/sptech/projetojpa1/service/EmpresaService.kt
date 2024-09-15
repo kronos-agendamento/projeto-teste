@@ -2,6 +2,7 @@ package sptech.projetojpa1.service
 
 import org.springframework.stereotype.Service
 import sptech.projetojpa1.domain.Empresa
+import sptech.projetojpa1.domain.Endereco
 import sptech.projetojpa1.domain.Usuario
 import sptech.projetojpa1.dto.empresa.EmpresaRequestDTO
 import sptech.projetojpa1.dto.empresa.EmpresaResponseDTO
@@ -65,15 +66,24 @@ class EmpresaService(
         dto.nome?.let { empresa.nome = it }
         dto.telefone?.let { empresa.telefone = it }
         dto.cnpj?.let { empresa.cnpj = it }
-        dto.endereco?.let {
-            val endereco = enderecoRepository.findById(it)
-                .orElseThrow { IllegalArgumentException("Endereço não encontrado") }
-            empresa.endereco = endereco
+
+
+            dto.endereco?.cep ?.let { empresa.endereco.cep = it}
+            empresa.endereco?.logradouro?.let { empresa.endereco.logradouro = it}
+            empresa.endereco?.numero?.let { empresa.endereco.numero = it}
+            empresa.endereco?.bairro?.let { empresa.endereco.bairro = it}
+            empresa.endereco?.cidade?.let { empresa.endereco.cidade = it}
+            empresa.endereco?.estado?.let { empresa.endereco.estado = it}
+            empresa.endereco?.complemento?.let { empresa.endereco.complemento = it
+
+
         }
         dto.horarioFuncionamento?.let {
-            val horarioFuncionamento = horarioFuncionamentoRepository.findById(it)
-                .orElseThrow { IllegalArgumentException("Horário de funcionamento não encontrado") }
-            empresa.horarioFuncionamento = horarioFuncionamento
+
+            empresa.horarioFuncionamento?.horarioAbertura?.let { empresa.horarioFuncionamento.horarioAbertura = it }
+            empresa.horarioFuncionamento?.horarioFechamento?.let { empresa.horarioFuncionamento.horarioFechamento = it }
+            empresa.horarioFuncionamento?.diaInicio?.let { empresa.horarioFuncionamento.diaInicio = it }
+            empresa.horarioFuncionamento?.diaFim?.let { empresa.horarioFuncionamento.diaFim = it }
         }
 
         empresaRepository.save(empresa)
