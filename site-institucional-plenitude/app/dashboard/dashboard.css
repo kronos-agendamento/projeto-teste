@@ -335,6 +335,14 @@ header p {
     row-gap: 33px;
 }
 
+.mini-grid-usabilidade {
+    display: flex;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 30px;
+    row-gap: 33px;
+}
+
 .tab-content {
     display: none; /* Esconde todo o conteúdo inicialmente */
 }
@@ -345,6 +353,18 @@ header p {
 
 .square {
     width: 478px;
+    height: 369px;
+    border-radius: 10px;
+    /* Bordas arredondadas */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+}
+
+.square-usabilidade {
+    width: 985px;
     height: 369px;
     border-radius: 10px;
     /* Bordas arredondadas */
@@ -443,6 +463,18 @@ header p {
 }
 
 .charts {
+    display: flex;
+    flex-wrap: wrap;
+    /* width: 146vh; */
+    width: fit-content;
+    border: 2.5px solid #D2135D;
+    border-radius: 10px 0 10px 10px;
+    justify-content: center;
+    background-color: #fdd9e5;
+    padding: 20px;
+}
+
+.charts-usabilidade {
     display: flex;
     flex-wrap: wrap;
     /* width: 146vh; */
