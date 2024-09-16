@@ -80,7 +80,8 @@ class UsuarioService(
                 email = usuario.email ?: "",
                 cpf = usuario.cpf ?: "",
                 instagram = usuario.instagram ?: "",
-                empresa = usuario.empresa
+                empresa = usuario.empresa,
+                idUsuario = usuario.codigo,
             )
         } else {
             null
@@ -175,7 +176,12 @@ class UsuarioService(
             telefone = usuario.telefone,
             cpf = usuario.cpf,
             dataNasc = usuario.dataNasc,
-            status = usuario.status
+            status = usuario.status,
+            empresa = usuario.empresa,
+            indicacao = usuario.indicacao,
+            genero = usuario.genero,
+            senha = usuario.senha,
+            email = usuario.email,
         )
     }
 

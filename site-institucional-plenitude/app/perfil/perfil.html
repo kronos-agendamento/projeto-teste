@@ -10,7 +10,6 @@
   <link href="../assets/favicon.png" rel="icon">
 
   <link rel="stylesheet" href="perfil.css" />
-  <script src="perfil.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 </head>
 
@@ -325,16 +324,8 @@
             <div class="form-group form-mr form-input">
 
               <div class="label">
-                <p>Dia Escolhido:</p>
-                <select name="" id="diaEscolhido" required>
-                  <option value="Domingo">Domingo</option>
-                  <option value="Segunda">Segunda</option>
-                  <option value="Terça">Terça</option>
-                  <option value="Quarta">Quarta</option>
-                  <option value="Quinta">Quinta</option>
-                  <option value="Sexta">Sexta</option>
-                  <option value="Sábado">Sábado</option>
-                </select>
+                  <p>Dia Escolhido:</p>
+                  <input type="date" id="diaEscolhido" required>
               </div>
             </div>
           </div>
@@ -357,7 +348,7 @@
 
 
                 <div class="button-container2">
-                  <button type="button" class="save-button" id="save-procedimento-button">
+                  <button type="button" class="save-button" id="bloqueio-button">
                     Adicionar
                   </button>
                 </div>
@@ -392,6 +383,8 @@
   </div>
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="perfil.js"></script>
+
   </div>
 </body>
 

@@ -1,5 +1,6 @@
 package sptech.projetojpa1.dto.usuario
 
+import sptech.projetojpa1.domain.Empresa
 import sptech.projetojpa1.domain.Endereco
 import java.time.LocalDate
 
@@ -14,5 +15,7 @@ data class UsuarioResponseDTO(
     var email: String? = null,
     var genero: String? = null,
     var indicacao: String? = null,
-    var endereco: Endereco? = null,
+    var empresa: Empresa? = null,
+    var senha: String? = null,
+    var endereco: Endereco? = null
 )
