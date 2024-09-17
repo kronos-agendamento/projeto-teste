@@ -12,15 +12,12 @@
         padding: 2rem;
     }
 
-
-    #titulo-saudacao,
-    #titulo,
-    #subtitulo,
+    #greeting1,
+    #greeting2,
     h2,
     span,
     button {
         transition: font-size 0.3s ease;
-        border: none;
     }
 
     /* Font size adjustment for responsiveness */
@@ -94,128 +91,127 @@
         color: #000;
     }
 
-
-    .introducao {
-        background-color: #d9006c;
-        color: #ffffff;
-        padding: 1.3rem;
-        border-radius: 3vh;
-        box-shadow: 10px 0 0 #ffffff;
-    }
-
-    .acessibilidade {
-        display: flex;
-        flex-direction: row-reverse;
-    }
-
-    .acessibilidade button {
-        margin: 0.2rem;
-    }
-
-    #titulo {
-        font-size: 24px;
-        font-weight: bold;
-        margin-bottom: 0.5rem;
-    }
-
-    #subtitulo {
-        font-size: 20px;
-    }
-
-
-    .pesquisa img {
+    .retorno img {
         width: 1.5rem;
     }
 
-    .pesquisa {
+    .retorno {
         display: flex;
         flex-direction: row-reverse;
     }
 
+    /* 
+    Formulario */
 
-    #titulo-flex {
-        display: flex;
-        align-items: center;
+    .label {
+        padding: 0.5vw;
+        margin-right: 2vw;
+        width: 100%;
     }
 
-    #icon-alert {
-        width: 2rem;
-        height: 2rem;
+    .box-dados [type="text"],
+    .box-dados [type="number"],
+
+    .box-dados [type="password"],
+    .box-dados [type="date"],
+    .box-dados [type="email"],
+    .box-dados select {
+        padding: 1vw;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin: 0.2vw;
+        width: 90%;
+        justify-content: center;
+        background-color: #fff0f5;
     }
 
-    #destaque {
-        font-weight: bold;
-    }
-
-    .content {
-        margin-top: 2rem;
-    }
-
-
-    .content-flex {
-        display: flex;
-        margin-top: 2rem;
-        justify-content: space-around
-    }
-
-    .content2 {
-        margin-top: 2rem;
-        margin-bottom: 5rem;
-    }
-
-
-    .input-content {
-        margin-bottom: 1rem;
-        height: 3rem;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-    }
-
-    .input-content input {
-        border: none;
-        background-color: #ffeceb;
-        height: 70%;
+    .imagem [type="file"] {
+        padding: 0;
+        padding: 1vw;
+        border-radius: 5px;
+        margin: 0.2vw;
         width: 70%;
-        border-radius: 1vh;
-        padding: 0.5rem;
-        margin-top: 0.5rem;
+        justify-content: center;
+
+    }
+    
+    .box-imagem {
+        padding: 1vw;
+        display: flex;
+        justify-content: center
     }
 
-    .response-content select {
-        border: none;
-        background-color: #ffeceb;
-        height: 70%;
-        width: 80%;
-        border-radius: 1vh;
-        padding: 0.5rem;
+    .box-imagem p{
+        margin: 5;
+        font-size: smaller;
+      }
+
+    .imagem {
+        background-color: #F1C3D5;
+        padding: 0.5vw;
+        border: 2px dotted #000000;
+        margin: 1vw;
+        width: 55%;
+        height: 50%;
     }
 
-    #icon-create {
-        width: 2rem;
-        height: 2rem;
+    .image {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+
+        img {
+            width: 50%;
+        }
+    }
+
+    .box-dados [type="number"] {
+        display: inline-block;
+        background-color: #fff0f5;
+    }
+
+    .box-dados [type="number"]+input[type="number"] {
+        margin-left: 20px;
+        background-color: #fff0f5;
     }
 
     .button-container {
         display: flex;
         justify-content: center;
-
+        padding-top: 2vw;
+        padding-right: 0.9vw;
     }
 
-    .content2 button {
-        padding: 3vw;
-        background-color: #ffeceb;
-        border-radius: 1vh;
+    .save-button {
         display: flex;
         align-items: center;
-        border: 1px solid #7c7e80;
-        ;
+        background-color: #fff0f5;
+        border: none;
+        border-radius: 10px;
+        padding: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin-top: 1rem;
+
+        svg {
+            margin-right: 10px;
+            width: 20rem;
+            height: 20rem;
+        }
     }
 
-    #icon-ficha {
-        width: 1.5rem;
-        height: 1.5rem;
-        margin-right: 0.5rem;
+    .save-button:hover {
+        background-color: #F1C3D5;
+        transition-duration: 500ms;
     }
 
+    #dados{
+        margin-bottom: 5rem;
+    }
+
+    #icon-save{
+        margin-right: 1rem;
+
+    }
 }

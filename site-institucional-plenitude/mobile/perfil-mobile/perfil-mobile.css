@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 
-@media (max-width: 768px) {
+@media (max-width: 5000px) {
 
     :root {
         --font-size-default: 16px;
@@ -8,9 +8,10 @@
 
     body {
         font-size: var(--font-size-default);
+        font-family: Poppins, sans-serif;
+        padding: 2rem;
     }
 
-    #titulo-saudacao,
     #greeting1,
     #greeting2,
     h2,
@@ -25,6 +26,7 @@
             font-size: 14px;
         }
     }
+
 
     .nav-bar {
         position: fixed;
@@ -89,39 +91,13 @@
         color: #000;
     }
 
-
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    body {
-        font-family: Poppins, sans-serif;
-        margin: 0;
-        padding: 0;
-    }
-
-    .corpo {
-        display: flex;
-        height: 140vh;
-        width: 97vw;
-        background-color: #d9006c;
-    }
-
     .saudacao {
         background-color: #d9006c;
-        margin: 1.5rem;
+        margin-bottom: 1.5rem;
         color: #ffffff;
         padding: 1.3rem;
         border-radius: 3vh;
         box-shadow: 10px 0 0 #ffffff;
-    }
-
-    h1,
-    h2,
-    span {
-        margin-left: 2rem;
     }
 
 
@@ -152,50 +128,67 @@
     .pesquisa {
         display: flex;
         flex-direction: row-reverse;
-        margin: 2rem
     }
 
-    /* Procedimentos */
+    /* Acesso */
 
-    .procedimentos {
+    .button-container {
         display: flex;
-        margin: 1.5rem;
-        box-shadow: 10px 0 0 #ffffff;
-
-    }
-
-    .box-procedimento {
-        padding: 0.3rem;
-        width: 40rem;
         justify-content: center;
-        align-items: center;
 
     }
+
+    .button-container button {
+        padding: 1rem;
+        background-color: #ffffff;
+        border-radius: 1vh;
+        display: flex;
+        align-items: center;
+        border: 1px solid #7c7e80;
+        font-weight: bold;
+    }
+
+    .descricao-aviso {
+        display: flex;
+        justify-content: center;
+    }
+
+    .ver-ultimo a {
+        font-weight: lighter;
+        display: flex;
+        justify-content: center;
+        margin: 0 1rem 1rem 2rem;
+        color: #000;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .box-agendamento {
+        padding: 2rem;
+        border-radius: 3vh;
+        box-shadow: 10px 0 0 #ffffff;
+        display: flex;
+        height: 8rem;
+        justify-content: space-between;
+        align-items: center;
+    }
+
 
     .icon-agendamento img {
         border-radius: 100%;
-        background-color: #fff;
+        background-color: #FFF0F5;
         padding: 0.2rem;
 
     }
 
-    #agendamento span {
+    .procedimento-agendamento span {
         display: flex;
-        margin-left: 0rem;
-    }
-
-    .icon-procedimento img {
-        width: 100%;
-        height: 100%;
-        background-color: #ffeceb;
-        border-radius: 100%;
     }
 
     .button-flex {
         display: flex;
         flex-direction: column;
         justify-content: space-around;
-        margin-left: 1rem;
     }
 
     .button-flex img {
@@ -204,104 +197,71 @@
         cursor: pointer;
     }
 
-    .box-agendamento {
-        background-color: #ffeceb;
-        margin: 1.5rem;
-        padding: 2rem;
-        border-radius: 3vh;
-
-        box-shadow: 10px 0 0 #ffffff;
-        display: flex;
-        height: 8rem;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .procedimento-agendamento {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        flex-grow: 1;
-        margin-left: 1rem;
-    }
-
     #openStatusModalBtn2 {
         border: none;
         background-color: #FFF0F5;
     }
 
-    .input-content {
+     /* Gráficos */
+
+     #titulo-dash{
         display: flex;
+        align-items: center;
+    }
+    #titulo-dash img{
+        width: 2rem ;
+        height: 2rem ;
     }
 
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
+    .card-content-2 {
+        justify-content: space-between;
+        width: 100%;
+        margin-top: 15px;
+        align-items: center;
+    }
+
+    .card-graficos {
         width: 100%;
         height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.4);
-    }
-
-    .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 30%;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
-        text-align: center;
-    }
-
-    .modal-content p {
-        margin-bottom: 20px;
-        font-size: 18px;
-    }
-
-    .modal-content .btn {
-        margin: 10px;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        font-weight: bold;
-    }
-
-    .modal-content .btn-yes,
-    .btn-save {
-        background-color: #28a745;
-        color: white;
-    }
-
-    .modal-content .btn-no {
-        background-color: #dc3545;
-        color: white;
-    }
-
-    .modal-content .btn-yes:hover {
-        background-color: #218838;
-    }
-
-    .modal-content .btn-no:hover {
-        background-color: #c82333;
-    }
-
-    .ver-todos a {
-        font-weight: lighter;
         display: flex;
-        flex-direction: row-reverse;
-        margin: 0 1rem 1rem 2rem;
-        color: #000;
-        cursor: pointer;
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    .caixa-grafico, #chart33 {
+        width: 90%;
+    }
+
+    .card-graficos p {
+        display: flex;
+        flex-direction: row;
+        color: black;
+        font-weight: 550;
+        font-size: smaller;
+        width: 400px
+    }
+
+    .card p {
+        display: flex;
+        flex-direction: row;
+        color: black;
+    }
+
+    /* Personalidade */
+
+    #destaque {
         font-weight: bold;
     }
 
-    .historico{
+    .personalidade {
         margin-bottom: 5rem;
     }
+
+   
+
+
+
+
 }

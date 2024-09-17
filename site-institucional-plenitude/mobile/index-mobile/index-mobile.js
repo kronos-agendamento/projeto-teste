@@ -36,13 +36,13 @@ function saudacao() {
     
     let saudacaoTexto;
     let diasDaSemana = [
-        { nome: "Domingo", genero: "um" },
-        { nome: "Segunda-feira", genero: "uma" },
-        { nome: "Terça-feira", genero: "uma" },
-        { nome: "Quarta-feira", genero: "uma" },
-        { nome: "Quinta-feira", genero: "uma" },
-        { nome: "Sexta-feira", genero: "uma" },
-        { nome: "Sábado", genero: "um" }
+        { nome: "Domingo", genero: "um", otimo: "ótimo" },
+        { nome: "Segunda-feira", genero: "uma", otimo: "ótima" },
+        { nome: "Terça-feira", genero: "uma", otimo: "ótima" },
+        { nome: "Quarta-feira", genero: "uma", otimo: "ótima" },
+        { nome: "Quinta-feira", genero: "uma", otimo: "ótima" },
+        { nome: "Sexta-feira", genero: "uma", otimo: "ótima" },
+        { nome: "Sábado", genero: "um", otimo: "ótimo"  }
     ];
     
     // Verifica a hora do dia para a saudação
