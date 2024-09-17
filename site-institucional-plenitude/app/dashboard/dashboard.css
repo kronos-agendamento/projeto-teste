@@ -247,7 +247,6 @@ header p {
 
 .card-content-2 h1 {
     font-size: x-large;
-    width: 300px;
     font-weight: 1400;
 }
 
@@ -321,7 +320,16 @@ header p {
 }
 
 .mini-square {
+    display: flex;
     width: 224px;
+    height: 167px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+}
+
+.mini-square-usabilidade {
+    display: flex;
+    width: 308px;
     height: 167px;
     background-color: rgb(255, 255, 255);
     border-radius: 10px;
@@ -361,6 +369,19 @@ header p {
     gap: 5px;
     justify-content: center;
     align-items: center;
+}
+
+.triple-square {
+
+        width: 985px;
+        border-radius: 10px;
+        padding-bottom: 20px;
+        /* Bordas arredondadas */
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: center;
+    
 }
 
 .square-usabilidade {
@@ -476,14 +497,14 @@ header p {
 
 .charts-usabilidade {
     display: flex;
-    flex-wrap: wrap;
     /* width: 146vh; */
     width: fit-content;
     border: 2.5px solid #D2135D;
     border-radius: 10px 0 10px 10px;
-    justify-content: center;
     background-color: #fdd9e5;
     padding: 20px;
+    flex-direction: column;
+    align-items: center;
 }
 
 .top-cards {
