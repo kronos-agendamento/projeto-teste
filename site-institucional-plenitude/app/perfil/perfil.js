@@ -93,24 +93,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     
       // Montar o objeto para enviar para a API
       const empresaData = {
-          nome: nomeEmpresa,
-          telefone: telefone,
-          cnpj: cnpj,
-          endereco: {
-              logradouro: logradouro,
-              cep: cep,
-              bairro: bairro,
-              cidade: cidade,
-              estado: estado,
-              numero: numero,
-              complemento: complemento
-          },
-          horarioFuncionamento: {
-              diaInicio: diaInicio,
-              diaFim: diaFim,
-              horaInicio: horaInicio,
-              horaFim: horaFim
-          }
+        nome: nomeEmpresa,
+        telefone: telefone,
+        cnpj: cnpj,
+        endereco: {
+          logradouro: logradouro,
+          cep: cep,
+          bairro: bairro,
+          cidade: cidade,
+          estado: estado,
+          numero: numero,
+          complemento: complemento
+        },
+        horarioFuncionamento: {
+          diaInicio: diaInicio,
+          diaFim: diaFim,
+          horarioAbertura: horaInicio, // Altere de 'horaInicio' para 'horarioAbertura'
+          horarioFechamento: horaFim   // Altere de 'horaFim' para 'horarioFechamento'
+        }
       };
     
       // Recuperar o CPF do localStorage
@@ -123,11 +123,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     
       // Fazer requisição PUT para o endpoint de atualização de empresa no localhost
       fetch(`http://localhost:8080/api/empresas/${cpf}`, {
-          method: "PUT",
-          headers: {
-              "Content-Type": "application/json"
-          },
-          body: JSON.stringify(empresaData)
+        method: "PATCH", // Alterado de "PUT" para "PATCH"
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(empresaData)
       })
       .then(response => {
           if (response.ok) {
@@ -152,44 +152,54 @@ document.addEventListener("DOMContentLoaded", async () => {
     return parseInt(cleaned, 10); // Converte para número
   }
 
-  async function atualizarUsuario(cpf) {
-    try {
-      const cpf = localStorage.getItem("cpf");
-
-      const usuarioDTO = {
-        nome: document.getElementById("nome").value,
-        dataNasc: document.getElementById("nascimento").value,
-        telefone: formatPhoneNumberToLong(document.getElementById("telefone").value),
-        genero: document.getElementById("genero").value,
-        instagram: document.getElementById("instagram").value,
-        indicacao: document.getElementById("indicacao").value,
-        email: document.getElementById("email").value,
-        senha: document.getElementById("senha").value
-      };
-
-      const usuarioResponse = await fetch(
-        `http://localhost:8080/usuarios/atualizacao-usuario-por-cpf/${cpf}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(usuarioDTO),
+    async function atualizarUsuario(cpf) {
+      try {
+        const cpf = localStorage.getItem("cpf");
+    
+        const usuarioDTO = {
+          nome: document.getElementById("nome").value,
+          dataNasc: document.getElementById("nascimento").value,
+          telefone: formatPhoneNumberToLong(document.getElementById("telefone").value),
+          genero: document.getElementById("genero").value,
+          instagram: document.getElementById("instagram").value,
+          indicacao: document.getElementById("indicacao").value,
+          email: document.getElementById("email").value,
+          senha: document.getElementById("senha").value
+        };
+    
+        const usuarioResponse = await fetch(
+          `http://localhost:8080/usuarios/atualizacao-usuario-por-cpf/${cpf}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(usuarioDTO),
+          }
+        );
+    
+        if (!usuarioResponse.ok) {
+          throw new Error(`Erro ao atualizar usuário: ${usuarioResponse.status}`);
         }
-      );
-
-      if (!usuarioResponse.ok) {
-        throw new Error(`Erro ao atualizar usuário: ${usuarioResponse.status}`);
+    
+        // Exibe mensagem de sucesso
+        document.getElementById("notification-message").textContent = "Dados alterados com sucesso!";
+        document.getElementById("notification").style.display = "block";
+        
+        console.log("Usuário atualizado com sucesso!");
+      } catch (error) {
+        console.error("Erro ao atualizar o usuário:", error);
+    
+        // Exibe mensagem de erro
+        document.getElementById("notification-message").textContent = "Erro ao alterar dados";
+        document.getElementById("notification").style.display = "block";
       }
-
-      console.log("Usuário atualizado com sucesso!");
-    } catch (error) {
-      console.error(
-        "Erro ao atualizar o usuário com o ID da nova empresa:",
-        error
-      );
+    
+      // Oculta a notificação após alguns segundos
+      setTimeout(() => {
+        document.getElementById("notification").style.display = "none";
+      }, 5000); // Oculta a notificação após 5 segundos
     }
-  }
 
   const nome = localStorage.getItem("nome");
   const instagram = localStorage.getItem("instagram");
@@ -502,4 +512,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
 

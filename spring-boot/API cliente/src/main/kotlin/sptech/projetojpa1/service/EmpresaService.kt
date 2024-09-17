@@ -67,23 +67,27 @@ class EmpresaService(
         dto.telefone?.let { empresa.telefone = it }
         dto.cnpj?.let { empresa.cnpj = it }
 
-
-            dto.endereco?.cep ?.let { empresa.endereco.cep = it}
-            empresa.endereco?.logradouro?.let { empresa.endereco.logradouro = it}
-            empresa.endereco?.numero?.let { empresa.endereco.numero = it}
-            empresa.endereco?.bairro?.let { empresa.endereco.bairro = it}
-            empresa.endereco?.cidade?.let { empresa.endereco.cidade = it}
-            empresa.endereco?.estado?.let { empresa.endereco.estado = it}
-            empresa.endereco?.complemento?.let { empresa.endereco.complemento = it
-
-
+        // Verifica se o endereço não é nulo antes de tentar atualizar
+        dto.endereco?.let { enderecoDto ->
+            empresa.endereco?.let { endereco ->
+                enderecoDto.cep?.let { endereco.cep = it }
+                enderecoDto.logradouro?.let { endereco.logradouro = it }
+                enderecoDto.numero?.let { endereco.numero = it }
+                enderecoDto.bairro?.let { endereco.bairro = it }
+                enderecoDto.cidade?.let { endereco.cidade = it }
+                enderecoDto.estado?.let { endereco.estado = it }
+                enderecoDto.complemento?.let { endereco.complemento = it }
+            }
         }
-        dto.horarioFuncionamento?.let {
 
-            empresa.horarioFuncionamento?.horarioAbertura?.let { empresa.horarioFuncionamento.horarioAbertura = it }
-            empresa.horarioFuncionamento?.horarioFechamento?.let { empresa.horarioFuncionamento.horarioFechamento = it }
-            empresa.horarioFuncionamento?.diaInicio?.let { empresa.horarioFuncionamento.diaInicio = it }
-            empresa.horarioFuncionamento?.diaFim?.let { empresa.horarioFuncionamento.diaFim = it }
+        // Verifica se o horário de funcionamento não é nulo antes de tentar atualizar
+        dto.horarioFuncionamento?.let { horarioDto ->
+            empresa.horarioFuncionamento?.let { horario ->
+                horarioDto.horarioAbertura?.let { horario.horarioAbertura = it }
+                horarioDto.horarioFechamento?.let { horario.horarioFechamento = it }
+                horarioDto.diaInicio?.let { horario.diaInicio = it }
+                horarioDto.diaFim?.let { horario.diaFim = it }
+            }
         }
 
         empresaRepository.save(empresa)
