@@ -1,0 +1,111 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+@media (max-width: 5000px) {
+
+    :root {
+        --font-size-default: 16px;
+    }
+
+    body {
+        font-size: var(--font-size-default);
+        font-family: Poppins, sans-serif;
+        padding: 2rem;
+    }
+
+    h2,
+    span,
+    button {
+        transition: font-size 0.3s ease;
+    }
+
+    /* Font size adjustment for responsiveness */
+    @media (max-width: 768px) {
+        body {
+            font-size: 14px;
+        }
+    }
+
+    .nav-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #d9006c;
+        display: flex;
+        justify-content: space-around;
+        padding: 1rem 0;
+        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+    }
+
+    .nav-bar ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+    }
+
+    /* Estilo para os itens da navbar */
+    .nav-bar ul li {
+        flex: 1;
+        text-align: center;
+    }
+
+    /* Estilo para o botão central */
+    .nav-bar .central {
+        position: relative;
+        /* Levanta o botão central */
+    }
+
+    .nav-bar .central a {
+        background-color: #000;
+        color: white;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 28px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Estilo para os outros ícones */
+    .nav-bar .list a {
+        text-decoration: none;
+        color: #000;
+        display: flex;
+        flex-direction: column
+    }
+
+    /* Estilo dos ícones */
+    .nav-bar .icon {
+        font-size: 24px;
+        color: #000;
+    }
+
+
+    .pesquisa img {
+        width: 1.5rem;
+    }
+
+    .pesquisa {
+        display: flex;
+        flex-direction: row-reverse;
+    }
+
+    /* Formulario */
+
+    .hidden {
+        display: none;
+    }
+
+    #agendamento {
+        margin-bottom: 5rem;
+    }
+
+}

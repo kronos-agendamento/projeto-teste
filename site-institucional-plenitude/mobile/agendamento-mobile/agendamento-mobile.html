@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Perfil | KronosBooking </title>
+
+    <link href="../../assets/img/favicon.png" rel="icon" />
+    <script src="agendamento-mobile.js"></script>
+    <link rel="stylesheet" href="agendamento-mobile.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+</head>
+
+<body>
+    <main>
+        <header>
+            <div class="pesquisa">
+                <img src="../../assets/icons/lupa.png" alt="">
+            </div>
+            <div id="titulo-agendamento">
+                <h1>Agendar</h1>
+            </div>
+        </header>
+        <section id="navigation">
+            <div class="nav-bar">
+                <ul>
+                    <li class="list">
+                        <a href="../index-mobile/index-mobile.html">
+                            <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="../ficha-anamnese-mobile/ficha-anamnese-mobile.html">
+                            <span class="icon"><ion-icon name="document-text-outline"></ion-icon></span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="../agendamento-mobile/agendamento-mobile.html">
+                            <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
+                        </a>
+                    </li>
+                    <li class="list active">
+                        <a href="../perfil-mobile/perfil-mobile.html">
+                            <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="../../index.html">
+                            <span class="icon"><ion-icon name="exit-outline"></ion-icon></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <section id="agendamento">
+            <div class="agendamento">
+
+                <!-- Select de Procedimento -->
+                <div class="form-group form-input">
+                    <label for="procedimento">Procedimento:</label>
+                    <select id="procedimento" name="procedimento">
+                        <option value="">Selecione o procedimento</option>
+                        <option value="cilios">Cílios</option>
+                        <option value="sobrancelha">Sobrancelha</option>
+                        <option value="maquiagem">Maquiagem</option>
+                    </select>
+                </div>
+
+
+                <!-- Select de Tipo de Atendimento (para Cílios) -->
+                <div class="form-group form-input hidden" id="tipo-atendimento-cilios">
+                    <label for="tipo-atendimento">Tipo de Atendimento:</label>
+                    <select name="tipo-atendimento">
+                        <option value="">Selecione o tipo de atendimento</option>
+                        <option value="primeira-vez">Primeira Vez</option>
+                        <option value="manutencao">Manutenção</option>
+                        <option value="retirada">Remoção</option>
+
+                    </select>
+                </div>
+
+                <!-- Select de Tipo de Atendimento (para Cílios e Maquiagem) -->
+                <div class="form-group form-input hidden" id="tipo-atendimento-maquiagem">
+                    <label for="tipo-atendimento">Tipo de Atendimento:</label>
+                    <select name="tipo-atendimento">
+                        <option value="">Selecione o tipo de atendimento</option>
+                        <option value="homecare">Home Care</option>
+                        <option value="evento">Evento</option>
+                        <option value="salao">Salão</option>
+                    </select>
+                </div>
+
+                <!-- Opções de Cílios -->
+                <div class="form-group form-input hidden" id="opcao-cilios">
+                    <label for="especificacao">Especificação:</label>
+                    <div class="options-agendamento">
+                        <img src="../../assets/img/Plenitude/Cílios/fioafio.webp" alt="Fio a Fio">
+                        <span>Fio a Fio</span>
+                    </div>
+                    <div class="options-agendamento">
+                        <img src="../../assets/img/Plenitude/Cílios/foxeyes.webp" alt="Fox Eyes">
+                        <span>Fox Eyes</span>
+                    </div>
+                    <div class="options-agendamento">
+                        <img src="../../assets/img/Plenitude/Cílios/brasileiro.webp" alt="Volume Brasileiro">
+                        <span>Volume Brasileiro</span>
+                    </div>
+                    <div class="options-agendamento">
+                        <img src="../../assets/img/Plenitude/Cílios/egipcio.webp" alt="Volume Egípcio">
+                        <span>Volume Egípcio</span>
+                    </div>
+                    <div class="options-agendamento">
+                        <img src="../../assets/img/Plenitude/Cílios/russo.webp" alt="Volume Russo">
+                        <span>Volume Russo</span>
+                    </div>
+                </div>
+
+
+                <!-- Opções de Sobrancelha -->
+                <div class="form-group form-input hidden" id="opcao-sobrancelha">
+                    <label for="especificacao">Especificação:</label>
+                    <div class="options-agendamento">
+                        <img src="../../assets/img/Plenitude/Sobrancelhas/design.webp" alt="Design">
+                        <span>Design</span>
+                    </div>
+                    <div class="options-agendamento">
+                        <img src="../../assets/img/Plenitude/Sobrancelhas/designcomhenna.webp" alt="Design com Henna">
+                        <span>Design com Henna</span>
+                    </div>
+                    <div class="options-agendamento">
+                        <img src="../../assets/img/Plenitude/Sobrancelhas/coloracao.webp" alt="Design com Coloração">
+                        <span>Design com Coloração</span>
+                    </div>
+                    <div class="options-agendamento">
+                        <img src="../../assets/img/Plenitude/Sobrancelhas/browlamination.webp" alt="Brow Lamination">
+                        <span>Brow Lamination</span>
+                    </div>
+                    <div class="options-agendamento">
+                        <img src="../../assets/img/Plenitude/Sobrancelhas/nanoblanding.webp"
+                            alt="Nanoblading/Micropigmentação">
+                        <span>Nanoblading/Micropigmentação</span>
+                    </div>
+                </div>
+
+                <!-- Opções de Maquiagem -->
+                <div class="form-group form-input hidden" id="opcao-maquiagem">
+                    <label for="especificacao">Especificação:</label>
+                    <div class="options-agendamento">
+                        <img src="../../assets/img/Plenitude/Maquiagem/make profissa simples.jpg"
+                            alt="Maquiagem Profissional Simples">
+                        <span>Maquiagem Profissional Simples</span>
+                    </div>
+                    <div class="options-agendamento">
+                        <img src="../../assets/img/Plenitude/Maquiagem/make profissa master.jpg"
+                            alt="Maquiagem Profissional Master">
+                        <span>Maquiagem Profissional Master</span>
+                    </div>
+                    <div class="options-agendamento">
+                        <img src="../../assets/img/Plenitude/Maquiagem/make profissa noiva.jpg"
+                            alt="Maquiagem Profissional Noiva">
+                        <span>Maquiagem Profissional Noiva</span>
+                    </div>
+                </div>
+
+                <div class="form-group form-input hidden" id="dias">
+                    <label for="dias">Escolha o melhor dia:</label>
+                    <select id="dias-select" required>
+                        <option value="" disabled selected>Selecione seu dia</option>
+                        <option value="22/04">22 de abril - segunda-feira</option>
+                        <option value="23/04">23 de abril - terça-feira</option>
+                        <option value="24/04">24 de abril - quarta-feira</option>
+                        <option value="25/04">25 de abril - quinta-feira</option>
+                        <option value="26/04">26 de abril - sexta-feira</option>
+                    </select>
+                </div>
+
+                <div class="form-group form-input hidden" id="horarios">
+                    <label for="horario">Escolha o melhor horário:</label>
+                    <select id="horarios-select" required>
+                        <option value="" disabled selected>Selecione seu horário</option>
+                        <option value="9:00">9:00</option>
+                        <option value="13:00">13:00</option>
+                        <option value="16:00">16:00</option>
+                        <option value="18:00">18:00</option>
+                    </select>
+                </div>
+
+                <div class="button-container hidden" id="button-alterar">
+                    <button type="button" class="save-button" id="save-usuario-button">
+
+                        <img src="../../../assets/icons/save.png" id="icon-save" alt="">
+                        Salvar Alterações
+
+                    </button>
+
+                </div>
+
+        </section>
+
+    </main>
+</body>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+</html>
