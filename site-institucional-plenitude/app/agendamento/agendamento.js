@@ -9,6 +9,9 @@ document.addEventListener("DOMContentLoaded", function () {
   let allStatuses = [];
   let editStatusId = null;
   let selectedAgendamentoId = null;
+  let agendamentosOriginais = []; // Para armazenar os agendamentos originais
+  let agendamentosFiltrados = []; // Variável para armazenar os agendamentos filtrados
+  let filtroAtivo = null; // Variável para armazenar o filtro atual
 
   // Função para abrir o novo modal de status
   function openCustomStatusModal() {
@@ -112,6 +115,11 @@ document.addEventListener("DOMContentLoaded", function () {
       const data = await response.json();
       agendamentos = data;
 
+      // Armazena uma cópia dos agendamentos originais para uso posterior
+      agendamentosOriginais = [...data];
+
+      agendamentosFiltrados = agendamentos;
+
       // Ordenar agendamentos por data, do mais recente ao mais antigo
       agendamentos.sort(
         (a, b) => new Date(b.dataHorario) - new Date(a.dataHorario)
@@ -137,85 +145,29 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function renderTable(filtro = "todos") {
+  function renderTable() {
+    console.log(agendamentosFiltrados);
     const tbody = document.getElementById("procedures-tbody");
     tbody.innerHTML = "";
-
-    const hoje = new Date();
-    const dataHoje = `${hoje.getFullYear()}-${String(
-      hoje.getMonth() + 1
-    ).padStart(2, "0")}-${String(hoje.getDate()).padStart(2, "0")}`;
-
-    let agendamentosFiltrados = agendamentos;
-
-    if (filtro === "hoje") {
-      agendamentosFiltrados = agendamentos.filter((agendamento) => {
-        const dataAgendamento = new Date(agendamento.dataHorario);
-        const dataAgendamentoFormatada = `${dataAgendamento.getFullYear()}-${String(
-          dataAgendamento.getMonth() + 1
-        ).padStart(2, "0")}-${String(dataAgendamento.getDate()).padStart(
-          2,
-          "0"
-        )}`;
-        return dataAgendamentoFormatada === dataHoje;
-      });
-    } else if (filtro === "custom") {
-      const from = document.getElementById("filter-from").value;
-      const to = document.getElementById("filter-to").value;
-      const client = document
-        .getElementById("filter-client")
-        .value.toLowerCase();
-      const procedure = document
-        .getElementById("filter-procedure")
-        .value.toLowerCase();
-      const specification = document
-        .getElementById("filter-specification")
-        .value.toLowerCase();
-
-      agendamentosFiltrados = agendamentos.filter((agendamento) => {
-        const dataAgendamento = new Date(agendamento.dataHorario);
-        const dataAgendamentoFormatada = `${dataAgendamento.getFullYear()}-${String(
-          dataAgendamento.getMonth() + 1
-        ).padStart(2, "0")}-${String(dataAgendamento.getDate()).padStart(
-          2,
-          "0"
-        )}`;
-
-        const isWithinDateRange =
-          (!from || dataAgendamentoFormatada >= from) &&
-          (!to || dataAgendamentoFormatada <= to);
-        const matchesClient =
-          !client || agendamento.usuario.toLowerCase().includes(client);
-        const matchesProcedure =
-          !procedure ||
-          agendamento.procedimento.tipo.toLowerCase().includes(procedure);
-        const matchesSpecification =
-          !specification ||
-          agendamento.especificacao.especificacao
-            .toLowerCase()
-            .includes(specification);
-
-        return (
-          isWithinDateRange &&
-          matchesClient &&
-          matchesProcedure &&
-          matchesSpecification
-        );
-      });
-    }
 
     const totalPages = Math.ceil(agendamentosFiltrados.length / itemsPerPage);
     document.getElementById("current-page").textContent = currentPage;
     document.getElementById("total-pages").textContent = totalPages;
 
+    // Corrige a paginação: filtra apenas os agendamentos que deveriam aparecer
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const agendamentosPaginaAtual = agendamentosFiltrados.slice(
+      startIndex,
+      endIndex
+    ); // Filtra somente a página atual
+
+    // Atualiza o botão de paginação
     document.getElementById("prev-page-btn").disabled = currentPage === 1;
     document.getElementById("next-page-btn").disabled =
       currentPage === totalPages;
 
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-
-    agendamentosFiltrados.slice(startIndex, endIndex).forEach((agendamento) => {
+    agendamentosPaginaAtual.forEach((agendamento) => {
       const tr = document.createElement("tr");
       tr.classList.add("clickable-row");
 
@@ -245,8 +197,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Cria uma td para o status
       const statusTd = document.createElement("td");
-
-      // Cria a div com a cor do status
       const statusColorDiv = document.createElement("div");
       statusColorDiv.style.backgroundColor = agendamento.statusAgendamento.cor;
       statusColorDiv.style.width = "10px";
@@ -255,11 +205,9 @@ document.addEventListener("DOMContentLoaded", function () {
       statusColorDiv.style.display = "inline-block";
       statusColorDiv.style.marginRight = "5px";
 
-      // Cria um span para o nome do status
       const statusNomeSpan = document.createElement("span");
       statusNomeSpan.textContent = agendamento.statusAgendamento.nome;
 
-      // Adiciona o div de cor e o span de nome à td de status
       statusTd.appendChild(statusColorDiv);
       statusTd.appendChild(statusNomeSpan);
       tr.appendChild(statusTd);
@@ -294,6 +242,86 @@ document.addEventListener("DOMContentLoaded", function () {
       tbody.appendChild(tr);
     });
   }
+
+  function aplicarFiltroAtual() {
+    if (filtroAtivo === "hoje") {
+      const hoje = new Date();
+      const diaAtual = hoje.getDate();
+      const mesAtual = hoje.getMonth();
+      const anoAtual = hoje.getFullYear();
+
+      agendamentosFiltrados = agendamentosFiltrados.filter((agendamento) => {
+        const dataAgendamento = new Date(agendamento.dataHorario);
+        return (
+          dataAgendamento.getDate() === diaAtual &&
+          dataAgendamento.getMonth() === mesAtual &&
+          dataAgendamento.getFullYear() === anoAtual
+        );
+      });
+    } else if (filtroAtivo === "todos") {
+      agendamentosFiltrados = [...agendamentosOriginais]; // Mostra todos os dados filtrados originalmente
+    }
+    renderTable(); // Renderiza a tabela novamente com os dados filtrados
+  }
+  // Botão para filtrar agendamentos de hoje
+  document.getElementById("hoje-agendamentos").addEventListener("click", () => {
+    filtroAtivo = "hoje";
+    aplicarFiltroAtual();
+  });
+
+  // Botão para mostrar todos os agendamentos
+  document
+    .getElementById("todos-agendamentos")
+    .addEventListener("click", () => {
+      filtroAtivo = "todos";
+      aplicarFiltroAtual();
+    });
+
+  // Inicialmente oculta o botão "Limpar Filtros"
+  document.getElementById("clear-all-filters").style.display = "none";
+
+  // Atualiza a função de aplicação de filtros
+  document
+    .getElementById("apply-filter-button")
+    .addEventListener("click", () => {
+      const from = document.getElementById("filter-from").value;
+      const to = document.getElementById("filter-to").value;
+      const client = document.getElementById("cliente-filtro").value;
+      const procedure = document.getElementById("procedimento-filtro").value;
+      const specification = document.getElementById(
+        "especificacao-filtro"
+      ).value;
+
+      const params = new URLSearchParams({
+        dataInicio: from || "",
+        dataFim: to || "",
+        clienteId: client || "",
+        procedimentoId: procedure || "",
+        especificacaoId: specification || "",
+      });
+
+      fetch(
+        `http://localhost:8080/api/agendamentos/filtro?${params.toString()}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((agendamentos) => {
+          agendamentosFiltrados = agendamentos; // Atualiza a variável global com os agendamentos filtrados
+          currentPage = 1; // Reseta a página para 1
+          renderTable(); // Re-renderiza a tabela com os dados filtrados
+
+          // Mostra o botão "Limpar Filtros" quando houver filtros aplicados
+          document.getElementById("clear-all-filters").style.display = "flex";
+        })
+        .catch((error) => {
+          console.error("Erro ao aplicar filtros:", error);
+        });
+    });
 
   document.getElementById("exportar-planilha").addEventListener("click", () => {
     document.getElementById("export-modal").style.display = "flex";
@@ -802,13 +830,57 @@ document.addEventListener("DOMContentLoaded", function () {
     .addEventListener("click", () => {
       document.getElementById("filter-modal").style.display = "none";
     });
+
+  // Função para limpar os inputs individualmente
+  document.getElementById("clear-from").addEventListener("click", () => {
+    document.getElementById("filter-from").value = "";
+  });
+
+  document.getElementById("clear-to").addEventListener("click", () => {
+    document.getElementById("filter-to").value = "";
+  });
+
+  document.getElementById("clear-client").addEventListener("click", () => {
+    document.getElementById("cliente-filtro").value = "";
+  });
+
+  document.getElementById("clear-procedure").addEventListener("click", () => {
+    document.getElementById("procedimento-filtro").value = "";
+  });
+
+  document
+    .getElementById("clear-specification")
+    .addEventListener("click", () => {
+      document.getElementById("especificacao-filtro").value = "";
+    });
+
+  // Limpar todos os filtros
+  document.getElementById("clear-all-filters").addEventListener("click", () => {
+    filtroAtivo = null;
+    agendamentos = [...agendamentosOriginais];
+    currentPage = 1;
+
+    renderTable();
+
+    document.getElementById("filter-from").value = "";
+    document.getElementById("filter-to").value = "";
+    document.getElementById("cliente-filtro").value = "";
+    document.getElementById("procedimento-filtro").value = "";
+    document.getElementById("especificacao-filtro").value = "";
+
+    document.getElementById("clear-all-filters").style.display = "none";
+    fetchAgendamentos(); // Chama a função original que busca todos os agendamentos
+  });
 });
 
 document.addEventListener("DOMContentLoaded", function () {
+  const procedimentoSelect = document.getElementById("procedimento-filtro");
+  const especificacaoSelect = document.getElementById("especificacao-filtro");
+
+  // Função para popular as opções de Procedimento
   fetch("http://localhost:8080/api/procedimentos")
     .then((response) => response.json())
     .then((data) => {
-      const procedimentoSelect = document.getElementById("procedimento-filtro");
       data.forEach((item) => {
         const option = document.createElement("option");
         option.value = item.idProcedimento;
@@ -817,27 +889,40 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
 
+  // Função para popular as opções de Especificação conforme o Procedimento selecionado
   fetch("http://localhost:8080/api/especificacoes")
     .then((response) => response.json())
     .then((data) => {
-      const especificacaoSelect = document.getElementById(
-        "especificacao-filtro"
-      );
-      data.forEach((item) => {
-        const option = document.createElement("option");
-        option.value = item.idEspecificacao;
-        option.textContent = item.especificacao;
-        especificacaoSelect.appendChild(option);
+      // Ao mudar o procedimento
+      procedimentoSelect.addEventListener("change", function () {
+        especificacaoSelect.disabled = false;
+        especificacaoSelect.innerHTML = ""; // Limpa as opções anteriores
+
+        const procedimentoId = procedimentoSelect.value;
+
+        // Filtra as especificações que pertencem ao procedimento selecionado
+        const especificacoesFiltradas = data.filter(
+          (item) => item.procedimento.idProcedimento == procedimentoId
+        );
+
+        // Popula o select de especificações
+        especificacoesFiltradas.forEach((item) => {
+          const option = document.createElement("option");
+          option.value = item.idEspecificacaoProcedimento;
+          option.textContent = item.especificacao;
+          especificacaoSelect.appendChild(option);
+        });
       });
     });
 
+  // Popular as opções de Clientes
   fetch("http://localhost:8080/usuarios")
     .then((response) => response.json())
     .then((data) => {
       const clienteSelect = document.getElementById("cliente-filtro");
       data.forEach((item) => {
         const option = document.createElement("option");
-        option.value = item.idCliente;
+        option.value = item.idUsuario;
         option.textContent = item.nome;
         clienteSelect.appendChild(option);
       });

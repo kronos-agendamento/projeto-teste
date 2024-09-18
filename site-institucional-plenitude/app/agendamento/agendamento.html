@@ -9,7 +9,6 @@
     <link href="../assets/favicon.png" rel="icon" />
 
     <link rel="stylesheet" href="agendamento.css" />
-    <script src="agendamento.js" defer></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
@@ -198,6 +197,13 @@
             <span id="total-pages">1</span></span
           >
           <button class="button-page" id="next-page-btn">Próxima Página</button>
+          <button
+            id="clear-all-filters"
+            class="button-page"
+            style="display: flex"
+          >
+            Limpar Filtros
+          </button>
         </div>
       </main>
     </div>
@@ -237,30 +243,40 @@
         <div>
           <label for="filter-from">De:</label>
           <input type="date" id="filter-from" />
+          <button class="clear-btn" id="clear-from">X</button>
+          <!-- Botão de limpar -->
           <label for="filter-to">Até:</label>
-          <input type="date" id="filter-to" /><br />
+          <input type="date" id="filter-to" />
+          <button class="clear-btn" id="clear-to">X</button>
+          <!-- Botão de limpar -->
+          <br />
           <label for="filter-client">Cliente:</label>
           <select id="cliente-filtro">
-            <!-- Options will be populated dynamically --></select
-          ><br />
+            <option value="">Selecione um cliente</option>
+          </select>
+          <button class="clear-btn" id="clear-client">X</button>
+          <!-- Botão de limpar -->
+          <br />
           <label for="procedimento">Procedimento:</label>
           <select id="procedimento-filtro">
-            <!-- Options will be populated dynamically --></select
-          ><br />
+            <option value="">Selecione um procedimento</option>
+          </select>
+          <button class="clear-btn" id="clear-procedure">X</button>
+          <!-- Botão de limpar -->
+          <br />
           <label for="filter-specification">Especificação:</label>
-          <select id="especificacao-filtro">
-            <!-- Options will be populated dynamically --></select
-          ><br />
+          <select id="especificacao-filtro" disabled>
+            <option value="">Selecione uma especificação</option>
+          </select>
+          <button class="clear-btn" id="clear-specification">X</button>
+          <!-- Botão de limpar -->
+          <br /><br />
         </div>
         <div>
-          <button
-            class="btn btn-save"
-            id="apply-filter-button"
-            onclick="applyFilters()"
-          >
+          <button class="btn btn-save" id="apply-filter-button">
             Aplicar Filtros
           </button>
-          <button id="close-filter-modal" class="btn btn-no">Cancelar</button>
+          <button id="close-filter-modal" class="btn btn-no">Fechar</button>
         </div>
       </div>
     </div>
@@ -477,5 +493,6 @@
     ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.2/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="agendamento.js" defer></script>
   </body>
 </html>

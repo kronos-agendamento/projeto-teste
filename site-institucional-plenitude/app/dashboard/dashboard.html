@@ -77,126 +77,309 @@
             <h1>Dashboard</h1>
             <p>Essa é a página onde você pode identificar tendências e gerar insights para seu negócio.</p>
         </header>
-        <div class="main-content">
-            <div class="tabs">
-                <button class="tab-button" style="background-color: #f58ab8;" id="usabilidadeBtn">Usabilidade</button>
-                <button class="tab-button" style="background-color: #ff5ba3;" id="operacionalBtn">Operacional</button>
-                <button class="tab-button" style="background-color: #e62762;" id="gerencialBtn">Gerencial</button>
-            </div>
+        <div class="chartContainer">
 
-            <div class="charts">
-                <div class="grid">
-                    <div class="square">
-                        <div class="mini-grid">
-                            <div class="mini-square">
-                                <div class="card">
-                                    <div class="indicator"></div>
-                                    <div class="card-content">
-                                        <p>Clientes Ativos</p>
-                                        <h2 id="clientes-ativos-count">Carregando...</h2>
-                                        <p>Último trimestre</p>
+            <div class="conteudo">
+                <div class="tabs">
+                    <button class="tab-button" id="usabilidadeBtn">Usabilidade</button>
+                    <button class="tab-button" id="operacionalBtn">Operacional</button>
+                    <button class="tab-button" id="gerencialBtn">Gerencial</button>
+                </div>
+                <div id="gerencial-content" class="tab-content">
+                    <div class="charts">
+                        <div class="grid">
+                            <div class="square">
+                                <div class="mini-grid">
+                                    <div class="mini-square">
+                                        <div class="card">
+                                            <div class="indicator"></div>
+                                            <div class="card-content">
+                                                <p>Clientes Ativos</p>
+                                                <h2 id="clientes-ativos-count">Carregando...</h2>
+                                                <!-- <p>Último trimestre</p> -->
 
+                                            </div>
+                                            <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
+                                        </div>
                                     </div>
-                                    <div class="growth">+ 2% <i class="arrow-up"></i></div>
-                                </div>
-                            </div>
-                            <div class="mini-square">
-                                <div class="card">
-                                    <div class="indicator"></div>
-                                    <div class="card-content">
-                                        <p>Clientes Inativos</p>
-                                        <h2 id="clientes-inativos-count">Carregando...</h2>
-                                        <p>Último trimestre</p>
+                                    <div class="mini-square">
+                                        <div class="card">
+                                            <div class="indicator"></div>
+                                            <div class="card-content">
+                                                <p>Clientes Inativos</p>
+                                                <h2 id="clientes-inativos-count">Carregando...</h2>
+                                                <!-- <p>Último trimestre</p> -->
 
+                                            </div>
+                                            <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
+                                        </div>
                                     </div>
-                                    <div class="growth">+ 2% <i class="arrow-up"></i></div>
-                                </div>
-                            </div>
-                            <div class="mini-square">
-                                <div class="card">
-                                    <div class="indicator"></div>
-                                    <div class="card-content">
-                                        <p>Agendamentos Realizados</p>
-                                        <h2 id="agendamentos-realizados-count">Carregando...</h2>
-                                        <p>Último trimestre</p>
+                                    <div class="mini-square">
+                                        <div class="card">
+                                            <div class="indicator"></div>
+                                            <div class="card-content">
+                                                <p style="font-size: 20px;">Agendamentos Realizados</p>
+                                                <h2 id="agendamentos-realizados-count">Carregando...</h2>
+                                                <!-- <p>Último trimestre</p> -->
 
+                                            </div>
+                                            <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
+                                        </div>
                                     </div>
-                                    <div class="growth">+ 2% <i class="arrow-up"></i></div>
+                                    <div class="mini-square">
+                                        <div class="card">
+                                            <div class="indicator"></div>
+                                            <div class="card-content">
+                                                <p>Clientes Fidelizados</p>
+                                                <h2 id="clientes-fidelizados-count">Carregando...</h2>
+                                                <!-- <p>Último trimestre</p> -->
+                                            </div>
+                                            <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="mini-square">
-                                <div class="card">
-                                    <div class="indicator"></div>
-                                    <div class="card-content">
-                                        <p>Clientes Fidelizados</p>
-                                        <h2 id="clientes-fidelizados-count">Carregando...</h2>
-                                        <p>Último trimestre</p>
+                            <div class="square" style="background-color: white;">
+                                <div class="card-graficos">
+                                    <div class="card-content-2">
+                                        <h1>Conversão de Clientes</h1>
+                                        <p>Últimos 5 meses</p>
                                     </div>
-                                    <div class="growth">+ 2% <i class="arrow-up"></i></div>
+                                    <p>Comparação de leads e clientes gerados.</p>
+                                    <div class="caixa-grafico">
+                                        <canvas id="chart2"></canvas>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="square" style="background-color: white;">
-                        <div class="card-graficos">
-                            <div class="card-content-2">
-                                <h1>Conversão de Clientes</h1>
-                                <p>Últimos 5 meses</p>
-                            </div>
-                            <p>Comparação de leads e clientes gerados.</p>
-                            <div class="caixa-grafico">
-                                <canvas id="chart2"></canvas>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="square" style="background-color: white;">
-                        <div class="card-graficos">
-                            <div class="card-content-2">
-                                <h1>Procedimentos Mais Realizados</h1>
-                                <p>Último Trimestre</p>
-                            </div>
-                            <p>Procedimentos mais famosos no estúdio e quantas vezes eles foram agendados no último
-                                trimestre.</p>
-                                <div class="caixa-grafico">
-                                    <canvas id="chart4"></canvas>
+                            <div class="square" style="background-color: white;">
+                                <div class="card-graficos">
+                                    <div class="card-content-2">
+                                        <h1>Procedimentos Mais Realizados</h1>
+                                        <p>Último Trimestre</p>
+                                    </div>
+                                    <p>Procedimentos mais famosos no estúdio e quantas vezes eles foram agendados no
+                                        último
+                                        trimestre.</p>
+                                    <div position="relative" class="caixa-grafico">
+                                        <canvas width="450" height="200" id="chart4"></canvas>
+                                    </div>
                                 </div>
+                            </div>
+                            <div class="square" style="background-color: white;">
+                                <div class="card-graficos">
+                                    <div class="card-content-2">
+                                        <h1>Procedimentos com Melhor Avaliação</h1>
+                                        <p>Últimos 5 meses</p>
+                                    </div>
+                                    <p>Procedimentos mais bem avaliados no estúdio e uma média de nota no último
+                                        trimestre.
+                                    </p>
+                                    <div class="caixa-grafico">
+                                        <canvas id="chart33"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="square" style="background-color: white;">
+                                <div class="card-graficos">
+                                    <div class="card-content-2">
+                                        <h1>Receita Acumulada</h1>
+                                        <p>Últimos 5 meses</p>
+                                    </div>
+                                    <p>Cálculo realizado em cima dos atendimentos concluídos e dos valores dos
+                                        procedimentos.
+                                    </p>
+                                    <div class="caixa-grafico">
+                                        <canvas id="chart3"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="square" style="background-color: white;">
+                                <div class="card-graficos">
+                                    <div class="card-content-2">
+                                        <h1>Canais de Divulgação</h1>
+                                        <p>Últimos 5 meses</p>
+                                    </div>
+                                    <p>Por qual meio de comunicação os clientes chegam no estúdio.</p>
+                                    <canvas style="padding-bottom: 30px;" id="chart1"></canvas>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="square" style="background-color: white;">
-                        <div class="card-graficos">
-                            <div class="card-content-2">
-                                <h1>Procedimentos com Melhor Avaliação</h1>
-                                <p>Últimos 5 meses</p>
+                </div>
+                <div id="operacional-content" class="tab-content">
+                    <div class="charts">
+                        <div class="grid">
+                            <div class="square">
+                                <div class="mini-grid">
+                                    <div class="mini-square">
+                                        <div class="card">
+                                            <div class="indicator"></div>
+                                            <div class="card-content">
+                                                <p>Agedamentos<br>Marcados</p>
+                                                <h2 id="clientes-ativos-count">Carregando...</h2>
+                                                <!-- <p>Último trimestre</p> -->
+
+                                            </div>
+                                            <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
+                                        </div>
+                                    </div>
+                                    <div class="mini-square">
+                                        <div class="card">
+                                            <div class="indicator"></div>
+                                            <div class="card-content">
+                                                <p>Agendamentos<br>Futuros</p>
+                                                <h2 id="clientes-inativos-count">Carregando...</h2>
+                                                <!-- <p>Último trimestre</p> -->
+
+                                            </div>
+                                            <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
+                                        </div>
+                                    </div>
+                                    <div class="mini-square">
+                                        <div class="card">
+                                            <div class="indicator"></div>
+                                            <div class="card-content">
+                                                <p style="font-size: 20px;">Tempo Médio Entre<br>Atendimentos</p>
+                                                <h2 id="agendamentos-realizados-count">Carregando...</h2>
+                                                <!-- <p>Último trimestre</p> -->
+
+                                            </div>
+                                            <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
+                                        </div>
+                                    </div>
+                                    <div class="mini-square">
+                                        <div class="card">
+                                            <div class="indicator"></div>
+                                            <div class="card-content">
+                                                <p>Média de Avaliação</p>
+                                                <h2 id="clientes-fidelizados-count">Carregando...</h2>
+                                                <!-- <p>Último trimestre</p> -->
+                                            </div>
+                                            <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <p>Procedimentos mais bem avaliados no estúdio e uma média de nota no último trimestre.</p>
-                            <div class="caixa-grafico">
-                                <canvas id="chart33"></canvas>
+                            <div class="square" style="background-color: white;">
+                                <div class="card-graficos">
+                                    <div class="card-content-2">
+                                        <h1>Agendamentos</h1>
+                                        <p>Últimos 5 meses</p>
+                                    </div>
+                                    <p>Distribuição das categorias dos agendamentos do dia de hoje.</p>
+                                    <div class="caixa-grafico">
+                                        <canvas id="chart2"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="square" style="background-color: white;">
+                                <div class="card-graficos">
+                                    <div class="card-content-2">
+                                        <h1>Procedimentos<br>Realizados</h1>
+                                        <p>Último Trimestre</p>
+                                    </div>
+                                    <p>Tempo médio de atendimento investido em cada procedimento.</p>
+                                    <div position="relative" class="caixa-grafico">
+                                        <canvas width="450" height="200" id="chart4"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="square" style="background-color: white;">
+                                <div class="card-graficos">
+                                    <div class="card-content-2">
+                                        <h1>Tempo Médio de<br>Atendimento</h1>
+                                        <p>Últimos 5 meses</p>
+                                    </div>
+                                    <p>Tempo médio de atendimento investido em cada procedimento.
+                                    </p>
+                                    <div class="caixa-grafico">
+                                        <canvas id="chart33"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="square" style="background-color: white;">
+                                <div class="card-graficos">
+                                    <div class="card-content-2">
+                                        <h1>Receita Média Gerada</h1>
+                                        <p>Últimos 5 meses</p>
+                                    </div>
+                                    <p>Receita média gerada até o momento com os procedimentos realizados.
+                                    </p>
+                                    <div class="caixa-grafico">
+                                        <canvas id="chart3"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="square" style="background-color: white;">
+                                <div class="card-graficos">
+                                    <div class="card-content-2">
+                                        <h1>Taxa de Retenção <br>de Clientes</h1>
+                                        <p>Últimos 5 meses</p>
+                                    </div>
+                                    <p>Taxa de retenção mostra a quantidade de clientes novos versus a quantidade de clientes antigos.</p>
+                                    <canvas style="padding-bottom: 30px;" id="chart1"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="square" style="background-color: white;">
-                        <div class="card-graficos">
-                            <div class="card-content-2">
-                                <h1>Receita Acumulada</h1>
-                                <p>Últimos 5 meses</p>
+                </div>
+                <div id="usabilidade-content" class="tab-content">
+                    <div class="charts-usabilidade">
+                        
+                            <div class="triple-square">
+                                <div class="mini-grid-usabilidade">
+                                    <div class="mini-square-usabilidade">
+                                        <div class="card">
+                                            <div class="indicator"></div>
+                                            <div class="card-content">
+                                                <p style="font-size: 15px;">Tempo Médio de Conclusão de Agendamento</p>
+                                                <h2 id="clientes-ativos-count">Carregando...</h2>
+                                                <!-- <p>Último trimestre</p> -->
+
+                                            </div>
+                                            <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
+                                        </div>
+                                    </div>
+                                    <div class="mini-square-usabilidade">
+                                        <div class="card">
+                                            <div class="indicator"></div>
+                                            <div class="card-content">
+                                                <p style="font-size: 15px;">Taxa Média de Abandono no Processo de Agendamento</p>
+                                                <h2 id="clientes-inativos-count">Carregando...</h2>
+                                                <!-- <p>Último trimestre</p> -->
+
+                                            </div>
+                                            <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
+                                        </div>
+                                    </div>
+                                    <div class="mini-square-usabilidade">
+                                        <div class="card">
+                                            <div class="indicator"></div>
+                                            <div class="card-content">
+                                                <p style="font-size: 15px;">Taxa Média de Retorno de Usuários ao Sistema</p>
+                                                <h2 id="agendamentos-realizados-count">Carregando...</h2>
+                                                <!-- <p>Último trimestre</p> -->
+
+                                            </div>
+                                            <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <p>Cálculo realizado em cima dos atendimentos concluídos e dos valores dos procedimentos.
-                            </p>
-                            <div class="caixa-grafico">
-                                <canvas id="chart3"></canvas>
+                            <div class="square-usabilidade" style="background-color: white;">
+                                <div class="card-graficos">
+                                    <div class="card-content-2">
+                                        <h1>Taxa de Conversão do Sistema de Agendamento</h1>
+                                        <p>Últimos 5 meses</p>
+                                    </div>
+                                    <p>Comparação de leads e clientes gerados.</p>
+                                    <div class="caixa-grafico">
+                                        <canvas id="chart2"></canvas>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="square" style="background-color: white;">
-                        <div class="card-graficos">
-                            <div class="card-content-2">
-                                <h1>Canais de Divulgação</h1>
-                                <p>Últimos 5 meses</p>
-                            </div>
-                            <p>Por qual meio de comunicação os clientes chegam no estúdio.</p>
-                            <canvas id="chart1"></canvas>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -207,76 +390,65 @@
         <script src="dashboard.js"></script>
         <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+        <script>document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', function () {
+                    // Remove a classe 'selected' de todos os botões
+                    document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('selected'));
 
-        <script>
-            document.getElementById('usabilidadeBtn').addEventListener('click', function () {
-                const chartContainer = document.querySelector('.chart-container');
-                chartContainer.innerHTML = `
-                    <div class="top-cards">
-                        <div class="summary-cards">
-                            <div class="summary-card" id="usabilidade-1">
-                                <p>Usabilidade Métrica 1</p>
-                                <h2>Dados</h2>
-                                <p>Descrição</p>
-                            </div>
-                            <div class="summary-card" id="usabilidade-2">
-                                <p>Usabilidade Métrica 2</p>
-                                <h2>Dados</h2>
-                                <p>Descrição</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-
-            document.getElementById('operacionalBtn').addEventListener('click', function () {
-                const chartContainer = document.querySelector('.chart-container');
-                chartContainer.innerHTML = `
-                    <div class="top-cards">
-                        <div class="summary-cards">
-                            <div class="summary-card" id="clientes-ativos">
-                                <p>Clientes Ativos</p>
-                                <h2 id="clientes-ativos-count">Carregando...</h2>
-                                <p>Último trimestre</p>
-                            </div>
-                            <div class="summary-card" id="clientes-inativos">
-                                <p>Clientes Inativos</p>
-                                <h2 id="clientes-inativos-count">Carregando...</h2>
-                                <p>Último trimestre</p>
-                            </div>
-                            <div class="summary-card" id="clientes-fidelizados">
-                                <p>Clientes Fidelizados</p>
-                                <h2 id="clientes-fidelizados-count">Carregando...</h2>
-                                <p>Último trimestre</p>
-                            </div>
-                        </div>
-                    </div>
-                    <h3>Receita Acumulada</h3>
-                    <canvas id="chart3"></canvas>
-                `;
-                // Iniciar gráfico se necessário
-            });
-
-            document.getElementById('gerencialBtn').addEventListener('click', function () {
-                const chartContainer = document.querySelector('.chart-container');
-                chartContainer.innerHTML = `
-                    <div class="top-cards">
-                        <div class="summary-cards">
-                            <div class="summary-card" id="gerencial-1">
-                                <p>Gerencial Métrica 1</p>
-                                <h2>Dados</h2>
-                                <p>Descrição</p>
-                            </div>
-                            <div class="summary-card" id="gerencial-2">
-                                <p>Gerencial Métrica 2</p>
-                                <h2>Dados</h2>
-                                <p>Descrição</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
+                    // Adiciona a classe 'selected' ao botão clicado
+                    this.classList.add('selected');
+                });
             });
         </script>
+        <script>
+            // Seleciona os botões
+            const usabilidadeBtn = document.getElementById('usabilidadeBtn');
+            const operacionalBtn = document.getElementById('operacionalBtn');
+            const gerencialBtn = document.getElementById('gerencialBtn');
+
+            // Seleciona os conteúdos
+            const usabilidadeContent = document.getElementById('usabilidade-content');
+            const operacionalContent = document.getElementById('operacional-content');
+            const gerencialContent = document.getElementById('gerencial-content');
+
+            // Função para esconder todos os conteúdos e mostrar o selecionado
+            function showContent(content) {
+                // Esconde todos os conteúdos
+                usabilidadeContent.style.display = 'none';
+                operacionalContent.style.display = 'none';
+                gerencialContent.style.display = 'none';
+
+                // Remove a classe 'active' de todos os botões
+                usabilidadeBtn.classList.remove('active');
+                operacionalBtn.classList.remove('active');
+                gerencialBtn.classList.remove('active');
+
+                // Exibe o conteúdo selecionado e adiciona a classe 'active' ao botão clicado
+                content.style.display = 'block';
+            }
+
+            // Adiciona eventos para mostrar os gráficos corretos ao clicar nos botões
+            usabilidadeBtn.addEventListener('click', function () {
+                showContent(usabilidadeContent);
+                usabilidadeBtn.classList.add('active');
+            });
+
+            operacionalBtn.addEventListener('click', function () {
+                showContent(operacionalContent);
+                operacionalBtn.classList.add('active');
+            });
+
+            gerencialBtn.addEventListener('click', function () {
+                showContent(gerencialContent);
+                gerencialBtn.classList.add('active');
+            });
+
+            // Exibir por padrão o conteúdo "Gerencial"
+            showContent(gerencialContent);
+            gerencialBtn.classList.add('active');
+
+        </script>
+
     </main>
 </body>
 

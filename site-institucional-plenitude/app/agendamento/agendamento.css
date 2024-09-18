@@ -919,3 +919,16 @@ table tr.clickable-row:hover {
   color: #dcf5f2;
   transition-duration: 100ms;
 }
+
+.clear-btn {
+  background-color: transparent;
+  border: none;
+  color: red;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.clear-btn:hover {
+  color: darkred;
+}

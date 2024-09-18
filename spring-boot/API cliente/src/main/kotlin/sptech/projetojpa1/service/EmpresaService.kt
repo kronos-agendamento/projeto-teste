@@ -65,15 +65,28 @@ class EmpresaService(
         dto.nome?.let { empresa.nome = it }
         dto.telefone?.let { empresa.telefone = it }
         dto.cnpj?.let { empresa.cnpj = it }
-        dto.endereco?.let {
-            val endereco = enderecoRepository.findById(it)
-                .orElseThrow { IllegalArgumentException("Endereço não encontrado") }
-            empresa.endereco = endereco
+
+        // Verifica se o endereço não é nulo antes de tentar atualizar
+        dto.endereco?.let { enderecoDto ->
+            empresa.endereco?.let { endereco ->
+                enderecoDto.cep?.let { endereco.cep = it }
+                enderecoDto.logradouro?.let { endereco.logradouro = it }
+                enderecoDto.numero?.let { endereco.numero = it }
+                enderecoDto.bairro?.let { endereco.bairro = it }
+                enderecoDto.cidade?.let { endereco.cidade = it }
+                enderecoDto.estado?.let { endereco.estado = it }
+                enderecoDto.complemento?.let { endereco.complemento = it }
+            }
         }
-        dto.horarioFuncionamento?.let {
-            val horarioFuncionamento = horarioFuncionamentoRepository.findById(it)
-                .orElseThrow { IllegalArgumentException("Horário de funcionamento não encontrado") }
-            empresa.horarioFuncionamento = horarioFuncionamento
+
+        // Verifica se o horário de funcionamento não é nulo antes de tentar atualizar
+        dto.horarioFuncionamento?.let { horarioDto ->
+            empresa.horarioFuncionamento?.let { horario ->
+                horarioDto.horarioAbertura?.let { horario.horarioAbertura = it }
+                horarioDto.horarioFechamento?.let { horario.horarioFechamento = it }
+                horarioDto.diaInicio?.let { horario.diaInicio = it }
+                horarioDto.diaFim?.let { horario.diaFim = it }
+            }
         }
 
         empresaRepository.save(empresa)

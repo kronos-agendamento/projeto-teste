@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Perfil | KronosBooking </title>
+
+    <link href="../../assets/img/favicon.png" rel="icon" />
+    <script src="perfil-mobile.js"></script>
+    <link rel="stylesheet" href="perfil-mobile.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+</head>
+
+<body>
+    <main>
+        <header>
+            <div class="pesquisa">
+                <img src="../../assets/icons/lupa.png" alt="">
+            </div>
+            <div id="titulo-saudacao">
+                <h1>Perfil</h1>
+            </div>
+            <div class="saudacao">
+                <div class="acessibilidade">
+                    <div class="font-information">
+                        <button id="information">i</button>
+                    </div>
+                    <div class="font-controls">
+                        <button id="increase-font">A+</button>
+                        <button id="decrease-font">A-</button>
+                    </div>
+                </div>
+                <div id="greeting1">
+                    <span id="userNameSpan">Usuário</span>!</h1>
+                </div>
+                <div id="greeting2"></div>
+            </div>
+        </header>
+        <section id="navigation">
+            <div class="nav-bar">
+                <ul>
+                    <li class="list">
+                        <a href="../index-mobile/index-mobile.html">
+                            <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="../ficha-anamnese-mobile/ficha-anamnese-mobile.html">
+                            <span class="icon"><ion-icon name="document-text-outline"></ion-icon></span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="../agendamento-mobile/agendamento-mobile.html">
+                            <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
+                        </a>
+                    </li>
+                    <li class="list active">
+                        <a href="../perfil-mobile/perfil-mobile.html">
+                            <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="../../index.html">
+                            <span class="icon"><ion-icon name="exit-outline"></ion-icon></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <section id="acesso">
+        <div class="button-container">
+            <button type="button" class="access-button" id="access-perfil-button">
+                <a href="../perfil-mobile/mobile-dados/perfil-dados.html">
+                    <span> Acessar dados pessoais</span>
+                </a>
+            </button>
+        </div>
+        <section id="aviso">
+            <div class="aviso">
+                <div id="titulo-aviso">
+                    <h2>Aviso:</h2>
+                    <span>
+                        Dias desde seu último procedimento:
+                    </span>
+                </div>
+                <div class="descricao-aviso">
+                    <div>
+                        <center>
+                            <h2>10</h2>
+                        </center>
+                        <div class="ver-ultimo">
+                            <a href="#">Ver último agendamento >></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="indicacao">
+            <div class="indicacao">
+                <div id="titulo-aviso">
+                    <h2>Indicações:</h2>
+                    <span>
+                        De acordo com o seu histórico, aqui estão algumas indicações de horários e procedimentos que
+                        podem te agradar
+                    </span>
+                </div>
+
+                <div class="box-agendamento">
+                    <div class="icon-agendamento">
+                        <img src="../../assets/icons/profile.png" width="100" height="100" alt="">
+                    </div>
+                    <div class="procedimento-agendamento">
+                        <span id="agendamento"> Cilios - Manutenção Volume Russo</span>
+                        <span id="agendamento"> 15/01/2024 as 14:00</span>
+                    </div>
+                    <div class="button-flex">
+                        <button id="openStatusModalBtn2" class="edit">
+                            <img src="../../assets/icons/createNew.png" alt="createNew" />
+                        </button>
+                    </div>
+                </div>
+                <div class="box-agendamento">
+                    <div class="icon-agendamento">
+                        <img src="../../assets/icons/profile.png" width="100" height="100" alt="">
+                    </div>
+                    <div class="procedimento-agendamento">
+                        <span id="agendamento"> Cilios - Colocação Volume Russo</span>
+                        <span id="agendamento"> 15/01/2024 as 16:00</span>
+                    </div>
+                    <div class="button-flex">
+                        <button id="openStatusModalBtn2" class="edit">
+                            <img src="../../assets/icons/createNew.png" alt="createNew" />
+                        </button>
+                    </div>
+                </div>
+                <div class="box-agendamento">
+                    <div class="icon-agendamento">
+                        <img src="../../assets/icons/profile.png" width="100" height="100" alt="">
+                    </div>
+                    <div class="procedimento-agendamento">
+                        <span id="agendamento"> Cilios - Colocação Volume Russo</span>
+                        <span id="agendamento"> 16/01/2024 as 10:00</span>
+                    </div>
+                    <div class="button-flex">
+                        <button id="openStatusModalBtn2" class="edit">
+                            <img src="../../assets/icons/createNew.png" alt="createNew" />
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="atividades">
+            <div class="atividades">
+                <div id="titulo-atividades">
+                    <h2>Suas atividades:</h2>
+                    <span>
+                        Historico de Procedimentos Realizados
+                    </span>
+                </div>
+                <div class="dashboard">
+                        <div class="card-graficos">
+                            <div class="card-content-2">
+                                <div id="titulo-dash">
+                                    <h4>
+                                        Fique de olho no seu desconto!
+                                    </h4>
+                                    <img src="../../assets/icons/alert.png" id="icon-alert" alt="">
+                                </div>
+                                <p>Quantidade</p>
+                                <p>Procedimento </p>
+                            </div>
+                            <div class="caixa-grafico">
+                                <canvas id="chart33"></canvas>
+                            </div>
+                        </div>
+                
+                </div>
+            </div>
+        </section>
+        <section id="Personalidade">
+            <div class="personalidade">
+                <div id="texto-personalidade">
+                    <h2>
+                        Personalidade
+                    </h2>
+                    <span>
+                        De acordo com o seu histórico, identificamos que a sua personalidade é o <span
+                            id="destaque">PODER!</span> Você gosta sempre de estar linda e arrumada.
+                    </span>
+                </div>
+                <div class="frequencia">
+                    <h3 id="dMaisAgendados">Dias mais agendados:</h3> <span id="dMaisAgendados">Segunda e Terça</span>
+                    <h3 id="hMaisAgendados">Horários mais agendados:</h3> <span id="hMaisAgendados">Entre 13:00 até
+                        15:00</span>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+</html>

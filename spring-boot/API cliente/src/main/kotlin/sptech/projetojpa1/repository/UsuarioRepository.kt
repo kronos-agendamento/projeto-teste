@@ -2,11 +2,17 @@ package sptech.projetojpa1.repository
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
+import sptech.projetojpa1.domain.Endereco
 import sptech.projetojpa1.domain.NivelAcesso
 import sptech.projetojpa1.domain.Usuario
 import sptech.projetojpa1.domain.usuario.Cliente
+import sptech.projetojpa1.dto.usuario.UsuarioResponseDTO
+import java.time.LocalDate
 
 interface UsuarioRepository : JpaRepository<Usuario, Int> {
+
+
+    fun countByStatus(status: Boolean): Int
 
     // Encontra usuários pelo nome
     fun findByNome(nome: String): List<Usuario>
@@ -120,7 +126,7 @@ interface UsuarioRepository : JpaRepository<Usuario, Int> {
 FROM 
     agendamento a
 JOIN 
-    status_agendamento sa ON a.fk_status = sa.id_status_agendamento
+    status sa ON a.fk_status = sa.id_status_agendamento
 WHERE 
     sa.nome = 'Concluído' 
     AND a.data_horario BETWEEN DATE_SUB(CURDATE(), INTERVAL 5 MONTH) AND CURDATE()
@@ -143,7 +149,7 @@ ORDER BY
                    YEAR(a.data_horario) AS ano, 
                    MONTH(a.data_horario) AS mes
             FROM agendamento a
-            JOIN status_agendamento sa ON a.fk_status = sa.id_status_agendamento
+            JOIN status sa ON a.fk_status = sa.id_status_agendamento
             WHERE sa.nome = 'Concluído'
               AND a.data_horario BETWEEN DATE_SUB(CURDATE(), INTERVAL 5 MONTH) AND CURDATE()
             GROUP BY a.fk_usuario, YEAR(a.data_horario), MONTH(a.data_horario)
@@ -158,9 +164,23 @@ ORDER BY
     )
     fun findClientesConcluidos5Meses(): List<Int>
 
+    @Query(
+        nativeQuery = true, value = """
+            SELECT u.id_usuario AS idUsuario, u.nome, u.data_nasc AS dataNasc, u.instagram, u.telefone, u.cpf, 
+                   u.status, u.email, u.genero, u.indicacao, u.fk_endereco AS endereco
+            FROM usuario u
+            JOIN (
+                SELECT a.fk_usuario
+                FROM agendamento a
+                WHERE a.data_horario BETWEEN DATE_SUB(NOW(), INTERVAL 3 MONTH) AND NOW()
+                GROUP BY a.fk_usuario
+                HAVING COUNT(DISTINCT DATE_FORMAT(a.data_horario, '%Y-%m')) = 3
+            ) fidelizados ON u.id_usuario = fidelizados.fk_usuario;
+        """
+    )
+    fun findClientesFidel(): List<Map<String, Any>>
+
 
     abstract fun save(cliente: Cliente): Cliente
-
-
 
 }

@@ -3,7 +3,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   let clienteData = {}; // Variável para armazenar os dados do cliente
 
   const urlParams = new URLSearchParams(window.location.search);
-  const cpf = urlParams.get("cpf");
+  const idUsuario = urlParams.get("idUsuario");
+  const idEndereco = urlParams.get("idEndereco");
   const clienteNome = localStorage.getItem("clienteNome");
 
   if (clienteNome) {
@@ -12,20 +13,20 @@ document.addEventListener("DOMContentLoaded", async function () {
     ).textContent = `Mais informações de: ${clienteNome}`;
   }
 
-  if (cpf) {
+  if (idUsuario) {
     try {
-      clienteData = await fetchUsuarioPorCpf(cpf);
+      clienteData = await fetchUsuarioPorId(idUsuario);
       if (clienteData) {
         // Preenchendo os campos do formulário de dados pessoais
+        setFieldValue("codigo", clienteData.idUsuario)
         setFieldValue("nome", clienteData.nome);
         setFieldValue("nascimento", formatDate(clienteData.dataNasc));
         setFieldValue("instagram", clienteData.instagram);
-        setFieldValue("cpf", clienteData.cpf);
+        setFieldValue("cpf", clienteData.cpf); // Você pode manter o CPF para exibir, mas não usá-lo para chamadas de API
         setFieldValue("telefone", clienteData.telefone);
         setFieldValue("genero", clienteData.genero);
         setFieldValue("email", clienteData.email);
         setFieldValue("indicacao", clienteData.indicacao);
-        setFieldValue("emergencia", clienteData.telefoneEmergencial);
 
         // Preenchendo os campos do formulário de endereço
         if (clienteData.endereco) {
@@ -37,25 +38,25 @@ document.addEventListener("DOMContentLoaded", async function () {
           setFieldValue("estado", clienteData.endereco.estado);
           setFieldValue("complemento", clienteData.endereco.complemento);
         } else {
-          console.error("Endereço não encontrado para o CPF fornecido.");
+          console.error("Endereço não encontrado para o ID fornecido.");
         }
       } else {
-        console.error("Nenhum dado encontrado para o CPF fornecido.");
+        console.error("Nenhum dado encontrado para o ID fornecido.");
       }
     } catch (error) {
       console.error("Erro ao buscar os dados do cliente:", error);
     }
   } else {
-    console.error("CPF não fornecido na URL.");
+    console.error("ID do usuário não fornecido na URL.");
   }
 
-  async function fetchUsuarioPorCpf(cpf) {
+  async function fetchUsuarioPorId(idUsuario) {
     try {
       const response = await fetch(
-        `http://localhost:8080/usuarios/buscar-por-cpf/${cpf}`
+        `http://localhost:8080/usuarios/${idUsuario}`
       );
       if (!response.ok) {
-        throw new Error(`Erro ao buscar usuário com CPF: ${cpf}`);
+        throw new Error(`Erro ao buscar usuário com ID: ${idUsuario}`);
       }
       return await response.json();
     } catch (error) {
@@ -135,29 +136,20 @@ document.addEventListener("DOMContentLoaded", async function () {
     const updatedData = {
       nome: document.getElementById("nome").value || clienteData.nome,
       email: document.getElementById("email").value || clienteData.email,
-      senha: null,
       instagram:
         document.getElementById("instagram").value || clienteData.instagram,
       telefone:
         parseInt(document.getElementById("telefone").value) ||
         clienteData.telefone,
-      telefoneEmergencial:
-        parseInt(document.getElementById("emergencia").value) ||
-        clienteData.telefoneEmergencial,
       genero: document.getElementById("genero").value || clienteData.genero,
       indicacao:
         document.getElementById("indicacao").value || clienteData.indicacao,
-      nivelAcessoId: clienteData.nivelAcesso
-        ? clienteData.nivelAcesso.codigo
-        : null,
-      enderecoId: clienteData.endereco ? clienteData.endereco.codigo : null,
-      empresaId: clienteData.empresaId,
-      fichaAnamneseId: clienteData.fichaAnamneseId,
+      cpf: document.getElementById("cpf").value || clienteData.cpf,
     };
 
     try {
       const response = await fetch(
-        `http://localhost:8080/usuarios/atualizacao-usuario/${cpf}`,
+        `http://localhost:8080/usuarios/${idUsuario}`, // Alterado para usar idUsuario
         {
           method: "PATCH",
           headers: {
@@ -202,9 +194,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/usuarios/atualizacao-endereco/${cpf}`,
+        `http://localhost:8080/api/enderecos/${idEndereco}`, // Alterado para usar o ID do endereço
         {
-          method: "PATCH",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },

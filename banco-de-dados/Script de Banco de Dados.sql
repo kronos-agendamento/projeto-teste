@@ -1,3 +1,4 @@
+-- drop database kronosbooking;
 CREATE DATABASE IF NOT EXISTS kronosbooking;
 USE kronosbooking;
 
@@ -119,7 +120,7 @@ CREATE TABLE resposta (
     fk_usuario INT NOT NULL,
     FOREIGN KEY (fk_pergunta) REFERENCES pergunta(id_pergunta),
     FOREIGN KEY (fk_ficha_anamnese) REFERENCES ficha_anamnese(id_ficha),
-    FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario)
+    FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
 );
 
 CREATE TABLE status (
@@ -137,7 +138,7 @@ CREATE TABLE agendamento (
     fk_procedimento INT NOT NULL,
     fk_especificacao_procedimento INT NOT NULL,
     fk_status INT NOT NULL,
-    FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario),
+    FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
     FOREIGN KEY (fk_procedimento) REFERENCES procedimento(id_procedimento),
     FOREIGN KEY (fk_especificacao_procedimento) REFERENCES especificacao(id_especificacao_procedimento),
     FOREIGN KEY (fk_status) REFERENCES status(id_status_agendamento)
@@ -150,17 +151,17 @@ CREATE TABLE feedback (
     fk_agendamento INT UNIQUE,
     fk_usuario INT,
     fk_cliente_avaliado INT,
-    FOREIGN KEY (fk_agendamento) REFERENCES agendamento(id_agendamento),
-    FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario),
-    FOREIGN KEY (fk_cliente_avaliado) REFERENCES usuario(id_usuario)
+    FOREIGN KEY (fk_agendamento) REFERENCES agendamento(id_agendamento) ON DELETE CASCADE,
+    FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
+    FOREIGN KEY (fk_cliente_avaliado) REFERENCES usuario(id_usuario) ON DELETE CASCADE
 );
 
 	CREATE TABLE cliente (
-		id_usuario INT PRIMARY KEY,
-		experiencia_avaliada VARCHAR(255),
-		frequencia INT,
-		FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
-	);
+    id_usuario INT PRIMARY KEY,
+    experiencia_avaliada VARCHAR(255),
+    frequencia INT,
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
+);
 
 	CREATE TABLE profissional (
 		id_usuario INT PRIMARY KEY,
@@ -168,7 +169,7 @@ CREATE TABLE feedback (
 		media_nota DOUBLE,
 		qualificacoes VARCHAR(255),
 		especialidade VARCHAR(255),
-		FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
+		FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
 	);
 
 INSERT INTO endereco (logradouro, cep, bairro, cidade, estado, numero, complemento)
@@ -182,7 +183,8 @@ VALUES
 ('Rua dos Girassóis', '56473829', 'Tatuapé', 'São Paulo', 'SP', '700', 'Apto 702'),
 ('Rua das Magnólias', '90817263', 'Morumbi', 'São Paulo', 'SP', '800', NULL),
 ('Avenida Sapopemba', '28374659', 'Sapopemba', 'São Paulo', 'SP', '900', 'Sala 905'),
-('Rua dos Lírios', '38492047', 'Centro', 'Guarulhos', 'SP', '1000', 'Apto 1001');
+('Rua dos Lírios', '38492047', 'Centro', 'Guarulhos', 'SP', '1000', 'Apto 1001'),
+('Rua Haddock Lobo', '01414001', 'Consolação', 'São Paulo', 'SP', '595', 'Faculdade');
 
 INSERT INTO nivel_acesso (nome, nivel, descricao)
 VALUES 
@@ -200,7 +202,8 @@ VALUES
 ('Quarta', 'Domingo', '10:00', '16:00'),
 ('Terça', 'Sexta', '09:00', '18:00'),
 ('Quarta', 'Sábado', '08:00', '18:00'),
-('Segunda', 'Quinta', '09:00', '17:00');
+('Segunda', 'Quinta', '09:00', '17:00'),
+('Segunda', 'Sexta', '16:30', '21:30');
 
 INSERT INTO empresa (nome, telefone, cnpj, fk_endereco, fk_horario_funcionamento)
 VALUES 
@@ -213,7 +216,8 @@ VALUES
 ('Estética Refinada', '71987654327', '77.888.999/0001-15', 7, 7),
 ('Sobrancelhas de Ouro', '81987654328', '88.999.000/0001-16', 8, 8),
 ('Cílios e Sobrancelhas', '91987654329', '99.000.111/0001-17', 9, 9),
-('Sobrancelhas Elegantes', '11987654330', '11.111.222/0001-18', 10, 10);
+('Sobrancelhas Elegantes', '11987654330', '11.111.222/0001-18', 10, 10),
+('Kronos', '11987654330', '10.101.222/0001-18', 11, 11);
 
 INSERT INTO ficha_anamnese (data_preenchimento)
 VALUES 
@@ -226,13 +230,14 @@ VALUES
 (NOW()), 
 (NOW()), 
 (NOW()), 
+(NOW()),
 (NOW());
 
 INSERT INTO usuario (nome, email, senha, instagram, cpf, telefone, data_nasc, genero, indicacao, status, fk_nivel_acesso, fk_endereco, fk_empresa, fk_ficha_anamnese)
 VALUES 
 ('Priscila Plenitude', 'priscila@plenitude.com', 'senhaAdmin', '@plenitudenoolhar', '111.111.111-11', 11987654321, '1980-01-01', 'Feminino', 'Instagram', TRUE, 1, 1, 1, NULL),
-('Ana Paula', 'ana@beleza.com', 'senha123', '@anabeauty', '222.222.222-22', 21987654321, '1992-02-02', 'Feminino', 'Indicação de Amiga', TRUE, 2, 2, 2, 2),
-('Carlos Eduardo', 'carlos@olharperfeito.com', 'senha123', '@carlosedu', '333.333.333-33', 31987654322, '1995-03-03', 'Masculino', 'Facebook', TRUE, 2, 3, 3, 3),
+('Ana Paula', 'ana@beleza.com', 'senha123', '@anabeauty', '469.674.588-09', 21987654321, '1992-02-02', 'Feminino', 'Indicação de Amiga', TRUE, 2, 2, 2, 2),
+('Carlos Eduardo', 'carlos@olharperfeito.com', 'senha123', '@carlosedu', '317.262.998-80', 31987654322, '1995-03-03', 'Masculino', 'Facebook', TRUE, 2, 3, 3, 3),
 ('Juliana Costa', 'juliana@glamour.com', 'senha123', '@jucosta', '444.444.444-44', 41987654323, '1990-04-04', 'Feminino', 'Google', TRUE, 2, 4, 4, 4),
 ('Roberta Silva', 'roberta@ciliosdiva.com', 'senha123', '@robdiva', '555.555.555-55', 51987654324, '1993-05-05', 'Feminino', 'Instagram', TRUE, 2, 5, 5, 5),
 ('Daniel Souza', 'daniel@makeup.com', 'senha123', '@danmake', '666.666.666-66', 61987654325, '1991-06-06', 'Masculino', 'Indicação de Influencer', TRUE, 2, 6, 6, 6),
@@ -250,7 +255,8 @@ VALUES
 ('Ricardo Martins', 'ricardo@novidade.com', 'senha123', '@ricardomartins', '777.777.777-78', 77987654328, '1987-02-10', 'Masculino', 'Instagram', TRUE, 2, 7, 7, 7),
 ('Letícia Silva', 'leticia@novidade.com', 'senha123', '@leticiasilva', '888.888.888-89', 88987654329, '1988-02-25', 'Feminino', 'Indicação de Amiga', TRUE, 2, 8, 8, 8),
 ('Vinícius Oliveira', 'vinicius@novidade.com', 'senha123', '@viniciusoliveira', '999.999.999-00', 99987654321, '1989-03-05', 'Masculino', 'Indicação Familiar', TRUE, 2, 9, 9, 9),
-('Amanda Castro', 'amanda@novidade.com', 'senha123', '@amandacastro', '101.010.101-11', 10198765432, '1990-03-20', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10);
+('Amanda Castro', 'amanda@novidade.com', 'senha123', '@amandacastro', '101.010.101-11', 10198765432, '1990-03-20', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10),
+('Ruan Cardozo', 'ruancrdz2004@gmail.com', 'ruancrdz2004', '@ruan_crdz', '526.107.418-55', 11944415361, '2004-10-02', 'Masculino', 'Instagram', TRUE, 1, 11, 11, 11);
 
 INSERT INTO procedimento (tipo, descricao)
 VALUES 
@@ -320,9 +326,13 @@ BEGIN
   DECLARE fim DATE;
   DECLARE qtd_agendamentos INT;
   DECLARE hora_aleatoria TIME;
+  DECLARE mes_atual INT;
+  DECLARE usuario_fidelizado INT;
+
+  -- Definir os IDs dos usuários que terão agendamentos em todos os 3 meses (separados por vírgulas)
+  SET @usuarios_fidelizados = '1,4,6';  -- IDs dos usuários a serem fidelizados
 
   -- Se hoje for domingo, começamos na segunda-feira desta semana
-  -- Caso contrário, começamos na segunda-feira da próxima semana
   IF WEEKDAY(CURDATE()) = 0 THEN 
     SET dia_atual = DATE_ADD(CURDATE(), INTERVAL 1 DAY);  -- Segunda-feira desta semana
   ELSE 
@@ -336,37 +346,52 @@ BEGIN
   SET @min_agendamentos = 2;
   SET @max_agendamentos = 6;
 
-  -- Loop para cada dia de segunda a sábado
-  WHILE dia_atual <= fim DO
-    -- Define uma quantidade aleatória de agendamentos para o dia atual
-    SET qtd_agendamentos = @min_agendamentos + FLOOR(RAND() * (@max_agendamentos - @min_agendamentos + 1));
+  -- Loop para os últimos 3 meses
+  SET mes_atual = 0;
 
-    -- Loop para inserir os agendamentos aleatórios para o dia atual
-    WHILE qtd_agendamentos > 0 DO
-      -- Gera uma hora aleatória entre 08:00 e 18:00 (trabalho diurno)
-      SET hora_aleatoria = SEC_TO_TIME(FLOOR(RAND() * (10 * 3600)) + 8 * 3600);
+  WHILE mes_atual < 3 DO
+    -- Incrementa o mês (começa do mês atual para os 3 meses anteriores)
+    SET dia_atual = DATE_ADD(CURDATE(), INTERVAL - mes_atual MONTH);
+    SET fim = DATE_ADD(dia_atual, INTERVAL 5 DAY); -- Mantém o ciclo semanal
 
-      -- Insere os agendamentos aleatórios para o dia atual
-      INSERT INTO agendamento (data_horario, tipo_agendamento, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status)
-      SELECT 
-        CONCAT(dia_atual, ' ', hora_aleatoria) AS data_horario, -- Data e hora aleatórias
-        CASE FLOOR(RAND() * 2) 
-          WHEN 0 THEN 'Colocação'
-          ELSE 'Manutenção'
-        END AS tipo_agendamento, -- Tipo aleatório entre Colocação e Manutenção
-        FLOOR(2 + (RAND() * 9)) AS fk_usuario, -- Usuários aleatórios (ajuste a faixa conforme necessário)
-        FLOOR(1 + (RAND() * 3)) AS fk_procedimento, -- Procedimentos aleatórios
-        FLOOR(1 + (RAND() * 10)) AS fk_especificacao_procedimento, -- Especificações aleatórias
-        1 AS fk_status -- Status fixo como '1' (ou altere se necessário)
-      FROM (SELECT 1) AS dummy; -- Necessário para gerar múltiplas linhas
+    -- Loop para cada dia de segunda a sábado
+    WHILE dia_atual <= fim DO
+      -- Define uma quantidade aleatória de agendamentos para o dia atual
+      SET qtd_agendamentos = @min_agendamentos + FLOOR(RAND() * (@max_agendamentos - @min_agendamentos + 1));
 
-      -- Decrementa a quantidade de agendamentos para o dia
-      SET qtd_agendamentos = qtd_agendamentos - 1;
+      -- Loop para inserir os agendamentos aleatórios para o dia atual
+      WHILE qtd_agendamentos > 0 DO
+        -- Gera uma hora aleatória entre 08:00 e 18:00 (trabalho diurno)
+        SET hora_aleatoria = SEC_TO_TIME(FLOOR(RAND() * (10 * 3600)) + 8 * 3600);
+
+        -- Seleciona um usuário fidelizado aleatoriamente da lista
+        SET usuario_fidelizado = CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(@usuarios_fidelizados, ',', FLOOR(1 + (RAND() * 4))), ',', -1) AS UNSIGNED);
+
+        -- Insere os agendamentos aleatórios para o dia atual
+        INSERT INTO agendamento (data_horario, tipo_agendamento, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status)
+        SELECT 
+          CONCAT(dia_atual, ' ', hora_aleatoria) AS data_horario, -- Data e hora aleatórias
+          CASE FLOOR(RAND() * 2) 
+            WHEN 0 THEN 'Colocação'
+            ELSE 'Manutenção'
+          END AS tipo_agendamento, -- Tipo aleatório entre Colocação e Manutenção
+          usuario_fidelizado AS fk_usuario, -- Usuários fidelizados aleatórios
+          FLOOR(1 + (RAND() * 3)) AS fk_procedimento, -- Procedimentos aleatórios
+          FLOOR(1 + (RAND() * 10)) AS fk_especificacao_procedimento, -- Especificações aleatórias
+          1 AS fk_status -- Status fixo como '1' (ou altere se necessário)
+        FROM (SELECT 1) AS dummy; -- Necessário para gerar múltiplas linhas
+
+        -- Decrementa a quantidade de agendamentos para o dia
+        SET qtd_agendamentos = qtd_agendamentos - 1;
+      END WHILE;
+
+      -- Incrementa para o próximo dia
+      SET dia_atual = DATE_ADD(dia_atual, INTERVAL 1 DAY);
+
     END WHILE;
 
-    -- Incrementa para o próximo dia
-    SET dia_atual = DATE_ADD(dia_atual, INTERVAL 1 DAY);
-
+    -- Passa para o próximo mês
+    SET mes_atual = mes_atual + 1;
   END WHILE;
 
 END //

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>teste</title>
+</head>
+<body>
+    <div id="seconds"></div>
+</body>
+</html>
+<script>
+    // timer para o marcar tempo que leva para realizar um agendamento!
+
+    let seconds = 0; // Variável para armazenar o tempo em segundos
+    const timeDisplay = document.getElementById('seconds');
+
+    const timer = setInterval(() => {
+      seconds++; // Incrementa a variável a cada segundo
+      console.log(`Segundos: ${seconds}`);
+      timeDisplay.textContent = seconds;
+    }, 1000); // 1000 ms = 1 segundo
+    
+    // Para parar o timer depois de um tempo, por exemplo, após 10 segundos:
+    setTimeout(() => {
+      clearInterval(timer); // Para o timer
+      console.log("Timer parado");
+    }, 10000); // 10000 ms = 10 segundos
+    
+</script>

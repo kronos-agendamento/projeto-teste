@@ -285,6 +285,16 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+document
+  .getElementById("open-filter-modal-btn")
+  .addEventListener("click", () => {
+    document.getElementById("filter-modal").style.display = "block";
+  });
+
+document.getElementById("close-filter-modal").addEventListener("click", () => {
+  document.getElementById("filter-modal").style.display = "none";
+});
+
 document.querySelector(".planilha-btn").addEventListener("click", function () {
   exportTableToExcel("procedures-table", "Procedimentos.xlsx");
 });
@@ -322,3 +332,46 @@ function exportTableToExcel(tableId, filename = "") {
     filename
   );
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  const procedimentoSelect = document.getElementById("procedimento-filtro");
+  const especificacaoSelect = document.getElementById("especificacao-filtro");
+
+  // Função para popular as opções de Procedimento
+  fetch("http://localhost:8080/api/procedimentos")
+    .then((response) => response.json())
+    .then((data) => {
+      data.forEach((item) => {
+        const option = document.createElement("option");
+        option.value = item.idProcedimento;
+        option.textContent = item.tipo;
+        procedimentoSelect.appendChild(option);
+      });
+    });
+
+  // Função para popular as opções de Especificação conforme o Procedimento selecionado
+  fetch("http://localhost:8080/api/especificacoes")
+    .then((response) => response.json())
+    .then((data) => {
+      // Ao mudar o procedimento
+      procedimentoSelect.addEventListener("change", function () {
+        especificacaoSelect.disabled = false;
+        especificacaoSelect.innerHTML = ""; // Limpa as opções anteriores
+
+        const procedimentoId = procedimentoSelect.value;
+
+        // Filtra as especificações que pertencem ao procedimento selecionado
+        const especificacoesFiltradas = data.filter(
+          (item) => item.procedimento.idProcedimento == procedimentoId
+        );
+
+        // Popula o select de especificações
+        especificacoesFiltradas.forEach((item) => {
+          const option = document.createElement("option");
+          option.value = item.idEspecificacaoProcedimento;
+          option.textContent = item.especificacao;
+          especificacaoSelect.appendChild(option);
+        });
+      });
+    });
+});

@@ -26,7 +26,6 @@ class EnderecoService(
         return enderecoRepository.save(endereco).toResponseDTO()
     }
 
-
     @Transactional
     fun atualizarEndereco(id: Int, enderecoDTO: EnderecoRequestDTO): EnderecoResponseDTO? {
         return enderecoRepository.findById(id).map { endereco ->
@@ -43,6 +42,9 @@ class EnderecoService(
         }.orElse(null)
     }
 
+    fun buscarApenasUltimoEndereco(): Int? {
+        return enderecoRepository.findTopByOrderByIdEnderecoDesc()?.idEndereco
+    }
 
     @Transactional
     fun deletarEndereco(id: Int): Boolean {

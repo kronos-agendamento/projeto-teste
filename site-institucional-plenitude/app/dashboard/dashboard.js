@@ -60,11 +60,11 @@ document.addEventListener('DOMContentLoaded', function () {
             buscarMediaNotas: '/api/feedbacks/buscar-media-notas',
 
             // Gráfico 4
-            receitaAcumulada: '/especificacoes/receita-acumulada',
-            receitaAcumuladaLabels: '/especificacoes/receita-acumulada-labels',
+            receitaAcumulada: '/api/especificacoes/receita-acumulada',
+            receitaAcumuladaLabels: '/api/especificacoes/receita-acumulada-labels',
 
             // Gráfico 2
-            agendamentosProcedimentosLabels: '/especificacoes/nomes',
+            agendamentosProcedimentosLabels: '/api/especificacoes/nomes',
             agendamentosProcedimentos: '/api/procedimentos/quantidade-agendamentos-procedimentos',
         };
 
@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function () {
             data: {
                 labels: labelsChart1,
                 datasets: [{
-                    label: 'oi tchau',
+                    label: 'Quantidade',
                     data: dataChart1,
                     backgroundColor: '#D2135D',
                     borderColor: '#D2135D',
@@ -317,7 +317,7 @@ document.addEventListener('DOMContentLoaded', function () {
             data: {
                 labels: labelsChart33,
                 datasets: [{
-                    label: 'caiu sinal da tim',
+                    label: 'Média',
                     data: dataChart33,
                     backgroundColor: ['#D2135D', '#E84E8A', '#F59DBF'],
                     borderColor: '#D2135D',
@@ -327,6 +327,8 @@ document.addEventListener('DOMContentLoaded', function () {
             options: {
                 indexAxis: 'y',
                 responsive: true,
+    maintainAspectRatio: false, // Permite ajustar a proporção do gráfico
+    aspectRatio: 2,
                 plugins: {
                     subtitle: {
                         display: true,
@@ -336,11 +338,13 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                     },
                     legend: {
-                        position: 'right',
+                        display: true, // Mostra a legenda
+                        position: 'top', // Posição da legenda (topo, neste caso)
+                        align: 'center', // Alinha a legenda ao centro
+                        title: {
+                            display: true
+                        }
                     },
-                    title: {
-                        display: true
-                    }
                 },
                 scales: {
                     y: {
@@ -380,7 +384,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                     },
                     legend: {
-                        position: 'right',
+                        display: true, // Mostra a legenda
+                        position: 'top', // Posição da legenda (topo, neste caso)
+                        align: 'center', // Alinha a legenda ao centro
+                        title: {
+                            display: true
+                        }
                     },
                     title: {
                         display: true
@@ -417,3 +426,34 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById("userInsta").textContent = instagram;
     }
 });
+
+
+// // timer para o marcar tempo que leva para realizar um agendamento!
+
+//     let seconds = 0; // Variável para armazenar o tempo em segundos
+    
+//     const timer = setInterval(() => {
+//       seconds++; // Incrementa a variável a cada segundo
+//       console.log(`Segundos: ${seconds}`);
+//     }, 1000); // 1000 ms = 1 segundo
+    
+//     // Para parar o timer depois de um tempo, por exemplo, após 10 segundos:
+//     setTimeout(() => {
+//       clearInterval(timer); // Para o timer
+//       console.log("Timer parado");
+//     }, 10000); // 10000 ms = 10 segundos
+    
+
+
+//     function sendSecondsToServer() {
+//         fetch('http://localhost:8080/api/agendamentos/atualizar-status/${selectedAgendamentoId}?statusId=3', { // Substitua pela URL do seu servidor
+//             method: 'PUT',
+//             headers: {
+//                 'Content-Type': 'application/json' // Define que o conteúdo é JSON
+//             },
+//             body: JSON.stringify({ time: seconds }) // Envia o valor dos segundos
+//         })
+//         .then(response => response.json())
+//         .then(data => console.log('Sucesso:', data))
+//         .catch(error => console.error('Erro:', error));
+//     }

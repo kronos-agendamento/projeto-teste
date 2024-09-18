@@ -137,7 +137,11 @@
         <span id="notification-message"></span>
       </div>
       <div class="actions">
-        <button class="filter-btn" style="height: 7vh; margin-left: 2.6%">
+        <button
+          id="open-filter-modal-btn"
+          class="filter-btn"
+          style="height: 7vh; margin-left: 2.6%"
+        >
           <img
             style="height: 5vh; margin-top: 30%"
             src="../../assets/icons/filter.png"
@@ -222,6 +226,35 @@
         <p id="especificacao">Especificação:</p>
         <button class="btn btn-yes">SIM</button>
         <button class="btn btn-no" onclick="closeModal()">NÃO</button>
+      </div>
+    </div>
+
+    <div id="filter-modal" class="modal">
+      <div class="modal-content">
+        <h3>Filtro de Agendamentos</h3>
+        <div>
+          <br />
+          <label for="procedimento">Procedimento:</label>
+          <select id="procedimento-filtro">
+            <option value="">Selecione um procedimento</option>
+          </select>
+          <button class="clear-btn" id="clear-procedure">X</button>
+          <!-- Botão de limpar -->
+          <br /><br />
+          <label for="filter-specification">Especificação:</label>
+          <select id="especificacao-filtro" disabled>
+            <option value="">Selecione uma especificação</option>
+          </select>
+          <button class="clear-btn" id="clear-specification">X</button>
+          <!-- Botão de limpar -->
+          <br /><br />
+        </div>
+        <div>
+          <button class="btn btn-save" id="apply-filter-button">
+            Aplicar Filtros
+          </button>
+          <button id="close-filter-modal" class="btn btn-no">Fechar</button>
+        </div>
       </div>
     </div>
     <script

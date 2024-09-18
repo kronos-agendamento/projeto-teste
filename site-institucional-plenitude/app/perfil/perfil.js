@@ -39,19 +39,30 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("senha").value = userData.senha || "";
     document.getElementById("empresa").value = userData.empresa.nome || "";
     document.getElementById("cnpj").value = userData.empresa.cnpj || "";
-    document.getElementById("telefone-empresa").value = userData.empresa.telefone || "";
+    document.getElementById("telefone-empresa").value =
+      userData.empresa.telefone || "";
     document.getElementById("cep").value = userData.empresa.endereco.cep || "";
-    document.getElementById("logradouro").value = userData.empresa.endereco.logradouro || "";
-    document.getElementById("numero").value = userData.empresa.endereco.numero || "";
-    document.getElementById("bairro").value = userData.empresa.endereco.bairro || "";
-    document.getElementById("complemento").value = userData.empresa.endereco.complemento || "";
-    document.getElementById("cidade").value = userData.empresa.endereco.cidade || "";
-    document.getElementById("estado").value = userData.empresa.endereco.estado || "";
+    document.getElementById("logradouro").value =
+      userData.empresa.endereco.logradouro || "";
+    document.getElementById("numero").value =
+      userData.empresa.endereco.numero || "";
+    document.getElementById("bairro").value =
+      userData.empresa.endereco.bairro || "";
+    document.getElementById("complemento").value =
+      userData.empresa.endereco.complemento || "";
+    document.getElementById("cidade").value =
+      userData.empresa.endereco.cidade || "";
+    document.getElementById("estado").value =
+      userData.empresa.endereco.estado || "";
 
-    document.getElementById('diaInicio').value = userData.empresa.horarioFuncionamento.diaInicio;
-    document.getElementById('diaFim').value = userData.empresa.horarioFuncionamento.diaFim;
-    document.getElementById('horaInicio').value = userData.empresa.horarioFuncionamento.horarioAbertura;
-    document.getElementById('horaFim').value = userData.empresa.horarioFuncionamento.horarioFechamento;
+    document.getElementById("diaInicio").value =
+      userData.empresa.horarioFuncionamento.diaInicio;
+    document.getElementById("diaFim").value =
+      userData.empresa.horarioFuncionamento.diaFim;
+    document.getElementById("horaInicio").value =
+      userData.empresa.horarioFuncionamento.horarioAbertura;
+    document.getElementById("horaFim").value =
+      userData.empresa.horarioFuncionamento.horarioFechamento;
   }
 
   function formatPhoneNumber(phoneNumber) {
@@ -64,63 +75,252 @@ document.addEventListener("DOMContentLoaded", async () => {
     return phoneNumber;
   }
 
+  document
+    .getElementById("bloqueio-button")
+    .addEventListener("click", async function () {
+      console.log("Botão de bloqueio clicado!");
+      const diaEscolhido = document.getElementById("diaEscolhido").value;
+      const horaInicioBlock = document.getElementById("horaInicioBlock").value;
+      const horaFimBlock = document.getElementById("horaFimBlock").value;
+      const idUsuario = parseInt(localStorage.getItem("idUsuario"), 10);
+
+      const data = {
+        dia: diaEscolhido,
+        horaInicio: horaInicioBlock,
+        horaFim: horaFimBlock,
+        usuarioId: idUsuario,
+      };
+
+      fetch("http://localhost:8080/api/agendamentos/bloquear", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Sucesso:", data);
+          alert("Horário bloqueado com sucesso!");
+        })
+        .catch((error) => {
+          console.error("Erro:", error);
+          alert("Erro ao bloquear horário.");
+        });
+    });
+
   // Adiciona o event listener após o DOM estar carregado
   document
     .getElementById("save-usuario-button")
     .addEventListener("click", async function () {
+      console.log("Botão de salvar clicado!");
       const cpf = localStorage.getItem("cpf");
       await atualizarUsuario();
 
     });
 
+    document.getElementById("save-empresa-button").addEventListener("click", function () {
+      // Capturar os valores dos inputs
+      const nomeEmpresa = document.getElementById("empresa").value;
+      const cnpj = document.getElementById("cnpj").value.replace(/[^\d]/g, ""); // Remove a máscara do CNPJ
+      const telefone = document.getElementById("telefone-empresa").value.replace(/[^\d]/g, ""); // Remove a máscara do telefone
+      const cep = document.getElementById("cep").value.replace(/[^\d]/g, ""); // Remove a máscara do CEP
+      const logradouro = document.getElementById("logradouro").value;
+      const numero = document.getElementById("numero").value;
+      const complemento = document.getElementById("complemento").value;
+      const bairro = document.getElementById("bairro").value;
+      const cidade = document.getElementById("cidade").value;
+      const estado = document.getElementById("estado").value;
+      const diaInicio = document.getElementById("diaInicio").value;
+      const diaFim = document.getElementById("diaFim").value;
+      const horaInicio = document.getElementById("horaInicio").value;
+      const horaFim = document.getElementById("horaFim").value;
+    
+      // Montar o objeto para enviar para a API
+      const empresaData = {
+        nome: nomeEmpresa,
+        telefone: telefone,
+        cnpj: cnpj,
+        endereco: {
+          logradouro: logradouro,
+          cep: cep,
+          bairro: bairro,
+          cidade: cidade,
+          estado: estado,
+          numero: numero,
+          complemento: complemento,
+        },
+        horarioFuncionamento: {
+          diaInicio: diaInicio,
+          diaFim: diaFim,
+          horarioAbertura: horaInicio,
+          horarioFechamento: horaFim,
+        },
+      };
+    
+      // Recuperar o CPF do localStorage
+      const cpf = localStorage.getItem("cpf");
+    
+      if (!cpf) {
+        alert("CPF não encontrado no localStorage.");
+        return;
+      }
+    
+      // Fazer requisição PATCH para o endpoint de atualização de empresa
+      fetch(`http://localhost:8080/api/empresas/${cpf}`, {
+        method: "PATCH", // Alterado de "PUT" para "PATCH"
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(empresaData),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Erro ao atualizar empresa: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          // Exibe mensagem de sucesso
+          showNotification("Dados da empresa atualizados com sucesso!");
+        })
+        .catch((error) => {
+          console.error("Erro ao atualizar a empresa:", error);
+    
+          // Exibe mensagem de erro
+          showNotification("Erro ao atualizar dados da empresa!", true);
+        });
+    
+      // Oculta a notificação após alguns segundos
+      setTimeout(() => {
+        document.getElementById("notification").classList.remove("show", "error");
+      }, 5000); // Oculta a notificação após 5 segundos
+    });
+    
+
   function formatPhoneNumberToLong(phoneNumber) {
     if (!phoneNumber) return null;
-    const cleaned = phoneNumber.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+    const cleaned = phoneNumber.replace(/\D/g, ""); // Remove todos os caracteres não numéricos
     return parseInt(cleaned, 10); // Converte para número
   }
 
-  async function atualizarUsuario(cpf) {
-    try {
-      const cpf = localStorage.getItem("cpf");
 
-      const usuarioDTO = {
-        nome: document.getElementById("nome").value,
-        dataNasc: document.getElementById("nascimento").value,
-        telefone: formatPhoneNumberToLong(document.getElementById("telefone").value),
-        genero: document.getElementById("genero").value,
-        instagram: document.getElementById("instagram").value,
-        indicacao: document.getElementById("indicacao").value,
-        email: document.getElementById("email").value,
-        senha: document.getElementById("senha").value
-      };
-
-      const usuarioResponse = await fetch(
-        `http://localhost:8080/usuarios/atualizacao-usuario-por-cpf/${cpf}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(usuarioDTO),
-        }
-      );
-
-      if (!usuarioResponse.ok) {
-        throw new Error(`Erro ao atualizar usuário: ${usuarioResponse.status}`);
-      }
-
-      console.log("Usuário atualizado com sucesso!");
-    } catch (error) {
-      console.error(
-        "Erro ao atualizar o usuário com o ID da nova empresa:",
-        error
-      );
+  function salvarNomeLocalStorage() {
+    const nome = document.getElementById("nome").value;
+    if (nome) {
+      localStorage.setItem("nome", nome);
     }
   }
 
+  function exibirNomeUsuario() {
+    const nome = localStorage.getItem("nome");
+    if (nome) {
+      document.getElementById("userName").textContent = nome;
+    }
+  }
+
+  async function atualizarUsuario(cpf) {
+  try {
+    const cpf = localStorage.getItem("cpf");
+
+    const usuarioDTO = {
+      nome: document.getElementById("nome").value,
+      dataNasc: document.getElementById("nascimento").value,
+      telefone: formatPhoneNumberToLong(document.getElementById("telefone").value),
+      genero: document.getElementById("genero").value,
+      instagram: document.getElementById("instagram").value,
+      indicacao: document.getElementById("indicacao").value,
+      email: document.getElementById("email").value,
+      senha: document.getElementById("senha").value
+    };
+
+    const usuarioResponse = await fetch(
+      `http://localhost:8080/usuarios/atualizacao-usuario-por-cpf/${cpf}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(usuarioDTO),
+      }
+    );
+
+    if (!usuarioResponse.ok) {
+      throw new Error(`Erro ao atualizar usuário: ${usuarioResponse.status}`);
+    }
+
+    // Atualiza o nome no localStorage
+    atualizarNomeLocalStorage();
+
+    // Exibe mensagem de sucesso
+    showNotification("Dados da usuário atualizados com sucesso!");
+    
+    console.log("Usuário atualizado com sucesso!");
+  } catch (error) {
+    console.error("Erro ao atualizar o usuário:", error);
+
+    // Exibe mensagem de erro
+    showNotification("Erro ao atualizar dados do usuário!", true);
+  }
+
+  // Oculta a notificação após alguns segundos
+  setTimeout(() => {
+    document.getElementById("notification").style.display = "none";
+  }, 5000); // Oculta a notificação após 5 segundos
+}
+
+  document.addEventListener("DOMContentLoaded", function() {
+    exibirNomeUsuario();
+  });
+
+    async function atualizarUsuario(cpf) {
+      try {
+        const cpf = localStorage.getItem("cpf");
+        const usuarioDTO = {
+          nome: document.getElementById("nome").value,
+          dataNasc: document.getElementById("nascimento").value,
+          telefone: formatPhoneNumberToLong(document.getElementById("telefone").value),
+          genero: document.getElementById("genero").value,
+          instagram: document.getElementById("instagram").value,
+          indicacao: document.getElementById("indicacao").value,
+          email: document.getElementById("email").value,
+          senha: document.getElementById("senha").value
+        };
+    
+        const usuarioResponse = await fetch(
+          `http://localhost:8080/usuarios/atualizacao-usuario-por-cpf/${cpf}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(usuarioDTO),
+          }
+        );
+    
+        if (!usuarioResponse.ok) {
+          throw new Error(`Erro ao atualizar usuário: ${usuarioResponse.status}`);
+        }
+    
+        // Exibe mensagem de sucesso
+        showNotification("Dados da usuário atualizados com sucesso!");
+        
+        console.log("Usuário atualizado com sucesso!");
+      } catch (error) {
+        console.error("Erro ao atualizar o usuário:", error);
+    
+        // Exibe mensagem de erro
+        showNotification("Erro ao atualizar dados do usuário!", true);
+      }
+    
+      // Oculta a notificação após alguns segundos
+      setTimeout(() => {
+        document.getElementById("notification").style.display = "none";
+      }, 5000); // Oculta a notificação após 5 segundos
+    }
+
   const nome = localStorage.getItem("nome");
   const instagram = localStorage.getItem("instagram");
-
 
   if (nome && instagram) {
     document.getElementById("userName").textContent = nome;
@@ -429,3 +629,22 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
+function showNotification(message, isError = false) {
+  const notification = document.getElementById("notification");
+  const notificationMessage = document.getElementById("notification-message");
+  notificationMessage.textContent = message;
+  if (isError) {
+    notification.classList.add("error");
+  } else {
+    notification.classList.remove("error");
+  }
+  notification.classList.add("show");
+  setTimeout(() => {
+    notification.classList.remove("show");
+  }, 3000);
+}
+
+
+
+

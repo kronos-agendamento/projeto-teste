@@ -2,6 +2,7 @@ package sptech.projetojpa1.service
 
 import jakarta.persistence.EntityManager
 import jakarta.transaction.Transactional
+import jakarta.validation.ConstraintViolationException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import sptech.projetojpa1.domain.Usuario
@@ -9,7 +10,6 @@ import sptech.projetojpa1.domain.usuario.Cliente
 import sptech.projetojpa1.domain.usuario.Profissional
 import sptech.projetojpa1.dto.usuario.*
 import sptech.projetojpa1.repository.*
-import java.util.*
 
 @Service
 class UsuarioService(
@@ -21,7 +21,8 @@ class UsuarioService(
     @Autowired private val respostaRepository: RespostaRepository,
     @Autowired private val feedbackRepository: FeedbackRepository,
     @Autowired private val agendamentoRepository: AgendamentoRepository,
-    @Autowired private val entityManager: EntityManager
+    @Autowired private val entityManager: EntityManager,
+    enderecoService: EnderecoService
 ) {
     fun salvarUsuario(dto: UsuarioRequest): Usuario {
         val usuario: Usuario = if (dto.nivelAcessoId == 1) {
@@ -79,7 +80,8 @@ class UsuarioService(
                 email = usuario.email ?: "",
                 cpf = usuario.cpf ?: "",
                 instagram = usuario.instagram ?: "",
-                empresa = usuario.empresa
+                empresa = usuario.empresa,
+                idUsuario = usuario.codigo,
             )
         } else {
             null
@@ -102,12 +104,26 @@ class UsuarioService(
         usuario.apply {
             nome = dto.nome ?: nome
             email = dto.email ?: email
-//            senha = dto.senha ?: senha
             instagram = dto.instagram ?: instagram
             dataNasc = dto.dataNasc ?: dataNasc
             telefone = dto.telefone ?: telefone
             genero = dto.genero ?: genero
             indicacao = dto.indicacao ?: indicacao
+        }
+        return usuarioRepository.save(usuario)
+    }
+
+    fun atualizarUsuarioPorId(id: Int, dto: UsuarioAtualizacaoRequest): Usuario? {
+        val usuario = usuarioRepository.findById(id).orElse(null) ?: return null
+        usuario.apply {
+            nome = dto.nome ?: nome
+            email = dto.email ?: email
+            instagram = dto.instagram ?: instagram
+            dataNasc = dto.dataNasc ?: dataNasc
+            telefone = dto.telefone ?: telefone
+            genero = dto.genero ?: genero
+            indicacao = dto.indicacao ?: indicacao
+            cpf = dto.cpf ?: cpf
         }
         return usuarioRepository.save(usuario)
     }
@@ -160,7 +176,12 @@ class UsuarioService(
             telefone = usuario.telefone,
             cpf = usuario.cpf,
             dataNasc = usuario.dataNasc,
-            status = usuario.status
+            status = usuario.status,
+            empresa = usuario.empresa,
+            indicacao = usuario.indicacao,
+            genero = usuario.genero,
+            senha = usuario.senha,
+            email = usuario.email,
         )
     }
 
@@ -174,7 +195,8 @@ class UsuarioService(
                 telefone = usuario.telefone,
                 cpf = usuario.cpf,
                 dataNasc = usuario.dataNasc,
-                status = usuario.status
+                status = usuario.status,
+                endereco = usuario.endereco
             )
         }
     }
@@ -193,6 +215,27 @@ class UsuarioService(
             usuarioRepository.findByStatusTrueAndNivelAcesso(nivelAcesso)
         } else {
             emptyList()
+        }
+    }
+
+    fun getById(id: Int): UsuarioResponseDTO? {
+        val usuario = usuarioRepository.findById(id).orElse(null)
+        return if (usuario != null) {
+            UsuarioResponseDTO(
+                idUsuario = usuario.codigo,
+                nome = usuario.nome,
+                instagram = usuario.instagram,
+                telefone = usuario.telefone,
+                email = usuario.email,
+                indicacao = usuario.indicacao,
+                genero = usuario.genero,
+                cpf = usuario.cpf,
+                dataNasc = usuario.dataNasc,
+                status = usuario.status,
+                endereco = usuario.endereco
+            )
+        } else {
+            null
         }
     }
 
@@ -284,6 +327,72 @@ class UsuarioService(
         }
     }
 
+    fun atualizarStatusUsuarioInativoPorId(id: Int): UsuarioResponseDTO? {
+        val usuario = usuarioRepository.findById(id).orElse(null)
+        return if (usuario != null) {
+            println("CPF do usuário: ${usuario.cpf}")
+            if (usuario.status == false) {
+                return UsuarioResponseDTO(
+                    idUsuario = usuario.codigo,
+                    nome = usuario.nome,
+                    instagram = usuario.instagram,
+                    telefone = usuario.telefone,
+                    cpf = usuario.cpf,
+                    dataNasc = usuario.dataNasc,
+                    status = usuario.status
+                )
+            }
+            usuario.status = false
+            try {
+                usuarioRepository.save(usuario)
+            } catch (e: ConstraintViolationException) {
+                println("Erro de validação: ${e.message}")
+                return null // ou outra forma de tratar o erro
+            }
+            UsuarioResponseDTO(
+                idUsuario = usuario.codigo,
+                nome = usuario.nome,
+                instagram = usuario.instagram,
+                telefone = usuario.telefone,
+                cpf = usuario.cpf,
+                dataNasc = usuario.dataNasc,
+                status = usuario.status
+            )
+        } else {
+            null
+        }
+    }
+
+    fun atualizarStatusUsuarioAtivoPorId(id: Int): UsuarioResponseDTO? {
+        val usuario = usuarioRepository.findById(id).orElse(null)
+        return if (usuario != null) {
+            if (usuario.status == true) {
+                return UsuarioResponseDTO(
+                    idUsuario = usuario.codigo,
+                    nome = usuario.nome,
+                    instagram = usuario.instagram,
+                    telefone = usuario.telefone,
+                    cpf = usuario.cpf,
+                    dataNasc = usuario.dataNasc,
+                    status = usuario.status
+                )
+            }
+            usuario.status = true
+            usuarioRepository.save(usuario)
+            UsuarioResponseDTO(
+                idUsuario = usuario.codigo,
+                nome = usuario.nome,
+                instagram = usuario.instagram,
+                telefone = usuario.telefone,
+                cpf = usuario.cpf,
+                dataNasc = usuario.dataNasc,
+                status = usuario.status
+            )
+        } else {
+            null
+        }
+    }
+
     fun getClientesConcluidosUltimos5Meses(): List<Int> {
         return usuarioRepository.findClientesConcluidos5Meses()
     }
@@ -291,4 +400,48 @@ class UsuarioService(
     fun getClientesFidelizadosUltimos5Meses(): List<Int> {
         return usuarioRepository.findClientesFidelizados5Meses()
     }
+
+    fun getByNomeContains(nome: String): List<UsuarioDTO> {
+        return usuarioRepository.findByNomeContainsIgnoreCase(nome)
+            .map { usuario ->
+                UsuarioDTO(
+                    codigo = usuario.codigo!!,
+                    nome = usuario.nome.toString(),
+                    instagram = usuario.instagram.toString(),
+                    telefone = usuario.telefone.toString(),
+                    cpf = usuario.cpf.toString()
+                )
+            }
+    }
+
+    fun buscarUsuarioPorCodigo(codigo: Int): Usuario? = usuarioRepository.findById(codigo).orElse(null)
+
+    fun countUsuariosWithStatusZero(): Int {
+        return usuarioRepository.countByStatus(false)
+    }
+
+    fun countUsuariosWithStatusUm(): Int {
+        return usuarioRepository.countByStatus(true)
+    }
+
+    fun buscarClientesFidel(): List<UsuarioResponseDTO> {
+        val clientes = usuarioRepository.findClientesFidel()
+        return clientes.map { row ->
+            UsuarioResponseDTO(
+                idUsuario = (row["idUsuario"] as Number).toInt(),
+                nome = row["nome"] as String?,
+                dataNasc = (row["dataNasc"] as java.sql.Date)?.toLocalDate(),
+                instagram = row["instagram"] as String?,
+                telefone = (row["telefone"] as Number)?.toLong(),
+                cpf = row["cpf"] as String?,
+                status = row["status"] as Boolean?,
+                email = row["email"] as String?,
+                genero = row["genero"] as String?,
+                indicacao = row["indicacao"] as String?,
+                endereco = null // Ajuste conforme necessário
+            )
+        }
+    }
+
+
 }

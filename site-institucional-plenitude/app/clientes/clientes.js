@@ -71,12 +71,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Função para buscar usuário por CPF
-  async function fetchUsuarioPorCpf(cpf) {
+  // Função para buscar usuário por idUsuario
+  async function fetchUsuarioPorId(idUsuario) {
     try {
-      const response = await fetch(`${baseUrl}/usuarios/buscar-por-cpf/${cpf}`);
+      const response = await fetch(`${baseUrl}/usuarios/${idUsuario}`);
       if (!response.ok) {
-        throw new Error(`Erro ao buscar usuário com CPF: ${cpf}`);
+        throw new Error("Erro ao buscar usuário.");
       }
       return await response.json();
     } catch (error) {
@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Função para renderizar a tabela
+  // Função para renderizar a tabela e atualizar os controles de paginação
   function renderTable(users, page) {
     proceduresTbody.innerHTML = "";
     const start = (page - 1) * itemsPerPage;
@@ -95,9 +95,10 @@ document.addEventListener("DOMContentLoaded", function () {
     paginatedUsers.forEach((user) => {
       const row = document.createElement("tr");
       const nome = user.nome;
-      const instagram = user.instagram.replace("@", ""); // Remove o "@" do início
+      const instagram = user.instagram.replace("@", "");
       const telefone = user.telefone;
       const cpf = user.cpf;
+      const idEndereco = user.endereco.idEndereco;
 
       row.innerHTML = `
       <td>${nome}</td>
@@ -110,52 +111,96 @@ document.addEventListener("DOMContentLoaded", function () {
       <td>${telefone}</td>
       <td>${cpf}</td>
       <td>
-          <button class="edit-btn" data-id="${cpf}" style="border: none; background: transparent; cursor: pointer;" title="Editar Cliente">
+          <button class="edit-btn" data-id="${user.idUsuario}" data-endereco="${idEndereco}" style="border: none; background: transparent; cursor: pointer;" title="Editar Cliente">
               <img src="../../assets/icons/editar.png" alt="Editar" style="width: 25px; height: 25px; margin-top:8px; margin-left:5px;">
           </button>
-          <button class="delete-btn" data-id="${cpf}" style="border: none; background: transparent; cursor: pointer;" title="Excluir Cliente">
+          <button class="delete-btn" data-id="${user.idUsuario}" style="border: none; background: transparent; cursor: pointer;" title="Excluir Cliente">
               <img src="../../assets/icons/excluir.png" alt="Excluir" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
           </button>
-          <button class="archive-btn" data-id="${cpf}" style="border: none; background: transparent; cursor: pointer;" title="Arquivar Cliente">
+          <button class="archive-btn" data-id="${user.cpf}" style="border: none; background: transparent; cursor: pointer;" title="Inativar Cliente">
               <img src="../../assets/icons/arquivar.png" alt="Arquivar" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
           </button>
       </td>
-  `;
+    `;
       proceduresTbody.appendChild(row);
     });
 
-    // Event listener para o botão de especificação
+    // Atualizar a exibição de página atual e total de páginas
+    const totalPages = Math.ceil(users.length / itemsPerPage);
+    currentPageSpan.textContent = currentPage;
+    totalPagesSpan.textContent = totalPages;
+
+    // Desabilitar ou habilitar botões de navegação conforme a página atual
+    prevPageBtn.disabled = currentPage === 1;
+    nextPageBtn.disabled = currentPage === totalPages;
+
+    // Adicionar eventos aos botões de ação (editar, excluir, arquivar)
+    adicionarEventosBotoes();
+    updatePaginationButtons();
+  }
+
+  function updatePaginationButtons() {
+    const totalPages = Math.ceil(usuarios.length / itemsPerPage);
+
+    // Desabilita o botão "Anterior" na primeira página
+    if (currentPage === 1) {
+      prevPageBtn.classList.add("disabled");
+      prevPageBtn.style.cursor = "not-allowed";
+      prevPageBtn.disabled = true;
+    } else {
+      prevPageBtn.classList.remove("disabled");
+      prevPageBtn.style.cursor = "pointer";
+      prevPageBtn.disabled = false;
+    }
+
+    // Desabilita o botão "Próximo" na última página
+    if (currentPage === totalPages) {
+      nextPageBtn.classList.add("disabled");
+      nextPageBtn.style.cursor = "not-allowed";
+      nextPageBtn.disabled = true;
+    } else {
+      nextPageBtn.classList.remove("disabled");
+      nextPageBtn.style.cursor = "pointer";
+      nextPageBtn.disabled = false;
+    }
+
+    // Atualiza a informação de páginas
+    currentPageSpan.textContent = currentPage;
+    totalPagesSpan.textContent = totalPages;
+  }
+
+  // Função para adicionar eventos aos botões de ação
+  function adicionarEventosBotoes() {
     document.querySelectorAll(".edit-btn").forEach((button) => {
       button.addEventListener("click", async function () {
-        const cpf = this.getAttribute("data-id");
-        const cliente = await fetchUsuarioPorCpf(cpf);
+        const idUsuario = this.getAttribute("data-id");
+        const idEndereco = this.getAttribute("data-endereco");
+        const cliente = await fetchUsuarioPorId(idUsuario);
 
         if (cliente) {
           localStorage.setItem("clienteNome", cliente.nome);
-          window.location.href = `../clientes/clienteForms/editar-cliente/editar-cliente.html?cpf=${cpf}`;
+          window.location.href = `../clientes/clienteForms/editar-cliente/editar-cliente.html?idUsuario=${idUsuario}&idEndereco=${idEndereco}`;
         } else {
           console.error("Cliente não encontrado.");
         }
       });
     });
 
-    // Event listener para o botão de deletar
     document.querySelectorAll(".delete-btn").forEach((button) => {
       const id = button.getAttribute("data-id");
       const nome = button
         .closest("tr")
-        .querySelector("td:nth-child(1)").textContent; // Captura o nome corretamente
+        .querySelector("td:nth-child(1)").textContent;
       button.addEventListener("click", () => {
         cpfParaDeletar = id;
         if (cpfParaDeletar) {
-          showModal(nome); // Passa o nome correto para o modal
+          showModal(nome);
         } else {
           console.error("ID do usuário é indefinido.");
         }
       });
     });
 
-    // Event listener para o botão de arquivar (📁)
     document.querySelectorAll(".archive-btn").forEach((button) => {
       const cpf = button.getAttribute("data-id");
       const nome = button.closest("tr").querySelector("td").textContent;
@@ -182,22 +227,21 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       if (!response.ok) {
-        throw new Error("Erro ao arquivar o usuário.");
+        throw new Error("Erro ao inativar o usuário.");
       }
 
       const data = await response.json();
-      showNotification("Usuário arquivado com sucesso!");
+      showNotification("Usuário inativado com sucesso!");
     } catch (error) {
-      console.error("Erro ao arquivar o usuário:", error);
-      showNotification("Erro ao arquivar o usuário.", true);
+      console.error("Erro ao inativar o usuário:", error);
+      showNotification("Erro ao inativar o usuário.", true);
     }
   }
 
-  // Função para deletar usuário
-  async function deleteUser(cpf) {
+  async function deleteUser(id) {
     try {
       const response = await fetch(
-        `${baseUrl}/usuarios/exclusao-usuario/${cpf}`,
+        `${baseUrl}/usuarios/exclusao-usuario/${id}`,
         {
           method: "DELETE",
         }
@@ -282,92 +326,108 @@ window.onclick = function (event) {
 };
 
 function pesquisarCliente() {
-  const nome = document.getElementById("nome").value;
-  const cpf = document.getElementById("cpf").value;
-  const codigo = document.getElementById("codigo").value;
+  const nome = document.getElementById('nome').value;
+  const cpf = document.getElementById('cpf').value;
+  const codigo = document.getElementById('codigo').value;
 
-  let url = "";
+  let url = '';
   if (codigo) {
-    url = `http://localhost:8080/usuarios/buscar-usuario-por-codigo/${codigo}`;
+      url = `http://localhost:8080/usuarios/${codigo}`;
   } else if (cpf) {
-    url = `http://localhost:8080/usuarios/buscar-por-cpf/${cpf}`;
-  } else if (nome) {
-    url = `http://localhost:8080/usuarios/buscar-por-nome/${nome}`;
-  } else {
-    alert("Por favor, preencha ao menos um dos campos.");
-    return;
+      url = `http://localhost:8080/usuarios/buscar-por-cpf/${cpf}`;
+  }
+  // } else if (nome) {
+  //     url = `http://localhost:8080/usuarios/buscar-por-nome/${nome}`;
+  else {
+      alert("Por favor, preencha ao menos um dos campos.");
+      return;
   }
 
-  console.log("URL gerada:", url);
+  console.log('URL gerada:', url);
 
   fetch(url)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`Erro: ${response.status} - ${response.statusText}`);
-      }
-      return response.json();
-    })
-    .then((data) => mostrarResultado(data))
-    .catch((error) => {
-      console.error("Erro ao buscar cliente:", error);
-      mostrarErro("Erro ao buscar cliente. Por favor, tente novamente.");
-    });
+      .then(response => {
+          if (!response.ok) {
+              throw new Error(`Erro: ${response.status} - ${response.statusText}`);
+          }
+          return response.json();
+      })
+      .then(data => mostrarResultado(data))
+      .catch(error => {
+          console.error('Erro ao buscar cliente:', error);
+          mostrarErro("Erro ao buscar cliente. Por favor, tente novamente.");
+      });
 }
 
 function mostrarResultado(data) {
-  const resultadoDiv = document.getElementById("resultado");
+  const resultadoDiv = document.getElementById('resultado');
 
-  if (!data || data.length === 0) {
-    resultadoDiv.innerHTML = "<p>Nenhum cliente encontrado.</p>";
-  } else if (Array.isArray(data)) {
-    let tableHTML = `
-            <table id="procedures-table-pesquisa" class="procedures-table-pesquisa">
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Instagram</th>
-                        <th>Telefone</th>
-                        <th>CPF</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-        `;
-
-    data.forEach((usuario) => {
-      tableHTML += `
-                <tr>
-                    <td>${usuario.nome}</td>
-                    <td>${usuario.instagram}</td>
-                    <td>${usuario.telefone}</td>
-                    <td>${usuario.cpf}</td>
-                    <td>
-                        <button class="ver-mais-btn" data-id="${usuario.cpf}" style="border: none; background: transparent; cursor: pointer;" title="Ver mais">
-                            <img src="../../assets/icons/mais-tres-pontos-indicador.png" alt="Ver mais" style="width: 20px; height: 20px; margin-top:18px; margin-left:15px;">
-                        </button>
-                    </td>
-                </tr>
-            `;
-    });
-
-    tableHTML += `</tbody></table>`;
-
-    resultadoDiv.innerHTML = tableHTML;
-
-    // Adicionar event listener para o botão "Ver mais"
-    document.querySelectorAll(".edit-btn").forEach((button) => {
-      button.addEventListener("click", function () {
-        const cpf = this.getAttribute("data-id");
-        // Redirecionar para a página de edição com o CPF na URL
-        window.location.href = `../clientes/clienteForms/editar-cliente.html?cpf=${cpf}`;
-      });
-    });
+  if (!data || (Array.isArray(data) && data.length === 0)) {
+      resultadoDiv.innerHTML = "<p>Nenhum cliente encontrado.</p>";
   } else {
-    resultadoDiv.innerHTML = `
-            <p>Nome: ${data.nome} | CPF: ${data.cpf} | Instagram: ${data.instagram} | Telefone: ${data.telefone}</p>
-        `;
+      // Se o retorno for um único objeto, transforme-o em um array para que a tabela funcione
+      const usuarios = Array.isArray(data) ? data : [data];
+
+      let tableHTML = `
+          <table id="procedures-table-pesquisa" class="procedures-table-pesquisa">
+              <thead>
+                  <tr>
+                      <th>Nome</th>
+                      <th>Instagram</th>
+                      <th>Telefone</th>
+                      <th>CPF</th>
+                      <th>Ações</th>
+                  </tr>
+              </thead>
+              <tbody>
+      `;
+
+      usuarios.forEach(usuario => {
+          tableHTML += `
+              <tr>
+                  <td>${usuario.nome}</td>
+                  <td>${usuario.instagram}</td>
+                  <td>${usuario.telefone}</td>
+                  <td>${usuario.cpf}</td>
+                  <td>
+                      <button class="ver-mais-btn" data-id="${usuario.idUsuario}" style="border: none; background: transparent; cursor: pointer;" title="Ver mais">
+                          <img src="../../assets/icons/mais-tres-pontos-indicador.png" alt="Ver mais" style="width: 20px; height: 20px; margin-top:18px; margin-left:15px;">
+                      </button>
+                  </td>
+              </tr>
+          `;
+      });
+
+      tableHTML += `</tbody></table>`;
+      resultadoDiv.innerHTML = tableHTML;
+
+      // Adicionar event listener para o botão "Ver mais"
+      document.querySelectorAll('.ver-mais-btn').forEach(button => {
+          button.addEventListener('click', function() {
+              const idUsuario = this.getAttribute("data-id");
+              window.location.href = `../clientes/clienteForms/editar-cliente/editar-cliente.html?idUsuario=${idUsuario}`;
+          });
+      });
   }
 }
+
+
+async function fetchUsuarioPorIdUsuario(idUsuario) {
+  try {
+      const response = await fetch(`http://localhost:8080/usuarios/${idUsuario}`);
+      if (!response.ok) {
+          throw new Error(`Erro ao buscar cliente: ${response.statusText}`);
+      }
+      const cliente = await response.json();
+      return cliente;
+  } catch (error) {
+      console.error("Erro na requisição:", error);
+      return null;
+  }
+}
+
+
+
 
 function mostrarErro(mensagem) {
   const resultadoDiv = document.getElementById("resultado");
@@ -420,3 +480,51 @@ function exportTableToExcel(tableId, filename = "") {
     filename
   );
 }
+
+
+// Função para buscar dados de clientes arquivados (status 0)
+async function fetchArquivados() {
+  const response = await fetch('http://localhost:8080/usuarios/count/arquivados'); // Ajuste a URL conforme necessário
+  if (!response.ok) {
+      throw new Error('Erro ao buscar clientes arquivados');
+  }
+  return await response.json(); // Retorna o número de clientes arquivados
+}
+
+// Função para buscar dados de clientes ativos (status 1)
+async function fetchAtivos() {
+  const response = await fetch('http://localhost:8080/usuarios/count/ativos'); // Ajuste a URL conforme necessário
+  if (!response.ok) {
+      throw new Error('Erro ao buscar clientes ativos');
+  }
+  return await response.json(); // Retorna o número de clientes ativos
+}
+
+// Função para buscar dados de clientes fidelizados (agendamentos nos ultimos 3 meses)
+async function fetchFidelizados() {
+  const response = await fetch('http://localhost:8080/usuarios/clientes-fidelizados-ultimos-tres-meses'); // Ajuste a URL conforme necessário
+  if (!response.ok) {
+      throw new Error('Erro ao buscar clientes ativos');
+  }
+  return await response.json(); // Retorna o número de clientes fidelizados
+}
+
+// Função para atualizar os KPIs
+async function updateKpiData() {
+  try {
+      const clientesAtivos = await fetchAtivos();
+      const clientesArquivados = await fetchArquivados();
+      const clientesFidelizados = await fetchFidelizados();
+      
+      // Atualizar o valor dos KPIs no HTML
+      document.getElementById('mais-agendado').textContent = clientesAtivos;
+      document.getElementById('menos-agendado').textContent = clientesArquivados;
+      document.getElementById('fidelizado').textContent = clientesFidelizados
+
+  } catch (error) {
+      console.error('Erro ao buscar dados dos KPIs:', error);
+  }
+}
+
+// Chama a função para atualizar os KPIs ao carregar a página
+window.onload = updateKpiData;

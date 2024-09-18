@@ -121,6 +121,7 @@ document
         localStorage.setItem("cpf", loginData.cpf);
         localStorage.setItem("instagram", loginData.instagram);
         localStorage.setItem("empresa", loginData.empresa.idEmpresa);
+        localStorage.setItem("idUsuario", loginData.idUsuario);
 
         showNotification("Login realizado com sucesso!");
         window.location.href = "../app/index/index.html";

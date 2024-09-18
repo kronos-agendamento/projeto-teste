@@ -1,3 +1,14 @@
+
+document.addEventListener("DOMContentLoaded", function () {
+  const nome = localStorage.getItem("nome");
+  const instagram = localStorage.getItem("instagram");
+
+  if (nome && instagram) {
+    document.getElementById("userName").textContent = nome;
+    document.getElementById("userInsta").textContent = instagram;
+  }
+});
+
 // var btn = document.getElementsByClassName("planilha-btn")[0];
 // var modal = document.getElementsByTagName("dialog")[0];
 // btn.onclick = function () {

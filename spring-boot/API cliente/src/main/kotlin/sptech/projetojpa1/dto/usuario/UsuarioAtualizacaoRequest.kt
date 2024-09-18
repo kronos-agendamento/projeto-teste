@@ -5,7 +5,6 @@ import java.time.LocalDate
 data class UsuarioAtualizacaoRequest(
     var nome: String?,
     var email: String?,
-//    var senha: String?,
     var instagram: String?,
     var dataNasc: LocalDate?,
     var telefone: Long?,
@@ -15,5 +14,6 @@ data class UsuarioAtualizacaoRequest(
     var nivelAcessoId: Int?,
     var enderecoId: Int?,
     var empresaId: Int?,
-    var fichaAnamneseId: Int?
+    var fichaAnamneseId: Int?,
+    var cpf: String?
 )
