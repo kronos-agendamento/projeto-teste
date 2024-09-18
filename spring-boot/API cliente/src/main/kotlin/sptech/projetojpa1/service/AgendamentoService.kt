@@ -21,7 +21,11 @@ class AgendamentoService(
 
     fun listarTodosAgendamentos(): List<AgendamentoResponseDTO> {
         val agendamentos = agendamentoRepository.findAll()
-        return agendamentos.map { agendamento ->
+
+        // Filtra os agendamentos para excluir aqueles com tipoAgendamento igual a "Bloqueio"
+        val agendamentosFiltrados = agendamentos.filter { it.tipoAgendamento != "Bloqueio" }
+
+        return agendamentosFiltrados.map { agendamento ->
             val usuario = agendamento.usuario
             AgendamentoResponseDTO(
                 idAgendamento = agendamento.idAgendamento,
@@ -29,14 +33,13 @@ class AgendamentoService(
                 tipoAgendamento = agendamento.tipoAgendamento,
                 usuario = usuario.nome,
                 usuarioTelefone = usuario.telefone?.toString(),
-                usuarioCpf = usuario.cpf ?: "CPF não disponível", // Verifica se o CPF está vazio
+                usuarioCpf = usuario.cpf ?: "CPF não disponível",
                 procedimento = agendamento.procedimento.tipo,
                 especificacao = agendamento.especificacao.especificacao,
                 statusAgendamento = agendamento.statusAgendamento
             )
         }
     }
-
 
     fun agendamentosRealizadosTrimestre(): Int {
         return agendamentoRepository.findAgendamentosConcluidosUltimoTrimestre()
@@ -56,11 +59,12 @@ class AgendamentoService(
         val agendamentosDoDia = agendamentoRepository.findByDataHorarioBetween(
             data.atTime(abertura),
             data.atTime(fechamento)
-        )
+        ).filter { it.tipoAgendamento != "Bloqueio" }  // Exclui os bloqueios
 
         val horariosOcupados = agendamentosDoDia.map {
             it.dataHorario?.toLocalTime() ?: throw IllegalArgumentException("Data e horário não podem ser nulos")
         }
+
         val horariosDisponiveis = mutableListOf<LocalTime>()
 
         var horarioAtual = abertura
@@ -73,7 +77,6 @@ class AgendamentoService(
 
         return horariosDisponiveis
     }
-
 
     fun validarAgendamento(agendamentoRequestDTO: AgendamentoRequestDTO): Boolean {
         val dataHorario = agendamentoRequestDTO.dataHorario
@@ -207,6 +210,65 @@ class AgendamentoService(
         }
 
         agendamentoRepository.deleteById(id)
+    }
+
+    fun filtrarAgendamentos(
+        dataInicio: LocalDate?,
+        dataFim: LocalDate?,
+        clienteId: Int?,
+        procedimentoId: Int?,
+        especificacaoId: Int?
+    ): List<AgendamentoResponseDTO> {
+        val agendamentos = agendamentoRepository.findAll().filter { agendamento ->
+            agendamento.tipoAgendamento != "Bloqueio" && // Exclui agendamentos com tipo "Bloqueio"
+                    (dataInicio == null || agendamento.dataHorario?.toLocalDate() != null && agendamento.dataHorario!!.toLocalDate() >= dataInicio) &&
+                    (dataFim == null || agendamento.dataHorario?.toLocalDate() != null && agendamento.dataHorario!!.toLocalDate() <= dataFim) &&
+                    (clienteId == null || agendamento.usuario.codigo == clienteId) &&
+                    (procedimentoId == null || agendamento.procedimento.idProcedimento == procedimentoId) &&
+                    (especificacaoId == null || agendamento.especificacao.idEspecificacaoProcedimento == especificacaoId)
+        }
+
+        return agendamentos.map { agendamento ->
+            val usuario = agendamento.usuario
+            AgendamentoResponseDTO(
+                idAgendamento = agendamento.idAgendamento,
+                dataHorario = agendamento.dataHorario,
+                tipoAgendamento = agendamento.tipoAgendamento,
+                usuario = usuario.nome,
+                usuarioTelefone = usuario.telefone?.toString(),
+                usuarioCpf = usuario.cpf ?: "CPF não disponível",
+                procedimento = agendamento.procedimento.tipo,
+                especificacao = agendamento.especificacao.especificacao,
+                statusAgendamento = agendamento.statusAgendamento
+            )
+        }
+    }
+
+    fun bloquearHorarios(dia: LocalDate, horaInicio: LocalTime, horaFim: LocalTime, usuarioId: Int) {
+        val horarioInicio = dia.atTime(horaInicio)
+        val horarioFim = dia.atTime(horaFim)
+
+        var horarioAtual = horarioInicio
+        while (horarioAtual.isBefore(horarioFim)) {
+            println("Bloqueando horário: $horarioAtual")
+            println("Usuário: $usuarioId")
+
+            val agendamentoFake = Agendamento(
+                dataHorario = horarioAtual,
+                tipoAgendamento = "Bloqueio",  // Tipo especial para identificar o bloqueio
+                usuario = usuarioRepository.findById(usuarioId)
+                    .orElseThrow { IllegalArgumentException("Usuário não encontrado") },
+                procedimento = procedimentoRepository.findById(1)  // Um ID fixo para o "procedimento bloqueio"
+                    .orElseThrow { IllegalArgumentException("Procedimento não encontrado") },
+                especificacao = especificacaoRepository.findById(1)  // Um ID fixo para a "especificação bloqueio"
+                    .orElseThrow { IllegalArgumentException("Especificação não encontrada") },
+                statusAgendamento = statusRepository.findById(1)  // Um ID fixo para "status bloqueado"
+                    .orElseThrow { IllegalArgumentException("Status não encontrado") }
+            )
+
+            agendamentoRepository.save(agendamentoFake)
+            horarioAtual = horarioAtual.plusMinutes(30)  // Incrementa de 30 em 30 minutos
+        }
     }
 
     fun countUsuariosWithStatusZero(): Int {

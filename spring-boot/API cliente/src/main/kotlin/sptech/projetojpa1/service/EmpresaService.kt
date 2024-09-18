@@ -2,7 +2,6 @@ package sptech.projetojpa1.service
 
 import org.springframework.stereotype.Service
 import sptech.projetojpa1.domain.Empresa
-import sptech.projetojpa1.domain.Endereco
 import sptech.projetojpa1.domain.Usuario
 import sptech.projetojpa1.dto.empresa.EmpresaRequestDTO
 import sptech.projetojpa1.dto.empresa.EmpresaResponseDTO

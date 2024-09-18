@@ -18,5 +18,4 @@ data class UsuarioResponseDTO(
     var empresa: Empresa? = null,
     var senha: String? = null,
     var endereco: Endereco? = null
-
 )

@@ -446,12 +446,3 @@ SET dtype = 'Profissional'
 WHERE fk_nivel_acesso = 1;
 
 SELECT * FROM usuario;
-select * from endereco;
-
-
-
-
-
-
-
-

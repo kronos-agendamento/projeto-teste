@@ -94,7 +94,7 @@ class EmpresaController(
             ApiResponse(responseCode = "404", description = "Empresa não encontrada")
         ]
     )
-    @PatchMapping("/{cpf}")
+    @PutMapping("/{cpf}")
     fun atualizarEmpresa(
         @PathVariable cpf: String,
         @RequestBody dto: EmpresaUpdateDTO

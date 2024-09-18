@@ -80,7 +80,8 @@ class UsuarioService(
                 email = usuario.email ?: "",
                 cpf = usuario.cpf ?: "",
                 instagram = usuario.instagram ?: "",
-                empresa = usuario.empresa
+                empresa = usuario.empresa,
+                idUsuario = usuario.codigo,
             )
         } else {
             null
@@ -122,6 +123,7 @@ class UsuarioService(
             telefone = dto.telefone ?: telefone
             genero = dto.genero ?: genero
             indicacao = dto.indicacao ?: indicacao
+            cpf = dto.cpf ?: cpf
         }
         return usuarioRepository.save(usuario)
     }
@@ -160,13 +162,7 @@ class UsuarioService(
                 instagram = usuario.instagram,
                 telefone = usuario.telefone,
                 cpf = usuario.cpf,
-                status = usuario.status,
-                email = usuario.email,
-                indicacao = usuario.indicacao,
-                genero = usuario.genero,
-                empresa = usuario.empresa,
-                senha = usuario.senha,
-
+                status = usuario.status
             )
         }
     }
@@ -176,16 +172,16 @@ class UsuarioService(
         return UsuarioResponseDTO(
             idUsuario = usuario.codigo,
             nome = usuario.nome,
-            dataNasc = usuario.dataNasc,
             instagram = usuario.instagram,
             telefone = usuario.telefone,
             cpf = usuario.cpf,
+            dataNasc = usuario.dataNasc,
             status = usuario.status,
-            email = usuario.email,
+            empresa = usuario.empresa,
             indicacao = usuario.indicacao,
             genero = usuario.genero,
-            empresa = usuario.empresa,
             senha = usuario.senha,
+            email = usuario.email,
         )
     }
 

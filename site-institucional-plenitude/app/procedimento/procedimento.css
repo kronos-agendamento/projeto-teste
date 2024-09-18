@@ -463,3 +463,72 @@ header p {
   display: flex;
   justify-content: center;
 }
+
+.clear-btn {
+  background-color: transparent;
+  border: none;
+  color: red;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.clear-btn:hover {
+  color: darkred;
+}
+
+#edit-nome,
+#filter-from,
+#filter-to,
+#filter-client,
+#filter-procedure,
+#filter-specification {
+  width: 30%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-top: 3vh;
+  margin-bottom: 2vh;
+}
+
+#filter-modal .modal-content {
+  width: 40%;
+  max-width: 600px;
+}
+#filter-modal .modal-content label {
+  margin: 10px 0 5px;
+}
+.modal-content .btn-yes,
+.btn-save {
+  background-color: #28a745;
+  color: white;
+}
+
+.modal-content .btn-no {
+  background-color: #dc3545;
+  color: white;
+}
+
+.modal-content .btn-yes:hover {
+  background-color: #218838;
+}
+
+.modal-content .btn-no:hover {
+  background-color: #c82333;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="file"],
+input[type="password"],
+input[type="date"],
+input[type="email"],
+select {
+  padding: 0.3vw;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-right: 0.2vw;
+  margin-left: 0.2vw;
+  margin-top: 15px;
+  width: 50%;
+}
