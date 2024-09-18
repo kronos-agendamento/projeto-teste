@@ -426,3 +426,34 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById("userInsta").textContent = instagram;
     }
 });
+
+
+// // timer para o marcar tempo que leva para realizar um agendamento!
+
+//     let seconds = 0; // Variável para armazenar o tempo em segundos
+    
+//     const timer = setInterval(() => {
+//       seconds++; // Incrementa a variável a cada segundo
+//       console.log(`Segundos: ${seconds}`);
+//     }, 1000); // 1000 ms = 1 segundo
+    
+//     // Para parar o timer depois de um tempo, por exemplo, após 10 segundos:
+//     setTimeout(() => {
+//       clearInterval(timer); // Para o timer
+//       console.log("Timer parado");
+//     }, 10000); // 10000 ms = 10 segundos
+    
+
+
+//     function sendSecondsToServer() {
+//         fetch('http://localhost:8080/api/agendamentos/atualizar-status/${selectedAgendamentoId}?statusId=3', { // Substitua pela URL do seu servidor
+//             method: 'PUT',
+//             headers: {
+//                 'Content-Type': 'application/json' // Define que o conteúdo é JSON
+//             },
+//             body: JSON.stringify({ time: seconds }) // Envia o valor dos segundos
+//         })
+//         .then(response => response.json())
+//         .then(data => console.log('Sucesso:', data))
+//         .catch(error => console.error('Erro:', error));
+//     }
