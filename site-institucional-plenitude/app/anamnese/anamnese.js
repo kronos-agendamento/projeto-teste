@@ -5,7 +5,7 @@
 // };
 
 const cirurgia = document.getElementById("cirugia").value;
-const descricao = document.getElementById("descricao").value;
+const descricaoCirurgia = document.getElementById("descricao").value;
 
 //Cria o objeto de dados para enviar
 const requestData = {
@@ -52,4 +52,38 @@ function showForm2(){
 function closeModal2(){
     const modal2 = document.getElementById("modalDesativadas");
     modal2.style.display = "none";
+}
+
+//Cadastrando pergunta nova
+const baseUrl = "http://localhost:8080"
+const descricaoPergunta = document.getElementById("descricao").value
+const tipoResposta = document.getElementById("tipo").value
+
+const perguntaData = {
+  descricao:descricaoPergunta,
+  tipo:tipoResposta
+}
+
+async function cadastrarPergunta(){
+try{
+  const response =  await fetch(`${baseUrl}/api/perguntas`,{
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    }, 
+    body: JSON.stringify(perguntaData),
+  });
+
+  const data =  await response.json();
+
+  if(response.ok){
+    document.getElementById("notification-message").textContent = "Pergunta cadastrada com sucesso!"
+  } else{
+    throw new Error(data.message || "Erro ao cadastrar pergunta");
+  }
+  
+} catch(error){
+ console.error("Erro ao cadastrar pergunta:", error);
+ document.getElementById("notification-message").textContent = "Erro ao cadastrar pergunta. Tente novamente";   
+}
 }

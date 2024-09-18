@@ -100,7 +100,7 @@
              Pesquisar Ficha Por Cliente
            </button></a>
            <div class="right-actions">
-             <button class="planilha-btn" onclick="showForm()">
+             <button class="planilha-btn" onclick="showForm2()">
                <img src="../../assets/icons/createNew.png" alt="spreadsheet" />Perguntas Desativadas
              </button>
              <button class="criar-btn" onclick="showForm()">
@@ -221,7 +221,7 @@
           <input type="text" id="tipo" placeholder="Tipo de Resposta">
         </div>
         <div>
-          <button id="save-button" class="btn btn-save">Salvar</button>
+          <button id="save-button" class="btn btn-save" onclick="cadastrarPergunta(), closeModal()">Salvar</button>
           <button onclick="closeModal()" class="btn btn-no">Cancelar</button>
         </div>
       </div>
