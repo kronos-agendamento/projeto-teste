@@ -123,7 +123,6 @@ class UsuarioService(
             telefone = dto.telefone ?: telefone
             genero = dto.genero ?: genero
             indicacao = dto.indicacao ?: indicacao
-            cpf = dto.cpf ?: cpf
         }
         return usuarioRepository.save(usuario)
     }
