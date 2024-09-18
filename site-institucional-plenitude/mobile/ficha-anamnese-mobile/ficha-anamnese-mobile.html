@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha Anamnese | KronosBooking </title>
+
+    <link href="../../assets/img/favicon.png" rel="icon" />
+    <script src="ficha-anamnese-mobile.js"></script>
+    <link rel="stylesheet" href="ficha-anamnese-mobile.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+
+<body>
+    <main>
+        <header>
+            <div class="pesquisa">
+                <img src="../../assets/icons/lupa.png" alt="">
+            </div>
+            <div id="titulo-saudacao">
+                <h1>Ficha</h1>
+            </div>
+            <div class="introducao">
+                <div class="acessibilidade">
+                    <div class="font-information">
+                        <button id="information">i</button>
+                    </div>
+                    <div class="font-controls">
+                        <button id="increase-font">A+</button>
+                        <button id="decrease-font">A-</button>
+                    </div>
+                </div>
+                <div id="titulo">
+                    Ficha de Anamnese
+                </div>
+
+
+                <div id="subtitulo">
+                    Preencha com seus dados
+                </div>
+
+            </div>
+        </header>
+        <section id="navigation">
+            <div class="nav-bar">
+                <ul>
+                    <li class="list">
+
+                        <a href="../index-mobile/index-mobile.html">
+                            <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                        </a>
+                    </li>
+                    <li class="list active">
+                        <a href="../ficha-anamnese/ficha-anamnese-mobile.html">
+                            <span class="icon"><ion-icon name="document-text-outline"></ion-icon></span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="../agendamento-mobile/agendamento-mobile.html">
+                            <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="../perfil-mobile/perfil-mobile.html">
+                            <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="../../index.html">
+                            <span class="icon"><ion-icon name="exit-outline"></ion-icon></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <section id="formulario">
+            <div id="titulo-formulario">
+                <div id="titulo-flex">
+                    <h2>Importante</h2>
+                    <img src="../../assets/icons/alert.png" id="icon-alert" alt="">
+                </div>
+                <span>
+                    Em caso de respostas <span id="destaque">negativas,</span> não informe nenhum dado e caso queira
+                    adicionar <span id="destaque">mais de uma
+                        informação para cada pergunta</span>, clique no <span id="destaque">“+”</span> para e um novo
+                    campo será aberto para você preencher.
+                </span>
+            </div>
+
+            <div class="content">
+                <div class="form-group form-input">
+                    <label for="descricao">Possui alergia a algum medicamento? Se sim, qual?</label>
+
+                    <div class="input-content">
+                        <input type="text" id="resposta" name="resposta" />
+
+                        <button id="openStatusModalBtn2" class="create">
+                            <img src="../../assets/icons/createNew.png" id="icon-create" alt="createNew" />
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group form-input">
+                    <label for="descricao">Utiliza ácido? Se sim, qual?</label>
+
+                    <div class="input-content">
+                        <input type="text" id="resposta" name="resposta" />
+
+                        <button id="openStatusModalBtn2" class="create">
+                            <img src="../../assets/icons/createNew.png" id="icon-create" alt="createNew" />
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="content-flex">
+                <div class="form-group form-input">
+                    <label for="descricao">Tem diabetes?</label>
+
+                    <div class="response-content">
+                        <p>De:</p>
+                        <select name="" id="resposta" required>
+                            <option value="Domingo">Sim</option>
+                            <option value="Segunda">Não</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="form-group form-input">
+                    <label for="descricao">Tem hipertensão?</label>
+
+                    <div class="response-content">
+                        <p>De:</p>
+                        <select name="" id="resposta" required>
+                            <option value="Domingo">Sim</option>
+                            <option value="Segunda">Não</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="content2">
+                <div class="button-container" id="button-alterar">
+
+                    <button type="button" class="save-button" id="save-usuario-button">
+                        <img src="../../assets/icons/ficha.preta.png" id="icon-ficha" alt="save" />
+                        Preencher ficha
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+</body>
+
+</html>

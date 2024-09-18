@@ -315,10 +315,10 @@
                             <div class="square" style="background-color: white;">
                                 <div class="card-graficos">
                                     <div class="card-content-2">
-                                        <h1>Taxa de Retenção de<br>Clientes</h1>
+                                        <h1>Taxa de Retenção <br>de Clientes</h1>
                                         <p>Últimos 5 meses</p>
                                     </div>
-                                    <p>Por qual meio de comunicação os clientes chegam no estúdio.</p>
+                                    <p>Taxa de retenção mostra a quantidade de clientes novos versus a quantidade de clientes antigos.</p>
                                     <canvas style="padding-bottom: 30px;" id="chart1"></canvas>
                                 </div>
                             </div>
@@ -326,15 +326,15 @@
                     </div>
                 </div>
                 <div id="usabilidade-content" class="tab-content">
-                    <div class="charts">
-                        <div class="grid">
-                            <div class="square">
-                                <div class="mini-grid">
-                                    <div class="mini-square">
+                    <div class="charts-usabilidade">
+                        
+                            <div class="triple-square">
+                                <div class="mini-grid-usabilidade">
+                                    <div class="mini-square-usabilidade">
                                         <div class="card">
                                             <div class="indicator"></div>
                                             <div class="card-content">
-                                                <p>Clientes Ativos</p>
+                                                <p style="font-size: 15px;">Tempo Médio de Conclusão de Agendamento</p>
                                                 <h2 id="clientes-ativos-count">Carregando...</h2>
                                                 <!-- <p>Último trimestre</p> -->
 
@@ -342,11 +342,11 @@
                                             <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
                                         </div>
                                     </div>
-                                    <div class="mini-square">
+                                    <div class="mini-square-usabilidade">
                                         <div class="card">
                                             <div class="indicator"></div>
                                             <div class="card-content">
-                                                <p>Clientes Inativos</p>
+                                                <p style="font-size: 15px;">Taxa Média de Abandono no Processo de Agendamento</p>
                                                 <h2 id="clientes-inativos-count">Carregando...</h2>
                                                 <!-- <p>Último trimestre</p> -->
 
@@ -354,11 +354,11 @@
                                             <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
                                         </div>
                                     </div>
-                                    <div class="mini-square">
+                                    <div class="mini-square-usabilidade">
                                         <div class="card">
                                             <div class="indicator"></div>
                                             <div class="card-content">
-                                                <p style="font-size: 20px;">Agendamentos Realizados</p>
+                                                <p style="font-size: 15px;">Taxa Média de Retorno de Usuários ao Sistema</p>
                                                 <h2 id="agendamentos-realizados-count">Carregando...</h2>
                                                 <!-- <p>Último trimestre</p> -->
 
@@ -366,23 +366,12 @@
                                             <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
                                         </div>
                                     </div>
-                                    <div class="mini-square">
-                                        <div class="card">
-                                            <div class="indicator"></div>
-                                            <div class="card-content">
-                                                <p>Clientes Fidelizados</p>
-                                                <h2 id="clientes-fidelizados-count">Carregando...</h2>
-                                                <!-- <p>Último trimestre</p> -->
-                                            </div>
-                                            <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
-                            <div class="square" style="background-color: white;">
+                            <div class="square-usabilidade" style="background-color: white;">
                                 <div class="card-graficos">
                                     <div class="card-content-2">
-                                        <h1>Conversão de Clientes</h1>
+                                        <h1>Taxa de Conversão do Sistema de Agendamento</h1>
                                         <p>Últimos 5 meses</p>
                                     </div>
                                     <p>Comparação de leads e clientes gerados.</p>
@@ -391,60 +380,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="square" style="background-color: white;">
-                                <div class="card-graficos">
-                                    <div class="card-content-2">
-                                        <h1>Procedimentos Mais Realizados</h1>
-                                        <p>Último Trimestre</p>
-                                    </div>
-                                    <p>Procedimentos mais famosos no estúdio e quantas vezes eles foram agendados no
-                                        último
-                                        trimestre.</p>
-                                    <div position="relative" class="caixa-grafico">
-                                        <canvas width="450" height="200" id="chart4"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="square" style="background-color: white;">
-                                <div class="card-graficos">
-                                    <div class="card-content-2">
-                                        <h1>Procedimentos com Melhor Avaliação</h1>
-                                        <p>Últimos 5 meses</p>
-                                    </div>
-                                    <p>Procedimentos mais bem avaliados no estúdio e uma média de nota no último
-                                        trimestre.
-                                    </p>
-                                    <div class="caixa-grafico">
-                                        <canvas id="chart33"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="square" style="background-color: white;">
-                                <div class="card-graficos">
-                                    <div class="card-content-2">
-                                        <h1>Receita Acumulada</h1>
-                                        <p>Últimos 5 meses</p>
-                                    </div>
-                                    <p>Cálculo realizado em cima dos atendimentos concluídos e dos valores dos
-                                        procedimentos.
-                                    </p>
-                                    <div class="caixa-grafico">
-                                        <canvas id="chart3"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="square" style="background-color: white;">
-                                <div class="card-graficos">
-                                    <div class="card-content-2">
-                                        <h1>Canais de Divulgação</h1>
-                                        <p>Últimos 5 meses</p>
-                                    </div>
-                                    <p>Por qual meio de comunicação os clientes chegam no estúdio.</p>
-                                    <canvas style="padding-bottom: 30px;" id="chart1"></canvas>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
