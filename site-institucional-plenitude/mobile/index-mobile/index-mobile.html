@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Início | KronosBooking </title>
+
+    <link href="../../assets/img/favicon.png" rel="icon" />
+    <script src="index-mobile.js"></script>
+    <link rel="stylesheet" href="index-mobile.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+</head>
+
+<body>
+    <main>
+        <header>
+            <div class="pesquisa">
+                <img src="../../assets/icons/lupa.png" alt="">
+            </div>
+            <div id="titulo-saudacao">
+                <h1>Home</h1>
+            </div>
+            <div class="saudacao">
+                <div class="acessibilidade">
+                    <div class="font-information">
+                        <button id="information">i</button>
+                    </div>
+                    <div class="font-controls">
+                        <button id="increase-font">A+</button>
+                        <button id="decrease-font">A-</button>
+                    </div>
+                </div>
+                <div id="greeting1">
+                    <span id="userNameSpan">Usuário</span>!</h1>
+                </div>
+
+
+                <div id="greeting2"></div>
+            </div>
+        </header>
+        <section id="navigation">
+            <div class="nav-bar">
+                <ul>
+                    <li class="list active">
+                        <a href="../index/index-mobile.html">
+                            <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="../ficha-anamnese-mobile/ficha-anamnese-mobile.html">
+                            <span class="icon"><ion-icon name="document-text-outline"></ion-icon></span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="../agendamento-mobile/agendamento-mobile.html">
+                            <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="../perfil-mobile/perfil-mobile.html">
+                            <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="../../index.html">
+                            <span class="icon"><ion-icon name="exit-outline"></ion-icon></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="procedimentos">
+            <div id="titulo-procedimentos">
+                <h2>Procedimentos</h2>
+                <span>
+                    Sinônimos de qualidade e durabilidade
+                </span>
+            </div>
+            <div class="procedimentos">
+
+                <div class="box-procedimento">
+                    <div class="icon-procedimento">
+                        <img src="../../assets/icons/profile.png" width="100" height="100">
+                    </div>
+                    <h3>Cílios</h3>
+                </div>
+                <div class="box-procedimento">
+                    <div class="icon-procedimento">
+                        <img src="../../assets/icons/make.png" width="100" height="100">
+                    </div>
+                    <h3>Maquiagem</h3>
+                </div>
+                <div class="box-procedimento">
+                    <div class="icon-procedimento">
+                        <img src="../../assets/icons/sobrancelha.png" width="100" height="100" alt="">
+                    </div>
+                    <h3>Sobrancelha</h3>
+                </div>
+            </div>
+        </section>
+
+        <section id="agendamentos">
+            <div id="titulo-agendamentos">
+                <h2>Próximos Agendamentos</h2>
+                <span>
+                    Veja seus próximos procedimentos
+                </span>
+            </div>
+            <div class="box-agendamento">
+                <div class="icon-agendamento">
+                    <img src="../../assets/icons/profile.png" width="100" height="100" alt="">
+                </div>
+                <div class="procedimento-agendamento">
+                    <span id="agendamento"> 13/08/2024 as 16:00</span>
+                    <span id="agendamento"> Cilios - Manutenção Volume Russo</span>
+                </div>
+                <div class="button-flex">
+                    <button id="openStatusModalBtn2" class="edit">
+                        <img src="../../assets/icons/excluir.png" alt="createNew" />
+                    </button>
+                    <button id="openStatusModalBtn2" class="edit">
+                        <img src="../../assets/icons/pen.png" alt="createNew" />
+                    </button>
+                </div>
+            </div>
+
+        </section>
+        <section id="historico">
+            <div class="historico">
+                <div id="titulo-agendamentos"></div>
+                <h2>Histórico de Agendamentos</h2>
+                <span>
+                    Veja os procedimentos já realizados:
+                </span>
+                <div class="ver-todos">
+                    <a href="#">Ver todos >></a>
+                </div>
+
+                <div class="box-agendamento">
+                    <div class="icon-agendamento">
+                        <img src="../../assets/icons/profile.png" width="100" height="100" alt="">
+                    </div>
+                    <div class="procedimento-agendamento">
+                        <span id="agendamento"> 15/01/2024 as 10:00</span>
+                        <span id="agendamento"> Cilios - Colocação Volume Russo</span>
+                    </div>
+                    <div class="button-flex">
+                        <button id="openStatusModalBtn2" class="edit">
+                            <img src="../../assets/icons/excluir.png" alt="createNew" />
+                        </button>
+                        <button id="openStatusModalBtn2" class="edit">
+                            <img src="../../assets/icons/pen.png" alt="createNew" />
+                        </button>
+                    </div>
+                </div>
+
+
+                <div class="box-agendamento">
+                    <div class="icon-agendamento">
+                        <img src="../../assets/icons/profile.png" width="100" height="100" alt="">
+                    </div>
+                    <div class="procedimento-agendamento">
+                        <span id="agendamento"> 20/06/2024 as 10:00</span>
+                        <span id="agendamento"> Cilios - Colocação Volume Russo</span>
+                    </div>
+                    <div class="button-flex">
+                        <button id="openStatusModalBtn2" class="edit">
+                            <img src="../../assets/icons/excluir.png" alt="createNew" />
+                        </button>
+                        <button id="openStatusModalBtn2" class="edit">
+                            <img src="../../assets/icons/pen.png" alt="createNew" />
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+</html>

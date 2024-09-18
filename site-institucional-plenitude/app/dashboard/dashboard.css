@@ -247,7 +247,6 @@ header p {
 
 .card-content-2 h1 {
     font-size: x-large;
-    width: 300px;
     font-weight: 1400;
 }
 
@@ -321,7 +320,16 @@ header p {
 }
 
 .mini-square {
+    display: flex;
     width: 224px;
+    height: 167px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+}
+
+.mini-square-usabilidade {
+    display: flex;
+    width: 308px;
     height: 167px;
     background-color: rgb(255, 255, 255);
     border-radius: 10px;
@@ -333,6 +341,22 @@ header p {
     grid-template-rows: repeat(2, 1fr);
     gap: 30px;
     row-gap: 33px;
+}
+
+.mini-grid-usabilidade {
+    display: flex;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 30px;
+    row-gap: 33px;
+}
+
+.tab-content {
+    display: none; /* Esconde todo o conteúdo inicialmente */
+}
+
+.tab-content.active {
+    display: block; /* Mostra o conteúdo ativo */
 }
 
 .square {
@@ -347,7 +371,32 @@ header p {
     align-items: center;
 }
 
-.main-content {
+.triple-square {
+
+        width: 985px;
+        border-radius: 10px;
+        padding-bottom: 20px;
+        /* Bordas arredondadas */
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: center;
+    
+}
+
+.square-usabilidade {
+    width: 985px;
+    height: 369px;
+    border-radius: 10px;
+    /* Bordas arredondadas */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+}
+
+.chartContainer {
     flex: 1;
     padding: 20px;
     display: flex;
@@ -358,23 +407,37 @@ header p {
 .tabs {
     display: flex;
     width: 146vh;
+    height: auto;
     justify-content: flex-end;
 }
 
 .tab-button {
+    border: 2px solid #D2135D;
     background-color: #D2135D;
     color: #fff;
-    border: none;
     border-radius: 12px 12px 0 0;
     padding: 10px 20px;
     cursor: pointer;
     width: 130px;
+    transition: background-color 0.3s ease, border 0.3s ease;
 }
 
-.tab-button.active,
+.tab-button.selected {
+    background-color: #e62762; /* Cor mais escura para o botão ativo */
+    border: 5px solid #ffffff; /* Contorno ao redor do botão ativo */
+    height: 110%;
+    border-radius: 12px 12px 12px 12px;
+  }
+
 .tab-button:hover {
-    background-color: #d81b60;
-}
+    background-color: #ff3e78; /* Muda a cor ao passar o mouse */
+    border: 2px solid #4e0c2a; /* Adiciona uma borda no hover */
+    border-radius: 12px 12px 0 0;
+  }
+
+  .tab-button:last-child {
+    margin-right: 0;
+  }
 
 .summary-cards {
     display: flex;
@@ -430,6 +493,18 @@ header p {
     justify-content: center;
     background-color: #fdd9e5;
     padding: 20px;
+}
+
+.charts-usabilidade {
+    display: flex;
+    /* width: 146vh; */
+    width: fit-content;
+    border: 2.5px solid #D2135D;
+    border-radius: 10px 0 10px 10px;
+    background-color: #fdd9e5;
+    padding: 20px;
+    flex-direction: column;
+    align-items: center;
 }
 
 .top-cards {
@@ -642,4 +717,12 @@ img {
     margin-top: 0.5vh;
     display: flex;
     justify-content: center;
+}
+
+.conteudo {
+
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-end;
 }

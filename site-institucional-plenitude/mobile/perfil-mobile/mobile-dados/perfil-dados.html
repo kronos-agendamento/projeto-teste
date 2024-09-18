@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <title>Dados | KronosBooking </title>
+
+    <link href="../../assets/img/favicon.png" rel="icon" />
+    <script src="perfil-dados.js"></script>
+    <link rel="stylesheet" href="perfil-dados.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+</head>
+
+<body>
+    <main>
+        <header>
+            <div class="retorno">
+                <img src="../../../assets/icons/retorno.png" alt="">
+            </div>
+            <div id="titulo-saudacao">
+                <h1>Perfil</h1>
+            </div>
+        </header>
+        <section id="navigation">
+            <div class="nav-bar">
+                <ul>
+                    <li class="list">
+                        <a href="../../index-mobile/index-mobile.html">
+                            <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="../../ficha-anamnese-mobile/ficha-anamnese-mobile.html">
+                            <span class="icon"><ion-icon name="document-text-outline"></ion-icon></span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="../../agendamento-mobile/agendamento-mobile.html">
+                            <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
+                        </a>
+                    </li>
+                    <li class="list active">
+                        <a href="../../perfil-mobile/perfil-mobile.html">
+                            <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="../../../index.html">
+                            <span class="icon"><ion-icon name="exit-outline"></ion-icon></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <section id="dados">
+            <div class="dados">
+                <div id="titulo-aviso">
+                    <span>
+                        Edite suas informações
+                    </span>
+                    <div class="box-imagem">
+                        <div class="imagem">
+                            <div class="image">
+                                <img src="../../../assets/icons/upload.png" alt="">
+
+                                <input type="file" name="profileImage" accept="image/*" placeholder="aaaaaaaaaa">
+                                <p>Clique e insira sua foto de perfil!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-dados">
+                        <div class="label">
+                            <p>Nome Completo:</p>
+                            <input type="text" id="nome" placeholder="Nome Completo" required>
+                        </div>
+
+                        <div class="label">
+                            <p>Data de Nascimento:</p>
+                            <input type="date" id="nascimento" required>
+                        </div>
+
+                        <div class="label">
+                            <p>Email:</p>
+                            <input type="email" id="email" placeholder="xxxxxxxxxxx@xxxx.com" required>
+                        </div>
+
+                        <div class="label">
+                            <p>Telefone:</p>
+                            <input type="text" id="telefone" placeholder="(00) 00000-0000" required>
+                        </div>
+
+                        <div class="label">
+                            <p>Instagram:</p>
+                            <input type="text" id="instagram" placeholder="@instagram" required>
+                        </div>
+
+                        <div class="label">
+                            <p>RG:</p>
+                            <input type="text" id="rg" placeholder="00.000.000-0" required>
+                        </div>
+
+                        <div class="label">
+                            <p>CPF:</p>
+                            <input type="text" id="cpf" placeholder="000.000.000-00" required>
+                        </div>
+
+                        <div class="label">
+                            <p>Gênero:</p>
+                            <select id="genero" required>
+                                <option value="Masculino">Masculino</option>
+                                <option value="Feminino">Feminino</option>
+                                <option value="Não-binário">Não-binário</option>
+                                <option value="Prefiro não dizer">Prefiro não dizer</option>
+                                <option value="Outro">Outro</option>
+                            </select>
+                        </div>
+
+                        <div class="label">
+                            <p>Indicação:</p>
+                            <select id="indicacao" required>
+                                <option value="Internet">Internet</option>
+                                <option value="Anúncio">Anúncio</option>
+                                <option value="Amigo contou">Amigo contou</option>
+                                <option value="Cliente contou">Cliente contou</option>
+                                <option value="Instagram">Instagram</option>
+                                <option value="Passou na frente e viu">Passou na frente e viu</option>
+                            </select>
+                        </div>
+
+                        <div class="button-container" id="button-alterar">
+                            <button type="button" class="save-button" id="save-usuario-button">
+                                
+                                <img src="../../../assets/icons/save.png" id="icon-save" alt="">
+                                Salvar Alterações
+                                
+                            </button>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+
+</html>
