@@ -39,19 +39,29 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("senha").value = userData.senha || "";
     document.getElementById("empresa").value = userData.empresa.nome || "";
     document.getElementById("cnpj").value = userData.empresa.cnpj || "";
-    document.getElementById("telefone-empresa").value = userData.empresa.telefone || "";
+    document.getElementById("telefone-empresa").value =
+      userData.empresa.telefone || "";
     document.getElementById("cep").value = userData.empresa.endereco.cep || "";
-    document.getElementById("logradouro").value = userData.empresa.endereco.logradouro || "";
-    document.getElementById("numero").value = userData.empresa.endereco.numero || "";
-    document.getElementById("bairro").value = userData.empresa.endereco.bairro || "";
-    document.getElementById("complemento").value = userData.empresa.endereco.complemento || "";
-    document.getElementById("cidade").value = userData.empresa.endereco.cidade || "";
-    document.getElementById("estado").value = userData.empresa.endereco.estado || "";
-
-    document.getElementById('diaInicio').value = userData.empresa.horarioFuncionamento.diaInicio;
-    document.getElementById('diaFim').value = userData.empresa.horarioFuncionamento.diaFim;
-    document.getElementById('horaInicio').value = userData.empresa.horarioFuncionamento.horarioAbertura;
-    document.getElementById('horaFim').value = userData.empresa.horarioFuncionamento.horarioFechamento;
+    document.getElementById("logradouro").value =
+      userData.empresa.endereco.logradouro || "";
+    document.getElementById("numero").value =
+      userData.empresa.endereco.numero || "";
+    document.getElementById("bairro").value =
+      userData.empresa.endereco.bairro || "";
+    document.getElementById("complemento").value =
+      userData.empresa.endereco.complemento || "";
+    document.getElementById("cidade").value =
+      userData.empresa.endereco.cidade || "";
+    document.getElementById("estado").value =
+      userData.empresa.endereco.estado || "";
+    document.getElementById("diaInicio").value =
+      userData.empresa.horarioFuncionamento.diaInicio;
+    document.getElementById("diaFim").value =
+      userData.empresa.horarioFuncionamento.diaFim;
+    document.getElementById("horaInicio").value =
+      userData.empresa.horarioFuncionamento.horarioAbertura;
+    document.getElementById("horaFim").value =
+      userData.empresa.horarioFuncionamento.horarioFechamento;
   }
 
   function formatPhoneNumber(phoneNumber) {
@@ -63,6 +73,38 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     return phoneNumber;
   }
+
+  document
+    .getElementById("bloqueio-button")
+    .addEventListener("click", async function () {
+      console.log("Botão de bloqueio clicado!");
+      const diaEscolhido = document.getElementById("diaEscolhido").value;
+      const horaInicioBlock = document.getElementById("horaInicioBlock").value;
+      const horaFimBlock = document.getElementById("horaFimBlock").value;
+      const idUsuario = parseInt(localStorage.getItem("idUsuario"), 10);
+      const data = {
+        dia: diaEscolhido,
+        horaInicio: horaInicioBlock,
+        horaFim: horaFimBlock,
+        usuarioId: idUsuario,
+      };
+      fetch("http://localhost:8080/api/agendamentos/bloquear", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Sucesso:", data);
+          alert("Horário bloqueado com sucesso!");
+        })
+        .catch((error) => {
+          console.error("Erro:", error);
+          alert("Erro ao bloquear horário.");
+        });
+    });
 
   // Adiciona o event listener após o DOM estar carregado
   document
