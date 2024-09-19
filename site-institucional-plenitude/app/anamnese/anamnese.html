@@ -111,41 +111,10 @@
           </section>
         </div>
       </div>
+
       <div class="main-content">
         <div class="center-content">
 
-       <div id="notification" class="notification">
-         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill"
-           viewBox="0 0 16 16">
-           <path
-             d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
-         </svg>
-         <span id="notification-message"></span>
-       </div>
-     </header>
-     <div class="main-content">
-       <div class="center-content">
-         <section class="actions">
-           <a href="../anamnese/anamnese.html"><button id="openFilterModalBtn" class="filter-btn">
-             <img src="../../assets/icons/search.webp " alt="filter"/>
-             Pesquisar Ficha Por Cliente
-           </button></a>
-           <div class="right-actions">
-             <button class="planilha-btn" onclick="showForm2()">
-               <img src="../../assets/icons/createNew.png" alt="spreadsheet" />Perguntas Desativadas
-             </button>
-             <button class="criar-btn" onclick="showForm()">
-               <img src="../../assets/icons/createNew.png" alt="createNew" />
-               <span>Criar Pergunta</span>
-             </button>
-           </div>
-           
-         </section>
-       </div>
-     </div>
-     <div class="main-content">
-       <div class="center-content">
-         
 
 
           <section class="form-section">
@@ -167,7 +136,7 @@
                 <div class="form-group form-input">
                   <label for="descricao">Já fez alguma cirurgia? Se sim, qual?</label>
                   <div class="input-content">
-                    <input type="text" id="cirurgia" name="cirurgia" />
+                    <input type="text" id="inputCirurgia" name="cirurgia" />
 
 
                     <button id="openStatusModalBtn2" class="edit">
@@ -180,7 +149,7 @@
                   <label for="descricao">Faz uso de algum medicamento? Se sim, qual?</label>
 
                   <div class="input-content">
-                    <input type="text" id="descricao" name="descricao" />
+                    <input type="text" id="descricaoMedicamento" />
 
                     <button id="openStatusModalBtn2" class="edit">
                       <img src="../../assets/icons/pen.png" alt="createNew" />
@@ -240,23 +209,23 @@
           </div>
         </div>
 
-     <div id="modalDesativadas" class="modal">
-      <div class="modal-content">
-        <div class="divTopoModal">
-          <h3>Perguntas Desativadas:</h3>
+        <div id="modalDesativadas" class="modal">
+          <div class="modal-content">
+            <div class="divTopoModal">
+              <h3>Perguntas Desativadas:</h3>
+            </div>
+            <div>
+              <label for="descricao">Descrição:</label>
+              <input type="text" id="descricao" placeholder="Descrição da Pergunta"><br>
+              <label for="tipo">Tipo de Resposta:</label>
+              <input type="text" id="tipo" placeholder="Tipo de Resposta">
+            </div>
+            <div>
+              <button onclick="salvarPergunta()" class="btn btn-save">Salvar</button>
+              <button onclick="closeModal()" class="btn btn-no">Cancelar</button>
+            </div>
+          </div>
         </div>
-        <div>
-          <label for="descricao">Descrição:</label>
-          <input type="text" id="descricao" placeholder="Descrição da Pergunta"><br>
-          <label for="tipo">Tipo de Resposta:</label>
-          <input type="text" id="tipo" placeholder="Tipo de Resposta">
-        </div>
-        <div>
-          <button id="save-button" class="btn btn-save" onclick="cadastrarPergunta(), closeModal()">Salvar</button>
-          <button onclick="closeModal()" class="btn btn-no">Cancelar</button>
-        </div>
-      </div>
-    </div>
 
 
 
