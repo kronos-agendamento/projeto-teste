@@ -542,3 +542,30 @@ function showNotification(message, isError = false) {
     notification.classList.remove("show");
   }, 3000);
 }
+
+ // Array com os dias da semana em português
+ const diasSemana = [
+  'Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 
+  'Quinta-feira', 'Sexta-feira', 'Sábado'
+];
+
+// Obtém a data e a hora atuais
+const dataAtual = new Date();
+const diaSemanaAtual = diasSemana[dataAtual.getDay()];
+const horas = dataAtual.getHours();
+const minutos = dataAtual.getMinutes();
+
+// Define a saudação com base no horário atual
+let saudacao;
+if (horas >= 5 && (horas < 12 || (horas === 12 && minutos === 0))) {
+  saudacao = 'Bom dia';
+} else if (horas >= 12 && (horas < 18 || (horas === 18 && minutos === 0))) {
+  saudacao = 'Boa tarde';
+} else {
+  saudacao = 'Boa noite';
+}
+
+// Atualiza o texto da saudação e do dia da semana
+document.getElementById('greeting').textContent = saudacao;
+document.getElementById('currentDay').textContent = diaSemanaAtual;
+
