@@ -39,30 +39,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("senha").value = userData.senha || "";
     document.getElementById("empresa").value = userData.empresa.nome || "";
     document.getElementById("cnpj").value = userData.empresa.cnpj || "";
-    document.getElementById("telefone-empresa").value =
-      userData.empresa.telefone || "";
+    document.getElementById("telefone-empresa").value = userData.empresa.telefone || "";
     document.getElementById("cep").value = userData.empresa.endereco.cep || "";
-    document.getElementById("logradouro").value =
-      userData.empresa.endereco.logradouro || "";
-    document.getElementById("numero").value =
-      userData.empresa.endereco.numero || "";
-    document.getElementById("bairro").value =
-      userData.empresa.endereco.bairro || "";
-    document.getElementById("complemento").value =
-      userData.empresa.endereco.complemento || "";
-    document.getElementById("cidade").value =
-      userData.empresa.endereco.cidade || "";
-    document.getElementById("estado").value =
-      userData.empresa.endereco.estado || "";
+    document.getElementById("logradouro").value = userData.empresa.endereco.logradouro || "";
+    document.getElementById("numero").value = userData.empresa.endereco.numero || "";
+    document.getElementById("bairro").value = userData.empresa.endereco.bairro || "";
+    document.getElementById("complemento").value = userData.empresa.endereco.complemento || "";
+    document.getElementById("cidade").value = userData.empresa.endereco.cidade || "";
+    document.getElementById("estado").value = userData.empresa.endereco.estado || "";
 
-    document.getElementById("diaInicio").value =
-      userData.empresa.horarioFuncionamento.diaInicio;
-    document.getElementById("diaFim").value =
-      userData.empresa.horarioFuncionamento.diaFim;
-    document.getElementById("horaInicio").value =
-      userData.empresa.horarioFuncionamento.horarioAbertura;
-    document.getElementById("horaFim").value =
-      userData.empresa.horarioFuncionamento.horarioFechamento;
+    document.getElementById('diaInicio').value = userData.empresa.horarioFuncionamento.diaInicio;
+    document.getElementById('diaFim').value = userData.empresa.horarioFuncionamento.diaFim;
+    document.getElementById('horaInicio').value = userData.empresa.horarioFuncionamento.horarioAbertura;
+    document.getElementById('horaFim').value = userData.empresa.horarioFuncionamento.horarioFechamento;
   }
 
   function formatPhoneNumber(phoneNumber) {
@@ -75,45 +64,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     return phoneNumber;
   }
 
-  document
-    .getElementById("bloqueio-button")
-    .addEventListener("click", async function () {
-      console.log("Botão de bloqueio clicado!");
-      const diaEscolhido = document.getElementById("diaEscolhido").value;
-      const horaInicioBlock = document.getElementById("horaInicioBlock").value;
-      const horaFimBlock = document.getElementById("horaFimBlock").value;
-      const idUsuario = parseInt(localStorage.getItem("idUsuario"), 10);
-
-      const data = {
-        dia: diaEscolhido,
-        horaInicio: horaInicioBlock,
-        horaFim: horaFimBlock,
-        usuarioId: idUsuario,
-      };
-
-      fetch("http://localhost:8080/api/agendamentos/bloquear", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("Sucesso:", data);
-          alert("Horário bloqueado com sucesso!");
-        })
-        .catch((error) => {
-          console.error("Erro:", error);
-          alert("Erro ao bloquear horário.");
-        });
-    });
-
   // Adiciona o event listener após o DOM estar carregado
   document
     .getElementById("save-usuario-button")
     .addEventListener("click", async function () {
-      console.log("Botão de salvar clicado!");
       const cpf = localStorage.getItem("cpf");
       await atualizarUsuario();
 
@@ -168,7 +122,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     
       // Fazer requisição PATCH para o endpoint de atualização de empresa
       fetch(`http://localhost:8080/api/empresas/${cpf}`, {
-        method: "PATCH", // Alterado de "PUT" para "PATCH"
+        method: "PUT", // Alterado de "PUT" para "PATCH"
         headers: {
           "Content-Type": "application/json",
         },
@@ -200,7 +154,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function formatPhoneNumberToLong(phoneNumber) {
     if (!phoneNumber) return null;
-    const cleaned = phoneNumber.replace(/\D/g, ""); // Remove todos os caracteres não numéricos
+    const cleaned = phoneNumber.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
     return parseInt(cleaned, 10); // Converte para número
   }
 
@@ -305,6 +259,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Exibe mensagem de sucesso
         showNotification("Dados da usuário atualizados com sucesso!");
         
+        // Atualizar localStorage
+        localStorage.setItem('nome', usuarioDTO.nome)
+        localStorage.setItem('instagram', usuarioDTO.instagram)
+
+        // Atualizar a página
+        setTimeout(function() {
+          location.reload();
+      }, 1000);
+
+        
+
         console.log("Usuário atualizado com sucesso!");
       } catch (error) {
         console.error("Erro ao atualizar o usuário:", error);
@@ -321,6 +286,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const nome = localStorage.getItem("nome");
   const instagram = localStorage.getItem("instagram");
+
 
   if (nome && instagram) {
     document.getElementById("userName").textContent = nome;
