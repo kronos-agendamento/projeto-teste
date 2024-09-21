@@ -67,3 +67,4 @@ function saudacao() {
 
 // Chama a função quando a página carregar
 window.onload = saudacao;
+
