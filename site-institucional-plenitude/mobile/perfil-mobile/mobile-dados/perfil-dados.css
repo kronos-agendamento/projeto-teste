@@ -214,4 +214,34 @@
         margin-right: 1rem;
 
     }
+
+
+    #notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #28a745; /* Cor de fundo padrão para sucesso */
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        display: none; /* Mudança aqui para inicialmente ocultar com display: none */
+        align-items: center;
+        z-index: 1000;
+        transition: opacity 0.5s ease-in-out;
+      }
+      
+      #notification.show {
+        display: flex; /* Exibe o elemento quando a classe show for adicionada */
+        opacity: 1;
+      }
+      
+      #notification.error {
+        background-color: #dc3545; /* Cor de fundo para erro */
+      }
+      
+      #notification-message {
+        margin-right: 10px;
+      }
+      
 }
