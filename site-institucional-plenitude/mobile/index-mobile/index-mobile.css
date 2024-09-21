@@ -190,6 +190,36 @@
     }
 
     .box-agendamento {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+    }
+    
+    .icon-agendamento img {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .procedimento-agendamento {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    .button-flex {
+        display: flex;
+        gap: 10px;
+    }
+    
+    .edit img {
+        width: 24px;
+        height: 24px;
+    }
+
+    /* .box-agendamento {
         background-color: #ffeceb;
         margin: 0.55rem;
         padding: 1rem;
@@ -206,7 +236,7 @@
         flex-direction: column;
         justify-content: center;
         flex-grow: 1;
-    }
+    } */
 
     .procedimento-agendamento span{
         font-size: smaller;
