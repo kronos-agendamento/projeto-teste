@@ -20,7 +20,7 @@ function criarAgendamento(agendamento) {
     iconAgendamento.style.border = '2px solid #AD9393';
     iconAgendamento.style.width= '60px'
     iconAgendamento.style.height= '60px'
-    iconAgendamento.style.marginTop= '5px'
+    iconAgendamento.style.marginTop= '7px'
 
     const imgIcon = document.createElement('img');
 
@@ -81,6 +81,10 @@ function criarAgendamento(agendamento) {
     boxAgendamento.appendChild(procedimentoAgendamento);
     boxAgendamento.appendChild(buttonFlex);
 
+    boxAgendamento.addEventListener('click', function() {
+        abrirModalAgendamento(agendamento);
+    });
+
     return boxAgendamento;}
 
 // Função para carregar agendamentos e separá-los em anteriores e futuros
@@ -131,6 +135,55 @@ async function carregarAgendamentos() {
         console.error('Erro ao carregar agendamentos:', error);
     }
 }
+
+function abrirModalAgendamento(agendamento) {
+    // Seleciona o modal pelo ID
+    const modal = document.getElementById('modal-agendamento');
+    
+    // Seleciona os elementos dentro do modal onde você exibirá as informações
+    const modalData = document.getElementById('modal-data');
+    const modalHorario = document.getElementById('modal-horario');
+    const modalDiaSemana = document.getElementById('modal-dia-semana');
+    const modalProcedimento = document.getElementById('modal-procedimento');
+    const modalEspecificacao = document.getElementById('modal-especificacao');
+    const modalProfissional = document.getElementById('modal-profissional');
+    const modalLocal = document.getElementById('modal-local');
+
+    // Função para formatar data e horário
+    const formatarData = (data) => {
+        const optionsData = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+        const optionsHorario = { hour: '2-digit', minute: '2-digit' };
+
+        const dataObj = new Date(data);
+        
+        const diaSemana = dataObj.toLocaleDateString('pt-BR', { weekday: 'long' });
+        const diaMesAno = dataObj.toLocaleDateString('pt-BR', optionsData);
+        const horario = dataObj.toLocaleTimeString('pt-BR', optionsHorario);
+
+        return { diaSemana, diaMesAno, horario };
+    };
+
+    const dataFormatada = formatarData(agendamento.dataAgendamento);
+
+    // Atualiza os elementos com os dados do agendamento clicado
+    // modalDiaSemana.textContent = dataFormatada.diaSemana;
+    modalData.innerHTML = `<strong>Data:</strong> ${dataFormatada.diaMesAno}`;
+    modalHorario.innerHTML = `<strong>Horário:</strong> ${dataFormatada.horario}`;
+    modalProcedimento.innerHTML = `<strong>Procedimento:</strong> ${agendamento.tipoProcedimento}`;
+    modalEspecificacao.innerHTML = `<strong>Especificação:</strong> ${agendamento.especificacaoProcedimento}`;
+    modalProfissional.innerHTML = `<strong>Profissional:</strong> Priscila Rossato`;
+    modalLocal.innerHTML = `<strong>Local:</strong> Vila Prudente`;
+    
+    // Exibe o modal
+    modal.style.display = 'block';
+}
+
+// Função para fechar o modal
+function fecharModal() {
+    const modal = document.getElementById('modal-agendamento');
+    modal.style.display = 'none';
+}
+
 
 // Chama a função ao carregar a página
 document.addEventListener('DOMContentLoaded', carregarAgendamentos);
