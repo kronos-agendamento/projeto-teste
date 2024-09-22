@@ -124,7 +124,15 @@ document
         localStorage.setItem("idUsuario", loginData.idUsuario);
 
         showNotification("Login realizado com sucesso!");
-        window.location.href = "../app/index/index.html";
+
+        // Verifica se o dispositivo está em modo mobile (largura menor que 768px)
+        if (window.innerWidth <= 768) {
+          // Redireciona para a página mobile
+          window.location.href = "../mobile/index-mobile/index-mobile.html";
+        } else {
+          // Redireciona para a página desktop
+          window.location.href = "../app/index/index.html";
+        }
       } else {
         showNotification(
           "Erro ao realizar login. Verifique suas credenciais.",
