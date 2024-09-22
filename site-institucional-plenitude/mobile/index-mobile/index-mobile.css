@@ -180,8 +180,8 @@
     .button-flex {
         display: flex;
         flex-direction: column;
-        justify-content: space-around;
-        margin-left: 1rem;
+        justify-content:space-around;
+        margin-left: 0.1rem;
     }
 
     .button-flex img {
@@ -224,6 +224,8 @@
         background-color: transparent; /* Remove a cor de fundo */
         cursor: pointer; /* Muda o cursor para pointer ao passar o mouse */
         padding: 0; /* Remove o padding extra, se necessário */
+        justify-content: space-around;
+        margin: -2px;
     }
     
     .edit img {

@@ -67,15 +67,15 @@ function criarAgendamento(agendamento) {
 
     if (dataAgendamento >= agora) {
         // Se for no futuro, exibe os botões
-
+    
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('edit');
         deleteButton.setAttribute('data-id', agendamento.idAgendamento); // Adiciona o ID do agendamento
-
+    
         // Adicionar evento ao botão para mostrar o modal de exclusão
         deleteButton.addEventListener('click', function () {
             document.getElementById('deleteModal').style.display = 'flex';
-
+    
             // Captura o ID do agendamento do botão
             const agendamentoId = this.getAttribute('data-id');
             
@@ -96,35 +96,47 @@ function criarAgendamento(agendamento) {
                 .catch(error => {
                     console.error('Erro:', error);
                 });
-
+    
                 // Fechar o modal após confirmar
                 document.getElementById('deleteModal').style.display = 'none';
             });
         });
-
+    
         const deleteImg = document.createElement('img');
         deleteImg.src = '../../assets/icons/excluir.png';
         deleteImg.alt = 'delete';
         deleteButton.appendChild(deleteImg);
-
+    
+        // Declara o botão detalhes antes de usá-lo
+        const detalhesButton = document.createElement('button');
+        detalhesButton.classList.add('edit');
+        const detalhesImg = document.createElement('img');
+        detalhesImg.src = '../../assets/icons/mais-tres-pontos-indicador.png';
+        detalhesImg.alt = 'detalhes';
+        detalhesButton.appendChild(detalhesImg);
+    
         const editButton = document.createElement('button');
         editButton.classList.add('edit');
         const editImg = document.createElement('img');
         editImg.src = '../../assets/icons/pen.png';
         editImg.alt = 'edit';
         editButton.appendChild(editImg);
-
+    
         buttonFlex.appendChild(deleteButton);
+        buttonFlex.appendChild(detalhesButton); // Agora o botão está corretamente definido
         buttonFlex.appendChild(editButton);
+    
+        detalhesButton.addEventListener('click', function() {
+        abrirModalAgendamento(agendamento);
+    });
     }
+    
 
     boxAgendamento.appendChild(iconAgendamento);
     boxAgendamento.appendChild(procedimentoAgendamento);
     boxAgendamento.appendChild(buttonFlex);
 
-    boxAgendamento.addEventListener('click', function() {
-        abrirModalAgendamento(agendamento);
-    });
+    
 
     return boxAgendamento;
 }
@@ -272,13 +284,13 @@ function saudacao() {
     
     let saudacaoTexto;
     let diasDaSemana = [
-        { nome: "Domingo", genero: "um", otimo: "ótimo" },
-        { nome: "Segunda-feira", genero: "uma", otimo: "ótima" },
-        { nome: "Terça-feira", genero: "uma", otimo: "ótima" },
-        { nome: "Quarta-feira", genero: "uma", otimo: "ótima" },
-        { nome: "Quinta-feira", genero: "uma", otimo: "ótima" },
-        { nome: "Sexta-feira", genero: "uma", otimo: "ótima" },
-        { nome: "Sábado", genero: "um", otimo: "ótimo"  }
+        { nome: "domingo", genero: "um", otimo: "ótimo" },
+        { nome: "segunda-feira", genero: "uma", otimo: "ótima" },
+        { nome: "terça-feira", genero: "uma", otimo: "ótima" },
+        { nome: "quarta-feira", genero: "uma", otimo: "ótima" },
+        { nome: "quinta-feira", genero: "uma", otimo: "ótima" },
+        { nome: "sexta-feira", genero: "uma", otimo: "ótima" },
+        { nome: "sábado", genero: "um", otimo: "ótimo"  }
     ];
     
     // Verifica a hora do dia para a saudação
