@@ -94,7 +94,7 @@
                     <h3>Cílios</h3>
                 </div>
                 <div class="box-procedimento">
-                    <div class="icon-procedimento" >
+                    <div class="icon-procedimento">
                         <img src="../../assets/icons/maquiagem-mobile.png" width="100" height="100" alt="">
                     </div>
                     <h3>Maquiagem</h3>
@@ -109,21 +109,10 @@
                     Veja seus próximos procedimentos
                 </span>
             </div>
-            <div class="box-agendamento">
-                <div class="icon-agendamento">
-                    <img src="../../assets/icons/profile.png" width="100" height="100" alt="">
-                </div>
-                <div class="procedimento-agendamento">
-                    <span id="agendamento"> 13/08/2024 as 16:00</span>
-                    <span id="agendamento"> Cilios - Manutenção Volume Russo</span>
-                </div>
-                <div class="button-flex">
-                    <button id="openStatusModalBtn2" class="edit">
-                        <img src="../../assets/icons/excluir.png" alt="createNew" />
-                    </button>
-                    <button id="openStatusModalBtn2" class="edit">
-                        <img src="../../assets/icons/pen.png" alt="createNew" />
-                    </button>
+
+            <div>
+                <div id="agendamentos-futuros" style="margin-top: 20px;">
+                    <!-- Agendamentos futuros serão carregados aqui -->
                 </div>
             </div>
 
@@ -131,34 +120,14 @@
         <section id="historico">
             <div class="historico">
                 <div id="titulo-agendamentos"></div>
-                <h2>Histórico de Agendamentos</h2>
-                <span>
-                    Veja os procedimentos já realizados:
-                </span>
-                <div class="ver-todos">
-                    <a href="#">Ver todos >></a>
-                </div>
-
-                <div id="agendamentos-container">
-                    <!-- Os agendamentos serão adicionados dinamicamente aqui -->
-                </div>
-
-
-                <div class="box-agendamento">
-                    <div class="icon-agendamento">
-                        <img src="../../assets/icons/profile.png" width="100" height="100" alt="">
+                <!-- Container para agendamentos anteriores -->
+                <div>
+                    <h2>Agendamentos Anteriores</h2>
+                    <div class="ver-todos">
+                        <a href="#" id="ver-todos-link">Ver todos >></a>
                     </div>
-                    <div class="procedimento-agendamento">
-                        <span id="agendamento"> 20/06/2024 as 10:00</span>
-                        <span id="agendamento"> Cilios - Colocação Volume Russo</span>
-                    </div>
-                    <div class="button-flex">
-                        <button id="openStatusModalBtn2" class="edit">
-                            <img src="../../assets/icons/excluir.png" alt="createNew" />
-                        </button>
-                        <button id="openStatusModalBtn2" class="edit">
-                            <img src="../../assets/icons/pen.png" alt="createNew" />
-                        </button>
+                    <div id="agendamentos-anteriores">
+                        <!-- Agendamentos anteriores serão carregados aqui -->
                     </div>
                 </div>
             </div>

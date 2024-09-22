@@ -13,11 +13,35 @@ function criarAgendamento(agendamento) {
     const boxAgendamento = document.createElement('div');
     boxAgendamento.classList.add('box-agendamento');
 
+    // Criação do círculo branco com o ícone menor dentro
     const iconAgendamento = document.createElement('div');
-    iconAgendamento.classList.add('icon-agendamento');
+    iconAgendamento.classList.add('icon-procedimento');
+    iconAgendamento.style.backgroundColor = '#ffffff'
+    iconAgendamento.style.border = '2px solid #AD9393';
+    iconAgendamento.style.width= '60px'
+    iconAgendamento.style.height= '60px'
+    iconAgendamento.style.marginTop= '5px'
+
     const imgIcon = document.createElement('img');
-    imgIcon.src = '../../assets/icons/profile.png';
-    imgIcon.alt = '';
+
+    // Verifica o tipo de procedimento e ajusta o ícone
+    switch (agendamento.tipoProcedimento) {
+        case 'Maquiagem':
+            imgIcon.src = '../../assets/icons/maquiagem-mobile.png';
+            break;
+        case 'Cílios':
+            imgIcon.src = '../../assets/icons/cilios-mobile.png';
+            break;
+        case 'Sobrancelha':
+            imgIcon.src = '../../assets/icons/sobrancelha-mobile.png';
+            break;
+        default:
+            imgIcon.src = '../../assets/icons/profile.png'; // Ícone padrão
+            break;
+    }
+
+    imgIcon.alt = agendamento.tipoProcedimento;
+    imgIcon.classList.add('procedimento-icon'); // Classe para ajustar o tamanho do ícone
     iconAgendamento.appendChild(imgIcon);
 
     const procedimentoAgendamento = document.createElement('div');
@@ -25,6 +49,7 @@ function criarAgendamento(agendamento) {
     
     const dataSpan = document.createElement('span');
     dataSpan.textContent = formatarData(agendamento.dataAgendamento);
+    dataSpan.style.fontWeight = 'bold';
     
     const tipoSpan = document.createElement('span');
     tipoSpan.textContent = `${agendamento.tipoProcedimento} - ${agendamento.especificacaoProcedimento}`;
@@ -56,22 +81,52 @@ function criarAgendamento(agendamento) {
     boxAgendamento.appendChild(procedimentoAgendamento);
     boxAgendamento.appendChild(buttonFlex);
 
-    return boxAgendamento;
-}
+    return boxAgendamento;}
 
-// Função para buscar os agendamentos e adicionar ao container
+// Função para carregar agendamentos e separá-los em anteriores e futuros
 async function carregarAgendamentos() {
     try {
         const response = await fetch(apiUrl);
         const agendamentos = await response.json();
 
-        const container = document.getElementById('agendamentos-container');
-        container.innerHTML = '';
+        const containerFuturos = document.getElementById('agendamentos-futuros');
+        const containerAnteriores = document.getElementById('agendamentos-anteriores');
+        const verTodosLink = document.getElementById('ver-todos-link');
+
+        containerFuturos.innerHTML = '';
+        containerAnteriores.innerHTML = '';
+
+        const agora = new Date(); // Data e hora atuais
+        let agendamentosAnteriores = [];
 
         agendamentos.forEach(agendamento => {
+            const dataAgendamento = new Date(agendamento.dataAgendamento);
             const agendamentoElement = criarAgendamento(agendamento);
-            container.appendChild(agendamentoElement);
+
+            if (dataAgendamento >= agora) {
+                // Agendamentos futuros
+                containerFuturos.appendChild(agendamentoElement);
+            } else {
+                // Coletar agendamentos anteriores
+                agendamentosAnteriores.push(agendamentoElement);
+            }
         });
+
+        // Exibir os 3 primeiros agendamentos anteriores
+        agendamentosAnteriores.slice(0, 3).forEach(agendamento => {
+            containerAnteriores.appendChild(agendamento);
+        });
+
+        // Evento do botão "Ver todos"
+        verTodosLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            containerAnteriores.innerHTML = ''; // Limpa os atuais
+            agendamentosAnteriores.forEach(agendamento => {
+                containerAnteriores.appendChild(agendamento); // Exibe todos
+            });
+            verTodosLink.style.display = 'none'; // Esconde o link após exibir todos
+        });
+
     } catch (error) {
         console.error('Erro ao carregar agendamentos:', error);
     }

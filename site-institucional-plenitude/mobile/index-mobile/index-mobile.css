@@ -191,11 +191,13 @@
 
     .box-agendamento {
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
         margin-bottom: 20px;
         padding: 10px;
-        border: 1px solid #ccc;
+        border: 1px solid #AD9393;
+        background-color: #FFF2F7;
         border-radius: 8px;
+        height: min-content;
     }
     
     .icon-agendamento img {
@@ -207,16 +209,25 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
+        width: 150px;
     }
     
     .button-flex {
         display: flex;
         gap: 10px;
     }
+
+    button.edit {
+        border: none; /* Remove a borda */
+        outline: none; /* Remove o contorno ao clicar */
+        background-color: transparent; /* Remove a cor de fundo */
+        cursor: pointer; /* Muda o cursor para pointer ao passar o mouse */
+        padding: 0; /* Remove o padding extra, se necessário */
+    }
     
     .edit img {
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
     }
 
     /* .box-agendamento {
