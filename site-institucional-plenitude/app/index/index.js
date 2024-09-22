@@ -549,23 +549,46 @@ function showNotification(message, isError = false) {
   'Quinta-feira', 'Sexta-feira', 'Sábado'
 ];
 
-// Obtém a data e a hora atuais
-const dataAtual = new Date();
-const diaSemanaAtual = diasSemana[dataAtual.getDay()];
-const horas = dataAtual.getHours();
-const minutos = dataAtual.getMinutes();
 
-// Define a saudação com base no horário atual
-let saudacao;
-if (horas >= 5 && (horas < 12 || (horas === 12 && minutos === 0))) {
-  saudacao = 'Bom dia';
-} else if (horas >= 12 && (horas < 18 || (horas === 18 && minutos === 0))) {
-  saudacao = 'Boa tarde';
-} else {
-  saudacao = 'Boa noite';
+function saudacao() {
+  const saudacaoElement1 = document.getElementById('greeting1');
+  const saudacaoElement2 = document.getElementById('greeting2');
+
+  const dataAtual = new Date();
+  const horaAtual = dataAtual.getHours();
+  const diaSemana = dataAtual.getDay();
+  
+  let saudacaoTexto;
+  let diasDaSemana = [
+      { nome: "Domingo", genero: "um", otimo: "ótimo" },
+      { nome: "Segunda-feira", genero: "uma", otimo: "ótima" },
+      { nome: "Terça-feira", genero: "uma", otimo: "ótima" },
+      { nome: "Quarta-feira", genero: "uma", otimo: "ótima" },
+      { nome: "Quinta-feira", genero: "uma", otimo: "ótima" },
+      { nome: "Sexta-feira", genero: "uma", otimo: "ótima" },
+      { nome: "Sábado", genero: "um", otimo: "ótimo"  }
+  ];
+  
+  // Verifica a hora do dia para a saudação
+  if (horaAtual >= 0 && horaAtual < 12) {
+      saudacaoTexto = "Bom dia";
+  } else if (horaAtual >= 12 && horaAtual < 18) {
+      saudacaoTexto = "Boa tarde";
+  } else {
+      saudacaoTexto = "Boa noite";
+  }
+
+  // Define o gênero correto para o "um/uma" de acordo com o dia da semana
+  const dia = diasDaSemana[diaSemana];
+  const genero = dia.genero;
+  const otimo = dia.otimo;
+
+  // Exibe a saudação com o dia da semana e o gênero correto
+  saudacaoElement1.textContent = `${saudacaoTexto}`;
+  saudacaoElement2.textContent = `Tenha ${genero} ${otimo} ${dia.nome}!`;
+
 }
 
-// Atualiza o texto da saudação e do dia da semana
-document.getElementById('greeting').textContent = saudacao;
-document.getElementById('currentDay').textContent = diaSemanaAtual;
+window.onload = saudacao;
+
 
