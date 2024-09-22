@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
 import sptech.projetojpa1.domain.Agendamento
 import sptech.projetojpa1.domain.Usuario
+import sptech.projetojpa1.dto.agendamento.AgendamentoDTO
 import java.time.LocalDateTime
 
 @Repository
@@ -35,4 +36,18 @@ interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
     ): List<Agendamento>
 
     fun deleteAllByUsuario(usuario: Usuario)
+
+    @Query("""
+SELECT new sptech.projetojpa1.dto.agendamento.AgendamentoDTO(
+        u.nome, a.usuario.id, a.dataHorario, a.tipoAgendamento, 
+        p.tipo, e.especificacao
+    )
+    FROM Agendamento a
+    JOIN a.usuario u
+    JOIN a.procedimento p
+    JOIN a.especificacao e
+    WHERE a.usuario.id = :usuarioId
+    ORDER BY a.dataHorario DESC
+    """)
+    fun listarAgendamentosPorUsuario(usuarioId: Int): List<AgendamentoDTO>
 }

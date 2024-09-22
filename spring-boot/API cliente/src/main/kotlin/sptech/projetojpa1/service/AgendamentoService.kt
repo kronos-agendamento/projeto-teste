@@ -2,6 +2,7 @@ package sptech.projetojpa1.service
 
 import org.springframework.stereotype.Service
 import sptech.projetojpa1.domain.Agendamento
+import sptech.projetojpa1.dto.agendamento.AgendamentoDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoRequestDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoResponseDTO
 import sptech.projetojpa1.repository.*
@@ -277,5 +278,9 @@ class AgendamentoService(
 
     fun countUsuariosWithStatusUm(): Int {
         return usuarioRepository.countByStatus(true)
+    }
+
+    fun listarAgendamentosPorUsuario(usuarioId: Int): List<AgendamentoDTO> {
+        return agendamentoRepository.listarAgendamentosPorUsuario(usuarioId)
     }
 }
