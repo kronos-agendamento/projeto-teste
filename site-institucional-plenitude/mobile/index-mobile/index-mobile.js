@@ -1,5 +1,6 @@
 // Usar o idUsuario dinamicamente na URL do endpoint
 const usuarioId = localStorage.getItem('idUsuario');
+const agendamentoId = localStorage.getItem('idAgendamento')
 const apiUrl = `http://localhost:8080/api/agendamentos/agendamentos/usuario/${usuarioId}`;
 
 // Função para formatar a data
@@ -18,9 +19,9 @@ function criarAgendamento(agendamento) {
     iconAgendamento.classList.add('icon-procedimento');
     iconAgendamento.style.backgroundColor = '#ffffff'
     iconAgendamento.style.border = '2px solid #AD9393';
-    iconAgendamento.style.width= '60px'
-    iconAgendamento.style.height= '60px'
-    iconAgendamento.style.marginTop= '7px'
+    iconAgendamento.style.width= '60px';
+    iconAgendamento.style.height= '60px';
+    iconAgendamento.style.marginTop= '7px';
 
     const imgIcon = document.createElement('img');
 
@@ -60,22 +61,62 @@ function criarAgendamento(agendamento) {
     const buttonFlex = document.createElement('div');
     buttonFlex.classList.add('button-flex');
 
-    const deleteButton = document.createElement('button');
-    deleteButton.classList.add('edit');
-    const deleteImg = document.createElement('img');
-    deleteImg.src = '../../assets/icons/excluir.png';
-    deleteImg.alt = 'delete';
-    deleteButton.appendChild(deleteImg);
+    // Verifica se o agendamento é no futuro
+    const dataAgendamento = new Date(agendamento.dataAgendamento);
+    const agora = new Date();
 
-    const editButton = document.createElement('button');
-    editButton.classList.add('edit');
-    const editImg = document.createElement('img');
-    editImg.src = '../../assets/icons/pen.png';
-    editImg.alt = 'edit';
-    editButton.appendChild(editImg);
+    if (dataAgendamento >= agora) {
+        // Se for no futuro, exibe os botões
 
-    buttonFlex.appendChild(deleteButton);
-    buttonFlex.appendChild(editButton);
+        const deleteButton = document.createElement('button');
+        deleteButton.classList.add('edit');
+        deleteButton.setAttribute('data-id', agendamento.idAgendamento); // Adiciona o ID do agendamento
+
+        // Adicionar evento ao botão para mostrar o modal de exclusão
+        deleteButton.addEventListener('click', function () {
+            document.getElementById('deleteModal').style.display = 'flex';
+
+            // Captura o ID do agendamento do botão
+            const agendamentoId = this.getAttribute('data-id');
+            
+            // Confirmação de exclusão no modal
+            document.getElementById('confirmDeleteButton').addEventListener('click', function () {
+                // Usa o ID capturado na URL
+                fetch(`http://localhost:8080/api/agendamentos/excluir/${agendamentoId}`, {
+                    method: 'DELETE',
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Agendamento excluído com sucesso!');
+                        location.reload(); 
+                    } else {
+                        alert('Erro ao excluir o agendamento.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                });
+
+                // Fechar o modal após confirmar
+                document.getElementById('deleteModal').style.display = 'none';
+            });
+        });
+
+        const deleteImg = document.createElement('img');
+        deleteImg.src = '../../assets/icons/excluir.png';
+        deleteImg.alt = 'delete';
+        deleteButton.appendChild(deleteImg);
+
+        const editButton = document.createElement('button');
+        editButton.classList.add('edit');
+        const editImg = document.createElement('img');
+        editImg.src = '../../assets/icons/pen.png';
+        editImg.alt = 'edit';
+        editButton.appendChild(editImg);
+
+        buttonFlex.appendChild(deleteButton);
+        buttonFlex.appendChild(editButton);
+    }
 
     boxAgendamento.appendChild(iconAgendamento);
     boxAgendamento.appendChild(procedimentoAgendamento);
@@ -85,7 +126,9 @@ function criarAgendamento(agendamento) {
         abrirModalAgendamento(agendamento);
     });
 
-    return boxAgendamento;}
+    return boxAgendamento;
+}
+
 
 // Função para carregar agendamentos e separá-los em anteriores e futuros
 async function carregarAgendamentos() {
@@ -183,6 +226,8 @@ function fecharModal() {
     const modal = document.getElementById('modal-agendamento');
     modal.style.display = 'none';
 }
+
+
 
 
 // Chama a função ao carregar a página

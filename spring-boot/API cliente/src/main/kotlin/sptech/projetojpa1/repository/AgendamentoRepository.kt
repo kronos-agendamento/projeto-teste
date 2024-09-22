@@ -39,7 +39,7 @@ interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
 
     @Query("""
 SELECT new sptech.projetojpa1.dto.agendamento.AgendamentoDTO(
-        u.nome, a.usuario.id, a.dataHorario, a.tipoAgendamento, 
+        u.nome, a.idAgendamento, a.usuario.id, a.dataHorario, a.tipoAgendamento, 
         p.tipo, e.especificacao
     )
     FROM Agendamento a

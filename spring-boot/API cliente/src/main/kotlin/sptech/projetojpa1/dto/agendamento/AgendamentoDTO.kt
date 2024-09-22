@@ -4,6 +4,7 @@ import java.time.LocalDateTime
 
 data class AgendamentoDTO (
     val nomeUsuario: String,
+    val idAgendamento: Int,
     val usuarioId: Int,
     val dataAgendamento: LocalDateTime,
     val tipoAgendamento: String,
