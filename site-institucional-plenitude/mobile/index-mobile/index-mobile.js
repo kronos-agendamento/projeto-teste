@@ -19,9 +19,9 @@ function criarAgendamento(agendamento) {
     iconAgendamento.classList.add('icon-procedimento');
     iconAgendamento.style.backgroundColor = '#ffffff'
     iconAgendamento.style.border = '2px solid #AD9393';
-    iconAgendamento.style.width= '60px';
-    iconAgendamento.style.height= '60px';
-    iconAgendamento.style.marginTop= '7px';
+    iconAgendamento.style.width= '80px';
+    iconAgendamento.style.height= '80px';
+    iconAgendamento.style.marginTop= '10px';
 
     const imgIcon = document.createElement('img');
 
@@ -51,15 +51,25 @@ function criarAgendamento(agendamento) {
     const dataSpan = document.createElement('span');
     dataSpan.textContent = formatarData(agendamento.dataAgendamento);
     dataSpan.style.fontWeight = 'bold';
+    dataSpan.style.fontSize = '15px'
     
     const tipoSpan = document.createElement('span');
     tipoSpan.textContent = `${agendamento.tipoProcedimento} - ${agendamento.especificacaoProcedimento}`;
+    tipoSpan.style.fontSize = '13px'
 
     procedimentoAgendamento.appendChild(dataSpan);
     procedimentoAgendamento.appendChild(tipoSpan);
 
     const buttonFlex = document.createElement('div');
     buttonFlex.classList.add('button-flex');
+
+     // Declara o botão detalhes antes de usá-lo
+     const detalhesButton = document.createElement('button');
+     detalhesButton.classList.add('edit');
+     const detalhesImg = document.createElement('img');
+     detalhesImg.src = '../../assets/icons/mais-tres-pontos-indicador.png';
+     detalhesImg.alt = 'detalhes';
+     detalhesButton.appendChild(detalhesImg);
 
     // Verifica se o agendamento é no futuro
     const dataAgendamento = new Date(agendamento.dataAgendamento);
@@ -123,7 +133,7 @@ function criarAgendamento(agendamento) {
         editButton.appendChild(editImg);
     
         buttonFlex.appendChild(deleteButton);
-        buttonFlex.appendChild(detalhesButton); // Agora o botão está corretamente definido
+        buttonFlex.appendChild(detalhesButton); 
         buttonFlex.appendChild(editButton);
     
         detalhesButton.addEventListener('click', function() {
@@ -239,6 +249,11 @@ function fecharModal() {
     modal.style.display = 'none';
 }
 
+// Função para fechar o modal
+function fecharModalDecisao() {
+    const modal = document.getElementById('deleteModal');
+    modal.style.display = 'none';
+}
 
 
 

@@ -330,6 +330,8 @@
         color: #000;
         cursor: pointer;
         font-weight: bold;
+        text-decoration: none;
+        font-style: italic;
     }
 
     .historico {
@@ -397,6 +399,30 @@
   
   button {
     margin: 10px;
+  }
+
+  #confirmDeleteButton{
+    font-family: Poppins, sans-serif;
+    background-color: #28a745;
+    width: 60px;
+    height: 40px;
+    font-size: 16px;
+    border: 1px solid #ad939300;
+    border-radius: 2px;
+    font-weight: bold;
+    color: #fefefe;
+  }
+
+  #cancelDeleteButton{
+    font-family: Poppins, sans-serif;
+    background-color: #c82333;
+    width: 90px;
+    height: 40px;
+    font-size: 16px;
+    border: 1px solid #ad939300;
+    border-radius: 2px;
+    font-weight: bold;
+    color: #fefefe;
   }
   
 
