@@ -131,24 +131,29 @@ function criarAgendamento(agendamento) {
         editImg.src = '../../assets/icons/pen.png';
         editImg.alt = 'edit';
         editButton.appendChild(editImg);
+
+        editButton.addEventListener('click', function() {
+            const agendamentoId = agendamento.idAgendamento; // Pega o ID do agendamento
+            console.log(`ID DO AGENDAMENTO: ${agendamentoId}`);
+            window.location.href = `reagendarForms/reagendar-mobile.html?id=${agendamentoId}`; // Redireciona para a nova página com o ID na URL
+        });
+        
+        buttonFlex.appendChild(editButton);
     
         buttonFlex.appendChild(deleteButton);
         buttonFlex.appendChild(detalhesButton); 
-        buttonFlex.appendChild(editButton);
     
         detalhesButton.addEventListener('click', function() {
         abrirModalAgendamento(agendamento);
+
     });
     }
-    
 
     boxAgendamento.appendChild(iconAgendamento);
     boxAgendamento.appendChild(procedimentoAgendamento);
     boxAgendamento.appendChild(buttonFlex);
 
-    
-
-    return boxAgendamento;
+    return boxAgendamento; 
 }
 
 
