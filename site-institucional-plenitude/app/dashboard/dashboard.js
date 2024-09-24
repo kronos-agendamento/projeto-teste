@@ -47,52 +47,58 @@ document.addEventListener('DOMContentLoaded', function () {
             clientesFidelizados: '/usuarios/clientes-fidelizados-ultimos-tres-meses',
             agendamentosRealizados: '/api/agendamentos/agendamentos-realizados',
 
-            // Gráfico 1
+            // Gráfico 1 - Gerencial
             listarTop3Indicacoes: '/usuarios/buscar-top3-indicacoes',
             listarNumeroIndicacoes: '/usuarios/buscar-numeros-indicacoes',
 
-            // Gráfico 2
+            // Gráfico 2 - Gerencial
             listarClientesConcluidosUltimosCincoMeses: '/usuarios/clientes-concluidos-ultimos-cinco-meses',
             listarClientesFidelizadosUltimosCincoMeses: '/usuarios/clientes-fidelizados-ultimos-cinco-meses',
 
-            // Gráfico 33
+            // Gráfico 33 - Gerencial
             listarProcedimentosBemAvaliados: '/api/procedimentos/listar-bem-avaliados',
             buscarMediaNotas: '/api/feedbacks/buscar-media-notas',
 
-            // Gráfico 4
+            // Gráfico 4 - Gerencial
             receitaAcumulada: '/api/especificacoes/receita-acumulada',
             receitaAcumuladaLabels: '/api/especificacoes/receita-acumulada-labels',
 
-            // Gráfico 2
+            // Gráfico 2 - Gerencial
             agendamentosProcedimentosLabels: '/api/especificacoes/nomes',
             agendamentosProcedimentos: '/api/procedimentos/quantidade-agendamentos-procedimentos',
+
+            // Gráfico 1 - Usabilidade
+            ultimosAgendamentosRealizados5Meses: '/api/agendamentos/agendamentos-realizados-ultimos-cinco-meses'
         };
 
-        // Chamadas para atualizar os KPIs de clientes
+        // Chamadas para atualizar os KPIs de clientes - Gerencial
         fetchData(endpoints.clientesAtivos, updateClientesAtivos);
         fetchData(endpoints.clientesInativos, updateClientesInativos);
         fetchData(endpoints.clientesFidelizados, updateClientesFidelizados);
         fetchData(endpoints.agendamentosRealizados, updateAgendamentosRealizados);
 
-        // Chamadas para atualizar os dados do gráfico 1
+        // Chamadas para atualizar os dados do gráfico 1 - Gerencial
         fetchData(endpoints.listarTop3Indicacoes, updateListarTop3Indicacoes);
         fetchData(endpoints.listarNumeroIndicacoes, updateChart1)
 
-        // Chamadas para atualizar os dados do gráfico 2
+        // Chamadas para atualizar os dados do gráfico 2 - Gerencial
         fetchData(endpoints.listarClientesConcluidosUltimosCincoMeses, updateChart2_1);
         fetchData(endpoints.listarClientesFidelizadosUltimosCincoMeses, updateChart2_2);
 
-        // Chamadas para atualizar os dados do gráfico 3
+        // Chamadas para atualizar os dados do gráfico 3 - Gerencial
         fetchData(endpoints.receitaAcumuladaLabels, updateReceitaAcumuladaLabels);
         fetchData(endpoints.receitaAcumulada, updateChart3);
 
-        // Chamadas para atualizar os dados do gráfico 33
+        // Chamadas para atualizar os dados do gráfico 33 - Gerencial
         fetchData(endpoints.listarProcedimentosBemAvaliados, updateChart33Labels)
         fetchData(endpoints.buscarMediaNotas, updateChart33);
 
-        // Chamadas para atualizar os dados do gráfico 4
+        // Chamadas para atualizar os dados do gráfico 4 - Gerencial
         fetchData(endpoints.agendamentosProcedimentosLabels, updateChart4Labels);
         fetchData(endpoints.agendamentosProcedimentos, updateChart4);
+
+        // Chamada para atualizar os dados do gráfico 1 - Usabilidade
+        fetchData(endpoints.ultimosAgendamentosRealizados5Meses, updateChartUsabilidade1)
 
 
     }
@@ -142,6 +148,13 @@ document.addEventListener('DOMContentLoaded', function () {
     let labelsChart1 = null;
     const ctx1 = document.getElementById('chart1').getContext('2d');
     let chart1;
+
+    let dataChartUsabilidade1 = null;
+    let labelsChartUsabilidade1 = lastFiveMonths;
+    const ctxUsabilidade1 = document.getElementById('chartUsabilidade1').getContext('2d');
+    let chartUsabilidade1;
+
+    
 
 
     // Funções para atualização
@@ -199,10 +212,14 @@ document.addEventListener('DOMContentLoaded', function () {
             createChart4();
         }
     }
+    function updateChartUsabilidade1(data) {
+        dataChartUsabilidade1 = data
+        createChartUsabilidade1();
+    }
 
 
 
-    // Criação de gráficos
+    // Criação de gráficos - Gerencial
     function createChart1() {
         if (!dataChart1 || !labelsChart1) return;
 
@@ -403,6 +420,60 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
+    // Criação de gráficos - Usabilidade
+    function createChartUsabilidade1() {
+        if (!dataChartUsabilidade1  || !labelsChartUsabilidade1) return;
+
+        if (chartUsabilidade1) chartUsabilidade1.destroy();
+
+        chartUsabilidade1 = new Chart(ctxUsabilidade1, {
+            type: 'bar',
+            data: {
+                labels: labelsChartUsabilidade1,
+                datasets: [{
+                    label: 'Qtd Agendamentos',
+                    data: dataChartUsabilidade1,
+                    backgroundColor: ['#D2135D', '#E84E8A', '#F59DBF'],
+                    borderColor: '#D2135D',
+                    fill: false
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                // plugins: {
+                //     subtitle: {
+                //         display: true,
+                //         text: '',
+                //         font: {
+                //             size: 14
+                //         }
+                //     },
+                //     legend: {
+                //         display: true, // Mostra a legenda
+                //        // position: 'top', // Posição da legenda (topo, neste caso)
+                //         align: 'center', // Alinha a legenda ao centro
+                //         title: {
+                //             display: true
+                //         }
+                //     },
+                //     title: {
+                //         display: true
+                //     }
+                // },
+                // scales: {
+                //     y: {
+                //         beginAtZero: true
+                //     }
+                // }
+            }
+        });
+    }
+
+
+
+
 
 
     // Função para formatar o número exibido

@@ -28,6 +28,22 @@ interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
     )
     fun findAgendamentosConcluidosUltimoTrimestre(): Int
 
+    @Query(
+        nativeQuery = true, value = """ 
+        SELECT 
+                COUNT(*) AS quantidade_agendamentos
+            FROM 
+                agendamento
+            WHERE 
+                data_horario >= DATE_SUB(CURDATE(), INTERVAL 5 MONTH)
+            GROUP BY 
+                YEAR(data_horario), MONTH(data_horario)
+            ORDER BY 
+                YEAR(data_horario) DESC, MONTH(data_horario) DESC;
+        """
+    )
+    fun findAgendamentosConcluidosUltimos5Meses(): List<Int>
+
     @Query("SELECT a FROM Agendamento a WHERE a.dataHorario BETWEEN :dataInicio AND :dataFim")
     fun findByDataHorarioBetween(
         @Param("dataInicio") dataInicio: LocalDateTime,

@@ -45,6 +45,10 @@ class AgendamentoService(
         return agendamentoRepository.findAgendamentosConcluidosUltimoTrimestre()
     }
 
+    fun agendamentosRealizadosUltimos5Meses(): List<Int> {
+        return agendamentoRepository.findAgendamentosConcluidosUltimos5Meses()
+    }
+
     fun listarHorariosDisponiveis(
         empresaId: Int,
         data: LocalDate
