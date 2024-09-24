@@ -54,7 +54,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       userData.empresa.endereco.cidade || "";
     document.getElementById("estado").value =
       userData.empresa.endereco.estado || "";
-
     document.getElementById("diaInicio").value =
       userData.empresa.horarioFuncionamento.diaInicio;
     document.getElementById("diaFim").value =
@@ -83,14 +82,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       const horaInicioBlock = document.getElementById("horaInicioBlock").value;
       const horaFimBlock = document.getElementById("horaFimBlock").value;
       const idUsuario = parseInt(localStorage.getItem("idUsuario"), 10);
-
       const data = {
         dia: diaEscolhido,
         horaInicio: horaInicioBlock,
         horaFim: horaFimBlock,
         usuarioId: idUsuario,
       };
-
       fetch("http://localhost:8080/api/agendamentos/bloquear", {
         method: "POST",
         headers: {
@@ -113,7 +110,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   document
     .getElementById("save-usuario-button")
     .addEventListener("click", async function () {
-      console.log("Botão de salvar clicado!");
       const cpf = localStorage.getItem("cpf");
       await atualizarUsuario();
 
@@ -168,7 +164,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     
       // Fazer requisição PATCH para o endpoint de atualização de empresa
       fetch(`http://localhost:8080/api/empresas/${cpf}`, {
-        method: "PATCH", // Alterado de "PUT" para "PATCH"
+        method: "PUT", // Alterado de "PUT" para "PATCH"
         headers: {
           "Content-Type": "application/json",
         },
@@ -200,7 +196,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function formatPhoneNumberToLong(phoneNumber) {
     if (!phoneNumber) return null;
-    const cleaned = phoneNumber.replace(/\D/g, ""); // Remove todos os caracteres não numéricos
+    const cleaned = phoneNumber.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
     return parseInt(cleaned, 10); // Converte para número
   }
 
@@ -305,6 +301,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Exibe mensagem de sucesso
         showNotification("Dados da usuário atualizados com sucesso!");
         
+        // Atualizar localStorage
+        localStorage.setItem('nome', usuarioDTO.nome)
+        localStorage.setItem('instagram', usuarioDTO.instagram)
+
+        // Atualizar a página
+        setTimeout(function() {
+          location.reload();
+      }, 1000);
+
+        
+
         console.log("Usuário atualizado com sucesso!");
       } catch (error) {
         console.error("Erro ao atualizar o usuário:", error);
@@ -321,6 +328,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const nome = localStorage.getItem("nome");
   const instagram = localStorage.getItem("instagram");
+
 
   if (nome && instagram) {
     document.getElementById("userName").textContent = nome;
