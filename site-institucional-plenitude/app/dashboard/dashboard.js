@@ -41,11 +41,17 @@ document.addEventListener('DOMContentLoaded', function () {
     // Atualiza os KPIs dos clientes ativos, inativos e fidelizados
     function updateKPIs() {
         const endpoints = {
-            // KPI's
+            
+
+
+            // KPI's - Gerencial
             clientesAtivos: '/usuarios/clientes-ativos',
             clientesInativos: '/usuarios/clientes-inativos',
             clientesFidelizados: '/usuarios/clientes-fidelizados-ultimos-tres-meses',
             agendamentosRealizados: '/api/agendamentos/agendamentos-realizados',
+
+            // KPI's - Usabilidade
+            tempoAgemdamento: ''
 
             // Gráfico 1 - Gerencial
             listarTop3Indicacoes: '/usuarios/buscar-top3-indicacoes',

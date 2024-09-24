@@ -26,6 +26,20 @@ interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
                 s.nome = 'Concluído'
                 AND a.data_horario >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH);"""
     )
+    fun tempoParaAgendar(): List<Int>
+
+    @Query(
+        nativeQuery = true, value = """ 
+        SELECT
+                COUNT(a.id_agendamento) AS quantidade_concluidos
+                FROM
+                agendamento a
+                INNER JOIN
+                status s ON a.fk_status = s.id_status_agendamento
+                WHERE
+                s.nome = 'Concluído'
+                AND a.data_horario >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH);"""
+    )
     fun findAgendamentosConcluidosUltimoTrimestre(): Int
 
     @Query(

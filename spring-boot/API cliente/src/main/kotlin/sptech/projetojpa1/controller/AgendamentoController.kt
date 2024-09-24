@@ -165,6 +165,12 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
         return ResponseEntity.ok(quantidadeConcluidos)
     }
 
+    @GetMapping("/tempo-para-agendar")
+    fun tempoParaAgendar(): ResponseEntity<List<Int>> {
+        val tempoPara = agendamentoService.tempoParaAgendar()
+        return ResponseEntity.ok(tempoPara)
+    }
+
     @GetMapping("/agendamentos-realizados-ultimos-cinco-meses")
     fun agendamentosRealizadosUltimos5Meses(): ResponseEntity<List<Int>> {
         val quantidadeConcluidos = agendamentoService.agendamentosRealizadosUltimos5Meses()

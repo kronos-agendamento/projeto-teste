@@ -134,6 +134,7 @@ CREATE TABLE agendamento (
     id_agendamento INT AUTO_INCREMENT PRIMARY KEY,
     data_horario DATETIME NOT NULL,
     tipo_agendamento VARCHAR(255) NOT NULL,
+    tempo_para_agendar INT,
     fk_usuario INT NOT NULL,
     fk_procedimento INT NOT NULL,
     fk_especificacao_procedimento INT NOT NULL,
@@ -143,6 +144,7 @@ CREATE TABLE agendamento (
     FOREIGN KEY (fk_especificacao_procedimento) REFERENCES especificacao(id_especificacao_procedimento),
     FOREIGN KEY (fk_status) REFERENCES status(id_status_agendamento)
 );
+
 
 CREATE TABLE feedback (
     id_feedback INT AUTO_INCREMENT PRIMARY KEY,

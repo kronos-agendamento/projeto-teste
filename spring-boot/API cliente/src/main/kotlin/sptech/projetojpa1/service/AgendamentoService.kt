@@ -45,6 +45,10 @@ class AgendamentoService(
         return agendamentoRepository.findAgendamentosConcluidosUltimoTrimestre()
     }
 
+    fun tempoParaAgendar(): List<Int> {
+        return agendamentoRepository.tempoParaAgendar()
+    }
+
     fun agendamentosRealizadosUltimos5Meses(): List<Int> {
         return agendamentoRepository.findAgendamentosConcluidosUltimos5Meses()
     }
