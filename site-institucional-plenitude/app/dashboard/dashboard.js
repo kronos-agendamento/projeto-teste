@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
             agendamentosRealizados: '/api/agendamentos/agendamentos-realizados',
 
             // KPI's - Usabilidade
-            tempoAgemdamento: '/api/agendamentos/tempo-para-agendar',
+            tempoAgendamento: '/api/agendamentos/tempo-para-agendar',
 
             // Gráfico 1 - Gerencial
             listarTop3Indicacoes: '/usuarios/buscar-top3-indicacoes',
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchData(endpoints.agendamentosRealizados, updateAgendamentosRealizados);
 
         // Chamadas para atualizar os KPI's de - Usabilidade
-        fetchData(endpoints.tempoAgemdamento, updateTempoAgendamento);
+        fetchData(endpoints.tempoAgendamento, updateTempoAgendamento);
 
         // Chamadas para atualizar os dados do gráfico 1 - Gerencial
         fetchData(endpoints.listarTop3Indicacoes, updateListarTop3Indicacoes);
@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Funções que atualizam as KPI's de usabilidade
     function updateTempoAgendamento(data) {
         const tempoMedioCount = document.getElementById('tempo-medio-conclusao');
-        tempoMedioCount.textContent = formatarNumero(data);
+        tempoMedioCount.textContent = data;
     }
 
     // Constantes dos gráficos
@@ -494,6 +494,8 @@ document.addEventListener('DOMContentLoaded', function () {
     function formatarNumero(valor) {
         return valor.toFixed(0); // Formata o número para exibir como inteiro
     }
+
+    
 
     // Atualiza os KPIs e gráficos em intervalos regulares (opcional)
     setInterval(updateKPIs, 30000); // Exemplo de atualização a cada 30 segundos
