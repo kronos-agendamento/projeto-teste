@@ -242,4 +242,21 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
     fun countUsuariossWithStatusUm(): Int {
         return agendamentoService.countUsuariosWithStatusUm()
     }
+
+    @Operation(
+        summary = "Conta a quantidade de dias entre o ultimo agendamento e a data atual",
+        description = "Retorna a quantidade de dias entre o ultimo agendamento e a data atual."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Retorna a quantidade de dias entre o ultimo agendamento e a data atual com sucesso"
+            )
+        ]
+    )
+    @GetMapping("/count-dias-ultimo-agendamento/{idUsuario}")
+    fun countDiasUltimoAgendamento(@PathVariable idUsuario: Int): Int {
+        return agendamentoService.countDiasUltimoAgendamento(idUsuario)
+    }
 }

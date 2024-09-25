@@ -35,4 +35,8 @@ interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
     ): List<Agendamento>
 
     fun deleteAllByUsuario(usuario: Usuario)
+
+    @Query("SELECT DATEDIFF(NOW(), dataHorario) FROM Agendamento WHERE usuario = :usuario AND dataHorario IS NOT NULL AND dataHorario <= NOW() ORDER BY dataHorario DESC LIMIT 1")
+    fun countDiasUltimoAgendamento(@Param("usuario") usuario: Usuario): Int?
 }
+

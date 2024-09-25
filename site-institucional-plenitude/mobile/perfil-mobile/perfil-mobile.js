@@ -65,5 +65,37 @@ function saudacao() {
 
 }
 
-// Chama a função quando a página carregar
-window.onload = saudacao;
+ // Função que faz a chamada à API e insere o resultado no <h2>
+ async function gapUltimoAgendamento() {
+    let idUsuario = localStorage.getItem('idUsuario');
+    
+    try {
+        const response = await fetch(`http://localhost:8080/api/agendamentos/count-dias-ultimo-agendamento/${idUsuario}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (response.ok) {
+
+            const data = await response.json();
+
+            document.querySelector('.descricao-aviso h2').textContent = `${data} dias`;
+
+            localStorage.setItem("QtdDiaUltimoAgendamento", data);
+        } else {
+            console.error("Erro na resposta:", response.status);
+            document.querySelector('.descricao-aviso h2').textContent = 'Erro ao obter dados';
+        }
+    } catch (error) {
+        console.error("Erro na requisição:", error);
+        document.querySelector('.descricao-aviso h2').textContent = 'Erro ao obter dados';
+    }
+}
+
+// Chama ambas as funções ao carregar a página
+window.onload = function() {
+    saudacao();
+    gapUltimoAgendamento();
+};
