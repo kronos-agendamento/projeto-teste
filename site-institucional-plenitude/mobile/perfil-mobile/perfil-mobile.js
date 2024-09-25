@@ -99,3 +99,25 @@ window.onload = function() {
     saudacao();
     gapUltimoAgendamento();
 };
+
+function getDiaMaisAgendado(idUsuario) {
+    // Coloque o endereço completo da API
+    fetch(`http://localhost:8080/api/agendamentos/dia-mais-agendado/${idUsuario}`)  // Certifique-se de que a porta e o caminho estão corretos
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro na requisição, status ' + response.status);
+            }
+            return response.text();  // Lendo a resposta como texto
+        })
+        .then(data => {
+            // Atualiza o span com o dia mais agendado
+            document.getElementById('dMaisAgendados').innerText = data;
+        })
+        .catch(error => {
+            console.error('Erro ao buscar o dia mais agendado:', error);
+            document.getElementById('dMaisAgendados').innerText = 'Erro ao carregar';
+        });
+}
+
+// Chama a função passando o idUsuario (substitua pelo ID real)
+getDiaMaisAgendado(1);  // Ajuste o ID dinamicamente conforme necessário

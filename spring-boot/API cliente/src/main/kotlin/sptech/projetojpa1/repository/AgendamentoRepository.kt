@@ -38,5 +38,26 @@ interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
 
     @Query("SELECT DATEDIFF(NOW(), dataHorario) FROM Agendamento WHERE usuario = :usuario AND dataHorario IS NOT NULL AND dataHorario <= NOW() ORDER BY dataHorario DESC LIMIT 1")
     fun countDiasUltimoAgendamento(@Param("usuario") usuario: Usuario): Int?
+
+    @Query(
+        """
+    SELECT CASE DAYOFWEEK(a.data_horario)
+               WHEN 1 THEN 'Domingo'
+               WHEN 2 THEN 'Segunda'
+               WHEN 3 THEN 'Terça'
+               WHEN 4 THEN 'Quarta'
+               WHEN 5 THEN 'Quinta'
+               WHEN 6 THEN 'Sexta'
+               WHEN 7 THEN 'Sábado'
+           END AS DiaSemana
+    FROM agendamento a
+    WHERE a.fk_usuario = :idUsuario
+    GROUP BY DiaSemana
+    ORDER BY COUNT(*) DESC
+    LIMIT 1
+""", nativeQuery = true
+    )
+    fun buscarDiaMaisAgendadoPorUsuario(idUsuario: Int): String
 }
+
 

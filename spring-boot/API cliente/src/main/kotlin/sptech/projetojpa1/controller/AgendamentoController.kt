@@ -259,4 +259,27 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
     fun countDiasUltimoAgendamento(@PathVariable idUsuario: Int): Int {
         return agendamentoService.countDiasUltimoAgendamento(idUsuario)
     }
+
+    @Operation(
+        summary = "Retorna o dia mais agendado da semana",
+        description = "Mostra o dia da semana mais agendado de acordo com cada usuario."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Retorna o dia mais agendado da semana"
+            )
+        ]
+    )
+
+    @GetMapping("/dia-mais-agendado/{idUsuario}")
+    fun getDiaMaisAgendadoPorUsuario(@PathVariable idUsuario: Int): String {
+        return agendamentoService.buscarDiaMaisAgendadoPorUsuario(idUsuario)
+    }
 }
+
+
+
+
+

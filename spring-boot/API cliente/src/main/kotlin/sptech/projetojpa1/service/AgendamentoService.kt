@@ -285,5 +285,9 @@ class AgendamentoService(
             .orElseThrow { IllegalArgumentException("Usuário não encontrado") }
         return agendamentoRepository.countDiasUltimoAgendamento(usuario) ?: 0
     }
+
+        fun buscarDiaMaisAgendadoPorUsuario(idUsuario: Int): String {
+            return agendamentoRepository.buscarDiaMaisAgendadoPorUsuario(idUsuario)
+        }
 }
 
