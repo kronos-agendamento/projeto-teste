@@ -100,7 +100,17 @@ window.onload = function() {
     gapUltimoAgendamento();
 };
 
-function getDiaMaisAgendado(idUsuario) {
+function getDiaMaisAgendado() {
+    // Recupera o ID do usuário do localStorage
+    const idUsuario = localStorage.getItem('idUsuario');
+    
+    // Verifica se o ID do usuário está presente
+    if (!idUsuario) {
+        console.error('ID do usuário não encontrado no localStorage');
+        document.getElementById('dMaisAgendados').innerText = 'ID do usuário não encontrado';
+        return;
+    }
+
     // Coloque o endereço completo da API
     fetch(`http://localhost:8080/api/agendamentos/dia-mais-agendado/${idUsuario}`)  // Certifique-se de que a porta e o caminho estão corretos
         .then(response => {
@@ -119,5 +129,38 @@ function getDiaMaisAgendado(idUsuario) {
         });
 }
 
-// Chama a função passando o idUsuario (substitua pelo ID real)
-getDiaMaisAgendado(1);  // Ajuste o ID dinamicamente conforme necessário
+// Chama a função para pegar o dia mais agendado
+getDiaMaisAgendado();
+
+
+function getHorarioMaisAgendado() {
+    // Recupera o ID do usuário do localStorage
+    const idUsuario = localStorage.getItem('idUsuario');
+
+    // Verifica se o ID do usuário está presente
+    if (!idUsuario) {
+        console.error('ID do usuário não encontrado no localStorage');
+        document.getElementById('horarioMaisAgendado').innerText = 'ID do usuário não encontrado';
+        return;
+    }
+
+    // Fazendo a requisição à API que retorna o intervalo de tempo mais agendado
+    fetch(`http://localhost:8080/api/agendamentos/usuarios/${idUsuario}/intervalo-mais-agendado`) 
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao buscar o horário mais agendado');
+            }
+            return response.text();  // A resposta será texto (o intervalo de tempo)
+        })
+        .then(data => {
+            // Atualiza o conteúdo do span com o horário retornado pela API
+            document.getElementById('horarioMaisAgendado').innerText = data;
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            document.getElementById('horarioMaisAgendado').innerText = 'Erro ao carregar';
+        });
+}
+
+// Chama a função para pegar o horário mais agendado
+getHorarioMaisAgendado();

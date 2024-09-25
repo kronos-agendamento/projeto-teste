@@ -58,6 +58,25 @@ interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
 """, nativeQuery = true
     )
     fun buscarDiaMaisAgendadoPorUsuario(idUsuario: Int): String
+
+
+    @Query("""
+    SELECT 
+        CASE 
+            WHEN HOUR(a.data_horario) BETWEEN 0 AND 3 THEN '00:00 até 04:00'
+            WHEN HOUR(a.data_horario) BETWEEN 4 AND 7 THEN '04:00 até 08:00'
+            WHEN HOUR(a.data_horario) BETWEEN 8 AND 11 THEN '08:00 até 12:00'
+            WHEN HOUR(a.data_horario) BETWEEN 12 AND 15 THEN '12:00 até 16:00'
+            WHEN HOUR(a.data_horario) BETWEEN 16 AND 19 THEN '16:00 até 20:00'
+            WHEN HOUR(a.data_horario) BETWEEN 20 AND 23 THEN '20:00 até 00:00'
+        END AS IntervaloTempo
+    FROM Agendamento a
+    WHERE a.fk_usuario = :idUsuario
+    GROUP BY IntervaloTempo
+    ORDER BY COUNT(*) DESC
+    LIMIT 1
+""", nativeQuery = true)
+    fun findMostBookedTimeByUser(idUsuario: Int): String?
 }
 
 

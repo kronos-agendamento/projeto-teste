@@ -289,5 +289,9 @@ class AgendamentoService(
         fun buscarDiaMaisAgendadoPorUsuario(idUsuario: Int): String {
             return agendamentoRepository.buscarDiaMaisAgendadoPorUsuario(idUsuario)
         }
+
+    fun getMostBookedTimeByUser(idUsuario: Int): String? {
+        return agendamentoRepository.findMostBookedTimeByUser(idUsuario)
+    }
 }
 
