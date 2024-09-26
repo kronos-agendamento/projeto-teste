@@ -33,6 +33,7 @@ class AgendamentoService(
                 tipoAgendamento = agendamento.tipoAgendamento,
                 usuario = usuario.nome,
                 usuarioTelefone = usuario.telefone?.toString(),
+                tempoAgendar = agendamento.tempoAgendar,
                 usuarioCpf = usuario.cpf ?: "CPF não disponível",
                 procedimento = agendamento.procedimento.tipo,
                 especificacao = agendamento.especificacao.especificacao,
@@ -122,6 +123,7 @@ class AgendamentoService(
                 ?: throw IllegalArgumentException("Data não pode ser nula"),
             tipoAgendamento = agendamentoRequestDTO.tipoAgendamento
                 ?: throw IllegalArgumentException("Tipo de agendamento não pode ser nulo"),
+            tempoAgendar = agendamentoRequestDTO.tempoAgendar,
             usuario = usuarioRepository.findById(agendamentoRequestDTO.fk_usuario)
                 .orElseThrow { IllegalArgumentException("Usuário não encontrado") },
             procedimento = procedimentoRepository.findById(agendamentoRequestDTO.fk_procedimento)
@@ -138,6 +140,7 @@ class AgendamentoService(
             idAgendamento = savedAgendamento.idAgendamento,
             dataHorario = savedAgendamento.dataHorario,
             tipoAgendamento = savedAgendamento.tipoAgendamento,
+            tempoAgendar = savedAgendamento.tempoAgendar,
             usuario = agendamento.usuario.nome,
             procedimento = agendamento.procedimento.tipo,
             especificacao = agendamento.especificacao.especificacao,
@@ -154,6 +157,7 @@ class AgendamentoService(
             dataHorario = agendamento.dataHorario,
             tipoAgendamento = agendamento.tipoAgendamento,
             usuario = agendamento.usuario.nome,
+            tempoAgendar = agendamento.tempoAgendar,
             procedimento = agendamento.procedimento.tipo,
             especificacao = agendamento.especificacao.especificacao,
             statusAgendamento = agendamento.statusAgendamento
@@ -186,6 +190,7 @@ class AgendamentoService(
             usuario = agendamento.usuario.nome,
             procedimento = agendamento.procedimento.tipo,
             especificacao = agendamento.especificacao.especificacao,
+            tempoAgendar = agendamento.tempoAgendar,
             statusAgendamento = agendamento.statusAgendamento
         )
     }
@@ -206,6 +211,7 @@ class AgendamentoService(
             dataHorario = updatedAgendamento.dataHorario,
             tipoAgendamento = updatedAgendamento.tipoAgendamento,
             usuario = agendamento.usuario.nome,
+            tempoAgendar = agendamento.tempoAgendar,
             procedimento = agendamento.procedimento.tipo,
             especificacao = agendamento.especificacao.especificacao,
             statusAgendamento = agendamento.statusAgendamento
@@ -245,6 +251,7 @@ class AgendamentoService(
                 usuario = usuario.nome,
                 usuarioTelefone = usuario.telefone?.toString(),
                 usuarioCpf = usuario.cpf ?: "CPF não disponível",
+                tempoAgendar = agendamento.tempoAgendar,
                 procedimento = agendamento.procedimento.tipo,
                 especificacao = agendamento.especificacao.especificacao,
                 statusAgendamento = agendamento.statusAgendamento
@@ -266,6 +273,7 @@ class AgendamentoService(
                 tipoAgendamento = "Bloqueio",  // Tipo especial para identificar o bloqueio
                 usuario = usuarioRepository.findById(usuarioId)
                     .orElseThrow { IllegalArgumentException("Usuário não encontrado") },
+                tempoAgendar = null,
                 procedimento = procedimentoRepository.findById(1)  // Um ID fixo para o "procedimento bloqueio"
                     .orElseThrow { IllegalArgumentException("Procedimento não encontrado") },
                 especificacao = especificacaoRepository.findById(1)  // Um ID fixo para a "especificação bloqueio"
