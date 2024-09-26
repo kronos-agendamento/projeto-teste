@@ -185,6 +185,7 @@
 
     .procedimento-agendamento span {
         display: flex;
+        margin-left: 35px;
     }
 
     .button-flex {
@@ -267,9 +268,7 @@
 
 .box-agendamento2{
     display: flex;
+    margin-right: 70px;
 }
-
-
-
 
 }

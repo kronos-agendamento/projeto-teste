@@ -218,7 +218,7 @@ async function fetchProcedimentos() {
                         <img src="${foto}" width="100" height="100" alt="${tipo_procedimento}">
                     </div>
                     <div class="procedimento-agendamento">
-                        <span id="agendamento">${tipo_procedimento} - ${descricao_procedimento}</span>
+                        <span id="agendamento">${tipo_procedimento}<br> ${descricao_procedimento}</span>
                         <span id="agendamento">${formattedDateTime}</span>
                     </div>
                 </div>
