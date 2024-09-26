@@ -186,7 +186,6 @@ function formatDateTime(dateTimeString) {
 async function fetchProcedimentos() {
     const idUsuario = localStorage.getItem('idUsuario');
 
-
     if (!idUsuario) {
         console.error('ID do usuário não encontrado em localDate.');
         return;
@@ -203,25 +202,26 @@ async function fetchProcedimentos() {
         container.innerHTML = ''; // Limpar conteúdo anterior
 
         procedimentos.forEach(procedimento => {
-            // Supondo que a resposta seja um array como [id, tipo, descricao, data_horario, fk_procedimento]
+            // Supondo que a resposta seja um array como [id, tipo, descricao, data_horario]
             const tipo_procedimento = procedimento[1]; // Tipo
             const descricao_procedimento = procedimento[2]; // Descrição
-            const data_horario = procedimento[3]; // Data e horário
+            const data_horario = procedimento[4]; // Data e horário mais recente
+
             const foto = '../../assets/icons/profile.png'; // Imagem padrão, você pode ajustar conforme necessário
 
             const formattedDateTime = formatDateTime(data_horario);
 
             const agendamentoHTML = `
                 <div class="box-agendamento">
-                <div class="box-agendamento2">
-                    <div class="icon-agendamento">
-                        <img src="${foto}" width="100" height="100" alt="${tipo_procedimento}">
+                    <div class="box-agendamento2">
+                        <div class="icon-agendamento">
+                            <img src="${foto}" width="100" height="100" alt="${tipo_procedimento}">
+                        </div>
+                        <div class="procedimento-agendamento">
+                            <span id="agendamento">${tipo_procedimento}<br> ${descricao_procedimento}</span>
+                            <span id="agendamento">Último agendamento: ${formattedDateTime}</span> <!-- Aqui mostramos a data e hora formatadas -->
+                        </div>
                     </div>
-                    <div class="procedimento-agendamento">
-                        <span id="agendamento">${tipo_procedimento}<br> ${descricao_procedimento}</span>
-                        <span id="agendamento">${formattedDateTime}</span>
-                    </div>
-                </div>
                 </div>
             `;
             container.insertAdjacentHTML('beforeend', agendamentoHTML);
@@ -233,3 +233,4 @@ async function fetchProcedimentos() {
 
 // Chamada da função
 fetchProcedimentos();
+
