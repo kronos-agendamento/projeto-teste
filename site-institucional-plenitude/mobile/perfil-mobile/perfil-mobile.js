@@ -164,3 +164,72 @@ function getHorarioMaisAgendado() {
 
 // Chama a função para pegar o horário mais agendado
 getHorarioMaisAgendado();
+
+
+
+
+
+// Função para formatar a data e hora
+function formatDateTime(dateTimeString) {
+    const options = {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+    };
+    return new Date(dateTimeString).toLocaleString('pt-BR', options);
+}
+
+// Função para buscar procedimentos
+async function fetchProcedimentos() {
+    const idUsuario = localStorage.getItem('idUsuario');
+
+
+    if (!idUsuario) {
+        console.error('ID do usuário não encontrado em localDate.');
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:8080/api/procedimentos/top3/${idUsuario}`);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const procedimentos = await response.json();
+
+        const container = document.querySelector(".box-agendamento");
+        container.innerHTML = ''; // Limpar conteúdo anterior
+
+        procedimentos.forEach(procedimento => {
+            // Supondo que a resposta seja um array como [id, tipo, descricao, data_horario, fk_procedimento]
+            const tipo_procedimento = procedimento[1]; // Tipo
+            const descricao_procedimento = procedimento[2]; // Descrição
+            const data_horario = procedimento[3]; // Data e horário
+            const foto = '../../assets/icons/profile.png'; // Imagem padrão, você pode ajustar conforme necessário
+
+            const formattedDateTime = formatDateTime(data_horario);
+
+            const agendamentoHTML = `
+                <div class="box-agendamento">
+                <div class="box-agendamento2">
+                    <div class="icon-agendamento">
+                        <img src="${foto}" width="100" height="100" alt="${tipo_procedimento}">
+                    </div>
+                    <div class="procedimento-agendamento">
+                        <span id="agendamento">${tipo_procedimento} - ${descricao_procedimento}</span>
+                        <span id="agendamento">${formattedDateTime}</span>
+                    </div>
+                </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', agendamentoHTML);
+        });
+    } catch (error) {
+        console.error('Erro ao buscar procedimentos:', error);
+    }
+}
+
+// Chamada da função
+fetchProcedimentos();

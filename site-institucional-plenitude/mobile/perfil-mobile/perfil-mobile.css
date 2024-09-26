@@ -171,6 +171,8 @@
         height: 8rem;
         justify-content: space-between;
         align-items: center;
+        flex-direction: column;
+
     }
 
 
@@ -259,7 +261,13 @@
         margin-bottom: 5rem;
     }
 
-   
+#atividades {
+    margin-top: 500px;
+}
+
+.box-agendamento2{
+    display: flex;
+}
 
 
 
