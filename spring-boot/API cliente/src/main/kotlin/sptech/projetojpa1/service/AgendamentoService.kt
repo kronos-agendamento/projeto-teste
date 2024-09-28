@@ -36,8 +36,11 @@ class AgendamentoService(
                 usuarioTelefone = usuario.telefone?.toString(),
                 tempoAgendar = agendamento.tempoAgendar,
                 usuarioCpf = usuario.cpf ?: "CPF não disponível",
+                usuarioId = usuario.codigo,
                 procedimento = agendamento.procedimento.tipo,
                 especificacao = agendamento.especificacao.especificacao,
+                fkEspecificacao = agendamento.especificacao.idEspecificacaoProcedimento,
+                fkProcedimento = agendamento.procedimento.idProcedimento,
                 statusAgendamento = agendamento.statusAgendamento
             )
         }
@@ -143,9 +146,12 @@ class AgendamentoService(
             tipoAgendamento = savedAgendamento.tipoAgendamento,
             tempoAgendar = savedAgendamento.tempoAgendar,
             usuario = agendamento.usuario.nome,
+            usuarioId = agendamento.usuario.codigo,
             procedimento = agendamento.procedimento.tipo,
             especificacao = agendamento.especificacao.especificacao,
-            statusAgendamento = agendamento.statusAgendamento
+            statusAgendamento = agendamento.statusAgendamento,
+            fkEspecificacao = agendamento.especificacao.idEspecificacaoProcedimento,
+            fkProcedimento = agendamento.procedimento.idProcedimento
         )
     }
 
@@ -160,7 +166,10 @@ class AgendamentoService(
             usuario = agendamento.usuario.nome,
             tempoAgendar = agendamento.tempoAgendar,
             procedimento = agendamento.procedimento.tipo,
+            usuarioId = agendamento.usuario.codigo,
             especificacao = agendamento.especificacao.especificacao,
+            fkEspecificacao = agendamento.especificacao.idEspecificacaoProcedimento,
+            fkProcedimento = agendamento.procedimento.idProcedimento,
             statusAgendamento = agendamento.statusAgendamento
         )
     }
@@ -192,7 +201,10 @@ class AgendamentoService(
             procedimento = agendamento.procedimento.tipo,
             especificacao = agendamento.especificacao.especificacao,
             tempoAgendar = agendamento.tempoAgendar,
-            statusAgendamento = agendamento.statusAgendamento
+            statusAgendamento = agendamento.statusAgendamento,
+            usuarioId = agendamento.usuario.codigo,
+            fkEspecificacao = agendamento.especificacao.idEspecificacaoProcedimento,
+            fkProcedimento = agendamento.procedimento.idProcedimento
         )
     }
 
@@ -215,7 +227,10 @@ class AgendamentoService(
             tempoAgendar = agendamento.tempoAgendar,
             procedimento = agendamento.procedimento.tipo,
             especificacao = agendamento.especificacao.especificacao,
-            statusAgendamento = agendamento.statusAgendamento
+            statusAgendamento = agendamento.statusAgendamento,
+            usuarioId = agendamento.usuario.codigo,
+            fkEspecificacao = agendamento.especificacao.idEspecificacaoProcedimento,
+            fkProcedimento = agendamento.procedimento.idProcedimento
         )
     }
 
@@ -255,8 +270,10 @@ class AgendamentoService(
                 tempoAgendar = agendamento.tempoAgendar,
                 procedimento = agendamento.procedimento.tipo,
                 especificacao = agendamento.especificacao.especificacao,
-                statusAgendamento = agendamento.statusAgendamento
-            )
+                statusAgendamento = agendamento.statusAgendamento,
+                usuarioId = agendamento.usuario.codigo,
+                fkEspecificacao = agendamento.especificacao.idEspecificacaoProcedimento,
+                fkProcedimento = agendamento.procedimento.idProcedimento)
         }
     }
 

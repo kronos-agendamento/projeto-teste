@@ -1,5 +1,6 @@
 package sptech.projetojpa1.dto.agendamento
 
+import sptech.projetojpa1.domain.Especificacao
 import java.time.LocalDateTime
 
 data class AgendamentoDTO (
@@ -9,5 +10,7 @@ data class AgendamentoDTO (
     val dataAgendamento: LocalDateTime,
     val tipoAgendamento: String,
     val tipoProcedimento: String,
-    val especificacaoProcedimento: String
+    val especificacaoProcedimento: String,
+    val fkEspecificacao: Int,
+    val fkProcedimento: Int
 ){}

@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const apiUrlAgendamentos = "http://localhost:8080/api/agendamentos";
 
   const clientesSelect = document.getElementById("clientes");
+  const tempoAgendarSelect = null;
   const procedimentosSelect = document.getElementById("procedimentos");
   const especificacoesSelect = document.getElementById("especificacoes");
   const tipoAgendamentoSelect = document.getElementById("tipo-atendimento");
@@ -170,12 +171,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
   saveButton.addEventListener("click", async function () {
     const clienteId = clientesSelect.value;
-    const procedimentoId = procedimentosSelect.value;
     const tipoAtendimento = tipoAgendamentoSelect.value;
-    const especificacaoId = especificacoesSelect.value;
     const data = dataInput.value;
     const horarioButton = document.querySelector(".horario-button.selected");
     const horario = horarioButton ? horarioButton.textContent : null;
+    const tempoAgendar = tempoAgendarSelect;
+    const procedimentoId = procedimentosSelect.value || params.get("procedimento") || sessionStorage.getItem('procedimento') ;
+    const especificacaoId = especificacoesSelect.value || params.get("especificacao") || sessionStorage.getItem('especificacao');
+  
+    // Preenche os selects
+    procedimentosSelect.value = procedimentoId || '';
+    especificacoesSelect.value = especificacaoId || '';
+  
+    // Certifique-se de que os valores estão sendo capturados corretamente
+    console.log("Procedimento ID:", procedimentoId);
+    console.log("Especificação ID:", especificacaoId);
+    
 
     if (
       !clienteId ||
@@ -190,20 +201,22 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     console.log(`${data}T${horario}.000Z`);
     const dataHorario = new Date(`${data}T${horario}.000Z`).toISOString();
+    const params = new URLSearchParams(window.location.search);
 
     const agendamento = {
       fk_usuario: parseInt(clienteId, 10),
-      fk_procedimento: parseInt(procedimentoId, 10),
-      fk_especificacao: parseInt(especificacaoId, 10),
+      fk_procedimento: parseInt(procedimentoId, 10) || parseInt(params.get("procedimento"), 10) || parseInt(sessionStorage.getItem('procedimento'), 10),
+      fk_especificacao: parseInt(especificacaoId, 10) || parseInt(params.get("especificacao"), 10) || parseInt(sessionStorage.getItem('especificacao'), 10),
       fk_status: 1,
       tipoAgendamento: tipoAtendimento,
       dataHorario: dataHorario,
+      tempoAgendar: 50
     };
-
+    
     try {
       // Realiza a requisição PUT para atualizar o agendamento
       const params = new URLSearchParams(window.location.search);
-      const agendamentoId = params.get("id"); // Pega o ID do agendamento da URL
+      const agendamentoId = params.get("idAgendamento"); // Pega o ID do agendamento da URL
       const apiUrlEditarAgendamento = `http://localhost:8080/api/agendamentos/atualizar/${agendamentoId}`;
       const response = await fetch(apiUrlEditarAgendamento, {
         method: "PUT",
@@ -265,7 +278,7 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   // Captura o ID do agendamento da URL
   const params = new URLSearchParams(window.location.search);
-  const agendamentoId = params.get("id"); // Pega o ID da URL
+  const agendamentoId = params.get("idAgendamento"); // Pega o ID da URL
 
   if (!agendamentoId) {
     console.error("ID do agendamento não encontrado na URL");
@@ -296,6 +309,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const clientesSelect = document.getElementById("clientes");
     const optionCliente = document.createElement("option");
     optionCliente.value = data.fk_usuario; // Usar o ID do usuário
+    optionCliente.value= params.get("usuarioId");
     optionCliente.text = data.usuario; // Mostrar o nome
     optionCliente.selected = true;
     clientesSelect.appendChild(optionCliente);

@@ -11,6 +11,8 @@ function formatarData(dataHora) {
 
 // Função para criar os elementos de agendamento no DOM
 function criarAgendamento(agendamento) {
+    console.log(agendamento); // Verifique o conteúdo do objeto completo
+
     const boxAgendamento = document.createElement('div');
     boxAgendamento.classList.add('box-agendamento');
 
@@ -133,9 +135,13 @@ function criarAgendamento(agendamento) {
         editButton.appendChild(editImg);
 
         editButton.addEventListener('click', function() {
+           
             const agendamentoId = agendamento.idAgendamento; // Pega o ID do agendamento
+            const usuarioId = agendamento.usuarioId;
+            const fkProcedimento = agendamento.fkProcedimento;
+            const fkEspecificacao = agendamento.fkEspecificacao;
             console.log(`ID DO AGENDAMENTO: ${agendamentoId}`);
-            window.location.href = `reagendarForms/reagendar-mobile.html?id=${agendamentoId}`; // Redireciona para a nova página com o ID na URL
+            window.location.href = `reagendarForms/reagendar-mobile.html?id=${agendamentoId}&idUsuario=${usuarioId}&fkProcedimento=${fkProcedimento}&fkEspecificacao=${fkEspecificacao}`; // Redireciona para a nova página com o ID na URL
         });
         
         buttonFlex.appendChild(editButton);

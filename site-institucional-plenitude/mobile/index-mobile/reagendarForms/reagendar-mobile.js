@@ -8,10 +8,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const especificacoesSelect = document.getElementById("especificacoes");
     const tipoAgendamentoSelect = document.getElementById("tipo-atendimento");
     const dataInput = document.getElementById("data");
+    const tempoAgendarSelect = null;
     const dataSelecionadaP = document.getElementById("data-selecionada");
     const horariosContainer = document.getElementById("horarios-disponiveis");
     const saveButton = document.getElementById("save-agendamento-button");
-  
+
+
     let especificacoes = []; // Array para armazenar todas as especificações
   
     async function carregarProcedimentos() {
@@ -93,8 +95,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         dataSelecionadaP.textContent = `Dia ${dia} de ${mes} - ${diaSemana}`;
   
-        const procedimentoId = procedimentosSelect.value;
-        const especificacaoId = especificacoesSelect.value;
+        const procedimentoId = procedimentosSelect.value || params.get("fkProcedimento") ;
+        const especificacaoId = especificacoesSelect.value || params.get("fkEspecificacao") ;
         const tipoAtendimento = tipoAgendamentoSelect.value;
   
         carregarHorariosDisponiveis(
@@ -151,16 +153,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   
     saveButton.addEventListener("click", async function () {
-      const clienteId = clientesSelect.value;
-      const procedimentoId = procedimentosSelect.value;
-      const tipoAtendimento = tipoAgendamentoSelect.value;
+      const procedimentoId = procedimentosSelect.value || parseInt(params.get("fkProcedimento"), 10);
+      const tipoAtendimento = tipoAgendamentoSelect.value|| parseInt(params.get("fkEspecificacao"), 10);
       const especificacaoId = especificacoesSelect.value;
       const data = dataInput.value;
       const horarioButton = document.querySelector(".horario-button.selected");
       const horario = horarioButton ? horarioButton.textContent : null;
-  
+      const tempoAgendar = tempoAgendarSelect;
+
+          // Preenche os selects
+    procedimentosSelect.value = procedimentoId || '';
+    especificacoesSelect.value = especificacaoId || '';
+
       if (
-        !clienteId ||
         !procedimentoId ||
         !tipoAtendimento ||
         !especificacaoId ||
@@ -172,14 +177,16 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       console.log(`${data}T${horario}.000Z`);
       const dataHorario = new Date(`${data}T${horario}.000Z`).toISOString();
-  
+      const params = new URLSearchParams(window.location.search);
+
       const agendamento = {
-        fk_usuario: parseInt(clienteId, 10),
-        fk_procedimento: parseInt(procedimentoId, 10),
-        fk_especificacao: parseInt(especificacaoId, 10),
+        fk_usuario: parseInt(params.get("idUsuario"), 10),
+        fk_procedimento: parseInt(procedimentoId, 10) || parseInt(params.get("fkProcedimento"), 10) ,
+        fk_especificacao: parseInt(especificacaoId, 10)|| parseInt(params.get("fkEspecificacao"), 10) ,
         fk_status: 1,
         tipoAgendamento: tipoAtendimento,
         dataHorario: dataHorario,
+        tempoAgendar: 50
       };
   
       try {
@@ -196,22 +203,22 @@ document.addEventListener("DOMContentLoaded", function () {
         });
   
         if (response.ok) {
-          showNotification("Agendamento criado com sucesso!");
+          // Mostra notificação de sucesso
+          showNotification("Alterações realizadas com sucesso!");
+    
+          // Redireciona para a página index-mobile
           setTimeout(() => {
-            window.location.href = "../../agendamento.html";
+            window.location.href = "../index-mobile.html"; // Redireciona após 1 segundo
           }, 1000);
         } else {
           const errorMsg = await response.text();
-          console.error("Erro ao criar agendamento: " + errorMsg);
-          showNotification(
-            "Já existe um agendamento para essa data e horário",
-            true
-          );
+          console.error("Erro ao reagendar: " + errorMsg);
+          showNotification("Erro ao reagendar. Tente novamente.", true);
         }
       } catch (error) {
-        console.error("Erro ao criar agendamento: ", error);
-        showNotification("Erro ao criar agendamento", true);
-      }
+        console.error("Erro ao reagendar: ", error);
+        showNotification("Erro ao reagendar. Tente novamente.", true);
+  }
     });
   
     carregarProcedimentos();
@@ -233,15 +240,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 3000);
   }
   
-  document.addEventListener("DOMContentLoaded", function () {
-    const nome = localStorage.getItem("nome");
-    const instagram = localStorage.getItem("instagram");
+  // document.addEventListener("DOMContentLoaded", function () {
+  //   const nome = localStorage.getItem("nome");
+  //   const instagram = localStorage.getItem("instagram");
   
-    if (nome && instagram) {
-      document.getElementById("userName").textContent = nome;
-      document.getElementById("userInsta").textContent = instagram;
-    }
-  });
+  //   if (nome && instagram) {
+  //     document.getElementById("userName").textContent = nome;
+  //     document.getElementById("userInsta").textContent = instagram;
+  //   }
+  // });
   
   document.addEventListener("DOMContentLoaded", function () {
     // Captura o ID do agendamento da URL
