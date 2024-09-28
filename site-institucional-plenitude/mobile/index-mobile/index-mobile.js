@@ -10,20 +10,18 @@ function formatarData(dataHora) {
 }
 
 // Função para criar os elementos de agendamento no DOM
-function criarAgendamento(agendamento) {
-    console.log(agendamento); // Verifique o conteúdo do objeto completo
-
+function criarAgendamento(agendamento, isAnterior = false) {
     const boxAgendamento = document.createElement('div');
     boxAgendamento.classList.add('box-agendamento');
 
     // Criação do círculo branco com o ícone menor dentro
     const iconAgendamento = document.createElement('div');
     iconAgendamento.classList.add('icon-procedimento');
-    iconAgendamento.style.backgroundColor = '#ffffff'
+    iconAgendamento.style.backgroundColor = '#ffffff';
     iconAgendamento.style.border = '2px solid #AD9393';
-    iconAgendamento.style.width= '80px';
-    iconAgendamento.style.height= '80px';
-    iconAgendamento.style.marginTop= '10px';
+    iconAgendamento.style.width = '80px';
+    iconAgendamento.style.height = '80px';
+    iconAgendamento.style.marginTop = '10px';
 
     const imgIcon = document.createElement('img');
 
@@ -49,15 +47,15 @@ function criarAgendamento(agendamento) {
 
     const procedimentoAgendamento = document.createElement('div');
     procedimentoAgendamento.classList.add('procedimento-agendamento');
-    
+
     const dataSpan = document.createElement('span');
     dataSpan.textContent = formatarData(agendamento.dataAgendamento);
     dataSpan.style.fontWeight = 'bold';
-    dataSpan.style.fontSize = '15px'
-    
+    dataSpan.style.fontSize = '15px';
+
     const tipoSpan = document.createElement('span');
     tipoSpan.textContent = `${agendamento.tipoProcedimento} - ${agendamento.especificacaoProcedimento}`;
-    tipoSpan.style.fontSize = '13px'
+    tipoSpan.style.fontSize = '13px';
 
     procedimentoAgendamento.appendChild(dataSpan);
     procedimentoAgendamento.appendChild(tipoSpan);
@@ -65,33 +63,33 @@ function criarAgendamento(agendamento) {
     const buttonFlex = document.createElement('div');
     buttonFlex.classList.add('button-flex');
 
-     // Declara o botão detalhes antes de usá-lo
-     const detalhesButton = document.createElement('button');
-     detalhesButton.classList.add('edit');
-     const detalhesImg = document.createElement('img');
-     detalhesImg.src = '../../assets/icons/mais-tres-pontos-indicador.png';
-     detalhesImg.alt = 'detalhes';
-     detalhesButton.appendChild(detalhesImg);
+    // Botão de mais informações (três pontinhos) para todos os agendamentos
+    const detalhesButton = document.createElement('button');
+    detalhesButton.classList.add('edit');
+    const detalhesImg = document.createElement('img');
+    detalhesImg.src = '../../assets/icons/mais-tres-pontos-indicador.png';
+    detalhesImg.alt = 'detalhes';
+    detalhesButton.appendChild(detalhesImg);
+    buttonFlex.appendChild(detalhesButton);
 
-    // Verifica se o agendamento é no futuro
-    const dataAgendamento = new Date(agendamento.dataAgendamento);
-    const agora = new Date();
+    // Evento de abrir modal ao clicar em "detalhes"
+    detalhesButton.addEventListener('click', function() {
+        abrirModalAgendamento(agendamento);
+    });
 
-    if (dataAgendamento >= agora) {
-        // Se for no futuro, exibe os botões
-    
+    if (!isAnterior) {
+        // Agendamentos futuros também têm botão de deletar e editar
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('edit');
-        deleteButton.setAttribute('data-id', agendamento.idAgendamento); // Adiciona o ID do agendamento
-    
+        deleteButton.setAttribute('data-id', agendamento.idAgendamento);
+
         // Adicionar evento ao botão para mostrar o modal de exclusão
         deleteButton.addEventListener('click', function () {
             document.getElementById('deleteModal').style.display = 'flex';
-    
+
             // Captura o ID do agendamento do botão
             const agendamentoId = this.getAttribute('data-id');
-            
-            // Confirmação de exclusão no modal
+
             document.getElementById('confirmDeleteButton').addEventListener('click', function () {
                 // Usa o ID capturado na URL
                 fetch(`http://localhost:8080/api/agendamentos/excluir/${agendamentoId}`, {
@@ -100,7 +98,7 @@ function criarAgendamento(agendamento) {
                 .then(response => {
                     if (response.ok) {
                         showNotification("Agendamento excluído com sucesso!");
-                        location.reload(); 
+                        location.reload();
                     } else {
                         showNotification("Erro ao excluir o agendamento. Tente novamente.", true);
                     }
@@ -108,59 +106,40 @@ function criarAgendamento(agendamento) {
                 .catch(error => {
                     showNotification("Agendamento excluído com sucesso!");
                 });
-    
+
                 // Fechar o modal após confirmar
                 document.getElementById('deleteModal').style.display = 'none';
             });
         });
-    
+
         const deleteImg = document.createElement('img');
         deleteImg.src = '../../assets/icons/excluir.png';
         deleteImg.alt = 'delete';
         deleteButton.appendChild(deleteImg);
-    
-        // Declara o botão detalhes antes de usá-lo
-        const detalhesButton = document.createElement('button');
-        detalhesButton.classList.add('edit');
-        const detalhesImg = document.createElement('img');
-        detalhesImg.src = '../../assets/icons/mais-tres-pontos-indicador.png';
-        detalhesImg.alt = 'detalhes';
-        detalhesButton.appendChild(detalhesImg);
-    
+        buttonFlex.appendChild(deleteButton);
+
         const editButton = document.createElement('button');
         editButton.classList.add('edit');
         const editImg = document.createElement('img');
         editImg.src = '../../assets/icons/pen.png';
         editImg.alt = 'edit';
-        editImg.title = 'Editar Agendamento'
         editButton.appendChild(editImg);
 
         editButton.addEventListener('click', function() {
-           
-            const agendamentoId = agendamento.idAgendamento; // Pega o ID do agendamento
+            const agendamentoId = agendamento.idAgendamento;
             const usuarioId = agendamento.usuarioId;
             const fkProcedimento = agendamento.fkProcedimento;
             const fkEspecificacao = agendamento.fkEspecificacao;
-            console.log(`ID DO AGENDAMENTO: ${agendamentoId}`);
-            window.location.href = `reagendarForms/reagendar-mobile.html?id=${agendamentoId}&idUsuario=${usuarioId}&fkProcedimento=${fkProcedimento}&fkEspecificacao=${fkEspecificacao}`; // Redireciona para a nova página com o ID na URL
+            window.location.href = `reagendarForms/reagendar-mobile.html?id=${agendamentoId}&idUsuario=${usuarioId}&fkProcedimento=${fkProcedimento}&fkEspecificacao=${fkEspecificacao}`;
         });
-        
         buttonFlex.appendChild(editButton);
-    
-        buttonFlex.appendChild(deleteButton);
-        buttonFlex.appendChild(detalhesButton); 
-    
-        detalhesButton.addEventListener('click', function() {
-        abrirModalAgendamento(agendamento);
-
-    });
     }
 
     boxAgendamento.appendChild(iconAgendamento);
     boxAgendamento.appendChild(procedimentoAgendamento);
     boxAgendamento.appendChild(buttonFlex);
 
-    return boxAgendamento; 
+    return boxAgendamento;
 }
 
 function showNotification(message, isError = false) {
@@ -180,7 +159,6 @@ function showNotification(message, isError = false) {
     // Exibe a notificação adicionando a classe "show"
     notification.classList.add("show");
 
-    clearTimeout(notificationTimeout);
 
     // Remove a notificação após 10 segundos (10000 milissegundos)
     notificationTimeout = setTimeout(() => {
@@ -188,8 +166,7 @@ function showNotification(message, isError = false) {
     }, 3000); 
 }
 
-
-// Função para carregar agendamentos e separá-los em anteriores e futuros
+// Função para carregar e processar agendamentos
 async function carregarAgendamentos() {
     try {
         const response = await fetch(apiUrl);
@@ -204,23 +181,37 @@ async function carregarAgendamentos() {
 
         const agora = new Date(); // Data e hora atuais
         let agendamentosAnteriores = [];
+        let agendamentosFuturos = [];
 
         agendamentos.forEach(agendamento => {
             const dataAgendamento = new Date(agendamento.dataAgendamento);
-            const agendamentoElement = criarAgendamento(agendamento);
 
-            if (dataAgendamento >= agora) {
+            // Verifica se o agendamento é de hoje e se o horário já passou
+            const ehHoje = dataAgendamento.toDateString() === agora.toDateString();
+            const jaPassou = ehHoje && dataAgendamento < agora;
+
+            if (dataAgendamento >= agora && !jaPassou) {
                 // Agendamentos futuros
-                containerFuturos.appendChild(agendamentoElement);
+                agendamentosFuturos.push(agendamento);
             } else {
-                // Coletar agendamentos anteriores
-                agendamentosAnteriores.push(agendamentoElement);
+                // Agendamentos anteriores ou realizados hoje
+                agendamentosAnteriores.push(agendamento);
             }
+        });
+
+        // Ordenar agendamentos futuros em ordem crescente
+        agendamentosFuturos.sort((a, b) => new Date(a.dataAgendamento) - new Date(b.dataAgendamento));
+
+        // Exibir agendamentos futuros
+        agendamentosFuturos.forEach(agendamento => {
+            const agendamentoElement = criarAgendamento(agendamento);
+            containerFuturos.appendChild(agendamentoElement);
         });
 
         // Exibir os 3 primeiros agendamentos anteriores
         agendamentosAnteriores.slice(0, 3).forEach(agendamento => {
-            containerAnteriores.appendChild(agendamento);
+            const agendamentoElement = criarAgendamento(agendamento, true);
+            containerAnteriores.appendChild(agendamentoElement);
         });
 
         // Evento do botão "Ver todos"
@@ -228,7 +219,8 @@ async function carregarAgendamentos() {
             e.preventDefault();
             containerAnteriores.innerHTML = ''; // Limpa os atuais
             agendamentosAnteriores.forEach(agendamento => {
-                containerAnteriores.appendChild(agendamento); // Exibe todos
+                const agendamentoElement = criarAgendamento(agendamento, true);
+                containerAnteriores.appendChild(agendamentoElement); // Exibe todos
             });
             verTodosLink.style.display = 'none'; // Esconde o link após exibir todos
         });
@@ -237,6 +229,9 @@ async function carregarAgendamentos() {
         console.error('Erro ao carregar agendamentos:', error);
     }
 }
+
+// Chama a função ao carregar a página
+document.addEventListener('DOMContentLoaded', carregarAgendamentos);
 
 function abrirModalAgendamento(agendamento) {
     // Seleciona o modal pelo ID
@@ -250,6 +245,7 @@ function abrirModalAgendamento(agendamento) {
     const modalEspecificacao = document.getElementById('modal-especificacao');
     const modalProfissional = document.getElementById('modal-profissional');
     const modalLocal = document.getElementById('modal-local');
+    const modalStatus = document.getElementById('modal-status');
 
     // Função para formatar data e horário
     const formatarData = (data) => {
@@ -275,6 +271,7 @@ function abrirModalAgendamento(agendamento) {
     modalEspecificacao.innerHTML = `<strong>Especificação:</strong> ${agendamento.especificacaoProcedimento}`;
     modalProfissional.innerHTML = `<strong>Profissional:</strong> Priscila Rossato`;
     modalLocal.innerHTML = `<strong>Local:</strong> Vila Prudente`;
+    modalStatus.innerHTML = `<strong>Status:</strong> ${agendamento.statusAgendamento} `;
     
     // Exibe o modal
     modal.style.display = 'block';

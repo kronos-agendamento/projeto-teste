@@ -12,5 +12,6 @@ data class AgendamentoDTO (
     val tipoProcedimento: String,
     val especificacaoProcedimento: String,
     val fkEspecificacao: Int,
-    val fkProcedimento: Int
+    val fkProcedimento: Int,
+    val statusAgendamento: String
 ){}
