@@ -3,9 +3,20 @@ document.addEventListener("DOMContentLoaded", async function () {
   let clienteData = {}; // Variável para armazenar os dados do cliente
 
   const urlParams = new URLSearchParams(window.location.search);
-  const idUsuario = urlParams.get("idUsuario");
+  const idUsuario = urlParams.get("idUsuario") || localStorage.getItem("idUsuario");
   const idEndereco = urlParams.get("idEndereco");
   const clienteNome = localStorage.getItem("clienteNome");
+  const agendamentoBtn = document.getElementById("agendamentoBtn");
+
+  // Verifica se o botão de agendamentos existe antes de adicionar o evento
+  if (agendamentoBtn) {
+    agendamentoBtn.addEventListener("click", function () {
+      // Redireciona para a página de agendamentos com o idUsuario na URL
+      window.location.href = `../agendamentos-cliente/agendamentos-clientes.html?idUsuario=${idUsuario}`;
+    });
+  } else {
+    console.error("Botão de agendamento não encontrado.");
+  }
 
   if (clienteNome) {
     document.querySelector(
@@ -13,6 +24,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     ).textContent = `Mais informações de: ${clienteNome}`;
   }
 
+  
   if (idUsuario) {
     try {
       clienteData = await fetchUsuarioPorId(idUsuario);
@@ -261,4 +273,9 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("userName").textContent = nome;
     document.getElementById("userInsta").textContent = instagram;
   }
+});
+
+agendamentoBtn.addEventListener("click", function () {
+  // Redireciona para a página de agendamentos com o idUsuario na URL
+  window.location.href = `../agendamentos-cliente/agendamentos-clientes.html?idUsuario=${idUsuario}`;
 });
