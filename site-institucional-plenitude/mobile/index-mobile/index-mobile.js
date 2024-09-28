@@ -99,14 +99,14 @@ function criarAgendamento(agendamento) {
                 })
                 .then(response => {
                     if (response.ok) {
-                        alert('Agendamento excluído com sucesso!');
+                        showNotification("Agendamento excluído com sucesso!");
                         location.reload(); 
                     } else {
-                        alert('Erro ao excluir o agendamento.');
+                        showNotification("Erro ao excluir o agendamento. Tente novamente.", true);
                     }
                 })
                 .catch(error => {
-                    console.error('Erro:', error);
+                    showNotification("Agendamento excluído com sucesso!");
                 });
     
                 // Fechar o modal após confirmar
@@ -132,6 +132,7 @@ function criarAgendamento(agendamento) {
         const editImg = document.createElement('img');
         editImg.src = '../../assets/icons/pen.png';
         editImg.alt = 'edit';
+        editImg.title = 'Editar Agendamento'
         editButton.appendChild(editImg);
 
         editButton.addEventListener('click', function() {
@@ -160,6 +161,31 @@ function criarAgendamento(agendamento) {
     boxAgendamento.appendChild(buttonFlex);
 
     return boxAgendamento; 
+}
+
+function showNotification(message, isError = false) {
+    const notification = document.getElementById("notification");
+    const notificationMessage = document.getElementById("notification-message");
+    
+    // Define a mensagem
+    notificationMessage.textContent = message;
+
+    // Define se é um erro ou não
+    if (isError) {
+        notification.classList.add("error");
+    } else {
+        notification.classList.remove("error");
+    }
+
+    // Exibe a notificação adicionando a classe "show"
+    notification.classList.add("show");
+
+    clearTimeout(notificationTimeout);
+
+    // Remove a notificação após 10 segundos (10000 milissegundos)
+    notificationTimeout = setTimeout(() => {
+        notification.classList.remove("show");
+    }, 3000); 
 }
 
 

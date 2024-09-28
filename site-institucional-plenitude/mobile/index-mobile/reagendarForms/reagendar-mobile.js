@@ -154,16 +154,13 @@ document.addEventListener("DOMContentLoaded", function () {
   
     saveButton.addEventListener("click", async function () {
       const procedimentoId = procedimentosSelect.value || parseInt(params.get("fkProcedimento"), 10);
-      const tipoAtendimento = tipoAgendamentoSelect.value|| parseInt(params.get("fkEspecificacao"), 10);
-      const especificacaoId = especificacoesSelect.value;
+      const tipoAtendimento = tipoAgendamentoSelect.value;
+      const especificacaoId = especificacoesSelect.value|| parseInt(params.get("fkEspecificacao"), 10);
       const data = dataInput.value;
       const horarioButton = document.querySelector(".horario-button.selected");
       const horario = horarioButton ? horarioButton.textContent : null;
       const tempoAgendar = tempoAgendarSelect;
 
-          // Preenche os selects
-    procedimentosSelect.value = procedimentoId || '';
-    especificacoesSelect.value = especificacaoId || '';
 
       if (
         !procedimentoId ||
@@ -284,7 +281,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Preencher o select de procedimentos
       const procedimentosSelect = document.getElementById("procedimentos");
       const optionProcedimento = document.createElement("option");
-      optionProcedimento.value = data.fk_procedimento; // Usar o ID do procedimento
+      optionProcedimento.value = data.fkProcedimento; // Usar o ID do procedimento
       optionProcedimento.text = data.procedimento; // Mostrar o nome
       optionProcedimento.selected = true;
       procedimentosSelect.appendChild(optionProcedimento);
@@ -296,7 +293,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Preencher o select de especificações
       const especificacoesSelect = document.getElementById("especificacoes");
       const optionEspecificacao = document.createElement("option");
-      optionEspecificacao.value = data.fk_especificacao; // Usar o ID da especificação
+      optionEspecificacao.value = data.fkEspecificacao; // Usar o ID da especificação
       optionEspecificacao.text = data.especificacao; // Mostrar o nome
       optionEspecificacao.selected = true;
       especificacoesSelect.appendChild(optionEspecificacao);
