@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa de Calor de Clientes</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7RnMgdvoROHW_o-4pQeM3LJyNMwxem6o&libraries=visualization,places"></script>
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Mapa de Calor de Clientes</h1>
+    <div id="map"></div>
+
+    <script>
+        let map;
+        let heatmap;
+        let heatmapData = [];
+
+        // Lista de endereços de clientes
+        const clientes = [
+            { address: "Av. Paulista, 1000, São Paulo, SP", name: "Cliente 1" },
+            { address: "Rua da Consolação, 2000, São Paulo, SP", name: "Cliente 2" },
+            { address: "Praça da Sé, São Paulo, SP", name: "Cliente 3" },
+            { address: "Av. Ipiranga, 4000, São Paulo, SP", name: "Cliente 4" }
+        ];
+
+        // Inicializa o mapa
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: -23.55052, lng: -46.633308 }, // São Paulo
+                zoom: 12
+            });
+
+            // Iterar sobre os clientes para geocodificar e criar pontos de calor
+            const geocoder = new google.maps.Geocoder();
+            clientes.forEach(cliente => {
+                geocodeAddress(geocoder, cliente);
+            });
+        }
+
+        // Função para geocodificar o endereço e adicionar pontos ao mapa de calor
+        function geocodeAddress(geocoder, cliente) {
+            geocoder.geocode({ address: cliente.address }, (results, status) => {
+                if (status === 'OK') {
+                    const location = results[0].geometry.location;
+
+                    // Adicionar a localização ao array de dados do heatmap
+                    heatmapData.push(location);
+
+                    // Atualiza o mapa de calor
+                    if (heatmap) {
+                        heatmap.setData(heatmapData);
+                    } else {
+                        initHeatmap();
+                    }
+                } else {
+                    console.log('Geocode não foi bem-sucedido para o seguinte motivo: ' + status);
+                }
+            });
+        }
+
+        // Inicializa o Heatmap Layer
+        function initHeatmap() {
+            heatmap = new google.maps.visualization.HeatmapLayer({
+                data: heatmapData,
+                map: map,
+                radius: 30 // Ajuste o raio conforme necessário
+            });
+        }
+
+        // Inicializar o mapa ao carregar a página
+        window.onload = initMap;
+    </script>
+</body>
+</html>
