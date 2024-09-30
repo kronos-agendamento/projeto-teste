@@ -63,4 +63,48 @@ interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
     ): List<Agendamento>
 
     fun deleteAllByUsuario(usuario: Usuario)
+
+    @Query("SELECT DATEDIFF(NOW(), dataHorario) FROM Agendamento WHERE usuario = :usuario AND dataHorario IS NOT NULL AND dataHorario <= NOW() ORDER BY dataHorario DESC LIMIT 1")
+    fun countDiasUltimoAgendamento(@Param("usuario") usuario: Usuario): Int?
+
+    @Query(
+        """
+    SELECT CASE DAYOFWEEK(a.data_horario)
+               WHEN 1 THEN 'Domingo'
+               WHEN 2 THEN 'Segunda'
+               WHEN 3 THEN 'Terça'
+               WHEN 4 THEN 'Quarta'
+               WHEN 5 THEN 'Quinta'
+               WHEN 6 THEN 'Sexta'
+               WHEN 7 THEN 'Sábado'
+           END AS DiaSemana
+    FROM agendamento a
+    WHERE a.fk_usuario = :idUsuario
+    GROUP BY DiaSemana
+    ORDER BY COUNT(*) DESC
+    LIMIT 1
+""", nativeQuery = true
+    )
+    fun buscarDiaMaisAgendadoPorUsuario(idUsuario: Int): String
+
+
+    @Query("""
+    SELECT 
+        CASE 
+            WHEN HOUR(a.data_horario) BETWEEN 0 AND 3 THEN '00:00 até 04:00'
+            WHEN HOUR(a.data_horario) BETWEEN 4 AND 7 THEN '04:00 até 08:00'
+            WHEN HOUR(a.data_horario) BETWEEN 8 AND 11 THEN '08:00 até 12:00'
+            WHEN HOUR(a.data_horario) BETWEEN 12 AND 15 THEN '12:00 até 16:00'
+            WHEN HOUR(a.data_horario) BETWEEN 16 AND 19 THEN '16:00 até 20:00'
+            WHEN HOUR(a.data_horario) BETWEEN 20 AND 23 THEN '20:00 até 00:00'
+        END AS IntervaloTempo
+    FROM Agendamento a
+    WHERE a.fk_usuario = :idUsuario
+    GROUP BY IntervaloTempo
+    ORDER BY COUNT(*) DESC
+    LIMIT 1
+""", nativeQuery = true)
+    fun findMostBookedTimeByUser(idUsuario: Int): String?
 }
+
+

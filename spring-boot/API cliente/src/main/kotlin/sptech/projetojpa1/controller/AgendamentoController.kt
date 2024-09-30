@@ -254,4 +254,64 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
     fun countUsuariossWithStatusUm(): Int {
         return agendamentoService.countUsuariosWithStatusUm()
     }
+
+    @Operation(
+        summary = "Conta a quantidade de dias entre o ultimo agendamento e a data atual",
+        description = "Retorna a quantidade de dias entre o ultimo agendamento e a data atual."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Retorna a quantidade de dias entre o ultimo agendamento e a data atual com sucesso"
+            )
+        ]
+    )
+    @GetMapping("/count-dias-ultimo-agendamento/{idUsuario}")
+    fun countDiasUltimoAgendamento(@PathVariable idUsuario: Int): Int {
+        return agendamentoService.countDiasUltimoAgendamento(idUsuario)
+    }
+
+    @Operation(
+        summary = "Retorna o dia mais agendado da semana",
+        description = "Mostra o dia da semana mais agendado de acordo com cada usuario."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Retorna o dia mais agendado da semana"
+            )
+        ]
+    )
+
+    @GetMapping("/dia-mais-agendado/{idUsuario}")
+    fun getDiaMaisAgendadoPorUsuario(@PathVariable idUsuario: Int): String {
+        return agendamentoService.buscarDiaMaisAgendadoPorUsuario(idUsuario)
+    }
+
+
+    @Operation(
+        summary = "Retorna o intervalo de horario mais agendado",
+        description = "Mostra o intervalo de horário mais agendado dependendo de cada usuário."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Retorna o itervalo de horário mais agendado"
+            )
+        ]
+    )
+
+    @GetMapping("/usuarios/{idUsuario}/intervalo-mais-agendado")
+    fun getMostBookedTimeByUser(@PathVariable idUsuario: Int): String {
+        return agendamentoService.getMostBookedTimeByUser(idUsuario)
+            ?: "Nenhum agendamento encontrado para o usuário."
+    }
 }
+
+
+
+
+

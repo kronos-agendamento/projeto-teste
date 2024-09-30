@@ -219,4 +219,23 @@ class ProcedimentoController(private val procedimentoService: ProcedimentoServic
         val quantidadeAgendamentos = procedimentoService.getQuantidadeAgendamentosPorProcedimento()
         return ResponseEntity.ok(quantidadeAgendamentos)
     }
+
+    @Operation(
+        summary = "Retorna os 3 procedimentos mais agendados por usuário",
+        description = "Retorna os 3 procedimentos mais agendados por usuário."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "3 procedimentos mais agendados por usuário retornada com sucesso"
+            )
+        ]
+    )
+
+    @GetMapping("/top3/{idUsuario}")
+    fun getTop3ProcedimentosByUsuario(@PathVariable idUsuario: Int): ResponseEntity<List<Any>> {
+        val procedimentos = procedimentoService.getTop3ProcedimentosByUsuario(idUsuario)
+        return ResponseEntity.ok(procedimentos)
+    }
 }
