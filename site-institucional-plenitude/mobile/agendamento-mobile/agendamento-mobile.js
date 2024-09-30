@@ -61,12 +61,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  // Carregar Especificações
   async function carregarEspecificacoes() {
     try {
       const response = await fetch(apiUrlEspecificacoes);
       if (response.ok) {
         especificacoes = await response.json();
-        console.log(especificacoes); // Adicione este log
       } else {
         console.error(
           "Erro ao buscar especificações: " +
@@ -81,7 +81,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Filtrar Especificações pelo Procedimento selecionado
-  // Função para filtrar Especificações pelo Procedimento selecionado
   function filtrarEspecificacoesPorProcedimento(
     procedimentoId,
     idEspecificacao = null
@@ -101,7 +100,6 @@ document.addEventListener("DOMContentLoaded", function () {
       especificacaoSelect.appendChild(option);
     });
 
-    // Mostrar campo de especificações
     if (especificacoesFiltradas.length > 0) {
       opcaoEspecificacaoDiv.classList.remove("hidden");
     } else {
@@ -110,34 +108,227 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Preencher automaticamente a especificação se o idEspecificacao estiver presente
     if (idEspecificacao) {
-      console.log("Preenchendo automaticamente a especificação");
       especificacaoSelect.value = idEspecificacao;
+    }
+  }
+
+  // Evento ao selecionar Procedimento
+  procedimentoSelect.addEventListener("change", function () {
+    const procedimentoId = procedimentoSelect.value;
+    if (procedimentoId) {
+      filtrarEspecificacoesPorProcedimento(procedimentoId);
+    } else {
+      opcaoEspecificacaoDiv.classList.add("hidden");
+      tipoAtendimentoDiv.classList.add("hidden");
+      dataInputDiv.classList.add("hidden");
+      horariosDiv.classList.add("hidden");
+      botaoAgendarDiv.classList.add("hidden");
+    }
+  });
+
+  // Evento ao selecionar Especificação
+  especificacaoSelect.addEventListener("change", function () {
+    const especificacaoId = especificacaoSelect.value;
+    if (especificacaoId) {
+      tipoAtendimentoDiv.classList.remove("hidden");
+      tipoAtendimentoSelect.disabled = false;
+    } else {
+      tipoAtendimentoDiv.classList.add("hidden");
+      dataInputDiv.classList.add("hidden");
+      horariosDiv.classList.add("hidden");
+      botaoAgendarDiv.classList.add("hidden");
+    }
+  });
+
+  // Inicializar
+  async function inicializar() {
+    await carregarProcedimentos();
+    await carregarEspecificacoes();
+
+    const idProcedimento = localStorage.getItem("idProcedimento");
+    const idEspecificacao = localStorage.getItem("idEspecificacao");
+
+    if (idProcedimento && idEspecificacao) {
+      procedimentoSelect.value = idProcedimento;
+      filtrarEspecificacoesPorProcedimento(idProcedimento, idEspecificacao);
+
+      tipoAtendimentoDiv.classList.remove("hidden");
+      tipoAtendimentoSelect.disabled = false;
+
+      localStorage.removeItem("idProcedimento");
+      localStorage.removeItem("idEspecificacao");
+      console.log("IDs removidos do localStorage");
+    }
+  }
+
+  // Chama a função de inicialização
+  inicializar();
+});
+document.addEventListener("DOMContentLoaded", function () {
+  const apiUrlProcedimentos = "http://localhost:8080/api/procedimentos";
+  const apiUrlEspecificacoes = "http://localhost:8080/api/especificacoes";
+  const apiUrlAgendamentos = "http://localhost:8080/api/agendamentos";
+  const apiUrlCriarAgendamento = "http://localhost:8080/api/agendamentos";
+
+  const procedimentoSelect = document.getElementById("procedimento");
+  const opcaoEspecificacaoDiv = document.getElementById("opcao-especificacao");
+  const especificacaoSelect = document.getElementById("especificacao");
+  const tipoAtendimentoDiv = document.getElementById("tipo-atendimento");
+  const tipoAtendimentoSelect = document.getElementById(
+    "tipo-atendimento-select"
+  );
+  const dataInputDiv = document.getElementById("data-div");
+  const dataInput = document.getElementById("data");
+  const horariosDiv = document.getElementById("horarios-div");
+  const horariosContainer = document.getElementById("horarios-disponiveis");
+  const botaoAgendarDiv = document.getElementById("botaoAgendarDiv");
+  const botaoAgendar = document.getElementById("save-agendamento-button");
+
+  let especificacoes = [];
+
+  // Inicialmente, ocultar todos os campos exceto o procedimento
+  opcaoEspecificacaoDiv.classList.add("hidden");
+  tipoAtendimentoDiv.classList.add("hidden");
+  dataInputDiv.classList.add("hidden");
+  horariosDiv.classList.add("hidden");
+  botaoAgendarDiv.classList.add("hidden");
+
+  // Carregar Procedimentos
+  async function carregarProcedimentos() {
+    try {
+      const response = await fetch(apiUrlProcedimentos);
+      if (response.ok) {
+        const procedimentos = await response.json();
+        procedimentos.forEach((procedimento) => {
+          const option = document.createElement("option");
+          option.value = procedimento.idProcedimento;
+          option.textContent = procedimento.tipo;
+          procedimentoSelect.appendChild(option);
+        });
+
+        // Verificar se há valores no localStorage e preencher automaticamente
+        const idProcedimento = localStorage.getItem("idProcedimento");
+        const idEspecificacao = localStorage.getItem("idEspecificacao");
+
+        if (idProcedimento) {
+          procedimentoSelect.value = idProcedimento;
+          filtrarEspecificacoesPorProcedimento(idProcedimento, idEspecificacao);
+        }
+      } else {
+        console.error(
+          "Erro ao buscar procedimentos: " +
+            response.status +
+            " " +
+            response.statusText
+        );
+      }
+    } catch (error) {
+      console.error("Erro ao buscar procedimentos: ", error);
+    }
+  }
+
+  // Carregar Especificações
+  async function carregarEspecificacoes() {
+    try {
+      const response = await fetch(apiUrlEspecificacoes);
+      if (response.ok) {
+        especificacoes = await response.json();
+      } else {
+        console.error(
+          "Erro ao buscar especificações: " +
+            response.status +
+            " " +
+            response.statusText
+        );
+      }
+    } catch (error) {
+      console.error("Erro ao buscar especificações: ", error);
+    }
+  }
+
+  // Filtrar Especificações pelo Procedimento selecionado
+  function filtrarEspecificacoesPorProcedimento(
+    procedimentoId,
+    idEspecificacao = null
+  ) {
+    especificacaoSelect.innerHTML =
+      '<option value="">Selecione a especificação</option>';
+
+    const especificacoesFiltradas = especificacoes.filter(
+      (especificacao) =>
+        especificacao.procedimento.idProcedimento == procedimentoId
+    );
+
+    especificacoesFiltradas.forEach((especificacao) => {
+      const option = document.createElement("option");
+      option.value = especificacao.idEspecificacaoProcedimento;
+      option.textContent = especificacao.especificacao;
+      especificacaoSelect.appendChild(option);
+    });
+
+    if (especificacoesFiltradas.length > 0) {
       opcaoEspecificacaoDiv.classList.remove("hidden");
+    } else {
+      opcaoEspecificacaoDiv.classList.add("hidden");
     }
 
-    // Resetar campos subsequentes
-    dataInputDiv.classList.add("hidden");
-    horariosDiv.classList.add("hidden");
-    botaoAgendarDiv.classList.add("hidden");
+    // Preencher automaticamente a especificação se o idEspecificacao estiver presente
+    if (idEspecificacao) {
+      especificacaoSelect.value = idEspecificacao;
+    }
   }
 
-  // Carregar dados na inicialização
-  carregarProcedimentos();
-  carregarEspecificacoes();
+  // Evento ao selecionar Procedimento
+  procedimentoSelect.addEventListener("change", function () {
+    const procedimentoId = procedimentoSelect.value;
+    if (procedimentoId) {
+      filtrarEspecificacoesPorProcedimento(procedimentoId);
+    } else {
+      opcaoEspecificacaoDiv.classList.add("hidden");
+      tipoAtendimentoDiv.classList.add("hidden");
+      dataInputDiv.classList.add("hidden");
+      horariosDiv.classList.add("hidden");
+      botaoAgendarDiv.classList.add("hidden");
+    }
+  });
 
-  // Verificar se há valores no localStorage e preencher automaticamente
-  const idProcedimento = localStorage.getItem("idProcedimento");
-  const idEspecificacao = localStorage.getItem("idEspecificacao");
+  // Evento ao selecionar Especificação
+  especificacaoSelect.addEventListener("change", function () {
+    const especificacaoId = especificacaoSelect.value;
+    if (especificacaoId) {
+      tipoAtendimentoDiv.classList.remove("hidden");
+      tipoAtendimentoSelect.disabled = false;
+    } else {
+      tipoAtendimentoDiv.classList.add("hidden");
+      dataInputDiv.classList.add("hidden");
+      horariosDiv.classList.add("hidden");
+      botaoAgendarDiv.classList.add("hidden");
+    }
+  });
 
-  if (idProcedimento && idEspecificacao) {
-    procedimentoSelect.value = idProcedimento;
+  // Inicializar
+  async function inicializar() {
+    await carregarProcedimentos();
+    await carregarEspecificacoes();
 
-    // Preenche a especificação junto com o procedimento
-    filtrarEspecificacoesPorProcedimento(idProcedimento, idEspecificacao);
+    const idProcedimento = localStorage.getItem("idProcedimento");
+    const idEspecificacao = localStorage.getItem("idEspecificacao");
 
-    tipoAtendimentoDiv.classList.remove("hidden");
-    tipoAtendimentoSelect.disabled = false; // Ativar o dropdown de tipo de atendimento
+    if (idProcedimento && idEspecificacao) {
+      procedimentoSelect.value = idProcedimento;
+      filtrarEspecificacoesPorProcedimento(idProcedimento, idEspecificacao);
+
+      tipoAtendimentoDiv.classList.remove("hidden");
+      tipoAtendimentoSelect.disabled = false;
+
+      localStorage.removeItem("idProcedimento");
+      localStorage.removeItem("idEspecificacao");
+      console.log("IDs removidos do localStorage");
+    }
   }
+
+  // Chama a função de inicialização
+  inicializar();
 
   // Evento ao selecionar Procedimento
   procedimentoSelect.addEventListener("change", function () {
@@ -192,6 +383,21 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  function showNotification(message, isError = false) {
+    const notification = document.getElementById("notification");
+    const notificationMessage = document.getElementById("notification-message");
+    notificationMessage.textContent = message;
+    if (isError) {
+      notification.classList.add("error");
+    } else {
+      notification.classList.remove("error");
+    }
+    notification.classList.add("show");
+    setTimeout(() => {
+      notification.classList.remove("show");
+    }, 3000);
+  }
+
   // Carregar Horários Disponíveis
   async function carregarHorariosDisponiveis(data) {
     try {
@@ -233,7 +439,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
           horariosDiv.classList.add("hidden");
           botaoAgendarDiv.classList.add("hidden");
-          alert("Não há horários disponíveis para esta data.");
+          showNotification("Não há horários disponíveis para esta data.", true);
         }
       } else {
         console.error(
@@ -261,7 +467,7 @@ document.addEventListener("DOMContentLoaded", function () {
       !data ||
       !horario
     ) {
-      alert("Todos os campos são obrigatórios");
+      showNotification("Todos os campos são obrigatórios", true);
       return;
     }
 
@@ -269,7 +475,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const idUsuario = localStorage.getItem("idUsuario");
 
     if (!idUsuario) {
-      alert("Usuário não encontrado. Por favor, faça login novamente.");
+      showNotification(
+        "Usuário não encontrado. Por favor, faça login novamente.",
+        true
+      );
       return;
     }
 
@@ -292,15 +501,15 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       if (response.ok) {
-        alert("Agendamento criado com sucesso!");
+        showNotification("Agendamento criado com sucesso!");
         window.location.href = "../agendamento-mobile/agendamento-mobile.html";
       } else {
         console.error("Erro ao criar agendamento: " + response.statusText);
-        alert("Já existe um agendamento para essa data e horário.");
+        showNotification("Erro ao criar agendamento", true);
       }
     } catch (error) {
       console.error("Erro ao criar agendamento: ", error);
-      alert("Erro ao criar agendamento.");
+      showNotification("Erro ao criar agendamento", true);
     }
   });
 
