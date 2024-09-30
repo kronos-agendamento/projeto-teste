@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const dataInput = document.getElementById("data");
   const horariosDiv = document.getElementById("horarios-div");
   const horariosContainer = document.getElementById("horarios-disponiveis");
+  const botaoAgendarDiv = document.getElementById("botaoAgendarDiv");
   const botaoAgendar = document.getElementById("save-agendamento-button");
 
   let especificacoes = [];
@@ -26,21 +27,27 @@ document.addEventListener("DOMContentLoaded", function () {
   horariosDiv.classList.add("hidden");
   botaoAgendarDiv.classList.add("hidden");
 
-  console.log('passei aqui')
-
   // Carregar Procedimentos
   async function carregarProcedimentos() {
     try {
       const response = await fetch(apiUrlProcedimentos);
       if (response.ok) {
         const procedimentos = await response.json();
-        console.log("Procedimentos recebidos:", procedimentos); // Log extra
         procedimentos.forEach((procedimento) => {
           const option = document.createElement("option");
           option.value = procedimento.idProcedimento;
           option.textContent = procedimento.tipo;
           procedimentoSelect.appendChild(option);
         });
+
+        // Verificar se há valores no localStorage e preencher automaticamente
+        const idProcedimento = localStorage.getItem("idProcedimento");
+        const idEspecificacao = localStorage.getItem("idEspecificacao");
+
+        if (idProcedimento) {
+          procedimentoSelect.value = idProcedimento;
+          filtrarEspecificacoesPorProcedimento(idProcedimento, idEspecificacao);
+        }
       } else {
         console.error(
           "Erro ao buscar procedimentos: " +
@@ -59,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const response = await fetch(apiUrlEspecificacoes);
       if (response.ok) {
         especificacoes = await response.json();
-        console.log("Especificações recebidas:", especificacoes); // Log extra
+        console.log(especificacoes); // Adicione este log
       } else {
         console.error(
           "Erro ao buscar especificações: " +
@@ -74,7 +81,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Filtrar Especificações pelo Procedimento selecionado
-  function filtrarEspecificacoesPorProcedimento(procedimentoId) {
+  function filtrarEspecificacoesPorProcedimento(
+    procedimentoId,
+    idEspecificacao = null
+  ) {
     especificacaoSelect.innerHTML =
       '<option value="">Selecione a especificação</option>';
 
@@ -97,8 +107,17 @@ document.addEventListener("DOMContentLoaded", function () {
       opcaoEspecificacaoDiv.classList.add("hidden");
     }
 
+    // Preencher automaticamente a especificação se o idEspecificacao estiver presente
+    if (idEspecificacao) {
+      console.log("Preenchendo automaticamente a especificação");
+      especificacaoSelect.value = idEspecificacao;
+      console.log(idEspecificacao);
+      opcaoEspecificacaoDiv.classList.remove("hidden");
+      opcaoEspecificacaoDiv.disabled = false; // Ativar o dropdown de tipo de atendimento
+      especificacaoSelect.value = idEspecificacao;
+    }
+
     // Resetar campos subsequentes
-    tipoAtendimentoDiv.classList.add("hidden");
     dataInputDiv.classList.add("hidden");
     horariosDiv.classList.add("hidden");
     botaoAgendarDiv.classList.add("hidden");
@@ -124,6 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const especificacaoId = especificacaoSelect.value;
     if (especificacaoId) {
       tipoAtendimentoDiv.classList.remove("hidden");
+      tipoAtendimentoSelect.disabled = false; // Ativar o dropdown de tipo de atendimento
     } else {
       // Ocultar campos subsequentes
       tipoAtendimentoDiv.classList.add("hidden");
@@ -171,10 +191,13 @@ document.addEventListener("DOMContentLoaded", function () {
         horariosContainer.innerHTML = "";
 
         horariosDisponiveis.forEach((horario) => {
-          const formattedTime =
-            String(horario.hour).padStart(2, "0") +
-            ":" +
-            String(horario.minute).padStart(2, "0");
+          // Supondo que horario é uma string no formato "HH:MM:SS"
+          const [hour, minute] = horario.split(":");
+          const formattedTime = `${hour.padStart(2, "0")}:${minute.padStart(
+            2,
+            "0"
+          )}`;
+
           const button = document.createElement("button");
           button.textContent = formattedTime;
           button.classList.add("horario-button");
@@ -227,6 +250,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const dataHorario = new Date(`${data}T${horario}`).toISOString();
+    const idUsuario = localStorage.getItem("idUsuario");
+
+    if (!idUsuario) {
+      alert("Usuário não encontrado. Por favor, faça login novamente.");
+      return;
+    }
 
     const agendamento = {
       fk_procedimento: parseInt(procedimentoId, 10),
@@ -234,6 +263,7 @@ document.addEventListener("DOMContentLoaded", function () {
       fk_status: 1,
       tipoAgendamento: tipoAtendimento,
       dataHorario: dataHorario,
+      fk_usuario: parseInt(idUsuario, 10),
     };
 
     try {
@@ -261,4 +291,16 @@ document.addEventListener("DOMContentLoaded", function () {
   // Carregar dados na inicialização
   carregarProcedimentos();
   carregarEspecificacoes();
+
+  // Verificar se há valores no localStorage e preencher automaticamente
+  const idProcedimento = localStorage.getItem("idProcedimento");
+  const idEspecificacao = localStorage.getItem("idEspecificacao");
+
+  if (idProcedimento && idEspecificacao) {
+    procedimentoSelect.value = idProcedimento;
+    especificacaoSelect.value = idEspecificacao;
+    filtrarEspecificacoesPorProcedimento(idProcedimento, idEspecificacao);
+    tipoAtendimentoDiv.classList.remove("hidden");
+    tipoAtendimentoSelect.disabled = false; // Ativar o dropdown de tipo de atendimento
+  }
 });

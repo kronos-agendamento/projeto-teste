@@ -18,9 +18,6 @@
   <body>
     <main>
       <header>
-        <div class="pesquisa">
-          <img src="../../assets/icons/lupa.png" alt="" />
-        </div>
         <div id="titulo-agendamento">
           <h1>Agendar</h1>
         </div>
@@ -87,24 +84,24 @@
             <label for="tipo-atendimento">Tipo de Atendimento:</label>
             <select name="tipo-atendimento" id="tipo-atendimento-select">
               <option value="">Selecione o tipo de atendimento</option>
-              <option value="primeira-vez">Primeira Vez</option>
-              <option value="manutencao">Manutenção</option>
-              <option value="retirada">Remoção</option>
+              <option value="Colocação">Primeira Vez</option>
+              <option value="Manutenção">Manutenção</option>
+              <option value="Retirada">Remoção</option>
             </select>
           </div>
 
-          <div class="form-group form-mr form-input">
+          <div class="form-group form-mr form-input" id="data-div">
             <label for="data">Escolha o melhor dia:</label>
             <input type="date" id="data" name="data" />
             <p id="data-selecionada"></p>
           </div>
-          <div class="form-group form-input">
+          <div class="form-group form-input" id="horarios-div">
             <label for="descricao"
               >Escolha o melhor horário dentro do dia:</label
             >
             <div id="horarios-disponiveis"></div>
 
-            <div class="button-container">
+            <div class="button-container" id="botaoAgendarDiv">
               <button
                 type="button"
                 class="save-button"
