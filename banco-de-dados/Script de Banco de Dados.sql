@@ -86,6 +86,14 @@ CREATE TABLE usuario (
     FOREIGN KEY (fk_ficha_anamnese) REFERENCES ficha_anamnese(id_ficha)
 );
 
+create table login_logoff (
+id_log INT auto_increment PRIMARY KEY,
+logi VARCHAR(5) NOT NULL,
+data_horario DATETIME NOT NULL,
+fk_usuario INT NOT NULL,
+FOREIGN KEY (fk_usuario) references usuario(id_usuario)
+);
+
 CREATE TABLE procedimento (
     id_procedimento INT AUTO_INCREMENT PRIMARY KEY,
     tipo VARCHAR(100) NOT NULL,

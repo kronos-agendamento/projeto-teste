@@ -94,15 +94,15 @@ document
   .getElementById("loginForm")
   .addEventListener("submit", async (event) => {
     event.preventDefault();
-
+  
     const email = document.getElementById("loginEmail").value;
     const senha = document.getElementById("loginSenha").value;
-
+  
     const payload = {
       email,
       senha,
     };
-
+  
     try {
       const response = await fetch("http://localhost:8080/usuarios/login", {
         method: "POST",
@@ -111,10 +111,10 @@ document
         },
         body: JSON.stringify(payload),
       });
-
+  
       if (response.ok) {
         const loginData = await response.json();
-
+  
         // Salva o nome, email e cpf no localStorage
         localStorage.setItem("nome", loginData.nome);
         localStorage.setItem("email", loginData.email);
@@ -122,7 +122,10 @@ document
         localStorage.setItem("instagram", loginData.instagram);
         localStorage.setItem("empresa", loginData.empresa.idEmpresa);
         localStorage.setItem("idUsuario", loginData.idUsuario);
-
+  
+        // Chama a função para registrar o log de login
+        await registrarLogLoginLogoff(loginData.idUsuario);
+  
         showNotification("Login realizado com sucesso!");
         window.location.href = "../app/index/index.html";
       } else {
@@ -135,7 +138,34 @@ document
       showNotification("Erro ao realizar login.", true);
     }
   });
-
+  
+  // Função para registrar o log de login/logoff
+  async function registrarLogLoginLogoff(idUsuario) {
+    try {
+      const logData = {
+        logi: "LOGIN", // Marca como 'LOGIN'
+        dataHorario: new Date().toISOString(), // Pega a data/hora atual no formato ISO
+        fkUsuario: idUsuario, // O ID do usuário que acabou de logar
+      };
+  
+      const response = await fetch("http://localhost:8080/login-logoff", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(logData),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Erro ao registrar log de login");
+      }
+  
+      console.log("Log de login registrado com sucesso!");
+    } catch (error) {
+      console.error("Erro ao registrar o log de login:", error);
+    }
+  }
+  
 document.addEventListener("DOMContentLoaded", function () {
   const signInForm = document.getElementById("signInForm");
   const signUpForm = document.getElementById("signUpForm");

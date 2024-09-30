@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // KPI's - Usabilidade
             tempoAgendamento: '/api/agendamentos/tempo-para-agendar',
+            retornoLogin: '/login-logoff/retorno-usuarios-login',
 
             // Gráfico 1 - Gerencial
             listarTop3Indicacoes: '/usuarios/buscar-top3-indicacoes',
@@ -85,6 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Chamadas para atualizar os KPI's de - Usabilidade
         fetchData(endpoints.tempoAgendamento, updateTempoAgendamento);
+        fetchData(endpoints.retornoLogin, updateRetornoLogin);
 
         // Chamadas para atualizar os dados do gráfico 1 - Gerencial
         fetchData(endpoints.listarTop3Indicacoes, updateListarTop3Indicacoes);
@@ -134,6 +136,10 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateTempoAgendamento(data) {
         const tempoMedioCount = document.getElementById('tempo-medio-conclusao');
         tempoMedioCount.textContent = data;
+    }
+    function updateRetornoLogin(data) {
+        const retornoLoginCount = document.getElementById('retorno-login-count');
+        retornoLoginCount.textContent = data;
     }
 
     // Constantes dos gráficos
