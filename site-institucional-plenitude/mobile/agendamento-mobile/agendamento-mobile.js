@@ -81,6 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Filtrar Especificações pelo Procedimento selecionado
+  // Função para filtrar Especificações pelo Procedimento selecionado
   function filtrarEspecificacoesPorProcedimento(
     procedimentoId,
     idEspecificacao = null
@@ -111,16 +112,31 @@ document.addEventListener("DOMContentLoaded", function () {
     if (idEspecificacao) {
       console.log("Preenchendo automaticamente a especificação");
       especificacaoSelect.value = idEspecificacao;
-      console.log(idEspecificacao);
       opcaoEspecificacaoDiv.classList.remove("hidden");
-      opcaoEspecificacaoDiv.disabled = false; // Ativar o dropdown de tipo de atendimento
-      especificacaoSelect.value = idEspecificacao;
     }
 
     // Resetar campos subsequentes
     dataInputDiv.classList.add("hidden");
     horariosDiv.classList.add("hidden");
     botaoAgendarDiv.classList.add("hidden");
+  }
+
+  // Carregar dados na inicialização
+  carregarProcedimentos();
+  carregarEspecificacoes();
+
+  // Verificar se há valores no localStorage e preencher automaticamente
+  const idProcedimento = localStorage.getItem("idProcedimento");
+  const idEspecificacao = localStorage.getItem("idEspecificacao");
+
+  if (idProcedimento && idEspecificacao) {
+    procedimentoSelect.value = idProcedimento;
+
+    // Preenche a especificação junto com o procedimento
+    filtrarEspecificacoesPorProcedimento(idProcedimento, idEspecificacao);
+
+    tipoAtendimentoDiv.classList.remove("hidden");
+    tipoAtendimentoSelect.disabled = false; // Ativar o dropdown de tipo de atendimento
   }
 
   // Evento ao selecionar Procedimento
@@ -291,10 +307,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // Carregar dados na inicialização
   carregarProcedimentos();
   carregarEspecificacoes();
-
-  // Verificar se há valores no localStorage e preencher automaticamente
-  const idProcedimento = localStorage.getItem("idProcedimento");
-  const idEspecificacao = localStorage.getItem("idEspecificacao");
 
   if (idProcedimento && idEspecificacao) {
     procedimentoSelect.value = idProcedimento;
