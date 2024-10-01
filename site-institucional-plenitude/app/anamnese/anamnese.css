@@ -691,3 +691,7 @@ Inicio Respostas
   display: flex;
   justify-content: center;
 }
+
+#modalDesatvadas table{
+margin-left: 12%; 
+}

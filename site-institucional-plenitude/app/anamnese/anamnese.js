@@ -8,39 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-// var btn = document.getElementsByClassName("planilha-btn")[0];
-// var modal = document.getElementsByTagName("dialog")[0];
-// btn.onclick = function () {
-//  modal.showModal();
-// };
-
-// const cirurgia = document.getElementById("cirugia").value;
-// const descricaoCirurgia = document.getElementById("descricao").value;
-
-//Cria o objeto de dados para enviar
-// const requestData = {
-//  cirugia: cirurgia,
-//  descricao: descricao,
-// };
-
-//Fazendo a requisição POST
-// fetch("http://localhost:8080/api/anamnese", {
-//  method: "POST",
-//  headers: {
-//    "Content-Type": "application/json",
-//  },
-//  body: JSON.stringify(requestData),
-// })
-//  .then((data) => {
-//    // Exibe mensagem de sucesso
-//    document.getElementById("notification-message").textContent =
-//      "Ficha de anamnese salva com sucesso!";
-//  })
-//  .catch((error) => {
-//    console.error("Erro ao salvar ficha:", error);
-//    document.getElementById("notification-message").textContent =
-//      "Erro ao salvar agendamento. Tente novamente";
-//  });
 
 
 function showForm() {
@@ -65,9 +32,13 @@ function closeModal2() {
   modal2.style.display = "none";
 }
 
-function salvarPergunta() {
+
+// URL base da API
+const baseUrl = "http://localhost:8080";
+
+function criarPergunta() {
   // Captura o valor da descrição da pergunta
-  const descricaoPergunta = document.getElementById("descricao").value;
+  const descricaoPergunta = document.getElementById("descricaoPergunta").value;
 
   // Estrutura dos dados que serão enviados
   const perguntaData = {
@@ -75,8 +46,6 @@ function salvarPergunta() {
     ativa: true // Sempre true por padrão
   };
 
-  // URL base da API
-  const baseUrl = "http://localhost:8080";
 
   // Faz a requisição POST para salvar a pergunta
   fetch(`${baseUrl}/api/perguntas`, {
@@ -106,3 +75,53 @@ function salvarPergunta() {
       document.getElementById("notification-message").textContent = "Erro ao cadastrar pergunta. Tente novamente";
     });
 }
+
+
+
+function getDesativadas() {
+
+  fetch(`${baseUrl}/api/perguntas/desativadas`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro na requisição: ' + response.status);
+        }
+        return response.json();
+    })
+    .then(perguntasDesativadas => {
+        console.log("Dados recebidos:", perguntasDesativadas);  // Log dos dados recebidos
+        preencherTabelasDesativadas(perguntasDesativadas);
+    })
+    .catch(error => {
+        console.error('Erro ao listar perguntas desativadas:', error);
+    });
+
+}
+
+function preencherTabelasDesativadas(perguntasDesativadas) {
+  const descricaoTd = document.getElementById("descricaoDesativada");
+
+  // Limpa o conteúdo anterior
+  descricaoTd.innerHTML = "";
+
+  // Verifica se há perguntas desativadas
+  if (perguntasDesativadas && perguntasDesativadas.length > 0) {
+      perguntasDesativadas.forEach(pergunta => {
+          const descricao = pergunta.pergunta ? pergunta.pergunta : "Descrição não disponível";
+
+          // Cria novos elementos para exibir as perguntas
+          const novaLinha = document.createElement("tr");
+          const descricaoCelula = document.createElement("td");
+
+          descricaoCelula.textContent = descricao;
+
+          novaLinha.appendChild(descricaoCelula);
+
+          // Adiciona a nova linha na tabela
+          descricaoTd.appendChild(novaLinha);
+      });
+  } else {
+      descricaoTd.innerHTML = "Nenhuma pergunta desativada encontrada";
+  }
+}
+
+
