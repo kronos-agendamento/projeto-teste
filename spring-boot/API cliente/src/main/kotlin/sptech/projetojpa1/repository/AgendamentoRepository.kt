@@ -28,6 +28,25 @@ interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
     fun tempoParaAgendar(): List<Int>
 
     @Query(
+        """
+        WITH AgendamentosDoDia AS (
+            SELECT data_horario
+            FROM agendamento
+            WHERE DATE(data_horario) = CURDATE()
+            ORDER BY data_horario
+        ),
+        DiferencasEntreAgendamentos AS (
+            SELECT TIMESTAMPDIFF(MINUTE, LAG(data_horario) OVER (ORDER BY data_horario), data_horario) AS diferenca
+            FROM AgendamentosDoDia
+        )
+        SELECT AVG(diferenca) 
+        FROM DiferencasEntreAgendamentos
+        WHERE diferenca IS NOT NULL;
+        """, nativeQuery = true
+    )
+    fun calcularTempoMedioEntreAgendamentosDoDia(): Double?
+
+    @Query(
         nativeQuery = true, value = """ 
         SELECT COUNT(*) AS agendamentos_marcados_hoje
         FROM agendamento

@@ -43,6 +43,10 @@ class AgendamentoService(
         }
     }
 
+    fun obterTempoMedioEntreAgendamentos(): Double? {
+        return agendamentoRepository.calcularTempoMedioEntreAgendamentosDoDia()
+    }
+
     fun agendamentosRealizadosTrimestre(): Int {
         return agendamentoRepository.findAgendamentosConcluidosUltimoTrimestre()
     }

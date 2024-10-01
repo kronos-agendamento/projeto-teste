@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.validation.Valid
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import sptech.projetojpa1.dto.agendamento.AgendamentoRequestDTO
@@ -34,6 +35,16 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
             ResponseEntity.ok(agendamentoResponseDTO)
         } catch (ex: IllegalArgumentException) {
             ResponseEntity.badRequest().body(ex.message)
+        }
+    }
+
+    @GetMapping("/tempo-medio")
+    fun getTempoMedioEntreAgendamentos(): ResponseEntity<Double> {
+        val tempoMedio = agendamentoService.obterTempoMedioEntreAgendamentos()
+        return if (tempoMedio != null) {
+            ResponseEntity.ok(tempoMedio)
+        } else {
+            ResponseEntity.status(HttpStatus.NO_CONTENT).build()
         }
     }
 

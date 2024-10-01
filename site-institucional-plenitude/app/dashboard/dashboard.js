@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
             totalAgendamentosHoje: '/api/agendamentos/total-agendamentos-hoje',
             totalAgendamentosFuturos: '/api/agendamentos/futuros',
             notasFeedbacks: '/api/feedbacks/media-notas-single',
+            tempoMedio: '/api/agendamentos/tempo-medio',
 
             // Gráfico 1 - Gerencial
             listarTop3Indicacoes: '/usuarios/buscar-top3-indicacoes',
@@ -79,6 +80,8 @@ document.addEventListener('DOMContentLoaded', function () {
             agendamentosProcedimentosLabels: '/api/especificacoes/nomes',
             agendamentosProcedimentos: '/api/procedimentos/quantidade-agendamentos-procedimentos',
 
+            // Gráfico 1 - Operacional
+
             // Gráfico 1 - Usabilidade
             ultimosAgendamentosRealizados5Meses: '/api/agendamentos/agendamentos-realizados-ultimos-cinco-meses'
         };
@@ -96,7 +99,8 @@ document.addEventListener('DOMContentLoaded', function () {
         // Chamadas para atualizar os KPI's de - Operacional
         fetchData(endpoints.totalAgendamentosHoje, updateTotalAgendamentosHoje);
         fetchData(endpoints.totalAgendamentosFuturos, updateTotalAgendamentosFuturos);
-        fetchData(endpoints.notasFeedbacks, updateNotaSingle)
+        fetchData(endpoints.notasFeedbacks, updateNotaSingle);
+        fetchData(endpoints.tempoMedio, updateTempoMedio);
 
         // Chamadas para atualizar os dados do gráfico 1 - Gerencial
         fetchData(endpoints.listarTop3Indicacoes, updateListarTop3Indicacoes);
@@ -151,6 +155,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const retornoLoginCount = document.getElementById('retorno-login-count');
         retornoLoginCount.textContent = data;
     }
+
     // Funções que atualizam as KPI's de operacional
     function updateTotalAgendamentosHoje(data) {
         const totalAgendamentosHoje = document.getElementById('total-agendamentos-hoje');
@@ -163,6 +168,10 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateNotaSingle(data) {
         const totalNotaSingle = document.getElementById('total-nota-single');
         totalNotaSingle.textContent = data;
+    }
+    function updateTempoMedio(data) {
+        const tempoMedioHoje = document.getElementById('tempo-medio-hoje');
+        tempoMedioHoje.textContent = data;
     }
 
     // Constantes dos gráficos
@@ -196,6 +205,10 @@ document.addEventListener('DOMContentLoaded', function () {
     let labelsChartUsabilidade1 = lastFiveMonths;
     const ctxUsabilidade1 = document.getElementById('chartUsabilidade1').getContext('2d');
     let chartUsabilidade1;
+
+    let dataChartOperacional1 = null;
+    const ctxOperacional1 = document.getElementById('chartUsabilidade1').getContext('2d');
+    let chartOperacional1;
 
     
 
