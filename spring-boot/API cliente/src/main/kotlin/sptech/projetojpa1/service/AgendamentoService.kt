@@ -2,6 +2,7 @@ package sptech.projetojpa1.service
 
 import org.springframework.stereotype.Service
 import sptech.projetojpa1.domain.Agendamento
+import sptech.projetojpa1.domain.Usuario
 import sptech.projetojpa1.dto.agendamento.AgendamentoRequestDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoResponseDTO
 import sptech.projetojpa1.repository.*
@@ -33,6 +34,7 @@ class AgendamentoService(
                 tipoAgendamento = agendamento.tipoAgendamento,
                 usuario = usuario.nome,
                 usuarioTelefone = usuario.telefone?.toString(),
+                tempoAgendar = agendamento.tempoAgendar,
                 usuarioCpf = usuario.cpf ?: "CPF não disponível",
                 procedimento = agendamento.procedimento.tipo,
                 especificacao = agendamento.especificacao.especificacao,
@@ -43,6 +45,22 @@ class AgendamentoService(
 
     fun agendamentosRealizadosTrimestre(): Int {
         return agendamentoRepository.findAgendamentosConcluidosUltimoTrimestre()
+    }
+
+    fun tempoParaAgendar(): List<Int> {
+        return agendamentoRepository.tempoParaAgendar()
+    }
+
+    fun totalAgendamentosHoje(): Int {
+        return agendamentoRepository.findTotalAgendamentosHoje()
+    }
+
+    fun obterTotalAgendamentosFuturos(): Int {
+        return agendamentoRepository.findTotalAgendamentosFuturos()
+    }
+
+    fun agendamentosRealizadosUltimos5Meses(): List<Int> {
+        return agendamentoRepository.findAgendamentosConcluidosUltimos5Meses()
     }
 
     fun listarHorariosDisponiveis(
@@ -114,6 +132,7 @@ class AgendamentoService(
                 ?: throw IllegalArgumentException("Data não pode ser nula"),
             tipoAgendamento = agendamentoRequestDTO.tipoAgendamento
                 ?: throw IllegalArgumentException("Tipo de agendamento não pode ser nulo"),
+            tempoAgendar = agendamentoRequestDTO.tempoAgendar,
             usuario = usuarioRepository.findById(agendamentoRequestDTO.fk_usuario)
                 .orElseThrow { IllegalArgumentException("Usuário não encontrado") },
             procedimento = procedimentoRepository.findById(agendamentoRequestDTO.fk_procedimento)
@@ -130,6 +149,7 @@ class AgendamentoService(
             idAgendamento = savedAgendamento.idAgendamento,
             dataHorario = savedAgendamento.dataHorario,
             tipoAgendamento = savedAgendamento.tipoAgendamento,
+            tempoAgendar = savedAgendamento.tempoAgendar,
             usuario = agendamento.usuario.nome,
             procedimento = agendamento.procedimento.tipo,
             especificacao = agendamento.especificacao.especificacao,
@@ -146,6 +166,7 @@ class AgendamentoService(
             dataHorario = agendamento.dataHorario,
             tipoAgendamento = agendamento.tipoAgendamento,
             usuario = agendamento.usuario.nome,
+            tempoAgendar = agendamento.tempoAgendar,
             procedimento = agendamento.procedimento.tipo,
             especificacao = agendamento.especificacao.especificacao,
             statusAgendamento = agendamento.statusAgendamento
@@ -178,6 +199,7 @@ class AgendamentoService(
             usuario = agendamento.usuario.nome,
             procedimento = agendamento.procedimento.tipo,
             especificacao = agendamento.especificacao.especificacao,
+            tempoAgendar = agendamento.tempoAgendar,
             statusAgendamento = agendamento.statusAgendamento
         )
     }
@@ -198,6 +220,7 @@ class AgendamentoService(
             dataHorario = updatedAgendamento.dataHorario,
             tipoAgendamento = updatedAgendamento.tipoAgendamento,
             usuario = agendamento.usuario.nome,
+            tempoAgendar = agendamento.tempoAgendar,
             procedimento = agendamento.procedimento.tipo,
             especificacao = agendamento.especificacao.especificacao,
             statusAgendamento = agendamento.statusAgendamento
@@ -237,6 +260,7 @@ class AgendamentoService(
                 usuario = usuario.nome,
                 usuarioTelefone = usuario.telefone?.toString(),
                 usuarioCpf = usuario.cpf ?: "CPF não disponível",
+                tempoAgendar = agendamento.tempoAgendar,
                 procedimento = agendamento.procedimento.tipo,
                 especificacao = agendamento.especificacao.especificacao,
                 statusAgendamento = agendamento.statusAgendamento
@@ -258,6 +282,7 @@ class AgendamentoService(
                 tipoAgendamento = "Bloqueio",  // Tipo especial para identificar o bloqueio
                 usuario = usuarioRepository.findById(usuarioId)
                     .orElseThrow { IllegalArgumentException("Usuário não encontrado") },
+                tempoAgendar = null,
                 procedimento = procedimentoRepository.findById(1)  // Um ID fixo para o "procedimento bloqueio"
                     .orElseThrow { IllegalArgumentException("Procedimento não encontrado") },
                 especificacao = especificacaoRepository.findById(1)  // Um ID fixo para a "especificação bloqueio"
@@ -278,4 +303,19 @@ class AgendamentoService(
     fun countUsuariosWithStatusUm(): Int {
         return usuarioRepository.countByStatus(true)
     }
+
+    fun countDiasUltimoAgendamento(idUsuario: Int): Int {
+        val usuario: Usuario = usuarioRepository.findById(idUsuario)
+            .orElseThrow { IllegalArgumentException("Usuário não encontrado") }
+        return agendamentoRepository.countDiasUltimoAgendamento(usuario) ?: 0
+    }
+
+        fun buscarDiaMaisAgendadoPorUsuario(idUsuario: Int): String {
+            return agendamentoRepository.buscarDiaMaisAgendadoPorUsuario(idUsuario)
+        }
+
+    fun getMostBookedTimeByUser(idUsuario: Int): String? {
+        return agendamentoRepository.findMostBookedTimeByUser(idUsuario)
+    }
 }
+

@@ -165,6 +165,30 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
         return ResponseEntity.ok(quantidadeConcluidos)
     }
 
+    @GetMapping("/tempo-para-agendar")
+    fun tempoParaAgendar(): ResponseEntity<List<Int>> {
+        val tempoPara = agendamentoService.tempoParaAgendar()
+        return ResponseEntity.ok(tempoPara)
+    }
+
+    @GetMapping("/total-agendamentos-hoje")
+    fun totalAgendamentosHoje(): ResponseEntity<Int> {
+        val tempoPara = agendamentoService.totalAgendamentosHoje()
+        return ResponseEntity.ok(tempoPara)
+    }
+
+    @GetMapping("/futuros")
+    fun getTotalAgendamentosFuturos(): ResponseEntity<Int> {
+        val agenFuturos = agendamentoService.obterTotalAgendamentosFuturos()
+        return ResponseEntity.ok(agenFuturos)
+    }
+
+    @GetMapping("/agendamentos-realizados-ultimos-cinco-meses")
+    fun agendamentosRealizadosUltimos5Meses(): ResponseEntity<List<Int>> {
+        val quantidadeConcluidos = agendamentoService.agendamentosRealizadosUltimos5Meses()
+        return ResponseEntity.ok(quantidadeConcluidos)
+    }
+
     @Operation(
         summary = "Lista horários disponíveis para agendamento",
         description = "Retorna uma lista de horários disponíveis para agendamento em uma data específica."
@@ -242,4 +266,64 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
     fun countUsuariossWithStatusUm(): Int {
         return agendamentoService.countUsuariosWithStatusUm()
     }
+
+    @Operation(
+        summary = "Conta a quantidade de dias entre o ultimo agendamento e a data atual",
+        description = "Retorna a quantidade de dias entre o ultimo agendamento e a data atual."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Retorna a quantidade de dias entre o ultimo agendamento e a data atual com sucesso"
+            )
+        ]
+    )
+    @GetMapping("/count-dias-ultimo-agendamento/{idUsuario}")
+    fun countDiasUltimoAgendamento(@PathVariable idUsuario: Int): Int {
+        return agendamentoService.countDiasUltimoAgendamento(idUsuario)
+    }
+
+    @Operation(
+        summary = "Retorna o dia mais agendado da semana",
+        description = "Mostra o dia da semana mais agendado de acordo com cada usuario."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Retorna o dia mais agendado da semana"
+            )
+        ]
+    )
+
+    @GetMapping("/dia-mais-agendado/{idUsuario}")
+    fun getDiaMaisAgendadoPorUsuario(@PathVariable idUsuario: Int): String {
+        return agendamentoService.buscarDiaMaisAgendadoPorUsuario(idUsuario)
+    }
+
+
+    @Operation(
+        summary = "Retorna o intervalo de horario mais agendado",
+        description = "Mostra o intervalo de horário mais agendado dependendo de cada usuário."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Retorna o itervalo de horário mais agendado"
+            )
+        ]
+    )
+
+    @GetMapping("/usuarios/{idUsuario}/intervalo-mais-agendado")
+    fun getMostBookedTimeByUser(@PathVariable idUsuario: Int): String {
+        return agendamentoService.getMostBookedTimeByUser(idUsuario)
+            ?: "Nenhum agendamento encontrado para o usuário."
+    }
 }
+
+
+
+
+

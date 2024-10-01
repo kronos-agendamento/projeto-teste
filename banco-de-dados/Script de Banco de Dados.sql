@@ -1,4 +1,4 @@
--- drop database kronosbooking;
+ -- drop database kronosbooking;
 CREATE DATABASE IF NOT EXISTS kronosbooking;
 USE kronosbooking;
 
@@ -86,6 +86,14 @@ CREATE TABLE usuario (
     FOREIGN KEY (fk_ficha_anamnese) REFERENCES ficha_anamnese(id_ficha)
 );
 
+create table login_logoff (
+id_log INT auto_increment PRIMARY KEY,
+logi VARCHAR(5) NOT NULL,
+data_horario DATETIME NOT NULL,
+fk_usuario INT NOT NULL,
+FOREIGN KEY (fk_usuario) references usuario(id_usuario)
+);
+
 CREATE TABLE procedimento (
     id_procedimento INT AUTO_INCREMENT PRIMARY KEY,
     tipo VARCHAR(100) NOT NULL,
@@ -134,6 +142,7 @@ CREATE TABLE agendamento (
     id_agendamento INT AUTO_INCREMENT PRIMARY KEY,
     data_horario DATETIME NOT NULL,
     tipo_agendamento VARCHAR(255) NOT NULL,
+    tempo_para_agendar INT,
     fk_usuario INT NOT NULL,
     fk_procedimento INT NOT NULL,
     fk_especificacao_procedimento INT NOT NULL,
@@ -143,6 +152,7 @@ CREATE TABLE agendamento (
     FOREIGN KEY (fk_especificacao_procedimento) REFERENCES especificacao(id_especificacao_procedimento),
     FOREIGN KEY (fk_status) REFERENCES status(id_status_agendamento)
 );
+
 
 CREATE TABLE feedback (
     id_feedback INT AUTO_INCREMENT PRIMARY KEY,
@@ -328,6 +338,7 @@ BEGIN
   DECLARE hora_aleatoria TIME;
   DECLARE mes_atual INT;
   DECLARE usuario_fidelizado INT;
+  DECLARE tempo_aleatorio INT;
 
   -- Definir os IDs dos usuários que terão agendamentos em todos os 3 meses (separados por vírgulas)
   SET @usuarios_fidelizados = '1,4,6';  -- IDs dos usuários a serem fidelizados
@@ -363,12 +374,15 @@ BEGIN
       WHILE qtd_agendamentos > 0 DO
         -- Gera uma hora aleatória entre 08:00 e 18:00 (trabalho diurno)
         SET hora_aleatoria = SEC_TO_TIME(FLOOR(RAND() * (10 * 3600)) + 8 * 3600);
+        
+        -- Gera um valor aleatório de tempo para agendar entre 15 e 120 minutos
+        SET tempo_aleatorio = 15 + FLOOR(RAND() * 106);
 
         -- Seleciona um usuário fidelizado aleatoriamente da lista
         SET usuario_fidelizado = CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(@usuarios_fidelizados, ',', FLOOR(1 + (RAND() * 4))), ',', -1) AS UNSIGNED);
 
         -- Insere os agendamentos aleatórios para o dia atual
-        INSERT INTO agendamento (data_horario, tipo_agendamento, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status)
+        INSERT INTO agendamento (data_horario, tipo_agendamento, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status, tempo_para_agendar)
         SELECT 
           CONCAT(dia_atual, ' ', hora_aleatoria) AS data_horario, -- Data e hora aleatórias
           CASE FLOOR(RAND() * 2) 
@@ -378,7 +392,8 @@ BEGIN
           usuario_fidelizado AS fk_usuario, -- Usuários fidelizados aleatórios
           FLOOR(1 + (RAND() * 3)) AS fk_procedimento, -- Procedimentos aleatórios
           FLOOR(1 + (RAND() * 10)) AS fk_especificacao_procedimento, -- Especificações aleatórias
-          1 AS fk_status -- Status fixo como '1' (ou altere se necessário)
+          1 AS fk_status, -- Status fixo como '1' (ou altere se necessário)
+          tempo_aleatorio AS tempo_para_agendar -- Tempo aleatório entre 15 e 120 minutos
         FROM (SELECT 1) AS dummy; -- Necessário para gerar múltiplas linhas
 
         -- Decrementa a quantidade de agendamentos para o dia
@@ -395,6 +410,7 @@ BEGIN
   END WHILE;
 
 END //
+
 
 DELIMITER ;
 
@@ -445,4 +461,3 @@ UPDATE usuario
 SET dtype = 'Profissional' 
 WHERE fk_nivel_acesso = 1;
 
-SELECT * FROM usuario;

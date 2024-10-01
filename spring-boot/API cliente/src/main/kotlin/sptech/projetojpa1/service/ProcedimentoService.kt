@@ -100,4 +100,8 @@ class ProcedimentoService(private val procedimentoRepository: ProcedimentoReposi
     fun getQuantidadeAgendamentosPorProcedimento(): List<Int> {
         return procedimentoRepository.findQuantidadeAgendamentosPorProcedimento()
     }
+
+    fun getTop3ProcedimentosByUsuario(idUsuario: Int): List<Any> {
+        return procedimentoRepository.findTop3ProcedimentosByUsuario(idUsuario)
+    }
 }

@@ -292,7 +292,6 @@ main {
 }
 
 header {
-  display: flex;
   justify-content: space-between;
   background-color: #d2135d;
   color: white;
@@ -301,7 +300,6 @@ header {
   margin-bottom: 2vh;
   margin-top: 2vh;
   margin-left: 2%;
-  height: 14vh;
 }
 
 header h1 {
@@ -312,6 +310,26 @@ header h1 {
 header p {
   margin: 0vh 0vh 0vh 2vh;
   font-size: 2vh;
+}
+
+.acessibilidade {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.acessibilidade button {
+  margin: 0.2rem;
+}
+
+#greeting1 {
+  font-size: 3vh;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+#greeting2 {
+  font-size: 2vh;
+  margin-bottom: 0.5rem;
 }
 
 .main-content {

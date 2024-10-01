@@ -31,6 +31,14 @@ interface FeedbackRepository : JpaRepository<Feedback, Int> {
     )
     fun buscarMediaNotas(): List<Double>
 
+    @Query(
+        nativeQuery = true, value = """
+        SELECT SUM(nota) / COUNT(*) AS media_notas
+        FROM feedback
+    """
+    )
+    fun buscarMediaNotasSingle(): Double
+
     fun findAllByClienteAvaliado(cliente: Cliente): List<Feedback>
 
     fun deleteAllByUsuario(usuario: Usuario)
