@@ -458,7 +458,39 @@
     background-color: #dc3545; /* Cor de erro - vermelho */
 }
 
-
-
+.modal-content input {
+  width: 94%;
+  padding: 7px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  height: 7px;
 }
+
+.modal-content select {
+    width: 99.5%;
+    padding: 11px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 10px;
+  }
+  
+
+  .save-button {
+    display: block; /* Botão visível */
+    align-items: center;
+    background-color: #e70069;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 8px;
+    font-size: 12px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+    font-family: Poppins, sans-serif;
+  }
+}
+
 
