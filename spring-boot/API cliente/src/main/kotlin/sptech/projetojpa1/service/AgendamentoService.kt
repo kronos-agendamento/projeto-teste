@@ -51,6 +51,14 @@ class AgendamentoService(
         return agendamentoRepository.tempoParaAgendar()
     }
 
+    fun totalAgendamentosHoje(): Int {
+        return agendamentoRepository.findTotalAgendamentosHoje()
+    }
+
+    fun obterTotalAgendamentosFuturos(): Int {
+        return agendamentoRepository.findTotalAgendamentosFuturos()
+    }
+
     fun agendamentosRealizadosUltimos5Meses(): List<Int> {
         return agendamentoRepository.findAgendamentosConcluidosUltimos5Meses()
     }

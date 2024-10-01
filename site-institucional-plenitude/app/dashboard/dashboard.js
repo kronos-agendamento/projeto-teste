@@ -54,6 +54,11 @@ document.addEventListener('DOMContentLoaded', function () {
             tempoAgendamento: '/api/agendamentos/tempo-para-agendar',
             retornoLogin: '/login-logoff/retorno-usuarios-login',
 
+            // KPI's - Operacional
+            totalAgendamentosHoje: '/api/agendamentos/total-agendamentos-hoje',
+            totalAgendamentosFuturos: '/api/agendamentos/futuros',
+            notasFeedbacks: '/api/feedbacks/media-notas-single',
+
             // Gráfico 1 - Gerencial
             listarTop3Indicacoes: '/usuarios/buscar-top3-indicacoes',
             listarNumeroIndicacoes: '/usuarios/buscar-numeros-indicacoes',
@@ -87,6 +92,11 @@ document.addEventListener('DOMContentLoaded', function () {
         // Chamadas para atualizar os KPI's de - Usabilidade
         fetchData(endpoints.tempoAgendamento, updateTempoAgendamento);
         fetchData(endpoints.retornoLogin, updateRetornoLogin);
+
+        // Chamadas para atualizar os KPI's de - Operacional
+        fetchData(endpoints.totalAgendamentosHoje, updateTotalAgendamentosHoje);
+        fetchData(endpoints.totalAgendamentosFuturos, updateTotalAgendamentosFuturos);
+        fetchData(endpoints.notasFeedbacks, updateNotaSingle)
 
         // Chamadas para atualizar os dados do gráfico 1 - Gerencial
         fetchData(endpoints.listarTop3Indicacoes, updateListarTop3Indicacoes);
@@ -140,6 +150,19 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateRetornoLogin(data) {
         const retornoLoginCount = document.getElementById('retorno-login-count');
         retornoLoginCount.textContent = data;
+    }
+    // Funções que atualizam as KPI's de operacional
+    function updateTotalAgendamentosHoje(data) {
+        const totalAgendamentosHoje = document.getElementById('total-agendamentos-hoje');
+        totalAgendamentosHoje.textContent = data;
+    }
+    function updateTotalAgendamentosFuturos(data) {
+        const totalAgendamentosFuturos = document.getElementById('total-agendamentos-futuros');
+        totalAgendamentosFuturos.textContent = data;
+    }
+    function updateNotaSingle(data) {
+        const totalNotaSingle = document.getElementById('total-nota-single');
+        totalNotaSingle.textContent = data;
     }
 
     // Constantes dos gráficos

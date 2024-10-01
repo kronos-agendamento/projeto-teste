@@ -1,5 +1,6 @@
 package sptech.projetojpa1.repository
 
+import org.hibernate.query.NativeQuery
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
@@ -25,6 +26,26 @@ interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
     """
     )
     fun tempoParaAgendar(): List<Int>
+
+    @Query(
+        nativeQuery = true, value = """ 
+        SELECT COUNT(*) AS agendamentos_marcados_hoje
+        FROM agendamento
+        WHERE DATE(data_horario) = CURDATE();
+    """
+    )
+    fun findTotalAgendamentosHoje(): Int
+
+
+
+    @Query(
+        nativeQuery = true, value = """
+    SELECT COUNT(*) AS agendamentos_futuros
+    FROM agendamento
+    WHERE DATE(data_horario) > CURDATE();
+    """
+    )
+    fun findTotalAgendamentosFuturos(): Int
 
     @Query(
         nativeQuery = true, value = """ 

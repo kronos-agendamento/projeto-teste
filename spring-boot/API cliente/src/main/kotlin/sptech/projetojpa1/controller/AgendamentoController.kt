@@ -171,6 +171,18 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
         return ResponseEntity.ok(tempoPara)
     }
 
+    @GetMapping("/total-agendamentos-hoje")
+    fun totalAgendamentosHoje(): ResponseEntity<Int> {
+        val tempoPara = agendamentoService.totalAgendamentosHoje()
+        return ResponseEntity.ok(tempoPara)
+    }
+
+    @GetMapping("/futuros")
+    fun getTotalAgendamentosFuturos(): ResponseEntity<Int> {
+        val agenFuturos = agendamentoService.obterTotalAgendamentosFuturos()
+        return ResponseEntity.ok(agenFuturos)
+    }
+
     @GetMapping("/agendamentos-realizados-ultimos-cinco-meses")
     fun agendamentosRealizadosUltimos5Meses(): ResponseEntity<List<Int>> {
         val quantidadeConcluidos = agendamentoService.agendamentosRealizadosUltimos5Meses()
