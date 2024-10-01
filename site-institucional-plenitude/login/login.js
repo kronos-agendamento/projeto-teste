@@ -90,7 +90,7 @@ document
     }
   });
 
-document
+  document
   .getElementById("loginForm")
   .addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -120,7 +120,7 @@ document
         localStorage.setItem("email", loginData.email);
         localStorage.setItem("cpf", loginData.cpf);
         localStorage.setItem("instagram", loginData.instagram);
-        localStorage.setItem("empresa", loginData.empresa.idEmpresa);
+        localStorage.setItem("empresa", loginData.empresa?.idEmpresa);
         localStorage.setItem("idUsuario", loginData.idUsuario);
 
         showNotification("Login realizado com sucesso!");
@@ -128,10 +128,18 @@ document
         // Verifica se o dispositivo está em modo mobile (largura menor que 768px)
         if (window.innerWidth <= 768) {
           // Redireciona para a página mobile
-          window.location.href = "../mobile/index-mobile/index-mobile.html";
+          window.location.href = `../mobile/index-mobile/index-mobile.html?cpf=${loginData.cpf}`;
         } else {
           // Redireciona para a página desktop
           window.location.href = "../app/index/index.html";
+        }
+
+        // Verifica se há dados faltantes (por exemplo: data_nasc, genero, etc.)
+        if (!loginData.data_nasc || !loginData.genero || !loginData.endereco) {
+          // Exibe um modal pedindo para completar os dados após o redirecionamento
+          setTimeout(() => {
+            showModalParaCompletarDados();
+          }, 2000); // Atraso para garantir o redirecionamento antes
         }
       } else {
         showNotification(
@@ -141,8 +149,16 @@ document
       }
     } catch (error) {
       showNotification("Erro ao realizar login.", true);
+      console.error("Erro:", error);
     }
   });
+
+function showModalParaCompletarDados() {
+  // Código para exibir o modal de "Complete seus dados"
+  const modalCadastro = document.getElementById("modal-cadastro");
+  modalCadastro.style.display = "block";
+}
+
 
 document.addEventListener("DOMContentLoaded", function () {
   const signInForm = document.getElementById("signInForm");

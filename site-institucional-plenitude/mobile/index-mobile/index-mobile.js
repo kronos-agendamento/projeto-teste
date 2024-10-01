@@ -9,6 +9,42 @@ function formatarData(dataHora) {
     return data.toLocaleDateString() + ' às ' + data.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
+async function buscarDadosUsuario() {
+    const usuarioId = localStorage.getItem("idUsuario");
+    if (!usuarioId) {
+      return null;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8080/usuarios/${usuarioId}`);
+      if (!response.ok) {
+        throw new Error("Erro ao buscar dados do usuário.");
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Erro ao buscar dados do usuário:", error);
+      return null;
+    }
+  }
+
+      // Função para verificar se os campos obrigatórios do usuário estão preenchidos
+      function verificarDadosIncompletos(usuario) {
+        const camposObrigatorios = [
+          usuario.dataNasc,
+          usuario.genero,
+          usuario.indicacao,
+          usuario.endereco?.logradouro,
+          usuario.endereco?.cep,
+          usuario.endereco?.bairro,
+          usuario.endereco?.cidade,
+          usuario.endereco?.estado,
+          usuario.endereco?.numero,
+        ];
+    
+        // Verifica se algum campo obrigatório está vazio ou nulo
+        return camposObrigatorios.some((campo) => campo === null || campo === "");
+      }
+
 // Função para criar os elementos de agendamento no DOM
 function criarAgendamento(agendamento, isAnterior = false) {
     const boxAgendamento = document.createElement('div');
@@ -365,3 +401,206 @@ function saudacao() {
 // Chama a função quando a página carregar
 window.onload = saudacao;
 
+
+document.addEventListener("DOMContentLoaded", async function () {
+    const modalCadastro = document.getElementById("modal-cadastro");
+    const modalClose = document.getElementById("modal-close");
+  
+
+  
+    // Função para exibir o modal
+    function exibirModal() {
+      modalCadastro.style.display = "block";
+    }
+  
+    // Função para fechar o modal
+    function fecharModal() {
+      modalCadastro.style.display = "none";
+    }
+  
+    // Função para iniciar a exibição do modal a cada 30 segundos
+    function iniciarExibicaoModal(usuario) {
+      if (verificarDadosIncompletos(usuario)) {
+        exibirModal(); // Exibe o modal imediatamente
+  
+        // Repetição a cada 30 segundos (30.000 ms)
+        const modalInterval = setInterval(function () {
+          if (verificarDadosIncompletos(usuario)) {
+            exibirModal(); // Reexibe o modal se os dados estiverem incompletos
+          } else {
+            clearInterval(modalInterval); // Para o intervalo se os dados forem completados
+          }
+        }, 30000); // 30 segundos
+      }
+    }
+  
+    // Evento para fechar o modal quando o botão de fechar for clicado
+    modalClose.addEventListener("click", fecharModal);
+  
+  
+    // Após carregar a página, buscar dados do usuário e verificar se estão completos
+    const usuario = await buscarDadosUsuario();
+    if (usuario) {
+      iniciarExibicaoModal(usuario);
+    }
+  });
+  
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Função para exibir notificação
+    function showNotification(message, isError = false) {
+      const notification = document.getElementById("notification");
+      const notificationMessage = document.getElementById("notification-message");
+      notificationMessage.textContent = message;
+      if (isError) {
+        notification.classList.add("error");
+      } else {
+        notification.classList.remove("error");
+      }
+      notification.classList.add("show");
+      setTimeout(() => {
+        notification.classList.remove("show");
+      }, 3000);
+    }
+  
+    // Função para buscar endereço pelo CEP usando a API do ViaCEP
+    async function buscarEnderecoPorCep(cep) {
+      try {
+        const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+        if (!response.ok) {
+          throw new Error("Erro ao buscar o endereço pelo CEP");
+        }
+        const endereco = await response.json();
+  
+        if (endereco.erro) {
+          showNotification("CEP não encontrado. Verifique e tente novamente.", true);
+          limparCamposEndereco();
+          return null;
+        }
+  
+        // Preenche os campos de endereço com os dados recebidos
+        document.getElementById("logradouro").value = endereco.logradouro || "";
+        document.getElementById("bairro").value = endereco.bairro || "";
+        document.getElementById("cidade").value = endereco.localidade || "";
+        document.getElementById("estado").value = endereco.uf || "";
+  
+        showNotification("Endereço preenchido com sucesso.");
+      } catch (error) {
+        console.error("Erro ao buscar o endereço:", error);
+        showNotification("Erro ao buscar o endereço. Tente novamente.", true);
+        limparCamposEndereco();
+      }
+    }
+  
+    // Limpa os campos de endereço caso o CEP seja inválido
+    function limparCamposEndereco() {
+      document.getElementById("logradouro").value = "";
+      document.getElementById("bairro").value = "";
+      document.getElementById("cidade").value = "";
+      document.getElementById("estado").value = "";
+    }
+  
+    // Evento blur no campo CEP para buscar o endereço
+    document.getElementById("cep").addEventListener("blur", function () {
+      const cep = this.value.replace(/\D/g, ""); // Remove qualquer caracter não numérico
+      if (cep.length === 8) {
+        buscarEnderecoPorCep(cep);
+      } else {
+        showNotification("CEP inválido. Verifique e tente novamente.", true);
+        limparCamposEndereco();
+      }
+    });
+  
+    // Função para pegar o CPF da URL
+    function getCpfFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("cpf"); // Pega o valor do parâmetro 'cpf' na URL
+    }
+  
+    // Função de envio do formulário (alterado para PATCH)
+    // Função de envio do formulário (alterado para PATCH)
+document.getElementById("usuarioForm").addEventListener("submit", async (event) => {
+    event.preventDefault();
+  
+    // Obter o CPF da URL
+    const cpf = getCpfFromUrl();
+    if (!cpf) {
+      showNotification("CPF não encontrado. Verifique a URL.", true);
+      return;
+    }
+  
+    // Pega os valores dos campos
+    const dataNasc = document.getElementById("nascimento").value;
+    const genero = document.getElementById("genero").value;
+    const indicacao = document.getElementById("indicacao").value;
+    const logradouro = document.getElementById("logradouro").value;
+    const numero = document.getElementById("numero").value;
+    const cep = document.getElementById("cep").value;
+    const bairro = document.getElementById("bairro").value;
+    const cidade = document.getElementById("cidade").value;
+    const estado = document.getElementById("estado").value;
+    const complemento = document.getElementById("complemento").value;
+  
+    // Criando o payload, mas só adiciona os campos que você deseja alterar
+    const payload = {
+      dataNasc,
+      genero,
+      indicacao,
+      endereco: {
+        logradouro,
+        cep,
+        bairro,
+        cidade,
+        estado,
+        numero,
+        complemento,
+      },
+    };
+  
+    try {
+      // Faz uma requisição PATCH para atualizar o usuário pelo CPF
+      const usuarioResponse = await fetch(`http://localhost:8080/usuarios/atualizacao-usuario-por-cpf/${cpf}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload), // Envia apenas os campos definidos no payload
+      });
+  
+      if (usuarioResponse.ok) {
+        // Se o usuário foi atualizado com sucesso, busque os dados atualizados
+        const updatedUser = await buscarDadosUsuario(); // Função para buscar o usuário novamente
+  
+        // Verifique se os dados estão completos agora
+        if (!verificarDadosIncompletos(updatedUser)) {
+          // Fechar o modal se os dados estiverem completos
+          fecharModal();
+  
+          // Atualizar os dados no localStorage
+          localStorage.setItem("nome", updatedUser.nome);
+          localStorage.setItem("email", updatedUser.email);
+          localStorage.setItem("cpf", updatedUser.cpf);
+          localStorage.setItem("instagram", updatedUser.instagram);
+          localStorage.setItem("empresa", updatedUser.empresa?.idEmpresa);
+          localStorage.setItem("idUsuario", updatedUser.idUsuario);
+  
+          showNotification("Cadastro atualizado com sucesso!", false);
+
+          
+        } else {
+          showNotification("Dados incompletos. Por favor, preencha todos os campos.", true);
+        }
+      } else {
+        const errorText = await usuarioResponse.text();
+        throw new Error("Erro ao atualizar usuário: " + errorText);
+      }
+    } catch (error) {
+      console.error("Erro geral:", error);
+      showNotification(error.message, true);
+    }
+  });
+  
+
+  });
+  

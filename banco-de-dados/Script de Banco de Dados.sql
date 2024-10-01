@@ -1,4 +1,4 @@
- -- drop database kronosbooking;
+-- drop database kronosbooking;
 CREATE DATABASE IF NOT EXISTS kronosbooking;
 USE kronosbooking;
 
