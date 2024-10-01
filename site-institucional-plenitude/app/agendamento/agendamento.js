@@ -224,12 +224,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const deleteButton = document.createElement("button");
       deleteButton.classList.add("delete-btn");
+      deleteButton.classList.add("filter-btn");
       deleteButton.dataset.id = agendamento.idAgendamento;
       deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
+
+      // Tooltip
+      const tooltip = document.createElement("div");
+      tooltip.classList.add("tooltip6");
+      tooltip.innerText = "Clique para excluir este status."; // Mensagem do tooltip
+
+      // Adiciona o tooltip ao botão de exclusão
+      deleteButton.appendChild(tooltip);
+
+      // Evento de clique para o botão de exclusão
       deleteButton.addEventListener("click", (event) => {
-        event.stopPropagation();
-        excluirAgendamento(agendamento.idAgendamento);
+          event.stopPropagation(); // Impede a propagação do evento
+          excluirAgendamento(agendamento.idAgendamento); // Chama a função de exclusão
       });
+
+      // Função de exemplo para excluir agendamento
+      function excluirAgendamento(id) {
+          console.log(`Agendamento ${id} excluído.`);
+          // Aqui você pode adicionar a lógica para excluir o agendamento
+      }
+
+      // Adiciona o botão de exclusão à página (opcional)
+      document.body.appendChild(deleteButton);
 
       acoesTd.appendChild(editButton);
       acoesTd.appendChild(deleteButton);

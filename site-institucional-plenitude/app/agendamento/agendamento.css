@@ -932,3 +932,158 @@ table tr.clickable-row:hover {
 .clear-btn:hover {
   color: darkred;
 }
+
+/* Estilos básicos do botão */
+.filter-btn {
+  position: relative;
+}
+
+/* Estilos do tooltip */
+.tooltip {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 120px; /* Ajuste conforme necessário */
+  left: 35%;
+  transform: translateX(-50%);
+}
+
+
+/* Estilos do tooltip */
+.tooltip2 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 120px; /* Ajuste conforme necessário */
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tooltip3{
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 120px; /* Ajuste conforme necessário */
+  left: 65%;
+  transform: translateX(-50%);
+}
+
+.tooltip4{
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 120px; /* Ajuste conforme necessário */
+  left: 75%;
+  transform: translateX(-50%);
+}
+
+
+
+.tooltip5{
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 120px; /* Ajuste conforme necessário */
+  left: 90%;
+  transform: translateX(-50%);
+}
+
+
+ /* Estilos do tooltip */
+ .tooltip6 {
+  display: none; /* Oculta por padrão */
+  position: absolute; /* Para que o tooltip flutue em relação ao botão */
+  background-color: #333; /* Cor de fundo do tooltip */
+  color: #fff; /* Cor do texto do tooltip */
+  padding: 5px 10px; /* Ajustes de padding */
+  border-radius: 5px; /* Bordas arredondadas */
+  font-size: 12px; /* Tamanho da fonte */
+  white-space: nowrap; /* Não quebra a linha */
+  z-index: 1000; /* Fica acima de outros elementos */
+  top: 1px; /* Posiciona o tooltip abaixo do botão */
+  margin-right: -20px; /* Centraliza horizontalmente */
+  transform: translateX(-50%); /* Ajusta a posição para centralizar */
+}
+
+
+
+
+.filter-btn:hover + .tooltip {
+  display: block;
+  
+}
+
+
+.filter-btn:hover + .tooltip2 {
+  display: block;
+  
+}
+
+
+.filter-btn:hover + .tooltip3 {
+  display: block;
+  
+}
+
+.filter-btn:hover + .tooltip4 {
+  display: block;
+  
+}
+
+.filter-btn:hover + .tooltip5 {
+  display: block;
+  
+}
+
+
+/* Exibe o tooltip quando o botão de exclusão é hover */
+.filter-btn:hover .tooltip6 {
+  display: block; /* Exibe o tooltip ao passar o mouse */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
