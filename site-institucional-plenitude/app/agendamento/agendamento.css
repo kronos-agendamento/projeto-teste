@@ -1030,9 +1030,39 @@ table tr.clickable-row:hover {
   font-size: 12px; /* Tamanho da fonte */
   white-space: nowrap; /* Não quebra a linha */
   z-index: 1000; /* Fica acima de outros elementos */
-  top: 1px; /* Posiciona o tooltip abaixo do botão */
-  margin-right: -20px; /* Centraliza horizontalmente */
+  top: -25px; /* Posiciona o tooltip abaixo do botão */
+  margin-left: -70px; /* Centraliza horizontalmente */
   transform: translateX(-50%); /* Ajusta a posição para centralizar */
+}
+
+.tooltip7{
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 340px; /* Ajuste conforme necessário */
+  left: 65%;
+  transform: translateX(-50%);
+}
+
+.tooltip8{
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 340px; /* Ajuste conforme necessário */
+  left: 65%;
+  transform: translateX(-50%);
 }
 
 
@@ -1070,6 +1100,57 @@ table tr.clickable-row:hover {
 .filter-btn:hover .tooltip6 {
   display: block; /* Exibe o tooltip ao passar o mouse */
 }
+
+.filter-btn:hover + .tooltip7 {
+  display: block;
+  
+}
+
+.filter-btn:hover + .tooltip8 {
+  display: block;
+  
+}
+
+
+
+
+.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip9 {
+  visibility: hidden;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* Ajuste conforme necessário */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip9::after {
+  content: "";
+  position: absolute;
+  top: 100%; /* Ajuste conforme necessário */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+
+.tooltip-wrapper:hover .tooltip9 {
+  visibility: visible;
+  opacity: 1;
+}
+
 
 
 

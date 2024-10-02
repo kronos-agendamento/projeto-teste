@@ -215,12 +215,25 @@ document.addEventListener("DOMContentLoaded", function () {
       const acoesTd = document.createElement("td");
       const editButton = document.createElement("button");
       editButton.classList.add("edit-btn");
+      editButton.classList.add("filter-btn");
       editButton.dataset.id = agendamento.idAgendamento;
       editButton.innerHTML = '<i class="fas fa-edit"></i>';
+
+       // Tooltip
+       const tooltip2 = document.createElement("div");
+       tooltip2.classList.add("tooltip6");
+       tooltip2.innerText = "Clique para editar."; // Mensagem do tooltip
+ 
+       // Adiciona o tooltip ao botão de exclusão
+       editButton.appendChild(tooltip2);
+
       editButton.addEventListener("click", (event) => {
         event.stopPropagation();
         editarAgendamento(agendamento.idAgendamento);
       });
+
+
+      
 
       const deleteButton = document.createElement("button");
       deleteButton.classList.add("delete-btn");
@@ -672,11 +685,27 @@ document.addEventListener("DOMContentLoaded", function () {
           const row = document.createElement("tr");
           row.innerHTML = `
               <td>${status.nome}</td>
-              <td><div class="color-box" style="background-color: ${status.cor}; width: 20px; height: 20px; border-radius: 100px; margin-left: 35%;"></div></td>
-              <td>
-                  <button class="edit-btn" data-id="${status.id}"><i class="fas fa-edit"></i></button>
-                  <button class="delete-btn" data-id="${status.id}"><i class="fas fa-trash"></i></button>
-              </td>
+             <td>
+  <div class="color-box" style="background-color: ${status.cor}; width: 20px; height: 20px; border-radius: 100px; margin-left: 35%;"></div>
+</td>
+<td>
+  <!-- Botão de Editar com tooltip -->
+  <div class="tooltip-wrapper">
+    <button class="edit-btn filter-btn" data-id="${status.id}">
+      <i class="fas fa-edit"></i>
+    </button>
+    <div class="tooltip9">Clique para editar.</div>
+  </div>
+
+  <!-- Botão de Excluir com tooltip -->
+  <div class="tooltip-wrapper">
+    <button class="delete-btn filter-btn" data-id="${status.id}">
+      <i class="fas fa-trash"></i>
+    </button>
+    <div class="tooltip9">Clique para excluir.</div>
+  </div>
+</td>
+
             `;
           tbody.appendChild(row);
         });
