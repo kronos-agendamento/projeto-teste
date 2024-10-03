@@ -43,6 +43,35 @@ class AgendamentoService(
         }
     }
 
+    fun obterAgendamentosPorStatus(): Map<String, Int> {
+        // Consulta o repositório e obtém os dados
+        val resultados = agendamentoRepository.contarAgendamentosPorStatus()
+
+        // Cria um mapa para armazenar os valores finais
+        val agendamentosPorStatus = mutableMapOf(
+            "agendados" to 0,
+            "confirmados" to 0,
+            "realizados" to 0,
+            "cancelados" to 0,
+            "reagendados" to 0
+        )
+
+        // Percorre os resultados e preenche o mapa
+        for (resultado in resultados) {
+            val statusNome = resultado["status_nome"] as String
+            val quantidade = (resultado["quantidade"] as Number).toInt()
+
+            when (statusNome) {
+                "Agendado" -> agendamentosPorStatus["agendados"] = quantidade
+                "Confirmado" -> agendamentosPorStatus["confirmados"] = quantidade
+                "Concluído" -> agendamentosPorStatus["realizados"] = quantidade
+                "Cancelado" -> agendamentosPorStatus["cancelados"] = quantidade
+                "Remarcado" -> agendamentosPorStatus["reagendados"] = quantidade
+            }
+        }
+        return agendamentosPorStatus
+    }
+
     fun obterTempoMedioEntreAgendamentos(): Double? {
         return agendamentoRepository.calcularTempoMedioEntreAgendamentosDoDia()
     }

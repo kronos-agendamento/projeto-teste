@@ -46,6 +46,23 @@ interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
     )
     fun calcularTempoMedioEntreAgendamentosDoDia(): Double?
 
+        @Query("""
+        SELECT 
+            sa.nome AS status_nome,
+            COUNT(a.id_agendamento) AS quantidade
+        FROM 
+            agendamento a
+        JOIN 
+            status sa ON a.fk_status = sa.id_status_agendamento
+        WHERE 
+            sa.nome IN ('Agendado', 'Confirmado', 'Concluído', 'Cancelado', 'Remarcado')  -- Apenas os status relevantes
+        GROUP BY 
+            sa.nome
+    """, nativeQuery = true)
+        fun contarAgendamentosPorStatus(): List<Map<String, Any>>
+
+
+
     @Query(
         nativeQuery = true, value = """ 
         SELECT COUNT(*) AS agendamentos_marcados_hoje

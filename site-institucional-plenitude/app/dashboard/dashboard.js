@@ -81,6 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
             agendamentosProcedimentos: '/api/procedimentos/quantidade-agendamentos-procedimentos',
 
             // Gráfico 1 - Operacional
+            agendamentosStatus: '/api/agendamentos/agendamento-status',
 
             // Gráfico 1 - Usabilidade
             ultimosAgendamentosRealizados5Meses: '/api/agendamentos/agendamentos-realizados-ultimos-cinco-meses'
@@ -121,6 +122,10 @@ document.addEventListener('DOMContentLoaded', function () {
         // Chamadas para atualizar os dados do gráfico 4 - Gerencial
         fetchData(endpoints.agendamentosProcedimentosLabels, updateChart4Labels);
         fetchData(endpoints.agendamentosProcedimentos, updateChart4);
+
+        // Chamada para atualizar os dados do gráfico 1 - Usabilidade
+        fetchData(endpoints.agendamentosStatus, updateChartOperacional1)
+
 
         // Chamada para atualizar os dados do gráfico 1 - Usabilidade
         fetchData(endpoints.ultimosAgendamentosRealizados5Meses, updateChartUsabilidade1)
@@ -207,13 +212,35 @@ document.addEventListener('DOMContentLoaded', function () {
     let chartUsabilidade1;
 
     let dataChartOperacional1 = null;
-    const ctxOperacional1 = document.getElementById('chartUsabilidade1').getContext('2d');
+    const ctxOperacional1 = document.getElementById('chartOperacional1').getContext('2d');
     let chartOperacional1;
 
     
 
 
     // Funções para atualização
+    function updateChartOperacional1(data) {
+    // Mapeia os dados de status a partir do objeto
+    const statusAgendamentos = {
+        agendados: data.agendados || 0,  // Valor padrão caso a propriedade não esteja presente
+        confirmados: data.confirmados || 0,
+        realizados: data.realizados || 0,
+        cancelados: data.cancelados || 0,
+        reagendados: data.reagendados || 0
+    };
+
+    // Atualiza os dados do gráfico na ordem desejada, independentemente da ordem de chegada
+    dataChartOperacional1 = [
+        statusAgendamentos.agendados,
+        statusAgendamentos.confirmados,
+        statusAgendamentos.realizados,
+        statusAgendamentos.cancelados,
+        statusAgendamentos.reagendados
+    ];
+
+    // Chama a função para criar/atualizar o gráfico
+    createChartOperacional1();
+    }
     function updateChart2_1(data) {
         dataChart2_1 = data;
 
@@ -476,7 +503,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-
     // Criação de gráficos - Usabilidade
     function createChartUsabilidade1() {
         if (!dataChartUsabilidade1  || !labelsChartUsabilidade1) return;
@@ -527,6 +553,35 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // Criação de gráficos - Operacional
+    function createChartOperacional1() {
+        if (!dataChartOperacional1) return;
+    
+        if (chartOperacional1) chartOperacional1.destroy();
+    
+        chartOperacional1 = new Chart(ctxOperacional1, {
+            type: 'bar',
+            data: {
+                labels: ['Agendados', 'Confirmados', 'Realizados', 'Cancelados', 'Reagendados'],
+                datasets: [{
+                    label: 'Qtd Agendamentos',
+                    data: dataChartOperacional1,
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#E84E8A', '#F59DBF'],
+                    borderColor: '#D2135D',
+                    fill: false
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
 
 
 

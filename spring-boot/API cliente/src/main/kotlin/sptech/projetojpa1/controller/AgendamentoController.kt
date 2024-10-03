@@ -38,6 +38,16 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
         }
     }
 
+    @GetMapping("/agendamento-status")
+    fun getAgendamentosPorStatus(): ResponseEntity<Map<String, Int>> {
+        val agendamentosPorStatus = agendamentoService.obterAgendamentosPorStatus()
+        return if (agendamentosPorStatus.isNotEmpty()) {
+            ResponseEntity.ok(agendamentosPorStatus)
+        } else {
+            ResponseEntity.status(HttpStatus.NO_CONTENT).build()
+        }
+    }
+
     @GetMapping("/tempo-medio")
     fun getTempoMedioEntreAgendamentos(): ResponseEntity<Double> {
         val tempoMedio = agendamentoService.obterTempoMedioEntreAgendamentos()
