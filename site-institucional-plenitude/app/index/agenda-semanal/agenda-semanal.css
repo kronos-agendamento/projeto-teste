@@ -491,3 +491,32 @@ header p {
   justify-content: center;
   margin-left: 4.2vw;
 }
+
+
+
+.filter-btn {
+  position: relative;
+}
+
+
+.tooltip12 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 500px; /* Ajuste conforme necessário */
+  left: 70%;
+  transform: translateX(-50%);
+}
+
+
+.filter-btn:hover + .tooltip12 {
+  display: block;
+  
+}
+
