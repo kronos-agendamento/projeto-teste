@@ -100,17 +100,23 @@
             <span id="notification-message"></span>
         </div>
         <div class="actions" style="margin-left: 8vh;">
+            <button class="undo-btn" id="btn-undo" style="height: 7vh; margin-left: 5%; display: none;" onclick="undoAction()">Desfazer</button>
+
+            
             <button class="filter-btn" style="height: 7vh; margin-left: 2.6%; width: 33vh; background-color:#d81b60;
              color: #fff;border: none;" onclick="openModalPesquisa()">
                 <img style="height: 4vh; width: 25h; margin-top: 10%; border-radius: 0px;"
                     src="../../../../assets/icons/usuario.png" alt="filter">Dados Gerais
             </button>
             <div class="right-actions">
-                <button class="avaliar-btn" style="height: 7vh; margin-left: 5px;" onclick="openModalAvaliar()"><img
-                        style="height: 4.5vh; width: 4.5vh; margin-top: 14%; border-radius: 0%;"
-                        src="../../../../assets/icons/agendar.preto.png" alt="spreadsheet">Agendamentos</button>
-                <button class="criar-btn" onclick="showForm()" style="height: 7vh; width: 37vh; margin-left: 5px;"><a
-                        style="width: max-content;" href="#">
+                <button class="avaliar-btn" style="height: 7vh; margin-left: 5px;" id="agendamentoBtn">
+                    <img style="height: 4.5vh; width: 4.5vh; margin-top: 14%; border-radius: 0%;" 
+                         src="../../../../assets/icons/agendar.preto.png" alt="spreadsheet">
+                    Agendamentos
+                </button>
+
+                <button class="criar-btn" style="height: 7vh; width: 37vh; margin-left: 5px;"><a
+                        style="width: max-content;">
                         <img style="height: 4vh; margin-top: 13%; border-radius: 0%;"
                             src="../../../../assets/icons/ficha.preta.png" alt="createNew"><span>Ficha de
                             Anamnese</span>
@@ -128,7 +134,7 @@
                     &nbsp;&nbsp;&nbsp; Dados Pessoais
                     <button class="edit-icon-btn" id="editIcon" aria-label="Editar Dados Pessoais"
                         onclick="enableEditing()">
-                        <img src="../../../../../assets/icons/editar.branco.png" alt="Editar"
+                        <img src="../../../../assets/icons/editar.branco.png" alt="Editar"
                             style="width: 20px; height: 20px; border-radius: 0px;">
                     </button>
                 </div>
@@ -140,7 +146,7 @@
                         <label for="nome">Código do Cliente:</label>
                         <div style="display: flex; align-items: center;">
                             <input type="text" id="codigo" name="codigo" required disabled>
-                            <span class="lock-icon" id="nome-lock">🔒</span>
+                            <span class="lock-icon" id="codigo-lock">🔒</span>
                         </div>
                     </div>
                 </div>

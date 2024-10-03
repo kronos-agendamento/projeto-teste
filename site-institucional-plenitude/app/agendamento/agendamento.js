@@ -185,14 +185,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const clienteTd = document.createElement("td");
       clienteTd.textContent = agendamento.usuario;
+      clienteTd.dataset.idUsuario = agendamento.usuarioId;  
+      clienteTd.dataset.idAgendamento = agendamento.idAgendamento;
       tr.appendChild(clienteTd);
+      
+      console.log(`Cliente: ${clienteTd.textContent}, ID do Cliente: ${clienteTd.dataset.idUsuario}, ID agendamento: ${clienteTd.dataset.idAgendamento}`);
 
       const procedimentoTd = document.createElement("td");
-      procedimentoTd.textContent = agendamento.procedimento;
+      procedimentoTd.textContent = agendamento.procedimento
+      procedimentoTd.dataset.fkProcedimento = agendamento.fkProcedimento;
       tr.appendChild(procedimentoTd);
 
       const especificacaoTd = document.createElement("td");
       especificacaoTd.textContent = agendamento.especificacao;
+      especificacaoTd.dataset.fkEspecificacao = agendamento.fkEspecificacao;
       tr.appendChild(especificacaoTd);
 
       // Cria uma td para o status
@@ -219,7 +225,7 @@ document.addEventListener("DOMContentLoaded", function () {
       editButton.innerHTML = '<i class="fas fa-edit"></i>';
       editButton.addEventListener("click", (event) => {
         event.stopPropagation();
-        editarAgendamento(agendamento.idAgendamento);
+        editarAgendamento(clienteTd.dataset.idAgendamento, clienteTd.dataset.idUsuario, procedimentoTd.dataset.fkProcedimento, especificacaoTd.dataset.fkEspecificacao)
       });
 
       const deleteButton = document.createElement("button");
@@ -530,9 +536,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  window.editarAgendamento = function (id) {
-    window.location.href = `agendamento-forms/editar-agendamento/editar-agendamento.html?id=${id}`;
-  };
+
+// Função que será chamada ao clicar no botão de editar
+window.editarAgendamento = function (idAgendamento, usuarioId,fkProcedimento, fkEspecificacao) {
+  // Salvando o id_usuario e o id_agendamento no sessionStorage
+  sessionStorage.setItem('id_usuario', usuarioId);
+  sessionStorage.setItem('id_agendamento', idAgendamento);
+  sessionStorage.setItem('procedimento', fkProcedimento);
+  sessionStorage.setItem('especificacao', fkEspecificacao);
+
+  // Redirecionando para a página com os parâmetros na URL
+  window.location.href = `agendamento-forms/editar-agendamento/editar-agendamento.html?idAgendamento=${idAgendamento}&usuarioId=${usuarioId}&procedimento=${fkProcedimento}&especificacao=${fkEspecificacao}`;
+};
+
 
   window.excluirAgendamento = function (id) {
     agendamentoIdToDelete = id;

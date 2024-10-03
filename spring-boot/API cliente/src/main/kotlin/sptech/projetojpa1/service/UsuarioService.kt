@@ -101,6 +101,21 @@ class UsuarioService(
 
     fun atualizarUsuarioPorCpf(cpf: String, dto: UsuarioAtualizacaoRequest): Usuario? {
         val usuario = usuarioRepository.findByCpf(cpf) ?: return null
+
+        // Verificar se o endereço foi passado e se ele não tem um ID, ou seja, é novo
+        dto.endereco?.let { enderecoDto ->
+            if (enderecoDto.idEndereco == null) {
+                // Salvar o endereço primeiro, se ele for novo (não tiver ID)
+                val enderecoSalvo = enderecoRepository.save(enderecoDto)
+                usuario.endereco = enderecoSalvo
+            } else {
+                // Se o endereço já existir, buscar o endereço pelo ID e associar
+                val enderecoExistente = enderecoRepository.findById(enderecoDto.idEndereco)
+                usuario.endereco = enderecoExistente.orElse(usuario.endereco)
+            }
+        }
+
+        // Atualizar os outros campos de usuário com os valores enviados
         usuario.apply {
             nome = dto.nome ?: nome
             email = dto.email ?: email
@@ -110,8 +125,11 @@ class UsuarioService(
             genero = dto.genero ?: genero
             indicacao = dto.indicacao ?: indicacao
         }
+
+        // Salvar o usuário atualizado
         return usuarioRepository.save(usuario)
     }
+
 
     fun atualizarUsuarioPorId(id: Int, dto: UsuarioAtualizacaoRequest): Usuario? {
         val usuario = usuarioRepository.findById(id).orElse(null) ?: return null

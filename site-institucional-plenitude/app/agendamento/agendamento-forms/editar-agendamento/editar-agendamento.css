@@ -132,7 +132,7 @@
 .horario-button {
   padding: 10px;
   border: none;
-  border-radius: 50%;
+  border-radius: 10%;
   background-color: #f0f0f0;
   cursor: pointer;
   transition: background-color 0.3s;
