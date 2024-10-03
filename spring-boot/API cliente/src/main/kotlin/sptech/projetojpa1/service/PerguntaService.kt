@@ -45,14 +45,8 @@ class PerguntaService(
         }
     }
 
-    fun listarPerguntasDesativadas(): List<PerguntaResponse> {
-        return perguntaRepository.findByAtiva(false).map { pergunta ->
-            PerguntaResponse(
-                idPergunta = pergunta.idPergunta,
-                pergunta = pergunta.pergunta,
-                ativa = pergunta.ativa
-            )
-        }
+    fun listarPerguntasDesativadas(): List<Pergunta> {
+        return perguntaRepository.findByAtivaFalse()
     }
 
     fun listarPerguntaPorId(id: Int): PerguntaResponse {

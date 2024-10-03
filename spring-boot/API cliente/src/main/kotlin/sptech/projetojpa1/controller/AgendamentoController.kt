@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.validation.Valid
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import sptech.projetojpa1.dto.agendamento.AgendamentoDTO
@@ -35,6 +36,26 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
             ResponseEntity.ok(agendamentoResponseDTO)
         } catch (ex: IllegalArgumentException) {
             ResponseEntity.badRequest().body(ex.message)
+        }
+    }
+
+    @GetMapping("/agendamento-status")
+    fun getAgendamentosPorStatus(): ResponseEntity<Map<String, Int>> {
+        val agendamentosPorStatus = agendamentoService.obterAgendamentosPorStatus()
+        return if (agendamentosPorStatus.isNotEmpty()) {
+            ResponseEntity.ok(agendamentosPorStatus)
+        } else {
+            ResponseEntity.status(HttpStatus.NO_CONTENT).build()
+        }
+    }
+
+    @GetMapping("/tempo-medio")
+    fun getTempoMedioEntreAgendamentos(): ResponseEntity<Double> {
+        val tempoMedio = agendamentoService.obterTempoMedioEntreAgendamentos()
+        return if (tempoMedio != null) {
+            ResponseEntity.ok(tempoMedio)
+        } else {
+            ResponseEntity.status(HttpStatus.NO_CONTENT).build()
         }
     }
 
@@ -172,6 +193,18 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
         return ResponseEntity.ok(tempoPara)
     }
 
+    @GetMapping("/total-agendamentos-hoje")
+    fun totalAgendamentosHoje(): ResponseEntity<Int> {
+        val tempoPara = agendamentoService.totalAgendamentosHoje()
+        return ResponseEntity.ok(tempoPara)
+    }
+
+    @GetMapping("/futuros")
+    fun getTotalAgendamentosFuturos(): ResponseEntity<Int> {
+        val agenFuturos = agendamentoService.obterTotalAgendamentosFuturos()
+        return ResponseEntity.ok(agenFuturos)
+    }
+
     @GetMapping("/agendamentos-realizados-ultimos-cinco-meses")
     fun agendamentosRealizadosUltimos5Meses(): ResponseEntity<List<Int>> {
         val quantidadeConcluidos = agendamentoService.agendamentosRealizadosUltimos5Meses()
@@ -255,6 +288,67 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
     fun countUsuariossWithStatusUm(): Int {
         return agendamentoService.countUsuariosWithStatusUm()
     }
+
+    @Operation(
+        summary = "Conta a quantidade de dias entre o ultimo agendamento e a data atual",
+        description = "Retorna a quantidade de dias entre o ultimo agendamento e a data atual."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Retorna a quantidade de dias entre o ultimo agendamento e a data atual com sucesso"
+            )
+        ]
+    )
+    @GetMapping("/count-dias-ultimo-agendamento/{idUsuario}")
+    fun countDiasUltimoAgendamento(@PathVariable idUsuario: Int): Int {
+        return agendamentoService.countDiasUltimoAgendamento(idUsuario)
+    }
+
+    @Operation(
+        summary = "Retorna o dia mais agendado da semana",
+        description = "Mostra o dia da semana mais agendado de acordo com cada usuario."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Retorna o dia mais agendado da semana"
+            )
+        ]
+    )
+
+    @GetMapping("/dia-mais-agendado/{idUsuario}")
+    fun getDiaMaisAgendadoPorUsuario(@PathVariable idUsuario: Int): String {
+        return agendamentoService.buscarDiaMaisAgendadoPorUsuario(idUsuario)
+    }
+
+
+    @Operation(
+        summary = "Retorna o intervalo de horario mais agendado",
+        description = "Mostra o intervalo de horário mais agendado dependendo de cada usuário."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Retorna o itervalo de horário mais agendado"
+            )
+        ]
+    )
+
+    @GetMapping("/usuarios/{idUsuario}/intervalo-mais-agendado")
+    fun getMostBookedTimeByUser(@PathVariable idUsuario: Int): String {
+        return agendamentoService.getMostBookedTimeByUser(idUsuario)
+            ?: "Nenhum agendamento encontrado para o usuário."
+    }
+}
+
+
+
+
+
 
 
     @GetMapping("/agendamentos/usuario/{usuarioId}")

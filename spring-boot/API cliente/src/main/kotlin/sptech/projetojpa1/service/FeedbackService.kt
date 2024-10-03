@@ -67,6 +67,10 @@ class FeedbackService(
         return feedbackRepository.buscarMediaNotas()
     }
 
+    fun calcularMediaNotas(): Double {
+        return feedbackRepository.buscarMediaNotasSingle()
+    }
+
     fun buscarFeedbackPorId(id: Int): FeedbackResponseDTO? {
         val feedback = feedbackRepository.findById(id).orElse(null) ?: return null
         return FeedbackResponseDTO(

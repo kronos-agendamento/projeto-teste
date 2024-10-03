@@ -2,6 +2,7 @@ package sptech.projetojpa1.service
 
 import org.springframework.stereotype.Service
 import sptech.projetojpa1.domain.Agendamento
+import sptech.projetojpa1.domain.Usuario
 import sptech.projetojpa1.dto.agendamento.AgendamentoDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoRequestDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoResponseDTO
@@ -46,12 +47,53 @@ class AgendamentoService(
         }
     }
 
+    fun obterAgendamentosPorStatus(): Map<String, Int> {
+        // Consulta o repositório e obtém os dados
+        val resultados = agendamentoRepository.contarAgendamentosPorStatus()
+
+        // Cria um mapa para armazenar os valores finais
+        val agendamentosPorStatus = mutableMapOf(
+            "agendados" to 0,
+            "confirmados" to 0,
+            "realizados" to 0,
+            "cancelados" to 0,
+            "reagendados" to 0
+        )
+
+        // Percorre os resultados e preenche o mapa
+        for (resultado in resultados) {
+            val statusNome = resultado["status_nome"] as String
+            val quantidade = (resultado["quantidade"] as Number).toInt()
+
+            when (statusNome) {
+                "Agendado" -> agendamentosPorStatus["agendados"] = quantidade
+                "Confirmado" -> agendamentosPorStatus["confirmados"] = quantidade
+                "Concluído" -> agendamentosPorStatus["realizados"] = quantidade
+                "Cancelado" -> agendamentosPorStatus["cancelados"] = quantidade
+                "Remarcado" -> agendamentosPorStatus["reagendados"] = quantidade
+            }
+        }
+        return agendamentosPorStatus
+    }
+
+    fun obterTempoMedioEntreAgendamentos(): Double? {
+        return agendamentoRepository.calcularTempoMedioEntreAgendamentosDoDia()
+    }
+
     fun agendamentosRealizadosTrimestre(): Int {
         return agendamentoRepository.findAgendamentosConcluidosUltimoTrimestre()
     }
 
     fun tempoParaAgendar(): List<Int> {
         return agendamentoRepository.tempoParaAgendar()
+    }
+
+    fun totalAgendamentosHoje(): Int {
+        return agendamentoRepository.findTotalAgendamentosHoje()
+    }
+
+    fun obterTotalAgendamentosFuturos(): Int {
+        return agendamentoRepository.findTotalAgendamentosFuturos()
     }
 
     fun agendamentosRealizadosUltimos5Meses(): List<Int> {
@@ -311,9 +353,5 @@ class AgendamentoService(
 
     fun countUsuariosWithStatusUm(): Int {
         return usuarioRepository.countByStatus(true)
-    }
-
-    fun listarAgendamentosPorUsuario(usuarioId: Int): List<AgendamentoDTO> {
-        return agendamentoRepository.listarAgendamentosPorUsuario(usuarioId)
     }
 }

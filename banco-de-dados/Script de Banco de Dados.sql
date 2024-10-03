@@ -2,6 +2,7 @@
 CREATE DATABASE IF NOT EXISTS kronosbooking;
 USE kronosbooking;
 
+
 DROP TABLE IF EXISTS feedback;
 DROP TABLE IF EXISTS cliente;
 DROP TABLE IF EXISTS profissional;
@@ -84,6 +85,14 @@ CREATE TABLE usuario (
     FOREIGN KEY (fk_endereco) REFERENCES endereco(id_endereco),
     FOREIGN KEY (fk_empresa) REFERENCES empresa(id_empresa),
     FOREIGN KEY (fk_ficha_anamnese) REFERENCES ficha_anamnese(id_ficha)
+);
+
+create table login_logoff (
+id_log INT auto_increment PRIMARY KEY,
+logi VARCHAR(5) NOT NULL,
+data_horario DATETIME NOT NULL,
+fk_usuario INT NOT NULL,
+FOREIGN KEY (fk_usuario) references usuario(id_usuario)
 );
 
 CREATE TABLE procedimento (
@@ -323,7 +332,6 @@ DELIMITER //
 
 CREATE PROCEDURE gerar_agendamentos_aleatorios()
 BEGIN
-  -- Define os dias da semana que queremos: de segunda a sábado
   DECLARE dia_atual DATE;
   DECLARE fim DATE;
   DECLARE qtd_agendamentos INT;
@@ -332,76 +340,59 @@ BEGIN
   DECLARE usuario_fidelizado INT;
   DECLARE tempo_aleatorio INT;
 
-  -- Definir os IDs dos usuários que terão agendamentos em todos os 3 meses (separados por vírgulas)
   SET @usuarios_fidelizados = '1,4,6';  -- IDs dos usuários a serem fidelizados
 
-  -- Se hoje for domingo, começamos na segunda-feira desta semana
   IF WEEKDAY(CURDATE()) = 0 THEN 
     SET dia_atual = DATE_ADD(CURDATE(), INTERVAL 1 DAY);  -- Segunda-feira desta semana
   ELSE 
     SET dia_atual = DATE_ADD(CURDATE(), INTERVAL (8 - WEEKDAY(CURDATE())) DAY);  -- Segunda-feira da próxima semana
   END IF;
 
-  -- Calcula o sábado correspondente (5 dias após a segunda)
   SET fim = DATE_ADD(dia_atual, INTERVAL 5 DAY);
 
-  -- Quantidade aleatória de agendamentos entre 2 a 6 por dia
   SET @min_agendamentos = 2;
   SET @max_agendamentos = 6;
 
-  -- Loop para os últimos 3 meses
   SET mes_atual = 0;
 
   WHILE mes_atual < 3 DO
-    -- Incrementa o mês (começa do mês atual para os 3 meses anteriores)
     SET dia_atual = DATE_ADD(CURDATE(), INTERVAL - mes_atual MONTH);
-    SET fim = DATE_ADD(dia_atual, INTERVAL 5 DAY); -- Mantém o ciclo semanal
+    SET fim = DATE_ADD(dia_atual, INTERVAL 5 DAY);
 
-    -- Loop para cada dia de segunda a sábado
     WHILE dia_atual <= fim DO
-      -- Define uma quantidade aleatória de agendamentos para o dia atual
       SET qtd_agendamentos = @min_agendamentos + FLOOR(RAND() * (@max_agendamentos - @min_agendamentos + 1));
 
-      -- Loop para inserir os agendamentos aleatórios para o dia atual
       WHILE qtd_agendamentos > 0 DO
-        -- Gera uma hora aleatória entre 08:00 e 18:00 (trabalho diurno)
         SET hora_aleatoria = SEC_TO_TIME(FLOOR(RAND() * (10 * 3600)) + 8 * 3600);
-        
-        -- Gera um valor aleatório de tempo para agendar entre 15 e 120 minutos
         SET tempo_aleatorio = 15 + FLOOR(RAND() * 106);
-
-        -- Seleciona um usuário fidelizado aleatoriamente da lista
         SET usuario_fidelizado = CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(@usuarios_fidelizados, ',', FLOOR(1 + (RAND() * 4))), ',', -1) AS UNSIGNED);
 
-        -- Insere os agendamentos aleatórios para o dia atual
         INSERT INTO agendamento (data_horario, tipo_agendamento, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status, tempo_para_agendar)
         SELECT 
-          CONCAT(dia_atual, ' ', hora_aleatoria) AS data_horario, -- Data e hora aleatórias
+          CONCAT(dia_atual, ' ', hora_aleatoria) AS data_horario, 
           CASE FLOOR(RAND() * 2) 
             WHEN 0 THEN 'Colocação'
             ELSE 'Manutenção'
-          END AS tipo_agendamento, -- Tipo aleatório entre Colocação e Manutenção
-          usuario_fidelizado AS fk_usuario, -- Usuários fidelizados aleatórios
-          FLOOR(1 + (RAND() * 3)) AS fk_procedimento, -- Procedimentos aleatórios
-          FLOOR(1 + (RAND() * 10)) AS fk_especificacao_procedimento, -- Especificações aleatórias
-          1 AS fk_status, -- Status fixo como '1' (ou altere se necessário)
-          tempo_aleatorio AS tempo_para_agendar -- Tempo aleatório entre 15 e 120 minutos
-        FROM (SELECT 1) AS dummy; -- Necessário para gerar múltiplas linhas
+          END AS tipo_agendamento, 
+          usuario_fidelizado AS fk_usuario, 
+          FLOOR(1 + (RAND() * 3)) AS fk_procedimento, 
+          FLOOR(1 + (RAND() * 10)) AS fk_especificacao_procedimento, 
+          FLOOR(1 + (RAND() * 10)) AS fk_status,  -- Gera um status aleatório entre 1 e 10
+          tempo_aleatorio AS tempo_para_agendar 
+        FROM (SELECT 1) AS dummy;
 
-        -- Decrementa a quantidade de agendamentos para o dia
         SET qtd_agendamentos = qtd_agendamentos - 1;
       END WHILE;
 
-      -- Incrementa para o próximo dia
       SET dia_atual = DATE_ADD(dia_atual, INTERVAL 1 DAY);
 
     END WHILE;
 
-    -- Passa para o próximo mês
     SET mes_atual = mes_atual + 1;
   END WHILE;
 
 END //
+
 
 
 DELIMITER ;

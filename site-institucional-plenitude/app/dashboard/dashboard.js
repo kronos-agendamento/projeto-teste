@@ -52,6 +52,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // KPI's - Usabilidade
             tempoAgendamento: '/api/agendamentos/tempo-para-agendar',
+            retornoLogin: '/login-logoff/retorno-usuarios-login',
+
+            // KPI's - Operacional
+            totalAgendamentosHoje: '/api/agendamentos/total-agendamentos-hoje',
+            totalAgendamentosFuturos: '/api/agendamentos/futuros',
+            notasFeedbacks: '/api/feedbacks/media-notas-single',
+            tempoMedio: '/api/agendamentos/tempo-medio',
 
             // Gráfico 1 - Gerencial
             listarTop3Indicacoes: '/usuarios/buscar-top3-indicacoes',
@@ -73,6 +80,9 @@ document.addEventListener('DOMContentLoaded', function () {
             agendamentosProcedimentosLabels: '/api/especificacoes/nomes',
             agendamentosProcedimentos: '/api/procedimentos/quantidade-agendamentos-procedimentos',
 
+            // Gráfico 1 - Operacional
+            agendamentosStatus: '/api/agendamentos/agendamento-status',
+
             // Gráfico 1 - Usabilidade
             ultimosAgendamentosRealizados5Meses: '/api/agendamentos/agendamentos-realizados-ultimos-cinco-meses'
         };
@@ -85,6 +95,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Chamadas para atualizar os KPI's de - Usabilidade
         fetchData(endpoints.tempoAgendamento, updateTempoAgendamento);
+        fetchData(endpoints.retornoLogin, updateRetornoLogin);
+
+        // Chamadas para atualizar os KPI's de - Operacional
+        fetchData(endpoints.totalAgendamentosHoje, updateTotalAgendamentosHoje);
+        fetchData(endpoints.totalAgendamentosFuturos, updateTotalAgendamentosFuturos);
+        fetchData(endpoints.notasFeedbacks, updateNotaSingle);
+        fetchData(endpoints.tempoMedio, updateTempoMedio);
 
         // Chamadas para atualizar os dados do gráfico 1 - Gerencial
         fetchData(endpoints.listarTop3Indicacoes, updateListarTop3Indicacoes);
@@ -105,6 +122,10 @@ document.addEventListener('DOMContentLoaded', function () {
         // Chamadas para atualizar os dados do gráfico 4 - Gerencial
         fetchData(endpoints.agendamentosProcedimentosLabels, updateChart4Labels);
         fetchData(endpoints.agendamentosProcedimentos, updateChart4);
+
+        // Chamada para atualizar os dados do gráfico 1 - Usabilidade
+        fetchData(endpoints.agendamentosStatus, updateChartOperacional1)
+
 
         // Chamada para atualizar os dados do gráfico 1 - Usabilidade
         fetchData(endpoints.ultimosAgendamentosRealizados5Meses, updateChartUsabilidade1)
@@ -134,6 +155,28 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateTempoAgendamento(data) {
         const tempoMedioCount = document.getElementById('tempo-medio-conclusao');
         tempoMedioCount.textContent = data;
+    }
+    function updateRetornoLogin(data) {
+        const retornoLoginCount = document.getElementById('retorno-login-count');
+        retornoLoginCount.textContent = data;
+    }
+
+    // Funções que atualizam as KPI's de operacional
+    function updateTotalAgendamentosHoje(data) {
+        const totalAgendamentosHoje = document.getElementById('total-agendamentos-hoje');
+        totalAgendamentosHoje.textContent = data;
+    }
+    function updateTotalAgendamentosFuturos(data) {
+        const totalAgendamentosFuturos = document.getElementById('total-agendamentos-futuros');
+        totalAgendamentosFuturos.textContent = data;
+    }
+    function updateNotaSingle(data) {
+        const totalNotaSingle = document.getElementById('total-nota-single');
+        totalNotaSingle.textContent = data;
+    }
+    function updateTempoMedio(data) {
+        const tempoMedioHoje = document.getElementById('tempo-medio-hoje');
+        tempoMedioHoje.textContent = data;
     }
 
     // Constantes dos gráficos
@@ -168,10 +211,36 @@ document.addEventListener('DOMContentLoaded', function () {
     const ctxUsabilidade1 = document.getElementById('chartUsabilidade1').getContext('2d');
     let chartUsabilidade1;
 
+    let dataChartOperacional1 = null;
+    const ctxOperacional1 = document.getElementById('chartOperacional1').getContext('2d');
+    let chartOperacional1;
+
     
 
 
     // Funções para atualização
+    function updateChartOperacional1(data) {
+    // Mapeia os dados de status a partir do objeto
+    const statusAgendamentos = {
+        agendados: data.agendados || 0,  // Valor padrão caso a propriedade não esteja presente
+        confirmados: data.confirmados || 0,
+        realizados: data.realizados || 0,
+        cancelados: data.cancelados || 0,
+        reagendados: data.reagendados || 0
+    };
+
+    // Atualiza os dados do gráfico na ordem desejada, independentemente da ordem de chegada
+    dataChartOperacional1 = [
+        statusAgendamentos.agendados,
+        statusAgendamentos.confirmados,
+        statusAgendamentos.realizados,
+        statusAgendamentos.cancelados,
+        statusAgendamentos.reagendados
+    ];
+
+    // Chama a função para criar/atualizar o gráfico
+    createChartOperacional1();
+    }
     function updateChart2_1(data) {
         dataChart2_1 = data;
 
@@ -434,7 +503,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-
     // Criação de gráficos - Usabilidade
     function createChartUsabilidade1() {
         if (!dataChartUsabilidade1  || !labelsChartUsabilidade1) return;
@@ -485,6 +553,35 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // Criação de gráficos - Operacional
+    function createChartOperacional1() {
+        if (!dataChartOperacional1) return;
+    
+        if (chartOperacional1) chartOperacional1.destroy();
+    
+        chartOperacional1 = new Chart(ctxOperacional1, {
+            type: 'bar',
+            data: {
+                labels: ['Agendados', 'Confirmados', 'Realizados', 'Cancelados', 'Reagendados'],
+                datasets: [{
+                    label: 'Qtd Agendamentos',
+                    data: dataChartOperacional1,
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#E84E8A', '#F59DBF'],
+                    borderColor: '#D2135D',
+                    fill: false
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
 
 
 

@@ -14,6 +14,8 @@ body {
   color: #444444;
 }
 
+
+
 a {
   color: #CDA582;
   text-decoration: none;
@@ -405,6 +407,7 @@ h6 {
   height: 90vh;
   background: url("../img/hero-bg.png") top right;
   background-size: cover;
+
 }
 
 #hero .container {
@@ -415,7 +418,7 @@ h6 {
 @media (max-width: 992px) {
   #hero .container {
     padding-top: 58px;
-  }
+}
 }
 
 #hero h1 {
@@ -454,6 +457,7 @@ h6 {
 @media (min-width: 1024px) {
   #hero {
     background-attachment: fixed;
+
   }
 }
 
@@ -533,7 +537,7 @@ h6 {
 # Sections General
 --------------------------------------------------------------*/
 section {
-  padding: 40px 0;
+  padding: 30px;
 }
 
 .section-bg {
@@ -627,6 +631,9 @@ section {
 --------------------------------------------------------------*/
 
 
+
+
+
 #aboutple h1 {
   font-size: 30px;
   margin: 0px;
@@ -634,6 +641,7 @@ section {
   font-weight: bold;
   color: #C21256;
 }
+
 
 #aboutple h2 {
   font-size: 32px;
