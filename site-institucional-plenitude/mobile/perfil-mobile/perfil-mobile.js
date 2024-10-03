@@ -6,12 +6,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Definir tamanho de fonte padrão ou carregar do localStorage
     let currentFontSize = localStorage.getItem('fontSize') || '16px';
     rootElement.style.setProperty('--font-size-default', currentFontSize);
+    document.body.style.fontSize = currentFontSize; // Aplicar o tamanho de fonte ao body
 
     // Função para aumentar o tamanho da fonte
     increaseFontBtn.addEventListener('click', function() {
         let newSize = parseFloat(currentFontSize) + 1;
         currentFontSize = `${newSize}px`;
         rootElement.style.setProperty('--font-size-default', currentFontSize);
+        document.body.style.fontSize = currentFontSize; // Aplicar o novo tamanho ao body
         localStorage.setItem('fontSize', currentFontSize);
     });
 
@@ -21,10 +23,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if (newSize >= 12) {  // Limitar tamanho mínimo da fonte
             currentFontSize = `${newSize}px`;
             rootElement.style.setProperty('--font-size-default', currentFontSize);
+            document.body.style.fontSize = currentFontSize; // Aplicar o novo tamanho ao body
             localStorage.setItem('fontSize', currentFontSize);
         }
     });
 });
+
 
 function saudacao() {
     const saudacaoElement1 = document.getElementById('greeting1');
