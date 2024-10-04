@@ -401,7 +401,7 @@ function renderStatuses() {
     <button class="edit-btn" data-id="${status.id}">
       <i class="fas fa-edit"></i>
     </button>
-    <div class="tooltip11">Clique para editar.</div>
+    <div class="tooltip11">Editar</div>
   </div>
 
   <!-- Botão de Excluir com tooltip -->
@@ -409,7 +409,7 @@ function renderStatuses() {
     <button class="delete-btn" data-id="${status.id}">
       <i class="fas fa-trash"></i>
     </button>
-    <div class="tooltip11">Clique para excluir.</div>
+    <div class="tooltip11">Excluir</div>
   </div>
 </td>
 

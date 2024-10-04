@@ -124,26 +124,35 @@
       <button class="filter-btn" style="height: 7vh; margin-left: 2.6%; width: 37vh" onclick="openModalPesquisa()">
         <img style="height: 4vh; margin-top: 12%" src="../../assets/icons/lupa.png" alt="filter" />Pesquisar Clientes
       </button>
+      <div id="tooltip1" class="tooltip1">Clique para pesquisar clientes.</div>
+
       <div class="right-actions">
-        <button class="arquivados-btn" style="height: 7vh; margin-left: 26%" onclick="redirectToArchived()">
+        <button class="arquivados-btn filter-btn" style="height: 7vh; margin-left: 26%" onclick="redirectToArchived()">
           <img style="height: 4.5vh; width: 4.5vh; margin-top: 19%" src="../../assets/icons/pasta-aberta.png"
             alt="spreadsheet" />
           Inativos
         </button>
-        <button class="avaliar-btn" style="height: 7vh; margin-left: 0%" onclick="openModalAvaliar()">
+        <div id="tooltip2" class="tooltip2">Clique para ver clientes inativos.</div>
+
+        <button class="avaliar-btn filter-btn" style="height: 7vh; margin-left: 0%" onclick="openModalAvaliar()">
           <img style="height: 4.5vh; width: 4.5vh; margin-top: 19%" src="../../assets/icons/estrela.png"
             alt="spreadsheet" />Avaliar
         </button>
-        <button class="planilha-btn" style="height: 7vh; margin-left: 0%">
+        <div id="tooltip3" class="tooltip3">Clique para avaliar um cliente.</div>
+
+        <button class="planilha-btn filter-btn" style="height: 7vh; margin-left: 0%">
           <img style="height: 4.5vh; width: 4.5vh; margin-top: 19%" src="../../assets/icons/spreadsheet.png"
             alt="spreadsheet" />Planilha
         </button>
-        <button class="criar-btn" onclick="showForm()" style="height: 7vh; width: 37vh">
+        <div id="tooltip4" class="tooltip4">Clique para exportar lista com clientes.</div>
+
+        <button class="criar-btn filter-btn" onclick="showForm()" style="height: 7vh; width: 37vh">
           <a style="width: max-content" href="clienteForms/cadastrar-cliente/cadastrar-cliente.html">
             <img style="height: 4vh; margin-top: 17%" src="../../assets/icons/createNew.png"
               alt="createNew" /><span>Criar Novo</span>
           </a>
         </button>
+        <div id="tooltip5" class="tooltip5">Clique para cadastrar clientes.</div>
       </div>
     </div>
     <table id="procedures-table" class="procedures-table">

@@ -674,3 +674,247 @@ img {
   opacity: 0.3; /* Deixa o botão mais transparente */
   transition: opacity 0.3s ease; /* Adiciona uma transição suave ao estado desabilitado */
 }
+
+.filter-btn {
+  position: relative;
+}
+
+/* Estilos do tooltip */
+.tooltip1 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 120px; /* Ajuste conforme necessário */
+  left: 35%;
+  transform: translateX(-50%);
+}
+
+.tooltip2 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 120px; /* Ajuste conforme necessário */
+  left: 60%;
+  transform: translateX(-50%);
+}
+
+.tooltip3 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 120px; /* Ajuste conforme necessário */
+  left: 69%;
+  transform: translateX(-50%);
+}
+
+.tooltip4 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 120px; /* Ajuste conforme necessário */
+  left: 78%;
+  transform: translateX(-50%);
+}
+
+.tooltip5 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 120px; /* Ajuste conforme necessário */
+  left: 86%;
+  transform: translateX(-50%);
+}
+
+.tooltip6 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 800px; /* Ajuste conforme necessário */
+  left: 67%;
+  transform: translateX(-50%);
+}
+
+.tooltip7 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 800px; /* Ajuste conforme necessário */
+  left: 45%;
+  transform: translateX(-50%);
+}
+
+.tooltip8 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 800px; /* Ajuste conforme necessário */
+  left: 90%;
+  transform: translateX(-50%);
+}
+
+.tooltip9 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 120px; /* Ajuste conforme necessário */
+  left: 35%;
+  transform: translateX(-50%);
+}
+
+.tooltip10 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 120px; /* Ajuste conforme necessário */
+  left: 35%;
+  transform: translateX(-50%);
+}
+
+.filter-btn:hover + .tooltip1 {
+  display: block;
+  
+}
+
+.filter-btn:hover + .tooltip2 {
+  display: block;
+  
+}
+
+.filter-btn:hover + .tooltip3 {
+  display: block;
+  
+}
+
+.filter-btn:hover + .tooltip4 {
+  display: block;
+  
+}
+
+.filter-btn:hover + .tooltip5 {
+  display: block;
+  
+}
+
+.filter-btn:hover + .tooltip6 {
+  display: block;
+  
+}
+
+.filter-btn:hover + .tooltip7 {
+  display: block;
+  
+}
+
+.filter-btn:hover + .tooltip8 {
+  display: block;
+  
+}
+
+.filter-btn:hover + .tooltip9 {
+  display: block;
+  
+}
+
+.filter-btn:hover + .tooltip10 {
+  display: block;
+  
+}
+
+
+
+.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip11 {
+  visibility: hidden;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* Ajuste conforme necessário */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip11::after {
+  content: "";
+  position: absolute;
+  top: 100%; /* Ajuste conforme necessário */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+
+.tooltip-wrapper:hover .tooltip11 {
+  visibility: visible;
+  opacity: 1;
+}
