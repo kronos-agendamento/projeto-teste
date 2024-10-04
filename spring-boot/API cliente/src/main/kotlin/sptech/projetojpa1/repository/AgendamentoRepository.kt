@@ -163,9 +163,6 @@ interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
     LIMIT 1
 """, nativeQuery = true)
     fun findMostBookedTimeByUser(idUsuario: Int): String?
-}
-
-
 
     @Query("""
 SELECT new sptech.projetojpa1.dto.agendamento.AgendamentoDTO(

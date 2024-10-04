@@ -343,16 +343,14 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
         return agendamentoService.getMostBookedTimeByUser(idUsuario)
             ?: "Nenhum agendamento encontrado para o usuário."
     }
-}
-
-
-
-
-
-
 
     @GetMapping("/agendamentos/usuario/{usuarioId}")
     fun listarAgendamentosPorUsuario(@PathVariable usuarioId: Int): List<AgendamentoDTO> {
         return agendamentoService.listarAgendamentosPorUsuario(usuarioId)
+    
     }
 }
+
+
+
+

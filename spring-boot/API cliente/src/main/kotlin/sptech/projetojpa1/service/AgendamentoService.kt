@@ -354,4 +354,22 @@ class AgendamentoService(
     fun countUsuariosWithStatusUm(): Int {
         return usuarioRepository.countByStatus(true)
     }
+
+    fun listarAgendamentosPorUsuario(usuarioId: Int): List<AgendamentoDTO> {
+        return agendamentoRepository.listarAgendamentosPorUsuario(usuarioId)
+    }
+
+    fun countDiasUltimoAgendamento(idUsuario: Int): Int {
+        val usuario: Usuario = usuarioRepository.findById(idUsuario)
+            .orElseThrow { IllegalArgumentException("Usuário não encontrado") }
+        return agendamentoRepository.countDiasUltimoAgendamento(usuario) ?: 0
+    }
+
+    fun buscarDiaMaisAgendadoPorUsuario(idUsuario: Int): String {
+        return agendamentoRepository.buscarDiaMaisAgendadoPorUsuario(idUsuario)
+    }
+
+    fun getMostBookedTimeByUser(idUsuario: Int): String? {
+        return agendamentoRepository.findMostBookedTimeByUser(idUsuario)
+    }
 }
