@@ -285,7 +285,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 btnUndo.style.display = "none";
                 btnRedo.style.display = "none";
                 // Quando os botões "Desfazer" e "Refazer" desaparecem, ajusta a margem do botão "Inativos"
-                document.getElementById("btn-arquivar").style.marginLeft = "20px";
+                document.getElementById("btn-arquivar").style.marginLeft = "10px";
             }, 10000);
         }
     }

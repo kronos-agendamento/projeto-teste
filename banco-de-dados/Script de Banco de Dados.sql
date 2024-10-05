@@ -1,7 +1,7 @@
 -- drop database kronosbooking;
 CREATE DATABASE IF NOT EXISTS kronosbooking;
 USE kronosbooking;
-select * from usuario;
+
 
 DROP TABLE IF EXISTS feedback;
 DROP TABLE IF EXISTS cliente;
