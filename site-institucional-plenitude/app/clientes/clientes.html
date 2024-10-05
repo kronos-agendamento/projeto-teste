@@ -125,9 +125,13 @@
         <img style="height: 4vh; margin-top: 12%" src="../../assets/icons/lupa.png" alt="filter" />Pesquisar Clientes
       </button>
       <div class="right-actions">
-        <button class="undo-btn" id="btn-undo" style="height: 7vh; margin-left: 5%; display: none;" onclick="undoAction()">Desfazer</button>
-        
-        <button class="arquivados-btn" style="height: 7vh; margin-left: 26%" onclick="redirectToArchived()">
+        <button class="btn-action undo-btn" id="btn-undo" onclick="undoAction()" style="display: none;">
+          <i class="fas fa-undo"></i> Desfazer
+        </button>
+        <button class="btn-action redo-btn" id="btn-redo" onclick="redoAction()" style="margin-left: 1%; display: none;">
+          <i class="fas fa-redo"></i> Refazer
+        </button>
+        <button class="arquivados-btn" style="height: 7vh; margin-left: 27%" onclick="redirectToArchived()">
           <img style="height: 4.5vh; width: 4.5vh; margin-top: 19%" src="../../assets/icons/pasta-aberta.png"
             alt="spreadsheet" />
           Inativos
@@ -140,10 +144,10 @@
           <img style="height: 4.5vh; width: 4.5vh; margin-top: 19%" src="../../assets/icons/spreadsheet.png"
             alt="spreadsheet" />Planilha
         </button>
-        <button class="criar-btn" onclick="showForm()" style="height: 7vh; width: 37vh">
+        <button class="criar-btn" onclick="showForm()" style="height: 7vh; width: 20vh">
           <a style="width: max-content" href="clienteForms/cadastrar-cliente/cadastrar-cliente.html">
             <img style="height: 4vh; margin-top: 17%" src="../../assets/icons/createNew.png"
-              alt="createNew" /><span>Criar Novo</span>
+              alt="createNew" /><span>Novo</span>
           </a>
         </button>
       </div>
