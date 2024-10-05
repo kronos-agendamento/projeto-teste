@@ -39,11 +39,13 @@ header p {
 .actions {
   display: flex;
   margin-top: 25px;
-  gap: 10px;
+  gap: 2px;
   margin-left: 20px;
   display: flex;
-  justify-content: space-between;
+  justify-content:flex-start;
 }
+
+
 .back {
   margin-top: 3vh;
 }
@@ -62,8 +64,8 @@ header p {
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 5px;
+  justify-content: flex-start;
+  gap: 2px;
   font-weight: bold;
 }
 
@@ -106,10 +108,6 @@ header p {
   border: none;
 }
 
-.right-actions {
-  display: flex;
-  margin-right: 80px;
-}
 
 .planilha-btn {
   margin-right: 10px;

@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let cpfParaArquivar = null;
     let cpfParaDeletar = null;
 
+    const btnArquivar = document.getElementById("btn-arquivar");
     const btnRedo = document.getElementById("btn-redo");
     const btnUndo = document.getElementById("btn-undo");
     const btnYes = document.querySelector(".btn-yes");
@@ -253,42 +254,45 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function updateUndoRedoButtons() {
-       // Atualiza a visibilidade dos botões "Desfazer" e "Refazer"
-       if (undoStack.length > 0) {
-        btnUndo.style.display = "inline-flex"; // Define como "inline-flex" para centralizar o conteúdo
-        btnUndo.style.width = "150px";         // Aumenta a largura do botão
-        btnUndo.style.height = "39.8px";         // Aumenta a altura do botão
-        btnUndo.style.padding = "10px 20px";   // Ajusta o padding para tornar o botão mais "cheio"
-        btnUndo.style.fontSize = "0.9rem";     // Aumenta o tamanho do texto
-        btnUndo.style.marginRight = "-65px";
-    } else {
-        btnUndo.style.display = "none";
-    }
-
-    if (redoStack.length > 0) {
-        btnRedo.style.display = "inline-flex"; // Define como "inline-flex" para centralizar o conteúdo
-        btnRedo.style.width = "150px";         // Aumenta a largura do botão
-        btnRedo.style.height = "39px";         // Aumenta a altura do botão
-        btnRedo.style.padding = "10px 20px";   // Ajusta o padding para tornar o botão mais "cheio"
-        btnRedo.style.fontSize = "0.9rem";     // Aumenta o tamanho do texto
-        btnRedo.style.marginRight = "-55px";
-        btnRedo.style.marginLeft = "-1.5px"
-    } else {
-        btnRedo.style.display = "none";
-    }
+        // Atualiza a visibilidade dos botões "Desfazer" e "Refazer"
+        if (undoStack.length > 0) {
+            btnUndo.style.display = "inline-flex"; // Define como "inline-flex" para centralizar o conteúdo
+            btnUndo.style.width = "100px";         // Aumenta a largura do botão
+            btnUndo.style.height = "39.8px";       // Aumenta a altura do botão
+            btnUndo.style.padding = "10px 10px";   // Ajusta o padding para tornar o botão mais "cheio"
+            btnUndo.style.fontSize = "0.9rem";     // Aumenta o tamanho do texto
+            btnUndo.style.marginLeft = "7px";
+        } else {
+            btnUndo.style.display = "none";
+        }
+    
+        if (redoStack.length > 0) {
+            btnRedo.style.display = "inline-flex"; // Define como "inline-flex" para centralizar o conteúdo
+            btnRedo.style.width = "100px";         // Aumenta a largura do botão
+            btnRedo.style.height = "39px";         // Aumenta a altura do botão
+            btnRedo.style.padding = "10px 13px";   // Ajusta o padding para tornar o botão mais "cheio"
+            btnRedo.style.fontSize = "0.9rem";     // Aumenta o tamanho do texto
+            btnRedo.style.marginLeft = "7px";
+        } else {
+            btnRedo.style.display = "none";
+        }
+ 
+    
         // Reinicia o timer para ocultar os botões após 10 segundos
         clearTimeout(undoRedoTimeout);
         if (undoStack.length > 0 || redoStack.length > 0) {
             undoRedoTimeout = setTimeout(() => {
                 btnUndo.style.display = "none";
                 btnRedo.style.display = "none";
+                // Quando os botões "Desfazer" e "Refazer" desaparecem, ajusta a margem do botão "Inativos"
+                document.getElementById("btn-arquivar").style.marginLeft = "20px";
             }, 10000);
         }
     }
-
+    
     btnUndo.addEventListener("click", undoAction);
     btnRedo.addEventListener("click", redoAction); // Adiciona o evento ao botão de refazer
-
+    
     async function init() {
         usuarios = await fetchUsuariosAtivos();
         renderTable(usuarios, currentPage);
