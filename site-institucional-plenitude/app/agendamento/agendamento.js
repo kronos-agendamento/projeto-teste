@@ -691,20 +691,21 @@ document.addEventListener("DOMContentLoaded", function () {
 <td>
   <!-- Botão de Editar com tooltip -->
   <div class="tooltip-wrapper">
-    <button class="edit-btn filter-btn" data-id="${status.id}">
+    <button class="edit-btn" data-id="${status.id}">
       <i class="fas fa-edit"></i>
     </button>
-    <div class="tooltip9">Clique para editar.</div>
+    <div class="tooltip9">Editar</div>
   </div>
 
   <!-- Botão de Excluir com tooltip -->
   <div class="tooltip-wrapper">
-    <button class="delete-btn filter-btn" data-id="${status.id}">
+    <button class="delete-btn" data-id="${status.id}">
       <i class="fas fa-trash"></i>
     </button>
-    <div class="tooltip9">Clique para excluir.</div>
+    <div class="tooltip9">Excluir</div>
   </div>
 </td>
+
 
             `;
           tbody.appendChild(row);

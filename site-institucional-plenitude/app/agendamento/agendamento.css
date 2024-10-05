@@ -1128,17 +1128,18 @@ table tr.clickable-row:hover {
   padding: 5px;
   position: absolute;
   z-index: 1;
-  bottom: 125%; /* Ajuste conforme necessário */
+  bottom: 125%; /* Ajuste conforme necessário para a distância vertical */
   left: 50%;
   transform: translateX(-50%);
   opacity: 0;
   transition: opacity 0.3s;
+  white-space: nowrap; /* Evita quebra de linha dentro da tooltip */
 }
 
 .tooltip9::after {
   content: "";
   position: absolute;
-  top: 100%; /* Ajuste conforme necessário */
+  top: 100%; /* Aponta para o botão */
   left: 50%;
   margin-left: -5px;
   border-width: 5px;
@@ -1150,6 +1151,8 @@ table tr.clickable-row:hover {
   visibility: visible;
   opacity: 1;
 }
+
+
 
 
 
