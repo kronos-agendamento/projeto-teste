@@ -180,7 +180,13 @@ ORDER BY
     )
     fun findClientesFidel(): List<Map<String, Any>>
 
+    // Busca todos os usuários de uma cidade específica
+    fun findAllByEndereco_Cidade(cidade: String): List<Usuario>
+
+    // Conta o número de usuários em uma cidade específica
+    fun countByEndereco_Cidade(cidade: String): Long
 
     abstract fun save(cliente: Cliente): Cliente
+
 
 }

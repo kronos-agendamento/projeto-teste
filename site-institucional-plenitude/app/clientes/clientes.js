@@ -521,3 +521,5 @@ async function updateKpiData() {
 }
 
 window.onload = updateKpiData;
+
+
