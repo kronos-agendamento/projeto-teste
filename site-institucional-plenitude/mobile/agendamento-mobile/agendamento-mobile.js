@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const opcaoCilios = document.getElementById('opcao-cilios');
     const opcaoSobrancelha = document.getElementById('opcao-sobrancelha');
     const opcaoMaquiagem = document.getElementById('opcao-maquiagem');
+    const endereco = document.getElementById('endereco');
     const dias = document.getElementById('dias');
     const horarios = document.getElementById('horarios');
     const botaoAgendar = document.getElementById('button-alterar');
@@ -16,6 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
         opcaoCilios.classList.add('hidden');
         opcaoSobrancelha.classList.add('hidden');
         opcaoMaquiagem.classList.add('hidden');
+        endereco.classList.add('hidden');
         dias.classList.add('hidden');
         horarios.classList.add('hidden');
         botaoAgendar.classList.add('hidden');
@@ -28,60 +30,55 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Função para mostrar horários e botão de agendamento após a seleção dos dias
     function mostrarConclusao() {
-        if (!dias.classList.contains('hidden')) {
-            horarios.classList.remove('hidden'); // Exibe os horários
-            botaoAgendar.classList.remove('hidden'); // Exibe o botão de agendamento
-        }
+        horarios.classList.remove('hidden'); // Exibe os horários
+        botaoAgendar.classList.remove('hidden'); // Exibe o botão de agendamento
     }
 
     // Função principal para lidar com a seleção de Procedimento
     procedimentoSelect.addEventListener('change', function () {
         resetarCampos();
         const procedimentoSelecionado = procedimentoSelect.value;
-        const diaSelecionado = dias.value
 
         if (procedimentoSelecionado === 'cilios') {
+            opcaoCilios.classList.remove('hidden'); // Exibe opções de cílios
             tipoAtendimentoCilios.classList.remove('hidden'); // Mostra as opções de atendimento para cílios
+
+            // Evento para mostrar dias após selecionar tipo de atendimento
             tipoAtendimentoCilios.querySelector('select').addEventListener('change', function () {
                 const tipoAtendimentoSelecionado = tipoAtendimentoCilios.querySelector('select').value;
 
                 if (tipoAtendimentoSelecionado === 'retirada') {
                     mostrarDias(); // Mostra dias
-                    // Adiciona evento para mostrar horários e botão após selecionar dias
-                    if(diaSelecionado !== ''){ dias.querySelector('select').addEventListener('change', function () {
-                        mostrarConclusao(); // Mostra horários e botão de agendamento
-                    });}
+                    dias.querySelector('select').addEventListener('change', mostrarConclusao); // Adiciona evento para mostrar horários
                 } else if (tipoAtendimentoSelecionado !== '') {
-                    opcaoCilios.classList.remove('hidden'); // Exibe opções de cílios se não for "Retirada"
                     mostrarDias(); // Mostra dias
-                    // Adiciona evento para mostrar horários e botão após selecionar dias
-                    if(diaSelecionado !== ''){ dias.querySelector('select').addEventListener('change', function () {
-                        mostrarConclusao(); // Mostra horários e botão de agendamento
-                    });}
-                   
+                    dias.querySelector('select').addEventListener('change', mostrarConclusao); // Adiciona evento para mostrar horários
                 }
             });
         } else if (procedimentoSelecionado === 'sobrancelha') {
             opcaoSobrancelha.classList.remove('hidden'); // Exibe opções de sobrancelha diretamente
             mostrarDias(); // Mostra dias
-            // Adiciona evento para mostrar horários e botão após selecionar dias
-            dias.querySelector('select').addEventListener('change', function () {
-                mostrarConclusao(); // Mostra horários e botão de agendamento
-            });
+            dias.querySelector('select').addEventListener('change', mostrarConclusao); // Adiciona evento para mostrar horários
         } else if (procedimentoSelecionado === 'maquiagem') {
             tipoAtendimentoMaquiagem.classList.remove('hidden'); // Mostra as opções de atendimento para maquiagem
+            opcaoMaquiagem.classList.remove('hidden'); // Exibe opções de maquiagem
+
+            // Evento para mostrar dias após selecionar tipo de atendimento
             tipoAtendimentoMaquiagem.querySelector('select').addEventListener('change', function () {
                 const tipoAtendimentoSelecionado = tipoAtendimentoMaquiagem.querySelector('select').value;
 
+                if (tipoAtendimentoSelecionado === 'salao') {
+                    endereco.classList.add('hidden'); // Esconde o campo de endereço se "salão" for selecionado
+                } else {
+                    endereco.classList.remove('hidden'); // Exibe o campo de endereço se não for "salão"
+                }
+
                 if (tipoAtendimentoSelecionado !== '') {
-                    opcaoMaquiagem.classList.remove('hidden'); // Exibe opções de maquiagem
                     mostrarDias(); // Mostra dias
-                    // Adiciona evento para mostrar horários e botão após selecionar dias
-                    dias.querySelector('select').addEventListener('change', function () {
-                        mostrarConclusao(); // Mostra horários e botão de agendamento
-                    });
+                    dias.querySelector('select').addEventListener('change', mostrarConclusao); // Adiciona evento para mostrar horários
                 }
             });
         }
     });
+
 });
