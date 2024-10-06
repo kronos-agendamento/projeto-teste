@@ -20,6 +20,7 @@ DROP TABLE IF EXISTS nivel_acesso;
 DROP TABLE IF EXISTS endereco;
 DROP TABLE IF EXISTS status;
 DROP PROCEDURE IF EXISTS gerar_agendamentos_aleatorios;
+DROP TABLE IF EXISTS Leads;
 
 CREATE TABLE endereco (
     id_endereco INT AUTO_INCREMENT PRIMARY KEY,
@@ -182,6 +183,16 @@ CREATE TABLE feedback (
 		especialidade VARCHAR(255),
 		FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
 	);
+    
+    CREATE TABLE Leads (
+    id_lead INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    telefone BIGINT NOT NULL,
+    instagram VARCHAR(255),
+    mensagem TEXT,
+    data_criacao DATETIME
+);
 
 INSERT INTO endereco (logradouro, cep, bairro, cidade, estado, numero, complemento)
 VALUES 
@@ -335,6 +346,7 @@ BEGIN
   DECLARE dia_atual DATE;
   DECLARE fim DATE;
   DECLARE qtd_agendamentos INT;
+
   DECLARE hora_aleatoria TIME;
   DECLARE mes_atual INT;
   DECLARE usuario_fidelizado INT;
@@ -393,8 +405,6 @@ BEGIN
 
 END //
 
-
-
 DELIMITER ;
 
 CALL gerar_agendamentos_aleatorios();
@@ -436,6 +446,14 @@ VALUES
 (9, 11, 4.8, 'Designer de Sobrancelhas', 'Sobrancelhas'),
 (10, 5, 4.3, 'Maquiadora Social', 'Maquiagem');
 
+INSERT INTO Leads (nome, email, telefone, instagram, mensagem, data_criacao)
+VALUES 
+('Maria Silva', 'maria.silva@example.com', 11987654321, '@mariasilva', 'Gostaria de saber mais sobre seus serviços.', NOW()),
+('João Pereira', 'joao.pereira@example.com', 11912345678, '@joaopereira', 'Tenho interesse em fazer uma extensão de cílios.', NOW()),
+('Ana Souza', 'ana.souza@example.com', 11987611234, NULL, 'Quais são os valores para design de sobrancelha?', NOW()),
+('Carla Oliveira', 'carla.oliveira@example.com', 11933332222, '@carlaoliveira', 'Vi uma promoção no Instagram e quero mais detalhes.', NOW()),
+('Pedro Santos', 'pedro.santos@example.com', 11998765432, '@pedrosantos', 'Como funciona o procedimento de volume russo?', NOW());
+
 UPDATE usuario 
 SET dtype = 'Cliente' 
 WHERE fk_nivel_acesso = 2;
@@ -443,4 +461,6 @@ WHERE fk_nivel_acesso = 2;
 UPDATE usuario 
 SET dtype = 'Profissional' 
 WHERE fk_nivel_acesso = 1;
+
+SELECT * FROM Leads;
 
