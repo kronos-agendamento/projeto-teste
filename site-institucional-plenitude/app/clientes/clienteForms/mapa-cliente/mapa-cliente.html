@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Origem de Clientes | KronosBooking</title>
+    <link rel="stylesheet" href="mapa-cliente.css" />
+    <link href="" rel="icon" />
+    <link href="../procedimento/image.png" rel="apple-touch-icon" />
+    <script src="mapa-cliente.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.2/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</head>
+
+<body>
+    <div class="navigation">
+        <li class="list" style="
+          width: 30px;
+          height: 30px;
+          list-style: none;
+          display: flex;
+          justify-content: center;
+          margin-top: 5vh;
+        ">
+            <div class="imagem-perfil" style="
+            width: 20vh;
+            height: 20vh;
+            border-radius: 300px;
+            display: flex;
+            justify-content: center;
+          ">
+                <img src="../../../index/Foto de Perfil.png" style="
+              width: 53vh;
+              height: 23vh;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            " />
+            </div>
+        </li>
+        <li id="userName" style="
+          margin-top: 20vh;
+          list-style: none;
+          color: white;
+          font-weight: 600;
+        "></li>
+        <li id="userInsta" style="
+          list-style: none;
+          color: white;
+          font-weight: 200;
+          font-size: 12px;
+        "></li>
+
+        <ul style="margin-top: 80%; position: absolute">
+            <li class="list">
+                <a href="../index/index.html">
+                    <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                    <span class="title">Início </span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="../perfil/perfil.html">
+                    <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
+                    <span class="title">Perfil</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="../agendamento/agendamento.html">
+                    <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
+                    <span class="title">Agendamentos</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="../anamnese/anamnese.html">
+                    <span class="icon"><ion-icon name="document-text-outline"></ion-icon></span>
+                    <span class="title">Anamneses</span>
+                </a>
+            </li>
+            <li class="list active">
+                <a href="../clientes/clientes.html">
+                    <span class="icon"><ion-icon name="person-add-outline"></ion-icon></span>
+                    <span class="title">Clientes</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="../procedimento/procedimento.html">
+                    <span class="icon"><ion-icon name="brush-outline"></ion-icon></span>
+                    <span class="title">Procedimentos</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="../dashboard/dashboard.html">
+                    <span class="icon"><ion-icon name="stats-chart-outline"></ion-icon></span>
+                    <span class="title">Dashboard</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="../../index.html">
+                    <span class="icon"><ion-icon name="exit-outline"></ion-icon></span>
+                    <span class="title">Sair</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="main-content" style="margin-top: 1%">
+        <header style="height: 14vh; width: 152vh; margin-left: 4.3%">
+            <h1>Origem de Clientes</h1>
+            <p>
+                Essa página é destinada para visualização de dados que mostram detalhes sobre a origem de seus clientes.
+            </p>
+        </header>
+        <div class="back" style="margin-top: 25px; margin-bottom: 15px;">
+            <a href="../../clientes.html" class="back-link"
+              >← Voltar para página de visualização da página inicial de clientes</a
+            >
+          </div>
+
+
+        <div class="content-row" style="display: flex; justify-content: space-between;">
+
+            <div style="width: 48%; margin-left: 50px; margin-top: 10px;">
+                <h2 style="margin-bottom: 10px; font-size: 18px;">Top 5 Bairros com Mais Clientes</h2>
+                    <p style="font-size: 16px;">Veja os principais bairros de onde vêm a maioria <br> dos seus clientes, com base na contagem total.</p>
+                
+            <!-- Div para a tabela de Top 5 Bairros -->
+            <div class="table-container">
+                <!-- <h2>Top 5 Bairros com Mais Clientes</h2> -->
+                <table id="top5-bairros-table">
+                    <thead>
+                        <tr>
+                            <th>Bairro</th>
+                            <th>Cidade</th>
+                            <th>Total de Clientes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Os dados da tabela serão inseridos aqui dinamicamente -->
+                    </tbody>
+                </table>
+            </div>
+            <!-- Div do mapa de calor -->
+            </div>
+            <div style="width: 48%; margin-left: 0px; margin-top: 10px;">
+                <h2 style="margin-bottom: 10px; font-size: 18px;">Mapa de Calor: Origem dos Clientes</h2>
+                    <p style="font-size: 16px;">O mapa abaixo destaca as áreas com maior concentração de clientes.</p>
+                
+            <div id="map"></div>
+            </div>
+        </div>
+
+        <h2 style="margin-left: 50px; margin-top: 30px; font-size: 18px;">Top 3 Cidades com mais Clientes</h2>
+        <p style="margin-left: 50px; font-size: 16px;">As três cidades que mais possuem clientes, com base na porcentagem total de clientes registrados.</p>
+        <div class="stats" style="margin-left: 1%; margin-top: 4%">
+            <div class="stat-item" style="width: 40vh">
+              <h2 style="font-weight:bold">Cidade Top 1</h2>
+              <p id="mais-agendado" style="font-weight:500">Carregando...</p>
+            </div>
+            <div class="stat-item" style="width: 40vh">
+              <h2 style="font-weight:bold">Cidade Top 2</h2>
+              <p id="menos-agendado" style="font-weight:500">Carregando...</p>
+            </div>
+            <div class="stat-item" style="width: 40vh">
+              <h2 style="font-weight:bold">Cidade Top 3</h2>
+              <p id="fidelizado" style="font-weight:500">Carregando...</p>
+            </div>
+          </div>
+    </div>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7RnMgdvoROHW_o-4pQeM3LJyNMwxem6o&libraries=visualization,places"></script>
+</body>
+
+</html>

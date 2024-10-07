@@ -21,16 +21,6 @@
         let heatmap;
         let heatmapData = [];
 
-        // Lista de endereços de agendamentos com pesos
-        const agendamentos = [
-            { address: "Av. Paulista, 1000, São Paulo, SP", name: "Cliente 1", weight: 2 },
-            { address: "Rua da Consolação, 2000, São Paulo, SP", name: "Cliente 2", weight: 3 },
-            { address: "Praça da Sé, São Paulo, SP", name: "Cliente 3", weight: 5 },
-            { address: "Av. Ipiranga, 4000, São Paulo, SP", name: "Cliente 4", weight: 1 },
-            { address: "Rua do Oratório, Santo André, SP", name: "Cliente 5", weight: 8 }, // Mais agendamentos no ABC
-            { address: "Rua da Figueira, São Caetano do Sul, SP", name: "Cliente 6", weight: 7 } // Mais agendamentos no ABC
-        ];
-
         // Inicializa o mapa
         function initMap() {
             map = new google.maps.Map(document.getElementById("map"), {
@@ -38,23 +28,41 @@
                 zoom: 11
             });
 
-            // Iterar sobre os agendamentos para geocodificar e criar pontos de calor
-            const geocoder = new google.maps.Geocoder();
-            agendamentos.forEach(agendamento => {
-                geocodeAddress(geocoder, agendamento);
-            });
+            // Chama a função para buscar os endereços da API
+            fetchEnderecos();
+        }
+
+        // Função para buscar os endereços da API
+        async function fetchEnderecos() {
+            try {
+                const response = await fetch('http://localhost:8080/api/enderecos');
+                if (!response.ok) {
+                    throw new Error(`Erro ao buscar endereços: ${response.statusText}`);
+                }
+
+                const enderecos = await response.json();
+                const geocoder = new google.maps.Geocoder();
+
+                // Itera sobre os endereços retornados pela API
+                enderecos.forEach(endereco => {
+                    const fullAddress = `${endereco.logradouro}, ${endereco.numero}, ${endereco.bairro}, ${endereco.cidade}, ${endereco.estado}`;
+                    geocodeAddress(geocoder, fullAddress);
+                });
+            } catch (error) {
+                console.error('Erro ao buscar os endereços:', error);
+            }
         }
 
         // Função para geocodificar o endereço e adicionar pontos ao mapa de calor
-        function geocodeAddress(geocoder, agendamento) {
-            geocoder.geocode({ address: agendamento.address }, (results, status) => {
+        function geocodeAddress(geocoder, address) {
+            geocoder.geocode({ address: address }, (results, status) => {
                 if (status === 'OK') {
                     const location = results[0].geometry.location;
 
                     // Adicionar a localização com o peso ao array de dados do heatmap
                     heatmapData.push({
                         location: location,
-                        weight: agendamento.weight
+                        weight: 1 // Aqui você pode ajustar o peso conforme necessário
                     });
 
                     // Atualiza o mapa de calor

@@ -121,18 +121,16 @@
       <span id="notification-message"></span>
     </div>
     <div class="actions">
-      <button class="filter-btn" style="height: 7vh; margin-left: 2.6%; width: 37vh" onclick="openModalPesquisa()">
-        <img style="height: 4vh; margin-top: 12%" src="../../assets/icons/lupa.png" alt="filter" />Pesquisar Clientes
-      </button>
-      <div class="right-actions">
-        <button class="undo-btn" id="btn-undo" style="height: 7vh; margin-left: 5%; display: none;" onclick="undoAction()">Desfazer</button>
-        
-        <button class="arquivados-btn" style="height: 7vh; margin-left: 26%" onclick="redirectToArchived()">
+      <button class="filter-btn" style="height: 7vh; margin-left: 3%; width: 23vh; margin-right: 10px;"
+        onclick="openModalPesquisa()">
+        <img style="height: 4vh; margin-top: 12%" src="../../assets/icons/lupa.png" alt="filter" />Pesquisar
+
+        <button class="arquivados-btn" style="height: 7vh;" onclick="redirectToArchived()" id="btn-arquivar">
           <img style="height: 4.5vh; width: 4.5vh; margin-top: 19%" src="../../assets/icons/pasta-aberta.png"
             alt="spreadsheet" />
           Inativos
         </button>
-        <button class="avaliar-btn" style="height: 7vh; margin-left: 0%" onclick="openModalAvaliar()">
+        <button class="avaliar-btn" style="height: 7vh; " onclick="openModalAvaliar()">
           <img style="height: 4.5vh; width: 4.5vh; margin-top: 19%" src="../../assets/icons/estrela.png"
             alt="spreadsheet" />Avaliar
         </button>
@@ -140,13 +138,26 @@
           <img style="height: 4.5vh; width: 4.5vh; margin-top: 19%" src="../../assets/icons/spreadsheet.png"
             alt="spreadsheet" />Planilha
         </button>
-        <button class="criar-btn" onclick="showForm()" style="height: 7vh; width: 37vh">
+        <button class="criar-btn" onclick="showForm()" style="height: 7vh; width: 16vh">
           <a style="width: max-content" href="clienteForms/cadastrar-cliente/cadastrar-cliente.html">
             <img style="height: 4vh; margin-top: 17%" src="../../assets/icons/createNew.png"
-              alt="createNew" /><span>Criar Novo</span>
+              alt="createNew" /><span>Novo</span>
           </a>
         </button>
-      </div>
+        <button class="btn-action undo-btn" id="btn-undo" onclick="undoAction()" style="display: none;">
+          <i class="fas fa-undo"></i> Desfazer
+        </button>
+        <button class="btn-action redo-btn" id="btn-redo" onclick="redoAction()"
+          style="margin-left: 1%; display: none;">
+          <i class="fas fa-redo"></i> Refazer
+        </button>
+
+    </div>
+    <div class="actions" style="display: flex; align-items: center; justify-content: center;">
+      <a href="../clientes/clienteForms/mapa-cliente/mapa-cliente.html" class="filter-btn" style="height: 7vh; width: 80vh; display: flex; align-items: center; justify-content: center; text-decoration: none; color: inherit; 
+        border: 1px solid #000000; border-radius: 10px;">
+        <i class="fas fa-map" style="margin-right: 10px;"></i> Visualizar Dados Sobre Origem de Clientes
+      </a>
     </div>
     <table id="procedures-table" class="procedures-table">
       <thead>
