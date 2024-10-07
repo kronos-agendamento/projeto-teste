@@ -1015,7 +1015,7 @@ Botão Ver todos / Ver menos
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 700px; /* Ajuste conforme necessário */
+  top: 560px; /* Ajuste conforme necessário */
   left: 90%;
   transform: translateX(-50%);
 }
@@ -1030,7 +1030,7 @@ Botão Ver todos / Ver menos
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 960px; /* Ajuste conforme necessário */
+  top: 830px; /* Ajuste conforme necessário */
   left: 90%;
   transform: translateX(-50%);
 }
@@ -1045,7 +1045,7 @@ Botão Ver todos / Ver menos
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 360px; /* Ajuste conforme necessário */
+  top: 220px; /* Ajuste conforme necessário */
   left: 90%;
   transform: translateX(-50%);
 }
