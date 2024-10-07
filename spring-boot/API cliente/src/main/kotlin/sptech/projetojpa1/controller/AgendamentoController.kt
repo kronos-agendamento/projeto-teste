@@ -347,7 +347,7 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
     @GetMapping("/agendamentos/usuario/{usuarioId}")
     fun listarAgendamentosPorUsuario(@PathVariable usuarioId: Int): List<AgendamentoDTO> {
         return agendamentoService.listarAgendamentosPorUsuario(usuarioId)
-    
+
     }
 }
 

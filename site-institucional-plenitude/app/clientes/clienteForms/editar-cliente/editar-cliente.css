@@ -39,10 +39,10 @@ header p {
 .actions {
   display: flex;
   margin-top: 25px;
-  gap: 10px;
-  margin-left: 20px;
+  gap: 5px;
+  margin-left: 15px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 .back {
   margin-top: 3vh;
@@ -1070,4 +1070,23 @@ img {
 
 .form-group-row .form-group:last-child {
   margin-right: 0;
+}
+
+/* Estilo específico de cada botão */
+#btn-undo {
+  background-color: #e11010; /* Laranja para "Desfazer" */
+  color: white;
+}
+
+#btn-undo:hover {
+  background-color: #ae0303;
+}
+
+#btn-redo {
+  background-color: #00b006; /* Azul para "Refazer" */
+  color: white;
+}
+
+#btn-redo:hover {
+  background-color: #006a04;
 }
