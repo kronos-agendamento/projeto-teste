@@ -444,5 +444,19 @@ class UsuarioController(
         return ResponseEntity.ok(clientesFidelizados)
     }
 
+    // Top 5 cidades com mais clientes
+    @GetMapping("/top5-bairros-clientes")
+    fun top5Bairros(): List<Map<String, Any>> {
+        return usuarioService.top5CidadesComMaisClientes()
+    }
+
+    @GetMapping("/top3-cidades-clientes")
+    fun top3Cidades(): List<Map<String, Any>> {
+        return usuarioService.top3CidadesPorPorcentagemClientes()
+    }
+
+
+
+
 }
 

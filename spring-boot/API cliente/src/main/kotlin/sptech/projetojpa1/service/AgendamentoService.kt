@@ -3,6 +3,7 @@ package sptech.projetojpa1.service
 import org.springframework.stereotype.Service
 import sptech.projetojpa1.domain.Agendamento
 import sptech.projetojpa1.domain.Usuario
+import sptech.projetojpa1.dto.agendamento.AgendamentoDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoRequestDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoResponseDTO
 import sptech.projetojpa1.repository.*
@@ -36,8 +37,11 @@ class AgendamentoService(
                 usuarioTelefone = usuario.telefone?.toString(),
                 tempoAgendar = agendamento.tempoAgendar,
                 usuarioCpf = usuario.cpf ?: "CPF não disponível",
+                usuarioId = usuario.codigo,
                 procedimento = agendamento.procedimento.tipo,
                 especificacao = agendamento.especificacao.especificacao,
+                fkEspecificacao = agendamento.especificacao.idEspecificacaoProcedimento,
+                fkProcedimento = agendamento.procedimento.idProcedimento,
                 statusAgendamento = agendamento.statusAgendamento
             )
         }
@@ -204,9 +208,12 @@ class AgendamentoService(
             tipoAgendamento = savedAgendamento.tipoAgendamento,
             tempoAgendar = savedAgendamento.tempoAgendar,
             usuario = agendamento.usuario.nome,
+            usuarioId = agendamento.usuario.codigo,
             procedimento = agendamento.procedimento.tipo,
             especificacao = agendamento.especificacao.especificacao,
-            statusAgendamento = agendamento.statusAgendamento
+            statusAgendamento = agendamento.statusAgendamento,
+            fkEspecificacao = agendamento.especificacao.idEspecificacaoProcedimento,
+            fkProcedimento = agendamento.procedimento.idProcedimento
         )
     }
 
@@ -221,7 +228,10 @@ class AgendamentoService(
             usuario = agendamento.usuario.nome,
             tempoAgendar = agendamento.tempoAgendar,
             procedimento = agendamento.procedimento.tipo,
+            usuarioId = agendamento.usuario.codigo,
             especificacao = agendamento.especificacao.especificacao,
+            fkEspecificacao = agendamento.especificacao.idEspecificacaoProcedimento,
+            fkProcedimento = agendamento.procedimento.idProcedimento,
             statusAgendamento = agendamento.statusAgendamento
         )
     }
@@ -253,7 +263,10 @@ class AgendamentoService(
             procedimento = agendamento.procedimento.tipo,
             especificacao = agendamento.especificacao.especificacao,
             tempoAgendar = agendamento.tempoAgendar,
-            statusAgendamento = agendamento.statusAgendamento
+            statusAgendamento = agendamento.statusAgendamento,
+            usuarioId = agendamento.usuario.codigo,
+            fkEspecificacao = agendamento.especificacao.idEspecificacaoProcedimento,
+            fkProcedimento = agendamento.procedimento.idProcedimento
         )
     }
 
@@ -276,7 +289,10 @@ class AgendamentoService(
             tempoAgendar = agendamento.tempoAgendar,
             procedimento = agendamento.procedimento.tipo,
             especificacao = agendamento.especificacao.especificacao,
-            statusAgendamento = agendamento.statusAgendamento
+            statusAgendamento = agendamento.statusAgendamento,
+            usuarioId = agendamento.usuario.codigo,
+            fkEspecificacao = agendamento.especificacao.idEspecificacaoProcedimento,
+            fkProcedimento = agendamento.procedimento.idProcedimento
         )
     }
 
@@ -316,8 +332,10 @@ class AgendamentoService(
                 tempoAgendar = agendamento.tempoAgendar,
                 procedimento = agendamento.procedimento.tipo,
                 especificacao = agendamento.especificacao.especificacao,
-                statusAgendamento = agendamento.statusAgendamento
-            )
+                statusAgendamento = agendamento.statusAgendamento,
+                usuarioId = agendamento.usuario.codigo,
+                fkEspecificacao = agendamento.especificacao.idEspecificacaoProcedimento,
+                fkProcedimento = agendamento.procedimento.idProcedimento)
         }
     }
 
@@ -357,18 +375,21 @@ class AgendamentoService(
         return usuarioRepository.countByStatus(true)
     }
 
+    fun listarAgendamentosPorUsuario(usuarioId: Int): List<AgendamentoDTO> {
+        return agendamentoRepository.listarAgendamentosPorUsuario(usuarioId)
+    }
+
     fun countDiasUltimoAgendamento(idUsuario: Int): Int {
         val usuario: Usuario = usuarioRepository.findById(idUsuario)
             .orElseThrow { IllegalArgumentException("Usuário não encontrado") }
         return agendamentoRepository.countDiasUltimoAgendamento(usuario) ?: 0
     }
 
-        fun buscarDiaMaisAgendadoPorUsuario(idUsuario: Int): String {
-            return agendamentoRepository.buscarDiaMaisAgendadoPorUsuario(idUsuario)
-        }
+    fun buscarDiaMaisAgendadoPorUsuario(idUsuario: Int): String {
+        return agendamentoRepository.buscarDiaMaisAgendadoPorUsuario(idUsuario)
+    }
 
     fun getMostBookedTimeByUser(idUsuario: Int): String? {
         return agendamentoRepository.findMostBookedTimeByUser(idUsuario)
     }
 }
-

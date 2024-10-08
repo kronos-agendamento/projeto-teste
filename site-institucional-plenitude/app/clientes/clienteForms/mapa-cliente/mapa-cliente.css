@@ -13,7 +13,7 @@ body {
   margin: 0;
   padding: 0;
   display: flex;
-  height: 1070px;
+  height: 990px;
 }
 
 header {
@@ -275,7 +275,7 @@ header p {
 
 /* navbar */
 .navigation {
-  height: 1020px;
+  height: 950px;
   background: #d2135d;
   width: 275px;
   margin-top: 20px;
@@ -694,3 +694,39 @@ img {
 #btn-redo:hover {
   background-color: #006a04;
 }
+
+
+#map {
+    height: 450px;
+    width: 90%; /* Ajuste a largura para caber ao lado da tabela */
+    margin-top: 30px;
+    border-radius: 10px;
+    border: 2px solid #d2135d;
+}
+
+.table-container {
+    width: 90%; /* Ajusta a largura da tabela para ocupar 48% do espaço, lado a lado com o mapa */
+    margin-right: 45px;
+    margin-top: 30px;
+    border-radius: 10px; /* Arredonda as bordas da tabela */
+
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    height: 450px;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+thead {
+    background-color: #d81b60;
+    color: white;
+}
+

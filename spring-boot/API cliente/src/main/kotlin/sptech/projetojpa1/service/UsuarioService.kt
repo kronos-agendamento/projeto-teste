@@ -101,6 +101,21 @@ class UsuarioService(
 
     fun atualizarUsuarioPorCpf(cpf: String, dto: UsuarioAtualizacaoRequest): Usuario? {
         val usuario = usuarioRepository.findByCpf(cpf) ?: return null
+
+        // Verificar se o endereço foi passado e se ele não tem um ID, ou seja, é novo
+        dto.endereco?.let { enderecoDto ->
+            if (enderecoDto.idEndereco == null) {
+                // Salvar o endereço primeiro, se ele for novo (não tiver ID)
+                val enderecoSalvo = enderecoRepository.save(enderecoDto)
+                usuario.endereco = enderecoSalvo
+            } else {
+                // Se o endereço já existir, buscar o endereço pelo ID e associar
+                val enderecoExistente = enderecoRepository.findById(enderecoDto.idEndereco)
+                usuario.endereco = enderecoExistente.orElse(usuario.endereco)
+            }
+        }
+
+        // Atualizar os outros campos de usuário com os valores enviados
         usuario.apply {
             nome = dto.nome ?: nome
             email = dto.email ?: email
@@ -110,8 +125,11 @@ class UsuarioService(
             genero = dto.genero ?: genero
             indicacao = dto.indicacao ?: indicacao
         }
+
+        // Salvar o usuário atualizado
         return usuarioRepository.save(usuario)
     }
+
 
     fun atualizarUsuarioPorId(id: Int, dto: UsuarioAtualizacaoRequest): Usuario? {
         val usuario = usuarioRepository.findById(id).orElse(null) ?: return null
@@ -441,6 +459,41 @@ class UsuarioService(
             )
         }
     }
+
+    fun top5CidadesComMaisClientes(): List<Map<String, Any>> {
+        val clientesPorBairroECidade = usuarioRepository.findAll()
+            .filter { it.endereco != null } // Filtra usuários que possuem endereço
+            .groupBy { it.endereco!!.bairro to it.endereco!!.cidade } // Agrupa por bairro e cidade
+            .map { (bairroCidade, clientes) ->
+                val (bairro, cidade) = bairroCidade // Desestrutura o bairro e a cidade
+                mapOf(
+                    "bairro" to bairro,
+                    "cidade" to cidade, // Adiciona a cidade ao resultado
+                    "clientes" to clientes.size
+                )
+            }
+            .sortedByDescending { it["clientes"] as Int } // Ordena pela quantidade de clientes
+            .take(5) // Retorna os top 5
+
+        return clientesPorBairroECidade
+    }
+
+    fun top3CidadesPorPorcentagemClientes(): List<Map<String, Any>> {
+        val totalClientes = usuarioRepository.count()
+        return usuarioRepository.findAll()
+            .filter { it.endereco != null } // Filtra usuários que possuem endereço
+            .groupBy { it.endereco!!.cidade } // Agrupa por cidade
+            .map { (cidade, clientes) -> // Mapeia para um formato que contenha cidade e porcentagem
+                mapOf(
+                    "cidade" to cidade,
+                    "porcentagem" to (clientes.size.toDouble() / totalClientes) * 100
+                )
+            }
+            .sortedByDescending { it["porcentagem"] as Double } // Ordena por porcentagem de forma decrescente
+            .take(3) // Retorna apenas os top 3
+    }
+
+
 
 
 }

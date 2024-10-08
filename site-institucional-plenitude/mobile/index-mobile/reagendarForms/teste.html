@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcular Tempo de Deslocamento</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7RnMgdvoROHW_o-4pQeM3LJyNMwxem6o&libraries=places"></script>
+</head>
+<body>
+    <h1>Calculadora de Tempo de Deslocamento</h1>
+
+    <div>
+        <label for="origem">Origem:</label>
+        <input type="text" id="origem" placeholder="Digite o local de origem" style="width: 500px;">
+    </div>
+
+    <div>
+        <label for="destino">Destino:</label>
+        <input type="text" id="destino" placeholder="Digite o local de destino" >
+    </div>
+
+    <div>
+        <label for="modo">Modo de Transporte:</label>
+        <select id="modo">
+            <option value="DRIVING">Carro</option>
+            <option value="WALKING">A pé</option>
+            <option value="BICYCLING">Bicicleta</option>
+            <option value="TRANSIT">Transporte Público</option>
+        </select>
+    </div>
+
+    <button onclick="calcularTempo()">Calcular Tempo</button>
+
+    <div id="resultado"></div>
+
+    <script>
+        let autocompleteOrigem, autocompleteDestino;
+
+        // Inicializar o Autocomplete nos campos de origem e destino
+        function initAutocomplete() {
+            const origemInput = document.getElementById('origem');
+            const destinoInput = document.getElementById('destino');
+
+            // Inicializa o Autocomplete no campo origem
+            autocompleteOrigem = new google.maps.places.Autocomplete(origemInput, {
+                types: ['geocode'],  // Limitar para endereços geográficos
+                componentRestrictions: { country: "br" } // Opcional: restringir ao Brasil
+            });
+
+            // Inicializa o Autocomplete no campo destino
+            autocompleteDestino = new google.maps.places.Autocomplete(destinoInput, {
+                types: ['geocode'],
+                componentRestrictions: { country: "br" }
+            });
+        }
+
+        function calcularTempo() {
+            const origem = document.getElementById('origem').value;
+            const destino = document.getElementById('destino').value;
+            const modo = document.getElementById('modo').value;
+
+            const service = new google.maps.DistanceMatrixService();
+            service.getDistanceMatrix(
+                {
+                    origins: [origem],
+                    destinations: [destino],
+                    travelMode: modo,  // Aqui você define o modo de transporte
+                    unitSystem: google.maps.UnitSystem.METRIC,
+                },
+                (response, status) => {
+                    if (status !== 'OK') {
+                        alert('Erro ao calcular a distância: ' + status);
+                        return;
+                    }
+
+                    const resultado = response.rows[0].elements[0];
+                    const distancia = resultado.distance.text;
+                    const duracao = resultado.duration.text;
+
+                    document.getElementById('resultado').innerHTML =
+                        `Distância: ${distancia} <br> Tempo estimado: ${duracao}`;
+                }
+            );
+        }
+
+        // Inicializar o Autocomplete ao carregar a página
+        window.onload = initAutocomplete;
+    </script>
+</body>
+</html>

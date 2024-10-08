@@ -7,6 +7,7 @@ import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import sptech.projetojpa1.dto.agendamento.AgendamentoDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoRequestDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoResponseDTO
 import sptech.projetojpa1.dto.agendamento.BloqueioRequestDTO
@@ -357,8 +358,13 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
         return agendamentoService.getMostBookedTimeByUser(idUsuario)
             ?: "Nenhum agendamento encontrado para o usuário."
     }
-}
 
+    @GetMapping("/agendamentos/usuario/{usuarioId}")
+    fun listarAgendamentosPorUsuario(@PathVariable usuarioId: Int): List<AgendamentoDTO> {
+        return agendamentoService.listarAgendamentosPorUsuario(usuarioId)
+
+    }
+}
 
 
 
