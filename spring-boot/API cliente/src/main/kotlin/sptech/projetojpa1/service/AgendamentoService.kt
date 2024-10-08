@@ -92,6 +92,26 @@ class AgendamentoService(
         return agendamentoRepository.findTotalAgendamentosFuturos()
     }
 
+    fun obterTotalReceitaUltimosTresMeses(): Map<String, Double> {
+        return agendamentoRepository.findTotalReceitaUltimosTresMeses().associate {
+            val procedimento = it[0] as String
+            val totalReceita = (it[1] as Number).toDouble()  // Cuidado com o tipo aqui, converta para Double
+            procedimento to totalReceita
+        }
+    }
+
+        fun obterTempoGastoPorProcedimentoUltimoMes(): Map<String, Double> {
+            return agendamentoRepository.findTempoGastoPorProcedimentoUltimoMes()
+                .associate {
+                    val procedimento = it[0] as String
+                    val tempoTotal = (it[1] as Number).toDouble()
+                    procedimento to tempoTotal
+                }
+        }
+
+
+
+
     fun agendamentosRealizadosUltimos5Meses(): List<Int> {
         return agendamentoRepository.findAgendamentosConcluidosUltimos5Meses()
     }
