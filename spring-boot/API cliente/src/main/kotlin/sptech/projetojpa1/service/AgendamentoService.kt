@@ -228,7 +228,12 @@ class AgendamentoService(
             procedimento = "Processando...",
             especificacao = "Processando...",
             statusAgendamento = statusRepository.findById(1)  // Um status fixo para indicar que o agendamento está pendente
-                .orElseThrow { IllegalArgumentException("Status não encontrado") }
+                .orElseThrow { IllegalArgumentException("Status não encontrado") },
+            usuarioTelefone = TODO(),
+            usuarioCpf = TODO(),
+            usuarioId = TODO(),
+            fkEspecificacao = TODO(),
+            fkProcedimento = TODO()
         )
     }
 
@@ -444,9 +449,6 @@ class AgendamentoService(
         return agendamentoRepository.countDiasUltimoAgendamento(usuario) ?: 0
     }
 
-    fun buscarDiaMaisAgendadoPorUsuario(idUsuario: Int): String {
-        return agendamentoRepository.buscarDiaMaisAgendadoPorUsuario(idUsuario)
-    }
     fun buscarDiaMaisAgendadoPorUsuario(idUsuario: Int): String {
         return agendamentoRepository.buscarDiaMaisAgendadoPorUsuario(idUsuario)
     }

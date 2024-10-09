@@ -111,17 +111,32 @@ document.addEventListener("DOMContentLoaded", function () {
         </td>
         <td>${telefone}</td>
         <td>${cpf}</td>
-        <td>
-            <button class="edit-btn" data-id="${user.idUsuario}" style="border: none; background: transparent; cursor: pointer;" title="Editar Cliente">
-                <img src="../../../../assets/icons/editar.png" alt="Editar" style="width: 25px; height: 25px; margin-top:8px; margin-left:5px;">
-            </button>
-            <button class="delete-btn" data-id="${user.idUsuario}" style="border: none; background: transparent; cursor: pointer;" title="Excluir Cliente">
-                <img src="../../../../assets/icons/excluir.png" alt="Excluir" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
-            </button>
-            <button class="activate-btn" data-id="${user.cpf}" style="border: none; background: transparent; cursor: pointer;" title="Ativar Cliente">
-                <img src="../../../../assets/icons/desarquivar.png" alt="Arquivar" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
-            </button>
-        </td>
+       <td>
+    <!-- Botão de Editar com tooltip -->
+    <div class="tooltip-wrapper">
+        <button class="edit-btn" data-id="${user.idUsuario}" style="border: none; background: transparent; cursor: pointer;">
+            <img src="../../../../assets/icons/editar.png" alt="Editar" style="width: 25px; height: 25px; margin-top:8px; margin-left:5px;">
+        </button>
+        <div class="tooltip11">Editar</div>
+    </div>
+
+    <!-- Botão de Excluir com tooltip -->
+    <div class="tooltip-wrapper">
+        <button class="delete-btn" data-id="${user.idUsuario}" style="border: none; background: transparent; cursor: pointer;">
+            <img src="../../../../assets/icons/excluir.png" alt="Excluir" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
+        </button>
+        <div class="tooltip11">Excluir</div>
+    </div>
+
+    <!-- Botão de Ativar com tooltip -->
+    <div class="tooltip-wrapper">
+        <button class="activate-btn" data-id="${user.cpf}" style="border: none; background: transparent; cursor: pointer;">
+            <img src="../../../../assets/icons/desarquivar.png" alt="Ativar" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
+        </button>
+        <div class="tooltip11">Ativar</div>
+    </div>
+</td>
+
       `;
         proceduresTbody.appendChild(row);
       });

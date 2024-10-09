@@ -104,14 +104,23 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td>${preco}</td>
                 <td>${duracao}</td>
                 <td>${especificacao}</td>
-                <td>
-                    <button class="edit-btn" data-id-especificacao="${especificacaoId}" data-id-procedimento="${procedimentoId}">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="delete-btn" data-id-especificacao="${especificacaoId}" data-id-procedimento="${procedimentoId}" data-tipo="${nome}" data-especificacao="${especificacao}">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </td>
+               <td>
+    <!-- Botão de Editar com tooltip -->
+    <div class="tooltip-wrapper">
+        <button class="edit-btn" data-id-especificacao="${especificacaoId}" data-id-procedimento="${procedimentoId}" style="border: none; background: transparent; cursor: pointer;">
+            <img src="../../assets/icons/editar.png" alt="Editar" style="width: 25px; height: 25px; margin-top:8px; margin-left:5px;">
+        </button>
+        <div class="tooltip11">Editar</div>
+    </div>
+
+    <!-- Botão de Excluir com tooltip -->
+    <div class="tooltip-wrapper">
+        <button class="delete-btn" data-id-especificacao="${especificacaoId}" data-id-procedimento="${procedimentoId}" data-tipo="${nome}" data-especificacao="${especificacao}" style="border: none; background: transparent; cursor: pointer;">
+            <img src="../../assets/icons/excluir.png" alt="Excluir" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
+        </button>
+        <div class="tooltip11">Excluir</div>
+    </div>
+</td>
             `;
       proceduresTbody.appendChild(row);
     });

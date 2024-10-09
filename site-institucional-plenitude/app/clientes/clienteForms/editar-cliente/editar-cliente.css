@@ -1090,3 +1090,87 @@ img {
 #btn-redo:hover {
   background-color: #006a04;
 }
+
+.filter-btn {
+  position: relative;
+}
+
+.tooltip15 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 155px; /* Ajuste conforme necessário */
+  left: 33%;
+  transform: translateX(-50%);
+}
+
+.tooltip16 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 155px; /* Ajuste conforme necessário */
+  left: 45%;
+  transform: translateX(-50%);
+}
+
+.tooltip17 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 155px; /* Ajuste conforme necessário */
+  left: 60%;
+  transform: translateX(-50%);
+}
+
+.tooltip18 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 155px; /* Ajuste conforme necessário */
+  left: 73%;
+  transform: translateX(-50%);
+}
+
+.filter-btn:hover + .tooltip15 {
+  display: block;
+  
+}
+
+.filter-btn:hover + .tooltip16 {
+  display: block;
+  
+}
+
+.filter-btn:hover + .tooltip17 {
+  display: block;
+  
+}
+
+.filter-btn:hover + .tooltip18 {
+  display: block;
+  
+}

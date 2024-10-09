@@ -395,12 +395,25 @@ function renderStatuses() {
   statusesToShow.forEach((status) => {
     const row = document.createElement("tr");
     row.innerHTML = `
-    <td>${status.nome}</td>
+     <td>${status.nome}</td>
     <td><div class="color-box" style="background-color: ${status.cor};"></div></td>
-    <td>
-        <button class="edit-btn" data-id="${status.id}"><i class="fas fa-edit"></i></button>
-        <button class="delete-btn" data-id="${status.id}"><i class="fas fa-trash"></i></button>
-    </td>
+   <td>
+  <!-- Botão de Editar com tooltip -->
+  <div class="tooltip-wrapper">
+    <button class="edit-btn" data-id="${status.id}">
+      <i class="fas fa-edit"></i>
+    </button>
+    <div class="tooltip11">Editar</div>
+  </div>
+
+  <!-- Botão de Excluir com tooltip -->
+  <div class="tooltip-wrapper">
+    <button class="delete-btn" data-id="${status.id}">
+      <i class="fas fa-trash"></i>
+    </button>
+    <div class="tooltip11">Excluir</div>
+  </div>
+</td>
 
         `;
     statusTbody.appendChild(row);

@@ -100,30 +100,45 @@ document.addEventListener("DOMContentLoaded", function () {
             const cpf = user.cpf;
             const idEndereco = user.endereco.idEndereco;
 
-            row.innerHTML = `
-            <td>${nome}</td>
-            <td>
-                <a href="https://www.instagram.com/${instagram}" target="_blank" class="instagram-link" style="display: flex; align-items: center;">
-                    <img src="../../assets/icons/instagram-icon.png" alt="Instagram" style="width: 20px; height: 20px; margin-right: 8px; margin-top: 20px">
-                    ${user.instagram}
-                </a>
-            </td>
-            <td>${telefone}</td>
-            <td>${cpf}</td>
-            <td>
-                <button class="edit-btn" data-id="${user.idUsuario}" data-endereco="${idEndereco}" style="border: none; background: transparent; cursor: pointer;" title="Editar Cliente">
-                    <img src="../../assets/icons/editar.png" alt="Editar" style="width: 25px; height: 25px; margin-top:8px; margin-left:5px;">
-                </button>
-                <button class="delete-btn" data-id="${user.idUsuario}" style="border: none; background: transparent; cursor: pointer;" title="Excluir Cliente">
-                    <img src="../../assets/icons/excluir.png" alt="Excluir" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
-                </button>
-                <button class="archive-btn" data-id="${user.cpf}" style="border: none; background: transparent; cursor: pointer;" title="Inativar Cliente">
-                    <img src="../../assets/icons/arquivar.png" alt="Arquivar" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
-                </button>
-            </td>
-        `;
-            proceduresTbody.appendChild(row);
-        });
+      row.innerHTML = `
+      <td>${nome}</td>
+      <td>
+          <a href="https://www.instagram.com/${instagram}" target="_blank" class="instagram-link" style="display: flex; align-items: center;">
+              <img src="../../assets/icons/instagram-icon.png" alt="Instagram" style="width: 20px; height: 20px; margin-right: 8px; margin-top: 20px">
+              ${user.instagram}
+          </a>
+      </td>
+      <td>${telefone}</td>
+      <td>${cpf}</td>
+  <td>
+    <!-- Botão de Editar com tooltip -->
+    <div class="tooltip-wrapper">
+        <button class="edit-btn" data-id="${user.idUsuario}" data-endereco="${idEndereco}" style="border: none; background: transparent; cursor: pointer;">
+            <img src="../../assets/icons/editar.png" alt="Editar" style="width: 25px; height: 25px; margin-top:8px; margin-left:5px;">
+        </button>
+        <div class="tooltip11">Editar</div>
+    </div>
+
+    <!-- Botão de Excluir com tooltip -->
+    <div class="tooltip-wrapper">
+        <button class="delete-btn" data-id="${user.idUsuario}" style="border: none; background: transparent; cursor: pointer;">
+            <img src="../../assets/icons/excluir.png" alt="Excluir" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
+        </button>
+        <div class="tooltip11">Excluir</div>
+    </div>
+
+    <!-- Botão de Arquivar com tooltip -->
+    <div class="tooltip-wrapper">
+        <button class="archive-btn" data-id="${user.cpf}" style="border: none; background: transparent; cursor: pointer;">
+            <img src="../../assets/icons/arquivar.png" alt="Arquivar" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
+        </button>
+        <div class="tooltip11">Inativar</div>
+    </div>
+</td>
+
+    `;
+      proceduresTbody.appendChild(row);
+    });
 
         const totalPages = Math.ceil(users.length / itemsPerPage);
         currentPageSpan.textContent = currentPage;

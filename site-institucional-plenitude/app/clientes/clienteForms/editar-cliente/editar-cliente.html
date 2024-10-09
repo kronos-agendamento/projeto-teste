@@ -106,20 +106,27 @@
                 <img style="height: 4vh; width: 25h; margin-top: 10%; border-radius: 0px;"
                     src="../../../../assets/icons/usuario.png" alt="filter">Dados Gerais
             </button>
-                <button class="avaliar-btn" style="height: 7vh;" id="agendamentoBtn">
+            <div id="tooltip15" class="tooltip15">Clique para ver os dados gerais.</div>
+         
+                <button class="avaliar-btn filter-btn" style="height: 7vh;" id="agendamentoBtn">
                     <img style="height: 4.5vh; width: 4.5vh; margin-top: 14%; border-radius: 0%;" 
                          src="../../../../assets/icons/agendar.preto.png" alt="spreadsheet">
                     Agendamentos
                 </button>
 
-                <button class="criar-btn" style="height: 7vh; width: 33vh; margin-left: -10px;"><a
+                        <div id="tooltip16" class="tooltip16">Clique para ver agendamentos.</div>
+
+                <button class="criar-btn filter-btn" style="height: 7vh; width: 33vh; margin-left: -10px;"><a
                         style="width: max-content;">
                         <img style="height: 4vh; margin-top: 13%; border-radius: 0%;"
                             src="../../../../assets/icons/ficha.preta.png" alt="createNew"><span>Ficha de
                             Anamnese</span>
                     </a></button>
-                <button type="button" class="pipefy-btn" id="enviarEmailButton"
+                    <div id="tooltip17" class="tooltip17">Clique para ver a ficha de anamnese.</div>
+
+                <button type="button" class="pipefy-btn filter-btn" id="enviarEmailButton"
                     style="margin-left: 0px; width: 144px;">Solicitar Feedback</button>
+                    <div id="tooltip18" class="tooltip18">Clique para solicitar um feedback.</div>
         
             <button class="btn-action undo-btn" id="btn-undo" onclick="undoAction()" style="display: none;">
                 <i class="fas fa-undo"></i> Desfazer

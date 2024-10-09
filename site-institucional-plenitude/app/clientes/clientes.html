@@ -124,26 +124,35 @@
       <button class="filter-btn" style="height: 7vh; margin-left: 3%; width: 23vh; margin-right: 10px;"
         onclick="openModalPesquisa()">
         <img style="height: 4vh; margin-top: 12%" src="../../assets/icons/lupa.png" alt="filter" />Pesquisar
+      </button>
+      <div id="tooltip1" class="tooltip1">Clique para pesquisar clientes.</div>
 
-        <button class="arquivados-btn" style="height: 7vh;" onclick="redirectToArchived()" id="btn-arquivar">
+        <button class="arquivados-btn filter-btn " style="height: 7vh;" onclick="redirectToArchived()" id="btn-arquivar">
           <img style="height: 4.5vh; width: 4.5vh; margin-top: 19%" src="../../assets/icons/pasta-aberta.png"
             alt="spreadsheet" />
           Inativos
         </button>
-        <button class="avaliar-btn" style="height: 7vh; " onclick="openModalAvaliar()">
+        <div id="tooltip2" class="tooltip2">Clique para ver clientes inativos.</div>
+
+        <button class="avaliar-btn filter-btn" style="height: 7vh; " onclick="openModalAvaliar()">
           <img style="height: 4.5vh; width: 4.5vh; margin-top: 19%" src="../../assets/icons/estrela.png"
             alt="spreadsheet" />Avaliar
         </button>
-        <button class="planilha-btn" style="height: 7vh; margin-left: 0%">
+        <div id="tooltip3" class="tooltip3">Clique para avaliar um cliente.</div>
+
+        <button class="planilha-btn filter-btn" style="height: 7vh; margin-left: 0%">
           <img style="height: 4.5vh; width: 4.5vh; margin-top: 19%" src="../../assets/icons/spreadsheet.png"
             alt="spreadsheet" />Planilha
         </button>
-        <button class="criar-btn" onclick="showForm()" style="height: 7vh; width: 16vh">
+        <div id="tooltip4" class="tooltip4">Clique para exportar lista com clientes.</div>
+
+        <button class="criar-btn filter-btn" onclick="showForm()" style="height: 7vh; width: 16vh">
           <a style="width: max-content" href="clienteForms/cadastrar-cliente/cadastrar-cliente.html">
             <img style="height: 4vh; margin-top: 17%" src="../../assets/icons/createNew.png"
               alt="createNew" /><span>Novo</span>
           </a>
         </button>
+        <div id="tooltip5" class="tooltip5">Clique para cadastrar clientes.</div>
         <button class="btn-action undo-btn" id="btn-undo" onclick="undoAction()" style="display: none;">
           <i class="fas fa-undo"></i> Desfazer
         </button>
@@ -152,6 +161,7 @@
           <i class="fas fa-redo"></i> Refazer
         </button>
 
+        
     </div>
     <div class="actions" style="display: flex; align-items: center; justify-content: center;">
       <a href="../clientes/clienteForms/mapa-cliente/mapa-cliente.html" class="filter-btn" style="height: 7vh; width: 80vh; display: flex; align-items: center; justify-content: center; text-decoration: none; color: inherit; 
@@ -186,20 +196,23 @@
         <h2 style="font-weight: normal">Clientes Ativos</h2>
         <p id="mais-agendado" style="font-weight: bold">Carregando...</p>
         <p style="font-size: 14px">Nos últimos 3 meses</p>
-        <a href="../clientes/clientes.html" style="font-weight: lighter">Ver todos >></a>
+        <a href="../clientes/clientes.html" style="font-weight: lighter" class="filter-btn">Ver todos >></a>
+        <div id="tooltip12" class="tooltip12">Clique para ver todos os clientes ativos.</div>
       </div>
       <div class="stat-item" style="width: 40vh">
         <h2 style="font-weight: normal">Clientes Inativos</h2>
         <p id="menos-agendado" style="font-weight: bold">Carregando...</p>
         <p style="font-size: 14px">Nos últimos 3 meses</p>
-        <a href="../clientes/clienteForms/arquivar-cliente/clientes-arquivados.html" style="font-weight: lighter">Ver
+        <a href="../clientes/clienteForms/arquivar-cliente/clientes-arquivados.html" style="font-weight: lighter" class="filter-btn">Ver
           todos >></a>
+          <div id="tooltip13" class="tooltip13">Clique para ver todos os clientes inativos.</div>
       </div>
       <div class="stat-item" style="width: 40vh">
         <h2 style="font-weight: normal">Clientes Fidelizados</h2>
         <p id="fidelizado" style="font-weight: bold">Carregando...</p>
         <p style="font-size: 14px">Nos últimos 3 meses</p>
-        <a href="../clientes/clienteForms/fidelizar-cliente/clientes-fidelizados.html">Ver todos >></a>
+        <a href="../clientes/clienteForms/fidelizar-cliente/clientes-fidelizados.html" class="filter-btn">Ver todos >></a>
+        <div id="tooltip14" class="tooltip14">Clique para ver todos os clientes fidelizados.</div>
       </div>
     </div>
   </div>
