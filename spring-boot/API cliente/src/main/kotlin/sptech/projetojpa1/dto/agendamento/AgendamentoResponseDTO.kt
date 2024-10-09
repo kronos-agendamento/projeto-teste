@@ -11,7 +11,10 @@ data class AgendamentoResponseDTO(
     var tempoAgendar: Int?,
     var usuarioTelefone: String? = null,
     var usuarioCpf: String? = null,
+    var usuarioId: Int?,
     var procedimento: String?,
     var especificacao: String?,
+    var fkEspecificacao: Int?,
+    var fkProcedimento: Int?,
     var statusAgendamento: Status
 )

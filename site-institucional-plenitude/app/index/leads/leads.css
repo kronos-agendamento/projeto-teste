@@ -136,6 +136,7 @@ header p {
 .procedures-table td {
   padding: 15px;
   text-align: left;
+  font-size: medium
 }
 
 .procedures-table tbody tr:nth-child(odd) {

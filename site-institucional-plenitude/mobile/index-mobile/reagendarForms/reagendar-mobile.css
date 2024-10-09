@@ -25,6 +25,7 @@
     @media (max-width: 768px) {
         body {
             font-size: 14px;
+            height: 1000px;
         }
     }    
 
@@ -424,6 +425,33 @@
     font-weight: bold;
     color: #fefefe;
   }
+  
+  /* Estilizando o ícone de lápis */
+.form-group label i {
+    font-size: 0.8em; /* Tamanho do ícone */
+    margin-left: 5px; /* Espaçamento entre o rótulo e o ícone */
+    cursor: pointer; /* Cursor de clique */
+  }
+  
+  /* Estilizando o select para ter a cor de fundo rosa */
+  .form-group select {
+    background-color: #ffe4eb; /* Fundo rosa claro */
+    border: 1px solid #e70069; /* Borda de cor similar */
+    padding: 8px; /* Padding interno */
+    border-radius: 5px; /* Borda arredondada */
+    width: 100%; /* Preenche a largura total */
+    -webkit-appearance: none; /* Remove a aparência padrão em alguns navegadores */
+    -moz-appearance: none;
+    appearance: none;
+  }
+  
+  /* Estilo opcional para remover a seta padrão do select */
+  .form-group select {
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+  }
   .notification {
     position: fixed;
     top: 20px;
@@ -437,60 +465,89 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     font-size: 14px;
     z-index: 1000; /* Garante que a notificação fique acima de outros elementos */
-    opacity: 0;
+    opacity: 0; /* Inicia invisível */
     visibility: hidden;
-    transition: opacity 0.5s ease-in-out, visibility 0s ease-in-out 1.5s;
-}
-
-.notification.show {
-    opacity: 1;
-    visibility: visible;
-    transition-delay: 0s; /* Sem atraso ao exibir */
-}
-
-.notification.hide {
-    opacity: 0;
-    visibility: hidden;
-    transition-delay: 10s; /* Atraso de 10 segundos para começar a desaparecer */
-}
-
-.notification.error {
-    background-color: #dc3545; /* Cor de erro - vermelho */
-}
-
-.modal-content input {
-  width: 94%;
-  padding: 7px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  height: 7px;
-}
-
-.modal-content select {
-    width: 99.5%;
-    padding: 11px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    height: 10px;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+    font-family: Poppins, sans-serif;
   }
   
-
+  .notification.show {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .notification svg {
+    margin-right: 10px;
+  }
+  
+  .notification.error {
+    background-color: #dc3545; /* Cor de erro - vermelho */
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+  
   .save-button {
-    display: block; /* Botão visível */
+    display: flex;
     align-items: center;
     background-color: #e70069;
     color: white;
     border: none;
     border-radius: 10px;
-    padding: 8px 8px;
-    font-size: 12px;
+    padding: 5px 10px;
+    font-size: 16px;
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s;
-    font-family: Poppins, sans-serif;
   }
-}
+  
+  .save-button svg {
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+  }
+  
+  .save-button:hover {
+    background-color: #d6005c;
+  }
+  
+  .horarios-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .horario-button {
+    padding: 10px;
+    border: none;
+    border-radius: 10%;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .horario-button:hover {
+    background-color: #ddd;
+  }
+  
+  .horario-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .horario-button.selected {
+    background-color: #e70069; /* Cor para o horário selecionado */
+    color: white;
+  }
 
+  #data-selecionada {
+    font-size: 1.1em;
+    margin-top: 10px;
+    color: #555;
+  }
+  
+
+}
 

@@ -3,6 +3,7 @@ package sptech.projetojpa1.service
 import org.springframework.stereotype.Service
 import sptech.projetojpa1.domain.Agendamento
 import sptech.projetojpa1.domain.Usuario
+import sptech.projetojpa1.dto.agendamento.AgendamentoDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoRequestDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoResponseDTO
 import sptech.projetojpa1.repository.*
@@ -37,11 +38,47 @@ class AgendamentoService(
                 usuarioTelefone = usuario.telefone?.toString(),
                 tempoAgendar = agendamento.tempoAgendar,
                 usuarioCpf = usuario.cpf ?: "CPF não disponível",
+                usuarioId = usuario.codigo,
                 procedimento = agendamento.procedimento.tipo,
                 especificacao = agendamento.especificacao.especificacao,
+                fkEspecificacao = agendamento.especificacao.idEspecificacaoProcedimento,
+                fkProcedimento = agendamento.procedimento.idProcedimento,
                 statusAgendamento = agendamento.statusAgendamento
             )
         }
+    }
+
+    fun obterAgendamentosPorStatus(): Map<String, Int> {
+        // Consulta o repositório e obtém os dados
+        val resultados = agendamentoRepository.contarAgendamentosPorStatus()
+
+        // Cria um mapa para armazenar os valores finais
+        val agendamentosPorStatus = mutableMapOf(
+            "agendados" to 0,
+            "confirmados" to 0,
+            "realizados" to 0,
+            "cancelados" to 0,
+            "reagendados" to 0
+        )
+
+        // Percorre os resultados e preenche o mapa
+        for (resultado in resultados) {
+            val statusNome = resultado["status_nome"] as String
+            val quantidade = (resultado["quantidade"] as Number).toInt()
+
+            when (statusNome) {
+                "Agendado" -> agendamentosPorStatus["agendados"] = quantidade
+                "Confirmado" -> agendamentosPorStatus["confirmados"] = quantidade
+                "Concluído" -> agendamentosPorStatus["realizados"] = quantidade
+                "Cancelado" -> agendamentosPorStatus["cancelados"] = quantidade
+                "Remarcado" -> agendamentosPorStatus["reagendados"] = quantidade
+            }
+        }
+        return agendamentosPorStatus
+    }
+
+    fun obterTempoMedioEntreAgendamentos(): Double? {
+        return agendamentoRepository.calcularTempoMedioEntreAgendamentosDoDia()
     }
 
     fun agendamentosRealizadosTrimestre(): Int {
@@ -51,6 +88,50 @@ class AgendamentoService(
     fun tempoParaAgendar(): List<Int> {
         return agendamentoRepository.tempoParaAgendar()
     }
+
+    fun totalAgendamentosHoje(): Int {
+        return agendamentoRepository.findTotalAgendamentosHoje()
+    }
+
+    fun obterTotalAgendamentosFuturos(): Int {
+        return agendamentoRepository.findTotalAgendamentosFuturos()
+    }
+
+    fun obterTotalReceitaUltimosTresMeses(): Map<String, Double> {
+        return agendamentoRepository.findTotalReceitaUltimosTresMeses().associate {
+            val procedimento = it[0] as String
+            val totalReceita = (it[1] as Number).toDouble()  // Cuidado com o tipo aqui, converta para Double
+            procedimento to totalReceita
+        }
+    }
+
+        fun obterTempoGastoPorProcedimentoUltimoMes(): Map<String, Double> {
+            return agendamentoRepository.findTempoGastoPorProcedimentoUltimoMes()
+                .associate {
+                    val procedimento = it[0] as String
+                    val tempoTotal = (it[1] as Number).toDouble()
+                    procedimento to tempoTotal
+                }
+        }
+
+    fun obterProcedimentosRealizadosUltimoTrimestre(): Map<String, Int> {
+        return agendamentoRepository.findProcedimentosRealizadosUltimoTrimestre()
+            .associate {
+                val procedimento = it[0] as String
+                val somaQtd = (it[1] as Number).toInt()
+                procedimento to somaQtd
+            }
+    }
+
+    fun obterValorTotalUltimoMesPorProcedimento(): Map<String, Double> {
+        return agendamentoRepository.findValorTotalUltimoMesPorProcedimento()
+            .associate {
+                val procedimento = it[0] as String
+                val valorTotal = (it[1] as Number).toDouble()
+                procedimento to valorTotal  // Criamos um par (chave, valor) para o Map
+            }
+    }
+
 
     fun agendamentosRealizadosUltimos5Meses(): List<Int> {
         return agendamentoRepository.findAgendamentosConcluidosUltimos5Meses()
@@ -205,7 +286,10 @@ class AgendamentoService(
             usuario = agendamento.usuario.nome,
             tempoAgendar = agendamento.tempoAgendar,
             procedimento = agendamento.procedimento.tipo,
+            usuarioId = agendamento.usuario.codigo,
             especificacao = agendamento.especificacao.especificacao,
+            fkEspecificacao = agendamento.especificacao.idEspecificacaoProcedimento,
+            fkProcedimento = agendamento.procedimento.idProcedimento,
             statusAgendamento = agendamento.statusAgendamento
         )
     }
@@ -237,7 +321,10 @@ class AgendamentoService(
             procedimento = agendamento.procedimento.tipo,
             especificacao = agendamento.especificacao.especificacao,
             tempoAgendar = agendamento.tempoAgendar,
-            statusAgendamento = agendamento.statusAgendamento
+            statusAgendamento = agendamento.statusAgendamento,
+            usuarioId = agendamento.usuario.codigo,
+            fkEspecificacao = agendamento.especificacao.idEspecificacaoProcedimento,
+            fkProcedimento = agendamento.procedimento.idProcedimento
         )
     }
 
@@ -260,7 +347,10 @@ class AgendamentoService(
             tempoAgendar = agendamento.tempoAgendar,
             procedimento = agendamento.procedimento.tipo,
             especificacao = agendamento.especificacao.especificacao,
-            statusAgendamento = agendamento.statusAgendamento
+            statusAgendamento = agendamento.statusAgendamento,
+            usuarioId = agendamento.usuario.codigo,
+            fkEspecificacao = agendamento.especificacao.idEspecificacaoProcedimento,
+            fkProcedimento = agendamento.procedimento.idProcedimento
         )
     }
 
@@ -300,8 +390,10 @@ class AgendamentoService(
                 tempoAgendar = agendamento.tempoAgendar,
                 procedimento = agendamento.procedimento.tipo,
                 especificacao = agendamento.especificacao.especificacao,
-                statusAgendamento = agendamento.statusAgendamento
-            )
+                statusAgendamento = agendamento.statusAgendamento,
+                usuarioId = agendamento.usuario.codigo,
+                fkEspecificacao = agendamento.especificacao.idEspecificacaoProcedimento,
+                fkProcedimento = agendamento.procedimento.idProcedimento)
         }
     }
 
@@ -342,12 +434,19 @@ class AgendamentoService(
         return usuarioRepository.countByStatus(true)
     }
 
+    fun listarAgendamentosPorUsuario(usuarioId: Int): List<AgendamentoDTO> {
+        return agendamentoRepository.listarAgendamentosPorUsuario(usuarioId)
+    }
+
     fun countDiasUltimoAgendamento(idUsuario: Int): Int {
         val usuario: Usuario = usuarioRepository.findById(idUsuario)
             .orElseThrow { IllegalArgumentException("Usuário não encontrado") }
         return agendamentoRepository.countDiasUltimoAgendamento(usuario) ?: 0
     }
 
+    fun buscarDiaMaisAgendadoPorUsuario(idUsuario: Int): String {
+        return agendamentoRepository.buscarDiaMaisAgendadoPorUsuario(idUsuario)
+    }
     fun buscarDiaMaisAgendadoPorUsuario(idUsuario: Int): String {
         return agendamentoRepository.buscarDiaMaisAgendadoPorUsuario(idUsuario)
     }

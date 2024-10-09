@@ -4,8 +4,10 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.validation.Valid
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import sptech.projetojpa1.dto.agendamento.AgendamentoDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoRequestDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoResponseDTO
 import sptech.projetojpa1.dto.agendamento.BloqueioRequestDTO
@@ -34,6 +36,26 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
             ResponseEntity.ok(agendamentoResponseDTO)
         } catch (ex: IllegalArgumentException) {
             ResponseEntity.badRequest().body(ex.message)
+        }
+    }
+
+    @GetMapping("/agendamento-status")
+    fun getAgendamentosPorStatus(): ResponseEntity<Map<String, Int>> {
+        val agendamentosPorStatus = agendamentoService.obterAgendamentosPorStatus()
+        return if (agendamentosPorStatus.isNotEmpty()) {
+            ResponseEntity.ok(agendamentosPorStatus)
+        } else {
+            ResponseEntity.status(HttpStatus.NO_CONTENT).build()
+        }
+    }
+
+    @GetMapping("/tempo-medio")
+    fun getTempoMedioEntreAgendamentos(): ResponseEntity<Double> {
+        val tempoMedio = agendamentoService.obterTempoMedioEntreAgendamentos()
+        return if (tempoMedio != null) {
+            ResponseEntity.ok(tempoMedio)
+        } else {
+            ResponseEntity.status(HttpStatus.NO_CONTENT).build()
         }
     }
 
@@ -147,6 +169,24 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
         return ResponseEntity.ok(agendamentosFiltrados)
     }
 
+        @GetMapping("/tempo-gasto-ultimo-mes")
+        fun getTempoGastoPorProcedimentoUltimoMes(): ResponseEntity<Map<String, Double>> {
+            val tempoGasto = agendamentoService.obterTempoGastoPorProcedimentoUltimoMes()
+            return ResponseEntity.ok(tempoGasto)
+        }
+
+    @GetMapping("/procedimentos-realizados-trimestre")
+    fun getProcedimentosRealizadosUltimoTrimestre(): ResponseEntity<Map<String, Int>> {
+        val procedimentosRealizados = agendamentoService.obterProcedimentosRealizadosUltimoTrimestre()
+        return ResponseEntity.ok(procedimentosRealizados)
+    }
+
+    @GetMapping("/valor-total-ultimo-mes")
+    fun getValorTotalUltimoMesPorProcedimento(): ResponseEntity<Map<String, Double>> {
+        val valorTotalProcedimentos = agendamentoService.obterValorTotalUltimoMesPorProcedimento()
+        return ResponseEntity.ok(valorTotalProcedimentos)
+    }
+
     @Operation(
         summary = "Obtém a quantidade de agendamentos realizados no último trimestre",
         description = "Retorna a quantidade de agendamentos concluídos no último trimestre."
@@ -170,6 +210,25 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
         val tempoPara = agendamentoService.tempoParaAgendar()
         return ResponseEntity.ok(tempoPara)
     }
+
+    @GetMapping("/total-agendamentos-hoje")
+    fun totalAgendamentosHoje(): ResponseEntity<Int> {
+        val tempoPara = agendamentoService.totalAgendamentosHoje()
+        return ResponseEntity.ok(tempoPara)
+    }
+
+    @GetMapping("/futuros")
+    fun getTotalAgendamentosFuturos(): ResponseEntity<Int> {
+        val agenFuturos = agendamentoService.obterTotalAgendamentosFuturos()
+        return ResponseEntity.ok(agenFuturos)
+    }
+
+    @GetMapping("/receita-ultimos-tres-meses")
+    fun getTotalReceitaUltimosTresMeses(): ResponseEntity<Map<String, Double>> {
+        val totalReceita = agendamentoService.obterTotalReceitaUltimosTresMeses()
+        return ResponseEntity.ok(totalReceita)
+    }
+
 
     @GetMapping("/agendamentos-realizados-ultimos-cinco-meses")
     fun agendamentosRealizadosUltimos5Meses(): ResponseEntity<List<Int>> {
@@ -309,8 +368,13 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
         return agendamentoService.getMostBookedTimeByUser(idUsuario)
             ?: "Nenhum agendamento encontrado para o usuário."
     }
-}
 
+    @GetMapping("/agendamentos/usuario/{usuarioId}")
+    fun listarAgendamentosPorUsuario(@PathVariable usuarioId: Int): List<AgendamentoDTO> {
+        return agendamentoService.listarAgendamentosPorUsuario(usuarioId)
+
+    }
+}
 
 
 

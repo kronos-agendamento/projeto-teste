@@ -1,6 +1,7 @@
- -- drop database kronosbooking;
+-- drop database kronosbooking;
 CREATE DATABASE IF NOT EXISTS kronosbooking;
 USE kronosbooking;
+
 
 DROP TABLE IF EXISTS feedback;
 DROP TABLE IF EXISTS cliente;
@@ -19,6 +20,7 @@ DROP TABLE IF EXISTS nivel_acesso;
 DROP TABLE IF EXISTS endereco;
 DROP TABLE IF EXISTS status;
 DROP PROCEDURE IF EXISTS gerar_agendamentos_aleatorios;
+DROP TABLE IF EXISTS Leads;
 
 CREATE TABLE endereco (
     id_endereco INT AUTO_INCREMENT PRIMARY KEY,
@@ -181,6 +183,16 @@ CREATE TABLE feedback (
 		especialidade VARCHAR(255),
 		FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
 	);
+    
+    CREATE TABLE Leads (
+    id_lead INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    telefone BIGINT NOT NULL,
+    instagram VARCHAR(255),
+    mensagem TEXT,
+    data_criacao DATETIME
+);
 
 INSERT INTO endereco (logradouro, cep, bairro, cidade, estado, numero, complemento)
 VALUES 
@@ -248,13 +260,13 @@ VALUES
 ('Priscila Plenitude', 'priscila@plenitude.com', 'senhaAdmin', '@plenitudenoolhar', '111.111.111-11', 11987654321, '1980-01-01', 'Feminino', 'Instagram', TRUE, 1, 1, 1, NULL),
 ('Ana Paula', 'ana@beleza.com', 'senha123', '@anabeauty', '469.674.588-09', 21987654321, '1992-02-02', 'Feminino', 'Indicação de Amiga', TRUE, 2, 2, 2, 2),
 ('Carlos Eduardo', 'carlos@olharperfeito.com', 'senha123', '@carlosedu', '317.262.998-80', 31987654322, '1995-03-03', 'Masculino', 'Facebook', TRUE, 2, 3, 3, 3),
-('Juliana Costa', 'juliana@glamour.com', 'senha123', '@jucosta', '444.444.444-44', 41987654323, '1990-04-04', 'Feminino', 'Google', TRUE, 2, 4, 4, 4),
-('Roberta Silva', 'roberta@ciliosdiva.com', 'senha123', '@robdiva', '555.555.555-55', 51987654324, '1993-05-05', 'Feminino', 'Instagram', TRUE, 2, 5, 5, 5),
-('Daniel Souza', 'daniel@makeup.com', 'senha123', '@danmake', '666.666.666-66', 61987654325, '1991-06-06', 'Masculino', 'Indicação de Influencer', TRUE, 2, 6, 6, 6),
-('Larissa Nunes', 'larissa@refinada.com', 'senha123', '@larissarefinada', '777.777.777-77', 71987654326, '1987-07-07', 'Feminino', 'Instagram', TRUE, 2, 7, 7, 7),
-('Tatiana Melo', 'tatiana@ouro.com', 'senha123', '@tatiouro', '888.888.888-88', 81987654327, '1985-08-08', 'Feminino', 'Indicação de Amiga', TRUE, 2, 8, 8, 8),
+('Juliana Costa', 'juliana@glamour.com', 'senha123', '@jucosta', '633.335.400-70', 41987654323, '1990-04-04', 'Feminino', 'Google', TRUE, 2, 4, 4, 4),
+('Roberta Silva', 'roberta@ciliosdiva.com', 'senha123', '@robdiva', '669.146.280-76', 51987654324, '1993-05-05', 'Feminino', 'Instagram', TRUE, 2, 5, 5, 5),
+('Daniel Souza', 'daniel@makeup.com', 'senha123', '@danmake', '730.940.230-88', 61987654325, '1991-06-06', 'Masculino', 'Indicação de Influencer', TRUE, 2, 6, 6, 6),
+('Larissa Nunes', 'larissa@refinada.com', 'senha123', '@larissarefinada', '224.744.500-41', 71987654326, '1987-07-07', 'Feminino', 'Instagram', TRUE, 2, 7, 7, 7),
+('Tatiana Melo', 'tatiana@ouro.com', 'senha123', '@tatiouro', '784.563.970-24', 81987654327, '1985-08-08', 'Feminino', 'Indicação de Amiga', TRUE, 2, 8, 8, 8),
 ('Paula Gomes', 'paula@cilios.com', 'senha123', '@paulagomes', '999.999.999-99', 91987654328, '1982-09-09', 'Feminino', 'Indicação Familiar', TRUE, 2, 9, 9, 9),
-('Cecília Costa', 'cecilia@elegantes.com', 'senha123', '@ceciliaelegantes', '101.010.101-10', 11987654329, '1989-10-10', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10),
+('Marília Costa', 'cecilia@elegantes.com', 'senha123', '@ceciliaelegantes', '101.010.101-10', 11987654329, '1989-10-19', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10),
 ('Cecília Costa', 'cecilia@elegantes.com', 'senha123', '@ceciliaelegantes', '101.010.101-10', 11987654329, '1989-10-10', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10),
 ('Lucas Lima', 'lucas@novidade.com', 'senha123', '@lucaslima', '111.111.111-12', 11987654322, '1981-11-01', 'Masculino', 'Instagram', TRUE, 1, 1, 1, NULL),
 ('Fernanda Santos', 'fernanda@novidade.com', 'senha123', '@fernandasantos', '222.222.222-23', 22987654323, '1982-11-15', 'Feminino', 'Indicação Familiar', TRUE, 2, 2, 2, 2),
@@ -331,86 +343,67 @@ DELIMITER //
 
 CREATE PROCEDURE gerar_agendamentos_aleatorios()
 BEGIN
-  -- Define os dias da semana que queremos: de segunda a sábado
   DECLARE dia_atual DATE;
   DECLARE fim DATE;
   DECLARE qtd_agendamentos INT;
+
   DECLARE hora_aleatoria TIME;
   DECLARE mes_atual INT;
   DECLARE usuario_fidelizado INT;
   DECLARE tempo_aleatorio INT;
 
-  -- Definir os IDs dos usuários que terão agendamentos em todos os 3 meses (separados por vírgulas)
   SET @usuarios_fidelizados = '1,4,6';  -- IDs dos usuários a serem fidelizados
 
-  -- Se hoje for domingo, começamos na segunda-feira desta semana
   IF WEEKDAY(CURDATE()) = 0 THEN 
     SET dia_atual = DATE_ADD(CURDATE(), INTERVAL 1 DAY);  -- Segunda-feira desta semana
   ELSE 
     SET dia_atual = DATE_ADD(CURDATE(), INTERVAL (8 - WEEKDAY(CURDATE())) DAY);  -- Segunda-feira da próxima semana
   END IF;
 
-  -- Calcula o sábado correspondente (5 dias após a segunda)
   SET fim = DATE_ADD(dia_atual, INTERVAL 5 DAY);
 
-  -- Quantidade aleatória de agendamentos entre 2 a 6 por dia
   SET @min_agendamentos = 2;
   SET @max_agendamentos = 6;
 
-  -- Loop para os últimos 3 meses
   SET mes_atual = 0;
 
   WHILE mes_atual < 3 DO
-    -- Incrementa o mês (começa do mês atual para os 3 meses anteriores)
     SET dia_atual = DATE_ADD(CURDATE(), INTERVAL - mes_atual MONTH);
-    SET fim = DATE_ADD(dia_atual, INTERVAL 5 DAY); -- Mantém o ciclo semanal
+    SET fim = DATE_ADD(dia_atual, INTERVAL 5 DAY);
 
-    -- Loop para cada dia de segunda a sábado
     WHILE dia_atual <= fim DO
-      -- Define uma quantidade aleatória de agendamentos para o dia atual
       SET qtd_agendamentos = @min_agendamentos + FLOOR(RAND() * (@max_agendamentos - @min_agendamentos + 1));
 
-      -- Loop para inserir os agendamentos aleatórios para o dia atual
       WHILE qtd_agendamentos > 0 DO
-        -- Gera uma hora aleatória entre 08:00 e 18:00 (trabalho diurno)
         SET hora_aleatoria = SEC_TO_TIME(FLOOR(RAND() * (10 * 3600)) + 8 * 3600);
-        
-        -- Gera um valor aleatório de tempo para agendar entre 15 e 120 minutos
         SET tempo_aleatorio = 15 + FLOOR(RAND() * 106);
-
-        -- Seleciona um usuário fidelizado aleatoriamente da lista
         SET usuario_fidelizado = CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(@usuarios_fidelizados, ',', FLOOR(1 + (RAND() * 4))), ',', -1) AS UNSIGNED);
 
-        -- Insere os agendamentos aleatórios para o dia atual
         INSERT INTO agendamento (data_horario, tipo_agendamento, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status, tempo_para_agendar)
         SELECT 
-          CONCAT(dia_atual, ' ', hora_aleatoria) AS data_horario, -- Data e hora aleatórias
+          CONCAT(dia_atual, ' ', hora_aleatoria) AS data_horario, 
           CASE FLOOR(RAND() * 2) 
             WHEN 0 THEN 'Colocação'
             ELSE 'Manutenção'
-          END AS tipo_agendamento, -- Tipo aleatório entre Colocação e Manutenção
-          usuario_fidelizado AS fk_usuario, -- Usuários fidelizados aleatórios
-          FLOOR(1 + (RAND() * 3)) AS fk_procedimento, -- Procedimentos aleatórios
-          FLOOR(1 + (RAND() * 10)) AS fk_especificacao_procedimento, -- Especificações aleatórias
-          1 AS fk_status, -- Status fixo como '1' (ou altere se necessário)
-          tempo_aleatorio AS tempo_para_agendar -- Tempo aleatório entre 15 e 120 minutos
-        FROM (SELECT 1) AS dummy; -- Necessário para gerar múltiplas linhas
+          END AS tipo_agendamento, 
+          usuario_fidelizado AS fk_usuario, 
+          FLOOR(1 + (RAND() * 3)) AS fk_procedimento, 
+          FLOOR(1 + (RAND() * 10)) AS fk_especificacao_procedimento, 
+          FLOOR(1 + (RAND() * 10)) AS fk_status,  -- Gera um status aleatório entre 1 e 10
+          tempo_aleatorio AS tempo_para_agendar 
+        FROM (SELECT 1) AS dummy;
 
-        -- Decrementa a quantidade de agendamentos para o dia
         SET qtd_agendamentos = qtd_agendamentos - 1;
       END WHILE;
 
-      -- Incrementa para o próximo dia
       SET dia_atual = DATE_ADD(dia_atual, INTERVAL 1 DAY);
 
     END WHILE;
 
-    -- Passa para o próximo mês
     SET mes_atual = mes_atual + 1;
   END WHILE;
 
 END //
-
 
 DELIMITER ;
 
@@ -453,6 +446,14 @@ VALUES
 (9, 11, 4.8, 'Designer de Sobrancelhas', 'Sobrancelhas'),
 (10, 5, 4.3, 'Maquiadora Social', 'Maquiagem');
 
+INSERT INTO Leads (nome, email, telefone, instagram, mensagem, data_criacao)
+VALUES 
+('Maria Silva', 'maria.silva@example.com', 11987654321, '@mariasilva', 'Gostaria de saber mais sobre seus serviços.', NOW()),
+('João Pereira', 'joao.pereira@example.com', 11912345678, '@joaopereira', 'Tenho interesse em fazer uma extensão de cílios.', NOW()),
+('Ana Souza', 'ana.souza@example.com', 11987611234, NULL, 'Quais são os valores para design de sobrancelha?', NOW()),
+('Carla Oliveira', 'carla.oliveira@example.com', 11933332222, '@carlaoliveira', 'Vi uma promoção no Instagram e quero mais detalhes.', NOW()),
+('Pedro Santos', 'pedro.santos@example.com', 11998765432, '@pedrosantos', 'Como funciona o procedimento de volume russo?', NOW());
+
 UPDATE usuario 
 SET dtype = 'Cliente' 
 WHERE fk_nivel_acesso = 2;
@@ -461,3 +462,8 @@ UPDATE usuario
 SET dtype = 'Profissional' 
 WHERE fk_nivel_acesso = 1;
 
+SELECT * FROM leads;
+
+        SELECT l.id_lead, l.nome, l.email, l.telefone 
+                FROM leads l 
+                ORDER BY l.id_lead ASC;
