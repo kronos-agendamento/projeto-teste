@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import sptech.projetojpa1.domain.Pergunta
 import sptech.projetojpa1.dto.pergunta.PerguntaCreateRequest
 import sptech.projetojpa1.dto.pergunta.PerguntaResponse
 import sptech.projetojpa1.dto.pergunta.PerguntaUpdateRequest
@@ -84,9 +85,13 @@ class PerguntaController(
         ]
     )
     @GetMapping("/desativadas")
-    fun listarPerguntasDesativadas(): ResponseEntity<List<PerguntaResponse>> {
-        val perguntas = perguntaService.listarPerguntasDesativadas()
-        return ResponseEntity.ok(perguntas)
+    fun listarPerguntasDesativadas(): ResponseEntity<List<Pergunta>> {
+        val perguntasDesativadas = perguntaService.listarPerguntasDesativadas()
+        return if (perguntasDesativadas.isNotEmpty()) {
+            ResponseEntity.ok(perguntasDesativadas)
+        } else {
+            ResponseEntity.noContent().build()
+        }
     }
 
     @Operation(

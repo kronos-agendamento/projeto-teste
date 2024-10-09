@@ -13,7 +13,7 @@ body {
   margin: 0;
   padding: 0;
   display: flex;
-  height: 1000px;
+  height: 1070px;
 }
 
 header {
@@ -39,11 +39,13 @@ header p {
 .actions {
   display: flex;
   margin-top: 25px;
-  gap: 10px;
+  gap: 2px;
   margin-left: 20px;
   display: flex;
-  justify-content: space-between;
+  justify-content:flex-start;
 }
+
+
 .back {
   margin-top: 3vh;
 }
@@ -62,8 +64,8 @@ header p {
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 5px;
+  justify-content: flex-start;
+  gap: 2px;
   font-weight: bold;
 }
 
@@ -106,10 +108,6 @@ header p {
   border: none;
 }
 
-.right-actions {
-  display: flex;
-  margin-right: 80px;
-}
 
 .planilha-btn {
   margin-right: 10px;
@@ -277,7 +275,7 @@ header p {
 
 /* navbar */
 .navigation {
-  height: auto;
+  height: 1020px;
   background: #d2135d;
   width: 275px;
   margin-top: 20px;
@@ -292,7 +290,7 @@ header p {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 50px;
+  margin-bottom: 100px;
   position: relative;
 }
 
@@ -655,6 +653,8 @@ img {
   text-align: left;
 }
 
+
+
 .procedures-table-pesquisa tbody tr:nth-child(odd) {
   background-color: #f9f9f9;
 }
@@ -675,6 +675,26 @@ img {
   transition: opacity 0.3s ease; /* Adiciona uma transição suave ao estado desabilitado */
 }
 
+
+/* Estilo específico de cada botão */
+#btn-undo {
+  background-color: #e11010; /* Laranja para "Desfazer" */
+  color: white;
+}
+
+#btn-undo:hover {
+  background-color: #ae0303;
+}
+
+#btn-redo {
+  background-color: #00b006; /* Azul para "Refazer" */
+  color: white;
+}
+
+#btn-redo:hover {
+  background-color: #006a04;
+}
+
 .filter-btn {
   position: relative;
 }
@@ -691,7 +711,7 @@ img {
   white-space: nowrap;
   z-index: 1000;
   top: 120px; /* Ajuste conforme necessário */
-  left: 35%;
+  left: 30%;
   transform: translateX(-50%);
 }
 
@@ -706,7 +726,7 @@ img {
   white-space: nowrap;
   z-index: 1000;
   top: 120px; /* Ajuste conforme necessário */
-  left: 60%;
+  left: 40%;
   transform: translateX(-50%);
 }
 
@@ -721,7 +741,7 @@ img {
   white-space: nowrap;
   z-index: 1000;
   top: 120px; /* Ajuste conforme necessário */
-  left: 69%;
+  left: 49%;
   transform: translateX(-50%);
 }
 
@@ -736,7 +756,7 @@ img {
   white-space: nowrap;
   z-index: 1000;
   top: 120px; /* Ajuste conforme necessário */
-  left: 78%;
+  left: 57%;
   transform: translateX(-50%);
 }
 
@@ -751,7 +771,7 @@ img {
   white-space: nowrap;
   z-index: 1000;
   top: 120px; /* Ajuste conforme necessário */
-  left: 86%;
+  left: 66%;
   transform: translateX(-50%);
 }
 
@@ -840,7 +860,7 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 950px; /* Ajuste conforme necessário */
+  top: 1030px; /* Ajuste conforme necessário */
   left: 35%;
   transform: translateX(-50%);
 }
@@ -855,7 +875,7 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 950px; /* Ajuste conforme necessário */
+  top: 1030px; /* Ajuste conforme necessário */
   left: 55%;
   transform: translateX(-50%);
 }
@@ -870,7 +890,7 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 950px; /* Ajuste conforme necessário */
+  top: 1030px; /* Ajuste conforme necessário */
   left: 77%;
   transform: translateX(-50%);
 }

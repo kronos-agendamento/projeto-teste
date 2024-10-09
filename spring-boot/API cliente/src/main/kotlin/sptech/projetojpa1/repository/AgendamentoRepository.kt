@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
 import sptech.projetojpa1.domain.Agendamento
 import sptech.projetojpa1.domain.Usuario
+import sptech.projetojpa1.dto.agendamento.AgendamentoDTO
 import java.time.LocalDateTime
 
 @Repository
@@ -25,6 +26,161 @@ interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
     """
     )
     fun tempoParaAgendar(): List<Int>
+
+    @Query(
+        """
+        WITH AgendamentosDoDia AS (
+            SELECT data_horario
+            FROM agendamento
+            WHERE DATE(data_horario) = CURDATE()
+            ORDER BY data_horario
+        ),
+        DiferencasEntreAgendamentos AS (
+            SELECT TIMESTAMPDIFF(MINUTE, LAG(data_horario) OVER (ORDER BY data_horario), data_horario) AS diferenca
+            FROM AgendamentosDoDia
+        )
+        SELECT AVG(diferenca) 
+        FROM DiferencasEntreAgendamentos
+        WHERE diferenca IS NOT NULL;
+        """, nativeQuery = true
+    )
+    fun calcularTempoMedioEntreAgendamentosDoDia(): Double?
+
+        @Query("""
+        SELECT 
+            sa.nome AS status_nome,
+            COUNT(a.id_agendamento) AS quantidade
+        FROM 
+            agendamento a
+        JOIN 
+            status sa ON a.fk_status = sa.id_status_agendamento
+        WHERE 
+            sa.nome IN ('Agendado', 'Confirmado', 'Concluído', 'Cancelado', 'Remarcado')  -- Apenas os status relevantes
+        GROUP BY 
+            sa.nome
+    """, nativeQuery = true)
+        fun contarAgendamentosPorStatus(): List<Map<String, Any>>
+
+
+
+    @Query(
+        nativeQuery = true, value = """ 
+        SELECT COUNT(*) AS agendamentos_marcados_hoje
+        FROM agendamento
+        WHERE DATE(data_horario) = CURDATE();
+    """
+    )
+    fun findTotalAgendamentosHoje(): Int
+
+
+
+    @Query(
+        nativeQuery = true, value = """
+    SELECT COUNT(*) AS agendamentos_futuros
+    FROM agendamento
+    WHERE DATE(data_horario) > CURDATE();
+    """
+    )
+    fun findTotalAgendamentosFuturos(): Int
+
+    @Query(
+        nativeQuery = true, value = """
+        SELECT p.tipo AS procedimento, 
+               SUM(CASE 
+                   WHEN a.tipo_agendamento = 'colocacao' THEN e.preco_colocacao
+                   WHEN a.tipo_agendamento = 'manutencao' THEN e.preco_manutencao
+                   WHEN a.tipo_agendamento = 'retirada' THEN e.preco_retirada
+               END) AS totalReceita
+        FROM agendamento a
+        JOIN especificacao e ON a.fk_especificacao_procedimento = e.id_especificacao_procedimento
+        JOIN procedimento p ON e.fk_procedimento = p.id_procedimento
+        WHERE a.data_horario >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+        GROUP BY p.tipo;
+        """
+    )
+    fun findTotalReceitaUltimosTresMeses(): List<Array<Any>>
+
+    @Query(
+        nativeQuery = true, value = """
+        SELECT 
+            p.tipo AS Procedimento, 
+            COUNT(*) AS soma_qtd
+        FROM 
+            agendamento a
+        JOIN 
+            especificacao e ON a.fk_especificacao_procedimento = e.id_especificacao_procedimento
+        JOIN 
+            procedimento p ON e.fk_procedimento = p.id_procedimento
+        WHERE 
+            a.data_horario >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+        GROUP BY 
+            p.tipo
+        ORDER BY 
+            soma_qtd DESC;
+        """
+    )
+    fun findProcedimentosRealizadosUltimoTrimestre(): List<Array<Any>>
+
+    @Query(
+        nativeQuery = true, value = """
+        SELECT 
+            p.tipo AS Procedimento, 
+            SUM(
+                CASE 
+                    WHEN a.tipo_agendamento = 'colocacao' THEN e.preco_colocacao * (TIME_TO_SEC(e.tempo_colocacao) / 3600)
+                    WHEN a.tipo_agendamento = 'manutencao' THEN e.preco_manutencao * (TIME_TO_SEC(e.tempo_manutencao) / 3600)
+                    WHEN a.tipo_agendamento = 'retirada' THEN e.preco_retirada * (TIME_TO_SEC(e.tempo_retirada) / 3600)
+                    ELSE 0
+                END
+            ) AS Valor_Total_Procedimento
+        FROM 
+            agendamento a
+        JOIN 
+            especificacao e ON a.fk_especificacao_procedimento = e.id_especificacao_procedimento
+        JOIN 
+            procedimento p ON e.fk_procedimento = p.id_procedimento
+        WHERE 
+            a.data_horario >= DATE_FORMAT(CURDATE() - INTERVAL 1 MONTH, '%Y-%m-01')
+            AND a.data_horario < DATE_FORMAT(CURDATE(), '%Y-%m-01')
+        GROUP BY 
+            p.tipo
+        ORDER BY 
+            p.tipo;
+        """
+    )
+    fun findValorTotalUltimoMesPorProcedimento(): List<Array<Any>>
+
+        @Query(
+            nativeQuery = true, value = """
+        SELECT 
+    p.tipo AS Procedimento, 
+    SUM(
+        CASE 
+            WHEN a.tipo_agendamento = 'colocacao' THEN TIME_TO_SEC(e.tempo_colocacao)
+            WHEN a.tipo_agendamento = 'manutencao' THEN TIME_TO_SEC(e.tempo_manutencao)
+            WHEN a.tipo_agendamento = 'retirada' THEN TIME_TO_SEC(e.tempo_retirada)
+            ELSE 0
+        END
+    ) / 60 AS Tempo_Total_Minutos
+FROM 
+    agendamento a
+JOIN 
+    especificacao e ON a.fk_especificacao_procedimento = e.id_especificacao_procedimento
+JOIN 
+    procedimento p ON e.fk_procedimento = p.id_procedimento
+WHERE 
+    a.data_horario >= DATE_FORMAT(CURDATE() - INTERVAL 1 MONTH, '%Y-%m-01')
+    AND a.data_horario < DATE_FORMAT(CURDATE(), '%Y-%m-01')
+GROUP BY 
+    p.tipo
+ORDER BY 
+    p.tipo;
+
+        """
+        )
+        fun findTempoGastoPorProcedimentoUltimoMes(): List<Array<Any>>  // Retorna uma lista de objetos com Procedimento e Tempo_Total
+
+
 
     @Query(
         nativeQuery = true, value = """ 
@@ -105,6 +261,19 @@ interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
     LIMIT 1
 """, nativeQuery = true)
     fun findMostBookedTimeByUser(idUsuario: Int): String?
+
+    @Query("""
+SELECT new sptech.projetojpa1.dto.agendamento.AgendamentoDTO(
+        u.nome, a.idAgendamento, a.usuario.id, a.dataHorario, a.tipoAgendamento, 
+        p.tipo, e.especificacao, p.idProcedimento, e.idEspecificacaoProcedimento, s.nome
+    )
+    FROM Agendamento a
+    JOIN a.usuario u
+    JOIN a.procedimento p
+    JOIN a.especificacao e
+    JOIN a.statusAgendamento s
+    WHERE a.usuario.id = :usuarioId
+    ORDER BY a.dataHorario DESC
+    """)
+    fun listarAgendamentosPorUsuario(usuarioId: Int): List<AgendamentoDTO>
 }
-
-

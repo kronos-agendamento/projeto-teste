@@ -77,7 +77,7 @@
 
       <header>
         <div>
-          <h1>Anamneses</h1>
+          <h1>Fichas de Anamnese</h1>
           <p> Preencha e garanta a segurança dos procedimentos feitos nos clientes. </p>
         </div>
 
@@ -99,7 +99,7 @@
                 Pesquisar Ficha Por Cliente
               </button></a>
             <div class="right-actions">
-              <button class="planilha-btn" onclick="showForm()">
+              <button class="planilha-btn" onclick="showForm2(), getDesativadas()">
                 <img src="../../assets/icons/createNew.png" alt="spreadsheet" />Perguntas Desativadas
               </button>
               <button class="criar-btn" onclick="showForm()">
@@ -198,12 +198,10 @@
             </div>
             <div>
               <label for="descricao">Descrição:</label>
-              <input type="text" id="descricao" placeholder="Descrição da Pergunta"><br>
-              <label for="tipo">Tipo de Resposta:</label>
-              <input type="text" id="tipo" placeholder="Tipo de Resposta">
+              <input type="text" id="descricaoPergunta" name="descricaoPergunta" placeholder="Descrição da Pergunta"><br>
             </div>
             <div>
-              <button id="save-button" class="btn btn-save">Salvar</button>
+              <button id="save-button" class="btn btn-save" onclick="criarPergunta(), closeModal()">Salvar</button>
               <button onclick="closeModal()" class="btn btn-no">Cancelar</button>
             </div>
           </div>
@@ -215,14 +213,24 @@
               <h3>Perguntas Desativadas:</h3>
             </div>
             <div>
-              <label for="descricao">Descrição:</label>
-              <input type="text" id="descricao" placeholder="Descrição da Pergunta"><br>
-              <label for="tipo">Tipo de Resposta:</label>
-              <input type="text" id="tipo" placeholder="Tipo de Resposta">
+             <table>
+              <thead>
+              <tr>
+                <td>
+                  Descrição
+                </td>
+              </tr>
+              <tr>
+                <td id="descricaoDesativada" name="descricaoDesativada"></td>
+              </tr>
+            </thead>
+            <tbody id="tabelaDesativadas" name="tabelaDesativadas">
+
+            </tbody>
+             </table>
             </div>
             <div>
-              <button onclick="salvarPergunta()" class="btn btn-save">Salvar</button>
-              <button onclick="closeModal()" class="btn btn-no">Cancelar</button>
+              <button onclick="closeModal2()" class="btn btn-no">Fechar</button>
             </div>
           </div>
         </div>

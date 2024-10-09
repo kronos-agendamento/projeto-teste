@@ -910,7 +910,7 @@ Botão Ver todos / Ver menos
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 150px; /* Ajuste conforme necessário */
+  top: 115px; /* Ajuste conforme necessário */
   left: 68%;
   transform: translateX(-50%);
 }
@@ -925,8 +925,8 @@ Botão Ver todos / Ver menos
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 230px; /* Ajuste conforme necessário */
-  left: 45%;
+  top: 200px; /* Ajuste conforme necessário */
+  left: 43%;
   transform: translateX(-50%);
 }
 
@@ -940,7 +940,7 @@ Botão Ver todos / Ver menos
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 230px; /* Ajuste conforme necessário */
+  top: 200px; /* Ajuste conforme necessário */
   left: 65%;
   transform: translateX(-50%);
 }
@@ -955,8 +955,8 @@ Botão Ver todos / Ver menos
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 150px; /* Ajuste conforme necessário */
-  left: 45%;
+  top: 115px; /* Ajuste conforme necessário */
+  left: 43%;
   transform: translateX(-50%);
 }
 
@@ -970,7 +970,7 @@ Botão Ver todos / Ver menos
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 320px; /* Ajuste conforme necessário */
+  top: 290px; /* Ajuste conforme necessário */
   left: 65%;
   transform: translateX(-50%);
 }
@@ -985,7 +985,7 @@ Botão Ver todos / Ver menos
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 700px; /* Ajuste conforme necessário */
+  top: 680px; /* Ajuste conforme necessário */
   left: 65%;
   transform: translateX(-50%);
 }
@@ -1000,7 +1000,7 @@ Botão Ver todos / Ver menos
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 1030px; /* Ajuste conforme necessário */
+  top: 1000px; /* Ajuste conforme necessário */
   left: 65%;
   transform: translateX(-50%);
 }
@@ -1015,7 +1015,7 @@ Botão Ver todos / Ver menos
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 560px; /* Ajuste conforme necessário */
+  top: 535px; /* Ajuste conforme necessário */
   left: 90%;
   transform: translateX(-50%);
 }
@@ -1030,7 +1030,7 @@ Botão Ver todos / Ver menos
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 830px; /* Ajuste conforme necessário */
+  top: 800px; /* Ajuste conforme necessário */
   left: 90%;
   transform: translateX(-50%);
 }
@@ -1045,8 +1045,23 @@ Botão Ver todos / Ver menos
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 220px; /* Ajuste conforme necessário */
+  top: 200px; /* Ajuste conforme necessário */
   left: 90%;
+  transform: translateX(-50%);
+}
+
+.tooltip12 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 1170px; /* Ajuste conforme necessário */
+  left: 64%;
   transform: translateX(-50%);
 }
 
@@ -1098,6 +1113,11 @@ Botão Ver todos / Ver menos
 }
 
 .filter-btn:hover + .tooltip10 {
+  display: block;
+  
+}
+
+.filter-btn:hover + .tooltip12 {
   display: block;
   
 }

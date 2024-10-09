@@ -4,14 +4,17 @@ import sptech.projetojpa1.domain.Status
 import java.time.LocalDateTime
 
 data class AgendamentoResponseDTO(
-    var idAgendamento: Int?,
-    var dataHorario: LocalDateTime?,
-    var tipoAgendamento: String?,
-    var usuario: String?,
-    var tempoAgendar: Int?,
+    var idAgendamento: Int? = null,
+    var dataHorario: LocalDateTime? = null,
+    var tipoAgendamento: String? = null,
+    var usuario: String? = null,
+    var tempoAgendar: Int? = null,
     var usuarioTelefone: String? = null,
     var usuarioCpf: String? = null,
-    var procedimento: String?,
-    var especificacao: String?,
-    var statusAgendamento: Status
+    var usuarioId: Int? = null,
+    var procedimento: String? = null,
+    var especificacao: String? = null,
+    var fkEspecificacao: Int? = null,
+    var fkProcedimento: Int? = null,
+    var statusAgendamento: Status? = null
 )

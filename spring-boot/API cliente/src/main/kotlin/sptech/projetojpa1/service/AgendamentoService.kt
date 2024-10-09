@@ -3,12 +3,13 @@ package sptech.projetojpa1.service
 import org.springframework.stereotype.Service
 import sptech.projetojpa1.domain.Agendamento
 import sptech.projetojpa1.domain.Usuario
+import sptech.projetojpa1.dto.agendamento.AgendamentoDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoRequestDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoResponseDTO
 import sptech.projetojpa1.repository.*
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
+import java.util.*
 
 @Service
 class AgendamentoService(
@@ -19,6 +20,7 @@ class AgendamentoService(
     private val statusRepository: StatusRepository,
     private val empresaRepository: EmpresaRepository
 ) {
+    private val filaAgendamentos: Queue<AgendamentoRequestDTO> = LinkedList()
 
     fun listarTodosAgendamentos(): List<AgendamentoResponseDTO> {
         val agendamentos = agendamentoRepository.findAll()
@@ -36,11 +38,47 @@ class AgendamentoService(
                 usuarioTelefone = usuario.telefone?.toString(),
                 tempoAgendar = agendamento.tempoAgendar,
                 usuarioCpf = usuario.cpf ?: "CPF não disponível",
+                usuarioId = usuario.codigo,
                 procedimento = agendamento.procedimento.tipo,
                 especificacao = agendamento.especificacao.especificacao,
+                fkEspecificacao = agendamento.especificacao.idEspecificacaoProcedimento,
+                fkProcedimento = agendamento.procedimento.idProcedimento,
                 statusAgendamento = agendamento.statusAgendamento
             )
         }
+    }
+
+    fun obterAgendamentosPorStatus(): Map<String, Int> {
+        // Consulta o repositório e obtém os dados
+        val resultados = agendamentoRepository.contarAgendamentosPorStatus()
+
+        // Cria um mapa para armazenar os valores finais
+        val agendamentosPorStatus = mutableMapOf(
+            "agendados" to 0,
+            "confirmados" to 0,
+            "realizados" to 0,
+            "cancelados" to 0,
+            "reagendados" to 0
+        )
+
+        // Percorre os resultados e preenche o mapa
+        for (resultado in resultados) {
+            val statusNome = resultado["status_nome"] as String
+            val quantidade = (resultado["quantidade"] as Number).toInt()
+
+            when (statusNome) {
+                "Agendado" -> agendamentosPorStatus["agendados"] = quantidade
+                "Confirmado" -> agendamentosPorStatus["confirmados"] = quantidade
+                "Concluído" -> agendamentosPorStatus["realizados"] = quantidade
+                "Cancelado" -> agendamentosPorStatus["cancelados"] = quantidade
+                "Remarcado" -> agendamentosPorStatus["reagendados"] = quantidade
+            }
+        }
+        return agendamentosPorStatus
+    }
+
+    fun obterTempoMedioEntreAgendamentos(): Double? {
+        return agendamentoRepository.calcularTempoMedioEntreAgendamentosDoDia()
     }
 
     fun agendamentosRealizadosTrimestre(): Int {
@@ -50,6 +88,50 @@ class AgendamentoService(
     fun tempoParaAgendar(): List<Int> {
         return agendamentoRepository.tempoParaAgendar()
     }
+
+    fun totalAgendamentosHoje(): Int {
+        return agendamentoRepository.findTotalAgendamentosHoje()
+    }
+
+    fun obterTotalAgendamentosFuturos(): Int {
+        return agendamentoRepository.findTotalAgendamentosFuturos()
+    }
+
+    fun obterTotalReceitaUltimosTresMeses(): Map<String, Double> {
+        return agendamentoRepository.findTotalReceitaUltimosTresMeses().associate {
+            val procedimento = it[0] as String
+            val totalReceita = (it[1] as Number).toDouble()  // Cuidado com o tipo aqui, converta para Double
+            procedimento to totalReceita
+        }
+    }
+
+        fun obterTempoGastoPorProcedimentoUltimoMes(): Map<String, Double> {
+            return agendamentoRepository.findTempoGastoPorProcedimentoUltimoMes()
+                .associate {
+                    val procedimento = it[0] as String
+                    val tempoTotal = (it[1] as Number).toDouble()
+                    procedimento to tempoTotal
+                }
+        }
+
+    fun obterProcedimentosRealizadosUltimoTrimestre(): Map<String, Int> {
+        return agendamentoRepository.findProcedimentosRealizadosUltimoTrimestre()
+            .associate {
+                val procedimento = it[0] as String
+                val somaQtd = (it[1] as Number).toInt()
+                procedimento to somaQtd
+            }
+    }
+
+    fun obterValorTotalUltimoMesPorProcedimento(): Map<String, Double> {
+        return agendamentoRepository.findValorTotalUltimoMesPorProcedimento()
+            .associate {
+                val procedimento = it[0] as String
+                val valorTotal = (it[1] as Number).toDouble()
+                procedimento to valorTotal  // Criamos um par (chave, valor) para o Map
+            }
+    }
+
 
     fun agendamentosRealizadosUltimos5Meses(): List<Int> {
         return agendamentoRepository.findAgendamentosConcluidosUltimos5Meses()
@@ -115,40 +197,89 @@ class AgendamentoService(
 
 
     fun criarAgendamento(agendamentoRequestDTO: AgendamentoRequestDTO): AgendamentoResponseDTO {
-        if (!validarAgendamento(agendamentoRequestDTO)) {
-            throw IllegalArgumentException("Já existe um agendamento para esse horário")
+        // Validação preliminar de entrada para garantir que os campos essenciais estão preenchidos
+        if (agendamentoRequestDTO.dataHorario == null || agendamentoRequestDTO.tipoAgendamento == null) {
+            throw IllegalArgumentException("Data e tipo de agendamento não podem ser nulos")
         }
 
-        val agendamento = Agendamento(
-            dataHorario = agendamentoRequestDTO.dataHorario
-                ?: throw IllegalArgumentException("Data não pode ser nula"),
-            tipoAgendamento = agendamentoRequestDTO.tipoAgendamento
-                ?: throw IllegalArgumentException("Tipo de agendamento não pode ser nulo"),
-            tempoAgendar = agendamentoRequestDTO.tempoAgendar,
-            usuario = usuarioRepository.findById(agendamentoRequestDTO.fk_usuario)
-                .orElseThrow { IllegalArgumentException("Usuário não encontrado") },
-            procedimento = procedimentoRepository.findById(agendamentoRequestDTO.fk_procedimento)
-                .orElseThrow { IllegalArgumentException("Procedimento não encontrado") },
-            especificacao = especificacaoRepository.findById(agendamentoRequestDTO.fk_especificacao)
-                .orElseThrow { IllegalArgumentException("Especificação não encontrada") },
-            statusAgendamento = statusRepository.findById(agendamentoRequestDTO.fk_status)
-                .orElseThrow { IllegalArgumentException("Status não encontrado") }
-        )
+        // Adiciona o agendamento à fila de processamento
+        // A fila é usada aqui para simular o conceito de processamento assíncrono, onde os agendamentos
+        // são armazenados em uma lista (fila) e processados posteriormente, evitando o processamento imediato.
+        println("Adicionando agendamento à fila: $agendamentoRequestDTO")
+        filaAgendamentos.add(agendamentoRequestDTO)
 
-        val savedAgendamento = agendamentoRepository.save(agendamento)
+        // Exibe a fila após adicionar o novo agendamento, mostrando que o item foi enfileirado.
+        println("Fila de agendamentos após adicionar: $filaAgendamentos")
 
+        // Chama o método de processamento da fila para processar os agendamentos enfileirados
+        // Neste caso, o processamento está ocorrendo imediatamente após o enfileiramento, mas em um sistema real,
+        // este processamento poderia ser feito de forma assíncrona ou agendada (por exemplo, a cada minuto).
+        processarFilaDeAgendamentos()
+
+        // Retorna uma resposta ao cliente indicando que o agendamento está sendo processado.
+        // Como o processamento é "simulado" de forma assíncrona, o ID do agendamento ainda não está disponível,
+        // mas outras informações podem ser retornadas enquanto o agendamento é tratado em segundo plano.
         return AgendamentoResponseDTO(
-            idAgendamento = savedAgendamento.idAgendamento,
-            dataHorario = savedAgendamento.dataHorario,
-            tipoAgendamento = savedAgendamento.tipoAgendamento,
-            tempoAgendar = savedAgendamento.tempoAgendar,
-            usuario = agendamento.usuario.nome,
-            procedimento = agendamento.procedimento.tipo,
-            especificacao = agendamento.especificacao.especificacao,
-            statusAgendamento = agendamento.statusAgendamento
+            idAgendamento = null,  // Um valor temporário, pois o agendamento ainda está sendo processado
+            dataHorario = agendamentoRequestDTO.dataHorario,
+            tipoAgendamento = agendamentoRequestDTO.tipoAgendamento,
+            tempoAgendar = agendamentoRequestDTO.tempoAgendar,
+            usuario = "Processando...",  // Indicador de que o processo ainda está em andamento
+            procedimento = "Processando...",
+            especificacao = "Processando...",
+            statusAgendamento = statusRepository.findById(1)  // Um status fixo para indicar que o agendamento está pendente
+                .orElseThrow { IllegalArgumentException("Status não encontrado") },
+            usuarioTelefone = TODO(),
+            usuarioCpf = TODO(),
+            usuarioId = TODO(),
+            fkEspecificacao = TODO(),
+            fkProcedimento = TODO()
         )
     }
 
+    fun processarFilaDeAgendamentos() {
+        // Processa todos os agendamentos presentes na fila.
+        // A fila segue o conceito FIFO (First In, First Out), onde o primeiro agendamento a ser adicionado
+        // será o primeiro a ser processado.
+        while (filaAgendamentos.isNotEmpty()) {
+            // Remove e obtém o primeiro agendamento da fila
+            val agendamentoRequestDTO = filaAgendamentos.poll()
+
+            // Exibe no log o agendamento que está sendo processado
+            println("Processando agendamento: $agendamentoRequestDTO")
+
+            // Validação de negócios para garantir que o agendamento é válido (exemplo: não existem conflitos de horário)
+            if (!validarAgendamento(agendamentoRequestDTO)) {
+                throw IllegalArgumentException("Já existe um agendamento para esse horário")
+            }
+
+            // Cria o objeto Agendamento baseado nos dados enfileirados
+            // Neste ponto, o agendamento está pronto para ser salvo no banco de dados.
+            val agendamento = Agendamento(
+                dataHorario = agendamentoRequestDTO.dataHorario,
+                tipoAgendamento = agendamentoRequestDTO.tipoAgendamento,
+                tempoAgendar = agendamentoRequestDTO.tempoAgendar,
+                usuario = usuarioRepository.findById(agendamentoRequestDTO.fk_usuario)
+                    .orElseThrow { IllegalArgumentException("Usuário não encontrado") },
+                procedimento = procedimentoRepository.findById(agendamentoRequestDTO.fk_procedimento)
+                    .orElseThrow { IllegalArgumentException("Procedimento não encontrado") },
+                especificacao = especificacaoRepository.findById(agendamentoRequestDTO.fk_especificacao)
+                    .orElseThrow { IllegalArgumentException("Especificação não encontrada") },
+                statusAgendamento = statusRepository.findById(agendamentoRequestDTO.fk_status)
+                    .orElseThrow { IllegalArgumentException("Status não encontrado") }
+            )
+
+            // Exibe no log o agendamento que será salvo no banco de dados
+            println("Salvando agendamento no banco de dados: $agendamento")
+
+            // Salva o agendamento no banco de dados
+            agendamentoRepository.save(agendamento)
+
+            // Exibe no log que o agendamento foi salvo com sucesso
+            println("Agendamento salvo com sucesso: $agendamento")
+        }
+    }
+    
     fun obterAgendamento(id: Int): AgendamentoResponseDTO {
         val agendamento = agendamentoRepository.findById(id)
             .orElseThrow { IllegalArgumentException("Agendamento não encontrado") }
@@ -160,7 +291,10 @@ class AgendamentoService(
             usuario = agendamento.usuario.nome,
             tempoAgendar = agendamento.tempoAgendar,
             procedimento = agendamento.procedimento.tipo,
+            usuarioId = agendamento.usuario.codigo,
             especificacao = agendamento.especificacao.especificacao,
+            fkEspecificacao = agendamento.especificacao.idEspecificacaoProcedimento,
+            fkProcedimento = agendamento.procedimento.idProcedimento,
             statusAgendamento = agendamento.statusAgendamento
         )
     }
@@ -192,7 +326,10 @@ class AgendamentoService(
             procedimento = agendamento.procedimento.tipo,
             especificacao = agendamento.especificacao.especificacao,
             tempoAgendar = agendamento.tempoAgendar,
-            statusAgendamento = agendamento.statusAgendamento
+            statusAgendamento = agendamento.statusAgendamento,
+            usuarioId = agendamento.usuario.codigo,
+            fkEspecificacao = agendamento.especificacao.idEspecificacaoProcedimento,
+            fkProcedimento = agendamento.procedimento.idProcedimento
         )
     }
 
@@ -215,7 +352,10 @@ class AgendamentoService(
             tempoAgendar = agendamento.tempoAgendar,
             procedimento = agendamento.procedimento.tipo,
             especificacao = agendamento.especificacao.especificacao,
-            statusAgendamento = agendamento.statusAgendamento
+            statusAgendamento = agendamento.statusAgendamento,
+            usuarioId = agendamento.usuario.codigo,
+            fkEspecificacao = agendamento.especificacao.idEspecificacaoProcedimento,
+            fkProcedimento = agendamento.procedimento.idProcedimento
         )
     }
 
@@ -255,12 +395,15 @@ class AgendamentoService(
                 tempoAgendar = agendamento.tempoAgendar,
                 procedimento = agendamento.procedimento.tipo,
                 especificacao = agendamento.especificacao.especificacao,
-                statusAgendamento = agendamento.statusAgendamento
-            )
+                statusAgendamento = agendamento.statusAgendamento,
+                usuarioId = agendamento.usuario.codigo,
+                fkEspecificacao = agendamento.especificacao.idEspecificacaoProcedimento,
+                fkProcedimento = agendamento.procedimento.idProcedimento)
         }
     }
 
     fun bloquearHorarios(dia: LocalDate, horaInicio: LocalTime, horaFim: LocalTime, usuarioId: Int) {
+
         val horarioInicio = dia.atTime(horaInicio)
         val horarioFim = dia.atTime(horaFim)
 
@@ -296,18 +439,22 @@ class AgendamentoService(
         return usuarioRepository.countByStatus(true)
     }
 
+    fun listarAgendamentosPorUsuario(usuarioId: Int): List<AgendamentoDTO> {
+        return agendamentoRepository.listarAgendamentosPorUsuario(usuarioId)
+    }
+
     fun countDiasUltimoAgendamento(idUsuario: Int): Int {
         val usuario: Usuario = usuarioRepository.findById(idUsuario)
             .orElseThrow { IllegalArgumentException("Usuário não encontrado") }
         return agendamentoRepository.countDiasUltimoAgendamento(usuario) ?: 0
     }
 
-        fun buscarDiaMaisAgendadoPorUsuario(idUsuario: Int): String {
-            return agendamentoRepository.buscarDiaMaisAgendadoPorUsuario(idUsuario)
-        }
+    fun buscarDiaMaisAgendadoPorUsuario(idUsuario: Int): String {
+        return agendamentoRepository.buscarDiaMaisAgendadoPorUsuario(idUsuario)
+    }
 
     fun getMostBookedTimeByUser(idUsuario: Int): String? {
         return agendamentoRepository.findMostBookedTimeByUser(idUsuario)
     }
 }
-
+    

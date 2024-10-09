@@ -1,5 +1,6 @@
 package sptech.projetojpa1.dto.usuario
 
+import sptech.projetojpa1.domain.Endereco
 import java.time.LocalDate
 
 data class UsuarioAtualizacaoRequest(
@@ -10,5 +11,5 @@ data class UsuarioAtualizacaoRequest(
     var telefone: Long?,
     var genero: String?,
     var indicacao: String?,
-
+    var endereco: Endereco?
     )

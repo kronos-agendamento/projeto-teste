@@ -161,8 +161,8 @@
                                     <p>Procedimentos mais famosos no estúdio e quantas vezes eles foram agendados no
                                         último
                                         trimestre.</p>
-                                    <div position="relative" class="caixa-grafico">
-                                        <canvas width="450" height="200" id="chart4"></canvas>
+                                    <div class="caixa-grafico">
+                                        <canvas id="chart4"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -216,8 +216,8 @@
                                         <div class="card">
                                             <div class="indicator"></div>
                                             <div class="card-content">
-                                                <p>Agedamentos<br>Marcados</p>
-                                                <h2 id="clientes-ativos-count">Carregando...</h2>
+                                                <p>Agendamentos<br>Marcados</p>
+                                                <h2 id="total-agendamentos-hoje">Carregando...</h2>
                                                 <!-- <p>Último trimestre</p> -->
 
                                             </div>
@@ -229,7 +229,7 @@
                                             <div class="indicator"></div>
                                             <div class="card-content">
                                                 <p>Agendamentos<br>Futuros</p>
-                                                <h2 id="clientes-inativos-count">Carregando...</h2>
+                                                <h2 id="total-agendamentos-futuros">Carregando...</h2>
                                                 <!-- <p>Último trimestre</p> -->
 
                                             </div>
@@ -241,7 +241,7 @@
                                             <div class="indicator"></div>
                                             <div class="card-content">
                                                 <p style="font-size: 20px;">Tempo Médio Entre<br>Atendimentos</p>
-                                                <h2 id="agendamentos-realizados-count">Carregando...</h2>
+                                                <h2 id="tempo-medio-hoje">Carregando...</h2>
                                                 <!-- <p>Último trimestre</p> -->
 
                                             </div>
@@ -252,8 +252,8 @@
                                         <div class="card">
                                             <div class="indicator"></div>
                                             <div class="card-content">
-                                                <p>Média de Avaliação</p>
-                                                <h2 id="clientes-fidelizados-count">Carregando...</h2>
+                                                <p style="font-size:large">Média de Avaliação dos Atendimentos</p>
+                                                <h2 id="total-nota-single">Carregando...</h2>
                                                 <!-- <p>Último trimestre</p> -->
                                             </div>
                                             <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
@@ -269,7 +269,7 @@
                                     </div>
                                     <p>Distribuição das categorias dos agendamentos do dia de hoje.</p>
                                     <div class="caixa-grafico">
-                                        <canvas id="chart2"></canvas>
+                                        <canvas id="chartOperacional1"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -280,9 +280,9 @@
                                         <h1>Procedimentos<br>Realizados</h1>
                                         <p>Último Trimestre</p>
                                     </div>
-                                    <p>Tempo médio de atendimento investido em cada procedimento.</p>
-                                    <div position="relative" class="caixa-grafico">
-                                        <canvas width="450" height="200" id="chart4"></canvas>
+                                    <p>Total de procedimentos realizados nos últimos 3 meses</p>
+                                    <div class="caixa-grafico">
+                                        <canvas id="chartProcedimentosRealizadosTrimestreOperacional3"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -290,12 +290,12 @@
                                 <div class="card-graficos">
                                     <div class="card-content-2">
                                         <h1>Tempo Médio de<br>Atendimento</h1>
-                                        <p>Últimos 5 meses</p>
+                                        <p>Últimos mês</p>
                                     </div>
                                     <p>Tempo médio de atendimento investido em cada procedimento.
                                     </p>
                                     <div class="caixa-grafico">
-                                        <canvas id="chart33"></canvas>
+                                        <canvas id="chartTempoGastoProcedimentosOperacional2"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -305,21 +305,21 @@
                                         <h1>Receita Média Gerada</h1>
                                         <p>Últimos 5 meses</p>
                                     </div>
-                                    <p>Receita média gerada até o momento com os procedimentos realizados.
+                                    <p>Receita média gerada nos últimos 3 meses com os procedimentos realizados.
                                     </p>
                                     <div class="caixa-grafico">
-                                        <canvas id="chart3"></canvas>
+                                        <canvas id="chartReceitaProcedimentosOperacional4"></canvas>
                                     </div>
                                 </div>
                             </div>
                             <div class="square" style="background-color: white;">
                                 <div class="card-graficos">
                                     <div class="card-content-2">
-                                        <h1>Taxa de Retenção <br>de Clientes</h1>
+                                        <h1>Valor da hora<br>de Procedimento</h1>
                                         <p>Últimos 5 meses</p>
                                     </div>
-                                    <p>Taxa de retenção mostra a quantidade de clientes novos versus a quantidade de clientes antigos.</p>
-                                    <canvas style="padding-bottom: 30px;" id="chart1"></canvas>
+                                    <p>Calculo da quantia de dinheiro gerado por hora de cada agendamento.</p>
+                                    <canvas style="padding-bottom: 30px;" id="chartValorTotalUltimoMesOperacional5"></canvas>
                                 </div>
                             </div>
                         </div>

@@ -39,10 +39,10 @@ header p {
 .actions {
   display: flex;
   margin-top: 25px;
-  gap: 10px;
-  margin-left: 20px;
+  gap: 5px;
+  margin-left: 15px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 .back {
   margin-top: 3vh;
@@ -1072,6 +1072,25 @@ img {
   margin-right: 0;
 }
 
+/* Estilo específico de cada botão */
+#btn-undo {
+  background-color: #e11010; /* Laranja para "Desfazer" */
+  color: white;
+}
+
+#btn-undo:hover {
+  background-color: #ae0303;
+}
+
+#btn-redo {
+  background-color: #00b006; /* Azul para "Refazer" */
+  color: white;
+}
+
+#btn-redo:hover {
+  background-color: #006a04;
+}
+
 .filter-btn {
   position: relative;
 }
@@ -1087,7 +1106,7 @@ img {
   white-space: nowrap;
   z-index: 1000;
   top: 155px; /* Ajuste conforme necessário */
-  left: 40%;
+  left: 33%;
   transform: translateX(-50%);
 }
 
@@ -1102,7 +1121,7 @@ img {
   white-space: nowrap;
   z-index: 1000;
   top: 155px; /* Ajuste conforme necessário */
-  left: 55%;
+  left: 45%;
   transform: translateX(-50%);
 }
 
@@ -1117,7 +1136,7 @@ img {
   white-space: nowrap;
   z-index: 1000;
   top: 155px; /* Ajuste conforme necessário */
-  left: 70%;
+  left: 60%;
   transform: translateX(-50%);
 }
 
@@ -1132,7 +1151,7 @@ img {
   white-space: nowrap;
   z-index: 1000;
   top: 155px; /* Ajuste conforme necessário */
-  left: 87%;
+  left: 73%;
   transform: translateX(-50%);
 }
 
@@ -1155,5 +1174,3 @@ img {
   display: block;
   
 }
-
-
