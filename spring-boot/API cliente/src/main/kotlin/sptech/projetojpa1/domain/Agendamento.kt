@@ -1,6 +1,7 @@
 package sptech.projetojpa1.domain
 
 import jakarta.persistence.*
+import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotNull
 import java.time.LocalDateTime
 
@@ -30,6 +31,10 @@ class Agendamento(
     @ManyToOne
     @JoinColumn(name = "fk_procedimento")
     var procedimento: Procedimento,
+
+    @field:NotNull(message = "O tempo não pode ser nulo")
+    @Column(name = "tempo_para_agendar")
+    var tempoAgendar: Int?,
 
     @field:NotNull(message = "Especificação não pode ser nula")
     @ManyToOne

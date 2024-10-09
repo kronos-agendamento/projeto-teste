@@ -51,7 +51,8 @@ document.addEventListener('DOMContentLoaded', function () {
             agendamentosRealizados: '/api/agendamentos/agendamentos-realizados',
 
             // KPI's - Usabilidade
-            tempoAgemdamento: ''
+            tempoAgendamento: '/api/agendamentos/tempo-para-agendar',
+            retornoLogin: '/login-logoff/retorno-usuarios-login',
 
             // Gráfico 1 - Gerencial
             listarTop3Indicacoes: '/usuarios/buscar-top3-indicacoes',
@@ -83,6 +84,10 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchData(endpoints.clientesFidelizados, updateClientesFidelizados);
         fetchData(endpoints.agendamentosRealizados, updateAgendamentosRealizados);
 
+        // Chamadas para atualizar os KPI's de - Usabilidade
+        fetchData(endpoints.tempoAgendamento, updateTempoAgendamento);
+        fetchData(endpoints.retornoLogin, updateRetornoLogin);
+
         // Chamadas para atualizar os dados do gráfico 1 - Gerencial
         fetchData(endpoints.listarTop3Indicacoes, updateListarTop3Indicacoes);
         fetchData(endpoints.listarNumeroIndicacoes, updateChart1)
@@ -109,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     }
 
-    // Funções que atualizam as KPI's
+    // Funções que atualizam as KPI's do gerencial
     updateKPIs();
     function updateClientesAtivos(data) {
         const clientesAtivosCount = document.getElementById('clientes-ativos-count');
@@ -126,6 +131,15 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateAgendamentosRealizados(data) {
         const agendamentosRealizadosCount = document.getElementById('agendamentos-realizados-count');
         agendamentosRealizadosCount.textContent = formatarNumero(data);
+    }
+    // Funções que atualizam as KPI's de usabilidade
+    function updateTempoAgendamento(data) {
+        const tempoMedioCount = document.getElementById('tempo-medio-conclusao');
+        tempoMedioCount.textContent = data;
+    }
+    function updateRetornoLogin(data) {
+        const retornoLoginCount = document.getElementById('retorno-login-count');
+        retornoLoginCount.textContent = data;
     }
 
     // Constantes dos gráficos
@@ -486,6 +500,8 @@ document.addEventListener('DOMContentLoaded', function () {
     function formatarNumero(valor) {
         return valor.toFixed(0); // Formata o número para exibir como inteiro
     }
+
+    
 
     // Atualiza os KPIs e gráficos em intervalos regulares (opcional)
     setInterval(updateKPIs, 30000); // Exemplo de atualização a cada 30 segundos

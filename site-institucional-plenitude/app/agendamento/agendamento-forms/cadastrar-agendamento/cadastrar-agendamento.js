@@ -1,4 +1,7 @@
-document.addEventListener("DOMContentLoaded", function () {
+  let seconds = 0
+  let timer = null;
+  
+  document.addEventListener("DOMContentLoaded", function () {
   const apiUrlClientes = "http://localhost:8080/usuarios";
   const apiUrlProcedimentos = "http://localhost:8080/api/procedimentos";
   const apiUrlEspecificacoes = "http://localhost:8080/api/especificacoes";
@@ -15,6 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const saveButton = document.getElementById("save-agendamento-button");
 
   let especificacoes = []; // Array para armazenar todas as especificações
+  
 
   async function carregarClientes() {
     try {
@@ -169,34 +173,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  async function criarAgendamento(agendamento) {
-    try {
-      const response = await fetch(apiUrlCriarAgendamento, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(agendamento),
-      });
-
-      if (response.ok) {
-        showNotification("Agendamento criado com sucesso!");
-        setTimeout(() => {
-          window.location.href = "../../agendamento.html";
-        }, 1000);
-      } else {
-        console.error("Erro ao criar agendamento: " + response.statusText);
-        showNotification(
-          "Já existe um agendamento para essa data e horário",
-          true
-        );
-      }
-    } catch (error) {
-      console.error("Erro ao criar agendamento: ", error);
-      showNotification("Erro ao criar agendamento", true);
-    }
-  }
-
   saveButton.addEventListener("click", async function () {
     const clienteId = clientesSelect.value;
     console.log(clienteId);
@@ -221,17 +197,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const dataHorario = new Date(`${data}T${horario}.000Z`).toISOString();
-
+    console.log(seconds+"antes do const")
     const agendamento = {
       fk_usuario: parseInt(clienteId, 10),
       fk_procedimento: parseInt(procedimentoId, 10),
       fk_especificacao: parseInt(especificacaoId, 10),
       fk_status: 1,
+      tempoAgendar: seconds,
       tipoAgendamento: tipoAtendimento,
       dataHorario: dataHorario,
     };
 
     try {
+      console.log(seconds+" segundos aí rapaiz")
       const response = await fetch(apiUrlCriarAgendamento, {
         method: "POST",
         headers: {
@@ -241,9 +219,10 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       if (response.ok) {
+        console.log(response);
+        console.log(agendamento);
         showNotification("Agendamento criado com sucesso!");
         setTimeout(() => {
-          window.location.href = "../../agendamento.html";
         }, 1000);
       } else {
         const errorMsg = await response.text();
@@ -288,3 +267,48 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("userInsta").textContent = instagram;
   }
 });
+
+// timer para o marcar tempo que leva para realizar um agendamento!
+
+// Função que será executada quando o valor do select mudar
+document.addEventListener("DOMContentLoaded", function () {
+   // Variável que irá armazenar o intervalo
+
+  // Função que será executada quando o valor do select mudar
+  document.getElementById('procedimentos').addEventListener('change', function () {
+    const selectedValue = this.value;
+
+    if (selectedValue !== "") { // Se o valor selecionado não for vazio
+      if (!timer) { // Verifica se o timer já está rodando
+        timer = setInterval(() => {
+          seconds++; // Incrementa a variável a cada segundo
+          console.log(`Segundos: ${seconds}`);
+        }, 1000); // 1000 ms = 1 segundo
+      }
+    }
+  })
+
+  document.getElementById('save-agendamento-button').addEventListener('click', function () {
+    if (timer) {
+      clearInterval(timer); // Para o timer
+      timer = null; // Reseta o timer
+      console.log(`Contagem parada em: ${seconds} segundos`);
+    }
+  });
+});
+
+
+
+
+//     function sendSecondsToServer() {
+//         fetch('http://localhost:8080/api/agendamentos/', { // Substitua pela URL do seu servidor
+//             method: 'PUT',
+//             headers: {
+//                 'Content-Type': 'application/json' // Define que o conteúdo é JSON
+//             },
+//             body: JSON.stringify({ time: seconds }) // Envia o valor dos segundos
+//         })
+//         .then(response => response.json())
+//         .then(data => console.log('Sucesso:', data))
+//         .catch(error => console.error('Erro:', error));
+//     }

@@ -91,7 +91,7 @@ h6 {
   bottom: 20px;
   z-index: 996;
   background: #ffff;
-  width:60px;
+  width: 60px;
   height: 60px;
   border-radius: 50px;
   transition: all 0.4s;
@@ -128,7 +128,7 @@ h6 {
   box-shadow: 0px 0px 25px 0 rgba(0, 0, 0, 0.08);
   z-index: 997;
   margin-top: 0px;
-  padding: 15px 0;
+  padding: 2rem;
 }
 
 #header2 .logo {
@@ -149,11 +149,7 @@ h6 {
   max-height: 75px;
 }
 
-@media (max-width: 992px) {
-  #header2 .logo {
-    font-size: 28px;
-  }
-}
+
 
 /*--------------------------------------------------------------
 # Header Social Links
@@ -313,116 +309,92 @@ h6 {
   }
 }
 
+/*--------------------------------------------------------------
+# Mobile Navigation 
+--------------------------------------------------------------*/
 
-/**
-* Mobile Navigation 
-*/
+@media (max-width: 992px) {
 
-.mobile-nav-toggle {
-  color: #222222;
-  font-size: 28px;
-  cursor: pointer;
-  display: none;
-  line-height: 0;
-  transition: 0.5s;
-}
-
-.mobile-nav-toggle.bi-x {
-  color: #fff;
-}
-
-@media (max-width: 991px) {
-  .mobile-nav-toggle {
+  /* Quando o menu estiver ativo */
+  #navbar.active ul {
     display: block;
+    position: fixed;
+    background-color: #fff;
+    /* Fundo branco */
+    width: 70%;
+    /* Ocupa 90% da largura da tela */
+    height: 70%;
+    /* Ocupa 80% da altura da tela */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    /* Centraliza a aba */
+    z-index: 9999;
+    text-align: center;
+    padding: 20px;
+    border-radius: 20px;
+    /* Cantos arredondados */
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+    /* Sombras suaves */
+    opacity: 1;
+    transition: all 0.4s ease;
   }
 
-  .navbar ul {
+  /* Fundo escuro para o resto do site quando o menu está ativo */
+  #navbar.active::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    /* Fundo escuro com transparência */
+    z-index: 9998;
+  }
+
+  /* Estilo para os itens do menu */
+  #navbar.active ul li {
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #8a8585;
+    /* Cor dos itens dentro da aba */
+    transition: color 0.3s ease;
+  }
+
+  /* Garantir que o ícone "X" feche corretamente o menu */
+  #navbar .mobile-nav-toggle {
+    color: #000;
+    /* Cor preta para melhor visibilidade no início */
+    font-size: 50px;
+    cursor: pointer;
+    display: block;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10001;
+    /* Para garantir que fique acima de tudo */
+    transition: all 0.3s ease;
+  }
+
+  /* Estilo para o ícone quando o menu estiver fechado */
+  #navbar ul {
     display: none;
+    /* Oculta o menu por padrão */
   }
-}
 
-.navbar-mobile {
-  position: fixed;
-  overflow: hidden;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  background: rgba(9, 9, 9, 0.9);
-  transition: 0.3s;
-  z-index: 999;
-}
+  #navbar.active ul li:hover {
+    color: #CDA582;
+    /* Cor dos itens ao passar o mouse */
+  }
 
-.navbar-mobile .mobile-nav-toggle {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-}
-
-.navbar-mobile ul {
-  display: block;
-  position: absolute;
-  top: 55px;
-  right: 15px;
-  bottom: 15px;
-  left: 15px;
-  padding: 10px 0;
-  border-radius: 10px;
-  background-color: #fff;
-  overflow-y: auto;
-  transition: 0.3s;
-}
-
-.navbar-mobile a,
-.navbar-mobile a:focus {
-  font-size: 15px;
-  padding-right: 15px;
-  color: #222222;
-}
-
-.navbar-mobile a:hover,
-.navbar-mobile .active,
-.navbar-mobile li:hover>a {
-  color: #CDA582;
-}
-
-.navbar-mobile .getstarted,
-.navbar-mobile .getstarted:focus {
-  margin: 15px;
-}
-
-.navbar-mobile .dropdown ul {
-  position: static;
-  display: none;
-  margin: 10px 20px;
-  padding: 10px 0;
-  z-index: 99;
-  opacity: 1;
-  visibility: visible;
-  background: #fff;
-  box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);
-}
-
-.navbar-mobile .dropdown ul li {
-  min-width: 200px;
-}
-
-.navbar-mobile .dropdown ul a {
-  padding: 10px 20px;
-}
-
-.navbar-mobile .dropdown ul a i {
-  font-size: 12px;
-}
-
-.navbar-mobile .dropdown ul a:hover,
-.navbar-mobile .dropdown ul .active:hover,
-.navbar-mobile .dropdown ul li:hover>a {
-  color: #CDA582;
-}
-
-.navbar-mobile .dropdown>.dropdown-active {
-  display: block;
+  /* Garantir que o menu deslize do lado esquerdo */
+  #navbar.active {
+    left: 0;
+    /* Garante que o menu se inicie no lado esquerdo */
+    transition: all 0.3s ease;
+  }
 }
 
 /*--------------------------------------------------------------
@@ -506,6 +478,7 @@ h6 {
     line-height: 24px;
   }
 }
+
 /*--------------------------------------------------------------
 # Featured Services
 --------------------------------------------------------------*/
@@ -679,7 +652,7 @@ section {
   position: relative;
 }
 
-#aboutple img{
+#aboutple img {
   width: 80vh;
   position: relative;
   bottom: 4.2vh;
@@ -714,6 +687,8 @@ section {
 .about .content p:last-child {
   margin-bottom: 0;
 }
+
+
 
 /*--------------------------------------------------------------
 # Skills
@@ -918,26 +893,26 @@ section {
 # Services
 --------------------------------------------------------------*/
 
-.services{
-  margin-top:120px ;
+.services {
+  margin-top: 120px;
 }
 
-.services .section-title{
+.services .section-title {
   padding-bottom: 15px;
 }
 
-.services h3{
+.services h3 {
   font-size: 25px;
-    font-weight: bold;
-    text-transform: uppercase;
-    position: relative;
-    padding: 40px 20px 40px 20px;
-    transition: all ease-in-out 0.3s;
+  font-weight: bold;
+  text-transform: uppercase;
+  position: relative;
+  padding: 40px 20px 40px 20px;
+  transition: all ease-in-out 0.3s;
 }
 
 .services .icon-box {
   text-align: center;
-  padding: 70px 20px 80px 20px;
+  padding: 35px 10px 40px 10px;
   transition: all ease-in-out 0.3s;
   background: #fff;
   box-shadow: 0px 0 35px 0 rgba(0, 0, 0, 0.08);
@@ -945,7 +920,7 @@ section {
 
 .services .icon img {
   width: 120px;
-  border-radius: 50%;
+  border-radius: 2rem;
   border: 4px solid #fff;
   margin: 0 auto;
 }
@@ -1146,19 +1121,26 @@ section {
   padding: 20px;
 }
 
+
 .portfolio .portfolio-wrap .portfolio-info h4 {
-  font-size: 20px;
+  font-size: 13px;
   color: #fff;
   font-weight: 600;
 }
 
 .portfolio .portfolio-wrap .portfolio-info p {
   color: rgba(255, 255, 255, 0.7);
-  font-size: 14px;
+  font-size: 8px;
   text-transform: uppercase;
   padding: 0;
   margin: 0;
   font-style: italic;
+}
+
+
+
+.portfolio-info p {
+  font-size: 14px;
 }
 
 .portfolio .portfolio-wrap .portfolio-links {
@@ -1219,7 +1201,8 @@ section {
 }
 
 .portfolio-details .portfolio-info {
-  padding: 30px;
+  padding: 2% 2% 2% 2%;
+  text-align: center;
   box-shadow: 0px 0 30px rgba(34, 34, 34, 0.08);
 }
 
@@ -1251,13 +1234,33 @@ section {
   margin-bottom: 20px;
 }
 
-.portfolio-details .portfolio-description p {
+.portfolio-details .portfolio-info .portfolio-description p {
   padding: 0;
+  font-size: small;
+}
+
+#destaque {
+  font-weight: bold;
 }
 
 /*--------------------------------------------------------------
 # Contact
 --------------------------------------------------------------*/
+
+.maps {
+  width: 100%;
+  height: 90%;
+  margin-top: 1rem;
+}
+
+@media (max-width: 992px) {
+  .maps {
+    width: 100%;
+    height: 20rem;
+    margin-top: 1rem;
+  }
+}
+
 .contact .info {
   width: 100%;
   background: #fff;
@@ -1290,6 +1293,8 @@ section {
   margin-bottom: 0;
   font-size: 14px;
   color: #555555;
+  margin: 1rem;
+
 }
 
 .contact .info .email,
@@ -1392,6 +1397,7 @@ section {
     transform: rotate(360deg);
   }
 }
+
 
 /*--------------------------------------------------------------
 # Footer
