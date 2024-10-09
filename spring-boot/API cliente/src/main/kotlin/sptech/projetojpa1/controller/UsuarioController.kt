@@ -455,7 +455,11 @@ class UsuarioController(
         return usuarioService.top3CidadesPorPorcentagemClientes()
     }
 
-
+    @GetMapping("/buscar-leads")
+    fun buscarLeads(): ResponseEntity<List<Map<String, Any>>> {
+        val leads = usuarioService.listarLeads()
+        return ResponseEntity.ok(leads)
+    }
 
 
 }

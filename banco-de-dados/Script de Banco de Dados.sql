@@ -20,6 +20,7 @@ DROP TABLE IF EXISTS nivel_acesso;
 DROP TABLE IF EXISTS endereco;
 DROP TABLE IF EXISTS status;
 DROP PROCEDURE IF EXISTS gerar_agendamentos_aleatorios;
+DROP TABLE IF EXISTS Leads;
 
 CREATE TABLE endereco (
     id_endereco INT AUTO_INCREMENT PRIMARY KEY,
@@ -182,6 +183,16 @@ CREATE TABLE feedback (
 		especialidade VARCHAR(255),
 		FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
 	);
+    
+    CREATE TABLE Leads (
+    id_lead INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    telefone BIGINT NOT NULL,
+    instagram VARCHAR(255),
+    mensagem TEXT,
+    data_criacao DATETIME
+);
 
 INSERT INTO endereco (logradouro, cep, bairro, cidade, estado, numero, complemento)
 VALUES 
@@ -255,7 +266,7 @@ VALUES
 ('Larissa Nunes', 'larissa@refinada.com', 'senha123', '@larissarefinada', '224.744.500-41', 71987654326, '1987-07-07', 'Feminino', 'Instagram', TRUE, 2, 7, 7, 7),
 ('Tatiana Melo', 'tatiana@ouro.com', 'senha123', '@tatiouro', '784.563.970-24', 81987654327, '1985-08-08', 'Feminino', 'Indicação de Amiga', TRUE, 2, 8, 8, 8),
 ('Paula Gomes', 'paula@cilios.com', 'senha123', '@paulagomes', '999.999.999-99', 91987654328, '1982-09-09', 'Feminino', 'Indicação Familiar', TRUE, 2, 9, 9, 9),
-('Cecília Costa', 'cecilia@elegantes.com', 'senha123', '@ceciliaelegantes', '101.010.101-10', 11987654329, '1989-10-10', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10),
+('Marília Costa', 'cecilia@elegantes.com', 'senha123', '@ceciliaelegantes', '101.010.101-10', 11987654329, '1989-10-19', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10),
 ('Cecília Costa', 'cecilia@elegantes.com', 'senha123', '@ceciliaelegantes', '101.010.101-10', 11987654329, '1989-10-10', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10),
 ('Lucas Lima', 'lucas@novidade.com', 'senha123', '@lucaslima', '111.111.111-12', 11987654322, '1981-11-01', 'Masculino', 'Instagram', TRUE, 1, 1, 1, NULL),
 ('Fernanda Santos', 'fernanda@novidade.com', 'senha123', '@fernandasantos', '222.222.222-23', 22987654323, '1982-11-15', 'Feminino', 'Indicação Familiar', TRUE, 2, 2, 2, 2),
@@ -335,6 +346,7 @@ BEGIN
   DECLARE dia_atual DATE;
   DECLARE fim DATE;
   DECLARE qtd_agendamentos INT;
+
   DECLARE hora_aleatoria TIME;
   DECLARE mes_atual INT;
   DECLARE usuario_fidelizado INT;
@@ -393,8 +405,6 @@ BEGIN
 
 END //
 
-
-
 DELIMITER ;
 
 CALL gerar_agendamentos_aleatorios();
@@ -436,6 +446,14 @@ VALUES
 (9, 11, 4.8, 'Designer de Sobrancelhas', 'Sobrancelhas'),
 (10, 5, 4.3, 'Maquiadora Social', 'Maquiagem');
 
+INSERT INTO Leads (nome, email, telefone, instagram, mensagem, data_criacao)
+VALUES 
+('Maria Silva', 'maria.silva@example.com', 11987654321, '@mariasilva', 'Gostaria de saber mais sobre seus serviços.', NOW()),
+('João Pereira', 'joao.pereira@example.com', 11912345678, '@joaopereira', 'Tenho interesse em fazer uma extensão de cílios.', NOW()),
+('Ana Souza', 'ana.souza@example.com', 11987611234, NULL, 'Quais são os valores para design de sobrancelha?', NOW()),
+('Carla Oliveira', 'carla.oliveira@example.com', 11933332222, '@carlaoliveira', 'Vi uma promoção no Instagram e quero mais detalhes.', NOW()),
+('Pedro Santos', 'pedro.santos@example.com', 11998765432, '@pedrosantos', 'Como funciona o procedimento de volume russo?', NOW());
+
 UPDATE usuario 
 SET dtype = 'Cliente' 
 WHERE fk_nivel_acesso = 2;
@@ -444,3 +462,8 @@ UPDATE usuario
 SET dtype = 'Profissional' 
 WHERE fk_nivel_acesso = 1;
 
+SELECT * FROM leads;
+
+        SELECT l.id_lead, l.nome, l.email, l.telefone 
+                FROM leads l 
+                ORDER BY l.id_lead ASC;

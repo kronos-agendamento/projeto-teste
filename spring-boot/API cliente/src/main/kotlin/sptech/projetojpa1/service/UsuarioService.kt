@@ -493,7 +493,7 @@ class UsuarioService(
             .take(3) // Retorna apenas os top 3
     }
 
-
+    fun listarLeads(): List<Map<String, Any>> = usuarioRepository.listarLeads()
 
 
 }
