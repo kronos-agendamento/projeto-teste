@@ -82,6 +82,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Gráfico 1 - Operacional
             agendamentosStatus: '/api/agendamentos/agendamento-status',
+            agendamentosReceitaUltimosTresMeses: '/api/agendamentos/receita-ultimos-tres-meses',
+            agendamentosTempoGastoUltimoMes: '/api/agendamentos/tempo-gasto-ultimo-mes',
 
             // Gráfico 1 - Usabilidade
             ultimosAgendamentosRealizados5Meses: '/api/agendamentos/agendamentos-realizados-ultimos-cinco-meses'
@@ -123,9 +125,10 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchData(endpoints.agendamentosProcedimentosLabels, updateChart4Labels);
         fetchData(endpoints.agendamentosProcedimentos, updateChart4);
 
-        // Chamada para atualizar os dados do gráfico 1 - Usabilidade
-        fetchData(endpoints.agendamentosStatus, updateChartOperacional1)
-
+        // Chamada para atualizar os dados do gráfico 1 - Operacional
+        fetchData(endpoints.agendamentosStatus, updateChartOperacional1);
+        fetchData(endpoints.agendamentosReceitaUltimosTresMeses, updateChartReceitaProcedimentosOperacional4);
+        fetchData(endpoints.agendamentosTempoGastoUltimoMes, updateChartTempoGastoOperacional2);
 
         // Chamada para atualizar os dados do gráfico 1 - Usabilidade
         fetchData(endpoints.ultimosAgendamentosRealizados5Meses, updateChartUsabilidade1)
@@ -206,14 +209,24 @@ document.addEventListener('DOMContentLoaded', function () {
     const ctx1 = document.getElementById('chart1').getContext('2d');
     let chart1;
 
+    // constantes dos gráficos de usabilidade
     let dataChartUsabilidade1 = null;
     let labelsChartUsabilidade1 = lastFiveMonths;
     const ctxUsabilidade1 = document.getElementById('chartUsabilidade1').getContext('2d');
     let chartUsabilidade1;
 
+    // constantes dos gráficos operacionais
     let dataChartOperacional1 = null;
     const ctxOperacional1 = document.getElementById('chartOperacional1').getContext('2d');
     let chartOperacional1;
+
+    let dataChartOperacional4 = null;
+    const ctxOperacional4 = document.getElementById('chartReceitaProcedimentosOperacional4').getContext('2d');
+    let chartOperacional4;
+
+    let dataChartOperacional2 = null;
+    const ctxOperacional2 = document.getElementById('chartTempoGastoProcedimentosOperacional2').getContext('2d');
+    let chartOperacional2;
 
     
 
@@ -240,6 +253,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Chama a função para criar/atualizar o gráfico
     createChartOperacional1();
+    }
+    function updateChartReceitaProcedimentosOperacional4(data) {
+        // Usando Object.entries() para obter as chaves (procedimentos) e valores (receita)
+        const labels = Object.keys(data);  // Isso pega as chaves: ["Maquiagem", "Sobrancelha", "Cilios"]
+        const dataChartReceita = Object.values(data);  // Isso pega os valores: [4550, 2540, 1720]
+    
+        // Agora você pode passar os 'labels' e 'dataChartReceita' para a função de criação do gráfico
+        createChartReceitaProcedimentosOperacional4(labels, dataChartReceita);
+    }
+    function updateChartTempoGastoOperacional2(data) {
+         // Mapeia os dados recebidos (objeto) para labels e valores do gráfico
+    const labels = Object.keys(data);  // Procedimentos (ex: Maquiagem, Sobrancelha, etc.)
+    const dataChart = Object.values(data);  // Tempos totais (ex: 350, 120, etc.)
+
+    // Se o gráfico já foi criado, apenas atualiza os dados e rótulos
+    
+        // Se o gráfico ainda não existe, cria-o pela primeira vez
+        createChartTempoGastoProcedimentosOperacional2(labels, dataChart);
+    
     }
     function updateChart2_1(data) {
         dataChart2_1 = data;
@@ -582,6 +614,60 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+    function createChartReceitaProcedimentosOperacional4(labels, dataChartReceita) {
+        const ctx = document.getElementById('chartReceitaProcedimentosOperacional4').getContext('2d');
+    
+        // Criação do novo gráfico
+        window.chartReceitaProcedimentosOperacional4 = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels, // Passando os nomes dos procedimentos como labels
+                datasets: [{
+                    label: 'Receita Total (R$)',
+                    data: dataChartReceita, // Passando as receitas como dados
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                    borderColor: '#4B0082',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+    // Função para criar o gráfico pela primeira vez
+    function createChartTempoGastoProcedimentosOperacional2(labels, dataChart) {
+    const ctxOperacional2 = document.getElementById('chartTempoGastoProcedimentosOperacional2').getContext('2d');
+
+    // Criação do gráfico com Chart.js
+    chartTempoGastoProcedimentos = new Chart(ctxOperacional2, {
+        type: 'bar',  // Tipo de gráfico (barras)
+        data: {
+            labels: labels,  // Procedimentos como rótulos (ex: Maquiagem, Sobrancelha)
+            datasets: [{
+                label: 'Tempo Total Gasto (minutos)',  // Título do gráfico
+                data: dataChart,  // Tempos totais como dados
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],  // Cores para as barras
+                borderColor: '#4B0082',  // Cor da borda
+                borderWidth: 1  // Largura da borda
+            }]
+        },
+        options: {
+            responsive: true,  // Responsivo para diferentes tamanhos de tela
+            scales: {
+                y: {
+                    beginAtZero: true  // Eixo Y começa no zero
+                }
+            }
+        }
+    });
+    }
+    
 
 
 

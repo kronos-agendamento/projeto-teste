@@ -1,6 +1,5 @@
 package sptech.projetojpa1.repository
 
-import org.hibernate.query.NativeQuery
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
@@ -83,6 +82,56 @@ interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
     """
     )
     fun findTotalAgendamentosFuturos(): Int
+
+    @Query(
+        nativeQuery = true, value = """
+        SELECT p.tipo AS procedimento, 
+               SUM(CASE 
+                   WHEN a.tipo_agendamento = 'colocacao' THEN e.preco_colocacao
+                   WHEN a.tipo_agendamento = 'manutencao' THEN e.preco_manutencao
+                   WHEN a.tipo_agendamento = 'retirada' THEN e.preco_retirada
+               END) AS totalReceita
+        FROM agendamento a
+        JOIN especificacao e ON a.fk_especificacao_procedimento = e.id_especificacao_procedimento
+        JOIN procedimento p ON e.fk_procedimento = p.id_procedimento
+        WHERE a.data_horario >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+        GROUP BY p.tipo;
+        """
+    )
+    fun findTotalReceitaUltimosTresMeses(): List<Array<Any>>
+
+
+        @Query(
+            nativeQuery = true, value = """
+        SELECT 
+    p.tipo AS Procedimento, 
+    SUM(
+        CASE 
+            WHEN a.tipo_agendamento = 'colocacao' THEN TIME_TO_SEC(e.tempo_colocacao)
+            WHEN a.tipo_agendamento = 'manutencao' THEN TIME_TO_SEC(e.tempo_manutencao)
+            WHEN a.tipo_agendamento = 'retirada' THEN TIME_TO_SEC(e.tempo_retirada)
+            ELSE 0
+        END
+    ) / 60 AS Tempo_Total_Minutos
+FROM 
+    agendamento a
+JOIN 
+    especificacao e ON a.fk_especificacao_procedimento = e.id_especificacao_procedimento
+JOIN 
+    procedimento p ON e.fk_procedimento = p.id_procedimento
+WHERE 
+    a.data_horario >= DATE_FORMAT(CURDATE() - INTERVAL 1 MONTH, '%Y-%m-01')
+    AND a.data_horario < DATE_FORMAT(CURDATE(), '%Y-%m-01')
+GROUP BY 
+    p.tipo
+ORDER BY 
+    p.tipo;
+
+        """
+        )
+        fun findTempoGastoPorProcedimentoUltimoMes(): List<Array<Any>>  // Retorna uma lista de objetos com Procedimento e Tempo_Total
+
+
 
     @Query(
         nativeQuery = true, value = """ 
