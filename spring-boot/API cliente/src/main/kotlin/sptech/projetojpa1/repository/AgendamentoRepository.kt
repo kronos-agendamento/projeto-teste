@@ -100,6 +100,55 @@ interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
     )
     fun findTotalReceitaUltimosTresMeses(): List<Array<Any>>
 
+    @Query(
+        nativeQuery = true, value = """
+        SELECT 
+            p.tipo AS Procedimento, 
+            COUNT(*) AS soma_qtd
+        FROM 
+            agendamento a
+        JOIN 
+            especificacao e ON a.fk_especificacao_procedimento = e.id_especificacao_procedimento
+        JOIN 
+            procedimento p ON e.fk_procedimento = p.id_procedimento
+        WHERE 
+            a.data_horario >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+        GROUP BY 
+            p.tipo
+        ORDER BY 
+            soma_qtd DESC;
+        """
+    )
+    fun findProcedimentosRealizadosUltimoTrimestre(): List<Array<Any>>
+
+    @Query(
+        nativeQuery = true, value = """
+        SELECT 
+            p.tipo AS Procedimento, 
+            SUM(
+                CASE 
+                    WHEN a.tipo_agendamento = 'colocacao' THEN e.preco_colocacao * (TIME_TO_SEC(e.tempo_colocacao) / 3600)
+                    WHEN a.tipo_agendamento = 'manutencao' THEN e.preco_manutencao * (TIME_TO_SEC(e.tempo_manutencao) / 3600)
+                    WHEN a.tipo_agendamento = 'retirada' THEN e.preco_retirada * (TIME_TO_SEC(e.tempo_retirada) / 3600)
+                    ELSE 0
+                END
+            ) AS Valor_Total_Procedimento
+        FROM 
+            agendamento a
+        JOIN 
+            especificacao e ON a.fk_especificacao_procedimento = e.id_especificacao_procedimento
+        JOIN 
+            procedimento p ON e.fk_procedimento = p.id_procedimento
+        WHERE 
+            a.data_horario >= DATE_FORMAT(CURDATE() - INTERVAL 1 MONTH, '%Y-%m-01')
+            AND a.data_horario < DATE_FORMAT(CURDATE(), '%Y-%m-01')
+        GROUP BY 
+            p.tipo
+        ORDER BY 
+            p.tipo;
+        """
+    )
+    fun findValorTotalUltimoMesPorProcedimento(): List<Array<Any>>
 
         @Query(
             nativeQuery = true, value = """

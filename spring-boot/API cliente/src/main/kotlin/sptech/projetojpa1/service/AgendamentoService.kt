@@ -113,7 +113,23 @@ class AgendamentoService(
                 }
         }
 
+    fun obterProcedimentosRealizadosUltimoTrimestre(): Map<String, Int> {
+        return agendamentoRepository.findProcedimentosRealizadosUltimoTrimestre()
+            .associate {
+                val procedimento = it[0] as String
+                val somaQtd = (it[1] as Number).toInt()
+                procedimento to somaQtd
+            }
+    }
 
+    fun obterValorTotalUltimoMesPorProcedimento(): Map<String, Double> {
+        return agendamentoRepository.findValorTotalUltimoMesPorProcedimento()
+            .associate {
+                val procedimento = it[0] as String
+                val valorTotal = (it[1] as Number).toDouble()
+                procedimento to valorTotal  // Criamos um par (chave, valor) para o Map
+            }
+    }
 
 
     fun agendamentosRealizadosUltimos5Meses(): List<Int> {

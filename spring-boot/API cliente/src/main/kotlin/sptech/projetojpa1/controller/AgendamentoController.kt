@@ -175,7 +175,17 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
             return ResponseEntity.ok(tempoGasto)
         }
 
+    @GetMapping("/procedimentos-realizados-trimestre")
+    fun getProcedimentosRealizadosUltimoTrimestre(): ResponseEntity<Map<String, Int>> {
+        val procedimentosRealizados = agendamentoService.obterProcedimentosRealizadosUltimoTrimestre()
+        return ResponseEntity.ok(procedimentosRealizados)
+    }
 
+    @GetMapping("/valor-total-ultimo-mes")
+    fun getValorTotalUltimoMesPorProcedimento(): ResponseEntity<Map<String, Double>> {
+        val valorTotalProcedimentos = agendamentoService.obterValorTotalUltimoMesPorProcedimento()
+        return ResponseEntity.ok(valorTotalProcedimentos)
+    }
 
     @Operation(
         summary = "Obtém a quantidade de agendamentos realizados no último trimestre",
