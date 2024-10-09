@@ -1,197 +1,248 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 
 @media (max-width: 5000px) {
+  :root {
+    --font-size-default: 16px;
+  }
 
-    :root {
-        --font-size-default: 16px;
-    }
+  body {
+    font-size: var(--font-size-default);
+    font-family: Poppins, sans-serif;
+    padding: 2rem;
+  }
 
+  h2,
+  span,
+  button {
+    transition: font-size 0.3s ease;
+  }
+
+  @media (max-width: 768px) {
     body {
-        font-size: var(--font-size-default);
-        font-family: Poppins, sans-serif;
-        padding: 2rem;
+      font-size: 14px;
     }
+  }
 
-    h2,
-    span,
-    button {
-        transition: font-size 0.3s ease;
-    }
+  .nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #d9006c;
+    display: flex;
+    justify-content: space-around;
+    padding: 1rem 0;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+  }
 
-    /* Font size adjustment for responsiveness */
-    @media (max-width: 768px) {
-        body {
-            font-size: 14px;
-        }
-    }
+  .nav-bar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+  }
 
-    .nav-bar {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background-color: #d9006c;
-        display: flex;
-        justify-content: space-around;
-        padding: 1rem 0;
-        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
-        z-index: 1000;
-    }
+  /* Estilo para os itens da navbar */
+  .nav-bar ul li {
+    flex: 1;
+    text-align: center;
+  }
 
-    .nav-bar ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: relative;
-    }
+  /* Estilo para o botão central */
+  .nav-bar .central {
+    position: relative;
+    /* Levanta o botão central */
+  }
 
-    /* Estilo para os itens da navbar */
-    .nav-bar ul li {
-        flex: 1;
-        text-align: center;
-    }
+  .nav-bar .central a {
+    background-color: #000;
+    color: white;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
 
-    /* Estilo para o botão central */
-    .nav-bar .central {
-        position: relative;
-        /* Levanta o botão central */
-    }
+  /* Estilo para os outros ícones */
+  .nav-bar .list a {
+    text-decoration: none;
+    color: #000;
+    display: flex;
+    flex-direction: column;
+  }
 
-    .nav-bar .central a {
-        background-color: #000;
-        color: white;
-        border-radius: 50%;
-        width: 60px;
-        height: 60px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 28px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    }
+  /* Estilo dos ícones */
+  .nav-bar .icon {
+    font-size: 24px;
+    color: #000;
+  }
 
-    /* Estilo para os outros ícones */
-    .nav-bar .list a {
-        text-decoration: none;
-        color: #000;
-        display: flex;
-        flex-direction: column
-    }
+  .pesquisa img {
+    width: 1.5rem;
+  }
 
-    /* Estilo dos ícones */
-    .nav-bar .icon {
-        font-size: 24px;
-        color: #000;
-    }
+  .pesquisa {
+    display: flex;
+    flex-direction: row-reverse;
+  }
 
+  /* Formulario */
 
-    .pesquisa img {
-        width: 1.5rem;
-    }
+  .hidden {
+    display: none;
+  }
 
-    .pesquisa {
-        display: flex;
-        flex-direction: row-reverse;
-    }
+  #agendamento {
+    margin-bottom: 5rem;
+  }
 
-    /* Formulario */
+  .form-group {
+    margin-bottom: 15px;
+  }
 
-    .hidden {
-        display: none;
-    }
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
 
-    #agendamento {
-        margin-bottom: 5rem;
-    }
+  .form-input {
+    width: 100%;
+  }
 
-    .form-group {
-        margin-bottom: 15px;
-    }
+  .options-agendamento {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem;
+  }
 
-    .form-group label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
+  .options-agendamento-make {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    margin: 2rem;
+  }
 
-    }
+  .agendamento select,
+  .agendamento input {
+    padding: 1vw;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 0.2vw;
+    width: 90%;
+    justify-content: center;
+    background-color: #fff0f5;
+  }
 
-    .form-input {
-        width: 100%;
+  .agendamento img {
+    width: 7rem;
+    height: auto;
+    border-radius: 1rem;
+    text-align: center;
+    flex-basis: calc(40% - 1rem); /* Calcula a largura para duas colunas */
+  }
 
-    }
+  .agendamento span {
+    text-align: center;
+    font-weight: bold;
+    font-size: smaller;
+  }
 
-    .options-agendamento {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin: 1rem;
-    }
+  .imagens {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+  }
 
-    .options-agendamento-make {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-around;
-        margin: 2rem;
-    }
+  .content {
+    display: flex;
+    justify-content: center;
+  }
 
-    .agendamento select,
-    .agendamento input {
-        padding: 1vw;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        margin: 0.2vw;
-        width: 90%;
-        justify-content: center;
-        background-color: #fff0f5;
-    }
+  .save-button {
+    padding: 3vw;
+    background-color: #fff0f5;
+    border-radius: 1vh;
+    display: flex;
+    align-items: center;
+    border: 1px solid #7c7e80;
+  }
 
-    .agendamento img {
-        width: 7rem;
-        height: auto;
-        border-radius: 1rem;
-        text-align: center;
-        flex-basis: calc(40% - 1rem); /* Calcula a largura para duas colunas */
-    }
+  #icon-save {
+    width: 1rem;
+  }
+}
 
-    .agendamento span{
-        text-align: center;
-        font-weight: bold;
-        font-size: smaller;
-    }
+.horarios-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 
+.horario-button {
+  padding: 10px;
+  border: none;
+  border-radius: 50%;
+  margin: 5px;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
 
-    .imagens {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: center;
-        
-    }
+.horario-button:hover {
+  background-color: #ddd;
+}
 
+.horario-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
 
-    .content {
-        display: flex;
-        justify-content: center;
+.horario-button.selected {
+  background-color: #e70069; /* Cor para o horário selecionado */
+  color: white;
+}
 
-    }
+.hidden {
+  display: none;
+}
 
-    .save-button{
-        padding: 3vw;
-        background-color: #fff0f5;
-        border-radius: 1vh;
-        display: flex;
-        align-items: center;
-        border: 1px solid #7c7e80;
-    }
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
 
+.notification.show {
+  opacity: 1;
+}
 
-    #icon-save{
-        width: 1rem;
-    }
+.notification.error {
+  background-color: #dc3545;
+}
 
+.notification svg {
+  margin-right: 10px;
 }
