@@ -1,7 +1,7 @@
-  let seconds = 0
-  let timer = null;
-  
-  document.addEventListener("DOMContentLoaded", function () {
+let seconds = 0;
+let timer = null;
+
+document.addEventListener("DOMContentLoaded", function () {
   const apiUrlClientes = "http://localhost:8080/usuarios";
   const apiUrlProcedimentos = "http://localhost:8080/api/procedimentos";
   const apiUrlEspecificacoes = "http://localhost:8080/api/especificacoes";
@@ -18,7 +18,6 @@
   const saveButton = document.getElementById("save-agendamento-button");
 
   let especificacoes = []; // Array para armazenar todas as especificações
-  
 
   async function carregarClientes() {
     try {
@@ -197,7 +196,7 @@
     }
 
     const dataHorario = new Date(`${data}T${horario}.000Z`).toISOString();
-    console.log(seconds+"antes do const")
+    console.log(seconds + "antes do const");
     const agendamento = {
       fk_usuario: parseInt(clienteId, 10),
       fk_procedimento: parseInt(procedimentoId, 10),
@@ -209,7 +208,7 @@
     };
 
     try {
-      console.log(seconds+" segundos aí rapaiz")
+      console.log(seconds + " segundos aí rapaiz");
       const response = await fetch(apiUrlCriarAgendamento, {
         method: "POST",
         headers: {
@@ -223,6 +222,7 @@
         console.log(agendamento);
         showNotification("Agendamento criado com sucesso!");
         setTimeout(() => {
+          window.location.href = "../agendamentos.html";
         }, 1000);
       } else {
         const errorMsg = await response.text();
@@ -272,33 +272,36 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Função que será executada quando o valor do select mudar
 document.addEventListener("DOMContentLoaded", function () {
-   // Variável que irá armazenar o intervalo
+  // Variável que irá armazenar o intervalo
 
   // Função que será executada quando o valor do select mudar
-  document.getElementById('procedimentos').addEventListener('change', function () {
-    const selectedValue = this.value;
+  document
+    .getElementById("procedimentos")
+    .addEventListener("change", function () {
+      const selectedValue = this.value;
 
-    if (selectedValue !== "") { // Se o valor selecionado não for vazio
-      if (!timer) { // Verifica se o timer já está rodando
-        timer = setInterval(() => {
-          seconds++; // Incrementa a variável a cada segundo
-          console.log(`Segundos: ${seconds}`);
-        }, 1000); // 1000 ms = 1 segundo
+      if (selectedValue !== "") {
+        // Se o valor selecionado não for vazio
+        if (!timer) {
+          // Verifica se o timer já está rodando
+          timer = setInterval(() => {
+            seconds++; // Incrementa a variável a cada segundo
+            console.log(`Segundos: ${seconds}`);
+          }, 1000); // 1000 ms = 1 segundo
+        }
       }
-    }
-  })
+    });
 
-  document.getElementById('save-agendamento-button').addEventListener('click', function () {
-    if (timer) {
-      clearInterval(timer); // Para o timer
-      timer = null; // Reseta o timer
-      console.log(`Contagem parada em: ${seconds} segundos`);
-    }
-  });
+  document
+    .getElementById("save-agendamento-button")
+    .addEventListener("click", function () {
+      if (timer) {
+        clearInterval(timer); // Para o timer
+        timer = null; // Reseta o timer
+        console.log(`Contagem parada em: ${seconds} segundos`);
+      }
+    });
 });
-
-
-
 
 //     function sendSecondsToServer() {
 //         fetch('http://localhost:8080/api/agendamentos/', { // Substitua pela URL do seu servidor
