@@ -188,5 +188,15 @@ ORDER BY
 
     abstract fun save(cliente: Cliente): Cliente
 
+    @Query(
+        nativeQuery = true, value =
+"""       
+     SELECT l.id_lead, l.nome, l.email, l.telefone, l.instagram, l.mensagem
+                FROM leads l
+                ORDER BY l.id_lead ASC;
+                """
+    )
+    fun listarLeads(): List<Map<String, Any>>
+
 
 }
