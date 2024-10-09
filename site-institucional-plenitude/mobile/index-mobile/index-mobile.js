@@ -8,26 +8,42 @@ document.addEventListener('DOMContentLoaded', function() {
     rootElement.style.setProperty('--font-size-default', currentFontSize);
     document.body.style.fontSize = currentFontSize; // Aplicar o tamanho de fonte ao body
 
+    const defaultFontSize = parseFloat(currentFontSize); // Tamanho inicial de referência
+    let currentIncrease = 0; // Contador de aumentos
+    let currentDecrease = 0; // Contador de diminuições
+    const maxAdjustments = 2; // Limitar o número de vezes que o tamanho da fonte pode ser alterado
+
     // Função para aumentar o tamanho da fonte
     increaseFontBtn.addEventListener('click', function() {
-        let newSize = parseFloat(currentFontSize) + 1;
-        currentFontSize = `${newSize}px`;
-        rootElement.style.setProperty('--font-size-default', currentFontSize);
-        document.body.style.fontSize = currentFontSize; // Aplicar o novo tamanho ao body
-        localStorage.setItem('fontSize', currentFontSize);
-    });
-
-    // Função para diminuir o tamanho da fonte
-    decreaseFontBtn.addEventListener('click', function() {
-        let newSize = parseFloat(currentFontSize) - 1;
-        if (newSize >= 12) {  // Limitar tamanho mínimo da fonte
+        if (currentIncrease < maxAdjustments) {
+            let newSize = parseFloat(currentFontSize) + 2; // Aumentar de 2px
             currentFontSize = `${newSize}px`;
             rootElement.style.setProperty('--font-size-default', currentFontSize);
             document.body.style.fontSize = currentFontSize; // Aplicar o novo tamanho ao body
             localStorage.setItem('fontSize', currentFontSize);
+            
+            currentIncrease++; // Incrementar o contador de aumentos
+            currentDecrease = 0; // Resetar o contador de diminuições para permitir novo ciclo
+        }
+    });
+
+    // Função para diminuir o tamanho da fonte
+    decreaseFontBtn.addEventListener('click', function() {
+        if (currentDecrease < maxAdjustments) {
+            let newSize = parseFloat(currentFontSize) - 2; // Diminuir de 2px
+            if (newSize >= defaultFontSize - 4) {  // Limitar a diminuição a 4px abaixo do tamanho inicial
+                currentFontSize = `${newSize}px`;
+                rootElement.style.setProperty('--font-size-default', currentFontSize);
+                document.body.style.fontSize = currentFontSize; // Aplicar o novo tamanho ao body
+                localStorage.setItem('fontSize', currentFontSize);
+                
+                currentDecrease++; // Incrementar o contador de diminuições
+                currentIncrease = 0; // Resetar o contador de aumentos para permitir novo ciclo
+            }
         }
     });
 });
+
 
 
 function saudacao() {
