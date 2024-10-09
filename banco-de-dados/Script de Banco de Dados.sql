@@ -266,7 +266,7 @@ VALUES
 ('Larissa Nunes', 'larissa@refinada.com', 'senha123', '@larissarefinada', '224.744.500-41', 71987654326, '1987-07-07', 'Feminino', 'Instagram', TRUE, 2, 7, 7, 7),
 ('Tatiana Melo', 'tatiana@ouro.com', 'senha123', '@tatiouro', '784.563.970-24', 81987654327, '1985-08-08', 'Feminino', 'Indicação de Amiga', TRUE, 2, 8, 8, 8),
 ('Paula Gomes', 'paula@cilios.com', 'senha123', '@paulagomes', '999.999.999-99', 91987654328, '1982-09-09', 'Feminino', 'Indicação Familiar', TRUE, 2, 9, 9, 9),
-('Cecília Costa', 'cecilia@elegantes.com', 'senha123', '@ceciliaelegantes', '101.010.101-10', 11987654329, '1989-10-10', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10),
+('Marília Costa', 'cecilia@elegantes.com', 'senha123', '@ceciliaelegantes', '101.010.101-10', 11987654329, '1989-10-19', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10),
 ('Cecília Costa', 'cecilia@elegantes.com', 'senha123', '@ceciliaelegantes', '101.010.101-10', 11987654329, '1989-10-10', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10),
 ('Lucas Lima', 'lucas@novidade.com', 'senha123', '@lucaslima', '111.111.111-12', 11987654322, '1981-11-01', 'Masculino', 'Instagram', TRUE, 1, 1, 1, NULL),
 ('Fernanda Santos', 'fernanda@novidade.com', 'senha123', '@fernandasantos', '222.222.222-23', 22987654323, '1982-11-15', 'Feminino', 'Indicação Familiar', TRUE, 2, 2, 2, 2),
@@ -462,5 +462,8 @@ UPDATE usuario
 SET dtype = 'Profissional' 
 WHERE fk_nivel_acesso = 1;
 
-SELECT * FROM Leads;
+SELECT * FROM leads;
 
+        SELECT l.id_lead, l.nome, l.email, l.telefone 
+                FROM leads l 
+                ORDER BY l.id_lead ASC;
