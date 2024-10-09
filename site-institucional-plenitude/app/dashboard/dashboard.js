@@ -632,7 +632,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 datasets: [{
                     label: 'Qtd Agendamentos',
                     data: dataChartOperacional1,
-                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#E84E8A', '#F59DBF'],
+                    backgroundColor: ['#FF6384',  '#D2135D', '#E84E8A', '#D94F4F','#C13584']
+
+                    ,
                     borderColor: '#D2135D',
                     fill: false
                 }]
@@ -659,7 +661,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 datasets: [{
                     label: 'Receita Total (R$)',
                     data: dataChartReceita, // Passando as receitas como dados
-                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                    backgroundColor: ['#D2135D', '#E84E8A', '#F59DBF'],
                     borderColor: '#4B0082',
                     borderWidth: 1
                 }]
@@ -686,7 +688,7 @@ document.addEventListener('DOMContentLoaded', function () {
             datasets: [{
                 label: 'Tempo Total Gasto (minutos)',  // Título do gráfico
                 data: dataChart,  // Tempos totais como dados
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],  // Cores para as barras
+                backgroundColor: ['#D2135D', '#E84E8A', '#F59DBF'],  // Cores para as barras
                 borderColor: '#4B0082',  // Cor da borda
                 borderWidth: 1  // Largura da borda
             }]
@@ -712,7 +714,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 datasets: [{
                     label: 'Quantidade de Procedimentos Realizados',  // Rótulo da barra
                     data: dataChart,  // Quantidade total de procedimentos realizados
-                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],  // Cores das barras
+                    backgroundColor: ['#FF6384', '#D2135D', '#E84E8A', '#C13584', '#D94F4F'],  // Cores das barras
                     borderColor: '#4B0082',  // Cor da borda
                     borderWidth: 1  // Largura da borda
                 }]
@@ -739,7 +741,7 @@ function createChartValorTotalUltimoMesOperacional5(labels, dataChart) {
             datasets: [{
                 label: 'Valor Total em R$ no Último Mês',  // Rótulo do gráfico
                 data: dataChart,  // Valores totais em dinheiro para cada procedimento
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],  // Cores das barras
+                backgroundColor: ['#FF6384', '#D2135D', '#E84E8A', '#C13584', '#D94F4F'],  // Cores das barras
                 borderColor: '#4B0082',  // Cor da borda
                 borderWidth: 1  // Largura da borda
             }]
