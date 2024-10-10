@@ -100,7 +100,7 @@
               </button></a>
             <div class="right-actions">
               <button class="planilha-btn" onclick="showForm2(), getDesativadas()">
-                <img src="../../assets/icons/createNew.png" alt="spreadsheet" />Perguntas Desativadas
+                <img src="../../assets/icons/desativar.webp" alt="spreadsheet" />Perguntas Desativadas
               </button>
               <button class="criar-btn" onclick="showForm()">
                 <img src="../../assets/icons/createNew.png" alt="createNew" />
@@ -134,25 +134,32 @@
             <div class="content-box">
               <div class="content">
                 <div class="form-group form-input">
-                  <label for="descricao">Já fez alguma cirurgia? Se sim, qual?</label>
+                  <label for="descricao" id="pergunta1Label"></label>
                   <div class="input-content">
-                    <input type="text" id="inputCirurgia" name="cirurgia" />
+                    <input type="text" id="idResposta1" name="resposta1" />
 
 
                     <button id="openStatusModalBtn2" class="edit">
                       <img src="../../assets/icons/pen.png" alt="createNew" />
                     </button>
+                    <button id="openStatusModalBtn3" class="delete" onclick="showForm3(), deletarPergunta(1)">
+                      <img src="../../assets/icons/excluir.png" alt="trashCan">
+                    </button>
                   </div>
 
                 </div>
                 <div class="form-group form-input">
-                  <label for="descricao">Faz uso de algum medicamento? Se sim, qual?</label>
-
+                  
+                    <label for="descricao" id="pergunta2Label"></label>
+                  
                   <div class="input-content">
-                    <input type="text" id="descricaoMedicamento" />
+                    <input type="text" id="idResposta2" name="resposta2"/>
 
                     <button id="openStatusModalBtn2" class="edit">
                       <img src="../../assets/icons/pen.png" alt="createNew" />
+                    </button>
+                    <button id="openStatusModalBtn3" class="delete" onclick="showForm3(), deletarPergunta(2)">
+                      <img src="../../assets/icons/excluir.png" alt="trashCan">
                     </button>
                   </div>
 
@@ -162,25 +169,31 @@
 
               <div class="content">
                 <div class="form-group form-input">
-                  <label for="descricao">Possui alergia a algum medicamento? Se sim, qual?</label>
+                  <label for="descricao" id="pergunta3Label"></label>
 
                   <div class="input-content">
-                    <input type="text" id="descricao" name="descricao" />
+                    <input type="text" id="idResposta3" name="resposta3" />
 
                     <button id="openStatusModalBtn2" class="edit">
                       <img src="../../assets/icons/pen.png" alt="createNew" />
+                    </button>
+                    <button id="openStatusModalBtn3" class="delete" onclick="showForm3(), deletarPergunta(3)">
+                      <img src="../../assets/icons/excluir.png" alt="trashCan">
                     </button>
                   </div>
                 </div>
 
                 <div class="form-group form-input">
-                  <label for="descricao">Utiliza ácido? Se sim, qual?</label>
+                  <label for="descricao" id="pergunta4Label"></label>
 
                   <div class="input-content">
-                    <input type="text" id="descricao" name="descricao" />
+                    <input type="text" id="idResposta4" name="resposta4" />
 
                     <button id="openStatusModalBtn2" class="edit">
                       <img src="../../assets/icons/pen.png" alt="createNew" />
+                    </button>
+                    <button id="openStatusModalBtn3" class="delete" onclick="showForm3(), deletarPergunta(4)">
+                      <img src="../../assets/icons/excluir.png" alt="trashCan">
                     </button>
                   </div>
 
@@ -217,7 +230,7 @@
               <thead>
               <tr>
                 <td>
-                  Descrição
+                  <b>Descrição</b>
                 </td>
               </tr>
               <tr>
@@ -231,6 +244,18 @@
             </div>
             <div>
               <button onclick="closeModal2()" class="btn btn-no">Fechar</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="modalDeletar" class="modal">
+          <div class="modal-content">
+            <div class="divTopoModal">
+              <h3>Deseja deletar a pergunta?</h3>
+            </div>
+            <div>
+              <button id="delete-button" class="btn btn-save" onclick="deletarPergunta(), closeModal3()">Sim</button>
+              <button onclick="closeModal3()" class="btn btn-no">Não</button>
             </div>
           </div>
         </div>

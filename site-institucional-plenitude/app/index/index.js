@@ -3,7 +3,7 @@ const baseUrl = "http://localhost:8080"; // Altere para o URL do seu servidor, s
 document.addEventListener("DOMContentLoaded", () => {
   const buttons = document.querySelectorAll("button");
   buttons.forEach((button) => {
-    button.addEventListener("click", () => {});
+    button.addEventListener("click", () => { });
   });
 });
 
@@ -88,9 +88,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     return horasFormatadas === 0
       ? `${minutosFormatados} min`
-      : `${horasFormatadas}h ${
-          minutosFormatados < 10 ? "0" + minutosFormatados : minutosFormatados
-        } min`;
+      : `${horasFormatadas}h ${minutosFormatados < 10 ? "0" + minutosFormatados : minutosFormatados
+      } min`;
   }
 
   const popularTabela = async () => {
@@ -558,9 +557,9 @@ function showNotification(message, isError = false) {
   }, 3000);
 }
 
- // Array com os dias da semana em português
- const diasSemana = [
-  'Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 
+// Array com os dias da semana em português
+const diasSemana = [
+  'Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira',
   'Quinta-feira', 'Sexta-feira', 'Sábado'
 ];
 
@@ -572,25 +571,25 @@ function saudacao() {
   const dataAtual = new Date();
   const horaAtual = dataAtual.getHours();
   const diaSemana = dataAtual.getDay();
-  
+
   let saudacaoTexto;
   let diasDaSemana = [
-      { nome: "Domingo", genero: "um", otimo: "ótimo" },
-      { nome: "Segunda-feira", genero: "uma", otimo: "ótima" },
-      { nome: "Terça-feira", genero: "uma", otimo: "ótima" },
-      { nome: "Quarta-feira", genero: "uma", otimo: "ótima" },
-      { nome: "Quinta-feira", genero: "uma", otimo: "ótima" },
-      { nome: "Sexta-feira", genero: "uma", otimo: "ótima" },
-      { nome: "Sábado", genero: "um", otimo: "ótimo"  }
+    { nome: "Domingo", genero: "um", otimo: "ótimo" },
+    { nome: "Segunda-feira", genero: "uma", otimo: "ótima" },
+    { nome: "Terça-feira", genero: "uma", otimo: "ótima" },
+    { nome: "Quarta-feira", genero: "uma", otimo: "ótima" },
+    { nome: "Quinta-feira", genero: "uma", otimo: "ótima" },
+    { nome: "Sexta-feira", genero: "uma", otimo: "ótima" },
+    { nome: "Sábado", genero: "um", otimo: "ótimo" }
   ];
-  
+
   // Verifica a hora do dia para a saudação
   if (horaAtual >= 0 && horaAtual < 12) {
-      saudacaoTexto = "Bom dia";
+    saudacaoTexto = "Bom dia";
   } else if (horaAtual >= 12 && horaAtual < 18) {
-      saudacaoTexto = "Boa tarde";
+    saudacaoTexto = "Boa tarde";
   } else {
-      saudacaoTexto = "Boa noite";
+    saudacaoTexto = "Boa noite";
   }
 
   // Define o gênero correto para o "um/uma" de acordo com o dia da semana
@@ -604,50 +603,50 @@ function saudacao() {
 
 }
 
-    // Função para buscar os leads
-    async function fetchLeads() {
-      try {
-          const response = await fetch(`${baseUrl}/usuarios/buscar-leads`);
-          if (!response.ok) throw new Error("Erro ao buscar os leads");
+// Função para buscar os leads
+async function fetchLeads() {
+  try {
+    const response = await fetch(`${baseUrl}/usuarios/buscar-leads`);
+    if (!response.ok) throw new Error("Erro ao buscar os leads");
 
-          const leads = await response.json();
-          renderLeads(leads); // Função para renderizar os dados dos leads
-      } catch (error) {
-          console.error("Erro ao carregar os leads:", error);
-      }
+    const leads = await response.json();
+    renderLeads(leads); // Função para renderizar os dados dos leads
+  } catch (error) {
+    console.error("Erro ao carregar os leads:", error);
+  }
+}
+
+// Função para renderizar a lista de leads no HTML (dentro da tabela)
+function renderLeads(leads) {
+  const leadsTableBody = document.querySelector("#procedures-tbody");
+
+  // Limpar o conteúdo da tabela antes de renderizar
+  leadsTableBody.innerHTML = "";
+
+  // Exibir apenas os primeiros 3 leads
+  const leadsParaExibir = leads.slice(0, 3);
+
+  if (leadsParaExibir.length === 0) {
+    leadsTableBody.innerHTML = "<tr><td colspan='5'>Nenhum lead encontrado.</td></tr>";
+    return;
   }
 
-  // Função para renderizar a lista de leads no HTML (dentro da tabela)
-  function renderLeads(leads) {
-      const leadsTableBody = document.querySelector("#leads tbody");
+  // Adicionar cada lead como uma nova linha na tabela
+  leadsParaExibir.forEach(lead => {
+    const row = document.createElement("tr");
 
-      // Limpar o conteúdo da tabela antes de renderizar
-      leadsTableBody.innerHTML = "";
-
-      // Exibir apenas os primeiros 3 leads
-      const leadsParaExibir = leads.slice(0, 3);
-
-      if (leadsParaExibir.length === 0) {
-          leadsTableBody.innerHTML = "<tr><td colspan='5'>Nenhum lead encontrado.</td></tr>";
-          return;
-      }
-
-      // Adicionar cada lead como uma nova linha na tabela
-      leadsParaExibir.forEach(lead => {
-          const row = document.createElement("tr");
-
-          row.innerHTML = `
+    row.innerHTML = `
               <td>${lead.nome}</td>
               <td>${lead.instagram}</td>
               <td>${lead.mensagem}</td>
           `;
 
-          leadsTableBody.appendChild(row);
-      });
-  }
+    leadsTableBody.appendChild(row);
+  });
+}
 
-  // Chama a função para buscar e renderizar os leads ao carregar a página
-  fetchLeads();
+// Chama a função para buscar e renderizar os leads ao carregar a página
+fetchLeads();
 
 
 

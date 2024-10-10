@@ -692,6 +692,13 @@ Inicio Respostas
   justify-content: center;
 }
 
-#modalDesatvadas table{
-margin-left: 12%; 
+#modalDesativadas table, tr, td{
+  margin-left: 12%;
+
 }
+
+#openStatusModalBtn3{
+  border: none;
+  background-color: #FFF0F5;
+}
+

@@ -105,14 +105,14 @@ class AgendamentoService(
         }
     }
 
-        fun obterTempoGastoPorProcedimentoUltimoMes(): Map<String, Double> {
-            return agendamentoRepository.findTempoGastoPorProcedimentoUltimoMes()
-                .associate {
-                    val procedimento = it[0] as String
-                    val tempoTotal = (it[1] as Number).toDouble()
-                    procedimento to tempoTotal
-                }
-        }
+    fun obterTempoGastoPorProcedimentoUltimoMes(): Map<String, Double> {
+        return agendamentoRepository.findTempoGastoPorProcedimentoUltimoMes()
+            .associate {
+                val procedimento = it[0] as String
+                val tempoTotal = (it[1] as Number).toDouble()
+                procedimento to tempoTotal
+            }
+    }
 
     fun obterProcedimentosRealizadosUltimoTrimestre(): Map<String, Int> {
         return agendamentoRepository.findProcedimentosRealizadosUltimoTrimestre()
@@ -279,7 +279,7 @@ class AgendamentoService(
             println("Agendamento salvo com sucesso: $agendamento")
         }
     }
-    
+
     fun obterAgendamento(id: Int): AgendamentoResponseDTO {
         val agendamento = agendamentoRepository.findById(id)
             .orElseThrow { IllegalArgumentException("Agendamento não encontrado") }
@@ -398,7 +398,8 @@ class AgendamentoService(
                 statusAgendamento = agendamento.statusAgendamento,
                 usuarioId = agendamento.usuario.codigo,
                 fkEspecificacao = agendamento.especificacao.idEspecificacaoProcedimento,
-                fkProcedimento = agendamento.procedimento.idProcedimento)
+                fkProcedimento = agendamento.procedimento.idProcedimento
+            )
         }
     }
 
