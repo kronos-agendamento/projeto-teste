@@ -606,7 +606,7 @@ function saudacao() {
 // Função para buscar os leads
 async function fetchLeads() {
   try {
-    const response = await fetch(`${baseUrl}/usuarios/buscar-leads`);
+    const response = await fetch(`${baseUrl}/usuarios/buscar-leads?pagina=1&&tamanhoDaPagina=10`);
     if (!response.ok) throw new Error("Erro ao buscar os leads");
 
     const leads = await response.json();
@@ -618,7 +618,7 @@ async function fetchLeads() {
 
 // Função para renderizar a lista de leads no HTML (dentro da tabela)
 function renderLeads(leads) {
-  const leadsTableBody = document.querySelector("#procedures-tbody");
+  const leadsTableBody = document.getElementById("proceduresl-tbody");
 
   // Limpar o conteúdo da tabela antes de renderizar
   leadsTableBody.innerHTML = "";
