@@ -1,3 +1,63 @@
+// Defina a função submitForm fora do DOMContentLoaded para garantir que esteja no escopo global
+async function submitForm() {
+    const idUsuario = localStorage.getItem("idUsuario");
+    if (!idUsuario) {
+        alert("Usuário não está logado.");
+        return;
+    }
+
+    const formData = {
+        fichaAnamnese: idUsuario,  // O ID da ficha de anamnese é igual ao ID do usuário
+        usuario: idUsuario,
+        respostas: []
+    };
+
+    // Coleta os valores dos inputs gerados
+    document.querySelectorAll('input, select').forEach(input => {
+        const perguntaId = input.name.split('_')[1]; // Extrai o ID da pergunta
+
+        // Verificar se o ID da pergunta é válido
+        if (!perguntaId) {
+            return;
+        }
+
+        let resposta;
+        if (input.type === 'checkbox') {
+            resposta = input.checked ? 'Sim' : 'Não';
+        } else {
+            resposta = input.value;
+        }
+
+        // Verifica se a resposta não está vazia
+        if (resposta.trim() !== "") {
+            formData.respostas.push({
+                resposta: resposta,
+                pergunta: parseInt(perguntaId)
+            });
+        }
+    });
+
+    console.log('Dados do formulário:', formData);
+
+    try {
+        const response = await fetch('http://localhost:8080/api/respostas', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        });
+
+        if (response.ok) {
+            alert('Respostas enviadas com sucesso!');
+        } else {
+            alert('Erro ao enviar respostas. Verifique os dados e tente novamente.');
+        }
+    } catch (error) {
+        console.error('Erro no envio das respostas:', error);
+    }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     const increaseFontBtn = document.getElementById("increase-font");
     const decreaseFontBtn = document.getElementById("decrease-font");
@@ -75,8 +135,6 @@ document.addEventListener("DOMContentLoaded", function () {
             let inputElement = null;
 
             if (pergunta.tipo === 'Input') {
-                console.log('Input');
-                console.log(pergunta);
                 inputElement = document.createElement('input');
                 inputElement.type = 'text';
                 inputElement.name = `pergunta_${pergunta.idPergunta}`;
@@ -85,15 +143,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 inputElement.style.display = "block"; // Para garantir que fique abaixo da pergunta
                 inputElement.style.width = "100%";
             } else if (pergunta.tipo === 'Check Box') {
-                console.log('Check Box');
-                console.log(pergunta);
                 inputElement = document.createElement('input');
                 inputElement.type = 'checkbox';
                 inputElement.name = `pergunta_${pergunta.idPergunta}`;
                 inputElement.style.marginTop = "10px"; // Espaçamento
             } else if (pergunta.tipo === 'Select') {
-                console.log('Select');
-                console.log(pergunta);
                 inputElement = document.createElement('select');
                 inputElement.name = `pergunta_${pergunta.idPergunta}`;
                 inputElement.required = true;
@@ -119,22 +173,6 @@ document.addEventListener("DOMContentLoaded", function () {
             // Adiciona o grupo de formulário ao conteúdo
             contentDiv.appendChild(formGroup);
         });
-    }
-
-    // Função para enviar o formulário (exemplo de envio)
-    function submitForm() {
-        const formData = new FormData();
-
-        // Coleta os valores dos inputs gerados
-        document.querySelectorAll('input, select').forEach(input => {
-            if (input.type === 'checkbox') {
-                formData.append(input.name, input.checked ? 'Sim' : 'Não');
-            } else {
-                formData.append(input.name, input.value);
-            }
-        });
-
-        console.log('Dados do formulário:', Object.fromEntries(formData));
     }
 
     // Buscar perguntas ao carregar a página

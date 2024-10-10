@@ -223,4 +223,8 @@
         label { font-weight: bold; }
         input, select { margin-left: 10px; }
 
+        #formulario{
+            margin-bottom: 60px;
+        }
+
 }
