@@ -81,16 +81,6 @@
     <main>
 
       <header>
-        <div class="acessibilidade">
-          <div class="font-information">
-            <button id="information">i</button>
-          </div>
-          <div class="font-controls">
-            <button id="increase-font">A+</button>
-            <button id="decrease-font">A-</button>
-          </div>
-        </div>
-
         <div id="greeting1">
           <h1>
             <span id="greeting">Bom dia</span>
@@ -113,26 +103,34 @@
       <div class="main-content">
         <div class="left-content">
           <section class="actions">
-            <a href="../agendamento/agendamento-forms/cadastrar-agendamento/cadastrar-agendamento.html"><button>
+            <a href="../agendamento/agendamento-forms/cadastrar-agendamento/cadastrar-agendamento.html" class="filter-btn"><button>
                 <i class="fas fa-calendar-plus"></i> Novo Agendamento
               </button></a>
-            <a href="../cliente/cliente-forms/cadastrar-cliente/cadastrar-cliente.html"><button>
+              <div id="tooltip4" class="tooltip4">Clique cadastrar novo agendamento</div>
+            <a href="../cliente/cliente-forms/cadastrar-cliente/cadastrar-cliente.html" class="filter-btn"><button >
                 <i class="fas fa-user-plus"></i> Novo Cliente
               </button></a>
-            <a href="../procedimento/procedimento-forms/cadastrar-procedimento/cadastrar-procedimento.html"><button>
+              <div id="tooltip1" class="tooltip1">Clique para cadastrar novo cliente</div>
+
+            <a href="../procedimento/procedimento-forms/cadastrar-procedimento/cadastrar-procedimento.html" class="filter-btn" ><button>
                 <i class="fas fa-tasks"></i> Novo Procedimento
               </button></a>
-            <a href="../perfil/perfil.html"><button>
+              <div id="tooltip2" class="tooltip2">Clique para cadastrar novo procedimento</div>
+
+            <a href="../perfil/perfil.html" class="filter-btn"><button>
                 <i class="fas fa-face-smile"> </i> Editar Perfil
               </button></a>
+              <div id="tooltip3" class="tooltip3">Clique para editar perfil</div>
+
           </section>
 
           <div class="table-container">
             <a href="agenda-semanal/agenda-semanal.html">
               <section class="weekly-schedule">
-                <h2>
+                <h2 class="filter-btn">
                   <i class="fas fa-calendar"></i> Agenda Semanal de Atendimentos
                 </h2>
+                <div id="tooltip5" class="tooltip5">Clique para ver o calendário</div>
               </section>
             </a>
 
@@ -153,7 +151,8 @@
               <tbody></tbody>
             </table>
             <div class="footer">
-              <a href="../procedimento/procedimento.html">Ver todos >></a>
+              <a href="../procedimento/procedimento.html" class="filter-btn">Ver todos >></a>
+              <div id="tooltip6" class="tooltip6">Clique para ver todos os procedimentos cadastrados</div>
             </div>
           </div>
 
@@ -173,8 +172,30 @@
               <tbody></tbody>
             </table>
             <div class="footer">
-              <a href="../cliente/cliente.html">Ver todos >></a>
+              <a href="../cliente/cliente.html" class="filter-btn">Ver todos >></a>
+              <div id="tooltip7" class="tooltip7">Clique para ver todos os clientes frequentes</div>
+
             </div>
+          </div>
+          <div class="table-container">
+            <div class="table-header">
+              <h1>Formulário de contato do site</h1>
+            </div>
+            <table id="leads">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Instagram</th>
+                  <th>Mensagem</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+            <div class="footer">
+              <a href="leads/leads.html" class="filter-btn">Ver todos >></a>
+              <div id="tooltip12" class="tooltip12">Clique para ver todos os leads.</div>
+            </div>
+           
           </div>
         </div>
         <div class="right-content">
@@ -190,7 +211,8 @@
               <div class="appointments"></div>
               <hr />
               <div class="footer">
-                <a href="../agendamento/agendamento.html">Ver todos >></a>
+                <a href="../agendamento/agendamento.html" class="filter-btn">Ver todos >></a>
+                <div id="tooltip10" class="tooltip10">Clique para todos os clientes do dia</div>
               </div>
             </div>
           </section>
@@ -210,7 +232,8 @@
               <tbody id="status-tbody"></tbody>
             </table>
             <div class="footer">
-              <a href="#" id="toggle-view">Ver todos >></a>
+              <a href="#" id="toggle-view" class="filter-btn">Ver todos >></a>
+              <div id="tooltip8" class="tooltip8">Clique para ver todos os status cadastrados</div>
             </div>
           </div>
 
@@ -220,9 +243,10 @@
                 <h1>Aniversariantes do Mês</h1>
               </div>
               <hr />
-              <div class="birthday-list"></div>
+              <div class="birthday-list "></div>
               <div class="footer-aniversario">
-                <a href="#" class="toggle-view">Ver todos >></a>
+                <a href="#" class="toggle-view filter-btn">Ver todos >></a>
+                <div id="tooltip9" class="tooltip9">Clique para criar um procedimento novo.</div>
               </div>
             </div>
           </div>

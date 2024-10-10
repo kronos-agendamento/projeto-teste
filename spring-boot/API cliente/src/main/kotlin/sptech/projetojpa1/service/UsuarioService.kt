@@ -460,5 +460,40 @@ class UsuarioService(
         }
     }
 
+    fun top5CidadesComMaisClientes(): List<Map<String, Any>> {
+        val clientesPorBairroECidade = usuarioRepository.findAll()
+            .filter { it.endereco != null } // Filtra usuários que possuem endereço
+            .groupBy { it.endereco!!.bairro to it.endereco!!.cidade } // Agrupa por bairro e cidade
+            .map { (bairroCidade, clientes) ->
+                val (bairro, cidade) = bairroCidade // Desestrutura o bairro e a cidade
+                mapOf(
+                    "bairro" to bairro,
+                    "cidade" to cidade, // Adiciona a cidade ao resultado
+                    "clientes" to clientes.size
+                )
+            }
+            .sortedByDescending { it["clientes"] as Int } // Ordena pela quantidade de clientes
+            .take(5) // Retorna os top 5
+
+        return clientesPorBairroECidade
+    }
+
+    fun top3CidadesPorPorcentagemClientes(): List<Map<String, Any>> {
+        val totalClientes = usuarioRepository.count()
+        return usuarioRepository.findAll()
+            .filter { it.endereco != null } // Filtra usuários que possuem endereço
+            .groupBy { it.endereco!!.cidade } // Agrupa por cidade
+            .map { (cidade, clientes) -> // Mapeia para um formato que contenha cidade e porcentagem
+                mapOf(
+                    "cidade" to cidade,
+                    "porcentagem" to (clientes.size.toDouble() / totalClientes) * 100
+                )
+            }
+            .sortedByDescending { it["porcentagem"] as Double } // Ordena por porcentagem de forma decrescente
+            .take(3) // Retorna apenas os top 3
+    }
+
+    fun listarLeads(): List<Map<String, Any>> = usuarioRepository.listarLeads()
+
 
 }

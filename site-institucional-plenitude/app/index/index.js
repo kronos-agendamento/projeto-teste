@@ -1,3 +1,5 @@
+const baseUrl = "http://localhost:8080"; // Altere para o URL do seu servidor, se necessário
+
 document.addEventListener("DOMContentLoaded", () => {
   const buttons = document.querySelectorAll("button");
   buttons.forEach((button) => {
@@ -393,12 +395,25 @@ function renderStatuses() {
   statusesToShow.forEach((status) => {
     const row = document.createElement("tr");
     row.innerHTML = `
-    <td>${status.nome}</td>
+     <td>${status.nome}</td>
     <td><div class="color-box" style="background-color: ${status.cor};"></div></td>
-    <td>
-        <button class="edit-btn" data-id="${status.id}"><i class="fas fa-edit"></i></button>
-        <button class="delete-btn" data-id="${status.id}"><i class="fas fa-trash"></i></button>
-    </td>
+   <td>
+  <!-- Botão de Editar com tooltip -->
+  <div class="tooltip-wrapper">
+    <button class="edit-btn" data-id="${status.id}">
+      <i class="fas fa-edit"></i>
+    </button>
+    <div class="tooltip11">Editar</div>
+  </div>
+
+  <!-- Botão de Excluir com tooltip -->
+  <div class="tooltip-wrapper">
+    <button class="delete-btn" data-id="${status.id}">
+      <i class="fas fa-trash"></i>
+    </button>
+    <div class="tooltip11">Excluir</div>
+  </div>
+</td>
 
         `;
     statusTbody.appendChild(row);
@@ -588,6 +603,53 @@ function saudacao() {
   saudacaoElement2.textContent = `Tenha ${genero} ${otimo} ${dia.nome}!`;
 
 }
+
+    // Função para buscar os leads
+    async function fetchLeads() {
+      try {
+          const response = await fetch(`${baseUrl}/usuarios/buscar-leads`);
+          if (!response.ok) throw new Error("Erro ao buscar os leads");
+
+          const leads = await response.json();
+          renderLeads(leads); // Função para renderizar os dados dos leads
+      } catch (error) {
+          console.error("Erro ao carregar os leads:", error);
+      }
+  }
+
+  // Função para renderizar a lista de leads no HTML (dentro da tabela)
+  function renderLeads(leads) {
+      const leadsTableBody = document.querySelector("#leads tbody");
+
+      // Limpar o conteúdo da tabela antes de renderizar
+      leadsTableBody.innerHTML = "";
+
+      // Exibir apenas os primeiros 3 leads
+      const leadsParaExibir = leads.slice(0, 3);
+
+      if (leadsParaExibir.length === 0) {
+          leadsTableBody.innerHTML = "<tr><td colspan='5'>Nenhum lead encontrado.</td></tr>";
+          return;
+      }
+
+      // Adicionar cada lead como uma nova linha na tabela
+      leadsParaExibir.forEach(lead => {
+          const row = document.createElement("tr");
+
+          row.innerHTML = `
+              <td>${lead.nome}</td>
+              <td>${lead.instagram}</td>
+              <td>${lead.mensagem}</td>
+          `;
+
+          leadsTableBody.appendChild(row);
+      });
+  }
+
+  // Chama a função para buscar e renderizar os leads ao carregar a página
+  fetchLeads();
+
+
 
 window.onload = saudacao;
 

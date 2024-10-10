@@ -399,6 +399,13 @@ h6 {
   }
 }
 
+/* Esconde o ícone de toggle na versão desktop */
+@media (min-width: 993px) {
+  #navbar .mobile-nav-toggle {
+    display: none;
+  }
+}
+
 /*--------------------------------------------------------------
 # Hero Section
 --------------------------------------------------------------*/

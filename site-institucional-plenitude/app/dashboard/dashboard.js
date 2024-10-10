@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
             totalAgendamentosHoje: '/api/agendamentos/total-agendamentos-hoje',
             totalAgendamentosFuturos: '/api/agendamentos/futuros',
             notasFeedbacks: '/api/feedbacks/media-notas-single',
-            tempoMedio: '/api/agendamentos/tempo-medio',
+            tempoMedio: '/api/agendamentos/tempo-para-agendar',
 
             // Gráfico 1 - Gerencial
             listarTop3Indicacoes: '/usuarios/buscar-top3-indicacoes',
@@ -82,6 +82,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Gráfico 1 - Operacional
             agendamentosStatus: '/api/agendamentos/agendamento-status',
+            agendamentosReceitaUltimosTresMeses: '/api/agendamentos/receita-ultimos-tres-meses',
+            agendamentosTempoGastoUltimoMes: '/api/agendamentos/tempo-gasto-ultimo-mes',
+            agendamentosProcedimentosRealizadosTrimestre: '/api/agendamentos/procedimentos-realizados-trimestre',
+            agendamentosValorTotalUltimoMes: '/api/agendamentos/valor-total-ultimo-mes',
 
             // Gráfico 1 - Usabilidade
             ultimosAgendamentosRealizados5Meses: '/api/agendamentos/agendamentos-realizados-ultimos-cinco-meses'
@@ -123,9 +127,12 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchData(endpoints.agendamentosProcedimentosLabels, updateChart4Labels);
         fetchData(endpoints.agendamentosProcedimentos, updateChart4);
 
-        // Chamada para atualizar os dados do gráfico 1 - Usabilidade
-        fetchData(endpoints.agendamentosStatus, updateChartOperacional1)
-
+        // Chamada para atualizar os dados do gráfico 1 - Operacional
+        fetchData(endpoints.agendamentosStatus, updateChartOperacional1);
+        fetchData(endpoints.agendamentosReceitaUltimosTresMeses, updateChartReceitaProcedimentosOperacional4);
+        fetchData(endpoints.agendamentosTempoGastoUltimoMes, updateChartTempoGastoOperacional2);
+        fetchData(endpoints.agendamentosProcedimentosRealizadosTrimestre, updateChartProcedimentoRealizadosTrimestreOperacional3);
+        fetchData(endpoints.agendamentosValorTotalUltimoMes, updateChartValorTotalUltimoMesOperacional5);
 
         // Chamada para atualizar os dados do gráfico 1 - Usabilidade
         fetchData(endpoints.ultimosAgendamentosRealizados5Meses, updateChartUsabilidade1)
@@ -206,19 +213,37 @@ document.addEventListener('DOMContentLoaded', function () {
     const ctx1 = document.getElementById('chart1').getContext('2d');
     let chart1;
 
+    // constantes dos gráficos de usabilidade
     let dataChartUsabilidade1 = null;
     let labelsChartUsabilidade1 = lastFiveMonths;
     const ctxUsabilidade1 = document.getElementById('chartUsabilidade1').getContext('2d');
     let chartUsabilidade1;
 
+    // constantes dos gráficos operacionais
     let dataChartOperacional1 = null;
     const ctxOperacional1 = document.getElementById('chartOperacional1').getContext('2d');
     let chartOperacional1;
 
+    let dataChartOperacional4 = null;
+    const ctxOperacional4 = document.getElementById('chartReceitaProcedimentosOperacional4').getContext('2d');
+    let chartReceitaProcedimentosOperacional4;
+
+    let dataChartOperacional2 = null;
+    const ctxOperacional2 = document.getElementById('chartTempoGastoProcedimentosOperacional2').getContext('2d');
+    let chartTempoGastoProcedimentos;
+
+    let dataChartOperacional3 = null;
+    const ctxOperacional3 = document.getElementById('chartProcedimentosRealizadosTrimestreOperacional3').getContext('2d');
+    let chartProcedimentosRealizadosTrimestreOperacional3;
+
+    let dataChartOperacional5 = null;
+    const ctxOperacional5 = document.getElementById('chartValorTotalUltimoMesOperacional5').getContext('2d');
+    let chartValorTotalUltimoMesOperacional5;
+
     
 
 
-    // Funções para atualização
+    // Funções para atualização operacional
     function updateChartOperacional1(data) {
     // Mapeia os dados de status a partir do objeto
     const statusAgendamentos = {
@@ -241,6 +266,47 @@ document.addEventListener('DOMContentLoaded', function () {
     // Chama a função para criar/atualizar o gráfico
     createChartOperacional1();
     }
+    function updateChartReceitaProcedimentosOperacional4(data) {
+        // Usando Object.entries() para obter as chaves (procedimentos) e valores (receita)
+        const labels = Object.keys(data);  // Isso pega as chaves: ["Maquiagem", "Sobrancelha", "Cilios"]
+        const dataChartReceita = Object.values(data);  // Isso pega os valores: [4550, 2540, 1720]
+    
+        // Agora você pode passar os 'labels' e 'dataChartReceita' para a função de criação do gráfico
+        createChartReceitaProcedimentosOperacional4(labels, dataChartReceita);
+    }
+    function updateChartTempoGastoOperacional2(data) {
+         // Mapeia os dados recebidos (objeto) para labels e valores do gráfico
+    const labels = Object.keys(data);  // Procedimentos (ex: Maquiagem, Sobrancelha, etc.)
+    const dataChart = Object.values(data);  // Tempos totais (ex: 350, 120, etc.)
+
+    // Se o gráfico já foi criado, apenas atualiza os dados e rótulos
+    
+        // Se o gráfico ainda não existe, cria-o pela primeira vez
+        createChartTempoGastoProcedimentosOperacional2(labels, dataChart);
+    
+    }
+    function updateChartProcedimentoRealizadosTrimestreOperacional3(data) {
+         // Mapeia os dados recebidos (objeto) para labels e valores do gráfico
+    const labels = Object.keys(data);  // Procedimentos (ex: Maquiagem, Sobrancelha, etc.)
+    const dataChart = Object.values(data);  // Tempos totais (ex: 350, 120, etc.)
+
+    // Se o gráfico já foi criado, apenas atualiza os dados e rótulos
+    
+        // Se o gráfico ainda não existe, cria-o pela primeira vez
+        createChartProcedimentosRealizadosTrimestreOperacional3(labels, dataChart);
+    }
+    function updateChartValorTotalUltimoMesOperacional5(data){
+             // Mapeia os dados recebidos (objeto) para labels e valores do gráfico
+    const labels = Object.keys(data);  // Procedimentos (ex: Maquiagem, Sobrancelha, etc.)
+    const dataChart = Object.values(data);  // Tempos totais (ex: 350, 120, etc.)
+
+    // Se o gráfico já foi criado, apenas atualiza os dados e rótulos
+    
+        // Se o gráfico ainda não existe, cria-o pela primeira vez
+        createChartValorTotalUltimoMesOperacional5(labels, dataChart);
+    }
+
+    // Funções para atualização gerencial e usabilidade
     function updateChart2_1(data) {
         dataChart2_1 = data;
 
@@ -566,7 +632,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 datasets: [{
                     label: 'Qtd Agendamentos',
                     data: dataChartOperacional1,
-                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#E84E8A', '#F59DBF'],
+                    backgroundColor: ['#FF6384',  '#D2135D', '#E84E8A', '#D94F4F','#C13584']
+
+                    ,
                     borderColor: '#D2135D',
                     fill: false
                 }]
@@ -582,6 +650,122 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+    function createChartReceitaProcedimentosOperacional4(labels, dataChartReceita) {
+        const ctx = document.getElementById('chartReceitaProcedimentosOperacional4').getContext('2d');
+    
+        // Criação do novo gráfico
+        window.chartReceitaProcedimentosOperacional4 = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels, // Passando os nomes dos procedimentos como labels
+                datasets: [{
+                    label: 'Receita Total (R$)',
+                    data: dataChartReceita, // Passando as receitas como dados
+                    backgroundColor: ['#D2135D', '#E84E8A', '#F59DBF'],
+                    borderColor: '#4B0082',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+    // Função para criar o gráfico pela primeira vez
+    function createChartTempoGastoProcedimentosOperacional2(labels, dataChart) {
+    const ctxOperacional2 = document.getElementById('chartTempoGastoProcedimentosOperacional2').getContext('2d');
+
+    // Criação do gráfico com Chart.js
+    chartTempoGastoProcedimentos = new Chart(ctxOperacional2, {
+        type: 'bar',  // Tipo de gráfico (barras)
+        data: {
+            labels: labels,  // Procedimentos como rótulos (ex: Maquiagem, Sobrancelha)
+            datasets: [{
+                label: 'Tempo Total Gasto (minutos)',  // Título do gráfico
+                data: dataChart,  // Tempos totais como dados
+                backgroundColor: ['#D2135D', '#E84E8A', '#F59DBF'],  // Cores para as barras
+                borderColor: '#4B0082',  // Cor da borda
+                borderWidth: 1  // Largura da borda
+            }]
+        },
+        options: {
+            responsive: true,  // Responsivo para diferentes tamanhos de tela
+            scales: {
+                y: {
+                    beginAtZero: true  // Eixo Y começa no zero
+                }
+            }
+        }
+    });
+    }
+    function createChartProcedimentosRealizadosTrimestreOperacional3(labels, dataChart) {
+        const ctx = document.getElementById('chartProcedimentosRealizadosTrimestreOperacional3').getContext('2d');
+    
+        // Criação do gráfico com Chart.js
+        window.chartProcedimentosRealizadosTrimestreOperacional3 = new Chart(ctx, {
+            type: 'bar',  // Tipo de gráfico: barra
+            data: {
+                labels: labels,  // Procedimentos como rótulos (ex: Maquiagem, Sobrancelha)
+                datasets: [{
+                    label: 'Quantidade de Procedimentos Realizados',  // Rótulo da barra
+                    data: dataChart,  // Quantidade total de procedimentos realizados
+                    backgroundColor: ['#FF6384', '#D2135D', '#E84E8A', '#C13584', '#D94F4F'],  // Cores das barras
+                    borderColor: '#4B0082',  // Cor da borda
+                    borderWidth: 1  // Largura da borda
+                }]
+            },
+            options: {
+                responsive: true,  // Responsivo para diferentes tamanhos de tela
+                scales: {
+                    y: {
+                        beginAtZero: true  // Eixo Y começa no zero
+                    }
+                }
+            }
+        });
+    }
+    // Função para criar o gráfico de valor total por procedimento no último mês
+function createChartValorTotalUltimoMesOperacional5(labels, dataChart) {
+    const ctxOperacional5 = document.getElementById('chartValorTotalUltimoMesOperacional5').getContext('2d');
+
+    // Criação do gráfico com Chart.js
+    window.chartValorTotalUltimoMesOperacional5 = new Chart(ctxOperacional5, {
+        type: 'bar',  // Tipo de gráfico: barra
+        data: {
+            labels: labels,  // Procedimentos como rótulos (ex: Maquiagem, Sobrancelha)
+            datasets: [{
+                label: 'Valor Total em R$ no Último Mês',  // Rótulo do gráfico
+                data: dataChart,  // Valores totais em dinheiro para cada procedimento
+                backgroundColor: ['#FF6384', '#D2135D', '#E84E8A', '#C13584', '#D94F4F'],  // Cores das barras
+                borderColor: '#4B0082',  // Cor da borda
+                borderWidth: 1  // Largura da borda
+            }]
+        },
+        options: {
+            responsive: true,  // Responsivo para diferentes tamanhos de tela
+            scales: {
+                y: {
+                    beginAtZero: true,  // Eixo Y começa no zero
+                    title: {
+                        display: true,
+                        text: 'Valor em R$'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Procedimentos'
+                    }
+                }
+            }
+        }
+    });
+}
 
 
 

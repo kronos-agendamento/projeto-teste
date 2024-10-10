@@ -12,14 +12,18 @@
     <link rel="stylesheet" href="perfil-mobile.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
-</head>
+</head> 
 
 <body>
     <main>
         <header>
             <div class="pesquisa">
-                <img src="../../assets/icons/lupa.png" alt="">
+                <img src="../../assets/icons/lupa.png" alt="" id="lupa-icon" title="Pesquisar uma especificação para agendar" style="cursor: pointer;">
+                <button id="close-icon" style="display:none;">X</button>
+                <input type="text" id="searchInput" placeholder="Pesquisar..." style="display:none; width: 100%; border-radius: 20px;" list="especificacoesList">
+                <datalist id="especificacoesList"></datalist>
             </div>
+            <div id="resultados"></div>
             <div id="titulo-saudacao">
                 <h1>Perfil</h1>
             </div>

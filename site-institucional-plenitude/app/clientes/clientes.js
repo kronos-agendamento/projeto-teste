@@ -1,328 +1,349 @@
 document.addEventListener("DOMContentLoaded", function () {
-  let undoStack = [];
-  let redoStack = [];
+    let undoStack = [];
+    let redoStack = [];
+    let undoRedoTimeout;
 
-  function showNotification(message, isError = false) {
-      const notification = document.getElementById("notification");
-      const notificationMessage = document.getElementById("notification-message");
-      notificationMessage.textContent = message;
-      if (isError) {
-          notification.classList.add("error");
-      } else {
-          notification.classList.remove("error");
-      }
-      notification.classList.add("show");
-      setTimeout(() => {
-          notification.classList.remove("show");
-      }, 3000);
-  }
+    function showNotification(message, isError = false) {
+        const notification = document.getElementById("notification");
+        const notificationMessage = document.getElementById("notification-message");
+        notificationMessage.textContent = message;
+        if (isError) {
+            notification.classList.add("error");
+        } else {
+            notification.classList.remove("error");
+        }
+        notification.classList.add("show");
+        setTimeout(() => {
+            notification.classList.remove("show");
+        }, 3000);
+    }
 
-  const baseUrl = "http://localhost:8080";
-  const proceduresTbody = document.getElementById("procedures-tbody");
-  const itemsPerPage = 5;
-  let currentPage = 1;
-  let usuarios = [];
-  let cpfParaArquivar = null;
-  let cpfParaDeletar = null;
+    const baseUrl = "http://localhost:8080";
+    const proceduresTbody = document.getElementById("procedures-tbody");
+    const itemsPerPage = 5;
+    let currentPage = 1;
+    let usuarios = [];
+    let cpfParaArquivar = null;
+    let cpfParaDeletar = null;
 
-  const btnUndo = document.getElementById("btn-undo");
-  const btnYes = document.querySelector(".btn-yes");
-  const prevPageBtn = document.getElementById("prev-page-btn");
-  const nextPageBtn = document.getElementById("next-page-btn");
-  const currentPageSpan = document.getElementById("current-page");
-  const totalPagesSpan = document.getElementById("total-pages");
-  const modal = document.getElementById("modal");
-  const modalArchive = document.getElementById("modal-archive");
-  const modalProcedimento = document.getElementById("usu");
-  const modalProcedimentoArchive = document.getElementById("usu-archive");
-  const btnYesArchive = document.getElementById("btnYesArchive");
+    const btnArquivar = document.getElementById("btn-arquivar");
+    const btnRedo = document.getElementById("btn-redo");
+    const btnUndo = document.getElementById("btn-undo");
+    const btnYes = document.querySelector(".btn-yes");
+    const prevPageBtn = document.getElementById("prev-page-btn");
+    const nextPageBtn = document.getElementById("next-page-btn");
+    const currentPageSpan = document.getElementById("current-page");
+    const totalPagesSpan = document.getElementById("total-pages");
+    const modal = document.getElementById("modal");
+    const modalArchive = document.getElementById("modal-archive");
+    const modalProcedimento = document.getElementById("usu");
+    const modalProcedimentoArchive = document.getElementById("usu-archive");
+    const btnYesArchive = document.getElementById("btnYesArchive");
 
-  function showModalArchive(nome, cpf) {
-      modalProcedimentoArchive.textContent = `Nome do usuário: ${nome}`;
-      cpfParaArquivar = cpf;
-      modalArchive.style.display = "block";
-  }
+    function showModalArchive(nome, cpf) {
+        modalProcedimentoArchive.textContent = `Nome do usuário: ${nome}`;
+        cpfParaArquivar = cpf;
+        modalArchive.style.display = "block";
+    }
 
-  function closeModalArchive() {
-      modalArchive.style.display = "none";
-  }
+    function closeModalArchive() {
+        modalArchive.style.display = "none";
+    }
 
-  btnYesArchive.addEventListener("click", async () => {
-      if (cpfParaArquivar) {
-          await arquivarUsuario(cpfParaArquivar);
-          undoStack.push({ action: "archive", cpf: cpfParaArquivar }); // Adiciona ação ao undo stack
-          redoStack = []; // Limpa redo stack após nova ação
-          btnUndo.style.display = "inline"; // Mostra o botão de desfazer
-          closeModalArchive();
-      }
-  });
+    btnYesArchive.addEventListener("click", async () => {
+        if (cpfParaArquivar) {
+            await arquivarUsuario(cpfParaArquivar);
+            undoStack.push({ action: "archive", cpf: cpfParaArquivar }); // Adiciona ação ao undo stack
+            redoStack = []; // Limpa redo stack após nova ação
+            updateUndoRedoButtons(); // Atualiza visibilidade dos botões
+            closeModalArchive();
+        }
+    });
 
-  document.querySelector("#modal-archive .btn-no").addEventListener("click", closeModalArchive);
+    document.querySelector("#modal-archive .btn-no").addEventListener("click", closeModalArchive);
 
-  async function fetchUsuariosAtivos() {
-      try {
-          const response = await fetch(`${baseUrl}/usuarios/buscar-por-status/1`);
-          const data = await response.json();
-          return data;
-      } catch (error) {
-          console.error("Erro ao carregar usuários ativos:", error);
-          return [];
-      }
-  }
+    async function fetchUsuariosAtivos() {
+        try {
+            const response = await fetch(`${baseUrl}/usuarios/buscar-por-status/1`);
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error("Erro ao carregar usuários ativos:", error);
+            return [];
+        }
+    }
 
-  async function fetchUsuarioPorId(idUsuario) {
-      try {
-          const response = await fetch(`${baseUrl}/usuarios/${idUsuario}`);
-          if (!response.ok) {
-              throw new Error("Erro ao buscar usuário.");
-          }
-          return await response.json();
-      } catch (error) {
-          console.error("Erro ao buscar usuário:", error);
-          return null;
-      }
-  }
+    async function fetchUsuarioPorId(idUsuario) {
+        try {
+            const response = await fetch(`${baseUrl}/usuarios/${idUsuario}`);
+            if (!response.ok) {
+                throw new Error("Erro ao buscar usuário.");
+            }
+            return await response.json();
+        } catch (error) {
+            console.error("Erro ao buscar usuário:", error);
+            return null;
+        }
+    }
 
-  function renderTable(users, page) {
-      proceduresTbody.innerHTML = "";
-      const start = (page - 1) * itemsPerPage;
-      const end = page * itemsPerPage;
-      const paginatedUsers = users.slice(start, end);
+    function renderTable(users, page) {
+        proceduresTbody.innerHTML = "";
+        const start = (page - 1) * itemsPerPage;
+        const end = page * itemsPerPage;
+        const paginatedUsers = users.slice(start, end);
 
-      paginatedUsers.forEach((user) => {
-          const row = document.createElement("tr");
-          const nome = user.nome;
-          const instagram = user.instagram.replace("@", "");
-          const telefone = user.telefone;
-          const cpf = user.cpf;
-          const idEndereco = user.endereco.idEndereco;
+        paginatedUsers.forEach((user) => {
+            const row = document.createElement("tr");
+            const nome = user.nome;
+            const instagram = user.instagram.replace("@", "");
+            const telefone = user.telefone;
+            const cpf = user.cpf;
+            const idEndereco = user.endereco.idEndereco;
 
-          row.innerHTML = `
-          <td>${nome}</td>
-          <td>
-              <a href="https://www.instagram.com/${instagram}" target="_blank" class="instagram-link" style="display: flex; align-items: center;">
-                  <img src="../../assets/icons/instagram-icon.png" alt="Instagram" style="width: 20px; height: 20px; margin-right: 8px; margin-top: 20px">
-                  ${user.instagram}
-              </a>
-          </td>
-          <td>${telefone}</td>
-          <td>${cpf}</td>
-          <td>
-              <button class="edit-btn" data-id="${user.idUsuario}" data-endereco="${idEndereco}" style="border: none; background: transparent; cursor: pointer;" title="Editar Cliente">
-                  <img src="../../assets/icons/editar.png" alt="Editar" style="width: 25px; height: 25px; margin-top:8px; margin-left:5px;">
-              </button>
-              <button class="delete-btn" data-id="${user.idUsuario}" style="border: none; background: transparent; cursor: pointer;" title="Excluir Cliente">
-                  <img src="../../assets/icons/excluir.png" alt="Excluir" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
-              </button>
-              <button class="archive-btn" data-id="${user.cpf}" style="border: none; background: transparent; cursor: pointer;" title="Inativar Cliente">
-                  <img src="../../assets/icons/arquivar.png" alt="Arquivar" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
-              </button>
-          </td>
-      `;
-          proceduresTbody.appendChild(row);
-      });
+      row.innerHTML = `
+      <td>${nome}</td>
+      <td>
+          <a href="https://www.instagram.com/${instagram}" target="_blank" class="instagram-link" style="display: flex; align-items: center;">
+              <img src="../../assets/icons/instagram-icon.png" alt="Instagram" style="width: 20px; height: 20px; margin-right: 8px; margin-top: 20px">
+              ${user.instagram}
+          </a>
+      </td>
+      <td>${telefone}</td>
+      <td>${cpf}</td>
+  <td>
+    <!-- Botão de Editar com tooltip -->
+    <div class="tooltip-wrapper">
+        <button class="edit-btn" data-id="${user.idUsuario}" data-endereco="${idEndereco}" style="border: none; background: transparent; cursor: pointer;">
+            <img src="../../assets/icons/editar.png" alt="Editar" style="width: 25px; height: 25px; margin-top:8px; margin-left:5px;">
+        </button>
+        <div class="tooltip11">Editar</div>
+    </div>
 
-      const totalPages = Math.ceil(users.length / itemsPerPage);
-      currentPageSpan.textContent = currentPage;
-      totalPagesSpan.textContent = totalPages;
+    <!-- Botão de Excluir com tooltip -->
+    <div class="tooltip-wrapper">
+        <button class="delete-btn" data-id="${user.idUsuario}" style="border: none; background: transparent; cursor: pointer;">
+            <img src="../../assets/icons/excluir.png" alt="Excluir" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
+        </button>
+        <div class="tooltip11">Excluir</div>
+    </div>
 
-      prevPageBtn.disabled = currentPage === 1;
-      nextPageBtn.disabled = currentPage === totalPages;
+    <!-- Botão de Arquivar com tooltip -->
+    <div class="tooltip-wrapper">
+        <button class="archive-btn" data-id="${user.cpf}" style="border: none; background: transparent; cursor: pointer;">
+            <img src="../../assets/icons/arquivar.png" alt="Arquivar" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
+        </button>
+        <div class="tooltip11">Inativar</div>
+    </div>
+</td>
 
-      adicionarEventosBotoes();
-      updatePaginationButtons();
-  }
+    `;
+      proceduresTbody.appendChild(row);
+    });
 
-  function updatePaginationButtons() {
-      const totalPages = Math.ceil(usuarios.length / itemsPerPage);
-      if (currentPage === 1) {
-          prevPageBtn.classList.add("disabled");
-          prevPageBtn.style.cursor = "not-allowed";
-          prevPageBtn.disabled = true;
-      } else {
-          prevPageBtn.classList.remove("disabled");
-          prevPageBtn.style.cursor = "pointer";
-          prevPageBtn.disabled = false;
-      }
-      if (currentPage === totalPages) {
-          nextPageBtn.classList.add("disabled");
-          nextPageBtn.style.cursor = "not-allowed";
-          nextPageBtn.disabled = true;
-      } else {
-          nextPageBtn.classList.remove("disabled");
-          nextPageBtn.style.cursor = "pointer";
-          nextPageBtn.disabled = false;
-      }
-      currentPageSpan.textContent = currentPage;
-      totalPagesSpan.textContent = totalPages;
-  }
+        const totalPages = Math.ceil(users.length / itemsPerPage);
+        currentPageSpan.textContent = currentPage;
+        totalPagesSpan.textContent = totalPages;
 
-  function adicionarEventosBotoes() {
-      document.querySelectorAll(".edit-btn").forEach((button) => {
-          button.addEventListener("click", async function () {
-              const idUsuario = this.getAttribute("data-id");
-              const idEndereco = this.getAttribute("data-endereco");
-              const cliente = await fetchUsuarioPorId(idUsuario);
+        prevPageBtn.disabled = currentPage === 1;
+        nextPageBtn.disabled = currentPage === totalPages;
 
-              if (cliente) {
-                  localStorage.setItem("clienteNome", cliente.nome);
-                  window.location.href = `../clientes/clienteForms/editar-cliente/editar-cliente.html?idUsuario=${idUsuario}&idEndereco=${idEndereco}`;
-              } else {
-                  console.error("Cliente não encontrado.");
-              }
-          });
-      });
+        adicionarEventosBotoes();
+    }
 
-      document.querySelectorAll(".delete-btn").forEach((button) => {
-          const id = button.getAttribute("data-id");
-          const nome = button.closest("tr").querySelector("td:nth-child(1)").textContent;
-          button.addEventListener("click", () => {
-              cpfParaDeletar = id;
-              if (cpfParaDeletar) {
-                  showModal(nome);
-              } else {
-                  console.error("ID do usuário é indefinido.");
-              }
-          });
-      });
+    function adicionarEventosBotoes() {
+        document.querySelectorAll(".edit-btn").forEach((button) => {
+            button.addEventListener("click", async function () {
+                const idUsuario = this.getAttribute("data-id");
+                const idEndereco = this.getAttribute("data-endereco");
+                const cliente = await fetchUsuarioPorId(idUsuario);
 
-      document.querySelectorAll(".archive-btn").forEach((button) => {
-          const cpf = button.getAttribute("data-id");
-          const nome = button.closest("tr").querySelector("td").textContent;
-          button.addEventListener("click", function () {
-              showModalArchive(nome, cpf);
-          });
-      });
-  }
+                if (cliente) {
+                    localStorage.setItem("clienteNome", cliente.nome);
+                    window.location.href = `../clientes/clienteForms/editar-cliente/editar-cliente.html?idUsuario=${idUsuario}&idEndereco=${idEndereco}`;
+                } else {
+                    console.error("Cliente não encontrado.");
+                }
+            });
+        });
 
-  function showModal(nome) {
-      modalProcedimento.textContent = `Nome do usuário: ${nome}`;
-      modal.style.display = "block";
-  }
+        document.querySelectorAll(".delete-btn").forEach((button) => {
+            const id = button.getAttribute("data-id");
+            const nome = button.closest("tr").querySelector("td:nth-child(1)").textContent;
+            button.addEventListener("click", () => {
+                cpfParaDeletar = id;
+                if (cpfParaDeletar) {
+                    showModal(nome);
+                } else {
+                    console.error("ID do usuário é indefinido.");
+                }
+            });
+        });
 
-  async function arquivarUsuario(cpf) {
-      try {
-          const response = await fetch(`${baseUrl}/usuarios/inativar/${cpf}`, {
-              method: "PATCH",
-              headers: {
-                  "Content-Type": "application/json",
-              },
-          });
+        document.querySelectorAll(".archive-btn").forEach((button) => {
+            const cpf = button.getAttribute("data-id");
+            const nome = button.closest("tr").querySelector("td").textContent;
+            button.addEventListener("click", function () {
+                showModalArchive(nome, cpf);
+            });
+        });
+    }
 
-          if (!response.ok) {
-              throw new Error("Erro ao inativar o usuário.");
-          }
+    async function arquivarUsuario(cpf) {
+        try {
+            const response = await fetch(`${baseUrl}/usuarios/inativar/${cpf}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+    
+            console.log("Resposta da API:", response);
+    
+            if (response.ok) {
+                showNotification("Usuário inativado com sucesso!");
+                usuarios = await fetchUsuariosAtivos(); // Atualiza a lista de usuários
+                renderTable(usuarios, currentPage); // Atualiza a tabela
+            } else {
+                // Verifica outros possíveis status que não são 200 mas podem não ser erros
+                const responseData = await response.json();
+                console.log("Erro ao inativar (dados da resposta):", responseData);
+                showNotification(`Erro ao inativar o usuário: ${response.status} - ${response.statusText}`, true);
+            }
+        } catch (error) {
+            console.error("Erro ao inativar o usuário (exceção):", error);
+            showNotification("Erro ao inativar o usuário. Verifique o console para mais detalhes.", true);
+        }
+    }
+    
 
-          showNotification("Usuário inativado com sucesso!");
-          usuarios = await fetchUsuariosAtivos(); // Atualiza a lista de usuários
-          renderTable(usuarios, currentPage); // Atualiza a tabela
-      } catch (error) {
-          console.error("Erro ao inativar o usuário:", error);
-          showNotification("Erro ao inativar o usuário.", true);
-      }
-  }
+    async function restoreArchivedUser(cpf) {
+        try {
+            const response = await fetch(`${baseUrl}/usuarios/ativar/${cpf}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
 
-  async function restoreArchivedUser(cpf) {
-      try {
-          const response = await fetch(`${baseUrl}/usuarios/ativar/${cpf}`, {
-              method: "PATCH",
-              headers: {
-                  "Content-Type": "application/json",
-              },
-          });
+            if (!response.ok) {
+                throw new Error("Erro ao reativar o usuário.");
+            }
 
-          if (!response.ok) {
-              throw new Error("Erro ao reativar o usuário.");
-          }
+            showNotification("Usuário reativado com sucesso!");
+            usuarios = await fetchUsuariosAtivos(); // Atualiza a lista de usuários
+            renderTable(usuarios, currentPage); // Atualiza a tabela
+        } catch (error) {
+            console.error("Erro ao reativar o usuário:", error);
+            showNotification("Erro ao reativar o usuário.", true);
+        }
+    }
 
-          showNotification("Usuário reativado com sucesso!");
-          usuarios = await fetchUsuariosAtivos(); // Atualiza a lista de usuários
-          renderTable(usuarios, currentPage); // Atualiza a tabela
-      } catch (error) {
-          console.error("Erro ao reativar o usuário:", error);
-          showNotification("Erro ao reativar o usuário.", true);
-      }
-  }
+    function undoAction() {
+        const lastAction = undoStack.pop();
+        if (!lastAction) {
+            showNotification("Nenhuma ação para desfazer.", true);
+            return;
+        }
 
-  function undoAction() {
-      const lastAction = undoStack.pop();
-      if (!lastAction) {
-          showNotification("Nenhuma ação para desfazer.", true);
-          return;
-      }
+        if (lastAction.action === "archive") {
+            restoreArchivedUser(lastAction.cpf);
+            redoStack.push(lastAction); // Adiciona ao stack de refazer
+        }
 
-      if (lastAction.action === "archive") {
-          restoreArchivedUser(lastAction.cpf);
-      } else if (lastAction.action === "delete") {
-          // Aqui você deve implementar a lógica para restaurar o usuário excluído
-          showNotification(`Restauração de ${lastAction.cpf} precisa ser implementada!`);
-      }
+        updateUndoRedoButtons(); // Atualiza visibilidade dos botões
+    }
 
-      // Oculta o botão de desfazer após uma ação
-      btnUndo.style.display = "none";
-  }
+    function redoAction() {
+        const lastRedoAction = redoStack.pop();
+        if (!lastRedoAction) {
+            showNotification("Nenhuma ação para refazer.", true);
+            return;
+        }
 
-  // Atribuindo as funções de desfazer e refazer ao objeto global
-  window.undoAction = undoAction; // Torna a função acessível globalmente
+        if (lastRedoAction.action === "archive") {
+            arquivarUsuario(lastRedoAction.cpf);
+            undoStack.push(lastRedoAction); // Adiciona ao stack de desfazer
+        }
 
-  async function deleteUser(id) {
-      try {
-          const response = await fetch(`${baseUrl}/usuarios/exclusao-usuario/${id}`, {
-              method: "DELETE",
-          });
+        updateUndoRedoButtons(); // Atualiza visibilidade dos botões
+    }
 
-          if (!response.ok) {
-              throw new Error("Erro ao deletar o usuário.");
-          }
+    function updateUndoRedoButtons() {
+        // Atualiza a visibilidade dos botões "Desfazer" e "Refazer"
+        if (undoStack.length > 0) {
+            btnUndo.style.display = "inline-flex"; // Define como "inline-flex" para centralizar o conteúdo
+            btnUndo.style.width = "100px";         // Aumenta a largura do botão
+            btnUndo.style.height = "39.8px";       // Aumenta a altura do botão
+            btnUndo.style.padding = "10px 10px";   // Ajusta o padding para tornar o botão mais "cheio"
+            btnUndo.style.fontSize = "0.9rem";     // Aumenta o tamanho do texto
+            btnUndo.style.marginLeft = "7px";
+        } else {
+            btnUndo.style.display = "none";
+        }
+    
+        if (redoStack.length > 0) {
+            btnRedo.style.display = "inline-flex"; // Define como "inline-flex" para centralizar o conteúdo
+            btnRedo.style.width = "100px";         // Aumenta a largura do botão
+            btnRedo.style.height = "39px";         // Aumenta a altura do botão
+            btnRedo.style.padding = "10px 13px";   // Ajusta o padding para tornar o botão mais "cheio"
+            btnRedo.style.fontSize = "0.9rem";     // Aumenta o tamanho do texto
+            btnRedo.style.marginLeft = "7px";
+        } else {
+            btnRedo.style.display = "none";
+        }
+ 
+    
+        // Reinicia o timer para ocultar os botões após 10 segundos
+        clearTimeout(undoRedoTimeout);
+        if (undoStack.length > 0 || redoStack.length > 0) {
+            undoRedoTimeout = setTimeout(() => {
+                btnUndo.style.display = "none";
+                btnRedo.style.display = "none";
+                // Quando os botões "Desfazer" e "Refazer" desaparecem, ajusta a margem do botão "Inativos"
+                document.getElementById("btn-arquivar").style.marginLeft = "10px";
+            }, 10000);
+        }
+    }
+    
+    btnUndo.addEventListener("click", undoAction);
+    btnRedo.addEventListener("click", redoAction); // Adiciona o evento ao botão de refazer
+    
+    async function init() {
+        usuarios = await fetchUsuariosAtivos();
+        renderTable(usuarios, currentPage);
 
-          // Aqui você deve adicionar a informação de exclusão no stack de desfazer
-          undoStack.push({ action: "delete", id: id }); // Armazena a ação de exclusão
-          btnUndo.style.display = "inline"; // Mostra o botão de desfazer
+        prevPageBtn.addEventListener("click", () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderTable(usuarios, currentPage);
+            }
+        });
 
-          showNotification("Usuário deletado com sucesso!");
-      } catch (error) {
-          console.error("Erro ao deletar o usuário:", error);
-          showNotification("Erro ao deletar o usuário.", true);
-      }
-  }
+        nextPageBtn.addEventListener("click", () => {
+            const totalPages = Math.ceil(usuarios.length / itemsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderTable(usuarios, currentPage);
+            }
+        });
 
-  function closeModal() {
-      modal.style.display = "none";
-  }
+        btnYes.addEventListener("click", async () => {
+            if (cpfParaDeletar !== null) {
+                await deleteUser(cpfParaDeletar);
+                usuarios = await fetchUsuariosAtivos();
+                renderTable(usuarios, currentPage);
+                closeModal();
+            }
+        });
 
-  async function init() {
-      usuarios = await fetchUsuariosAtivos();
-      renderTable(usuarios, currentPage);
+        document.querySelector(".btn-no").addEventListener("click", closeModal);
 
-      prevPageBtn.addEventListener("click", () => {
-          if (currentPage > 1) {
-              currentPage--;
-              renderTable(usuarios, currentPage);
-          }
-      });
+        updateUndoRedoButtons(); // Atualiza os botões na inicialização
+    }
 
-      nextPageBtn.addEventListener("click", () => {
-          const totalPages = Math.ceil(usuarios.length / itemsPerPage);
-          if (currentPage < totalPages) {
-              currentPage++;
-              renderTable(usuarios, currentPage);
-          }
-      });
-
-      btnYes.addEventListener("click", async () => {
-          if (cpfParaDeletar !== null) {
-              await deleteUser(cpfParaDeletar);
-              usuarios = await fetchUsuariosAtivos();
-              renderTable(usuarios, currentPage);
-              closeModal();
-          }
-      });
-
-      document.querySelector(".btn-no").addEventListener("click", closeModal);
-  }
-
-  init();
+    init();
 });
+
 
 document.addEventListener("DOMContentLoaded", function () {
   const nome = localStorage.getItem("nome");
@@ -515,3 +536,5 @@ async function updateKpiData() {
 }
 
 window.onload = updateKpiData;
+
+

@@ -1,13 +1,14 @@
 package sptech.projetojpa1.service
 
 import org.springframework.stereotype.Service
+import sptech.projetojpa1.domain.Resposta
+import sptech.projetojpa1.dto.resposta.RespostaBatchRequestDTO
+import sptech.projetojpa1.dto.resposta.RespostaFilteredDTO
 import sptech.projetojpa1.dto.resposta.RespostaRequestDTO
 import sptech.projetojpa1.dto.resposta.RespostaResponseDTO
-import sptech.projetojpa1.dto.resposta.RespostaFilteredDTO
-import sptech.projetojpa1.domain.Resposta
-import sptech.projetojpa1.repository.RespostaRepository
-import sptech.projetojpa1.repository.PerguntaRepository
 import sptech.projetojpa1.repository.FichaAnamneseRepository
+import sptech.projetojpa1.repository.PerguntaRepository
+import sptech.projetojpa1.repository.RespostaRepository
 import sptech.projetojpa1.repository.UsuarioRepository
 
 @Service
@@ -18,31 +19,37 @@ class RespostaService(
     private val usuarioRepository: UsuarioRepository
 ) {
 
-    fun criarResposta(request: RespostaRequestDTO): RespostaResponseDTO {
-        val pergunta = perguntaRepository.findById(request.pergunta)
-            .orElseThrow { IllegalArgumentException("Pergunta não encontrada") }
+    fun criarRespostas(request: RespostaBatchRequestDTO): List<RespostaResponseDTO> {
         val fichaAnamnese = fichaAnamneseRepository.findById(request.fichaAnamnese)
             .orElseThrow { IllegalArgumentException("Ficha não encontrada") }
         val usuario = usuarioRepository.findById(request.usuario)
             .orElseThrow { IllegalArgumentException("Usuário não encontrado") }
 
-        val resposta = Resposta(
-            resposta = request.resposta,
-            pergunta = pergunta,
-            fichaAnamnese = fichaAnamnese,
-            usuario = usuario
-        )
+        val respostasSalvas = request.respostas.map { respostaRequest ->
+            val pergunta = perguntaRepository.findById(respostaRequest.pergunta)
+                .orElseThrow { IllegalArgumentException("Pergunta não encontrada") }
 
-        val respostaSalva = respostaRepository.save(resposta)
+            val resposta = Resposta(
+                resposta = respostaRequest.resposta,
+                pergunta = pergunta,
+                fichaAnamnese = fichaAnamnese,
+                usuario = usuario
+            )
 
-        return RespostaResponseDTO(
-            idResposta = respostaSalva.idResposta!!,
-            resposta = respostaSalva.resposta,
-            pergunta = respostaSalva.pergunta.pergunta,
-            usuario = respostaSalva.usuario.nome ?: "",
-            dataPreenchimento = respostaSalva.fichaAnamnese.dataPreenchimento.toString()
-        )
+            respostaRepository.save(resposta)
+        }
+
+        return respostasSalvas.map { respostaSalva ->
+            RespostaResponseDTO(
+                idResposta = respostaSalva.idResposta!!,
+                resposta = respostaSalva.resposta,
+                pergunta = respostaSalva.pergunta.pergunta,
+                usuario = respostaSalva.usuario.nome ?: "",
+                dataPreenchimento = respostaSalva.fichaAnamnese.dataPreenchimento.toString()
+            )
+        }
     }
+
 
     fun listarRespostas(): List<RespostaResponseDTO> {
         val respostas = respostaRepository.findAll()

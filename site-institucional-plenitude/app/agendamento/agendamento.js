@@ -221,21 +221,54 @@ document.addEventListener("DOMContentLoaded", function () {
       const acoesTd = document.createElement("td");
       const editButton = document.createElement("button");
       editButton.classList.add("edit-btn");
+      editButton.classList.add("filter-btn");
       editButton.dataset.id = agendamento.idAgendamento;
       editButton.innerHTML = '<i class="fas fa-edit"></i>';
+
+       // Tooltip
+       const tooltip2 = document.createElement("div");
+       tooltip2.classList.add("tooltip6");
+       tooltip2.innerText = "Clique para editar."; // Mensagem do tooltip
+ 
+       // Adiciona o tooltip ao botão de exclusão
+       editButton.appendChild(tooltip2);
+
       editButton.addEventListener("click", (event) => {
         event.stopPropagation();
         editarAgendamento(clienteTd.dataset.idAgendamento, clienteTd.dataset.idUsuario, procedimentoTd.dataset.fkProcedimento, especificacaoTd.dataset.fkEspecificacao)
       });
 
+
+      
+
       const deleteButton = document.createElement("button");
       deleteButton.classList.add("delete-btn");
+      deleteButton.classList.add("filter-btn");
       deleteButton.dataset.id = agendamento.idAgendamento;
       deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
+
+      // Tooltip
+      const tooltip = document.createElement("div");
+      tooltip.classList.add("tooltip6");
+      tooltip.innerText = "Clique para excluir este status."; // Mensagem do tooltip
+
+      // Adiciona o tooltip ao botão de exclusão
+      deleteButton.appendChild(tooltip);
+
+      // Evento de clique para o botão de exclusão
       deleteButton.addEventListener("click", (event) => {
-        event.stopPropagation();
-        excluirAgendamento(agendamento.idAgendamento);
+          event.stopPropagation(); // Impede a propagação do evento
+          excluirAgendamento(agendamento.idAgendamento); // Chama a função de exclusão
       });
+
+      // Função de exemplo para excluir agendamento
+      function excluirAgendamento(id) {
+          console.log(`Agendamento ${id} excluído.`);
+          // Aqui você pode adicionar a lógica para excluir o agendamento
+      }
+
+      // Adiciona o botão de exclusão à página (opcional)
+      document.body.appendChild(deleteButton);
 
       acoesTd.appendChild(editButton);
       acoesTd.appendChild(deleteButton);
@@ -668,11 +701,28 @@ window.editarAgendamento = function (idAgendamento, usuarioId,fkProcedimento, fk
           const row = document.createElement("tr");
           row.innerHTML = `
               <td>${status.nome}</td>
-              <td><div class="color-box" style="background-color: ${status.cor}; width: 20px; height: 20px; border-radius: 100px; margin-left: 35%;"></div></td>
-              <td>
-                  <button class="edit-btn" data-id="${status.id}"><i class="fas fa-edit"></i></button>
-                  <button class="delete-btn" data-id="${status.id}"><i class="fas fa-trash"></i></button>
-              </td>
+             <td>
+  <div class="color-box" style="background-color: ${status.cor}; width: 20px; height: 20px; border-radius: 100px; margin-left: 35%;"></div>
+</td>
+<td>
+  <!-- Botão de Editar com tooltip -->
+  <div class="tooltip-wrapper">
+    <button class="edit-btn" data-id="${status.id}">
+      <i class="fas fa-edit"></i>
+    </button>
+    <div class="tooltip9">Editar</div>
+  </div>
+
+  <!-- Botão de Excluir com tooltip -->
+  <div class="tooltip-wrapper">
+    <button class="delete-btn" data-id="${status.id}">
+      <i class="fas fa-trash"></i>
+    </button>
+    <div class="tooltip9">Excluir</div>
+  </div>
+</td>
+
+
             `;
           tbody.appendChild(row);
         });

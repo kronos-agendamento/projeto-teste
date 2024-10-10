@@ -209,7 +209,6 @@ header p {
 
 }
 
-
 .card-graficos p {
     display: flex;
     flex-direction: row;
@@ -253,13 +252,13 @@ header p {
 .card-content-2 p {
     display: flex;
     justify-content: center;
+    align-items: center;
     border: 2px solid rgb(0, 0, 0);
     background-color: #fff;
     border-radius: 15px;
-    /* padding: 5px 10px; */
+    padding: 5px;
     margin-right: 23px;
     margin-left: 0px;
-
     font-size: 14px;
     color: rgb(0, 0, 0);
     cursor: pointer;

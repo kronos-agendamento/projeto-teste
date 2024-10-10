@@ -339,34 +339,54 @@ document.addEventListener('DOMContentLoaded', function() {
     // Definir tamanho de fonte padrão ou carregar do localStorage
     let currentFontSize = localStorage.getItem('fontSize') || '16px';
     rootElement.style.setProperty('--font-size-default', currentFontSize);
+    document.body.style.fontSize = currentFontSize; // Aplicar o tamanho de fonte ao body
+
+    const defaultFontSize = parseFloat(currentFontSize); // Tamanho inicial de referência
+    let currentIncrease = 0; // Contador de aumentos
+    let currentDecrease = 0; // Contador de diminuições
+    const maxAdjustments = 2; // Limitar o número de vezes que o tamanho da fonte pode ser alterado
 
     // Função para aumentar o tamanho da fonte
     increaseFontBtn.addEventListener('click', function() {
-        let newSize = parseFloat(currentFontSize) + 1;
-        currentFontSize = `${newSize}px`;
-        rootElement.style.setProperty('--font-size-default', currentFontSize);
-        localStorage.setItem('fontSize', currentFontSize);
+        if (currentIncrease < maxAdjustments) {
+            let newSize = parseFloat(currentFontSize) + 2; // Aumentar de 2px
+            currentFontSize = `${newSize}px`;
+            rootElement.style.setProperty('--font-size-default', currentFontSize);
+            document.body.style.fontSize = currentFontSize; // Aplicar o novo tamanho ao body
+            localStorage.setItem('fontSize', currentFontSize);
+            
+            currentIncrease++; // Incrementar o contador de aumentos
+            currentDecrease = 0; // Resetar o contador de diminuições para permitir novo ciclo
+        }
     });
 
     // Função para diminuir o tamanho da fonte
     decreaseFontBtn.addEventListener('click', function() {
-        let newSize = parseFloat(currentFontSize) - 1;
-        if (newSize >= 12) {  // Limitar tamanho mínimo da fonte
-            currentFontSize = `${newSize}px`;
-            rootElement.style.setProperty('--font-size-default', currentFontSize);
-            localStorage.setItem('fontSize', currentFontSize);
+        if (currentDecrease < maxAdjustments) {
+            let newSize = parseFloat(currentFontSize) - 2; // Diminuir de 2px
+            if (newSize >= defaultFontSize - 4) {  // Limitar a diminuição a 4px abaixo do tamanho inicial
+                currentFontSize = `${newSize}px`;
+                rootElement.style.setProperty('--font-size-default', currentFontSize);
+                document.body.style.fontSize = currentFontSize; // Aplicar o novo tamanho ao body
+                localStorage.setItem('fontSize', currentFontSize);
+                
+                currentDecrease++; // Incrementar o contador de diminuições
+                currentIncrease = 0; // Resetar o contador de aumentos para permitir novo ciclo
+            }
         }
     });
 });
 
-function saudacao() {
-    const saudacaoElement1 = document.getElementById('greeting1');
-    const saudacaoElement2 = document.getElementById('greeting2');
+
+
+  function saudacao() {
+    const saudacaoElement1 = document.getElementById("greeting1");
+    const saudacaoElement2 = document.getElementById("greeting2");
 
     const dataAtual = new Date();
     const horaAtual = dataAtual.getHours();
     const diaSemana = dataAtual.getDay();
-    
+
     let saudacaoTexto;
     let diasDaSemana = [
         { nome: "domingo", genero: "um", otimo: "ótimo" },
@@ -377,14 +397,14 @@ function saudacao() {
         { nome: "sexta-feira", genero: "uma", otimo: "ótima" },
         { nome: "sábado", genero: "um", otimo: "ótimo"  }
     ];
-    
+
     // Verifica a hora do dia para a saudação
     if (horaAtual >= 0 && horaAtual < 12) {
-        saudacaoTexto = "Bom dia";
+      saudacaoTexto = "Bom dia";
     } else if (horaAtual >= 12 && horaAtual < 18) {
-        saudacaoTexto = "Boa tarde";
+      saudacaoTexto = "Boa tarde";
     } else {
-        saudacaoTexto = "Boa noite";
+      saudacaoTexto = "Boa noite";
     }
 
     // Define o gênero correto para o "um/uma" de acordo com o dia da semana
@@ -395,8 +415,133 @@ function saudacao() {
     // Exibe a saudação com o dia da semana e o gênero correto
     saudacaoElement1.textContent = `${saudacaoTexto}`;
     saudacaoElement2.textContent = `Tenha ${genero} ${otimo} ${dia.nome}!`;
+  }
 
-}
+  // Função para normalizar strings (remover acentos e converter para minúsculas)
+  function normalizeString(str) {
+    return str
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+  }
+
+  // Função para carregar especificações
+  function carregarEspecificacoes() {
+    fetch("http://localhost:8080/api/especificacoes")
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else if (response.status === 204) {
+          console.log("Nenhuma especificação encontrada.");
+          return [];
+        } else {
+          throw new Error("Erro ao carregar especificações");
+        }
+      })
+      .then((data) => {
+        console.log("Especificações carregadas:", data);
+        const dataList = document.getElementById("especificacoesList");
+        dataList.innerHTML = ""; // Limpa as opções anteriores
+
+        // Ordena as especificações antes de adicioná-las ao datalist
+        data.sort((a, b) => {
+          const normalizedA = normalizeString(
+            `${a.especificacao} - ${a.procedimento.tipo}`
+          );
+          const normalizedB = normalizeString(
+            `${b.especificacao} - ${b.procedimento.tipo}`
+          );
+          return normalizedA.localeCompare(normalizedB);
+        });
+
+        data.forEach((item) => {
+          const option = document.createElement("option");
+          option.value = `${item.especificacao} - ${item.procedimento.tipo}`;
+          option.dataset.normalized = normalizeString(option.value);
+          option.dataset.idEspecificacao = item.idEspecificacaoProcedimento;
+          option.dataset.idProcedimento = item.procedimento.idProcedimento;
+          dataList.appendChild(option);
+        });
+      })
+      .catch((error) => {
+        console.error("Erro:", error);
+      });
+  }
+
+  // Função para salvar IDs no localStorage e redirecionar para a tela de agendamento
+  function salvarIdsNoLocalStorage() {
+    const input = document.getElementById("searchInput");
+    const selectedOption = Array.from(
+      document.getElementById("especificacoesList").options
+    ).find((option) => option.value === input.value);
+
+    if (selectedOption) {
+      const idEspecificacao = selectedOption.dataset.idEspecificacao;
+      const idProcedimento = selectedOption.dataset.idProcedimento;
+
+      localStorage.setItem("idEspecificacao", idEspecificacao);
+      localStorage.setItem("idProcedimento", idProcedimento);
+
+      console.log("IDs salvos no localStorage:", {
+        idEspecificacao,
+        idProcedimento,
+      });
+
+      // Redireciona para a tela de agendamento
+      window.location.href = "../agendamento-mobile/agendamento-mobile.html";
+    }
+  }
+
+  // Adiciona evento de mudança para salvar os IDs no localStorage e redirecionar
+  document
+    .getElementById("searchInput")
+    .addEventListener("change", salvarIdsNoLocalStorage);
+
+  // Função para busca binária
+  function buscaBinaria(arr, x) {
+    let start = 0;
+    let end = arr.length - 1;
+
+    while (start <= end) {
+      let mid = Math.floor((start + end) / 2);
+      const midVal = arr[mid].dataset.normalized;
+
+      if (midVal.includes(x)) {
+        return mid;
+      } else if (midVal < x) {
+        start = mid + 1;
+      } else {
+        end = mid - 1;
+      }
+    }
+
+    return -1;
+  }
+
+  // Função para filtrar as opções do datalist usando busca binária
+  function filtrarEspecificacoes() {
+    const input = document.getElementById("searchInput");
+    const filter = normalizeString(input.value);
+    const dataList = document.getElementById("especificacoesList");
+    const options = Array.from(dataList.getElementsByTagName("option"));
+
+    // Ordena as opções para garantir que a busca binária funcione corretamente
+    options.sort((a, b) =>
+      a.dataset.normalized.localeCompare(b.dataset.normalized)
+    );
+
+    // Realiza a busca binária
+    const index = buscaBinaria(options, filter);
+
+    // Exibe apenas as opções que correspondem ao filtro
+    options.forEach((option, i) => {
+      if (i === index || option.dataset.normalized.includes(filter)) {
+        option.style.display = "";
+      } else {
+        option.style.display = "none";
+      }
+    });
+  }
 
 // Chama a função quando a página carregar
 window.onload = saudacao;
@@ -603,4 +748,3 @@ document.getElementById("usuarioForm").addEventListener("submit", async (event) 
   
 
   });
-  
