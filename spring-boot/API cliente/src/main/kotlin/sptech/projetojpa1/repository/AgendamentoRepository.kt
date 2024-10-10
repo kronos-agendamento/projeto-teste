@@ -262,6 +262,32 @@ ORDER BY
 """, nativeQuery = true)
     fun findMostBookedTimeByUser(idUsuario: Int): String?
 
+    @Query(
+        nativeQuery = true, value = """
+        SELECT 
+            e.especificacao AS Procedimento, 
+            COUNT(*) AS qtd_procedimentos
+        FROM 
+            agendamento a
+        JOIN 
+            especificacao e ON a.fk_especificacao_procedimento = e.id_especificacao_procedimento
+        JOIN 
+            usuario u ON a.fk_usuario = u.id_usuario
+        WHERE 
+            u.id_usuario = :usuarioId  -- ID do usuário específico
+            AND DATE_FORMAT(a.data_horario, '%Y-%m') = :mesAno  -- Mês e ano específicos no formato YYYY-MM
+            AND a.data_horario >= CURDATE() - INTERVAL 1 YEAR  -- Apenas procedimentos do último ano
+        GROUP BY 
+            e.especificacao
+        ORDER BY 
+            qtd_procedimentos DESC;
+        """
+    )
+    fun findProcedimentosPorUsuarioEMes(
+        @Param("usuarioId") usuarioId: Long,
+        @Param("mesAno") mesAno: String
+    ): List<Array<Any>>  // Retorna uma lista com Procedimento e a quantidade
+
     @Query("""
 SELECT new sptech.projetojpa1.dto.agendamento.AgendamentoDTO(
         u.nome, a.idAgendamento, a.usuario.id, a.dataHorario, a.tipoAgendamento, 

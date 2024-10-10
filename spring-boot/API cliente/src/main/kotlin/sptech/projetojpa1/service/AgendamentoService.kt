@@ -453,6 +453,15 @@ class AgendamentoService(
         return agendamentoRepository.buscarDiaMaisAgendadoPorUsuario(idUsuario)
     }
 
+    fun obterProcedimentosPorUsuarioEMes(usuarioId: Long, mesAno: String): Map<String, Int> {
+        return agendamentoRepository.findProcedimentosPorUsuarioEMes(usuarioId, mesAno)
+            .associate {
+                val procedimento = it[0] as String  // O primeiro elemento é o nome do procedimento
+                val quantidade = (it[1] as Number).toInt()  // O segundo elemento é a quantidade
+                procedimento to quantidade
+            }
+    }
+
     fun getMostBookedTimeByUser(idUsuario: Int): String? {
         return agendamentoRepository.findMostBookedTimeByUser(idUsuario)
     }
