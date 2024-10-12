@@ -119,7 +119,8 @@ CREATE TABLE especificacao (
 CREATE TABLE pergunta (
     id_pergunta INT AUTO_INCREMENT PRIMARY KEY,
     pergunta VARCHAR(255) NOT NULL,
-    pergunta_ativa BOOLEAN NOT NULL
+    pergunta_ativa BOOLEAN NOT NULL,
+    pergunta_tipo VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE resposta (
@@ -300,18 +301,19 @@ VALUES
 ('Maquiagem para Eventos', 150.00, 0.00, 0.00, '02:00', '00:00', '00:00', 1);
 
 
-INSERT INTO pergunta (pergunta, pergunta_ativa)
+INSERT INTO pergunta (pergunta, pergunta_ativa, pergunta_tipo)
 VALUES 
-('Você tem alergia a algum produto?', TRUE),
-('Já teve reações adversas em algum procedimento anterior?', TRUE),
-('Você faz uso de medicamentos?', TRUE),
-('Você está grávida ou amamentando?', TRUE),
-('Você tem problemas de pele?', TRUE),
-('Você já fez micropigmentação antes?', TRUE),
-('Você usa produtos específicos nos cílios ou sobrancelhas?', TRUE),
-('Você já fez algum procedimento estético nos últimos 6 meses?', TRUE),
-('Tem alguma doença crônica que deveríamos saber?', TRUE),
-('Está utilizando algum tratamento dermatológico?', TRUE);
+('Você tem alergia a algum produto?', TRUE, 'Input'),
+('Já teve reações adversas em algum procedimento anterior?', TRUE, 'Input'),
+('Você faz uso de medicamentos?', TRUE, 'Select'),
+('Você está grávida ou amamentando?', TRUE, 'Check Box'),
+('Você tem problemas de pele?', TRUE, 'Select'),
+('Você já fez micropigmentação antes?', TRUE, 'Check Box'),
+('Você usa produtos específicos nos cílios ou sobrancelhas?', TRUE, 'Input'),
+('Você já fez algum procedimento estético nos últimos 6 meses?', TRUE, 'Select'),
+('Tem alguma doença crônica que deveríamos saber?', TRUE, 'Input'),
+('Está utilizando algum tratamento dermatológico?', TRUE, 'Check Box');
+
 
 INSERT INTO resposta (resposta, fk_pergunta, fk_ficha_anamnese, fk_usuario)
 VALUES 
@@ -471,3 +473,7 @@ select * from horario_funcionamento;
         SELECT l.id_lead, l.nome, l.email, l.telefone 
                 FROM leads l 
                 ORDER BY l.id_lead ASC;
+                
+                select * from pergunta;
+                
+                select * from resposta where fk_usuario = 2;

@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import sptech.projetojpa1.dto.resposta.RespostaBatchRequestDTO
 import sptech.projetojpa1.dto.resposta.RespostaFilteredDTO
 import sptech.projetojpa1.dto.resposta.RespostaRequestDTO
 import sptech.projetojpa1.dto.resposta.RespostaResponseDTO
@@ -28,9 +29,9 @@ class RespostaController(
         ]
     )
     @PostMapping
-    fun criarResposta(@RequestBody @Valid request: RespostaRequestDTO): ResponseEntity<RespostaResponseDTO> {
-        val respostaCriada = respostaService.criarResposta(request)
-        return ResponseEntity.status(201).body(respostaCriada)
+    fun criarRespostas(@RequestBody @Valid request: RespostaBatchRequestDTO): ResponseEntity<List<RespostaResponseDTO>> {
+        val respostas = respostaService.criarRespostas(request)
+        return ResponseEntity.ok(respostas)
     }
 
     @Operation(

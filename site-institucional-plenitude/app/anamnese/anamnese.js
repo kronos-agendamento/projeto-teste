@@ -32,6 +32,16 @@ function closeModal2() {
   modal2.style.display = "none";
 }
 
+function showForm3(){
+  const modal3 = document.getElementById("modalDeletar")
+  modal3.style.display = "block"
+}
+
+function closeModal3(){
+  const modal3 = document.getElementById("modalDeletar")
+  modal3.style.display = "none"
+}
+
 
 // URL base da API
 const baseUrl = "http://localhost:8080";
@@ -75,6 +85,36 @@ function criarPergunta() {
       document.getElementById("notification-message").textContent = "Erro ao cadastrar pergunta. Tente novamente";
     });
 }
+
+
+function obterPerguntas(){
+  fetch(`${baseUrl}/api/perguntas/ativas`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+  .then(response => {
+    if(!response.ok){
+      throw new Error('Erro na requisição: ' + response.status);
+    }
+    return response.json()
+  })
+  .then(perguntas => {
+    //Preenche as tabelas com as perguntas dinâmicas
+    perguntas.forEach((pergunta, index) => {
+      const label = getElementById(`pergunta${index + 1}Label`);
+      if(label){
+        label.textContent = pergunta.pergunta
+      }
+    });
+  })
+  .catch(error => {
+    console.error('Erro ao obter perguntas: ', error);
+  } )
+}
+document.addEventListener("DOMContentLoaded", obterPerguntas)
+
 
 
 
@@ -124,4 +164,24 @@ function preencherTabelasDesativadas(perguntasDesativadas) {
   }
 }
 
+function deletarPergunta(button){
 
+const perguntaId = button.getAttribute("data-id");
+fetch(`${baseUrl}/api/perguntas/${perguntaId}`, {
+  method: "DELETE",
+  headers: {
+    "Content-Type" : "application/json"
+  }
+})
+.then(response => {
+  if(response.ok){
+    document.getElementById("notification-message").textContent = "Pergunta deletada com sucesso!"
+  } else if(response.status === 404){
+      document.getElementById("notification-message").textContent = "Pergunta não encontrada"
+  } else{
+    throw new Error("Erro ao deletar pergunta.")
+  }
+})
+
+
+}

@@ -43,6 +43,117 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+// Envio dos Dados Corretos Para o Fetch que Busca os Dados do Gráfico de Perfil
+document.addEventListener('DOMContentLoaded', function() {
+  // Função para gerar os meses do ano atual até o mês atual
+  function populateMonthSelect() {
+      const selectMes = document.getElementById('selectMes');
+      const currentDate = new Date();
+      const currentYear = currentDate.getFullYear();
+      const currentMonth = currentDate.getMonth() + 1;  // getMonth() retorna de 0 a 11, então adicionamos +1
+
+      // Limpa as opções existentes no <select>
+      selectMes.innerHTML = '';
+
+      // Adiciona os meses de janeiro até o mês atual
+      for (let month = 1; month <= currentMonth; month++) {
+          const monthString = month.toString().padStart(2, '0');  // Garante que o mês tenha 2 dígitos (ex: '01')
+          const option = document.createElement('option');
+          option.value = `${currentYear}-${monthString}`;
+          option.text = new Intl.DateTimeFormat('pt-BR', { month: 'long' }).format(new Date(currentYear, month - 1));  // Nome do mês em português
+          selectMes.appendChild(option);
+      }
+
+      // Define o mês atual como o selecionado por padrão
+      selectMes.value = `${currentYear}-${currentMonth.toString().padStart(2, '0')}`;
+  }
+
+  // Chama a função para popular o <select> com os meses ao carregar a página
+  populateMonthSelect();
+
+  // Pega o ID do usuário do localStorage
+  const idUsuario = localStorage.getItem('idUsuario');
+  if (!idUsuario) {
+      console.error('ID do usuário não encontrado no localStorage.');
+      return;
+  }
+
+  // Captura o mês selecionado no <select> e chama o fetch
+  document.getElementById('selectMes').addEventListener('change', function() {
+      const selectedMonth = this.value;  // Pega o mês selecionado no formato YYYY-MM
+      fetchProcedimentosPorUsuarioEMes(idUsuario, selectedMonth);  // Faz o fetch com o mês selecionado
+  });
+
+  // Inicializa o gráfico com o mês atual ao carregar a página
+  const defaultMonth = document.getElementById('selectMes').value;  // Pega o mês atual do <select>
+  fetchProcedimentosPorUsuarioEMes(idUsuario, defaultMonth);  // Faz o fetch inicial
+});
+
+
+// Busca dos dados para o Gráfico de Perfil
+function fetchProcedimentosPorUsuarioEMes(usuarioId, mesAno) {
+  fetch(`http://localhost:8080/api/agendamentos/procedimentos-usuario-mes?usuarioId=${usuarioId}&mesAno=${mesAno}`)
+      .then(response => response.json())
+      .then(data => {
+          updateChartProcedimentosUsuarioMes(data);
+      })
+      .catch(error => {
+          console.error('Erro ao buscar dados para o gráfico:', error);
+      });
+}
+
+// Atualização do dados do Gráfico de Perfil
+function updateChartProcedimentosUsuarioMes(data) {
+  const labels = Object.keys(data);  // Os nomes dos procedimentos (ex: Volume Russo, Volume Fio a Fio)
+  const dataChart = Object.values(data);  // Quantidade de procedimentos (ex: 3, 2, 1)
+
+  // Chama a função para criar ou atualizar o gráfico
+  createChartProcedimentosUsuarioMes(labels, dataChart);
+}
+
+// Criação do Gráfico de Perfil
+function createChartProcedimentosUsuarioMes(labels, dataChart) {
+const ctx = document.getElementById('chartProcedimentosUsuarioMes').getContext('2d');
+
+    // Verifica se o gráfico já existe e o destrói antes de criar um novo
+    if (window.chartProcedimentosUsuarioMes instanceof Chart) {
+      window.chartProcedimentosUsuarioMes.destroy();
+  }
+
+
+  // Criação do gráfico com Chart.js
+  window.chartProcedimentosUsuarioMes = new Chart(ctx, {
+      type: 'bar',  // Tipo de gráfico: barra
+      data: {
+          labels: labels,  // Procedimentos como rótulos (ex: Maquiagem, Sobrancelha)
+          datasets: [{
+              label: 'Quantidade de Procedimentos',  // Rótulo da barra
+              data: dataChart,  // Quantidades de procedimentos
+              backgroundColor: ['#f9b4c4', '#c4145a', '#e99fb8'],  // Cores das barras
+              borderColor: '#4B0082',  // Cor da borda
+              borderWidth: 1  // Largura da borda
+          }]
+      },
+      options: {
+          responsive: true,  // Responsivo para diferentes tamanhos de tela
+          scales: {
+              y: {
+                  beginAtZero: true,  // Eixo Y começa no zero
+                  title: {
+                      display: true,
+                      text: 'Quantidade'
+                  }
+              },
+              x: {
+                  title: {
+                      display: true,
+                      text: 'Procedimentos'
+                  }
+              }
+          }
+      }
+  });
+}
 
 
 

@@ -103,43 +103,39 @@
       <div class="main-content">
         <div class="left-content">
           <section class="actions">
-            <a href="../agendamento/agendamento-forms/cadastrar-agendamento/cadastrar-agendamento.html" class="filter-btn"><button>
+            <a href="../agendamento/agendamento-forms/cadastrar-agendamento/cadastrar-agendamento.html"
+              class="filter-btn"><button>
                 <i class="fas fa-calendar-plus"></i> Novo Agendamento
               </button></a>
-              <div id="tooltip4" class="tooltip4">Clique cadastrar novo agendamento</div>
-            <a href="../cliente/cliente-forms/cadastrar-cliente/cadastrar-cliente.html" class="filter-btn"><button >
+            <div id="tooltip4" class="tooltip4">Clique cadastrar novo agendamento</div>
+            <a href="../cliente/cliente-forms/cadastrar-cliente/cadastrar-cliente.html" class="filter-btn"><button>
                 <i class="fas fa-user-plus"></i> Novo Cliente
               </button></a>
-              <div id="tooltip1" class="tooltip1">Clique para cadastrar novo cliente</div>
+            <div id="tooltip1" class="tooltip1">Clique para cadastrar novo cliente</div>
 
-            <a href="../procedimento/procedimento-forms/cadastrar-procedimento/cadastrar-procedimento.html" class="filter-btn" ><button>
+            <a href="../procedimento/procedimento-forms/cadastrar-procedimento/cadastrar-procedimento.html"
+              class="filter-btn"><button>
                 <i class="fas fa-tasks"></i> Novo Procedimento
               </button></a>
-              <div id="tooltip2" class="tooltip2">Clique para cadastrar novo procedimento</div>
+            <div id="tooltip2" class="tooltip2">Clique para cadastrar novo procedimento</div>
 
             <a href="../perfil/perfil.html" class="filter-btn"><button>
                 <i class="fas fa-face-smile"> </i> Editar Perfil
               </button></a>
-              <div id="tooltip3" class="tooltip3">Clique para editar perfil</div>
+            <div id="tooltip3" class="tooltip3">Clique para editar perfil</div>
 
           </section>
+          <section class="actions" id="center">
+            <a href="agenda-semanal/agenda-semanal.html" class="filter-btn"><button id="center">
+              <i class="fas fa-calendar"> </i>Agenda Semanal de Atendimentos
+             
+            </button></a>
+            <div id="tooltip5" class="tooltip5">Clique para ver o calendário</div>
+          </section>
 
-          <div class="table-container">
-            <a href="agenda-semanal/agenda-semanal.html">
-              <section class="weekly-schedule">
-                <h2 class="filter-btn">
-                  <i class="fas fa-calendar"></i> Agenda Semanal de Atendimentos
-                </h2>
-                <div id="tooltip5" class="tooltip5">Clique para ver o calendário</div>
-              </section>
-            </a>
-
-          </div>
-          <div class="table-container">
-            <div class="table-header">
-              <h1>Procedimentos Cadastrados</h1>
-            </div>
-            <table id="procedimentos-cadastrados">
+          <div class="conteiner">
+            <h3>Procedimentos Cadastrados</h3>
+            <table id="procedimentos-cadastrados" class="procedures-table">
               <thead>
                 <tr>
                   <th>Nome</th>
@@ -155,12 +151,9 @@
               <div id="tooltip6" class="tooltip6">Clique para ver todos os procedimentos cadastrados</div>
             </div>
           </div>
-
-          <div class="table-container">
-            <div class="table-header">
-              <h1>Clientes Frequentes</h1>
-            </div>
-            <table id="clientes-frequentes">
+          <div class="conteiner">
+            <table id="clientes-frequentes" class="procedures-table">
+              <h3 id="titulo">Clientes Frequentes</h3>
               <thead>
                 <tr>
                   <th>Nome</th>
@@ -169,19 +162,17 @@
                   <th>Último Procedimento</th>
                 </tr>
               </thead>
-              <tbody></tbody>
+              <tbody id="procedures-tbody"></tbody>
             </table>
             <div class="footer">
               <a href="../cliente/cliente.html" class="filter-btn">Ver todos >></a>
               <div id="tooltip7" class="tooltip7">Clique para ver todos os clientes frequentes</div>
-
             </div>
           </div>
-          <div class="table-container">
-            <div class="table-header">
-              <h1>Formulário de contato do site</h1>
-            </div>
-            <table id="leads">
+
+          <div class="conteiner">
+            <h3>Formulário de contato do site</h3>
+            <table id="leads" class="procedures-table">
               <thead>
                 <tr>
                   <th>Nome</th>
@@ -189,13 +180,12 @@
                   <th>Mensagem</th>
                 </tr>
               </thead>
-              <tbody></tbody>
+              <tbody id="proceduresl-tbody"></tbody>
             </table>
             <div class="footer">
               <a href="leads/leads.html" class="filter-btn">Ver todos >></a>
               <div id="tooltip12" class="tooltip12">Clique para ver todos os leads.</div>
             </div>
-           
           </div>
         </div>
         <div class="right-content">
@@ -217,11 +207,9 @@
             </div>
           </section>
 
-          <div class="table-container">
-            <div class="table-header">
-              <h1>Status Cadastrados</h1>
-            </div>
-            <table>
+          <div class="conteiner">
+            <table class="procedures-table2">
+              <h3 id="titulo">Status Cadastrados</h3>
               <thead>
                 <tr>
                   <th>Nome</th>
@@ -240,7 +228,7 @@
           <div class="table-container">
             <div class="birthday-card">
               <div class="table-header">
-                <h1>Aniversariantes do Mês</h1>
+                <h3>Aniversariantes do Mês</h3>
               </div>
               <hr />
               <div class="birthday-list "></div>
@@ -252,32 +240,33 @@
           </div>
         </div>
       </div>
+  </div>
 
-      <div id="modal" class="modal">
-        <div class="modal-content">
-          <p>Tem certeza que deseja excluir o status?</p>
-          <p id="procedimento"></p>
-          <button class="btn btn-yes">SIM</button>
-          <button class="btn btn-no" onclick="closeModal()">NÃO</button>
-        </div>
-      </div>
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <p>Tem certeza que deseja excluir o status?</p>
+      <p id="procedimento"></p>
+      <button class="btn btn-yes">SIM</button>
+      <button class="btn btn-no" onclick="closeModal()">NÃO</button>
+    </div>
+  </div>
 
-      <div id="edit-modal" class="modal">
-        <div class="modal-content2">
-          <h3>Editar Status</h3>
-          <div>
-            <input type="text" id="edit-nome" placeholder="Nome" />
-            <input type="color" id="edit-cor" placeholder="Cor do Status">
-          </div>
-          <div>
-            <button class="btn btn-save">Salvar</button>
-            <button class="btn btn-no" onclick="closeEditModal()">
-              Cancelar
-            </button>
-          </div>
-        </div>
+  <div id="edit-modal" class="modal">
+    <div class="modal-content2">
+      <h3>Editar Status</h3>
+      <div>
+        <input type="text" id="edit-nome" placeholder="Nome" />
+        <input type="color" id="edit-cor" placeholder="Cor do Status">
       </div>
-    </main>
+      <div>
+        <button class="btn btn-save">Salvar</button>
+        <button class="btn btn-no" onclick="closeEditModal()">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+  </main>
   </div>
 
   <script src="index.js"></script>
