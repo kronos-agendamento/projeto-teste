@@ -8,7 +8,7 @@
 
 body {
   font-family: Poppins, sans-serif;
-
+  height: 80rem;
   margin: 0;
   padding: 0;
 }
@@ -126,7 +126,7 @@ navbar  lateral
 --------------------------------------------------------------*/
 
 .navigation {
-  height: 70rem;
+  height: 76.6rem;
   background: #d2135d;
   width: 19vw;
   top: 2vh;

@@ -11,5 +11,6 @@ data class UsuarioAtualizacaoRequest(
     var telefone: Long?,
     var genero: String?,
     var indicacao: String?,
+    var senha: String?,
     var endereco: Endereco?
     )

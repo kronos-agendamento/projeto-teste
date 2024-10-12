@@ -124,6 +124,7 @@ class UsuarioService(
             telefone = dto.telefone ?: telefone
             genero = dto.genero ?: genero
             indicacao = dto.indicacao ?: indicacao
+            senha = dto.senha?: senha
         }
 
         // Salvar o usuário atualizado
