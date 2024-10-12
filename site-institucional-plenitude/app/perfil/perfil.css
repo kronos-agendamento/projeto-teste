@@ -126,7 +126,7 @@ navbar  lateral
 --------------------------------------------------------------*/
 
 .navigation {
-  height: auto;
+  height: 70rem;
   background: #d2135d;
   width: 19vw;
   top: 2vh;
@@ -764,6 +764,131 @@ td {
 
 #notification-message {
   margin-right: 10px;
+}
+
+.form-section {
+  width: 73vw;
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+  margin-left: 3.5vh;
+  margin-top: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.form-section h2 {
+  margin-bottom: 20px;
+  font-size: 18px;
+  color: #e70069;
+  padding: 10px;
+  background-color: #e70069;
+  color: white;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  margin-top: -20px;
+  margin-left: -20px;
+  margin-right: -20px;
+}
+
+.form-section .edit-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-radius: 50%;
+  padding: 5px;
+  cursor: pointer;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="file"],
+.form-group select,
+.form-group input[type="date"],
+.form-group input[type="email"],
+.form-group input[type="password"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.form-group-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.form-group-row .form-group {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.form-group-row .form-group:last-child {
+  margin-right: 0;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.save-button {
+  display: block; /* Botão visível */
+  align-items: center;
+  background-color: #e70069;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s;
+}
+
+.save-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.save-button.show {
+  display: block;
+}
+
+.save-button svg {
+  margin-right: 10px;
+  width: 20px;
+  height: 20px;
+}
+
+.edit-icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-size: 18px;
+}
+
+.lock-icon {
+  margin-left: 10px;
+  font-size: 20px;
+  display: none; /* Inicialmente escondido */
 }
 
 

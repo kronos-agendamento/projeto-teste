@@ -83,17 +83,7 @@
           <h1>Perfil</h1>
           <p>Boas-vindas ao seu perfil, tenha controle dos seus dados e mantenha-os atualizados!</p>
         </div>
-          
 
-        <div id="notification" class="notification">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill"
-          viewBox="0 0 16 16">
-          <path
-            d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
-        </svg>
-        <span id="notification-message"></span>
-      </div>
-    
 
         <div id="notification" class="notification">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill"
@@ -103,299 +93,309 @@
           </svg>
           <span id="notification-message"></span>
         </div>
+
       </header>
 
-      <div class="main-content">
-        <div class="center-content">
-          <div class="table-header">
-            <h1>Dados do usuário</h1>
+      <section class="form-section" id="personalInfoForm">
+
+        <h2>
+          <div class="form-group-row">
+            &nbsp;&nbsp;&nbsp; Dados Pessoais
+            <button class="edit-icon-btn" id="editIconUsuario" aria-label="Editar Dados Pessoais">
+              <img src="../../assets/icons/editar.branco.png" alt="Editar"
+                style="width: 20px; height: 20px; border-radius: 0px;">
+            </button>
+            
           </div>
-          <div class="content-box">
-            <div class="content-form-flex-image" id="imagem">
-              <div class="imagem">
-                <div class="image">
-                  <img src="../../assets/icons/upload.png" alt="">
 
-                  <input type="file" name="profileImage" accept="image/*" placeholder="aaaaaaaaaa">
-                  <p>Insira aqui uma imagem de perfil!</p>
-                </div>
+        </h2>
+        <form id="personalForm" class="form">
+          <div class="form-group-row">
+            <div class="form-group">
+              <label for="nome">Nome:</label>
+              <div style="display: flex; align-items: center;">
+                <input type="text" id="nome" name="nome" required disabled>
+                <span class="lock-icon" id="nome-lock">🔓</span>
               </div>
             </div>
-
-            <div class="content-form-flex">
-              <div class="form-group form-mr form-input">
-                <div class="label">
-                  <p>Nome Completo:</p>
-                  <input type="text" id="nome" placeholder="Nome Completo" required>
-                </div>
-
-                <div class="label">
-                  <p>Data de Nascimento:</p>
-                  <input type="date" id="nascimento" placeholder="Data de nascimento" required>
-                </div>
-
-                <div class="label">
-                  <p>Telefone:</p>
-                  <input type="text" id="telefone" placeholder="(00) 00000-0000" required>
-                </div>
+            <div class="form-group">
+              <label for="nascimento">Data de Nascimento:</label>
+              <div style="display: flex; align-items: center;">
+                <input type="date" id="nascimento" name="nascimento" required disabled>
+                <span class="lock-icon" id="nascimento-lock">🔒</span>
               </div>
             </div>
-
-            <div class="content-form-flex">
-              <div class="form-group form-mr form-input">
-                <div class="label">
-                  <p>Gênero:</p>
-                  <select id="genero" required>
-                    <option value="Masculino">Masculino</option>
-                    <option value="Feminino">Feminino</option>
-                    <option value="Não-binário">Não-binário</option>
-                    <option value="Prefiro não dizer">Prefiro não dizer</option>
-                    <option value="Outro">Outro</option>
-                  </select>
-                </div>
-
-                <div class="label">
-                  <p>Instagram:</p>
-                  <input type="text" id="instagram" placeholder="@instagram" required>
-                </div>
-
-                <div class="label">
-                  <p>Indicação:</p>
-                  <select id="indicacao" required>
-                    <option value="Internet">Internet</option>
-                    <option value="Anúncio">Anúncio</option>
-                    <option value="Amigo contou">Amigo contou</option>
-                    <option value="Cliente contou">Cliente contou</option>
-                    <option value="Instagram">Instagram</option>
-                    <option value="Passou na frente e viu">Passou na frente e viu</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <div class="content-form-flex">
-              <div class="form-group form-mr form-input">
-                <div class="label">
-                  <p>Email:</p>
-                  <input type="email" id="email" placeholder="xxxxxxxxxxx@xxxx.com" required>
-                </div>
-                <div class="label">
-                  <p>Senha:</p>
-                  <input type="password" id="senha" placeholder="senha@123" required>
-                </div>
-
-                <div class="button-container" id="button-alterar">
-                  <button type="button" class="save-button" id="save-usuario-button">
-                    Alterar dados
-                  </button>
-                </div>
+            <div class="form-group">
+              <label for="instagram">Instagram:</label>
+              <div style="display: flex; align-items: center;">
+                <input type="text" id="instagram" name="instagram" required disabled>
+                <span class="lock-icon" id="instagram-lock">🔓</span>
               </div>
             </div>
           </div>
+          <div class="form-group-row">
+            <div class="form-group">
+              <label for="cpf">CPF:</label>
+              <div style="display: flex; align-items: center;">
+                <input type="text" id="cpf" name="cpf" required disabled>
+                <span class="lock-icon" id="cpf-lock">🔒</span>
+              </div>
+            </div>
 
+            <div class="form-group">
+              <label for="telefone">Celular:</label>
+              <div style="display: flex; align-items: center;">
+                <input type="text" id="telefone" name="telefone" required disabled>
+                <span class="lock-icon" id="telefone-lock">🔓</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="senha">Senha:</label>
+              <div style="display: flex; align-items: center;">
+                <input type="text" id="senha" name="senha" required disabled>
+                <span class="lock-icon" id="senha-lock">🔓</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group-row">
+            <div class="form-group">
+              <label for="genero">Gênero:</label>
+              <div style="display: flex; align-items: center;">
+                <select id="genero" required disabled>
+                  <option value="Masculino">Masculino</option>
+                  <option value="Feminino">Feminino</option>
+                  <option value="Não-binário">Não-binário</option>
+                  <option value="Prefiro não dizer">Prefiro não dizer</option>
+                  <option value="Outro">Outro</option>
+                </select>
+                <span class="lock-icon" id="genero-lock">🔓</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email">Email:</label>
+              <div style="display: flex; align-items: center;">
+                <input type="email" id="email" name="email" required disabled>
+                <span class="lock-icon" id="email-lock">🔓</span>
+              </div>
+            </div>
+          </div>
+          <div class="button-container">
+            <button type="submit" class="save-button" id="save-usuario-button" disabled>Salvar Dados Pessoais</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="form-section" id="personalInfoForm">
+
+        <h2>
+          <div class="form-group-row">
+            &nbsp;&nbsp;&nbsp; Dados Empresariais
+            <button class="edit-icon-btn" id="editIconEmpresa" aria-label="Editar Dados Pessoais">
+              <img src="../../assets/icons/editar.branco.png" alt="Editar"
+                style="width: 20px; height: 20px; border-radius: 0px;">
+            </button>
+          </div>
+
+        </h2>
+        <form id="empresaForm" class="form">
+          <div class="form-group-row">
+            <div class="form-group">
+              <label for="nome">Nome da empresa:</label>
+              <div style="display: flex; align-items: center;">
+                <input type="text" id="empresa" name="empresa" required disabled>
+                <span class="lock-icon" id="empresa-lock">🔓</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="cnpj">CNPJ:</label>
+              <div style="display: flex; align-items: center;">
+                <input type="text" id="cnpj" name="cnpj" required disabled>
+                <span class="lock-icon" id="cnpj-lock">🔒</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="telefone">Telefone:</label>
+              <div style="display: flex; align-items: center;">
+                <input type="text" id="telefone-empresa" name="telefone" required disabled>
+                <span class="lock-icon" id="telefone-lock">🔓</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group-row">
+            <div class="form-group">
+              <label for="dias">Dias de funcionamento:</label>
+              <p>De:</p>
+              <select name="" id="diaInicio" required>
+                <option value="Domingo">Domingo</option>
+                <option value="Segunda">Segunda</option>
+                <option value="Terça">Terça</option>
+                <option value="Quarta">Quarta</option>
+                <option value="Quinta">Quinta</option>
+                <option value="Sexta">Sexta</option>
+                <option value="Sábado">Sábado</option>
+              </select>
+              <span class="lock-icon" id="diaInicio-lock">🔓</span>
+            </div>
+            <div class="form-group">
+              <label for="diaFim" style="height: 20px;"></label>
+              <p>Até:</p>
+              <select name="" id="diaFim" required>
+                <option value="Domingo">Domingo</option>
+                <option value="Segunda">Segunda</option>
+                <option value="Terça">Terça</option>
+                <option value="Quarta">Quarta</option>
+                <option value="Quinta">Quinta</option>
+                <option value="Sexta">Sexta</option>
+                <option value="Sábado">Sábado</option>
+              </select>
+              <span class="lock-icon" id="diaFim-lock">🔓</span>
+            </div>
+          </div>
+          <div class="form-group-row">
+            <div class="form-group">
+              <label for="dias">Horários de funcionamento:</label>
+              <p>Horário Início:</p>
+              <input type="time" id="horaInicio" name="horaInicio" required>
+              <span class="lock-icon" id="horaInicio-lock">🔓</span>
+            </div>
+            <div class="form-group">
+              <label for="diaFim" style="height: 20px;"></label>
+              <p>Horário Fim:</p>
+              <input type="time" id="horaFim" name="horaFim" required>
+              <span class="lock-icon" id="horaFim-lock">🔓</span>
+            </div>
+          </div>
+          <div class="form-group-row">
+            <div class="form-group">
+              <label for="cep">CEP:</label>
+              <div style="display: flex; align-items: center;">
+                <input type="text" id="cep" name="cep" required disabled>
+                <span class="lock-icon" id="cep-lock">🔓</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="logradouro">Logradouro:</label>
+              <div style="display: flex; align-items: center;">
+                <input type="text" id="logradouro" name="logradouro" required disabled>
+                <span class="lock-icon" id="logradouro-lock">🔒</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group-row">
+            <div class="form-group">
+              <label for="numero">Número:</label>
+              <div style="display: flex; align-items: center;">
+                <input type="text" id="numero" name="numero" required disabled>
+                <span class="lock-icon" id="numero-lock">🔓</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="bairro">Bairro:</label>
+              <div style="display: flex; align-items: center;">
+                <input type="text" id="bairro" name="bairro" required disabled>
+                <span class="lock-icon" id="bairro-lock">🔓</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="cidade">Cidade:</label>
+              <div style="display: flex; align-items: center;">
+                <input type="text" id="cidade-empresa" name="cidade" required disabled>
+                <span class="lock-icon" id="cidade-lock">🔓</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="estado">Estado:</label>
+              <div style="display: flex; align-items: center;">
+                <input type="text" id="estado-empresa" name="estado" required disabled>
+                <span class="lock-icon" id="estado-lock">🔓</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group-row">
+            <div class="form-group">
+              <label for="complemento">Complemento:</label>
+              <div style="display: flex; align-items: center;">
+                <input type="text" id="complemento" name="complemento" required disabled>
+                <span class="lock-icon" id="complemento-lock">🔓</span>
+              </div>
+            </div>
+          </div>
+          <div class="button-container">
+            <button type="submit" class="save-button" id="save-empresa-button" disabled>Salvar Dados Empresariais</button>
+          </div>
+        </form>
+      </section>
+
+
+      <!-- <div class="right-content">
+        <div class="table-header">
+          <h1>Bloqueio de agendamentos</h1>
         </div>
-      </div>
-      <div class="main-content">
-        <div class="left-content">
-          <div class="table-header">
-            <h1>Dados da empresa</h1>
+        <div class="content-form">
+          <div class="form-group form-mr form-input">
+
+            <div class="label">
+              <p>Dia Escolhido:</p>
+              <input type="date" id="diaEscolhido" required>
+            </div>
           </div>
-          <div class="content2">
-            <div class="content-form2">
-              <div class="form-group form-mr form-input">
-                <div class="label">
-                  <p>Nome da Empresa:</p>
-                  <input type="text" id="empresa" placeholder="XXXX" required>
+        </div>
+        <div class="content-form" id="horarioBlock">
+          <div class="form-group form-mr form-input">
+            <div class="label">
+              <p>Horário de Bloqueio:</p>
+
+              <div class="content-box2">
+                <div class="content-box">
+                  <p>De:</p>
+                  <input type="time" id="horaInicioBlock" name="horaInicioBlock" required><br><br>
+                </div>
+
+                <div class="content-box">
+                  <p>Até:</p>
+                  <input type="time" id="horaFimBlock" name="horaFimBlock" required><br><br>
                 </div>
               </div>
 
-              <div class="form-group form-mr form-input">
-                <div class="label">
-                  <p>CNPJ:</p>
-                  <input type="text" id="cnpj" placeholder="xx.xxx.xxx/xxxx-xx" required>
-                </div>
-              </div>
 
-              <div class="form-group form-mr form-input">
-                <div class="label">
-                  <p>Telefone:</p>
-                  <input type="text" id="telefone-empresa" placeholder="xx.xxx.xxx/xxxx-xx" required>
-                </div>
-              </div>
-
-              <div class="form-group form-mr form-input">
-                <div class="label">
-                  <p>Dias de funcionamento:</p>
-
-                  <div class="content-box">
-                    <p>De:</p>
-                    <select name="" id="diaInicio" required>
-                      <option value="Domingo">Domingo</option>
-                      <option value="Segunda">Segunda</option>
-                      <option value="Terça">Terça</option>
-                      <option value="Quarta">Quarta</option>
-                      <option value="Quinta">Quinta</option>
-                      <option value="Sexta">Sexta</option>
-                      <option value="Sábado">Sábado</option>
-                    </select>
-                  </div>
-                  <div class="content-box">
-                    <p>Até:</p>
-                    <select name="" id="diaFim" required>
-                      <option value="Domingo">Domingo</option>
-                      <option value="Segunda">Segunda</option>
-                      <option value="Terça">Terça</option>
-                      <option value="Quarta">Quarta</option>
-                      <option value="Quinta">Quinta</option>
-                      <option value="Sexta">Sexta</option>
-                      <option value="Sábado">Sábado</option>
-                    </select>
-
-                  </div>
-                </div>
-
-              </div>
-              <div class="form-group form-mr form-input">
-                <div class="label">
-                  <p>Horários de funcionamento:</p>
-
-                  <label for="horaInicio">Hora de Início:</label>
-                  <input type="time" id="horaInicio" name="horaInicio" required><br>
-
-                  <label for="horaFim">Hora de Fim:</label>
-                  <input type="time" id="horaFim" name="horaFim" required>
-                </div>
-              </div>
-
-              <div class="button-container" id="button-alterar-empresa">
-                <button type="button" class="save-button" id="save-empresa-button">
-                  Alterar dados
+              <div class="button-container2">
+                <button type="button" class="save-button" id="bloqueio-button">
+                  Adicionar
                 </button>
               </div>
             </div>
-
-            <div class="content-form2">
-              <div class="form-group form-mr form-input">
-                <div class="label">
-                  <p>CEP:</p>
-                  <input type="text" id="cep" name="cep" placeholder="00000-000">
-                </div>
-              </div>
-
-              <div class="form-group form-mr form-input">
-                <div class="label">
-                  <p>Logradouro:</p>
-                  <input type="text" id="logradouro" name="logradouro" placeholder="Rua Alexandre">
-                </div>
-              </div>
-
-              <div class="form-group form-mr form-input">
-                <div class="label">
-                  <p>Número:</p>
-                  <input type="text" id="numero" name="numero" placeholder="Rua Alexandre">
-                </div>
-              </div>
-
-              <div class="form-group form-mr form-input">
-                <div class="label">
-                  <p>Complemento:</p>
-                  <input type="text" id="complemento" name="complemento" placeholder="Rua Alexandre">
-                </div>
-              </div>
-
-              <div class="form-group form-mr form-input">
-                <div class="label">
-                  <p>Bairro:</p>
-                  <input type="text" id="bairro" name="bairro" placeholder="São João Clímaco">
-                </div>
-              </div>
-
-              <div class="form-group form-mr form-input">
-                <div class="label">
-                  <p>Cidade:</p>
-                  <input type="text" id="cidade" name="cidade" placeholder="São Paulo">
-                </div>
-              </div>
-
-              <div class="form-group form-mr form-input">
-                <div class="label">
-                  <p>Estado:</p>
-                  <input type="text" id="estado" name="estado" placeholder="São Paulo" required>
-                </div>
-              </div>
-
-            </div>
           </div>
         </div>
-
-        <div class="right-content">
-          <div class="table-header">
-            <h1>Bloqueio de agendamentos</h1>
-          </div>
-          <div class="content-form">
-            <div class="form-group form-mr form-input">
-
-              <div class="label">
-                  <p>Dia Escolhido:</p>
-                  <input type="date" id="diaEscolhido" required>
-              </div>
-            </div>
-          </div>
-          <div class="content-form" id="horarioBlock">
-            <div class="form-group form-mr form-input">
-              <div class="label">
-                <p>Horário de Bloqueio:</p>
-
-                <div class="content-box2">
-                  <div class="content-box">
-                    <p>De:</p>
-                    <input type="time" id="horaInicioBlock" name="horaInicioBlock" required><br><br>
-                  </div>
-
-                  <div class="content-box">
-                    <p>Até:</p>
-                    <input type="time" id="horaFimBlock" name="horaFimBlock" required><br><br>
-                  </div>
-                </div>
-
-
-                <div class="button-container2">
-                  <button type="button" class="save-button" id="bloqueio-button">
-                    Adicionar
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      </div> -->
+  </div>
   </div>
   </div>
   <!-- Modal de Confirmação -->
-  <div id="confirmModal" class="modal">
+  <!-- <div id="confirmModal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
       <p>Deseja realmente atualizar a foto do perfil?</p>
       <button id="confirmButton">Sim</button>
       <button id="cancelButton">Não</button>
     </div>
-  </div>
+  </div> -->
 
 
-  </div>
-  <footer id="footer">
+
+  <!-- <footer id="footer">
     <div class="footer_container">
       <div class="copyright">
         &copy; Copyright <strong><span>KRONOS</span></strong>. All Rights Reserved
       </div>
     </div>
-  </footer><!-- End  Footer -->
+  </footer>End  Footer -->
 
   </main>
   </div>
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script src="perfil.js"></script>
+  <script src="perfil.js"></script>
 
   </div>
 </body>
