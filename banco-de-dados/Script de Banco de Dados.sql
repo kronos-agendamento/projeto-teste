@@ -443,8 +443,6 @@ VALUES
 (4, 9, 4.7, 'Micropigmentadora', 'Sobrancelhas'),
 (5, 15, 5.0, 'Especialista em Maquiagem para Noivas', 'Maquiagem'),
 (6, 8, 4.6, 'Maquiadora Artística', 'Maquiagem'),
-(7, 7, 4.5, 'Especialista em Lifting de Cílios', 'Cílios'),
-(8, 6, 4.4, 'Técnica em Henna para Sobrancelhas', 'Sobrancelhas'),
 (9, 11, 4.8, 'Designer de Sobrancelhas', 'Sobrancelhas'),
 (10, 5, 4.3, 'Maquiadora Social', 'Maquiagem');
 
@@ -452,7 +450,7 @@ INSERT INTO Leads (nome, email, telefone, instagram, mensagem, data_criacao)
 VALUES 
 ('Maria Silva', 'maria.silva@example.com', 11987654321, '@mariasilva', 'Gostaria de saber mais sobre seus serviços.', NOW()),
 ('João Pereira', 'joao.pereira@example.com', 11912345678, '@joaopereira', 'Tenho interesse em fazer uma extensão de cílios.', NOW()),
-('Ana Souza', 'ana.souza@example.com', 11987611234, NULL, 'Quais são os valores para design de sobrancelha?', NOW()),
+('Ana Souza', 'ana.souza@example.com', 11987611234, '@aninha', 'Quais são os valores para design de sobrancelha?', NOW()),
 ('Carla Oliveira', 'carla.oliveira@example.com', 11933332222, '@carlaoliveira', 'Vi uma promoção no Instagram e quero mais detalhes.', NOW()),
 ('Pedro Santos', 'pedro.santos@example.com', 11998765432, '@pedrosantos', 'Como funciona o procedimento de volume russo?', NOW());
 
@@ -464,12 +462,8 @@ UPDATE usuario
 SET dtype = 'Profissional' 
 WHERE fk_nivel_acesso = 1;
 
-SELECT * FROM leads;
-SELECT * FROM usuario;
-select * from empresa;
+SELECT * FROM agendamento;
 select * from endereco;
-select * from horario_funcionamento;
-
         SELECT l.id_lead, l.nome, l.email, l.telefone 
                 FROM leads l 
                 ORDER BY l.id_lead ASC;

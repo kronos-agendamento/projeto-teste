@@ -6,8 +6,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import sptech.projetojpa1.dto.FichaCompletaResponseDTO
 import sptech.projetojpa1.dto.FichaRequest
-import sptech.projetojpa1.dto.FichaResponse
 import sptech.projetojpa1.service.FichaAnamneseService
 
 @RestController
@@ -34,7 +34,7 @@ class FichaAnamneseController(
         ]
     )
     @PostMapping
-    fun cadastrarFichaAnamnese(@RequestBody @Valid novaFichaAnamneseDTO: FichaRequest): ResponseEntity<FichaResponse> {
+    fun cadastrarFichaAnamnese(@RequestBody @Valid novaFichaAnamneseDTO: FichaRequest): ResponseEntity<FichaCompletaResponseDTO> {
         val fichaAnamneseSalva = fichaAnamneseService.cadastrarFichaAnamnese(novaFichaAnamneseDTO)
         return ResponseEntity.status(201).body(fichaAnamneseSalva)
     }
@@ -60,7 +60,7 @@ class FichaAnamneseController(
         ]
     )
     @GetMapping
-    fun listarFichasAnamnese(): ResponseEntity<List<FichaResponse>> {
+    fun listarFichasAnamnese(): ResponseEntity<List<FichaCompletaResponseDTO>> {
         val fichas = fichaAnamneseService.listarFichasAnamnese()
         return if (fichas.isEmpty()) {
             ResponseEntity.status(204).build()

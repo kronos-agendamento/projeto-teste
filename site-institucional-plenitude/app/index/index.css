@@ -10,13 +10,13 @@ body {
   font-family: Poppins, sans-serif;
   margin: 0;
   padding: 0;
+  width: 100%;
 }
 
 .corpo {
   display: flex;
   background-color: #ffffff;
   height: 140vh;
-  width: 97vw;
 }
 
 .container {
@@ -295,45 +295,36 @@ header {
   justify-content: space-between;
   background-color: #d2135d;
   color: white;
-  padding: 2vh;
+  padding: 3vh;
   border-radius: 3vh;
   margin-bottom: 1rem;
   margin-top: 1rem;
   margin-left: 1.5rem;
+  margin-right: 0.8rem;
 }
 
 header h1 {
-  margin: 1vh 0vh 0vh 2vh;
+  margin: 1vh;
   font-size: 3vh;
 }
 
 header p {
-  margin: 0vh 0vh 0vh 2vh;
+  margin: 1vh;
   font-size: 2vh;
-}
-
-.acessibilidade {
-  display: flex;
-  flex-direction: row-reverse;
-}
-
-.acessibilidade button {
-  margin: 0.2rem;
 }
 
 #greeting1 {
-  font-size: 3vh;
+  font-size: 3.5vh;
   font-weight: bold;
-  margin-bottom: 0.5rem;
 }
 
 #greeting2 {
-  font-size: 2vh;
-  margin-bottom: 0.5rem;
+  font-size: 2.5vh;
 }
 
 .main-content {
   display: flex;
+  width: 100%;
 }
 
 .left-content {
@@ -348,7 +339,7 @@ header p {
 .right-content {
   display: flex;
   flex-direction: column;
-  width: 15vw;
+  width: 25vw;
   height: auto;
   margin-top: 1vh;
   margin-left: 2vw;
@@ -368,11 +359,11 @@ header p {
   display: flex;
   font-family: Poppins, sans-serif;
   height: 10vh;
-  width: 21vw;
+  width: 22vw;
   justify-content: center;
-  margin-right: 1rem;
-  margin-bottom: 1rem;
   padding: 2vh;
+  margin-bottom: 1.5rem;
+  margin-right: 0.9rem;
   align-items: center;
   font-size: 16px;
   border-radius: 2vh;
@@ -385,10 +376,9 @@ header p {
   display: flex;
   font-family: Poppins, sans-serif;
   height: 10vh;
-  width: 43.5vw;
+  width: 45vw;
   justify-content: center;
-  margin-right: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   padding: 2vh;
   align-items: center;
   font-size: 16px;
@@ -410,23 +400,6 @@ header p {
 
 .actions a {
   text-decoration: none;
-}
-
-#center button {
-  background-color: #fff0f5;
-  display: flex;
-  font-family: Poppins, sans-serif;
-  height: 10vh;
-  width: 43.5vw;
-  justify-content: center;
-  margin-right: 1rem;
-  margin-bottom: 1rem;
-  padding: 2vh;
-  align-items: center;
-  font-size: 16px;
-  border-radius: 2vh;
-  border: 1px solid black;
-  cursor: pointer;
 }
 
 #center button:hover {
@@ -458,7 +431,7 @@ Inicio Agenda
   padding: 10px;
   border: 1px solid black;
   width: 25vw;
-  margin: 1vh;
+  margin-bottom: 1rem;
 }
 
 .agenda h1 {
@@ -484,8 +457,7 @@ Inicio Agenda
 
 .appointment {
   display: flex;
-  justify-content: space-between;
-  padding: 1vh 0;
+  padding: 1.5vh;
   border-bottom: 1px solid #494747;
 }
 
@@ -497,7 +469,8 @@ Inicio Agenda
   font-size: 1.2em;
   color: #333;
   display: flex;
-  margin: 2vh 2vw 0 2vw;
+  width: 30%;
+  margin: 1vw;
 }
 
 .details h3 {
@@ -660,14 +633,21 @@ Aniversariantes
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  /* Permite a quebra de linha para dispositivos menores */
+  width: 100%;
   padding: 10px;
+}
+
+.birthday-info .date  {
+  display: flex;
+  align-items: center;
+  width: 20%;
+  padding: 2px;
 }
 
 .birthday-info .icon {
   flex: 0 0 auto;
+  width: 15%;
   /* Não permitir que o ícone se expanda */
-  margin-right: 10px;
 }
 
 .birthday-info .icon img {
@@ -679,6 +659,7 @@ Aniversariantes
   flex: 1;
   /* Permite que o texto ocupe o restante do espaço */
   text-align: left;
+  width: 60%;
   margin: 0;
 }
 
@@ -727,6 +708,12 @@ Botão Ver todos / Ver menos
   display: flex;
   justify-content: flex-end;
   padding: 0.5vh 1vw 0.5vh 0;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+#status footer {
+width: 100rem;
 }
 
 .footer a {

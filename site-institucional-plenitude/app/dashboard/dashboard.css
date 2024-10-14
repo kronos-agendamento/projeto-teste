@@ -1,127 +1,370 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', Arial, sans-serif;
 }
 
 body {
-    display: flex;
-    background-color: #ffffff;
+    font-family: Poppins, sans-serif;
     margin: 0;
     padding: 0;
+}
+
+.corpo {
     display: flex;
-    height: 1000px;
+    background-color: #ffffff;
+    height: 135vh;
+    width: 97vw;
 }
 
-header {
-    background-color: #D2135D;
+.main-content {
+    display: flex;
+    width: 100%;
+  }
+  
+.container {
+    display: flex;
+    width: 100%;
+}
+
+.edit-btn,
+.delete-btn,
+.more-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 2px;
+}
+
+aside {
+    background-color: #d9006c;
     color: white;
-    padding: 2vh;
-    border-radius: 3vh;
-    margin-bottom: 2vh;
-    margin-top: 2vh;
-  height: 20vh;
-}
-
-header h1 {
-    margin: 1vh 0vh 0vh 2vh;
-    font-size: 3vh;
-}
-
-header p {
-    margin: 0vh 0vh 0vh 2vh;
-    font-size: 2vh;
-}
-
-/* .sidebar {
-    width: 275px;
-    height: 680px;
-    background-color: #D2135D;
-    color: #fff;
+    width: 250px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 20px;
-    border-radius: 30px;
-    margin-top: 50px;
-    margin-left: 50px;
-    margin-bottom: 50px;
 }
 
-.profile {
-    text-align: center;
-    margin-top: 35px;
+@media (max-width: 992px) {
+    #main {
+        margin-top: 30px;
+    }
 }
+
+#main {
+    margin-top: 50px;
+}
+
+@media (max-width: 992px) {
+    #main {
+        margin-top: 30px;
+    }
+}
+
+/*--------------------------------------------------------------
+      Inicio Nav
+      --------------------------------------------------------------*/
 
 .profile img {
     border-radius: 50%;
-    width: 110px;
-    height: 110px;
+    width: 100px;
+    height: 100px;
 }
 
-.profile .title-p {
-    margin-top: 10px;
-    font-size: 18px;
+.profile h2 {
+    margin: 10px 0 5px;
 }
 
 .profile p {
-    font-size: 12px;
+    margin: 0;
+    font-size: 0.9em;
 }
 
 nav ul {
     list-style: none;
-    width: 100%;
     padding: 0;
-    margin-top: 45px;
+    margin: 20px 0;
+    width: 100%;
 }
 
 nav ul li {
-    width: 100%;
-    margin-left: -50px;
+    padding: 10px;
+    text-align: center;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #fff;
 }
 
-nav ul li a {
-    text-decoration: none;
-    color: #fff;
-    display: block;
-    padding: 10px 15px;
+/*--------------------------------------------------------------
+      navbar  lateral
+      --------------------------------------------------------------*/
+
+.navigation {
+    height: auto;
+    background: #d2135d;
+    width: 19vw;
+    top: 2vh;
+    margin-left: 3vw;
+    border-radius: 3vh;
+    margin-bottom: 2vh;
+    box-shadow: 10px 0 0 #ffffff;
+    border-left: 10px solid #d2135d;
+    overflow-x: hidden;
     display: flex;
+    flex-direction: column;
     align-items: center;
+    position: relative;
+}
+
+.perfil {
+    padding: 5vh;
+}
+
+.navigation .perfil .imagem-perfil {
+    width: 20vh;
+    height: 20vh;
+    border-radius: 300px;
+    display: flex;
+    justify-content: center;
+    list-style: none;
+}
+
+.navigation .perfil .imagem-perfil img {
+    margin: 1vh;
+    width: 53vh;
+    height: 23vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+}
+
+.perfil #userName {
+    display: flex;
+    list-style: none;
+    color: white;
+    font-weight: 600;
+    margin-top: 6vh;
+    justify-content: center;
+}
+
+.perfil #userInsta {
+    list-style: none;
+    color: white;
+    font-weight: 200;
     font-size: 12px;
-    font-weight: 500;
+    margin-top: 0.5vh;
+    display: flex;
+    justify-content: center;
 }
 
-nav ul li a img {
-    width: 25px;
-    margin-right: 18px;
-}
+/*--------------------------------------------------------------
+      Final Nav
+      
+      Inicio Main
+      --------------------------------------------------------------*/
 
-nav ul li a:hover,
-.active {
-    background-color: #d81b60;
+main {
+    background-color: #ffffff;
+    width: 75vw;
 }
 
 header {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background-color: #D2135D;
-    margin-top: 40px;
-    border-radius: 15px;
-    height: 100px;
-    width: 90%;
-    max-width: 800px;
-    padding: 15px;
-    color: #f9f9f9;
+    background-color: #d2135d;
+    color: white;
+    padding: 3vh;
+    border-radius: 3vh;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    margin-left: 1.5rem;
+    margin-right: 0.8rem;
+}
+
+header h1 {
+    margin: 1vh;
+    font-size: 3vh;
 }
 
 header p {
-    margin-bottom: 5px;
-} */
+    margin: 1vh;
+    font-size: 2vh;
+}
 
+
+#greeting1 {
+    font-size: 3.5vh;
+    font-weight: bold;
+}
+
+#greeting2 {
+    font-size: 2.5vh;
+}
+
+/*--------------------------------------------------------------
+# Links
+ --------------------------------------------------------------*/
+
+.navigation ul {
+    position: absolute !important;
+    top: 30vh;
+    left: 0;
+    width: 100%;
+    padding-left: 1vw;
+    padding-top: 10vh;
+}
+
+.navigation ul li {
+    position: relative;
+    list-style: none;
+    width: 100%;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.navigation ul li a {
+    position: relative;
+    display: flex;
+    width: 100%;
+    text-decoration: none;
+    color: #fff;
+    height: 8vh;
+    margin-bottom: 2.5vh;
+}
+
+.navigation ul li a .icon {
+    position: relative;
+    display: block;
+    min-width: 3vw;
+    height: 3vh;
+    text-align: center;
+    line-height: 70px;
+}
+
+.navigation ul li a .icon ion-icon {
+    position: relative;
+    font-size: 1.5rem;
+    z-index: 1;
+}
+
+.navigation ul li a .title {
+    position: relative;
+    display: block;
+    padding-left: 1.5vw;
+    height: 60px;
+    line-height: 60px;
+    white-space: nowrap;
+    font-size: 15px;
+}
+
+.navigation ul li.active {
+    color: black;
+    background: #ffffff;
+}
+
+.navigation ul li.active a {
+    color: black;
+    /* Cor do texto quando ativo */
+}
+
+.navigation ul li.active a .icon ion-icon {
+    color: black;
+    /* Cor do ícone quando ativo */
+}
+
+.navigation ul li.active a::before {
+    content: "";
+    position: absolute;
+    bottom: 8vh;
+    right: 0;
+    width: 5vh;
+    height: 5vh;
+    background: #d2135d;
+    border-radius: 50%;
+    box-shadow: 15px 15px 0 #ffffff;
+    color: black;
+}
+
+.navigation ul li.active a::after {
+    content: "";
+    position: absolute;
+    top: 8vh;
+    right: 0;
+    width: 5vh;
+    height: 5vh;
+    background: #d2135d;
+    border-radius: 50%;
+    box-shadow: 15px -15px 0 #ffffff;
+}
+
+/*--------------------------------------------------------------
+      Final Nav
+      Inicio Notifications
+      ---------------------------------------------------------------*/
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.notification.show {
+    opacity: 1;
+}
+
+.notification.error {
+    background-color: #dc3545;
+}
+
+.notification svg {
+    margin-right: 10px;
+}
+
+/* Progress Bar */
+.progress-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 80%;
+    margin: 20px auto;
+}
+
+.progress-container span {
+    flex: 1;
+    text-align: center;
+    font-size: 14px;
+    color: #d2135d;
+}
+
+.progress-bar {
+    position: relative;
+    flex: 6;
+    height: 15px;
+    background-color: #f3f3f3;
+    border-radius: 10px;
+    margin: 0 10px;
+    overflow: hidden;
+}
+
+.progress {
+    position: absolute;
+    height: 100%;
+    background-color: #d2135d;
+    width: 70%;
+    /* Adjust this percentage based on completed appointments */
+}
 
 
 .card h1 {
@@ -281,7 +524,7 @@ header p {
 .card-content p {
     margin: 5px 0;
     font-size: 25px;
-    
+
 }
 
 .card-content h2 {
@@ -351,11 +594,13 @@ header p {
 }
 
 .tab-content {
-    display: none; /* Esconde todo o conteúdo inicialmente */
+    display: none;
+    /* Esconde todo o conteúdo inicialmente */
 }
 
 .tab-content.active {
-    display: block; /* Mostra o conteúdo ativo */
+    display: block;
+    /* Mostra o conteúdo ativo */
 }
 
 .square {
@@ -372,15 +617,15 @@ header p {
 
 .triple-square {
 
-        width: 985px;
-        border-radius: 10px;
-        padding-bottom: 20px;
-        /* Bordas arredondadas */
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        align-items: center;
-    
+    width: 985px;
+    border-radius: 10px;
+    padding-bottom: 20px;
+    /* Bordas arredondadas */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+
 }
 
 .square-usabilidade {
@@ -422,21 +667,25 @@ header p {
 }
 
 .tab-button.selected {
-    background-color: #e62762; /* Cor mais escura para o botão ativo */
-    border: 5px solid #ffffff; /* Contorno ao redor do botão ativo */
+    background-color: #e62762;
+    /* Cor mais escura para o botão ativo */
+    border: 5px solid #ffffff;
+    /* Contorno ao redor do botão ativo */
     height: 110%;
     border-radius: 12px 12px 12px 12px;
-  }
+}
 
 .tab-button:hover {
-    background-color: #ff3e78; /* Muda a cor ao passar o mouse */
-    border: 2px solid #4e0c2a; /* Adiciona uma borda no hover */
+    background-color: #ff3e78;
+    /* Muda a cor ao passar o mouse */
+    border: 2px solid #4e0c2a;
+    /* Adiciona uma borda no hover */
     border-radius: 12px 12px 0 0;
-  }
+}
 
-  .tab-button:last-child {
+.tab-button:last-child {
     margin-right: 0;
-  }
+}
 
 .summary-cards {
     display: flex;
@@ -485,7 +734,7 @@ header p {
 .charts {
     display: flex;
     flex-wrap: wrap;
-    /* width: 146vh; */
+    width: 160vw;
     width: fit-content;
     border: 2.5px solid #D2135D;
     border-radius: 10px 0 10px 10px;
@@ -496,7 +745,7 @@ header p {
 
 .charts-usabilidade {
     display: flex;
-    /* width: 146vh; */
+    width: 160vw;
     width: fit-content;
     border: 2.5px solid #D2135D;
     border-radius: 10px 0 10px 10px;
@@ -572,156 +821,9 @@ header p {
     background-color: #aaa;
 }
 
-
-/* navbar */
-.navigation {
-    height: auto;
-    background: #D2135D;
-    width: 275px;
-    margin-top: 20px;
-    margin-left: 32px;
-    box-shadow: 10px 0 0 #ffffff;
-    border-left: 10px solid #D2135D;
-    overflow-y: auto;
-    /* Permite rolagem vertical se necessário */
-    overflow-x: hidden;
-    /* Remove a rolagem horizontal */
-    border-radius: 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 50px;
-    position: relative;
-
-}
-
-.navigation ul {
-    position: absolute !important;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding-left: 5px;
-    padding-top: 40px;
-}
-
-.navigation ul li {
-    position: relative;
-    list-style: none;
-    width: 100%;
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-
-}
-
-.navigation ul li a {
-
-    position: relative;
-    display: flex;
-    width: 100%;
-    text-decoration: none;
-    color: #fff;
-    height: 50px;
-    margin-bottom: 3vh;
-}
-
-.navigation ul li a .icon {
-    position: relative;
-    display: block;
-    min-width: 60px;
-    height: 60px;
-    text-align: center;
-    line-height: 70px;
-}
-
-.navigation ul li a .icon ion-icon {
-    position: relative;
-    font-size: 1.5rem;
-    z-index: 1;
-}
-
-.navigation ul li a .title {
-    position: relative;
-    display: block;
-    padding-left: 10px;
-    height: 60px;
-    line-height: 60px;
-    white-space: nowrap;
-    font-size: 15px;
-}
-
-.navigation ul li.active {
-    color: black;
-    background: #ffffff;
-
-}
-
-.navigation ul li.active a {
-    color: black;
-    /* Cor do texto quando ativo */
-}
-
-.navigation ul li.active a .icon ion-icon {
-    color: black;
-    /* Cor do ícone quando ativo */
-}
-
-
-.navigation ul li.active a::before {
-    content: '';
-    position: absolute;
-    top: -30px;
-    right: 0;
-    width: 30px;
-    height: 30px;
-    background: #D2135D;
-    border-radius: 50%;
-    box-shadow: 15px 15px 0 #ffffff;
-    color: black;
-}
-
-.navigation ul li.active a::after {
-    content: '';
-    position: absolute;
-    bottom: -30px;
-    right: 0;
-    width: 30px;
-    height: 30px;
-    background: #D2135D;
-    border-radius: 50%;
-    box-shadow: 15px -15px 0 #ffffff;
-}
-
-img {
-    width: 1000px;
-    height: 60px;
-    border-radius: 600px;
-    margin-bottom: 20px;
-}
-
-#userName {
-    display: flex;
-    list-style: none;
-    color: white;
-    font-weight: 600;
-    margin-top: 6vh;
-    justify-content: center;
-    margin-top: 20vh;
-}
-
-#userInsta {
-    list-style: none;
-    color: white;
-    font-weight: 200;
-    font-size: 12px;
-    margin-top: 0.5vh;
-    display: flex;
-    justify-content: center;
-}
-
 .conteudo {
-
     display: flex;
-    width: 100%;
+
     flex-direction: column;
     align-items: flex-end;
 }
