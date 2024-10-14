@@ -177,4 +177,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Buscar perguntas ao carregar a página
     window.onload = fetchPerguntas;
+
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
 });

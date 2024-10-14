@@ -653,6 +653,8 @@ function showNotification(message, isError = false) {
   }, 3000);
 }
 
+new window.VLibras.Widget('https://vlibras.gov.br/app');
+
 
 
 

@@ -512,7 +512,7 @@ document.addEventListener("DOMContentLoaded", function () {
       showNotification("Erro ao criar agendamento", true);
     }
   });
-
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
   // Carregar dados na inicialização
   carregarProcedimentos();
   carregarEspecificacoes();
@@ -524,4 +524,6 @@ document.addEventListener("DOMContentLoaded", function () {
     tipoAtendimentoDiv.classList.remove("hidden");
     tipoAtendimentoSelect.disabled = false; // Ativar o dropdown de tipo de atendimento
   }
+  
 });
+

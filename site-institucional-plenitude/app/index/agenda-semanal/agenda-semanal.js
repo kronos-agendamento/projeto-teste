@@ -120,6 +120,8 @@ document
 // Chama o fetchAgendamentos ao carregar a página para exibir a semana atual
 fetchAgendamentos();
 
+
+
 document.addEventListener("DOMContentLoaded", function () {
   const nome = localStorage.getItem("nome");
   const instagram = localStorage.getItem("instagram");
@@ -127,5 +129,10 @@ document.addEventListener("DOMContentLoaded", function () {
   if (nome && instagram) {
     document.getElementById("userName").textContent = nome;
     document.getElementById("userInsta").textContent = instagram;
-  }
+  }  
 });
+
+
+new window.VLibras.Widget('https://vlibras.gov.br/app');
+
+

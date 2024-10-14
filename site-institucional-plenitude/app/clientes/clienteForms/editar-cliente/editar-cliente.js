@@ -312,3 +312,6 @@ agendamentoBtn.addEventListener("click", function () {
   // Redireciona para a página de agendamentos com o idUsuario na URL
   window.location.href = `../agendamentos-cliente/agendamentos-clientes.html?idUsuario=${idUsuario}`;
 });
+
+
+new window.VLibras.Widget('https://vlibras.gov.br/app');

@@ -301,6 +301,9 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log(`Contagem parada em: ${seconds} segundos`);
       }
     });
+
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+    
 });
 
 //     function sendSecondsToServer() {

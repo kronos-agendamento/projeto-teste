@@ -546,4 +546,6 @@ document.addEventListener("DOMContentLoaded", function () {
   
   // Chama a função para atualizar os KPIs ao carregar a página
   window.onload = updateKpiData;
+
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
   

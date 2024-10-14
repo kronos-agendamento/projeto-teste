@@ -537,4 +537,8 @@ async function updateKpiData() {
 
 window.onload = updateKpiData;
 
+new window.VLibras.Widget('https://vlibras.gov.br/app');
+
+
+
 

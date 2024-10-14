@@ -167,3 +167,6 @@
         fetchTop3Cidades();
     };
 
+
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+
