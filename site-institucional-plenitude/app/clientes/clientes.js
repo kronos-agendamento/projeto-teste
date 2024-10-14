@@ -40,28 +40,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const modalProcedimentoArchive = document.getElementById("usu-archive");
     const btnYesArchive = document.getElementById("btnYesArchive");
 
-    function showModal(nome) {
-        // Define o nome do cliente no modal
-        modalProcedimento.textContent = `Nome do cliente: ${nome}`;
-        // Exibe o modal
-        modal.style.display = "block";
-    }
-    
-    // Função para fechar o modal de exclusão
-    function closeModal() {
-        modal.style.display = "none";
-    }
-
-    btnYes.addEventListener("click", async () => {
-        if (cpfParaDeletar !== null) {
-            await deleteUser(cpfParaDeletar); // Chama a função deleteUser para excluir o usuário
-            usuarios = await fetchUsuariosAtivos(); // Atualiza a lista de usuários após a exclusão
-            renderTable(usuarios, currentPage); // Re-renderiza a tabela com os dados atualizados
-            closeModal(); // Fecha o modal de exclusão
-        }
-    });
-    
-
     function showModalArchive(nome, cpf) {
         modalProcedimentoArchive.textContent = `Nome do usuário: ${nome}`;
         cpfParaArquivar = cpf;
@@ -209,31 +187,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     }
-
-    async function deleteUser(idUsuario) {
-        try {
-            const response = await fetch(`http://localhost:8080/usuarios/exclusao-usuario/${idUsuario}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-    
-            // Trata os códigos de sucesso, como 200 (OK) e 204 (No Content)
-            if (response.ok || response.status === 204) {
-                showNotification('Usuário excluído com sucesso!');
-            } else {
-                // Se o status não for um desses códigos, tratamos como erro
-                throw new Error(`Erro ao deletar usuário: ${response.status} - ${response.statusText}`);
-            }
-    
-        } catch (error) {
-            console.error('Erro ao deletar o usuário:', error);
-            showNotification('Erro ao excluir o usuário. Por favor, tente novamente.', true);
-        }
-    }
-    
-    
 
     async function arquivarUsuario(cpf) {
         try {
