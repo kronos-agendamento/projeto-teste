@@ -13,7 +13,7 @@ class FichaAnamnese(
 
     var dataPreenchimento: LocalDateTime,
 
-    @OneToOne(mappedBy = "fichaAnamnese")
+    @OneToOne(mappedBy = "fichaAnamnese", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var usuario: Usuario? = null,
 
     @OneToMany(mappedBy = "fichaAnamnese", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
