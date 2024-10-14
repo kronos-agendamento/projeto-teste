@@ -8,7 +8,6 @@
 
 body {
   font-family: Poppins, sans-serif;
-
   margin: 0;
   padding: 0;
 }
@@ -169,32 +168,35 @@ main {
 }
 
 header {
-  display: flex;
-  justify-content: space-between;
   background-color: #d2135d;
   color: white;
-  padding: 2vh;
+  padding: 3vh;
   border-radius: 3vh;
-  margin-bottom: 2vh;
-  margin-top: 2vh;
-  margin-left: 2%;
-  height: 14vh;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  margin-left: 1.5rem;
+  margin-right: 0.8rem;
 }
 
 header h1 {
-  margin: 1vh 0vh 0vh 2vh;
+  margin: 1vh;
   font-size: 3vh;
 }
 
 header p {
-  margin: 0vh 0vh 0vh 2vh;
+  margin: 1vh;
   font-size: 2vh;
 }
 
-.main-content {
-  display: flex;
+
+#greeting1 {
+  font-size: 3.5vh;
+  font-weight: bold;
 }
 
+#greeting2 {
+  font-size: 2.5vh;
+}
 /*--------------------------------------------------------------
 # Links
 --------------------------------------------------------------*/
@@ -370,7 +372,6 @@ Inicio Filtros
 .center-content {
   display: flex;
   flex-direction: column;
-  width: 68vw;
   height: auto;
   margin-top: 1vh;
   margin-left: 2vw;
@@ -447,15 +448,14 @@ Inicio Tabela de procedimentos
 ---------------------------------------------------------------*/
 
 .procedures-table {
-  width: 150vh;
-  max-width: 150vh;
+  width: 160vh;
   border-collapse: collapse;
   margin-top: 30px;
   background-color: #fff;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin-left: 4.5%;
+  margin-left: 2.3%;
   margin-right: auto;
 }
 
@@ -1151,23 +1151,5 @@ table tr.clickable-row:hover {
   visibility: visible;
   opacity: 1;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

@@ -585,11 +585,11 @@ function saudacao() {
 
   // Verifica a hora do dia para a saudação
   if (horaAtual >= 0 && horaAtual < 12) {
-    saudacaoTexto = "Bom dia";
+    saudacaoTexto = "Bom dia,";
   } else if (horaAtual >= 12 && horaAtual < 18) {
-    saudacaoTexto = "Boa tarde";
+    saudacaoTexto = "Boa tarde,";
   } else {
-    saudacaoTexto = "Boa noite";
+    saudacaoTexto = "Boa noite,";
   }
 
   // Define o gênero correto para o "um/uma" de acordo com o dia da semana
