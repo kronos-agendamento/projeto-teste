@@ -40,6 +40,26 @@ document.addEventListener("DOMContentLoaded", function () {
     const modalProcedimentoArchive = document.getElementById("usu-archive");
     const btnYesArchive = document.getElementById("btnYesArchive");
 
+    function showModal(nome) {
+        // Define o nome do cliente no modal
+        modalProcedimento.textContent = `Nome do cliente: ${nome}`;
+        // Exibe o modal
+        modal.style.display = "block";
+    }
+    
+    // Função para fechar o modal de exclusão
+    function closeModal() {
+        modal.style.display = "none";
+    }
+    btnYes.addEventListener("click", async () => {
+        if (cpfParaDeletar !== null) {
+            await deleteUser(cpfParaDeletar); // Chama a função deleteUser para excluir o usuário
+            usuarios = await fetchUsuariosAtivos(); // Atualiza a lista de usuários após a exclusão
+            renderTable(usuarios, currentPage); // Re-renderiza a tabela com os dados atualizados
+            closeModal(); // Fecha o modal de exclusão
+        }
+    });
+    
     function showModalArchive(nome, cpf) {
         modalProcedimentoArchive.textContent = `Nome do usuário: ${nome}`;
         cpfParaArquivar = cpf;
@@ -118,7 +138,6 @@ document.addEventListener("DOMContentLoaded", function () {
         </button>
         <div class="tooltip11">Editar</div>
     </div>
-
     <!-- Botão de Excluir com tooltip -->
     <div class="tooltip-wrapper">
         <button class="delete-btn" data-id="${user.idUsuario}" style="border: none; background: transparent; cursor: pointer;">
@@ -126,7 +145,6 @@ document.addEventListener("DOMContentLoaded", function () {
         </button>
         <div class="tooltip11">Excluir</div>
     </div>
-
     <!-- Botão de Arquivar com tooltip -->
     <div class="tooltip-wrapper">
         <button class="archive-btn" data-id="${user.cpf}" style="border: none; background: transparent; cursor: pointer;">
@@ -135,7 +153,6 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="tooltip11">Inativar</div>
     </div>
 </td>
-
     `;
       proceduresTbody.appendChild(row);
     });
@@ -188,6 +205,30 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    async function deleteUser(idUsuario) {
+        try {
+            const response = await fetch(`http://localhost:8080/usuarios/exclusao-usuario/${idUsuario}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+    
+            // Trata os códigos de sucesso, como 200 (OK) e 204 (No Content)
+            if (response.ok || response.status === 204) {
+                showNotification('Usuário excluído com sucesso!');
+            } else {
+                // Se o status não for um desses códigos, tratamos como erro
+                throw new Error(`Erro ao deletar usuário: ${response.status} - ${response.statusText}`);
+            }
+    
+        } catch (error) {
+            console.error('Erro ao deletar o usuário:', error);
+            showNotification('Erro ao excluir o usuário. Por favor, tente novamente.', true);
+        }
+    }
+    
+    
     async function arquivarUsuario(cpf) {
         try {
             const response = await fetch(`${baseUrl}/usuarios/inativar/${cpf}`, {
@@ -196,9 +237,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Content-Type": "application/json",
                 },
             });
-    
+
             console.log("Resposta da API:", response);
-    
+
             if (response.ok) {
                 showNotification("Usuário inativado com sucesso!");
                 usuarios = await fetchUsuariosAtivos(); // Atualiza a lista de usuários
@@ -214,7 +255,7 @@ document.addEventListener("DOMContentLoaded", function () {
             showNotification("Erro ao inativar o usuário. Verifique o console para mais detalhes.", true);
         }
     }
-    
+
 
     async function restoreArchivedUser(cpf) {
         try {
@@ -280,7 +321,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
             btnUndo.style.display = "none";
         }
-    
+
         if (redoStack.length > 0) {
             btnRedo.style.display = "inline-flex"; // Define como "inline-flex" para centralizar o conteúdo
             btnRedo.style.width = "100px";         // Aumenta a largura do botão
@@ -291,8 +332,8 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
             btnRedo.style.display = "none";
         }
- 
-    
+
+
         // Reinicia o timer para ocultar os botões após 10 segundos
         clearTimeout(undoRedoTimeout);
         if (undoStack.length > 0 || redoStack.length > 0) {
@@ -304,10 +345,10 @@ document.addEventListener("DOMContentLoaded", function () {
             }, 10000);
         }
     }
-    
+
     btnUndo.addEventListener("click", undoAction);
     btnRedo.addEventListener("click", redoAction); // Adiciona o evento ao botão de refazer
-    
+
     async function init() {
         usuarios = await fetchUsuariosAtivos();
         renderTable(usuarios, currentPage);
@@ -536,5 +577,3 @@ async function updateKpiData() {
 }
 
 window.onload = updateKpiData;
-
-

@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", async function () {
-    let isEditing = false;
+    let isEditingPersonal = false; // Para alternar edição de Dados Pessoais
+    let isEditingAddress = false;  // Para alternar edição de Dados de Endereço
     let clienteData = {}; // Variável para armazenar os dados do cliente
     let originalData = {}; // Para armazenar os dados originais do cliente
     let undoStack = []; // Stack para desfazer ações
@@ -88,33 +89,53 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
 
-    window.enableEditing = function () {
-        isEditing = !isEditing;
-        const lockIcons = document.querySelectorAll(".lock-icon");
-        const fields = document.querySelectorAll("#personalForm input, #addressForm input");
-        const saveButtons = document.querySelectorAll(".save-button");
+    // Função para mostrar ou esconder ícones de cadeado
+    function toggleLockIcons(formId, show) {
+        const lockIcons = document.querySelectorAll(`#${formId} .lock-icon`);
+        lockIcons.forEach((lockIcon) => {
+            lockIcon.style.display = show ? "inline" : "none";
+        });
+    }
 
-        if (isEditing) {
-            lockIcons.forEach((lockIcon) => {
-                lockIcon.style.display = "inline";
+    // Função para alternar a edição de "Dados Pessoais"
+    function togglePersonalEditing() {
+        isEditingPersonal = !isEditingPersonal; // Alterna o estado de edição
+        if (isEditingPersonal) {
+            document.querySelectorAll("#personalForm input").forEach((field) => {
+                field.disabled = false; // Habilita os campos de Dados Pessoais
             });
-            fields.forEach((field) => {
-                const lockIcon = document.getElementById(`${field.id}-lock`);
-                if (lockIcon && lockIcon.textContent === "🔓") {
-                    field.disabled = false;
-                }
-            });
-            saveButtons.forEach((button) => (button.disabled = false));
+            document.getElementById("saveButton").disabled = false; // Habilita o botão de salvar de Dados Pessoais
+            toggleLockIcons("personalForm", true); // Mostra ícones de cadeado para Dados Pessoais
         } else {
-            lockIcons.forEach((lockIcon) => {
-                lockIcon.style.display = "none";
+            document.querySelectorAll("#personalForm input").forEach((field) => {
+                field.disabled = true; // Desabilita os campos de Dados Pessoais
             });
-            fields.forEach((field) => {
-                field.disabled = true;
-            });
-            saveButtons.forEach((button) => (button.disabled = true));
+            document.getElementById("saveButton").disabled = true; // Desabilita o botão de salvar de Dados Pessoais
+            toggleLockIcons("personalForm", false); // Esconde ícones de cadeado para Dados Pessoais
         }
-    };
+    }
+
+    // Função para alternar a edição de "Dados de Endereço"
+    function toggleAddressEditing() {
+        isEditingAddress = !isEditingAddress; // Alterna o estado de edição
+        if (isEditingAddress) {
+            document.querySelectorAll("#addressForm input").forEach((field) => {
+                field.disabled = false; // Habilita os campos de Dados de Endereço
+            });
+            document.getElementById("saveButtonAddress").disabled = false; // Habilita o botão de salvar de Endereço
+            toggleLockIcons("addressForm", true); // Mostra ícones de cadeado para Dados de Endereço
+        } else {
+            document.querySelectorAll("#addressForm input").forEach((field) => {
+                field.disabled = true; // Desabilita os campos de Dados de Endereço
+            });
+            document.getElementById("saveButtonAddress").disabled = true; // Desabilita o botão de salvar de Endereço
+            toggleLockIcons("addressForm", false); // Esconde ícones de cadeado para Dados de Endereço
+        }
+    }
+
+    // Vincula os eventos de clique aos botões de edição de cada formulário
+    document.getElementById("editIconPessoal").addEventListener("click", togglePersonalEditing);
+    document.getElementById("editIconAdress").addEventListener("click", toggleAddressEditing);
 
     function showNotification(message, isError = false) {
         const notification = document.getElementById("notification");
@@ -160,7 +181,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 clienteData = updatedData;
                 showNotification("Dados atualizados com sucesso!");
                 updateUndoRedoButtons();
-                window.enableEditing();
+                togglePersonalEditing(); // Desabilita edição após salvar
             } else {
                 showNotification("Erro ao atualizar os dados.", true);
             }
@@ -199,7 +220,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 clienteData.endereco = updatedAddress;
                 showNotification("Endereço atualizado com sucesso!");
                 updateUndoRedoButtons();
-                window.enableEditing();
+                toggleAddressEditing(); // Desabilita edição após salvar
             } else {
                 showNotification("Erro ao atualizar o endereço.", true);
             }
@@ -311,4 +332,43 @@ document.addEventListener("DOMContentLoaded", function () {
 agendamentoBtn.addEventListener("click", function () {
   // Redireciona para a página de agendamentos com o idUsuario na URL
   window.location.href = `../agendamentos-cliente/agendamentos-clientes.html?idUsuario=${idUsuario}`;
+});
+
+// Selecionando os elementos do formulário
+const cepInput = document.querySelector("#cep");
+const logradouroInput = document.querySelector("#logradouro");
+const bairroInput = document.querySelector("#bairro");
+const cidadeInput = document.querySelector("#cidade");
+const estadoInput = document.querySelector("#estado");
+
+// Função para buscar o endereço pelo CEP
+const buscaEndereco = async (cep) => {
+  try {
+    const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+    const data = await response.json();
+
+    if (data.erro) {
+      alert("CEP não encontrado.");
+      return;
+    }
+
+    // Populando os campos com os dados recebidos
+    logradouroInput.value = data.logradouro;
+    bairroInput.value = data.bairro;
+    cidadeInput.value = data.localidade;
+    estadoInput.value = data.uf;
+  } catch (error) {
+    console.error("Erro ao buscar o endereço:", error);
+  }
+};
+
+// Evento que detecta quando o usuário terminou de digitar o CEP
+cepInput.addEventListener("blur", () => {
+  const cep = cepInput.value.replace(/\D/g, ""); // Remove qualquer caractere que não seja número
+  if (cep.length === 8) {
+    // Verifica se o CEP tem 8 dígitos
+    buscaEndereco(cep);
+  } else {
+    alert("Por favor, insira um CEP válido.");
+  }
 });

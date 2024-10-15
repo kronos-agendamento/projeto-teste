@@ -1,8 +1,7 @@
--- drop database kronosbooking;
-CREATE DATABASE IF NOT EXISTS kronosbooking;
+create database kronosbooking;
 USE kronosbooking;
 
-
+DROP TABLE IF EXISTS login_logoff;
 DROP TABLE IF EXISTS feedback;
 DROP TABLE IF EXISTS cliente;
 DROP TABLE IF EXISTS profissional;
@@ -10,7 +9,6 @@ DROP TABLE IF EXISTS agendamento;
 DROP TABLE IF EXISTS resposta;
 DROP TABLE IF EXISTS pergunta;
 DROP TABLE IF EXISTS especificacao;
-DROP TABLE IF EXISTS tempo_procedimento;
 DROP TABLE IF EXISTS procedimento;
 DROP TABLE IF EXISTS usuario;
 DROP TABLE IF EXISTS ficha_anamnese;
@@ -230,7 +228,7 @@ VALUES
 
 INSERT INTO empresa (nome, telefone, cnpj, fk_endereco, fk_horario_funcionamento)
 VALUES 
-('Plenitude no Olhar', '11987654321', '72.926.223/0001-95', 1, 1),
+('Plenitude no Olhar', '11987654321', '12.345.678/0001-90', 1, 1),
 ('Beleza Suprema', '21987654322', '98.765.432/0002-10', 2, 2),
 ('Olhar Perfeito', '31987654323', '22.333.444/0001-11', 3, 3),
 ('Glamour Sobrancelhas', '41987654324', '44.555.666/0001-12', 4, 4),
@@ -258,7 +256,7 @@ VALUES
 
 INSERT INTO usuario (nome, email, senha, instagram, cpf, telefone, data_nasc, genero, indicacao, status, fk_nivel_acesso, fk_endereco, fk_empresa, fk_ficha_anamnese)
 VALUES 
-('Priscila Plenitude', 'priscila@plenitude.com', 'senhaAdmin', '@plenitudenoolhar', '372.372.888-06', 11987654321, '1980-01-01', 'Feminino', 'Instagram', TRUE, 1, 1, 1, NULL),
+('Priscila Plenitude', 'priscila@plenitude.com', 'senhaAdmin', '@plenitudenoolhar', '111.111.111-11', 11987654321, '1980-01-01', 'Feminino', 'Instagram', TRUE, 1, 1, 1, NULL),
 ('Ana Paula', 'ana@beleza.com', 'senha123', '@anabeauty', '469.674.588-09', 21987654321, '1992-02-02', 'Feminino', 'Indicação de Amiga', TRUE, 2, 2, 2, 2),
 ('Carlos Eduardo', 'carlos@olharperfeito.com', 'senha123', '@carlosedu', '317.262.998-80', 31987654322, '1995-03-03', 'Masculino', 'Facebook', TRUE, 2, 3, 3, 3),
 ('Juliana Costa', 'juliana@glamour.com', 'senha123', '@jucosta', '633.335.400-70', 41987654323, '1990-04-04', 'Feminino', 'Google', TRUE, 2, 4, 4, 4),
@@ -268,18 +266,18 @@ VALUES
 ('Tatiana Melo', 'tatiana@ouro.com', 'senha123', '@tatiouro', '784.563.970-24', 81987654327, '1985-08-08', 'Feminino', 'Indicação de Amiga', TRUE, 2, 8, 8, 8),
 ('Paula Gomes', 'paula@cilios.com', 'senha123', '@paulagomes', '999.999.999-99', 91987654328, '1982-09-09', 'Feminino', 'Indicação Familiar', TRUE, 2, 9, 9, 9),
 ('Marília Costa', 'cecilia@elegantes.com', 'senha123', '@ceciliaelegantes', '101.010.101-10', 11987654329, '1989-10-19', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10),
-('Cecília Costa', 'cecilia@elegantes.com', 'senha123', '@ceciliaelegantes', '101.010.101-10', 11987654329, '1989-10-10', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10),
+('Cecília Costa', 'cecilia@elegantes.com', 'senha123', '@ceciliaelegantes', '101.010.101-10', 11987654329, '1989-10-10', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 11),
 ('Lucas Lima', 'lucas@novidade.com', 'senha123', '@lucaslima', '111.111.111-12', 11987654322, '1981-11-01', 'Masculino', 'Instagram', TRUE, 1, 1, 1, NULL),
-('Fernanda Santos', 'fernanda@novidade.com', 'senha123', '@fernandasantos', '222.222.222-23', 22987654323, '1982-11-15', 'Feminino', 'Indicação Familiar', TRUE, 2, 2, 2, 2),
-('Jorge Almeida', 'jorge@novidade.com', 'senha123', '@jorgealmeida', '333.333.333-34', 33987654324, '1983-12-20', 'Masculino', 'Facebook', TRUE, 2, 3, 3, 3),
-('Camila Rocha', 'camila@novidade.com', 'senha123', '@camilarocha', '444.444.444-45', 44987654325, '1984-12-25', 'Feminino', 'Google', TRUE, 2, 4, 4, 4),
-('Renato Costa', 'renato@novidade.com', 'senha123', '@renatocosta', '555.555.555-56', 55987654326, '1985-01-30', 'Masculino', 'Instagram', TRUE, 2, 5, 5, 5),
-('Mariana Ferreira', 'mariana@novidade.com', 'senha123', '@marianaferreira', '666.666.666-67', 66987654327, '1986-01-15', 'Feminino', 'Indicação de Influencer', TRUE, 2, 6, 6, 6),
-('Ricardo Martins', 'ricardo@novidade.com', 'senha123', '@ricardomartins', '777.777.777-78', 77987654328, '1987-02-10', 'Masculino', 'Instagram', TRUE, 2, 7, 7, 7),
-('Letícia Silva', 'leticia@novidade.com', 'senha123', '@leticiasilva', '888.888.888-89', 88987654329, '1988-02-25', 'Feminino', 'Indicação de Amiga', TRUE, 2, 8, 8, 8),
-('Vinícius Oliveira', 'vinicius@novidade.com', 'senha123', '@viniciusoliveira', '999.999.999-00', 99987654321, '1989-03-05', 'Masculino', 'Indicação Familiar', TRUE, 2, 9, 9, 9),
-('Amanda Castro', 'amanda@novidade.com', 'senha123', '@amandacastro', '101.010.101-11', 10198765432, '1990-03-20', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10),
-('Ruan Cardozo', 'ruancrdz2004@gmail.com', 'ruancrdz2004', '@ruan_crdz', '526.107.418-55', 11944415361, '2004-10-02', 'Masculino', 'Instagram', TRUE, 1, 11, 11, 11);
+('Fernanda Santos', 'fernanda@novidade.com', 'senha123', '@fernandasantos', '222.222.222-23', 22987654323, '1982-11-15', 'Feminino', 'Indicação Familiar', TRUE, 2, 2, 2, NULL),
+('Jorge Almeida', 'jorge@novidade.com', 'senha123', '@jorgealmeida', '333.333.333-34', 33987654324, '1983-12-20', 'Masculino', 'Facebook', TRUE, 2, 3, 3, NULL),
+('Camila Rocha', 'camila@novidade.com', 'senha123', '@camilarocha', '444.444.444-45', 44987654325, '1984-12-25', 'Feminino', 'Google', TRUE, 2, 4, 4, NULL),
+('Renato Costa', 'renato@novidade.com', 'senha123', '@renatocosta', '555.555.555-56', 55987654326, '1985-01-30', 'Masculino', 'Instagram', TRUE, 2, 5, 5, NULL),
+('Mariana Ferreira', 'mariana@novidade.com', 'senha123', '@marianaferreira', '666.666.666-67', 66987654327, '1986-01-15', 'Feminino', 'Indicação de Influencer', TRUE, 2, 6, 6, NULL),
+('Ricardo Martins', 'ricardo@novidade.com', 'senha123', '@ricardomartins', '777.777.777-78', 77987654328, '1987-02-10', 'Masculino', 'Instagram', TRUE, 2, 7, 7, NULL),
+('Letícia Silva', 'leticia@novidade.com', 'senha123', '@leticiasilva', '888.888.888-89', 88987654329, '1988-02-25', 'Feminino', 'Indicação de Amiga', TRUE, 2, 8, 8, NULL),
+('Vinícius Oliveira', 'vinicius@novidade.com', 'senha123', '@viniciusoliveira', '999.999.999-00', 99987654321, '1989-03-05', 'Masculino', 'Indicação Familiar', TRUE, 2, 9, 9, NULL),
+('Amanda Castro', 'amanda@novidade.com', 'senha123', '@amandacastro', '101.010.101-11', 10198765432, '1990-03-20', 'Feminino', 'Instagram', TRUE, 2, 10, 10, NULL),
+('Ruan Cardozo', 'ruancrdz2004@gmail.com', 'ruancrdz2004', '@ruan_crdz', '526.107.418-55', 11944415361, '2004-10-02', 'Masculino', 'Instagram', TRUE, 1, 11, 11, NULL);
 
 INSERT INTO procedimento (tipo, descricao)
 VALUES 
@@ -443,6 +441,8 @@ VALUES
 (4, 9, 4.7, 'Micropigmentadora', 'Sobrancelhas'),
 (5, 15, 5.0, 'Especialista em Maquiagem para Noivas', 'Maquiagem'),
 (6, 8, 4.6, 'Maquiadora Artística', 'Maquiagem'),
+(7, 7, 4.5, 'Especialista em Lifting de Cílios', 'Cílios'),
+(8, 6, 4.4, 'Técnica em Henna para Sobrancelhas', 'Sobrancelhas'),
 (9, 11, 4.8, 'Designer de Sobrancelhas', 'Sobrancelhas'),
 (10, 5, 4.3, 'Maquiadora Social', 'Maquiagem');
 
@@ -450,7 +450,7 @@ INSERT INTO Leads (nome, email, telefone, instagram, mensagem, data_criacao)
 VALUES 
 ('Maria Silva', 'maria.silva@example.com', 11987654321, '@mariasilva', 'Gostaria de saber mais sobre seus serviços.', NOW()),
 ('João Pereira', 'joao.pereira@example.com', 11912345678, '@joaopereira', 'Tenho interesse em fazer uma extensão de cílios.', NOW()),
-('Ana Souza', 'ana.souza@example.com', 11987611234, '@aninha', 'Quais são os valores para design de sobrancelha?', NOW()),
+('Ana Souza', 'ana.souza@example.com', 11987611234, NULL, 'Quais são os valores para design de sobrancelha?', NOW()),
 ('Carla Oliveira', 'carla.oliveira@example.com', 11933332222, '@carlaoliveira', 'Vi uma promoção no Instagram e quero mais detalhes.', NOW()),
 ('Pedro Santos', 'pedro.santos@example.com', 11998765432, '@pedrosantos', 'Como funciona o procedimento de volume russo?', NOW());
 
@@ -462,12 +462,4 @@ UPDATE usuario
 SET dtype = 'Profissional' 
 WHERE fk_nivel_acesso = 1;
 
-SELECT * FROM agendamento;
-select * from endereco;
-        SELECT l.id_lead, l.nome, l.email, l.telefone 
-                FROM leads l 
-                ORDER BY l.id_lead ASC;
-                
-                select * from pergunta;
-                
-                select * from resposta where fk_usuario = 2;
+SELECT * FROM usuario;

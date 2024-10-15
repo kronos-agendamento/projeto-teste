@@ -22,99 +22,86 @@ function showNotification(message, isError = false) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-
-  let isEditing = false;
+  let isEditingPersonal = false;
   let isEditingEmpresa = false;
 
   // Função para alternar a edição dos campos do formulário de usuário
   function toggleEditing() {
-    isEditing = !isEditing;
-    const lockIcons = document.querySelectorAll(".lock-icon");
-    const fields = document.querySelectorAll("#personalForm input, #personalForm select");
-    const saveButton = document.getElementById("save-usuario-button");
-
-    console.log("Edição de usuário ativada:", isEditing);
-
-    if (isEditing) {
-      lockIcons.forEach((lockIcon) => {
-        lockIcon.style.display = "inline"; // Exibe ícones de cadeado
-      });
-
-      fields.forEach((field) => {
-        const lockIcon = document.getElementById(`${field.id}-lock`);
-        if (lockIcon && lockIcon.textContent === "🔓") {
-          field.disabled = false; // Habilita apenas campos que podem ser editados
-        }
-      });
-
-      // Habilitar o campo de senha se estiver desbloqueado
-      const senhaLockIcon = document.getElementById("senha-lock");
-      const senhaField = document.getElementById("senha");
-      if (senhaLockIcon && senhaLockIcon.textContent === "🔓") {
-        senhaField.disabled = false; // Habilita o campo de senha
+      if (isEditingEmpresa) {
+          toggleEditingEmpresa(); // Se os campos empresariais estão sendo editados, desativa
       }
+      isEditingPersonal = !isEditingPersonal;
+      const lockIcons = document.querySelectorAll("#personalForm .lock-icon");
+      const fields = document.querySelectorAll("#personalForm input, #personalForm select");
+      const saveButton = document.getElementById("save-usuario-button");
 
-      saveButton.disabled = false; // Habilita o botão de salvar
-    } else {
-      lockIcons.forEach((lockIcon) => {
-        lockIcon.style.display = "none"; // Oculta ícones de cadeado
-      });
+      if (isEditingPersonal) {
+          lockIcons.forEach((lockIcon) => {
+              lockIcon.style.display = "inline"; // Exibe ícones de cadeado
+          });
 
-      fields.forEach((field) => {
-        field.disabled = true; // Desabilita todos os campos
-      });
+          fields.forEach((field) => {
+              field.disabled = false; // Habilita todos os campos
+          });
 
-      saveButton.disabled = true; // Desabilita o botão de salvar
-    }
+          saveButton.disabled = false; // Habilita o botão de salvar
+      } else {
+          lockIcons.forEach((lockIcon) => {
+              lockIcon.style.display = "none"; // Oculta ícones de cadeado
+          });
+
+          fields.forEach((field) => {
+              field.disabled = true; // Desabilita todos os campos
+          });
+
+          saveButton.disabled = true; // Desabilita o botão de salvar
+      }
   }
 
   // Função para alternar a edição dos campos do formulário de empresa
   function toggleEditingEmpresa() {
-    isEditingEmpresa = !isEditingEmpresa;
-    const lockIcons = document.querySelectorAll("#empresaForm .lock-icon");
-    const fields = document.querySelectorAll("#empresaForm input, #empresaForm select");
-    const saveButton = document.getElementById("save-empresa-button");
+      if (isEditingPersonal) {
+          toggleEditing(); // Se os campos pessoais estão sendo editados, desativa
+      }
+      isEditingEmpresa = !isEditingEmpresa;
+      const lockIcons = document.querySelectorAll("#empresaForm .lock-icon");
+      const fields = document.querySelectorAll("#empresaForm input, #empresaForm select");
+      const saveButton = document.getElementById("save-empresa-button");
 
-    if (isEditingEmpresa) {
-      lockIcons.forEach((lockIcon) => {
-        lockIcon.style.display = "inline"; // Exibe ícones de cadeado
-      });
+      if (isEditingEmpresa) {
+          lockIcons.forEach((lockIcon) => {
+              lockIcon.style.display = "inline"; // Exibe ícones de cadeado
+          });
 
-      fields.forEach((field) => {
-        const lockIcon = document.getElementById(`${field.id}-lock`);
-        if (lockIcon && lockIcon.textContent === "🔓") {
-          field.disabled = false; // Habilita apenas campos que podem ser editados
-        }
-      });
+          fields.forEach((field) => {
+              field.disabled = false; // Habilita todos os campos
+          });
 
-      saveButton.disabled = false; // Habilita o botão de salvar
-    } else {
-      lockIcons.forEach((lockIcon) => {
-        lockIcon.style.display = "none"; // Oculta ícones de cadeado
-      });
+          saveButton.disabled = false; // Habilita o botão de salvar
+      } else {
+          lockIcons.forEach((lockIcon) => {
+              lockIcon.style.display = "none"; // Oculta ícones de cadeado
+          });
 
-      fields.forEach((field) => {
-        field.disabled = true; // Desabilita todos os campos
-      });
+          fields.forEach((field) => {
+              field.disabled = true; // Desabilita todos os campos
+          });
 
-      saveButton.disabled = true; // Desabilita o botão de salvar
-    }
+          saveButton.disabled = true; // Desabilita o botão de salvar
+      }
   }
-
-
 
   // Adicionar o event listener ao botão de editar dados pessoais
   const editIconUsuario = document.getElementById("editIconUsuario");
   if (editIconUsuario) {
-    editIconUsuario.addEventListener("click", toggleEditing);
+      editIconUsuario.addEventListener("click", toggleEditing);
   }
 
   // Adicionar o event listener ao botão de editar dados empresariais
   const editIconEmpresa = document.getElementById("editIconEmpresa");
   if (editIconEmpresa) {
-    editIconEmpresa.addEventListener("click", toggleEditingEmpresa);
+      editIconEmpresa.addEventListener("click", toggleEditingEmpresa);
   }
-
 
 
 
