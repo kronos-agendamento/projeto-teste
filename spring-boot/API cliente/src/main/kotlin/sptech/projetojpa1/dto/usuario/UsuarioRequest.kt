@@ -3,7 +3,7 @@ package sptech.projetojpa1.dto.usuario
 import java.time.LocalDate
 
 data class UsuarioRequest(
-    val codigo: Int?,
+    val codigo: Int,
     val nome: String?,
     val email: String?,
     val senha: String?,

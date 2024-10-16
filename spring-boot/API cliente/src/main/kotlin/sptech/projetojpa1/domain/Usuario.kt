@@ -13,7 +13,7 @@ import java.time.LocalDate
 abstract class Usuario(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario")
-    var codigo: Int? = null,
+    var codigo: Int,
 
     @field:NotBlank(message = "Nome é obrigatório")
     var nome: String? = null,
