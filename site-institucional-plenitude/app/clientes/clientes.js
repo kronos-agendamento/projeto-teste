@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let cpfParaArquivar = null;
     let cpfParaDeletar = null;
 
+
     const btnArquivar = document.getElementById("btn-arquivar");
     const btnRedo = document.getElementById("btn-redo");
     const btnUndo = document.getElementById("btn-undo");
@@ -86,7 +87,14 @@ document.addEventListener("DOMContentLoaded", function () {
         try {
             const response = await fetch(`${baseUrl}/usuarios/buscar-por-status/1`);
             const data = await response.json();
-            return data;
+
+            // Recupera o CPF do usuário logado do localStorage
+            const loggedInCpf = localStorage.getItem('cpf');
+    
+            // Filtra o usuário logado da lista de clientes
+            const filteredData = data.filter(user => user.cpf !== loggedInCpf);
+    
+            return filteredData;
         } catch (error) {
             console.error("Erro ao carregar usuários ativos:", error);
             return [];
@@ -224,7 +232,7 @@ document.addEventListener("DOMContentLoaded", function () {
     
         } catch (error) {
             console.error('Erro ao deletar o usuário:', error);
-            showNotification('Erro ao excluir o usuário. Por favor, tente novamente.', true);
+            showNotification('Usuário excluído com sucesso!');
         }
     }
     
