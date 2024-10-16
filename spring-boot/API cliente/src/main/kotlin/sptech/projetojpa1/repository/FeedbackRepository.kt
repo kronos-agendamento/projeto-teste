@@ -42,4 +42,6 @@ interface FeedbackRepository : JpaRepository<Feedback, Int> {
     fun findAllByClienteAvaliado(cliente: Cliente): List<Feedback>
 
     fun deleteAllByUsuario(usuario: Usuario)
+
+    fun findAllByUsuario(usuario: Usuario): List<Feedback>
 }

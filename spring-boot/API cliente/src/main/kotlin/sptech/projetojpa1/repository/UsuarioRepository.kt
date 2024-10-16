@@ -1,7 +1,10 @@
 package sptech.projetojpa1.repository
 
+import jakarta.transaction.Transactional
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.query.Param
 import sptech.projetojpa1.domain.Endereco
 import sptech.projetojpa1.domain.NivelAcesso
 import sptech.projetojpa1.domain.Usuario
@@ -190,7 +193,7 @@ ORDER BY
 
     @Query(
         nativeQuery = true, value =
-"""       
+        """       
      SELECT l.id_lead, l.nome, l.email, l.telefone, l.instagram, l.mensagem
                 FROM leads l
                 ORDER BY l.id_lead ASC;
@@ -198,5 +201,8 @@ ORDER BY
     )
     fun listarLeads(): List<Map<String, Any>>
 
-
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Usuario u WHERE u.codigo = :id")
+    fun deletarPorId(@Param("id") id: Int): Int
 }

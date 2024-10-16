@@ -6,6 +6,7 @@ import sptech.projetojpa1.dto.FichaCompletaResponseDTO
 import sptech.projetojpa1.dto.FichaRequest
 import sptech.projetojpa1.dto.ficha.PerguntaRespostaDTO
 import sptech.projetojpa1.repository.FichaAnamneseRepository
+import java.time.LocalDate
 
 @Service
 data class FichaAnamneseService(
@@ -47,5 +48,31 @@ data class FichaAnamneseService(
             )
         }
     }
+
+    fun buscarFichasPorFiltros(
+        nomeUsuario: String?,
+        cpf: String?,
+        dataPreenchimento: LocalDate?
+    ): List<FichaCompletaResponseDTO> {
+        // Buscamos as fichas do banco de dados usando o filtro
+        val fichas = fichaAnamneseRepository.findByFilters(nomeUsuario, cpf, dataPreenchimento)
+
+        // Convertendo FichaAnamnese para FichaCompletaResponseDTO
+        return fichas.map { ficha ->
+            FichaCompletaResponseDTO(
+                codigoFicha = ficha.codigoFicha,
+                dataPreenchimento = ficha.dataPreenchimento,
+                usuarioId = ficha.usuario?.codigo,
+                usuarioNome = ficha.usuario?.nome,
+                perguntasRespostas = ficha.respostas.map { resposta ->
+                    PerguntaRespostaDTO(
+                        pergunta = resposta.pergunta.pergunta,
+                        resposta = resposta.resposta
+                    )
+                }
+            )
+        }
+    }
+
 
 }

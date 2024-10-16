@@ -1,4 +1,5 @@
-create database kronosbooking;
+-- drop database kronosbooking;
+CREATE DATABASE IF NOT EXISTS kronosbooking;
 USE kronosbooking;
 
 DROP TABLE IF EXISTS login_logoff;
