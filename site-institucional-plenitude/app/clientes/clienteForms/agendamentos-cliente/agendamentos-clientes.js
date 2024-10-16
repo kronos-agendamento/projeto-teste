@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   const params = new URLSearchParams(window.location.search);
-  const idUsuario = params.get("idUsuario"); // Pega o ID da URL
+  const idUsuario = params.get("idUsuario") || localStorage.getItem("idUsuario");
   const url = `http://localhost:8080/api/agendamentos/agendamentos/usuario/${idUsuario}`;
   const itemsPerPage = 5;
   let currentPage = 1;
@@ -9,6 +9,21 @@ document.addEventListener("DOMContentLoaded", function () {
   let agendamentoIdToDelete = null;
   let agendamentosOriginais = []; // Para armazenar os agendamentos originais
   let agendamentosFiltrados = []; // Variável para armazenar os agendamentos filtrados
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const idEndereco = urlParams.get("idEndereco");
+  const clienteNome = localStorage.getItem("clienteNome");
+  const dadosBtn = document.getElementById("dadosBtn");
+
+  if (clienteNome) {
+    document.querySelector("header h1").textContent = `Mais informações de: ${clienteNome}`;
+
+  }
+
+  dadosBtn.addEventListener("click", function () {
+    // Redireciona para a página de agendamentos com o idUsuario na URL
+    window.location.href = `../editar-cliente/editar-cliente.html?idUsuario=${idUsuario}`;
+  });
 
   // Função para formatar a data e hora
   function formatarDataHora(dataHora) {
@@ -182,4 +197,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Inicializa a busca de agendamentos ao carregar a página
   fetchAgendamentos();
+
+
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const nome = localStorage.getItem("nome");
+  const instagram = localStorage.getItem("instagram");
+
+  if (nome && instagram) {
+      document.getElementById("userName").textContent = nome;
+      document.getElementById("userInsta").textContent = instagram;
+  }
 });

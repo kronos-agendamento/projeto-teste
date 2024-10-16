@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Procedimento | KronosBooking</title>
+    <title>Editar Cliente | KronosBooking</title>
     <link rel="stylesheet" href="editar-cliente.css">
     <link href="" rel="icon">
-    <link href="../procedimento/image.png" rel="apple-touch-icon">
+    <link href="../../../procedimento/image.png" rel="apple-touch-icon">
     <script src="editar-cliente.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.2/xlsx.full.min.js"></script>
@@ -30,7 +30,7 @@
         <li id="userInsta" style="list-style: none; color: white; font-weight: 200; font-size: 12px;">
         </li>
 
-        <ul style="margin-top: 100%; position:absolute;">
+        <ul style="margin-top: 80%; position:absolute;">
             <li class="list">
                 <a href="../index/index.html">
                     <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
@@ -87,7 +87,7 @@
             <h1 style="margin-top: 10px;">Mais informações de: </h1>
         </header>
         <div class="back">
-            <a href="../../clientes.html    " class="back-link" style="margin-left: 11vh;">← Voltar para página de
+            <a href="../../clientes.html    " class="back-link" style="margin-left: 8vh;">← Voltar para página de
                 visualização dos
                 clientes </a>
         </div>
@@ -99,42 +99,40 @@
             </svg>
             <span id="notification-message"></span>
         </div>
-        <div class="actions" style="margin-left: 8vh;">
-    
+        <div class="actions" style="margin-left: 3vh;">
+
             <button class="filter-btn" style="height: 7vh; margin-left: 2.6%; width: 27vh; background-color:#d81b60;
              color: #fff;border: none;" onclick="openModalPesquisa()">
-                <img style="height: 4vh; width: 25h; margin-top: 10%; border-radius: 0px;"
-                    src="../../../../assets/icons/usuario.png" alt="filter">Dados Gerais
+                <i class="fas fa-user" style="margin-right: 10px; font-size: 24px;"></i>Dados Gerais
             </button>
             <div id="tooltip15" class="tooltip15">Clique para ver os dados gerais.</div>
-         
-                <button class="avaliar-btn filter-btn" style="height: 7vh;" id="agendamentoBtn">
-                    <img style="height: 4.5vh; width: 4.5vh; margin-top: 14%; border-radius: 0%;" 
-                         src="../../../../assets/icons/agendar.preto.png" alt="spreadsheet">
-                    Agendamentos
-                </button>
 
-                        <div id="tooltip16" class="tooltip16">Clique para ver agendamentos.</div>
+            <button class="avaliar-btn filter-btn" style="height: 7vh;" id="agendamentoBtn">
+                <i class="fas fa-calendar" style="margin-right: 10px; font-size: 24px;"></i>
+                Agendamentos
+            </button>
 
-                <button class="criar-btn filter-btn" style="height: 7vh; width: 33vh; margin-left: -10px;"><a
-                        style="width: max-content;">
-                        <img style="height: 4vh; margin-top: 13%; border-radius: 0%;"
-                            src="../../../../assets/icons/ficha.preta.png" alt="createNew"><span>Ficha de
-                            Anamnese</span>
-                    </a></button>
-                    <div id="tooltip17" class="tooltip17">Clique para ver a ficha de anamnese.</div>
+            <div id="tooltip16" class="tooltip16">Clique para ver agendamentos.</div>
 
-                <button type="button" class="pipefy-btn filter-btn" id="enviarEmailButton"
-                    style="margin-left: 0px; width: 144px;">Solicitar Feedback</button>
-                    <div id="tooltip18" class="tooltip18">Clique para solicitar um feedback.</div>
-        
+            <button class="criar-btn filter-btn" style="height: 7vh; width: 33vh; margin-left: -10px;"><a
+                    style="width: max-content;">
+                    <i class="fas fa-file-medical" style="margin-right: 10px; font-size: 24px;"></i>Ficha de
+                    Anamnese
+                </a></button>
+            <div id="tooltip17" class="tooltip17">Clique para ver a ficha de anamnese.</div>
+
+            <button type="button" class="pipefy-btn filter-btn" id="enviarEmailButton"
+                style="margin-left: 0px; width: 184px;">
+                <i class="fas fa-bullhorn" style="margin-right: 10px; font-size: 24px;"></i>Solicitar Feedback</button>
+            <div id="tooltip18" class="tooltip18">Clique para solicitar um feedback.</div>
+
             <button class="btn-action undo-btn" id="btn-undo" onclick="undoAction()" style="display: none;">
                 <i class="fas fa-undo"></i> Desfazer
-              </button>
-              <button class="btn-action redo-btn" id="btn-redo" onclick="redoAction()" style="display: none;">
+            </button>
+            <button class="btn-action redo-btn" id="btn-redo" onclick="redoAction()" style="display: none;">
                 <i class="fas fa-redo"></i> Refazer
-              </button>
-           
+            </button>
+
         </div>
 
 

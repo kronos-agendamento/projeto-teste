@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     if (agendamentoBtn) {
         agendamentoBtn.addEventListener("click", function () {
-            window.location.href = `../agendamentos-cliente/agendamentos-clientes.html?idUsuario=${idUsuario}`;
+            window.location.href = `../agendamentos-cliente/agendamento-clientes.html?idUsuario=${idUsuario}`;
         });
     }
 
@@ -331,7 +331,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 agendamentoBtn.addEventListener("click", function () {
   // Redireciona para a página de agendamentos com o idUsuario na URL
-  window.location.href = `../agendamentos-cliente/agendamentos-clientes.html?idUsuario=${idUsuario}`;
+  window.location.href = `../agendamentos-cliente/agendamento-clientes.html?idUsuario=${idUsuario}`;
 });
 
 // Selecionando os elementos do formulário
@@ -372,3 +372,4 @@ cepInput.addEventListener("blur", () => {
     alert("Por favor, insira um CEP válido.");
   }
 });
+

@@ -508,34 +508,82 @@ function redirectToArchived() {
   window.location.href = "../clientes/clienteForms/arquivar-cliente/clientes-arquivados.html";
 }
 
+// Adiciona o evento de clique ao botão para exportar a tabela
 document.querySelector(".planilha-btn").addEventListener("click", function () {
-  exportTableToExcel("procedures-table", "ClientesAtivos.xlsx");
+    // Faz a requisição para buscar todos os dados do servidor
+    fetch("http://localhost:8080/usuarios/buscar-por-status/1")  // Altere para a sua URL que retorna todos os dados de clientes
+      .then(response => response.json())  // Converte a resposta em JSON
+      .then(data => {
+        // Preenche a tabela com todos os dados recebidos
+        renderAllUsersInTable(data);
+  
+        // Depois de preencher a tabela, chama a função de exportação
+        exportTableToExcel("procedures-table", "ClientesAtivos.xlsx");
+      })
+      .catch(error => {
+        console.error("Erro ao buscar os dados completos:", error);
+      });
 });
+  
+// Função para preencher a tabela com todos os dados recebidos
+function renderAllUsersInTable(data) {
+  var table = document.getElementById("procedures-table").querySelector("tbody");
+  table.innerHTML = ""; // Limpa a tabela antes de preenchê-la
 
+  data.forEach(user => {
+    let row = table.insertRow();
+    row.insertCell(0).textContent = user.nome;
+    row.insertCell(1).textContent = user.instagram;
+    row.insertCell(2).textContent = user.telefone;
+    row.insertCell(3).textContent = user.cpf;  // Certifique-se de que a API retorna o CPF
+    row.insertCell(4).textContent = user.email;
+  });
+}
+
+// Função para exportar a tabela para um arquivo Excel
 function exportTableToExcel(tableId, filename = "") {
   var table = document.getElementById(tableId);
+  
+  // Clona a tabela para manipular sem alterar o DOM original
   var tempTable = table.cloneNode(true);
+  
+  // Verificar se há cabeçalho e adicioná-lo, se necessário
   var tempThead = tempTable.querySelector("thead");
-  var tempHeaderRow = tempThead.rows[0];
-  tempHeaderRow.deleteCell(-1); // Deletes the last cell from header
-
-  var tempTbody = tempTable.querySelector("tbody");
-  for (var i = 0; i < tempTbody.rows.length; i++) {
-      tempTbody.rows[i].deleteCell(-1); // Deletes the last cell from each row
+  if (!tempThead) {
+    tempThead = tempTable.createTHead();
+    var row = tempThead.insertRow(0);
+    row.insertCell(0).textContent = "Nome Completo";
+    row.insertCell(1).textContent = "Perfil Instagram";
+    row.insertCell(2).textContent = "Telefone de Contato";
+    row.insertCell(3).textContent = "Documento CPF";
+    row.insertCell(4).textContent = "Email";
+  } else {
+    // Se o cabeçalho já existe, altera os títulos das colunas diretamente
+    var tempHeaderRow = tempThead.rows[0];
+    tempHeaderRow.cells[0].textContent = "Nome Completo";
+    tempHeaderRow.cells[1].textContent = "Perfil Instagram";
+    tempHeaderRow.cells[2].textContent = "Telefone de Contato";
+    tempHeaderRow.cells[3].textContent = "Documento CPF";
+    tempHeaderRow.cells[4].textContent = "Email";
   }
 
+  // Converte a tabela para um arquivo Excel
   var wb = XLSX.utils.table_to_book(tempTable, { sheet: "Sheet1" });
   var wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
 
   function s2ab(s) {
-      var buf = new ArrayBuffer(s.length);
-      var view = new Uint8Array(buf);
-      for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xff;
-      return buf;
+    var buf = new ArrayBuffer(s.length);
+    var view = new Uint8Array(buf);
+    for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xff;
+    return buf;
   }
 
+  // Salva o arquivo Excel
   saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), filename);
 }
+
+  
+  
 
 // Funções para buscar dados de clientes arquivados, ativos e fidelizados
 async function fetchArquivados() {
