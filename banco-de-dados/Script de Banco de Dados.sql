@@ -1,8 +1,6 @@
--- drop database kronosbooking;
-CREATE DATABASE IF NOT EXISTS kronosbooking;
 USE kronosbooking;
 
-
+DROP TABLE IF EXISTS login_logoff;
 DROP TABLE IF EXISTS feedback;
 DROP TABLE IF EXISTS cliente;
 DROP TABLE IF EXISTS profissional;
@@ -10,7 +8,6 @@ DROP TABLE IF EXISTS agendamento;
 DROP TABLE IF EXISTS resposta;
 DROP TABLE IF EXISTS pergunta;
 DROP TABLE IF EXISTS especificacao;
-DROP TABLE IF EXISTS tempo_procedimento;
 DROP TABLE IF EXISTS procedimento;
 DROP TABLE IF EXISTS usuario;
 DROP TABLE IF EXISTS ficha_anamnese;
@@ -268,18 +265,18 @@ VALUES
 ('Tatiana Melo', 'tatiana@ouro.com', 'senha123', '@tatiouro', '784.563.970-24', 81987654327, '1985-08-08', 'Feminino', 'Indicação de Amiga', TRUE, 2, 8, 8, 8),
 ('Paula Gomes', 'paula@cilios.com', 'senha123', '@paulagomes', '999.999.999-99', 91987654328, '1982-09-09', 'Feminino', 'Indicação Familiar', TRUE, 2, 9, 9, 9),
 ('Marília Costa', 'cecilia@elegantes.com', 'senha123', '@ceciliaelegantes', '101.010.101-10', 11987654329, '1989-10-19', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10),
-('Cecília Costa', 'cecilia@elegantes.com', 'senha123', '@ceciliaelegantes', '101.010.101-10', 11987654329, '1989-10-10', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10),
+('Cecília Costa', 'cecilia@elegantes.com', 'senha123', '@ceciliaelegantes', '101.010.101-10', 11987654329, '1989-10-10', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 11),
 ('Lucas Lima', 'lucas@novidade.com', 'senha123', '@lucaslima', '111.111.111-12', 11987654322, '1981-11-01', 'Masculino', 'Instagram', TRUE, 1, 1, 1, NULL),
-('Fernanda Santos', 'fernanda@novidade.com', 'senha123', '@fernandasantos', '222.222.222-23', 22987654323, '1982-11-15', 'Feminino', 'Indicação Familiar', TRUE, 2, 2, 2, 2),
-('Jorge Almeida', 'jorge@novidade.com', 'senha123', '@jorgealmeida', '333.333.333-34', 33987654324, '1983-12-20', 'Masculino', 'Facebook', TRUE, 2, 3, 3, 3),
-('Camila Rocha', 'camila@novidade.com', 'senha123', '@camilarocha', '444.444.444-45', 44987654325, '1984-12-25', 'Feminino', 'Google', TRUE, 2, 4, 4, 4),
-('Renato Costa', 'renato@novidade.com', 'senha123', '@renatocosta', '555.555.555-56', 55987654326, '1985-01-30', 'Masculino', 'Instagram', TRUE, 2, 5, 5, 5),
-('Mariana Ferreira', 'mariana@novidade.com', 'senha123', '@marianaferreira', '666.666.666-67', 66987654327, '1986-01-15', 'Feminino', 'Indicação de Influencer', TRUE, 2, 6, 6, 6),
-('Ricardo Martins', 'ricardo@novidade.com', 'senha123', '@ricardomartins', '777.777.777-78', 77987654328, '1987-02-10', 'Masculino', 'Instagram', TRUE, 2, 7, 7, 7),
-('Letícia Silva', 'leticia@novidade.com', 'senha123', '@leticiasilva', '888.888.888-89', 88987654329, '1988-02-25', 'Feminino', 'Indicação de Amiga', TRUE, 2, 8, 8, 8),
-('Vinícius Oliveira', 'vinicius@novidade.com', 'senha123', '@viniciusoliveira', '999.999.999-00', 99987654321, '1989-03-05', 'Masculino', 'Indicação Familiar', TRUE, 2, 9, 9, 9),
-('Amanda Castro', 'amanda@novidade.com', 'senha123', '@amandacastro', '101.010.101-11', 10198765432, '1990-03-20', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10),
-('Ruan Cardozo', 'ruancrdz2004@gmail.com', 'ruancrdz2004', '@ruan_crdz', '526.107.418-55', 11944415361, '2004-10-02', 'Masculino', 'Instagram', TRUE, 1, 11, 11, 11);
+('Fernanda Santos', 'fernanda@novidade.com', 'senha123', '@fernandasantos', '222.222.222-23', 22987654323, '1982-11-15', 'Feminino', 'Indicação Familiar', TRUE, 2, 2, 2, NULL),
+('Jorge Almeida', 'jorge@novidade.com', 'senha123', '@jorgealmeida', '333.333.333-34', 33987654324, '1983-12-20', 'Masculino', 'Facebook', TRUE, 2, 3, 3, NULL),
+('Camila Rocha', 'camila@novidade.com', 'senha123', '@camilarocha', '444.444.444-45', 44987654325, '1984-12-25', 'Feminino', 'Google', TRUE, 2, 4, 4, NULL),
+('Renato Costa', 'renato@novidade.com', 'senha123', '@renatocosta', '555.555.555-56', 55987654326, '1985-01-30', 'Masculino', 'Instagram', TRUE, 2, 5, 5, NULL),
+('Mariana Ferreira', 'mariana@novidade.com', 'senha123', '@marianaferreira', '666.666.666-67', 66987654327, '1986-01-15', 'Feminino', 'Indicação de Influencer', TRUE, 2, 6, 6, NULL),
+('Ricardo Martins', 'ricardo@novidade.com', 'senha123', '@ricardomartins', '777.777.777-78', 77987654328, '1987-02-10', 'Masculino', 'Instagram', TRUE, 2, 7, 7, NULL),
+('Letícia Silva', 'leticia@novidade.com', 'senha123', '@leticiasilva', '888.888.888-89', 88987654329, '1988-02-25', 'Feminino', 'Indicação de Amiga', TRUE, 2, 8, 8, NULL),
+('Vinícius Oliveira', 'vinicius@novidade.com', 'senha123', '@viniciusoliveira', '999.999.999-00', 99987654321, '1989-03-05', 'Masculino', 'Indicação Familiar', TRUE, 2, 9, 9, NULL),
+('Amanda Castro', 'amanda@novidade.com', 'senha123', '@amandacastro', '101.010.101-11', 10198765432, '1990-03-20', 'Feminino', 'Instagram', TRUE, 2, 10, 10, NULL),
+('Ruan Cardozo', 'ruancrdz2004@gmail.com', 'ruancrdz2004', '@ruan_crdz', '526.107.418-55', 11944415361, '2004-10-02', 'Masculino', 'Instagram', TRUE, 1, 11, 11, NULL);
 
 INSERT INTO procedimento (tipo, descricao)
 VALUES 
@@ -462,12 +459,4 @@ UPDATE usuario
 SET dtype = 'Profissional' 
 WHERE fk_nivel_acesso = 1;
 
-SELECT * FROM agendamento;
-select * from endereco;
-        SELECT l.id_lead, l.nome, l.email, l.telefone 
-                FROM leads l 
-                ORDER BY l.id_lead ASC;
-                
-                select * from pergunta;
-                
-                select * from resposta where fk_usuario = 2;
+SELECT * FROM usuario;
