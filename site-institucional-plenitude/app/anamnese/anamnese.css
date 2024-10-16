@@ -161,32 +161,40 @@ main {
  background-color: #ffffff;
  width: 75vw;
 }
-
 header {
- display: flex;
- justify-content: space-between;
- background-color: #D2135D;
- color: white;
- padding: 2vh;
- border-radius: 3vh;
- margin-bottom: 2vh;
- margin-top: 2vh;
- margin-left: 2%;
- height: 14vh;
+  justify-content: space-between;
+  background-color: #d2135d;
+  color: white;
+  padding: 3vh;
+  border-radius: 3vh;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  margin-left: 1.5rem;
+  margin-right: 0.8rem;
 }
 
 header h1 {
- margin: 1vh 0vh 0vh 2vh;
- font-size: 3vh;
+  margin: 1vh;
+  font-size: 3vh;
 }
 
 header p {
- margin: 0vh 0vh 0vh 2vh;
- font-size: 2vh;
+  margin: 1vh;
+  font-size: 2vh;
+}
+
+#greeting1 {
+  font-size: 3.5vh;
+  font-weight: bold;
+}
+
+#greeting2 {
+  font-size: 2.5vh;
 }
 
 .main-content {
  display: flex;
+ width: 100%;
 }
 
 
