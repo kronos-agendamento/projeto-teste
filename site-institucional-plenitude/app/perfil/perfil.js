@@ -27,80 +27,80 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Função para alternar a edição dos campos do formulário de usuário
   function toggleEditing() {
-      if (isEditingEmpresa) {
-          toggleEditingEmpresa(); // Se os campos empresariais estão sendo editados, desativa
-      }
-      isEditingPersonal = !isEditingPersonal;
-      const lockIcons = document.querySelectorAll("#personalForm .lock-icon");
-      const fields = document.querySelectorAll("#personalForm input, #personalForm select");
-      const saveButton = document.getElementById("save-usuario-button");
+    if (isEditingEmpresa) {
+      toggleEditingEmpresa(); // Se os campos empresariais estão sendo editados, desativa
+    }
+    isEditingPersonal = !isEditingPersonal;
+    const lockIcons = document.querySelectorAll("#personalForm .lock-icon");
+    const fields = document.querySelectorAll("#personalForm input, #personalForm select");
+    const saveButton = document.getElementById("save-usuario-button");
 
-      if (isEditingPersonal) {
-          lockIcons.forEach((lockIcon) => {
-              lockIcon.style.display = "inline"; // Exibe ícones de cadeado
-          });
+    if (isEditingPersonal) {
+      lockIcons.forEach((lockIcon) => {
+        lockIcon.style.display = "inline"; // Exibe ícones de cadeado
+      });
 
-          fields.forEach((field) => {
-              field.disabled = false; // Habilita todos os campos
-          });
+      fields.forEach((field) => {
+        field.disabled = false; // Habilita todos os campos
+      });
 
-          saveButton.disabled = false; // Habilita o botão de salvar
-      } else {
-          lockIcons.forEach((lockIcon) => {
-              lockIcon.style.display = "none"; // Oculta ícones de cadeado
-          });
+      saveButton.disabled = false; // Habilita o botão de salvar
+    } else {
+      lockIcons.forEach((lockIcon) => {
+        lockIcon.style.display = "none"; // Oculta ícones de cadeado
+      });
 
-          fields.forEach((field) => {
-              field.disabled = true; // Desabilita todos os campos
-          });
+      fields.forEach((field) => {
+        field.disabled = true; // Desabilita todos os campos
+      });
 
-          saveButton.disabled = true; // Desabilita o botão de salvar
-      }
+      saveButton.disabled = true; // Desabilita o botão de salvar
+    }
   }
 
   // Função para alternar a edição dos campos do formulário de empresa
   function toggleEditingEmpresa() {
-      if (isEditingPersonal) {
-          toggleEditing(); // Se os campos pessoais estão sendo editados, desativa
-      }
-      isEditingEmpresa = !isEditingEmpresa;
-      const lockIcons = document.querySelectorAll("#empresaForm .lock-icon");
-      const fields = document.querySelectorAll("#empresaForm input, #empresaForm select");
-      const saveButton = document.getElementById("save-empresa-button");
+    if (isEditingPersonal) {
+      toggleEditing(); // Se os campos pessoais estão sendo editados, desativa
+    }
+    isEditingEmpresa = !isEditingEmpresa;
+    const lockIcons = document.querySelectorAll("#empresaForm .lock-icon");
+    const fields = document.querySelectorAll("#empresaForm input, #empresaForm select");
+    const saveButton = document.getElementById("save-empresa-button");
 
-      if (isEditingEmpresa) {
-          lockIcons.forEach((lockIcon) => {
-              lockIcon.style.display = "inline"; // Exibe ícones de cadeado
-          });
+    if (isEditingEmpresa) {
+      lockIcons.forEach((lockIcon) => {
+        lockIcon.style.display = "inline"; // Exibe ícones de cadeado
+      });
 
-          fields.forEach((field) => {
-              field.disabled = false; // Habilita todos os campos
-          });
+      fields.forEach((field) => {
+        field.disabled = false; // Habilita todos os campos
+      });
 
-          saveButton.disabled = false; // Habilita o botão de salvar
-      } else {
-          lockIcons.forEach((lockIcon) => {
-              lockIcon.style.display = "none"; // Oculta ícones de cadeado
-          });
+      saveButton.disabled = false; // Habilita o botão de salvar
+    } else {
+      lockIcons.forEach((lockIcon) => {
+        lockIcon.style.display = "none"; // Oculta ícones de cadeado
+      });
 
-          fields.forEach((field) => {
-              field.disabled = true; // Desabilita todos os campos
-          });
+      fields.forEach((field) => {
+        field.disabled = true; // Desabilita todos os campos
+      });
 
-          saveButton.disabled = true; // Desabilita o botão de salvar
-      }
+      saveButton.disabled = true; // Desabilita o botão de salvar
+    }
   }
 
   // Adicionar o event listener ao botão de editar dados pessoais
   const editIconUsuario = document.getElementById("editIconUsuario");
   if (editIconUsuario) {
-      editIconUsuario.addEventListener("click", toggleEditing);
+    editIconUsuario.addEventListener("click", toggleEditing);
   }
 
   // Adicionar o event listener ao botão de editar dados empresariais
   const editIconEmpresa = document.getElementById("editIconEmpresa");
   if (editIconEmpresa) {
-      editIconEmpresa.addEventListener("click", toggleEditingEmpresa);
+    editIconEmpresa.addEventListener("click", toggleEditingEmpresa);
   }
 
 
@@ -389,83 +389,84 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     });
 
-  document.getElementById("save-empresa-button").addEventListener("click", function () {
-    // Capturar os valores dos inputs
-    const nomeEmpresa = document.getElementById("empresa").value;
-    const cnpj = document.getElementById("cnpj").value.replace(/[^\d]/g, ""); // Remove a máscara do CNPJ
-    const telefone = document.getElementById("telefone-empresa").value.replace(/[^\d]/g, ""); // Remove a máscara do telefone
-    const cep = document.getElementById("cep").value.replace(/[^\d]/g, ""); // Remove a máscara do CEP
-    const logradouro = document.getElementById("logradouro").value;
-    const numero = document.getElementById("numero").value;
-    const complemento = document.getElementById("complemento").value;
-    const bairro = document.getElementById("bairro").value;
-    const cidade = document.getElementById("cidade-empresa").value;
-    const estado = document.getElementById("estado-empresa").value;
-    const diaInicio = document.getElementById("diaInicio").value;
-    const diaFim = document.getElementById("diaFim").value;
-    const horaInicio = document.getElementById("horaInicio").value;
-    const horaFim = document.getElementById("horaFim").value;
-
-    // Montar o objeto para enviar para a API
-    const empresaData = {
-      nome: nomeEmpresa,
-      telefone: telefone,
-      cnpj: cnpj,
-      endereco: {
-        logradouro: logradouro,
-        cep: cep,
-        bairro: bairro,
-        cidade: cidade,
-        estado: estado,
-        numero: numero,
-        complemento: complemento,
-      },
-      horarioFuncionamento: {
-        diaInicio: diaInicio,
-        diaFim: diaFim,
-        horarioAbertura: horaInicio,
-        horarioFechamento: horaFim,
-      },
-    };
-
-    // Recuperar o CPF do localStorage
-    const cpf = localStorage.getItem("cpf");
-
-    if (!cpf) {
-      alert("CPF não encontrado no localStorage.");
-      return;
-    }
-
-    // Fazer requisição PATCH para o endpoint de atualização de empresa
-    fetch(`http://localhost:8080/api/empresas/${cpf}`, {
-      method: "PUT", // Alterado de "PUT" para "PATCH"
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(empresaData),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Erro ao atualizar empresa: ${response.status}`);
-        }
-        return response.json();
+    document.getElementById("save-empresa-button").addEventListener("click", function () {
+      // Capturar os valores dos inputs
+      const nomeEmpresa = document.getElementById("empresa").value;
+      const cnpj = document.getElementById("cnpj").value.replace(/[^\d]/g, ""); // Remove a máscara do CNPJ
+      const telefone = document.getElementById("telefone-empresa").value.replace(/[^\d]/g, ""); // Remove a máscara do telefone
+      const cep = document.getElementById("cep").value.replace(/[^\d]/g, ""); // Remove a máscara do CEP
+      const logradouro = document.getElementById("logradouro").value;
+      const numero = document.getElementById("numero").value;
+      const complemento = document.getElementById("complemento").value;
+      const bairro = document.getElementById("bairro").value;
+      const cidade = document.getElementById("cidade-empresa").value;
+      const estado = document.getElementById("estado-empresa").value;
+      const diaInicio = document.getElementById("diaInicio").value;
+      const diaFim = document.getElementById("diaFim").value;
+      const horaInicio = document.getElementById("horaInicio").value;
+      const horaFim = document.getElementById("horaFim").value;
+  
+      // Montar o objeto para enviar para a API
+      const empresaData = {
+          nome: nomeEmpresa,
+          telefone: telefone,
+          cnpj: cnpj,
+          endereco: {
+              logradouro: logradouro,
+              cep: cep,
+              bairro: bairro,
+              cidade: cidade,
+              estado: estado,
+              numero: numero,
+              complemento: complemento,
+          },
+          horarioFuncionamento: {
+              diaInicio: diaInicio,
+              diaFim: diaFim,
+              horarioAbertura: horaInicio,
+              horarioFechamento: horaFim,
+          },
+      };
+  
+      // Recuperar o CPF do localStorage
+      const cpf = localStorage.getItem("cpf");
+  
+      if (!cpf) {
+          alert("CPF não encontrado no localStorage.");
+          return;
+      }
+  
+      // Fazer requisição PATCH para o endpoint de atualização de empresa
+      fetch(`http://localhost:8080/api/empresas/${cpf}`, {
+          method: "PUT",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify(empresaData),
       })
-      .then((data) => {
-        // Exibe mensagem de sucesso
-        showNotification("Dados da empresa atualizados com sucesso!");
+      .then(response => {
+          if (!response.ok) {
+              // Se a resposta não for OK, lançar um erro para o catch
+              throw new Error(`Erro ao atualizar empresa: ${response.status}`);
+          }
+          return response.json();
       })
-      .catch((error) => {
-        console.error("Erro ao atualizar a empresa:", error);
-
-        // Exibe mensagem de erro
-        showNotification("Erro ao atualizar dados da empresa!", true);
+      .then(data => {
+          // Exibir notificação de sucesso
+          showNotification("Empresa atualizada com sucesso!", false);
+  
+          // Recarregar a página após 1 segundo
+          setTimeout(function () {
+              location.reload();
+          }, 1000);
+      })
+      .catch(error => {
+          // Exibir notificação de erro
+          showNotification(error.message, true);
       });
-
-    // Oculta a notificação após alguns segundos
-    setTimeout(() => {
-      document.getElementById("notification").classList.remove("show", "error");
-    }, 5000); // Oculta a notificação após 5 segundos
   });
+  
+
 
 
   function formatPhoneNumberToLong(phoneNumber) {
@@ -516,23 +517,22 @@ document.addEventListener("DOMContentLoaded", async () => {
           },
           body: JSON.stringify(usuarioDTO),
         }
+
       );
+      // Exibe mensagem de sucesso
+      showNotification("Dados da usuário atualizados com sucesso!");
+      setTimeout(function () {
+        location.reload();
+      }, 1000);
 
       if (!usuarioResponse.ok) {
         throw new Error(`Erro ao atualizar usuário: ${usuarioResponse.status}`);
       }
 
-      // Exibe mensagem de sucesso
-      showNotification("Dados da usuário atualizados com sucesso!");
 
       // Atualizar localStorage
       localStorage.setItem('nome', usuarioDTO.nome)
       localStorage.setItem('instagram', usuarioDTO.instagram)
-
-      // Atualizar a página
-      setTimeout(function () {
-        location.reload();
-      }, 1000);
 
 
 

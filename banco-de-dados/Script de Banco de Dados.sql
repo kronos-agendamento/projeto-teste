@@ -229,7 +229,7 @@ VALUES
 
 INSERT INTO empresa (nome, telefone, cnpj, fk_endereco, fk_horario_funcionamento)
 VALUES 
-('Plenitude no Olhar', '11987654321', '12.345.678/0001-90', 1, 1),
+('Plenitude no Olhar', '11987654321', '24.274.515/0001-48', 1, 1),
 ('Beleza Suprema', '21987654322', '98.765.432/0002-10', 2, 2),
 ('Olhar Perfeito', '31987654323', '22.333.444/0001-11', 3, 3),
 ('Glamour Sobrancelhas', '41987654324', '44.555.666/0001-12', 4, 4),
@@ -481,3 +481,6 @@ ADD CONSTRAINT fk_ficha_anamnese_usuario
 FOREIGN KEY (fk_ficha_anamnese) REFERENCES ficha_anamnese(id_ficha) ON DELETE CASCADE;
 
 SELECT * FROM usuario;	
+select * from especificacao;
+select * from agendamento;
+delete from agendamento where fk_especificacao_procedimento= 1;

@@ -19,7 +19,7 @@ body {
   display: flex;
   background-color: #ffffff;
   height: 140vh;
-  width: 97vw;
+  width: 98vw;
 }
 
 .container {
@@ -130,9 +130,9 @@ navbar  lateral
 .navigation {
   height: 76.6rem;
   background: #d2135d;
-  width: 19vw;
-  top: 2vh;
-  margin-left: 3vw;
+  width: 263px;
+  margin-left: 32px;
+  margin-top: 20px;
   border-radius: 3vh;
   margin-bottom: 2vh;
   box-shadow: 10px 0 0 #ffffff;
@@ -301,7 +301,7 @@ header {
   padding: 2vh;
   border-radius: 3vh;
   margin-bottom: 2vh;
-  margin-top: 2vh;
+  margin-top: 22px;
   margin-left: 2%;
   height: 14vh;
 }
@@ -769,11 +769,11 @@ td {
 }
 
 .form-section {
-  width: 73vw;
+  width: 152vh;
   background-color: #fff;
   padding: 20px;
   margin-bottom: 20px;
-  margin-left: 3.5vh;
+  margin-left: 4.3%;
   margin-top: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
