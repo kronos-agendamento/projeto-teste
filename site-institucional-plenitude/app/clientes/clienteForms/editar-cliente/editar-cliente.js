@@ -152,6 +152,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         }, 3000);
     }
 
+    
+
     async function updatePersonalData(event) {
         event.preventDefault();
 
@@ -371,5 +373,106 @@ cepInput.addEventListener("blur", () => {
   } else {
     alert("Por favor, insira um CEP válido.");
   }
+});
+
+
+
+// Função para definir o valor de um campo de entrada
+function setFieldValue(fieldId, value) {
+    const field = document.getElementById(fieldId);
+    if (!field) {
+        console.error(`Campo com id "${fieldId}" não foi encontrado.`);
+        return;
+    }
+
+    if (!value || value === "") {
+        field.value = "Não há registro desse dado*";
+        field.style.color = "red";  // Muda a cor do texto para vermelho para indicar ausência de dado
+    } else {
+        field.value = value;
+        field.style.color = "";  // Reseta a cor para o padrão
+    }
+}
+
+
+document.addEventListener("DOMContentLoaded", async function () {
+    function showNotification(message, isError = false) {
+        const notification = document.getElementById("notification");
+        const notificationMessage = document.getElementById("notification-message");
+        notificationMessage.textContent = message;
+        if (isError) {
+            notification.classList.add("error");
+        } else {
+            notification.classList.remove("error");
+        }
+        notification.classList.add("show");
+        setTimeout(() => {
+            notification.classList.remove("show");
+        }, 3000);
+    }
+    
+    const enviarEmailButton = document.getElementById('enviarEmailButton');
+    const emailInput = document.getElementById('email'); // Pegar o input do email
+
+    let clienteData = {}; // Variável para armazenar os dados do cliente
+    console.log(clienteData)
+
+    // Verifique se o idUsuario está nos parâmetros da URL ou no localStorage
+    const urlParams = new URLSearchParams(window.location.search);
+    const idUsuario = urlParams.get("idUsuario") || localStorage.getItem("idUsuario");
+    const clienteNome = localStorage.getItem("clienteNome");
+    
+    // Se o nome do cliente estiver armazenado, exibe no cabeçalho
+    if (clienteNome) {
+        document.querySelector("header h1").textContent = `Mais informações de: ${clienteNome}`;
+    }
+
+    // Função para capturar o valor do campo de email e enviar o e-mail
+    enviarEmailButton.addEventListener('click', function () {
+        // Captura o email diretamente do campo de input
+        const emailCliente = emailInput.value;
+        const nomeCliente = clienteData.nome || 'Cliente';
+
+        // Verificar se o campo de email tem um valor
+        if (!emailCliente) {
+            showNotification("O cliente não possui um e-mail cadastrado.", true);
+            return;
+        }
+
+        // Mensagem de feedback
+        const mensagem = "Por favor, nos dê seu feedback sobre os nossos serviços preenchendo o formulário no link abaixo.";
+
+        // Chama a função para enviar o e-mail
+        enviarEmail(emailCliente, nomeCliente, mensagem);
+    });
+
+    // Função para enviar o e-mail
+    async function enviarEmail(email, nome, mensagem) {
+        try {
+            const response = await fetch('http://127.0.0.1:5000/enviar-email', { // Rota do servidor Flask para enviar e-mail
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email,      // E-mail do destinatário
+                    nome: nome,        // Nome do cliente
+                    mensagem: mensagem // Mensagem personalizada
+                })
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                console.log(`Email enviado com sucesso para ${email}`);
+                showNotification("E-mail enviado com sucesso!");
+            } else {
+                console.error('Erro ao enviar o e-mail:', data.error);
+                showNotification('Erro ao enviar o e-mail.', true);
+            }
+        } catch (error) {
+            console.error('Erro ao enviar o e-mail:', error);
+            showNotification('Erro ao enviar o e-mail.', true);
+        }
+    }
 });
 
