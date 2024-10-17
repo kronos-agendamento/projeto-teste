@@ -16,7 +16,7 @@ body {
 .corpo {
   display: flex;
   background-color: #ffffff;
-  height: 140vh;
+  width: 98vw;
 }
 
 .container {
@@ -127,9 +127,9 @@ navbar  lateral
 .navigation {
   height: auto;
   background: #d2135d;
-  width: 19vw;
-  top: 2vh;
-  margin-left: 3vw;
+  width: 265px;
+  margin-top: 20px;
+  margin-left: 32px;
   border-radius: 3vh;
   margin-bottom: 2vh;
   box-shadow: 10px 0 0 #ffffff;
@@ -298,8 +298,8 @@ header {
   padding: 3vh;
   border-radius: 3vh;
   margin-bottom: 1rem;
-  margin-top: 1rem;
-  margin-left: 1.5rem;
+  margin-top: 22px;
+  margin-left: 2%;
   margin-right: 0.8rem;
 }
 
@@ -314,12 +314,14 @@ header p {
 }
 
 #greeting1 {
-  font-size: 3.5vh;
+  font-size: 3vh;
   font-weight: bold;
+  margin: 0vh 0vh 0vh 1.3vh;
 }
 
 #greeting2 {
-  font-size: 2.5vh;
+  margin: 0vh 0vh 0vh 1.3vh;
+  font-size: 2vh;
 }
 
 .main-content {
@@ -339,7 +341,7 @@ header p {
 .right-content {
   display: flex;
   flex-direction: column;
-  width: 25vw;
+  width: 24vw;
   height: auto;
   margin-top: 1vh;
   margin-left: 2vw;
@@ -359,11 +361,11 @@ header p {
   display: flex;
   font-family: Poppins, sans-serif;
   height: 10vh;
-  width: 22vw;
+  width: 20vw;
   justify-content: center;
   padding: 2vh;
   margin-bottom: 1.5rem;
-  margin-right: 0.9rem;
+  margin-left: 1rem;
   align-items: center;
   font-size: 16px;
   border-radius: 2vh;
@@ -376,7 +378,7 @@ header p {
   display: flex;
   font-family: Poppins, sans-serif;
   height: 10vh;
-  width: 45vw;
+  width: 43vw;
   justify-content: center;
   margin-bottom: 2rem;
   padding: 2vh;
@@ -430,7 +432,7 @@ Inicio Agenda
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 10px;
   border: 1px solid black;
-  width: 25vw;
+  width: 23vw;
   margin-bottom: 1rem;
 }
 
@@ -557,7 +559,7 @@ Status Cadastrados
   overflow: hidden;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border: 1px solid #000;
-  width: 25vw;
+  width: 51vh;
   margin: 1vh;
 }
 
@@ -615,6 +617,7 @@ Aniversariantes
   /* Ajusta a altura automática para o conteúdo */
   margin-bottom: 1vh;
   /* Espaço entre cartões */
+  width: 51vh;
 }
 
 .birthday-card h1 {
@@ -1213,7 +1216,7 @@ width: 100rem;
 /* Novas tabelas  */
 
 .procedures-table {
-  width: 100vh;
+  width: 94vh;
   max-width: 150vh;
   border-collapse: collapse;
   margin-top: 0.5rem;
@@ -1221,12 +1224,12 @@ width: 100rem;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin-right: auto;
+  margin-left: 1rem;
   border: 1px solid black;
 }
 
 .procedures-table2 {
-  width: 55vh;
+  width: 51vh;
   max-width: 150vh;
   border-collapse: collapse;
   margin-top: 0.5rem;
@@ -1262,3 +1265,4 @@ width: 100rem;
 .procedures-table tbody tr:nth-child(odd) {
   background-color: #f9f9f9;
 }
+

@@ -18,20 +18,50 @@
 
   <div class="corpo">
     <div class="navigation">
-      <div class="perfil">
-        <div class="imagem-perfil">
-          <img src="../assets/Foto de Perfil.png">
-        </div>
-        <li id="userName"></li>
-        <li id="userInsta"></li>
-      </div>
-      <ul>
-        <li class="list">
-          <a href="../index/index.html">
-            <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
-            <span class="title">Início </span>
-          </a>
-        </li>
+      <li class="list" style="
+      width: 30px;
+      height: 30px;
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      margin-top: 5vh;
+    ">
+  <div class="imagem-perfil" style="
+        width: 20vh;
+        height: 20vh;
+        border-radius: 300px;
+        display: flex;
+        justify-content: center;
+      ">
+    <img src="../index/Foto de Perfil.png" style="
+          width: 53vh;
+          height: 23vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        " />
+  </div>
+</li>
+<li id="userName" style="
+      margin-top: 20vh;
+      list-style: none;
+      color: white;
+      font-weight: 600;
+    "></li>
+<li id="userInsta" style="
+      list-style: none;
+      color: white;
+      font-weight: 200;
+      font-size: 12px;
+    "></li>
+
+<ul style="margin-top: 3%; position: absolute">
+  <li class="list">
+    <a href="../index/index.html">
+      <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+      <span class="title">Início </span>
+    </a>
+  </li>
         <li class="list active">
           <a href="perfil.html">
             <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
@@ -69,7 +99,7 @@
           </a>
         </li>
         <li class="list">
-          <a href="../../../../index.html">
+          <a href="../../index.html">
             <span class="icon"><ion-icon name="exit-outline"></ion-icon></span>
             <span class="title">Sair</span>
           </a>
