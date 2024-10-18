@@ -87,34 +87,55 @@ function criarPergunta() {
 }
 
 
-function obterPerguntas(){
-  fetch(`${baseUrl}/api/perguntas/ativas`, {
+function obterPrimeirasPerguntasAtivas(){
+  return fetch(`${baseUrl}/api/perguntas/ativas/primeiras`, {
     method: "GET",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type" : "application/json"
     }
-  })
-  .then(response => {
-    if(!response.ok){
-      throw new Error('Erro na requisição: ' + response.status);
-    }
-    return response.json()
-  })
-  .then(perguntas => {
-    //Preenche as tabelas com as perguntas dinâmicas
-    perguntas.forEach((pergunta, index) => {
-      const label = getElementById(`pergunta${index + 1}Label`);
-      if(label){
-        label.textContent = pergunta.pergunta
-      }
-    });
+    })
+  .then((response) => {
+   if(!response.ok){
+    throw new Error(`Erro na requisição: ${response.status}`)
+   }
+   return response.json()
   })
   .catch(error => {
-    console.error('Erro ao obter perguntas: ', error);
-  } )
-}
-document.addEventListener("DOMContentLoaded", obterPerguntas)
+    console.error("Erro ao obter as primeiras perguntas ativas:", error);
+    throw error; 
+  });
 
+}
+
+
+function listarPrimeirasPerguntasAtivas() {
+  obterPrimeirasPerguntasAtivas()
+      .then(perguntas => {
+          if (perguntas.length === 0) {
+              console.log("Nenhuma pergunta ativa encontrada");
+              return;
+          }
+
+          // Para cada pergunta, associa a label e o input com base na estrutura do HTML
+          perguntas.forEach((pergunta, index) => {
+              const labelElement = document.getElementById(`pergunta${index+1}Label`);
+              const inputElement = document.getElementById(`idResposta${index + 1}`);
+              
+              if (labelElement && inputElement) {
+                  labelElement.textContent = pergunta.pergunta; // Insere o texto da pergunta na label
+                  inputElement.placeholder = "Digite sua resposta aqui..."; // Opcional, pode ser ajustado
+              }
+          });
+      })
+      .catch(error => {
+          console.error("Erro ao listar as primeiras perguntas ativas:", error);
+      });
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  listarPrimeirasPerguntasAtivas();
+});
 
 
 
@@ -136,6 +157,8 @@ function getDesativadas() {
     });
 
 }
+
+
 
 function preencherTabelasDesativadas(perguntasDesativadas) {
   const descricaoTd = document.getElementById("descricaoDesativada");

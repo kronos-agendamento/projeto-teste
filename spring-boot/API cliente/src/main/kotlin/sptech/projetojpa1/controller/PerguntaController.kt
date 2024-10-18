@@ -156,4 +156,31 @@ class PerguntaController(
             ResponseEntity.status(404).build()
         }
     }
+
+
+@Operation(
+    summary = "Listar as 4 primeiras perguntas ativas",
+    description = "Retorna as primeiras 4 perguntas ativas no sistema."
+)
+
+@ApiResponses(
+    value = [
+        ApiResponse(responseCode = "200", description = "Operação bem sucedida."),
+        ApiResponse(responseCode = "204", description = "Nenhuma pergunta encontrada."),
+        ApiResponse(responseCode = "500", description = "Erro interno de servidor."),
+        ApiResponse(responseCode = "400", description = "Má requisição.")
+    ]
+)
+@GetMapping("/ativas/primeiras")
+fun listarPrimeirasPerguntasAtivas():ResponseEntity<List<PerguntaResponse>>{
+    val primeirasPerguntas = perguntaService.listarPrimeirasPerguntasAtivas()
+    return if(primeirasPerguntas.isEmpty()){
+        ResponseEntity.status(204).build()
+    } else{
+        ResponseEntity.ok(primeirasPerguntas)
+    }
+
+
+}
+
 }

@@ -45,6 +45,20 @@ class PerguntaService(
         }
     }
 
+    fun listarPrimeirasPerguntasAtivas():List<PerguntaResponse>{
+        val perguntasAtivas = perguntaRepository.findTop4ByAtivaTrue()
+
+        return perguntasAtivas.map { pergunta ->
+            PerguntaResponse(
+                idPergunta = pergunta.idPergunta,
+                pergunta = pergunta.pergunta,
+                ativa = pergunta.ativa
+            )
+
+
+        }
+    }
+
     fun listarPerguntasDesativadas(): List<Pergunta> {
         return perguntaRepository.findByAtivaFalse()
     }
