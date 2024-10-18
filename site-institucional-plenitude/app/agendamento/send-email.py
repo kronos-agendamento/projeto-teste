@@ -11,15 +11,15 @@ CORS(app)  # Habilitando o CORS para todas as rotas
 def enviar_email():
     data = request.get_json()
     email_destino = data.get('email')
-    nome_cliente = data.get('nome')
-    novo_status = data.get('mensagem')  # Aqui será a mensagem com o status
+    mensagem= data.get('mensagem') 
+    
 
-    if not email_destino or not novo_status:
+    if not email_destino or not mensagem:
         return jsonify({'error': 'Email e status são necessários'}), 400
 
     # Configurações do servidor SMTP para Gmail
     remetente = 'gyugyulia64@gmail.com'  # Seu email do Gmail
-    senha = 'boca btpk cgbt patu'   # Senha de aplicativo do Gmail
+    senha = 'bfzf asbi vdul ikwr'   # Senha de aplicativo do Gmail
 
     try:
         # Configurando a mensagem do email
@@ -30,8 +30,7 @@ def enviar_email():
 
         # Corpo do e-mail que será enviado ao cliente
         corpo = f"""
-        <p>Olá {nome_cliente},</p>
-        <p>O status do seu agendamento foi atualizado para <strong>{novo_status}</strong>.</p>
+        <p> <strong>{mensagem}</strong></p>
         <p>Caso tenha alguma dúvida ou precise de mais informações, estamos à disposição.</p>
         <p>Atenciosamente,</p>
         <p><strong>Equipe Plenitude no Olhar</strong></p>

@@ -99,6 +99,14 @@ async function buscarEmailCliente(selectedAgendamentoId, nome) {
       // Aqui você ajusta conforme a resposta que você verá no console
       const clienteEmail = data.email 
       const nomeCliente = data.usuario 
+      const dataHoraAgendamento = new Date(data.dataHorario); // Supondo que você tem `dataHorario`
+const dataFormatada = dataHoraAgendamento.toLocaleDateString('pt-BR');
+const horaFormatada = dataHoraAgendamento.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+const dataAgend = `${dataFormatada} às ${horaFormatada}`;
+
+
+      const especificacao = data.especificacao
+
 
       // Verificar se o e-mail está disponível
       if (!clienteEmail) {
@@ -107,7 +115,7 @@ async function buscarEmailCliente(selectedAgendamentoId, nome) {
       }
 
       // Enviar e-mail ao cliente sobre a atualização de status
-      enviarEmail(clienteEmail, nomeCliente, nome);
+      enviarEmail(clienteEmail, nomeCliente, nome, dataAgend, especificacao);
 
   } catch (error) {
       console.error('Erro ao buscar o e-mail do cliente:', error);
@@ -117,7 +125,7 @@ async function buscarEmailCliente(selectedAgendamentoId, nome) {
 
 
 // Função para enviar o e-mail após a atualização do status
-async function enviarEmail(clienteEmail, nomeCliente, nome) {
+async function enviarEmail(clienteEmail, nomeCliente, nome, dataAgend, especificacao) {
   try {
       const response = await fetch('http://127.0.0.1:5001/enviar-email-status', { // Rota do servidor Flask para enviar e-mail
           method: 'POST',
@@ -127,7 +135,7 @@ async function enviarEmail(clienteEmail, nomeCliente, nome) {
           body: JSON.stringify({
               email: clienteEmail,      // E-mail do destinatário
               nome: nomeCliente,        // Nome do cliente
-              mensagem: `"${nome}"` // Mensagem personalizada
+              mensagem: `Olá ${nomeCliente}, o status do seu agendamento do dia ${dataAgend} para o procedimento de ${especificacao} foi alterado para "${nome}".` // Mensagem personalizada
           })
       });
 
