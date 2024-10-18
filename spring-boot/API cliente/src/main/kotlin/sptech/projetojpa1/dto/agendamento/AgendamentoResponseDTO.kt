@@ -8,6 +8,7 @@ data class AgendamentoResponseDTO(
     var dataHorario: LocalDateTime? = null,
     var tipoAgendamento: String? = null,
     var usuario: String? = null,
+    var email: String? = null,
     var tempoAgendar: Int? = null,
     var usuarioTelefone: String? = null,
     var usuarioCpf: String? = null,

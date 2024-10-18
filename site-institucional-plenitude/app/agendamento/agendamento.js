@@ -61,28 +61,91 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-  // Função para selecionar um status e atualizar
-  function selecionarStatus(id, nome) {
-    fetch(
-      `http://localhost:8080/api/agendamentos/atualizar-status/${selectedAgendamentoId}?statusId=${id}`,
-      {
-        method: "PUT",
+// Função para selecionar um status e atualizar
+function selecionarStatus(id, nome) {
+  fetch(`http://localhost:8080/api/agendamentos/atualizar-status/${selectedAgendamentoId}?statusId=${id}`, {
+      method: "PUT",
+  })
+  .then((response) => {
+      if (!response.ok) throw new Error("Erro ao atualizar o status.");
+      return response.json();
+  })
+  .then((data) => {
+      // Exibe uma notificação de sucesso
+      showNotification(`Status atualizado para "${nome}" com sucesso!`);
+      fetchAgendamentos(); // Atualizar a lista de agendamentos
+      closeCustomStatusModal(); // Fechar o modal
+      
+      // Após atualizar o status, busca o e-mail do cliente
+      buscarEmailCliente(selectedAgendamentoId, nome);  // Passa o ID do agendamento atualizado e o nome do novo status
+  })
+  .catch((error) => {
+      console.error("Erro ao atualizar o status:", error);
+      showNotification("Erro ao atualizar o status!", true);
+  });
+}
+
+async function buscarEmailCliente(selectedAgendamentoId, nome) {
+  try {
+      const response = await fetch(`http://localhost:8080/api/agendamentos/buscar/${selectedAgendamentoId}`);
+      if (!response.ok) {
+          throw new Error(`Erro ao buscar agendamento com ID: ${selectedAgendamentoId}`);
       }
-    )
-      .then((response) => {
-        if (!response.ok) throw new Error("Erro ao atualizar o status.");
-        return response.json();
-      })
-      .then((data) => {
-        showNotification(`Status atualizado para "${nome}" com sucesso!`);
-        fetchAgendamentos(); // Atualizar a lista de agendamentos
-        closeCustomStatusModal(); // Fechar o modal
-      })
-      .catch((error) => {
-        console.error("Erro ao atualizar o status:", error);
-        showNotification("Erro ao atualizar o status!", true);
-      });
+      const data = await response.json();
+
+      // Adiciona um log para verificar os dados da resposta
+      console.log('Resposta da API:', data);
+
+      // Aqui você ajusta conforme a resposta que você verá no console
+      const clienteEmail = data.email 
+      const nomeCliente = data.usuario 
+
+      // Verificar se o e-mail está disponível
+      if (!clienteEmail) {
+          console.error("E-mail do cliente não encontrado.");
+          return;
+      }
+
+      // Enviar e-mail ao cliente sobre a atualização de status
+      enviarEmail(clienteEmail, nomeCliente, nome);
+
+  } catch (error) {
+      console.error('Erro ao buscar o e-mail do cliente:', error);
   }
+}
+
+
+
+// Função para enviar o e-mail após a atualização do status
+async function enviarEmail(clienteEmail, nomeCliente, nome) {
+  try {
+      const response = await fetch('http://127.0.0.1:5001/enviar-email-status', { // Rota do servidor Flask para enviar e-mail
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+              email: clienteEmail,      // E-mail do destinatário
+              nome: nomeCliente,        // Nome do cliente
+              mensagem: `"${nome}"` // Mensagem personalizada
+          })
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+          console.log(`Email enviado com sucesso para ${clienteEmail}`);
+          showNotification("E-mail enviado com sucesso!");
+      } else {
+          console.error('Erro ao enviar o e-mail:', data.error);
+          showNotification('Erro ao enviar o e-mail.', true);
+      }
+  } catch (error) {
+      console.error('Erro ao enviar o e-mail:', error);
+      showNotification('Erro ao enviar o e-mail.', true);
+  }
+}
+
+
 
   // Função para fechar o modal de seleção de status
   function closeCustomStatusModal() {

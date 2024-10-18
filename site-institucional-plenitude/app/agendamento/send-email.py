@@ -1,55 +1,58 @@
+from flask import Flask, request, jsonify
+from flask_cors import CORS  # Importar o CORS
 import smtplib
-from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-import sys
+from email.mime.text import MIMEText
 
-# Função para enviar e-mail de forma dinâmica
-def enviar_email_para_cliente(cliente_email, nome_cliente, novo_status, email_sender, email_password):
-    smtp_server = "smtp.gmail.com"
-    smtp_port = 587
+app = Flask(__name__)
+CORS(app)  # Habilitando o CORS para todas as rotas
 
-    # Configuração do e-mail
-    msg = MIMEMultipart()
-    msg["From"] = email_sender
-    msg["To"] = cliente_email
-    msg["Subject"] = "Atualização no Status do seu Agendamento"
+@app.route('/enviar-email-status', methods=['POST'])
+def enviar_email():
+    data = request.get_json()
+    email_destino = data.get('email')
+    nome_cliente = data.get('nome')
+    novo_status = data.get('mensagem')  # Aqui será a mensagem com o status
 
-    # Corpo do e-mail
-    body = f"""
-    Olá {nome_cliente},
+    if not email_destino or not novo_status:
+        return jsonify({'error': 'Email e status são necessários'}), 400
 
-    O status do seu agendamento foi atualizado para: {novo_status}.
-
-    Agradecemos por escolher nossos serviços.
-    
-    Atenciosamente,
-    Equipe de Atendimento
-    """
-    msg.attach(MIMEText(body, "plain"))
+    # Configurações do servidor SMTP para Gmail
+    remetente = 'gyugyulia64@gmail.com'  # Seu email do Gmail
+    senha = 'boca btpk cgbt patu'   # Senha de aplicativo do Gmail
 
     try:
-        # Conectar ao servidor SMTP e enviar o e-mail
-        server = smtplib.SMTP(smtp_server, smtp_port)
-        server.starttls()
-        server.login(email_sender, email_password)
-        server.sendmail(email_sender, cliente_email, msg.as_string())
-        server.quit()
-        print(f"E-mail enviado para {cliente_email} com sucesso!")
+        # Configurando a mensagem do email
+        msg = MIMEMultipart()
+        msg['From'] = remetente
+        msg['To'] = email_destino
+        msg['Subject'] = 'Atualização de Status do Agendamento - Plenitude no Olhar' 
+
+        # Corpo do e-mail que será enviado ao cliente
+        corpo = f"""
+        <p>Olá {nome_cliente},</p>
+        <p>O status do seu agendamento foi atualizado para <strong>{novo_status}</strong>.</p>
+        <p>Caso tenha alguma dúvida ou precise de mais informações, estamos à disposição.</p>
+        <p>Atenciosamente,</p>
+        <p><strong>Equipe Plenitude no Olhar</strong></p>
+        <p style="font-style: italic;">Beleza que vai além do olhar ✨</p>
+        """
+
+        msg.attach(MIMEText(corpo, 'html'))
+
+        # Conectando ao servidor SMTP do Gmail
+        servidor = smtplib.SMTP('smtp.gmail.com', 587)
+        servidor.starttls()
+        servidor.login(remetente, senha)
+
+        # Enviando o email
+        servidor.send_message(msg)
+        servidor.quit()
+
+        return jsonify({'message': 'Email enviado com sucesso!'}), 200
+
     except Exception as e:
-        print(f"Erro ao enviar e-mail: {e}")
+        return jsonify({'error': str(e)}), 500
 
-# Recebe argumentos via linha de comando ou API
-if __name__ == "__main__":
-    # Argumentos recebidos dinamicamente: cliente_email, nome_cliente, novo_status
-    if len(sys.argv) < 5:
-        print("Uso: python3 enviar_email.py <cliente_email> <nome_cliente> <novo_status> <email_sender> <email_password>")
-        sys.exit(1)
-
-    cliente_email = sys.argv[1]  # Email do cliente recebido
-    nome_cliente = sys.argv[2]   # Nome do cliente
-    novo_status = sys.argv[3]    # Novo status do agendamento
-    email_sender = sys.argv[4]   # E-mail do remetente
-    email_password = sys.argv[5] # Senha do e-mail do remetente
-
-    # Chama a função para enviar o e-mail
-    enviar_email_para_cliente(cliente_email, nome_cliente, novo_status, email_sender, email_password)
+if __name__ == '__main__':
+    app.run(debug=True, port=5001)
