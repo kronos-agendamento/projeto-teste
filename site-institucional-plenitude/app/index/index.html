@@ -127,9 +127,9 @@
           </section>
           <section class="actions" id="center">
             <a href="agenda-semanal/agenda-semanal.html" class="filter-btn"><button id="center">
-              <i class="fas fa-calendar"> </i>Agenda Semanal de Atendimentos
-             
-            </button></a>
+                <i class="fas fa-calendar"> </i>Agenda Semanal de Atendimentos
+
+              </button></a>
             <div id="tooltip5" class="tooltip5">Clique para ver o calendário</div>
           </section>
 
@@ -180,7 +180,7 @@
                   <th>Mensagem</th>
                 </tr>
               </thead>
-              <tbody id="procedures-tbody"></tbody>
+              <tbody id="proceduresl-tbody"></tbody>
             </table>
             <div class="footer">
               <a href="leads/leads.html" class="filter-btn">Ver todos >></a>
@@ -189,23 +189,25 @@
           </div>
         </div>
         <div class="right-content">
-          <section class="daily-schedule">
-            <div class="agenda">
-              <h1>Agenda Diária</h1>
-              <div class="day">
-                <h2>
-                  <span class="weekday">Dia da Semana</span>
-                  <span class="date">Data</span>
-                </h2>
+          <div class="conteiner">
+            <section class="daily-schedule">
+              <div class="agenda">
+                <h1>Agenda Diária</h1>
+                <div class="day">
+                  <h2>
+                    <span class="weekday">Dia da Semana</span>
+                    <span class="date">Data</span>
+                  </h2>
+                </div>
+                <div class="appointments"></div>
+                <hr />
+                <div class="footer">
+                  <a href="../agendamento/agendamento.html" class="filter-btn">Ver todos >></a>
+                  <div id="tooltip10" class="tooltip10">Clique para todos os clientes do dia</div>
+                </div>
               </div>
-              <div class="appointments"></div>
-              <hr />
-              <div class="footer">
-                <a href="../agendamento/agendamento.html" class="filter-btn">Ver todos >></a>
-                <div id="tooltip10" class="tooltip10">Clique para todos os clientes do dia</div>
-              </div>
-            </div>
-          </section>
+            </section>
+          </div>
 
           <div class="conteiner">
             <table class="procedures-table2">
@@ -219,54 +221,54 @@
               </thead>
               <tbody id="status-tbody"></tbody>
             </table>
-            <div class="footer">
+            <div class="footer" id="status">
               <a href="#" id="toggle-view" class="filter-btn">Ver todos >></a>
               <div id="tooltip8" class="tooltip8">Clique para ver todos os status cadastrados</div>
             </div>
           </div>
-
-          <div class="table-container">
-            <div class="birthday-card">
-              <div class="table-header">
-                <h3>Aniversariantes do Mês</h3>
-              </div>
-              <hr />
-              <div class="birthday-list "></div>
-              <div class="footer-aniversario">
-                <a href="#" class="toggle-view filter-btn">Ver todos >></a>
-                <div id="tooltip9" class="tooltip9">Clique para criar um procedimento novo.</div>
+          <div class="conteiner">
+            <div class="table-container">
+              <div class="birthday-card">
+                <div class="table-header">
+                  <h3>Aniversariantes do Mês</h3>
+                </div>
+                <hr />
+                <div class="birthday-list "></div>
+                <div class="footer-aniversario">
+                  <a href="#" class="toggle-view filter-btn">Ver todos >></a>
+                  <div id="tooltip9" class="tooltip9">Clique para criar um procedimento novo.</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-  </div>
-
-  <div id="modal" class="modal">
-    <div class="modal-content">
-      <p>Tem certeza que deseja excluir o status?</p>
-      <p id="procedimento"></p>
-      <button class="btn btn-yes">SIM</button>
-      <button class="btn btn-no" onclick="closeModal()">NÃO</button>
     </div>
-  </div>
+      <div id="modal" class="modal">
+        <div class="modal-content">
+          <p>Tem certeza que deseja excluir o status?</p>
+          <p id="procedimento"></p>
+          <button class="btn btn-yes">SIM</button>
+          <button class="btn btn-no" onclick="closeModal()">NÃO</button>
+        </div>
+      </div>
 
-  <div id="edit-modal" class="modal">
-    <div class="modal-content2">
-      <h3>Editar Status</h3>
-      <div>
-        <input type="text" id="edit-nome" placeholder="Nome" />
-        <input type="color" id="edit-cor" placeholder="Cor do Status">
+      <div id="edit-modal" class="modal">
+        <div class="modal-content2">
+          <h3>Editar Status</h3>
+          <div>
+            <input type="text" id="edit-nome" placeholder="Nome" />
+            <input type="color" id="edit-cor" placeholder="Cor do Status">
+          </div>
+          <div>
+            <button class="btn btn-save">Salvar</button>
+            <button class="btn btn-no" onclick="closeEditModal()">
+              Cancelar
+            </button>
+          </div>
+        </div>
       </div>
-      <div>
-        <button class="btn btn-save">Salvar</button>
-        <button class="btn btn-no" onclick="closeEditModal()">
-          Cancelar
-        </button>
-      </div>
-    </div>
-  </div>
-  </main>
+    </main>
   </div>
 
   <script src="index.js"></script>

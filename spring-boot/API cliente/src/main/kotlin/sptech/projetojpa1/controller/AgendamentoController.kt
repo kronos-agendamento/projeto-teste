@@ -350,6 +350,15 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
     }
 
 
+    @GetMapping("/procedimentos-usuario-mes")
+    fun getProcedimentosPorUsuarioEMes(
+        @RequestParam usuarioId: Long,
+        @RequestParam mesAno: String
+    ): ResponseEntity<Map<String, Int>> {
+        val procedimentos = agendamentoService.obterProcedimentosPorUsuarioEMes(usuarioId, mesAno)
+        return ResponseEntity.ok(procedimentos)
+    }
+
     @Operation(
         summary = "Retorna o intervalo de horario mais agendado",
         description = "Mostra o intervalo de horário mais agendado dependendo de cada usuário."

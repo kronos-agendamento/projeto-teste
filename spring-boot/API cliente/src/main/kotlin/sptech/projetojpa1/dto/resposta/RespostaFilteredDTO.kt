@@ -4,5 +4,5 @@ data class RespostaFilteredDTO(
     val resposta: String,
     val pergunta: String,
     val usuario: String,
-    val dataPreenchimento: String
+    val dataPreenchimento: String,
 )

@@ -1,9 +1,10 @@
 package sptech.projetojpa1.service
 
 import jakarta.persistence.EntityManager
-import jakarta.transaction.Transactional
+import org.springframework.transaction.annotation.Transactional
 import jakarta.validation.ConstraintViolationException
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.transaction.annotation.Propagation
 import org.springframework.stereotype.Service
 import sptech.projetojpa1.domain.Usuario
 import sptech.projetojpa1.domain.usuario.Cliente
@@ -20,9 +21,10 @@ class UsuarioService(
     @Autowired private val fichaAnamneseRepository: FichaAnamneseRepository,
     @Autowired private val respostaRepository: RespostaRepository,
     @Autowired private val feedbackRepository: FeedbackRepository,
+    @Autowired private val clienteRepository: ClienteRepository,
+    @Autowired private val profissionalRepository: ProfissionalRepository,
     @Autowired private val agendamentoRepository: AgendamentoRepository,
     @Autowired private val entityManager: EntityManager,
-    enderecoService: EnderecoService
 ) {
     fun salvarUsuario(dto: UsuarioRequest): Usuario {
         val usuario: Usuario = if (dto.nivelAcessoId == 1) {
@@ -145,27 +147,23 @@ class UsuarioService(
         return usuarioRepository.save(usuario)
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     fun deletarUsuarioPorId(id: Int): Boolean {
-        val usuario = usuarioRepository.findById(id).orElse(null) ?: return false
-
-        // Excluindo Feedbacks relacionados ao Usuário
-        feedbackRepository.deleteAllByUsuario(usuario)
-
-        // Excluindo Agendamentos relacionados ao Usuário
-        agendamentoRepository.deleteAllByUsuario(usuario)
-
-        // Excluindo Respostas relacionadas ao Usuário
-        respostaRepository.deleteAllByUsuario(usuario)
-
-        // Excluindo outras entidades associadas (se necessário)
-        // Adicione aqui outras exclusões necessárias, seguindo o padrão acima
-
-        // Por fim, excluir o próprio Usuário
-        usuarioRepository.delete(usuario)
-        return true
+        println("Iniciando exclusão do usuário com ID: $id")
+        return try {
+            val deletados = usuarioRepository.deletarPorId(id)
+            if (deletados > 0) {
+                println("Usuário com ID $id excluído com sucesso.")
+                true
+            } else {
+                println("Usuário com ID $id não encontrado.")
+                false
+            }
+        } catch (e: Exception) {
+            println("Erro ao excluir o usuário com ID $id: ${e.message}")
+            false
+        }
     }
-
 
     fun listarUsuariosAtivos(): List<Usuario> = usuarioRepository.findByStatusTrue()
 

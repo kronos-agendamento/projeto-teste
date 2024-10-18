@@ -2,6 +2,7 @@ package sptech.projetojpa1.domain
 
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.Null
 import jakarta.validation.constraints.Size
 
 @Entity
@@ -16,5 +17,8 @@ class Pergunta(
     var pergunta: String,
 
     @Column(name = "pergunta_ativa")
-    var ativa: Boolean = false
+    var ativa: Boolean = false,
+
+    @Column(name = "pergunta_tipo ")
+    var tipo:String? = null
 )

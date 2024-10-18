@@ -79,12 +79,10 @@
     </div>
     <main>
       <header>
-        <div>
-          <h1>Agendamentos</h1>
-          <p>
-            Esta página permite a visualização, cadastro, edição e exclusão de
-            agendamentos.
-          </p>
+        <div id="greeting1">Agendamentos</div>
+        <div id="greeting2">
+          Esta página permite a visualização, cadastro, edição e exclusão de
+          agendamentos.
         </div>
         <div id="notification" class="notification">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill"
@@ -95,6 +93,7 @@
           <span id="notification-message"></span>
         </div>
       </header>
+      
       <div class="main-content">
         <div class="center-content">
           <section class="actions">
@@ -143,35 +142,37 @@
         </div>
         <span id="total-label">Atendimentos Totais</span>
       </div>
-      <div class="tabs">
-        <button class="tab-button" id="todos-agendamentos">Todos</button>
-        <button class="tab-button" id="hoje-agendamentos">Hoje</button>
-      </div>
-      <table id="procedures-table" class="procedures-table">
-        <thead>
-          <tr>
-            <th>Data/Hora</th>
-            <th>Cliente</th>
-            <th>Procedimento</th>
-            <th>Especificação</th>
-            <th>Status</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody id="procedures-tbody"></tbody>
-      </table>
+      <div class="conteiner">
+        <div class="tabs">
+          <button class="tab-button" id="todos-agendamentos">Todos</button>
+          <button class="tab-button" id="hoje-agendamentos">Hoje</button>
+        </div>
+        <table id="procedures-table" class="procedures-table">
+          <thead>
+            <tr>
+              <th>Data/Hora</th>
+              <th>Cliente</th>
+              <th>Procedimento</th>
+              <th>Especificação</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="procedures-tbody"></tbody>
+        </table>
 
-      <div class="pagination">
-        <button class="button-page" id="prev-page-btn" disabled>
-          Página Anterior
-        </button>
-        <span>
-          <span class="current-page" id="current-page">1</span> /
-          <span id="total-pages">1</span></span>
-        <button class="button-page" id="next-page-btn">Próxima Página</button>
-        <button id="clear-all-filters" class="button-page" style="display: flex">
-          Limpar Filtros
-        </button>
+        <div class="pagination">
+          <button class="button-page" id="prev-page-btn" disabled>
+            Página Anterior
+          </button>
+          <span>
+            <span class="current-page" id="current-page">1</span> /
+            <span id="total-pages">1</span></span>
+          <button class="button-page" id="next-page-btn">Próxima Página</button>
+          <button id="clear-all-filters" class="button-page" style="display: flex">
+            Limpar Filtros
+          </button>.
+        </div>
       </div>
     </main>
   </div>

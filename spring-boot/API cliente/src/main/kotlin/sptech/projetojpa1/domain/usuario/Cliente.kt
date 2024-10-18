@@ -10,7 +10,7 @@ import java.time.LocalDate
 @Entity
 @DiscriminatorValue("Cliente")
 class Cliente(
-    codigo: Int? = null,
+    codigo: Int,
     nome: String? = null,
     email: String? = null,
     senha: String? = null,

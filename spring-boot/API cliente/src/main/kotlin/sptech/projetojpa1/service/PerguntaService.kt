@@ -15,13 +15,15 @@ class PerguntaService(
     fun criarPergunta(request: PerguntaCreateRequest): PerguntaResponse {
         val novaPergunta = Pergunta(
             pergunta = request.pergunta,
-            ativa = request.ativa
+            ativa = request.ativa,
+            tipo = request.tipo
         )
         val perguntaSalva = perguntaRepository.save(novaPergunta)
         return PerguntaResponse(
             idPergunta = perguntaSalva.idPergunta,
             pergunta = perguntaSalva.pergunta,
-            ativa = perguntaSalva.ativa
+            ativa = perguntaSalva.ativa,
+            tipo = perguntaSalva.tipo
         )
     }
 
@@ -30,7 +32,8 @@ class PerguntaService(
             PerguntaResponse(
                 idPergunta = pergunta.idPergunta,
                 pergunta = pergunta.pergunta,
-                ativa = pergunta.ativa
+                ativa = pergunta.ativa,
+                tipo = pergunta.tipo
             )
         }
     }
@@ -40,7 +43,8 @@ class PerguntaService(
             PerguntaResponse(
                 idPergunta = pergunta.idPergunta,
                 pergunta = pergunta.pergunta,
-                ativa = pergunta.ativa
+                ativa = pergunta.ativa,
+                tipo = pergunta.tipo
             )
         }
     }
@@ -69,7 +73,8 @@ class PerguntaService(
         return PerguntaResponse(
             idPergunta = pergunta.idPergunta,
             pergunta = pergunta.pergunta,
-            ativa = pergunta.ativa
+            ativa = pergunta.ativa,
+            tipo = pergunta.tipo
         )
     }
 
@@ -84,7 +89,8 @@ class PerguntaService(
         return PerguntaResponse(
             idPergunta = perguntaAtualizada.idPergunta,
             pergunta = perguntaAtualizada.pergunta,
-            ativa = perguntaAtualizada.ativa
+            ativa = perguntaAtualizada.ativa,
+            tipo = perguntaAtualizada.tipo
         )
     }
 
