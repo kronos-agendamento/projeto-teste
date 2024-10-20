@@ -1,3 +1,9 @@
+body {
+  font-family: Poppins, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
 .divDados {
   background-color: FFF0F5;
   justify-content: space-between;
@@ -80,10 +86,52 @@ a:visited {
 }
 
 .input-content {
-  width: 25%;
-  margin: 10px;
+  width: 100%;
+  padding-right: 10px;
+}
+
+.fas {
+  font-size: 1.5em;
 }
 
 .m {
   margin-left: 10px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="file"],
+input[type="date"],
+select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.divVoltar {
+  margin-bottom: 20px;
+  margin-left: -70px;
+}
+
+.form-group {
+  width: 33%; /* 33% de largura para cada pergunta */
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap; /* Permite que novas rows sejam criadas automaticamente */
+  margin-bottom: 20px;
+}
+
+.input-content input {
+  width: 100%; /* Faz com que o input ocupe 100% da largura da div */
+}
+
+.resposta-text {
+  padding: 5px;
+  border: 1px solid transparent; /* Borda padrão transparente */
+  margin-top: 5px;
 }

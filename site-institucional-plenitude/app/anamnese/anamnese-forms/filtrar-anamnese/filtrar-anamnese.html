@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Anamneses | KronosBooking</title>
+  <title>Filtro Anamnese | KronosBooking</title>
 
   <!-- CSS -->
   <link rel="stylesheet" href="../../anamnese.css" />
@@ -99,7 +99,7 @@
 
       <div id="juntandoDiv">
         <div class="divVoltar">
-          <a href="../../anamnese.html"><img src="https://cdn-icons-png.flaticon.com/512/45/45468.png" id="setaVolta">
+          <a href="../../anamnese.html"><img src="https://cdn-icons-png.flaticon.com/512/45/45468.png" id="setaVolta" style="margin-bottom: -8px ; margin-right: 10px;">
             <span>Voltar para a página de visualização da ficha de anamnese</span></a>
         </div>
 
@@ -113,17 +113,18 @@
 
             <div id="inserirCPF">
               <span>CPF:</span> <br>
-              <input type="number" id="inputCPF">
+              <input type="text" id="inputCPF" disabled> <!-- Campo desativado -->
             </div>
-
+            
             <div id="inserirData">
               <span>Data de Preenchimento:</span>
-              <input type="date" id="inputPreenchimento">
+              <input type="date" id="inputPreenchimento" disabled> <!-- Campo desativado -->
             </div>
+            
           </div>
         </div>
 
-        <div class="main-content">
+        <div class="main-content" id="mainContent" style="display: none;">
           <div class="center-content">
             <section class="form-section">
               <div class="form-title">

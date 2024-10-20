@@ -64,9 +64,11 @@ data class FichaAnamneseService(
                 dataPreenchimento = ficha.dataPreenchimento,
                 usuarioId = ficha.usuario?.codigo,
                 usuarioNome = ficha.usuario?.nome,
+                usuarioCpf = ficha.usuario?.cpf,
                 perguntasRespostas = ficha.respostas.map { resposta ->
                     PerguntaRespostaDTO(
                         pergunta = resposta.pergunta.pergunta,
+                        perguntaTipo = resposta.pergunta.tipo,
                         resposta = resposta.resposta
                     )
                 }

@@ -7,4 +7,5 @@ interface PerguntaRepository : JpaRepository<Pergunta, Int> {
 
     fun findByAtiva(ativa: Boolean): List<Pergunta>
     fun findByAtivaFalse():List<Pergunta>
+    fun findTop4ByAtivaTrue():List<Pergunta>
 }

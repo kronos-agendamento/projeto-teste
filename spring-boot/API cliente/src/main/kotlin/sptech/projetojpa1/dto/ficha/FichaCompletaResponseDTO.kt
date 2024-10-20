@@ -8,5 +8,6 @@ data class FichaCompletaResponseDTO(
     val dataPreenchimento: LocalDateTime,
     val usuarioId: Int?,
     val usuarioNome: String?,
+    val usuarioCpf: String? = null,
     val perguntasRespostas: List<PerguntaRespostaDTO>
 )

@@ -1,246 +1,228 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Anamneses | KronosBooking</title>
+    <link rel="stylesheet" href="anamnese.css" />
+    <script src="anamnese.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Anamneses | KronosBooking</title>
-  <link rel="stylesheet" href="anamnese.css" />
-  <script src="anamnese.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-</head>
-
-<body>
-  <div class="corpo">
-    <div class="navigation">
-      <div class="perfil">
-        <div class="imagem-perfil">
-          <img src="../assets/Foto de Perfil.png">
+  <body>
+    <div class="corpo">
+      <div class="navigation">
+        <div class="perfil">
+          <div class="imagem-perfil">
+            <img src="../assets/Foto de Perfil.png" />
+          </div>
+          <li id="userName"></li>
+          <li id="userInsta"></li>
         </div>
-        <li id="userName"></li>
-        <li id="userInsta"></li>
+
+        <ul>
+          <li class="list">
+            <a href="../index/index.html">
+              <span class="icon"
+                ><ion-icon name="home-outline"></ion-icon
+              ></span>
+              <span class="title">Início </span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../perfil/perfil.html">
+              <span class="icon"
+                ><ion-icon name="people-outline"></ion-icon
+              ></span>
+              <span class="title">Perfil</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../agendamento/agendamento.html">
+              <span class="icon"
+                ><ion-icon name="calendar-outline"></ion-icon
+              ></span>
+              <span class="title">Agendamentos</span>
+            </a>
+          </li>
+          <li class="list active">
+            <a href="anamnese.html">
+              <span class="icon"
+                ><ion-icon name="document-text-outline"></ion-icon
+              ></span>
+              <span class="title">Anamneses</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../clientes/clientes.html">
+              <span class="icon"
+                ><ion-icon name="person-add-outline"></ion-icon
+              ></span>
+              <span class="title">Clientes</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../procedimento/procedimento.html">
+              <span class="icon"
+                ><ion-icon name="brush-outline"></ion-icon
+              ></span>
+              <span class="title">Procedimentos</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../dashboard/dashboard.html">
+              <span class="icon"
+                ><ion-icon name="stats-chart-outline"></ion-icon
+              ></span>
+              <span class="title">Dashboard</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../../index.html">
+              <span class="icon"
+                ><ion-icon name="exit-outline"></ion-icon
+              ></span>
+              <span class="title">Sair</span>
+            </a>
+          </li>
+        </ul>
       </div>
+      <main>
+        <header>
+          <div>
+            <div id="greeting1">Ficha de Anamnese</div>
+            <div id="greeting2">
+              Preencha e garanta a segurança dos procedimentos feitos nos
+              clientes.
+            </div>
+          </div>
 
-
-      <ul>
-        <li class="list">
-          <a href="../index/index.html">
-            <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
-            <span class="title">Início </span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../perfil/perfil.html">
-            <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
-            <span class="title">Perfil</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../agendamento/agendamento.html">
-            <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
-            <span class="title">Agendamentos</span>
-          </a>
-        </li>
-        <li class="list active">
-          <a href="anamnese.html">
-            <span class="icon"><ion-icon name="document-text-outline"></ion-icon></span>
-            <span class="title">Anamneses</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../clientes/clientes.html">
-            <span class="icon"><ion-icon name="person-add-outline"></ion-icon></span>
-            <span class="title">Clientes</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../procedimento/procedimento.html">
-            <span class="icon"><ion-icon name="brush-outline"></ion-icon></span>
-            <span class="title">Procedimentos</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../dashboard/dashboard.html">
-            <span class="icon"><ion-icon name="stats-chart-outline"></ion-icon></span>
-            <span class="title">Dashboard</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../../index.html">
-            <span class="icon"><ion-icon name="exit-outline"></ion-icon></span>
-            <span class="title">Sair</span>
-          </a>
-        </li>
-      </ul>
-    </div>
-    <main>
-
-      <header>
-        <div>
-          <div id="greeting1">Fichas de Anamnese</div>
-          <div id="greeting2">Preencha e garanta a segurança dos procedimentos feitos nos clientes.</div>
+          <div id="notification" class="notification">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              fill="white"
+              class="bi bi-check-circle-fill"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z"
+              />
+            </svg>
+            <span id="notification-message"></span>
+          </div>
+        </header>
+        <div class="main-content">
+          <div class="center-content">
+            <section class="actions">
+              <a
+                href="../anamnese/anamnese-forms/filtrar-anamnese/filtrar-anamnese.html"
+                ><button id="openFilterModalBtn" class="filter-btn">
+                  <img
+                    src="../../assets/icons/search.webp "
+                    alt="filter"
+                    style="margin-right: 20px"
+                  />
+                  Pesquisar Ficha Por Cliente
+                </button></a
+              >
+              <div class="right-actions">
+                <button
+                  class="planilha-btn"
+                  onclick="showForm2(), getDesativadas()"
+                >
+                  <img
+                    src="../../assets/icons/desativar.webp"
+                    alt="spreadsheet"
+                  />Perguntas Desativadas
+                </button>
+                <button class="criar-btn" onclick="showForm()">
+                  <img src="../../assets/icons/createNew.png" alt="createNew" />
+                  <span>Criar Pergunta</span>
+                </button>
+              </div>
+            </section>
+          </div>
         </div>
 
-        <div id="notification" class="notification">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill"
-            viewBox="0 0 16 16">
-            <path
-              d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
-          </svg>
-          <span id="notification-message"></span>
-        </div>
-      </header>
-      <div class="main-content">
-        <div class="center-content">
-          <section class="actions">
-            <a href="../anamnese/anamnese-forms/filtrar-anamnese/filtrar-anamnese.html"><button id="openFilterModalBtn"
-                class="filter-btn">
-                <img src="../../assets/icons/search.webp " alt="filter" />
-                Pesquisar Ficha Por Cliente
-              </button></a>
-            <div class="right-actions">
-              <button class="planilha-btn" onclick="showForm2(), getDesativadas()">
-                <img src="../../assets/icons/desativar.webp" alt="spreadsheet" />Perguntas Desativadas
-              </button>
-              <button class="criar-btn" onclick="showForm()">
-                <img src="../../assets/icons/createNew.png" alt="createNew" />
-                <span>Criar Pergunta</span>
-              </button>
-            </div>
-
-          </section>
-        </div>
-      </div>
-
-      <div class="main-content">
-        <div class="center-content">
-
-
-
-          <section class="form-section">
-            <div class="form-title">
-              <h2>Dados dos Agendamentos</h2>
-            </div>
-
-            <div class="direcionamento">
-              <span><img src="../../assets/icons/alert.png" alt="createNew" />
-
-                <div>
-                  Em caso de respostas <strong>negativas</strong> , não informe nenhum dado e caso queira adicionar
-                  <strong> mais de uma informação para cada pergunta </strong>,
-                  clique no <strong>“+” </strong> para e um novo campo será aberto para você preencher.</a>
-                </div>
-            </div>
-            <div class="content-box">
-              <div class="content">
-                <div class="form-group form-input">
-                  <label for="descricao" id="pergunta1Label"></label>
-                  <div class="input-content">
-                    <input type="text" id="idResposta1" name="resposta1" />
-
-
-                    <button id="openStatusModalBtn2" class="edit">
-                      <img src="../../assets/icons/pen.png" alt="createNew" />
-                    </button>
-                    <button id="openStatusModalBtn3" class="delete" onclick="showForm3(), deletarPergunta(1)">
-                      <img src="../../assets/icons/excluir.png" alt="trashCan">
-                    </button>
-                  </div>
-
-                </div>
-                <div class="form-group form-input">
-                  
-                    <label for="descricao" id="pergunta2Label"></label>
-                  
-                  <div class="input-content">
-                    <input type="text" id="idResposta2" name="resposta2"/>
-
-                    <button id="openStatusModalBtn2" class="edit">
-                      <img src="../../assets/icons/pen.png" alt="createNew" />
-                    </button>
-                    <button id="openStatusModalBtn3" class="delete" onclick="showForm3(), deletarPergunta(2)">
-                      <img src="../../assets/icons/excluir.png" alt="trashCan">
-                    </button>
-                  </div>
-
-                </div>
+        <div class="main-content">
+          <div class="center-content">
+            <section class="form-section">
+              <div class="form-title">
+                <h2>Perguntas Ativas</h2>
               </div>
 
+              <div class="direcionamento"></div>
 
-              <div class="content">
-                <div class="form-group form-input">
-                  <label for="descricao" id="pergunta3Label"></label>
-
-                  <div class="input-content">
-                    <input type="text" id="idResposta3" name="resposta3" />
-
-                    <button id="openStatusModalBtn2" class="edit">
-                      <img src="../../assets/icons/pen.png" alt="createNew" />
-                    </button>
-                    <button id="openStatusModalBtn3" class="delete" onclick="showForm3(), deletarPergunta(3)">
-                      <img src="../../assets/icons/excluir.png" alt="trashCan">
-                    </button>
-                  </div>
-                </div>
-
-                <div class="form-group form-input">
-                  <label for="descricao" id="pergunta4Label"></label>
-
-                  <div class="input-content">
-                    <input type="text" id="idResposta4" name="resposta4" />
-
-                    <button id="openStatusModalBtn2" class="edit">
-                      <img src="../../assets/icons/pen.png" alt="createNew" />
-                    </button>
-                    <button id="openStatusModalBtn3" class="delete" onclick="showForm3(), deletarPergunta(4)">
-                      <img src="../../assets/icons/excluir.png" alt="trashCan">
-                    </button>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-            </form>
-          </section>
-          </section>
+              <div class="content-box"></div>
+            </section>
+          </div>
         </div>
+
         <div id="questionModal" class="modal">
           <div class="modal-content">
             <div class="divTopoModal">
               <h3>Criar Pergunta</h3>
+              <br />
             </div>
             <div>
-              <label for="descricao">Descrição:</label>
-              <input type="text" id="descricaoPergunta" name="descricaoPergunta" placeholder="Descrição da Pergunta"><br>
+              <label for="descricao">Pergunta: </label>
+              <input
+                type="text"
+                id="descricaoPergunta"
+                name="descricaoPergunta"
+                placeholder="Digite a pergunta"
+              /><br /><br />
+              <label for="tipo">Tipo: </label>
+              <select
+                id="tipoPergunta"
+                name="tipoPergunta"
+                onchange="mostrarExemplo()"
+              >
+                <option value="Input">Texto</option>
+                <option value="Select">Seleção</option>
+                <option value="Check Box">Caixa de Seleção</option></select
+              ><br /><br />
+              <div id="exemploTipoPergunta" class="exemplo"></div>
+              <br />
             </div>
             <div>
-              <button id="save-button" class="btn btn-save" onclick="criarPergunta(), closeModal()">Salvar</button>
-              <button onclick="closeModal()" class="btn btn-no">Cancelar</button>
+              <button
+                id="save-button"
+                class="btn btn-save"
+                onclick="criarPergunta(), closeModal()"
+              >
+                Salvar
+              </button>
+              <button onclick="closeModal()" class="btn btn-no">
+                Cancelar
+              </button>
             </div>
           </div>
         </div>
 
         <div id="modalDesativadas" class="modal">
-          <div class="modal-content">
+          <div class="modal-content" id="context-desativado" style="width: 50%">
             <div class="divTopoModal">
               <h3>Perguntas Desativadas:</h3>
+              <br />
             </div>
-            <div>
-             <table>
-              <thead>
-              <tr>
-                <td>
-                  <b>Descrição</b>
-                </td>
-              </tr>
-              <tr>
-                <td id="descricaoDesativada" name="descricaoDesativada"></td>
-              </tr>
-            </thead>
-            <tbody id="tabelaDesativadas" name="tabelaDesativadas">
-
-            </tbody>
-             </table>
+            <div style="display: flex; justify-content: center">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Pergunta</th>
+                    <th>Tipo</th>
+                    <th>Ação</th>
+                  </tr>
+                </thead>
+                <tbody id="tabelaDesativadas"></tbody>
+                <!-- Corpo da tabela onde os dados serão inseridos -->
+              </table>
             </div>
             <div>
               <button onclick="closeModal2()" class="btn btn-no">Fechar</button>
@@ -251,22 +233,98 @@
         <div id="modalDeletar" class="modal">
           <div class="modal-content">
             <div class="divTopoModal">
-              <h3>Deseja deletar a pergunta?</h3>
+              <h3>Deseja desativar a pergunta?</h3>
+              <br />
+              <p id="perguntaTexto"></p>
+              <p id="perguntaTipo"></p>
             </div>
             <div>
-              <button id="delete-button" class="btn btn-save" onclick="deletarPergunta(), closeModal3()">Sim</button>
+              <button
+                id="delete-button"
+                class="btn btn-save"
+                onclick="desativarPergunta(perguntaIdGlobal), closeModal3()"
+              >
+                Sim
+              </button>
               <button onclick="closeModal3()" class="btn btn-no">Não</button>
             </div>
           </div>
         </div>
 
-
-
-        <div>
-          <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-          <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+        <!-- Modal para Editar Pergunta -->
+        <!-- Modal para Editar Pergunta -->
+        <div id="editQuestionModal" class="modal">
+          <div class="modal-content">
+            <div class="divTopoModal">
+              <h3>Editar Pergunta</h3>
+              <br />
+            </div>
+            <div>
+              <label for="editDescricaoPergunta">Pergunta: </label>
+              <input
+                type="text"
+                id="editDescricaoPergunta"
+                name="editDescricaoPergunta"
+              /><br /><br />
+              <label for="editTipoPergunta">Tipo: </label>
+              <select
+                id="editTipoPergunta"
+                name="editTipoPergunta"
+                onchange="mostrarExemploEditar()"
+              >
+                <option value="Input">Texto</option>
+                <option value="Select">Seleção</option>
+                <option value="Check Box">Caixa de Seleção</option></select
+              ><br /><br />
+              <div id="exemploTipoPerguntaEditar" class="exemplo"></div>
+              <br />
+            </div>
+            <div>
+              <button
+                id="edit-save-button"
+                class="btn btn-save"
+                onclick="atualizarPergunta()"
+              >
+                Salvar
+              </button>
+              <button onclick="closeEditModal()" class="btn btn-no">
+                Cancelar
+              </button>
+            </div>
+          </div>
         </div>
-    </main>
-</body>
+        <div id="modalExcluir" class="modal">
+          <div class="modal-content">
+            <div class="divTopoModal">
+              <h3>Deseja excluir a pergunta?</h3>
+              <br />
+              <p id="perguntaExcluirTexto"></p>
+              <p id="perguntaExcluirTipo"></p>
+            </div>
+            <div>
+              <button
+                id="confirm-excluir-button"
+                class="btn btn-save"
+                onclick="confirmarExcluirPergunta()"
+              >
+                Sim
+              </button>
+              <button onclick="closeExcluirModal()" class="btn btn-no">
+                Não
+              </button>
+            </div>
+          </div>
+        </div>
 
+        <script
+          type="module"
+          src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+        ></script>
+        <script
+          nomodule
+          src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+        ></script>
+      </main>
+    </div>
+  </body>
 </html>
