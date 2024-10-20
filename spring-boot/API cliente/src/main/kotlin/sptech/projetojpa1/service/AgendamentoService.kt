@@ -20,33 +20,30 @@ class AgendamentoService(
     private val statusRepository: StatusRepository,
     private val empresaRepository: EmpresaRepository
 ) {
-    private val filaAgendamentos: Queue<AgendamentoRequestDTO> = LinkedList()
-
     fun listarTodosAgendamentos(): List<AgendamentoResponseDTO> {
         val agendamentos = agendamentoRepository.findAll()
 
-        // Filtra os agendamentos para excluir aqueles com tipoAgendamento igual a "Bloqueio"
-        val agendamentosFiltrados = agendamentos.filter { it.tipoAgendamento != "Bloqueio" }
-
-        return agendamentosFiltrados.map { agendamento ->
+        return agendamentos.map { agendamento ->
             val usuario = agendamento.usuario
             AgendamentoResponseDTO(
-                idAgendamento = agendamento.idAgendamento,
                 dataHorario = agendamento.dataHorario,
+                idAgendamento = agendamento.idAgendamento,
                 tipoAgendamento = agendamento.tipoAgendamento,
                 usuario = usuario.nome,
                 usuarioTelefone = usuario.telefone?.toString(),
                 tempoAgendar = agendamento.tempoAgendar,
                 usuarioCpf = usuario.cpf ?: "CPF não disponível",
                 usuarioId = usuario.codigo,
-                procedimento = agendamento.procedimento.tipo,
-                especificacao = agendamento.especificacao.especificacao,
-                fkEspecificacao = agendamento.especificacao.idEspecificacaoProcedimento,
-                fkProcedimento = agendamento.procedimento.idProcedimento,
+                procedimento = agendamento.procedimento?.tipo,
+                especificacao = agendamento.especificacao?.especificacao,
+                fkEspecificacao = agendamento.especificacao?.idEspecificacaoProcedimento,
+                fkProcedimento = agendamento.procedimento?.idProcedimento,
                 statusAgendamento = agendamento.statusAgendamento
             )
         }
     }
+
+    private val filaAgendamentos: Queue<AgendamentoRequestDTO> = LinkedList()
 
     fun obterAgendamentosPorStatus(): Map<String, Int> {
         // Consulta o repositório e obtém os dados
@@ -290,11 +287,11 @@ class AgendamentoService(
             tipoAgendamento = agendamento.tipoAgendamento,
             usuario = agendamento.usuario.nome,
             tempoAgendar = agendamento.tempoAgendar,
-            procedimento = agendamento.procedimento.tipo,
+            procedimento = agendamento.procedimento?.tipo,
             usuarioId = agendamento.usuario.codigo,
-            especificacao = agendamento.especificacao.especificacao,
-            fkEspecificacao = agendamento.especificacao.idEspecificacaoProcedimento,
-            fkProcedimento = agendamento.procedimento.idProcedimento,
+            especificacao = agendamento.especificacao?.especificacao,
+            fkEspecificacao = agendamento.especificacao?.idEspecificacaoProcedimento,
+            fkProcedimento = agendamento.procedimento?.idProcedimento,
             statusAgendamento = agendamento.statusAgendamento
         )
     }
@@ -323,13 +320,12 @@ class AgendamentoService(
             dataHorario = updatedAgendamento.dataHorario,
             tipoAgendamento = updatedAgendamento.tipoAgendamento,
             usuario = agendamento.usuario.nome,
-            procedimento = agendamento.procedimento.tipo,
-            especificacao = agendamento.especificacao.especificacao,
-            tempoAgendar = agendamento.tempoAgendar,
+            procedimento = agendamento.procedimento?.tipo,
+            especificacao = agendamento.especificacao?.especificacao,
             statusAgendamento = agendamento.statusAgendamento,
             usuarioId = agendamento.usuario.codigo,
-            fkEspecificacao = agendamento.especificacao.idEspecificacaoProcedimento,
-            fkProcedimento = agendamento.procedimento.idProcedimento
+            fkEspecificacao = agendamento.especificacao?.idEspecificacaoProcedimento,
+            fkProcedimento = agendamento.procedimento?.idProcedimento
         )
     }
 
@@ -349,13 +345,12 @@ class AgendamentoService(
             dataHorario = updatedAgendamento.dataHorario,
             tipoAgendamento = updatedAgendamento.tipoAgendamento,
             usuario = agendamento.usuario.nome,
-            tempoAgendar = agendamento.tempoAgendar,
-            procedimento = agendamento.procedimento.tipo,
-            especificacao = agendamento.especificacao.especificacao,
+            procedimento = agendamento.procedimento?.tipo,
+            especificacao = agendamento.especificacao?.especificacao,
             statusAgendamento = agendamento.statusAgendamento,
             usuarioId = agendamento.usuario.codigo,
-            fkEspecificacao = agendamento.especificacao.idEspecificacaoProcedimento,
-            fkProcedimento = agendamento.procedimento.idProcedimento
+            fkEspecificacao = agendamento.especificacao?.idEspecificacaoProcedimento,
+            fkProcedimento = agendamento.procedimento?.idProcedimento
         )
     }
 
@@ -379,8 +374,8 @@ class AgendamentoService(
                     (dataInicio == null || agendamento.dataHorario?.toLocalDate() != null && agendamento.dataHorario!!.toLocalDate() >= dataInicio) &&
                     (dataFim == null || agendamento.dataHorario?.toLocalDate() != null && agendamento.dataHorario!!.toLocalDate() <= dataFim) &&
                     (clienteId == null || agendamento.usuario.codigo == clienteId) &&
-                    (procedimentoId == null || agendamento.procedimento.idProcedimento == procedimentoId) &&
-                    (especificacaoId == null || agendamento.especificacao.idEspecificacaoProcedimento == especificacaoId)
+                    (procedimentoId == null || agendamento.procedimento?.idProcedimento == procedimentoId) &&
+                    (especificacaoId == null || agendamento.especificacao?.idEspecificacaoProcedimento == especificacaoId)
         }
 
         return agendamentos.map { agendamento ->
@@ -392,13 +387,12 @@ class AgendamentoService(
                 usuario = usuario.nome,
                 usuarioTelefone = usuario.telefone?.toString(),
                 usuarioCpf = usuario.cpf ?: "CPF não disponível",
-                tempoAgendar = agendamento.tempoAgendar,
-                procedimento = agendamento.procedimento.tipo,
-                especificacao = agendamento.especificacao.especificacao,
+                procedimento = agendamento.procedimento?.tipo,
+                especificacao = agendamento.especificacao?.especificacao,
                 statusAgendamento = agendamento.statusAgendamento,
                 usuarioId = agendamento.usuario.codigo,
-                fkEspecificacao = agendamento.especificacao.idEspecificacaoProcedimento,
-                fkProcedimento = agendamento.procedimento.idProcedimento
+                fkEspecificacao = agendamento.especificacao?.idEspecificacaoProcedimento,
+                fkProcedimento = agendamento.procedimento?.idProcedimento
             )
         }
     }
@@ -418,12 +412,9 @@ class AgendamentoService(
                 tipoAgendamento = "Bloqueio",  // Tipo especial para identificar o bloqueio
                 usuario = usuarioRepository.findById(usuarioId)
                     .orElseThrow { IllegalArgumentException("Usuário não encontrado") },
-                tempoAgendar = null,
-                procedimento = procedimentoRepository.findById(1)  // Um ID fixo para o "procedimento bloqueio"
-                    .orElseThrow { IllegalArgumentException("Procedimento não encontrado") },
-                especificacao = especificacaoRepository.findById(1)  // Um ID fixo para a "especificação bloqueio"
-                    .orElseThrow { IllegalArgumentException("Especificação não encontrada") },
-                statusAgendamento = statusRepository.findById(1)  // Um ID fixo para "status bloqueado"
+                procedimento = null,  // Permitir valor nulo para procedimento
+                especificacao = null,  // Permitir valor nulo para especificação
+                statusAgendamento = statusRepository.findById(2)  // Um ID fixo para "status bloqueado"
                     .orElseThrow { IllegalArgumentException("Status não encontrado") }
             )
 
@@ -431,6 +422,40 @@ class AgendamentoService(
             horarioAtual = horarioAtual.plusMinutes(30)  // Incrementa de 30 em 30 minutos
         }
     }
+
+    fun desbloquearHorarios(dia: LocalDate, horaInicio: LocalTime, horaFim: LocalTime) {
+        val horarioInicio = dia.atTime(horaInicio)
+        val horarioFim = dia.atTime(horaFim)
+
+        val agendamentosBloqueados = agendamentoRepository.findByDataHorarioBetween(horarioInicio, horarioFim)
+            .filter { it.tipoAgendamento == "Bloqueio" }
+
+        if (agendamentosBloqueados.isNotEmpty()) {
+            agendamentoRepository.deleteAll(agendamentosBloqueados)
+            println("Horários desbloqueados com sucesso!")
+        } else {
+            println("Nenhum horário bloqueado encontrado no intervalo especificado.")
+        }
+    }
+
+    fun listarHorariosBloqueados(): List<AgendamentoResponseDTO> {
+        val agendamentosBloqueados = agendamentoRepository.findByTipoAgendamento("Bloqueio")
+
+        return agendamentosBloqueados.map { agendamento ->
+            AgendamentoResponseDTO(
+                idAgendamento = agendamento.idAgendamento,
+                dataHorario = agendamento.dataHorario,
+                tipoAgendamento = agendamento.tipoAgendamento,
+                usuario = agendamento.usuario.nome,
+                tempoAgendar = agendamento.tempoAgendar,
+                procedimento = agendamento.procedimento?.tipo,
+                especificacao = agendamento.especificacao?.especificacao,
+                statusAgendamento = agendamento.statusAgendamento,
+                usuarioId = agendamento.usuario.codigo
+            )
+        }
+    }
+
 
     fun countUsuariosWithStatusZero(): Int {
         return usuarioRepository.countByStatus(false)
