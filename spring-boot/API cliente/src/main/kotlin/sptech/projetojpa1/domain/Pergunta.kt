@@ -17,8 +17,8 @@ class Pergunta(
     var pergunta: String,
 
     @Column(name = "pergunta_ativa")
-    var ativa: Boolean = false,
+    var ativa: Boolean? = null,
 
-    @Column(name = "pergunta_tipo ")
+    @Column(name = "pergunta_tipo")
     var tipo:String? = null
 )

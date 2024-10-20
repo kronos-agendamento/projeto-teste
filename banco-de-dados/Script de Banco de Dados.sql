@@ -299,19 +299,47 @@ VALUES
 ('Tem alguma doença crônica que deveríamos saber?', TRUE, 'Input'),
 ('Está utilizando algum tratamento dermatológico?', TRUE, 'Check Box');
 
-
+-- Inserção de respostas para o usuário 2 (Ana Paula)
 INSERT INTO resposta (resposta, fk_pergunta, fk_ficha_anamnese, fk_usuario)
 VALUES 
-('Não', 1, 1, 2),
-('Sim, a produtos de amônia', 2, 1, 2),
-('Não', 3, 2, 3),
-('Sim, estou amamentando', 4, 2, 3),
-('Sim, tenho dermatite', 5, 3, 4),
-('Sim, já fiz micropigmentação', 6, 3, 4),
-('Não', 7, 4, 5),
-('Sim, fiz alongamento de cílios', 8, 4, 5),
-('Não', 9, 5, 6),
-('Sim, uso produtos dermatológicos', 10, 5, 6);
+('Não', 1, 2, 2),
+('Não, nunca tive problemas com procedimentos.', 2, 2, 2),
+('Sim, tomo anti-inflamatórios regularmente.', 3, 2, 2),
+('Não, não estou grávida nem amamentando.', 4, 2, 2),
+('Não, minha pele está saudável.', 5, 2, 2),
+('Não, nunca fiz micropigmentação.', 6, 2, 2),
+('Sim, uso óleo de rícino nos cílios.', 7, 2, 2),
+('Não, não fiz nenhum procedimento estético nos últimos meses.', 8, 2, 2),
+('Não, não tenho nenhuma doença crônica.', 9, 2, 2),
+('Sim, estou em tratamento com ácido retinoico.', 10, 2, 2);
+
+-- Inserção de respostas para o usuário 3 (Carlos Eduardo)
+INSERT INTO resposta (resposta, fk_pergunta, fk_ficha_anamnese, fk_usuario)
+VALUES 
+('Sim, sou alérgico a látex.', 1, 3, 3),
+('Sim, já tive uma reação leve ao fazer extensão de cílios.', 2, 3, 3),
+('Sim, uso medicamento para hipertensão.', 3, 3, 3),
+('Não, minha parceira está grávida, mas eu não.', 4, 3, 3),
+('Sim, tenho psoríase leve.', 5, 3, 3),
+('Não, nunca fiz micropigmentação.', 6, 3, 3),
+('Sim, uso máscara específica para cílios diariamente.', 7, 3, 3),
+('Sim, fiz um tratamento estético no rosto há 3 meses.', 8, 3, 3),
+('Não, não tenho nenhuma doença crônica.', 9, 3, 3),
+('Não, não estou em nenhum tratamento dermatológico.', 10, 3, 3);
+
+-- Inserção de respostas para o usuário 4 (Juliana Costa)
+INSERT INTO resposta (resposta, fk_pergunta, fk_ficha_anamnese, fk_usuario)
+VALUES 
+('Não, não tenho alergia a nenhum produto.', 1, 4, 4),
+('Sim, já tive vermelhidão após um peeling químico.', 2, 4, 4),
+('Sim, estou tomando antibiótico para infecção.', 3, 4, 4),
+('Não, não estou grávida nem amamentando.', 4, 4, 4),
+('Sim, tenho acne ocasional.', 5, 4, 4),
+('Sim, fiz micropigmentação de sobrancelha há 2 anos.', 6, 4, 4),
+('Sim, uso soro fisiológico nos cílios.', 7, 4, 4),
+('Sim, fiz um tratamento de laser no rosto há 4 meses.', 8, 4, 4),
+('Sim, tenho hipotireoidismo.', 9, 4, 4),
+('Não, não estou em tratamento dermatológico no momento.', 10, 4, 4);
 
 INSERT INTO status (nome, cor, motivo)
 VALUES 
@@ -477,5 +505,12 @@ FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE;
 ALTER TABLE usuario 
 ADD CONSTRAINT fk_ficha_anamnese_usuario 
 FOREIGN KEY (fk_ficha_anamnese) REFERENCES ficha_anamnese(id_ficha) ON DELETE CASCADE;
+
+ALTER TABLE resposta 
+DROP FOREIGN KEY resposta_ibfk_1;
+
+ALTER TABLE resposta
+ADD CONSTRAINT fk_resposta_pergunta
+FOREIGN KEY (fk_pergunta) REFERENCES pergunta(id_pergunta) ON DELETE CASCADE;
 
 SELECT * FROM usuario;	

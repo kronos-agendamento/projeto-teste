@@ -68,13 +68,8 @@ class PerguntaController(
         ]
     )
     @GetMapping("/ativas")
-    fun listarPerguntasAtivas(@RequestParam ativa: Boolean): ResponseEntity<List<PerguntaResponse>> {
-        val perguntas = perguntaService.listarPerguntasAtivas(ativa)
-        return if (perguntas.isEmpty()) {
-            ResponseEntity.status(204).build()
-        } else {
-            ResponseEntity.ok(perguntas)
-        }
+    fun listarPerguntasAtivas(@RequestParam(defaultValue = "true") ativa: Boolean): List<PerguntaResponse> {
+        return perguntaService.listarPerguntasAtivas(ativa)
     }
 
     @Operation(summary = "Listar perguntas desativadas", description = "Lista todas as perguntas desativadas.")
@@ -133,11 +128,16 @@ class PerguntaController(
     ): ResponseEntity<PerguntaResponse> {
         return try {
             val perguntaAtualizada = perguntaService.atualizarPergunta(id, request)
+
+            // Verificar se o campo 'tipo' está sendo atualizado corretamente
+            println("Tipo de pergunta atual: ${request.tipo}")
+
             ResponseEntity.ok(perguntaAtualizada)
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
         }
     }
+
 
     @Operation(summary = "Excluir pergunta", description = "Exclui uma pergunta existente com base no ID fornecido.")
     @ApiResponses(
@@ -157,30 +157,37 @@ class PerguntaController(
         }
     }
 
-
-@Operation(
-    summary = "Listar as 4 primeiras perguntas ativas",
-    description = "Retorna as primeiras 4 perguntas ativas no sistema."
-)
-
-@ApiResponses(
-    value = [
-        ApiResponse(responseCode = "200", description = "Operação bem sucedida."),
-        ApiResponse(responseCode = "204", description = "Nenhuma pergunta encontrada."),
-        ApiResponse(responseCode = "500", description = "Erro interno de servidor."),
-        ApiResponse(responseCode = "400", description = "Má requisição.")
-    ]
-)
-@GetMapping("/ativas/primeiras")
-fun listarPrimeirasPerguntasAtivas():ResponseEntity<List<PerguntaResponse>>{
-    val primeirasPerguntas = perguntaService.listarPrimeirasPerguntasAtivas()
-    return if(primeirasPerguntas.isEmpty()){
-        ResponseEntity.status(204).build()
-    } else{
-        ResponseEntity.ok(primeirasPerguntas)
+    @Operation(
+        summary = "Desativa uma pergunta pelo ID",
+        description = "Marca uma pergunta como inativa atualizando o campo ativa para false."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Pergunta desativada com sucesso"),
+            ApiResponse(responseCode = "404", description = "Pergunta não encontrada"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+        ]
+    )
+    @PatchMapping("/desativar/{id}")
+    fun desativarPergunta(@PathVariable id: Int): ResponseEntity<PerguntaResponse> {
+        val perguntaDesativada = perguntaService.desativarPergunta(id)
+        return ResponseEntity.ok(perguntaDesativada)
     }
 
-
-}
-
+    @Operation(
+        summary = "Ativa uma pergunta pelo ID",
+        description = "Marca uma pergunta como ativa atualizando o campo ativa para true."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Pergunta ativada com sucesso"),
+            ApiResponse(responseCode = "404", description = "Pergunta não encontrada"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+        ]
+    )
+    @PatchMapping("/ativar/{id}")
+    fun ativarPergunta(@PathVariable id: Int): ResponseEntity<PerguntaResponse> {
+        val perguntaAtivada = perguntaService.ativarPergunta(id)
+        return ResponseEntity.ok(perguntaAtivada)
+    }
 }

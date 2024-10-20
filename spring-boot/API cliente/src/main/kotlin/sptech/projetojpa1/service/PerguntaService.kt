@@ -6,7 +6,6 @@ import sptech.projetojpa1.dto.pergunta.PerguntaCreateRequest
 import sptech.projetojpa1.dto.pergunta.PerguntaResponse
 import sptech.projetojpa1.dto.pergunta.PerguntaUpdateRequest
 import sptech.projetojpa1.repository.PerguntaRepository
-import java.util.NoSuchElementException
 
 @Service
 class PerguntaService(
@@ -49,20 +48,6 @@ class PerguntaService(
         }
     }
 
-    fun listarPrimeirasPerguntasAtivas():List<PerguntaResponse>{
-        val perguntasAtivas = perguntaRepository.findTop4ByAtivaTrue()
-
-        return perguntasAtivas.map { pergunta ->
-            PerguntaResponse(
-                idPergunta = pergunta.idPergunta,
-                pergunta = pergunta.pergunta,
-                ativa = pergunta.ativa
-            )
-
-
-        }
-    }
-
     fun listarPerguntasDesativadas(): List<Pergunta> {
         return perguntaRepository.findByAtivaFalse()
     }
@@ -84,6 +69,7 @@ class PerguntaService(
 
         pergunta.pergunta = request.pergunta
         pergunta.ativa = request.ativa
+        pergunta.tipo = request.tipo
 
         val perguntaAtualizada = perguntaRepository.save(pergunta)
         return PerguntaResponse(
@@ -99,5 +85,45 @@ class PerguntaService(
             throw NoSuchElementException("Pergunta com id $id não encontrada")
         }
         perguntaRepository.deleteById(id)
+    }
+
+    fun desativarPergunta(id: Int): PerguntaResponse {
+        // Busca a pergunta pelo id, caso não encontre lança uma exceção
+        val pergunta = perguntaRepository.findById(id)
+            .orElseThrow { NoSuchElementException("Pergunta com id $id não encontrada") }
+
+        // Atualiza o campo ativa para false
+        pergunta.ativa = false
+
+        // Salva a pergunta atualizada no banco de dados
+        val perguntaDesativada = perguntaRepository.save(pergunta)
+
+        // Retorna a pergunta desativada como resposta
+        return PerguntaResponse(
+            idPergunta = perguntaDesativada.idPergunta,
+            pergunta = perguntaDesativada.pergunta,
+            ativa = perguntaDesativada.ativa,
+            tipo = perguntaDesativada.tipo
+        )
+    }
+
+    fun ativarPergunta(id: Int): PerguntaResponse {
+        // Busca a pergunta pelo id, caso não encontre lança uma exceção
+        val pergunta = perguntaRepository.findById(id)
+            .orElseThrow { NoSuchElementException("Pergunta com id $id não encontrada") }
+
+        // Atualiza o campo ativa para true
+        pergunta.ativa = true
+
+        // Salva a pergunta atualizada no banco de dados
+        val perguntaAtivada = perguntaRepository.save(pergunta)
+
+        // Retorna a pergunta ativada como resposta
+        return PerguntaResponse(
+            idPergunta = perguntaAtivada.idPergunta,
+            pergunta = perguntaAtivada.pergunta,
+            ativa = perguntaAtivada.ativa,
+            tipo = perguntaAtivada.tipo
+        )
     }
 }
