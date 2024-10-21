@@ -262,8 +262,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (usuarioResponse.ok) {
           console.log("Usuário cadastrado com sucesso.");
-          localStorage.setItem("nome", nome);
-          localStorage.setItem("email", email);
 
           showNotification(
             "Cadastro realizado com sucesso!",
@@ -279,4 +277,15 @@ document.addEventListener("DOMContentLoaded", function () {
         showNotification(error.message, true);
       }
     });
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  const nome = localStorage.getItem("nome");
+  const instagram = localStorage.getItem("instagram");
+
+  if (nome && instagram) {
+      document.getElementById("userName").textContent = nome;
+      document.getElementById("userInsta").textContent = instagram;
+  }
 });

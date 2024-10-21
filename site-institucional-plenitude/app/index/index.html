@@ -18,16 +18,46 @@
 
   <div class="corpo">
     <div class="navigation">
-      <div class="perfil">
-        <div class="imagem-perfil">
-          <img src="../assets/Foto de Perfil.png" />
+      <li class="list" style="
+      width: 30px;
+      height: 30px;
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      margin-top: 5vh;
+    ">
+        <div class="imagem-perfil" style="
+        width: 20vh;
+        height: 20vh;
+        border-radius: 300px;
+        display: flex;
+        justify-content: center;
+      ">
+          <img src="../index/Foto de Perfil.png" style="
+          width: 53vh;
+          height: 23vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        " />
         </div>
-        <li id="userName"></li>
-        <li id="userInsta"></li>
-      </div>
-      <ul>
+      </li>
+      <li id="userName" style="
+      margin-top: 20vh;
+      list-style: none;
+      color: white;
+      font-weight: 600;
+    "></li>
+      <li id="userInsta" style="
+      list-style: none;
+      color: white;
+      font-weight: 200;
+      font-size: 12px;
+    "></li>
+
+      <ul style="margin-top: 3%; position: absolute">
         <li class="list active">
-          <a href="index.html">
+          <a href="../index/index.html">
             <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
             <span class="title">Início </span>
           </a>
@@ -80,7 +110,7 @@
 
     <main>
 
-      <header>
+      <header style="height: 14vh; width: 151.5vh; margin-left: 4.0%">
         <div id="greeting1">
           <h1>
             <span id="greeting">Bom dia</span>
@@ -134,7 +164,7 @@
           </section>
 
           <div class="conteiner">
-            <h3>Procedimentos Cadastrados</h3>
+            <h3 style=" margin-left: 1.2rem;">Procedimentos Cadastrados</h3>
             <table id="procedimentos-cadastrados" class="procedures-table">
               <thead>
                 <tr>
@@ -153,7 +183,7 @@
           </div>
           <div class="conteiner">
             <table id="clientes-frequentes" class="procedures-table">
-              <h3 id="titulo">Clientes Frequentes</h3>
+              <h3 style=" margin-left: 1.2rem;" id="titulo">Clientes Frequentes</h3>
               <thead>
                 <tr>
                   <th>Nome</th>
@@ -171,7 +201,7 @@
           </div>
 
           <div class="conteiner">
-            <h3>Formulário de contato do site</h3>
+            <h3 style=" margin-left: 1.2rem;">Formulário de contato do site</h3>
             <table id="leads" class="procedures-table">
               <thead>
                 <tr>

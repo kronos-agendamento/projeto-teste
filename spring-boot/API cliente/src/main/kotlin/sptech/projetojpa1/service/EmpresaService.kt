@@ -65,8 +65,22 @@ class EmpresaService(
         dto.nome?.let { empresa.nome = it }
         dto.telefone?.let { empresa.telefone = it }
         dto.cnpj?.let { empresa.cnpj = it }
+        dto.endereco?.let {
+            empresa.endereco.logradouro = it.logradouro ?: empresa.endereco.logradouro
+            empresa.endereco.cep = it.cep ?: empresa.endereco.cep
+            empresa.endereco.bairro = it.bairro
+            empresa.endereco.cidade= it.cidade
+            empresa.endereco.complemento=it.complemento
+            empresa.endereco.numero= it.numero
+            empresa.endereco.estado=it.estado
+        }
 
-        // Verifica se o endereço não é nulo antes de tentar atualizar
+        dto.horarioFuncionamento?.let {
+            empresa.horarioFuncionamento.diaInicio = it.diaInicio
+            empresa.horarioFuncionamento.diaFim= it.diaFim
+            empresa.horarioFuncionamento.horarioAbertura= it.horarioAbertura
+            empresa.horarioFuncionamento.horarioFechamento= it.horarioFechamento
+        }
 
         empresaRepository.save(empresa)
         return empresa.toResponseDTO()

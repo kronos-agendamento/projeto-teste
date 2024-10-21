@@ -126,6 +126,7 @@ class UsuarioService(
             telefone = dto.telefone ?: telefone
             genero = dto.genero ?: genero
             indicacao = dto.indicacao ?: indicacao
+            senha = dto.senha?: senha
         }
 
         // Salvar o usuário atualizado
@@ -206,6 +207,7 @@ class UsuarioService(
             UsuarioResponseDTO(
                 idUsuario = usuario.codigo,
                 nome = usuario.nome,
+                email = usuario.email,
                 instagram = usuario.instagram,
                 telefone = usuario.telefone,
                 cpf = usuario.cpf,

@@ -104,11 +104,11 @@ nav ul li {
       --------------------------------------------------------------*/
 
 .navigation {
-    height: auto;
+    height: 78rem;
     background: #d2135d;
-    width: 19vw;
-    top: 2vh;
-    margin-left: 3vw;
+    width: 263px;
+    top: 22px;
+    margin-left: 2.6vw;
     border-radius: 3vh;
     margin-bottom: 2vh;
     box-shadow: 10px 0 0 #ffffff;
@@ -179,29 +179,32 @@ header {
     padding: 3vh;
     border-radius: 3vh;
     margin-bottom: 1rem;
-    margin-top: 1rem;
-    margin-left: 1.5rem;
+    margin-top: 24px;
+    margin-left: 2.3rem;
     margin-right: 0.8rem;
 }
 
 header h1 {
-    margin: 1vh;
+    margin: 0vh 0vh 0vh 2vh;
     font-size: 3vh;
+    margin-left: 1vh;
 }
 
 header p {
-    margin: 1vh;
+    margin: 0vh 0vh 0vh 2vh;
     font-size: 2vh;
 }
 
 
 #greeting1 {
-    font-size: 3.5vh;
+    font-size: 3vh;
     font-weight: bold;
+    margin: 0vh 0vh 0vh 1.3vh;
 }
 
 #greeting2 {
-    font-size: 2.5vh;
+    margin: 0vh 0vh 0vh 1.3vh;
+    font-size: 2vh;
 }
 
 /*--------------------------------------------------------------
@@ -456,11 +459,12 @@ header p {
     display: flex;
     flex-direction: row;
     color: black;
-    margin-left: 35px;
+    margin-left: 43px;
     margin-right: 20px;
     font-weight: 550;
     font-size: smaller;
-    width: 400px
+    margin-top: 2%;
+    width: 360px
 }
 
 .card p {
@@ -482,13 +486,14 @@ header p {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    padding-left: 35px;
+    padding-left: 20px;
     margin-top: 15px;
     align-items: center;
 }
 
 .card-content-2 h1 {
-    font-size: x-large;
+    font-size: 18px;
+    width: 152px;
     font-weight: 1400;
 }
 
@@ -501,15 +506,50 @@ header p {
     border-radius: 15px;
     padding: 5px;
     margin-right: 23px;
-    margin-left: 0px;
-    font-size: 14px;
+    margin-left: 15px;
+    font-size: 12px;
     color: rgb(0, 0, 0);
     cursor: pointer;
     outline: none;
     height: fit-content;
-    width: 170px;
+    width: 190px;
+    margin-top: -15px;
 }
 
+.card-content-3 {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding-left: 20px;
+    margin-top: 15px;
+    align-items: center;
+}
+
+.card-content-3 h1 {
+    font-size: 18px;
+    font-weight: 1400;
+    width: 152px;
+}
+
+
+.card-content-3 p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid rgb(0, 0, 0);
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 5px;
+    margin-right: 23px;
+    margin-left: 15px;
+    font-size: 12px;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+    outline: none;
+    height: fit-content;
+    width: 195px;
+    margin-top: -15px;
+}
 .indicator {
     height: 110px;
     width: 4px;
@@ -523,7 +563,7 @@ header p {
 
 .card-content p {
     margin: 5px 0;
-    font-size: 25px;
+    font-size: 18px;
 
 }
 
@@ -563,15 +603,15 @@ header p {
 
 .mini-square {
     display: flex;
-    width: 224px;
-    height: 167px;
+    width: 184px;
+    height: 150px;
     background-color: rgb(255, 255, 255);
     border-radius: 10px;
 }
 
 .mini-square-usabilidade {
     display: flex;
-    width: 308px;
+    width: 380px;
     height: 167px;
     background-color: rgb(255, 255, 255);
     border-radius: 10px;
@@ -604,13 +644,12 @@ header p {
 }
 
 .square {
-    width: 478px;
-    height: 369px;
+    width: 400px;
+    height: 335px;
     border-radius: 10px;
     /* Bordas arredondadas */
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
     justify-content: center;
     align-items: center;
 }
@@ -629,7 +668,7 @@ header p {
 }
 
 .square-usabilidade {
-    width: 985px;
+    width: 795px;
     height: 369px;
     border-radius: 10px;
     /* Bordas arredondadas */
@@ -734,25 +773,25 @@ header p {
 .charts {
     display: flex;
     flex-wrap: wrap;
-    width: 160vw;
-    width: fit-content;
+    width: 55rem;
     border: 2.5px solid #D2135D;
     border-radius: 10px 0 10px 10px;
     justify-content: center;
     background-color: #fdd9e5;
     padding: 20px;
+    margin-left: 3.8vh;
 }
 
 .charts-usabilidade {
     display: flex;
-    width: 160vw;
-    width: fit-content;
+    width: 55rem;
     border: 2.5px solid #D2135D;
     border-radius: 10px 0 10px 10px;
     background-color: #fdd9e5;
     padding: 20px;
     flex-direction: column;
     align-items: center;
+    margin-left: 3.8vh;
 }
 
 .top-cards {
