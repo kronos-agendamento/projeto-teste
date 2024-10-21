@@ -78,13 +78,23 @@ function renderAgenda(agendamentos) {
         const appointment = document.createElement("div");
         appointment.classList.add("appointment");
 
+        // Formata o horário do agendamento
         const horarioFormatado = `${data
           .getHours()
           .toString()
           .padStart(2, "0")}h${data.getMinutes().toString().padStart(2, "0")}`;
-        appointment.innerHTML = `
-          <p>${horarioFormatado}<br />${agendamento.usuario}<br />${agendamento.especificacao}</p>
-        `;
+
+        // Se o tipo de agendamento for "Bloqueio", exibe "BLOQUEIO" e o horário
+        if (agendamento.tipoAgendamento === "Bloqueio") {
+          appointment.innerHTML = `<p>${horarioFormatado}<br />BLOQUEIO</p>`;
+        } else {
+          // Caso contrário, exibe o horário, o nome do usuário e a especificação
+          appointment.innerHTML = `
+            <p>${horarioFormatado}<br />${agendamento.usuario}<br />${
+            agendamento.especificacao || ""
+          }</p>
+          `;
+        }
 
         diaElement.appendChild(appointment);
       }

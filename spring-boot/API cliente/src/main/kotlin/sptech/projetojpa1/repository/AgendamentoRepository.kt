@@ -307,4 +307,6 @@ SELECT new sptech.projetojpa1.dto.agendamento.AgendamentoDTO(
     fun listarAgendamentosPorUsuario(usuarioId: Int): List<AgendamentoDTO>
 
     fun findAllByUsuario(usuario: Usuario): List<Agendamento>
+
+    fun findByTipoAgendamento(tipoAgendamento: String): List<Agendamento>
 }

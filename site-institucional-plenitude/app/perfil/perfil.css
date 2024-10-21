@@ -342,7 +342,7 @@ Dados do usuário
 .left-content {
   display: flex;
   flex-direction: column;
-  width: 55vw;
+  width: 100%;
   height: auto;
   margin-top: 2vh;
   margin-left: 2vw;
