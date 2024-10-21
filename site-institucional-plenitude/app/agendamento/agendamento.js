@@ -157,15 +157,13 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("current-page").textContent = currentPage;
     document.getElementById("total-pages").textContent = totalPages;
 
-    // Corrige a paginação: filtra apenas os agendamentos que deveriam aparecer
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const agendamentosPaginaAtual = agendamentosFiltrados.slice(
       startIndex,
       endIndex
-    ); // Filtra somente a página atual
+    );
 
-    // Atualiza o botão de paginação
     document.getElementById("prev-page-btn").disabled = currentPage === 1;
     document.getElementById("next-page-btn").disabled =
       currentPage === totalPages;
@@ -192,10 +190,6 @@ document.addEventListener("DOMContentLoaded", function () {
       clienteTd.dataset.idAgendamento = agendamento.idAgendamento;
       tr.appendChild(clienteTd);
 
-      console.log(
-        `Cliente: ${clienteTd.textContent}, ID do Cliente: ${clienteTd.dataset.idUsuario}, ID agendamento: ${clienteTd.dataset.idAgendamento}`
-      );
-
       const procedimentoTd = document.createElement("td");
       procedimentoTd.textContent = agendamento.procedimento;
       procedimentoTd.dataset.fkProcedimento = agendamento.fkProcedimento;
@@ -206,7 +200,6 @@ document.addEventListener("DOMContentLoaded", function () {
       especificacaoTd.dataset.fkEspecificacao = agendamento.fkEspecificacao;
       tr.appendChild(especificacaoTd);
 
-      // Cria uma td para o status
       const statusTd = document.createElement("td");
       const statusColorDiv = document.createElement("div");
       statusColorDiv.style.backgroundColor = agendamento.statusAgendamento.cor;
@@ -224,22 +217,14 @@ document.addEventListener("DOMContentLoaded", function () {
       tr.appendChild(statusTd);
 
       const acoesTd = document.createElement("td");
+
+      // Botão de Editar
       const editButton = document.createElement("button");
-      editButton.classList.add("edit-btn");
-      editButton.classList.add("filter-btn");
+      editButton.classList.add("edit-btn", "filter-btn");
       editButton.dataset.id = agendamento.idAgendamento;
       editButton.innerHTML = '<i class="fas fa-edit"></i>';
-
-      // Tooltip
-      const tooltip2 = document.createElement("div");
-      tooltip2.classList.add("tooltip6");
-      tooltip2.innerText = "Clique para editar."; // Mensagem do tooltip
-
-      // Adiciona o tooltip ao botão de exclusão
-      editButton.appendChild(tooltip2);
-
       editButton.addEventListener("click", (event) => {
-        event.stopPropagation();
+        event.stopPropagation(); // Impede que o evento se propague para a linha
         editarAgendamento(
           clienteTd.dataset.idAgendamento,
           clienteTd.dataset.idUsuario,
@@ -247,40 +232,20 @@ document.addEventListener("DOMContentLoaded", function () {
           especificacaoTd.dataset.fkEspecificacao
         );
       });
+      acoesTd.appendChild(editButton);
 
+      // Botão de Excluir
       const deleteButton = document.createElement("button");
-      deleteButton.classList.add("delete-btn");
-      deleteButton.classList.add("filter-btn");
+      deleteButton.classList.add("delete-btn", "filter-btn");
       deleteButton.dataset.id = agendamento.idAgendamento;
       deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
-
-      // Tooltip
-      const tooltip = document.createElement("div");
-      tooltip.classList.add("tooltip6");
-      tooltip.innerText = "Clique para excluir este status."; // Mensagem do tooltip
-
-      // Adiciona o tooltip ao botão de exclusão
-      deleteButton.appendChild(tooltip);
-
-      // Evento de clique para o botão de exclusão
       deleteButton.addEventListener("click", (event) => {
-        event.stopPropagation(); // Impede a propagação do evento
-        excluirAgendamento(agendamento.idAgendamento); // Chama a função de exclusão
+        event.stopPropagation(); // Impede que o evento se propague para a linha
+        excluirAgendamento(agendamento.idAgendamento);
       });
-
-      // Função de exemplo para excluir agendamento
-      function excluirAgendamento(id) {
-        console.log(`Agendamento ${id} excluído.`);
-        // Aqui você pode adicionar a lógica para excluir o agendamento
-      }
-
-      // Adiciona o botão de exclusão à página (opcional)
-      document.body.appendChild(deleteButton);
-
-      acoesTd.appendChild(editButton);
       acoesTd.appendChild(deleteButton);
-      tr.appendChild(acoesTd);
 
+      tr.appendChild(acoesTd);
       tr.addEventListener("click", () =>
         showDetalhesModal(agendamento.idAgendamento)
       );
@@ -288,6 +253,40 @@ document.addEventListener("DOMContentLoaded", function () {
       tbody.appendChild(tr);
     });
   }
+
+  window.excluirAgendamento = function (id) {
+    agendamentoIdToDelete = id;
+    document.getElementById(
+      "procedimento"
+    ).textContent = `ID do agendamento: ${id}`;
+    document.getElementById("modal").style.display = "block";
+  };
+
+  window.closeModal = function () {
+    document.getElementById("modal").style.display = "none";
+  };
+
+  window.confirmDeletion = async function () {
+    if (agendamentoIdToDelete !== null) {
+      try {
+        const response = await fetch(
+          `http://localhost:8080/api/agendamentos/excluir/${agendamentoIdToDelete}`,
+          {
+            method: "DELETE",
+          }
+        );
+
+        if (!response.ok) throw new Error("Erro ao excluir o agendamento.");
+        await fetchAgendamentos(); // Atualiza a lista de agendamentos após exclusão
+        agendamentoIdToDelete = null;
+        closeModal();
+        showNotification("Agendamento excluído com sucesso!");
+      } catch (error) {
+        console.error("Erro ao excluir o agendamento:", error);
+        showNotification("Erro ao excluir o agendamento!", true);
+      }
+    }
+  };
 
   function aplicarFiltroAtual() {
     if (filtroAtivo === "hoje") {
