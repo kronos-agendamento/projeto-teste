@@ -202,71 +202,85 @@ document.addEventListener("DOMContentLoaded", function () {
   const horariosContainer = document.getElementById("horarios-disponiveis");
   const botaoAgendarDiv = document.getElementById("botaoAgendarDiv");
   const botaoAgendar = document.getElementById("save-agendamento-button");
-
   let especificacoes = [];
-
-
   const mediaValor = 90; // Valor por hora
   const hora = 0.5; // Horas
   const maoObra = mediaValor * hora; // Cálculo da mão de obra
-
-  const gasolina = 4; // Valor fixo da gasolina (exemplo)
+  const origem = "Rua das Gilias, 361 - Vila Bela, São Paulo - State of São Paulo, Brazil";
+  const gasolina = 5; // Valor fixo da gasolina (exemplo)
   const enderecoInput = document.getElementById("endereco");
   const taxaTotalDiv = document.getElementById("taxa-total");
   const valorTaxaSpan = document.getElementById("valor-taxa");
+  const totalKmSpan = document.getElementById("total-km");
   const calcularTaxaButton = document.getElementById("calcular-taxa-button");
-
+  
+  let autocompleteEndereco;
+  
+  // Inicializar o Autocomplete no campo de endereço
+  async function initAutocomplete() {
+    autocompleteEndereco = new google.maps.places.Autocomplete(enderecoInput, {
+      types: ['geocode'],
+      componentRestrictions: { country: "br" }
+    });
+  }
+  
+  // Função para calcular a distância
+  async function calcularDistancia(endereco) {
+    return new Promise((resolve, reject) => {
+      const service = new google.maps.DistanceMatrixService();
+  
+      service.getDistanceMatrix(
+        {
+          origins: [origem],
+          destinations: [endereco],
+          travelMode: 'DRIVING', // Aqui define o modo de transporte
+          unitSystem: google.maps.UnitSystem.METRIC,
+        },
+        (response, status) => {
+          if (status === 'OK') {
+            const resultado = response.rows[0].elements[0];
+            const distanciaKm = resultado.distance.value / 1000; // Distância em quilômetros
+            resolve(distanciaKm);
+          } else {
+            reject('Erro ao calcular a distância: ' + status);
+          }
+        }
+      );
+    });
+  }
+  
+  // Função para calcular a taxa total
   async function calcularTaxa() {
     const endereco = enderecoInput.value;
-
+  
     if (endereco) {
       try {
         const kmLoc = await calcularDistancia(endereco); // Chamada à função que pode falhar
-
+  
         // Se a distância for calculada corretamente, calcula a taxa
         if (kmLoc !== null) {
           const taxaLoc = gasolina * kmLoc; // Cálculo da taxa de locomoção
           const taxaTotal = taxaLoc + maoObra; // Cálculo da taxa total
-          valorTaxaSpan.textContent = `R$ ${taxaTotal.toFixed(2)}`; // Exibir a taxa total
+          valorTaxaSpan.textContent = `R$ ${taxaTotal.toFixed(2)}, `; // Exibir a taxa total
+          totalKmSpan.textContent = `${kmLoc} de distância`
           taxaTotalDiv.classList.remove("hidden"); // Mostrar a taxa total
         } else {
           valorTaxaSpan.textContent = "Distância não encontrada para o endereço."; // Mensagem se a distância não for encontrada
           taxaTotalDiv.classList.remove("hidden");
         }
       } catch (error) {
-        // Aqui você pode lidar com o erro da API
         console.error("Erro ao calcular a distância:", error);
         valorTaxaSpan.textContent = "Erro ao calcular a distância. Tente novamente."; // Mensagem de erro
         taxaTotalDiv.classList.remove("hidden"); // Mostrar a mensagem de erro
       }
     } else {
+    
       taxaTotalDiv.classList.add("hidden"); // Ocultar a taxa total se o endereço estiver vazio
     }
   }
-
-  // Evento para calcular a taxa ao clicar no botão
+  
+  // Event listener para o botão de calcular taxa
   calcularTaxaButton.addEventListener("click", calcularTaxa);
-
-  // Função simulada para calcular a distância
-  async function calcularDistancia(endereco) {
-    // Simulação da chamada da API
-    const apiResponse = false; // Simule a condição da API aqui (true para API funcionando, false para falha)
-
-    if (apiResponse) {
-      // Simulação de distâncias para diferentes endereços
-      const distancias = {
-        "Endereco A": 5,  // Simulação de 5 km
-        "Endereco B": 10, // Simulação de 10 km
-        "Endereco C": 15  // Simulação de 15 km
-      };
-
-      // Retornar a distância correspondente ao endereço inserido ou uma distância padrão
-      return distancias[endereco] || null; // Se o endereço não corresponder a A, B ou C, retorna null
-    } else {
-      throw new Error("API não disponível"); // Lançar erro se a API não estiver funcionando
-    }
-  }
-
 
   // Inicialmente, ocultar todos os campos exceto o procedimento
   opcaoEspecificacaoDiv.classList.add("hidden");
