@@ -43,6 +43,47 @@ class AgendamentoService(
         }
     }
 
+    fun criarAgendamento(agendamentoRequestDTO: AgendamentoRequestDTO): AgendamentoResponseDTO {
+        // Validação preliminar de entrada para garantir que os campos essenciais estão preenchidos
+        if (agendamentoRequestDTO.dataHorario == null || agendamentoRequestDTO.tipoAgendamento == null) {
+            throw IllegalArgumentException("Data e tipo de agendamento não podem ser nulos")
+        }
+
+        // Adiciona o agendamento à fila de processamento
+        // A fila é usada aqui para simular o conceito de processamento assíncrono, onde os agendamentos
+        // são armazenados em uma lista (fila) e processados posteriormente, evitando o processamento imediato.
+        println("Adicionando agendamento à fila: $agendamentoRequestDTO")
+        filaAgendamentos.add(agendamentoRequestDTO)
+
+        // Exibe a fila após adicionar o novo agendamento, mostrando que o item foi enfileirado.
+        println("Fila de agendamentos após adicionar: $filaAgendamentos")
+
+        // Chama o método de processamento da fila para processar os agendamentos enfileirados
+        // Neste caso, o processamento está ocorrendo imediatamente após o enfileiramento, mas em um sistema real,
+        // este processamento poderia ser feito de forma assíncrona ou agendada (por exemplo, a cada minuto).
+        processarFilaDeAgendamentos()
+
+        // Retorna uma resposta ao cliente indicando que o agendamento está sendo processado.
+        // Como o processamento é "simulado" de forma assíncrona, o ID do agendamento ainda não está disponível,
+        // mas outras informações podem ser retornadas enquanto o agendamento é tratado em segundo plano.
+        return AgendamentoResponseDTO(
+            idAgendamento = null,  // Um valor temporário, pois o agendamento ainda está sendo processado
+            dataHorario = agendamentoRequestDTO.dataHorario,
+            tipoAgendamento = agendamentoRequestDTO.tipoAgendamento,
+            tempoAgendar = agendamentoRequestDTO.tempoAgendar,
+            usuario = "Processando...",  // Indicador de que o processo ainda está em andamento
+            procedimento = "Processando...",
+            especificacao = "Processando...",
+            statusAgendamento = statusRepository.findById(1)  // Um status fixo para indicar que o agendamento está pendente
+                .orElseThrow { IllegalArgumentException("Status não encontrado") },
+            usuarioTelefone = null,
+            usuarioCpf = null,
+            usuarioId = null,
+            fkEspecificacao = null,
+            fkProcedimento = null
+        )
+    }
+
     private val filaAgendamentos: Queue<AgendamentoRequestDTO> = LinkedList()
 
     fun obterAgendamentosPorStatus(): Map<String, Int> {
@@ -120,6 +161,7 @@ class AgendamentoService(
             }
     }
 
+
     fun obterValorTotalUltimoMesPorProcedimento(): Map<String, Double> {
         return agendamentoRepository.findValorTotalUltimoMesPorProcedimento()
             .associate {
@@ -128,7 +170,6 @@ class AgendamentoService(
                 procedimento to valorTotal  // Criamos um par (chave, valor) para o Map
             }
     }
-
 
     fun agendamentosRealizadosUltimos5Meses(): List<Int> {
         return agendamentoRepository.findAgendamentosConcluidosUltimos5Meses()
@@ -150,6 +191,7 @@ class AgendamentoService(
             data.atTime(fechamento)
         ).filter { it.tipoAgendamento != "Bloqueio" }  // Exclui os bloqueios
 
+        // Obter os horários já ocupados no dia específico
         val horariosOcupados = agendamentosDoDia.map {
             it.dataHorario?.toLocalTime() ?: throw IllegalArgumentException("Data e horário não podem ser nulos")
         }
@@ -158,6 +200,7 @@ class AgendamentoService(
 
         var horarioAtual = abertura
         while (horarioAtual.isBefore(fechamento)) {
+            // Verificar se o horário atual não está ocupado
             if (!horariosOcupados.contains(horarioAtual)) {
                 horariosDisponiveis.add(horarioAtual)
             }
@@ -190,48 +233,6 @@ class AgendamentoService(
         )
 
         return horariosOcupados.isEmpty()
-    }
-
-
-    fun criarAgendamento(agendamentoRequestDTO: AgendamentoRequestDTO): AgendamentoResponseDTO {
-        // Validação preliminar de entrada para garantir que os campos essenciais estão preenchidos
-        if (agendamentoRequestDTO.dataHorario == null || agendamentoRequestDTO.tipoAgendamento == null) {
-            throw IllegalArgumentException("Data e tipo de agendamento não podem ser nulos")
-        }
-
-        // Adiciona o agendamento à fila de processamento
-        // A fila é usada aqui para simular o conceito de processamento assíncrono, onde os agendamentos
-        // são armazenados em uma lista (fila) e processados posteriormente, evitando o processamento imediato.
-        println("Adicionando agendamento à fila: $agendamentoRequestDTO")
-        filaAgendamentos.add(agendamentoRequestDTO)
-
-        // Exibe a fila após adicionar o novo agendamento, mostrando que o item foi enfileirado.
-        println("Fila de agendamentos após adicionar: $filaAgendamentos")
-
-        // Chama o método de processamento da fila para processar os agendamentos enfileirados
-        // Neste caso, o processamento está ocorrendo imediatamente após o enfileiramento, mas em um sistema real,
-        // este processamento poderia ser feito de forma assíncrona ou agendada (por exemplo, a cada minuto).
-        processarFilaDeAgendamentos()
-
-        // Retorna uma resposta ao cliente indicando que o agendamento está sendo processado.
-        // Como o processamento é "simulado" de forma assíncrona, o ID do agendamento ainda não está disponível,
-        // mas outras informações podem ser retornadas enquanto o agendamento é tratado em segundo plano.
-        return AgendamentoResponseDTO(
-            idAgendamento = null,  // Um valor temporário, pois o agendamento ainda está sendo processado
-            dataHorario = agendamentoRequestDTO.dataHorario,
-            tipoAgendamento = agendamentoRequestDTO.tipoAgendamento,
-            tempoAgendar = agendamentoRequestDTO.tempoAgendar,
-            usuario = "Processando...",  // Indicador de que o processo ainda está em andamento
-            procedimento = "Processando...",
-            especificacao = "Processando...",
-            statusAgendamento = statusRepository.findById(1)  // Um status fixo para indicar que o agendamento está pendente
-                .orElseThrow { IllegalArgumentException("Status não encontrado") },
-            usuarioTelefone = TODO(),
-            usuarioCpf = TODO(),
-            usuarioId = TODO(),
-            fkEspecificacao = TODO(),
-            fkProcedimento = TODO()
-        )
     }
 
     fun processarFilaDeAgendamentos() {
