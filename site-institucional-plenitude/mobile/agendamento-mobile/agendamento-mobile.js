@@ -182,53 +182,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Chama a função de inicialização
   inicializar();
-});
-document.addEventListener("DOMContentLoaded", function () {
-  const apiUrlProcedimentos = "http://localhost:8080/api/procedimentos";
-  const apiUrlEspecificacoes = "http://localhost:8080/api/especificacoes";
-  const apiUrlAgendamentos = "http://localhost:8080/api/agendamentos";
-  const apiUrlCriarAgendamento = "http://localhost:8080/api/agendamentos";
 
-  const procedimentoSelect = document.getElementById("procedimento");
-  const opcaoEspecificacaoDiv = document.getElementById("opcao-especificacao");
-  const especificacaoSelect = document.getElementById("especificacao");
-  const tipoAtendimentoDiv = document.getElementById("tipo-atendimento");
-  const tipoAtendimentoSelect = document.getElementById(
-    "tipo-atendimento-select"
-  );
-  const dataInputDiv = document.getElementById("data-div");
-  const dataInput = document.getElementById("data");
-  const horariosDiv = document.getElementById("horarios-div");
-  const horariosContainer = document.getElementById("horarios-disponiveis");
-  const botaoAgendarDiv = document.getElementById("botaoAgendarDiv");
-  const botaoAgendar = document.getElementById("save-agendamento-button");
-  let especificacoes = [];
-  const mediaValor = 90; // Valor por hora
+  const mediaValor = 50; // Valor por hora
   const hora = 0.5; // Horas
   const maoObra = mediaValor * hora; // Cálculo da mão de obra
   const origem = "Rua das Gilias, 361 - Vila Bela, São Paulo - State of São Paulo, Brazil";
-  const gasolina = 5; // Valor fixo da gasolina (exemplo)
+  const gasolina = 4; // Valor fixo médio da gasolina (exemplo)
   const enderecoInput = document.getElementById("endereco");
   const taxaTotalDiv = document.getElementById("taxa-total");
   const valorTaxaSpan = document.getElementById("valor-taxa");
   const totalKmSpan = document.getElementById("total-km");
   const calcularTaxaButton = document.getElementById("calcular-taxa-button");
-  
-  let autocompleteEndereco;
-  
-  // Inicializar o Autocomplete no campo de endereço
-  async function initAutocomplete() {
-    autocompleteEndereco = new google.maps.places.Autocomplete(enderecoInput, {
-      types: ['geocode'],
-      componentRestrictions: { country: "br" }
-    });
-  }
-  
+
   // Função para calcular a distância
   async function calcularDistancia(endereco) {
     return new Promise((resolve, reject) => {
       const service = new google.maps.DistanceMatrixService();
-  
+
       service.getDistanceMatrix(
         {
           origins: [origem],
@@ -248,15 +218,15 @@ document.addEventListener("DOMContentLoaded", function () {
       );
     });
   }
-  
+
   // Função para calcular a taxa total
   async function calcularTaxa() {
     const endereco = enderecoInput.value;
-  
+
     if (endereco) {
       try {
         const kmLoc = await calcularDistancia(endereco); // Chamada à função que pode falhar
-  
+
         // Se a distância for calculada corretamente, calcula a taxa
         if (kmLoc !== null) {
           const taxaLoc = gasolina * kmLoc; // Cálculo da taxa de locomoção
@@ -274,11 +244,11 @@ document.addEventListener("DOMContentLoaded", function () {
         taxaTotalDiv.classList.remove("hidden"); // Mostrar a mensagem de erro
       }
     } else {
-    
+
       taxaTotalDiv.classList.add("hidden"); // Ocultar a taxa total se o endereço estiver vazio
     }
   }
-  
+
   // Event listener para o botão de calcular taxa
   calcularTaxaButton.addEventListener("click", calcularTaxa);
 
@@ -401,30 +371,6 @@ document.addEventListener("DOMContentLoaded", function () {
       botaoAgendarDiv.classList.add("hidden");
     }
   });
-
-  // Inicializar
-  async function inicializar() {
-    await carregarProcedimentos();
-    await carregarEspecificacoes();
-
-    const idProcedimento = localStorage.getItem("idProcedimento");
-    const idEspecificacao = localStorage.getItem("idEspecificacao");
-
-    if (idProcedimento && idEspecificacao) {
-      procedimentoSelect.value = idProcedimento;
-      filtrarEspecificacoesPorProcedimento(idProcedimento, idEspecificacao);
-
-      tipoAtendimentoDiv.classList.remove("hidden");
-      tipoAtendimentoSelect.disabled = false;
-
-      localStorage.removeItem("idProcedimento");
-      localStorage.removeItem("idEspecificacao");
-      console.log("IDs removidos do localStorage");
-    }
-  }
-
-  // Chama a função de inicialização
-  inicializar();
 
   // Evento ao selecionar Procedimento
   procedimentoSelect.addEventListener("change", function () {
