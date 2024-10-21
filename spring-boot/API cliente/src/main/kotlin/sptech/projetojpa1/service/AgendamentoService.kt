@@ -423,39 +423,21 @@ class AgendamentoService(
         }
     }
 
-    fun desbloquearHorarios(dia: LocalDate, horaInicio: LocalTime, horaFim: LocalTime) {
-        val horarioInicio = dia.atTime(horaInicio)
-        val horarioFim = dia.atTime(horaFim)
+    fun desbloquearHorarios(dia: LocalDate, horaInicio: LocalTime) {
+        val horarioInicio = dia.atTime(horaInicio) // Cria o horário inicial com a data especificada
 
-        val agendamentosBloqueados = agendamentoRepository.findByDataHorarioBetween(horarioInicio, horarioFim)
+        // Busca os agendamentos do tipo "Bloqueio" que começam no horário exato
+        val agendamentosBloqueados = agendamentoRepository.findByDataHorario(horarioInicio)
             .filter { it.tipoAgendamento == "Bloqueio" }
 
         if (agendamentosBloqueados.isNotEmpty()) {
+            // Deleta todos os agendamentos do tipo "Bloqueio" encontrados no horário exato
             agendamentoRepository.deleteAll(agendamentosBloqueados)
-            println("Horários desbloqueados com sucesso!")
+            println("Horários bloqueados às $horarioInicio foram desbloqueados com sucesso!")
         } else {
-            println("Nenhum horário bloqueado encontrado no intervalo especificado.")
+            println("Nenhum horário bloqueado encontrado para $horarioInicio.")
         }
     }
-
-    fun listarHorariosBloqueados(): List<AgendamentoResponseDTO> {
-        val agendamentosBloqueados = agendamentoRepository.findByTipoAgendamento("Bloqueio")
-
-        return agendamentosBloqueados.map { agendamento ->
-            AgendamentoResponseDTO(
-                idAgendamento = agendamento.idAgendamento,
-                dataHorario = agendamento.dataHorario,
-                tipoAgendamento = agendamento.tipoAgendamento,
-                usuario = agendamento.usuario.nome,
-                tempoAgendar = agendamento.tempoAgendar,
-                procedimento = agendamento.procedimento?.tipo,
-                especificacao = agendamento.especificacao?.especificacao,
-                statusAgendamento = agendamento.statusAgendamento,
-                usuarioId = agendamento.usuario.codigo
-            )
-        }
-    }
-
 
     fun countUsuariosWithStatusZero(): Int {
         return usuarioRepository.countByStatus(false)

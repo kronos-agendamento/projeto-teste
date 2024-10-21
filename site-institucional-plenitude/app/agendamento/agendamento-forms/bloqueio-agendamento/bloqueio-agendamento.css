@@ -5,16 +5,18 @@
 }
 
 .form-section {
-  width: 65vw;
+  width: 100%; /* Faz com que os formulários ocupem 48% do espaço para que caibam lado a lado */
   background-color: #fff0f5;
-  margin-bottom: 20px;
-  margin-left: 20px;
-  margin-top: 20px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   border: 1px solid #7b7b7b;
-  margin-left: 2.9%;
-  width: 150vh;
+  padding: 20px;
+}
+
+.form-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
 }
 
 .content-form {
@@ -26,11 +28,15 @@
   display: flex;
   align-items: center;
   padding: 2vh;
+  border-radius: 8px;
 }
 
 .form-section h2 {
-  font-size: 18px;
+  font-size: 20px;
   color: #fff;
+  padding: 10px;
+  background-color: #e70069;
+  border-radius: 4px;
 }
 
 .form-group {
@@ -41,16 +47,20 @@
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
+  font-size: 15px;
 }
 
 .form-group input[type="text"],
 .form-group input[type="number"],
 .form-group input[type="file"],
+.form-group input[type="date"],
+.form-group input[type="time"],
 .form-group select {
   width: 100%;
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 5px;
+  font-size: 16px;
 }
 
 .form-group input[type="file"] {
@@ -66,19 +76,14 @@
   margin-left: 20px;
 }
 
-.form-mr {
-  margin-right: 24px;
-}
-
-.form-flex {
-  display: flex;
-  justify-content: space-between;
-}
-
 .button-container {
   display: flex;
   justify-content: flex-end;
   margin-top: 20px;
+}
+
+.button-container2 {
+  text-align: right;
 }
 
 .save-button {
@@ -88,39 +93,20 @@
   color: white;
   border: none;
   border-radius: 10px;
-  padding: 5px 10px;
+  padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.save-button svg {
-  margin-right: 10px;
-  width: 20px;
-  height: 20px;
 }
 
 .save-button:hover {
   background-color: #d6005c;
 }
 
-.form-input {
-  width: 50%;
-}
-
-.form-section span {
-  display: flex;
-  align-items: center;
-}
-
-.form-group label {
-  font-size: 15px;
-}
-
-#data-selecionada {
-  font-size: 1.1em;
-  margin-top: 10px;
-  color: #555;
+.save-button svg {
+  margin-right: 10px;
+  width: 20px;
+  height: 20px;
 }
 
 .horarios-container {
@@ -148,16 +134,172 @@
 }
 
 .horario-button.selected {
-  background-color: #e70069; /* Cor para o horário selecionado */
+  background-color: #e70069;
   color: white;
 }
 
 .disabled-select {
   opacity: 0.5;
-  pointer-events: none; /* Não permite clicar no select */
+  pointer-events: none;
 }
 
 .disabled-select:not([disabled]) {
   opacity: 1;
   pointer-events: auto;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+}
+
+.calendar-grid .calendar-slot {
+  padding: 15px;
+  text-align: center;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.calendar-grid .blocked {
+  background-color: #e70069;
+  color: white;
+}
+
+.calendar-grid .calendar-header {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.agenda {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.agenda th {
+  background-color: #d90461;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  font-weight: normal;
+}
+
+.agenda td {
+  padding: 20px;
+  text-align: center;
+  border: 1px solid #f1f1f1;
+  position: relative;
+  width: 180px;
+  vertical-align: top;
+}
+
+.appointment {
+  background-color: #fcdfe7;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.appointment p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 3vh;
+}
+
+.pagination button {
+  background-color: #ffffff;
+  font-family: Poppins, sans-serif;
+  font-weight: 600;
+  height: 5vh;
+  justify-content: center;
+  margin: 1vh;
+  padding: 2vh;
+  align-items: center;
+  border-radius: 1vh;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.pagination span {
+  display: flex;
+  justify-content: center;
+  padding: 1vh;
+  align-items: center;
+  color: #ffffff;
+  background-color: #d2135d;
+  border-radius: 1vw;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+}
+
+.row {
+  justify-content: space-between; /* Mantém os formulários separados */
+  margin-bottom: 20px;
+}
+
+.top-row {
+  display: flex;
+  justify-content: space-between; /* Ajusta os itens para ficarem lado a lado */
+  gap: 20px; /* Adiciona um espaço entre os formulários */
+}
+
+.pagination span {
+  color: white !important;
+}
+
+/* Estilo do container de agendamentos */
+.agendamento {
+  background-color: #fcdfe7;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: Arial, sans-serif;
+  transition: transform 0.3s;
+}
+
+.classe_linha_pagination {
+  margin-bottom: 10px;
+}
+
+.agendamento:hover {
+  transform: translateY(-5px);
+}
+
+/* Estilo específico para os horários de bloqueio */
+.agendamento.bloqueio {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Estilo do horário */
+.agendamento strong {
+  font-size: 1.2em;
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Estilo do cliente e procedimento */
+.agendamento p {
+  margin: 5px 0;
+  font-size: 0.9em;
+  color: #333;
+}
+
+.agendamento.bloqueio {
+  cursor: pointer;
 }
