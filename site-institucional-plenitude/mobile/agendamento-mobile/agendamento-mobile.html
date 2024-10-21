@@ -98,12 +98,26 @@
           <div class="form-group form-input hidden" id="tipo-atendimento">
             <label for="tipo-atendimento">Tipo de Atendimento:</label>
             <select name="tipo-atendimento" id="tipo-atendimento-select">
-              <option value="">Selecione o tipo de atendimento</option>
-              <option value="Colocação">Primeira Vez</option>
-              <option value="Manutenção">Manutenção</option>
-              <option value="Retirada">Remoção</option>
+                <option value="">Selecione o tipo de atendimento</option>
+                <option value="Colocação" id="opcao-colocacao">Primeira Vez</option>
+                <option value="Manutenção" id="opcao-manutencao">Manutenção</option>
+                <option value="Retirada" id="opcao-retirada">Remoção</option>
+                <option value="Homecare" id="opcao-homecare">Homecare</option>
+                <option value="Estudio" id="opcao-estudio">Estudio</option>
+                <option value="Evento" id="opcao-evento">Evento</option>
             </select>
+        </div>
+        
+        <div class="form-group form-input hidden" id="endereco-group">
+            <label for="endereco">Endereço:</label>
+            <input type="text" id="endereco" placeholder="Insira o endereço">
+            <button id="calcular-taxa-button">Calcular Taxa</button>
           </div>
+        
+        <div id="taxa-total" class="hidden">
+          <p>Taxa Total: <span id="valor-taxa"></span></p>
+      </div>
+        
 
           <div class="form-group form-mr form-input" id="data-div">
             <label for="data">Escolha o melhor dia:</label>

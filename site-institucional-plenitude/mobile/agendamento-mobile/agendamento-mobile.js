@@ -8,16 +8,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const opcaoEspecificacaoDiv = document.getElementById("opcao-especificacao");
   const especificacaoSelect = document.getElementById("especificacao");
   const tipoAtendimentoDiv = document.getElementById("tipo-atendimento");
-  const tipoAtendimentoSelect = document.getElementById(
-    "tipo-atendimento-select"
-  );
+  const tipoAtendimentoSelect = document.getElementById("tipo-atendimento-select");
   const dataInputDiv = document.getElementById("data-div");
+  const procedimentoId = procedimentoSelect.value;
   const dataInput = document.getElementById("data");
   const horariosDiv = document.getElementById("horarios-div");
   const horariosContainer = document.getElementById("horarios-disponiveis");
   const botaoAgendarDiv = document.getElementById("botaoAgendarDiv");
   const botaoAgendar = document.getElementById("save-agendamento-button");
-
   let especificacoes = [];
 
   // Inicialmente, ocultar todos os campos exceto o procedimento
@@ -26,6 +24,25 @@ document.addEventListener("DOMContentLoaded", function () {
   dataInputDiv.classList.add("hidden");
   horariosDiv.classList.add("hidden");
   botaoAgendarDiv.classList.add("hidden");
+
+  function atualizarOpcoesTipoAtendimento(procedimentoId) {
+    const options = tipoAtendimentoSelect.options; // Obtenha as opções do select
+
+    console.log("Atualizando opções para procedimento:", procedimentoId);
+
+    // Habilitar ou desabilitar opções com base no procedimento
+    for (let i = 0; i < options.length; i++) {
+      console.log(`Verificando opção: ${options[i].value}`); // Log para verificação
+      if (procedimentoId == 1) { // Supondo que "1" seja o ID de Maquiagem
+        options[i].disabled = !["Homecare", "Estudio", "Evento"].includes(options[i].value);
+      } else {
+        options[i].disabled = !["Colocação", "Manutenção", "Retirada"].includes(options[i].value);
+      }
+      console.log(`Opção ${options[i].value} está ${options[i].disabled ? 'desabilitada' : 'habilitada'}`); // Log do estado da opção
+    }
+
+    tipoAtendimentoDiv.classList.remove("hidden"); // Mostrar a div do tipo de atendimento
+  }
 
   // Carregar Procedimentos
   async function carregarProcedimentos() {
@@ -51,9 +68,9 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         console.error(
           "Erro ao buscar procedimentos: " +
-            response.status +
-            " " +
-            response.statusText
+          response.status +
+          " " +
+          response.statusText
         );
       }
     } catch (error) {
@@ -70,9 +87,9 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         console.error(
           "Erro ao buscar especificações: " +
-            response.status +
-            " " +
-            response.statusText
+          response.status +
+          " " +
+          response.statusText
         );
       }
     } catch (error) {
@@ -115,8 +132,10 @@ document.addEventListener("DOMContentLoaded", function () {
   // Evento ao selecionar Procedimento
   procedimentoSelect.addEventListener("change", function () {
     const procedimentoId = procedimentoSelect.value;
+
     if (procedimentoId) {
       filtrarEspecificacoesPorProcedimento(procedimentoId);
+      atualizarOpcoesTipoAtendimento(procedimentoId); // Atualiza as opções com base no procedimento
     } else {
       opcaoEspecificacaoDiv.classList.add("hidden");
       tipoAtendimentoDiv.classList.add("hidden");
@@ -186,6 +205,69 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let especificacoes = [];
 
+
+  const mediaValor = 90; // Valor por hora
+  const hora = 0.5; // Horas
+  const maoObra = mediaValor * hora; // Cálculo da mão de obra
+
+  const gasolina = 4; // Valor fixo da gasolina (exemplo)
+  const enderecoInput = document.getElementById("endereco");
+  const taxaTotalDiv = document.getElementById("taxa-total");
+  const valorTaxaSpan = document.getElementById("valor-taxa");
+  const calcularTaxaButton = document.getElementById("calcular-taxa-button");
+
+  async function calcularTaxa() {
+    const endereco = enderecoInput.value;
+
+    if (endereco) {
+      try {
+        const kmLoc = await calcularDistancia(endereco); // Chamada à função que pode falhar
+
+        // Se a distância for calculada corretamente, calcula a taxa
+        if (kmLoc !== null) {
+          const taxaLoc = gasolina * kmLoc; // Cálculo da taxa de locomoção
+          const taxaTotal = taxaLoc + maoObra; // Cálculo da taxa total
+          valorTaxaSpan.textContent = `R$ ${taxaTotal.toFixed(2)}`; // Exibir a taxa total
+          taxaTotalDiv.classList.remove("hidden"); // Mostrar a taxa total
+        } else {
+          valorTaxaSpan.textContent = "Distância não encontrada para o endereço."; // Mensagem se a distância não for encontrada
+          taxaTotalDiv.classList.remove("hidden");
+        }
+      } catch (error) {
+        // Aqui você pode lidar com o erro da API
+        console.error("Erro ao calcular a distância:", error);
+        valorTaxaSpan.textContent = "Erro ao calcular a distância. Tente novamente."; // Mensagem de erro
+        taxaTotalDiv.classList.remove("hidden"); // Mostrar a mensagem de erro
+      }
+    } else {
+      taxaTotalDiv.classList.add("hidden"); // Ocultar a taxa total se o endereço estiver vazio
+    }
+  }
+
+  // Evento para calcular a taxa ao clicar no botão
+  calcularTaxaButton.addEventListener("click", calcularTaxa);
+
+  // Função simulada para calcular a distância
+  async function calcularDistancia(endereco) {
+    // Simulação da chamada da API
+    const apiResponse = false; // Simule a condição da API aqui (true para API funcionando, false para falha)
+
+    if (apiResponse) {
+      // Simulação de distâncias para diferentes endereços
+      const distancias = {
+        "Endereco A": 5,  // Simulação de 5 km
+        "Endereco B": 10, // Simulação de 10 km
+        "Endereco C": 15  // Simulação de 15 km
+      };
+
+      // Retornar a distância correspondente ao endereço inserido ou uma distância padrão
+      return distancias[endereco] || null; // Se o endereço não corresponder a A, B ou C, retorna null
+    } else {
+      throw new Error("API não disponível"); // Lançar erro se a API não estiver funcionando
+    }
+  }
+
+
   // Inicialmente, ocultar todos os campos exceto o procedimento
   opcaoEspecificacaoDiv.classList.add("hidden");
   tipoAtendimentoDiv.classList.add("hidden");
@@ -217,9 +299,9 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         console.error(
           "Erro ao buscar procedimentos: " +
-            response.status +
-            " " +
-            response.statusText
+          response.status +
+          " " +
+          response.statusText
         );
       }
     } catch (error) {
@@ -236,9 +318,9 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         console.error(
           "Erro ao buscar especificações: " +
-            response.status +
-            " " +
-            response.statusText
+          response.status +
+          " " +
+          response.statusText
         );
       }
     } catch (error) {
@@ -363,14 +445,27 @@ document.addEventListener("DOMContentLoaded", function () {
   // Evento ao selecionar Tipo de Atendimento
   tipoAtendimentoSelect.addEventListener("change", function () {
     const tipoAtendimento = tipoAtendimentoSelect.value;
+
+    console.log(tipoAtendimento)
+
     if (tipoAtendimento) {
-      dataInputDiv.classList.remove("hidden");
+      dataInputDiv.classList.remove("hidden"); // Mostrar dataInputDiv
     } else {
       dataInputDiv.classList.add("hidden");
       horariosDiv.classList.add("hidden");
       botaoAgendarDiv.classList.add("hidden");
     }
+
+    // Verifica se o tipo de atendimento é Homecare ou Evento
+    if (tipoAtendimento === "Homecare" || tipoAtendimento === "Evento") {
+      // Mostrar o campo de endereço
+      document.getElementById("endereco-group").classList.remove("hidden");
+    } else {
+      // Ocultar o campo de endereço se não for Homecare ou Evento
+      document.getElementById("endereco-group").classList.add("hidden");
+    }
   });
+
 
   // Evento ao selecionar Data
   dataInput.addEventListener("change", function () {
@@ -512,16 +607,4 @@ document.addEventListener("DOMContentLoaded", function () {
       showNotification("Erro ao criar agendamento", true);
     }
   });
-
-  // Carregar dados na inicialização
-  carregarProcedimentos();
-  carregarEspecificacoes();
-
-  if (idProcedimento && idEspecificacao) {
-    procedimentoSelect.value = idProcedimento;
-    especificacaoSelect.value = idEspecificacao;
-    filtrarEspecificacoesPorProcedimento(idProcedimento, idEspecificacao);
-    tipoAtendimentoDiv.classList.remove("hidden");
-    tipoAtendimentoSelect.disabled = false; // Ativar o dropdown de tipo de atendimento
-  }
 });
