@@ -227,7 +227,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
           });
         } else {
-          // Exibe as informações do agendamento normal
           cell.innerHTML += `<div class="agendamento">
             <strong>${horario}</strong><br>
             ${agendamento.usuario}<br>
