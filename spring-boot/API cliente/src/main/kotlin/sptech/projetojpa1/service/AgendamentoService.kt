@@ -286,6 +286,7 @@ class AgendamentoService(
             dataHorario = agendamento.dataHorario,
             tipoAgendamento = agendamento.tipoAgendamento,
             usuario = agendamento.usuario.nome,
+            email = agendamento.usuario.email,
             tempoAgendar = agendamento.tempoAgendar,
             procedimento = agendamento.procedimento?.tipo,
             usuarioId = agendamento.usuario.codigo,

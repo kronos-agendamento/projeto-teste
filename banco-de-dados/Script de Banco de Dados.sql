@@ -1,3 +1,5 @@
+-- drop database kronosbooking;
+CREATE DATABASE IF NOT EXISTS kronosbooking;
 USE kronosbooking;
 
 DROP TABLE IF EXISTS login_logoff;
@@ -227,7 +229,7 @@ VALUES
 
 INSERT INTO empresa (nome, telefone, cnpj, fk_endereco, fk_horario_funcionamento)
 VALUES 
-('Plenitude no Olhar', '11987654321', '12.345.678/0001-90', 1, 1),
+('Plenitude no Olhar', '11987654321', '24.274.515/0001-48', 1, 1),
 ('Beleza Suprema', '21987654322', '98.765.432/0002-10', 2, 2),
 ('Olhar Perfeito', '31987654323', '22.333.444/0001-11', 3, 3),
 ('Glamour Sobrancelhas', '41987654324', '44.555.666/0001-12', 4, 4),
@@ -255,7 +257,7 @@ VALUES
 
 INSERT INTO usuario (nome, email, senha, instagram, cpf, telefone, data_nasc, genero, indicacao, status, fk_nivel_acesso, fk_endereco, fk_empresa, fk_ficha_anamnese)
 VALUES 
-('Priscila Plenitude', 'priscila@plenitude.com', 'senhaAdmin', '@plenitudenoolhar', '111.111.111-11', 11987654321, '1980-01-01', 'Feminino', 'Instagram', TRUE, 1, 1, 1, NULL),
+('Priscila Plenitude', 'priscila@plenitude.com', 'senhaAdmin', '@plenitudenoolhar', '133.747.670-60', 11987654321, '1980-01-01', 'Feminino', 'Instagram', TRUE, 1, 1, 1, NULL),
 ('Ana Paula', 'ana@beleza.com', 'senha123', '@anabeauty', '469.674.588-09', 21987654321, '1992-02-02', 'Feminino', 'Indicação de Amiga', TRUE, 2, 2, 2, 2),
 ('Carlos Eduardo', 'carlos@olharperfeito.com', 'senha123', '@carlosedu', '317.262.998-80', 31987654322, '1995-03-03', 'Masculino', 'Facebook', TRUE, 2, 3, 3, 3),
 ('Juliana Costa', 'juliana@glamour.com', 'senha123', '@jucosta', '633.335.400-70', 41987654323, '1990-04-04', 'Feminino', 'Google', TRUE, 2, 4, 4, 4),
@@ -514,3 +516,6 @@ ADD CONSTRAINT fk_resposta_pergunta
 FOREIGN KEY (fk_pergunta) REFERENCES pergunta(id_pergunta) ON DELETE CASCADE;
 
 SELECT * FROM usuario;	
+select * from especificacao;
+select * from agendamento;
+delete from agendamento where fk_especificacao_procedimento= 1;

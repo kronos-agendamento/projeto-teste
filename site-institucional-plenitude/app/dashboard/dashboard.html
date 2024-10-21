@@ -6,19 +6,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | KronosBooking</title>
     <link rel="stylesheet" href="dashboard.css">
+    <link href="../assets/favicon.png" rel="icon" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body>
     <div class="corpo">
         <div class="navigation">
-            <div class="perfil">
-                <div class="imagem-perfil">
-                    <img src="../assets/Foto de Perfil.png" />
-                </div>
-                <li id="userName"></li>
-                <li id="userInsta"></li>
-            </div>
+            <li class="list" style="
+          width: 30px;
+          height: 30px;
+          list-style: none;
+          display: flex;
+          justify-content: center;
+          margin-top: 5vh;
+        ">
+      <div class="imagem-perfil" style="
+            width: 20vh;
+            height: 20vh;
+            border-radius: 300px;
+            display: flex;
+            justify-content: center;
+          ">
+        <img src="../index/Foto de Perfil.png" style="
+              width: 53vh;
+              height: 23vh;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            " />
+      </div>
+    </li>
+    <li id="userName" style="
+          margin-top: 20vh;
+          list-style: none;
+          color: white;
+          font-weight: 600;
+        "></li>
+    <li id="userInsta" style="
+          list-style: none;
+          color: white;
+          font-weight: 200;
+          font-size: 12px;
+        "></li>
 
             <ul>
                 <li class="list">
@@ -34,7 +64,7 @@
                     </a>
                 </li>
                 <li class="list">
-                    <a href="agendamento.html">
+                    <a href="../agendamento.html">
                         <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
                         <span class="title">Agendamentos</span>
                     </a>
@@ -87,7 +117,7 @@
             </header>
             <div class="main-content">
                     <div class="chartContainer">
-                        <div class="conteudo">
+                        <div class="conteudo" >
                             <div class="tabs">
                                 <button class="tab-button" id="usabilidadeBtn">Usabilidade</button>
                                 <button class="tab-button" id="operacionalBtn">Operacional</button>
@@ -124,9 +154,9 @@
                                                 </div>
                                                 <div class="mini-square">
                                                     <div class="card">
-                                                        <div class="indicator"></div>
+                                                        <div class="indicator" style="width: 6px;"></div>
                                                         <div class="card-content">
-                                                            <p style="font-size: 20px;">Agendamentos Realizados</p>
+                                                            <p>Agendamentos Realizados</p>
                                                             <h2 id="agendamentos-realizados-count">Carregando...</h2>
                                                             <!-- <p>Último trimestre</p> -->
 
@@ -136,7 +166,7 @@
                                                 </div>
                                                 <div class="mini-square">
                                                     <div class="card">
-                                                        <div class="indicator"></div>
+                                                        <div class="indicator" style="width: 5px;"></div>
                                                         <div class="card-content">
                                                             <p>Clientes Fidelizados</p>
                                                             <h2 id="clientes-fidelizados-count">Carregando...</h2>
@@ -149,7 +179,7 @@
                                         </div>
                                         <div class="square" style="background-color: white;">
                                             <div class="card-graficos">
-                                                <div class="card-content-2">
+                                                <div class="card-content-3">
                                                     <h1>Conversão de Clientes</h1>
                                                     <p>Últimos 5 meses</p>
                                                 </div>
@@ -227,7 +257,7 @@
                                                     <div class="card">
                                                         <div class="indicator"></div>
                                                         <div class="card-content">
-                                                            <p>Agendamentos<br>Marcados</p>
+                                                            <p style="font-size: 16px;">Agendamentos<br>Marcados</p>
                                                             <h2 id="total-agendamentos-hoje">Carregando...</h2>
                                                             <!-- <p>Último trimestre</p> -->
 
@@ -239,7 +269,7 @@
                                                     <div class="card">
                                                         <div class="indicator"></div>
                                                         <div class="card-content">
-                                                            <p>Agendamentos<br>Futuros</p>
+                                                            <p style="font-size: 16px;">Agendamentos <br>Futuros</p>
                                                             <h2 id="total-agendamentos-futuros">Carregando...</h2>
                                                             <!-- <p>Último trimestre</p> -->
 
@@ -251,7 +281,7 @@
                                                     <div class="card">
                                                         <div class="indicator"></div>
                                                         <div class="card-content">
-                                                            <p style="font-size: 20px;">Tempo Médio
+                                                            <p style="font-size: 16px;">Tempo Médio
                                                                 Entre<br>Atendimentos</p>
                                                             <h2 id="tempo-medio-hoje">Carregando...</h2>
                                                             <!-- <p>Último trimestre</p> -->
@@ -262,9 +292,9 @@
                                                 </div>
                                                 <div class="mini-square">
                                                     <div class="card">
-                                                        <div class="indicator"></div>
+                                                        <div class="indicator" style="width: 8px;"></div>
                                                         <div class="card-content">
-                                                            <p style="font-size:large">Média de Avaliação dos
+                                                            <p style="font-size: 16px;">Média de Avaliação dos
                                                                 Atendimentos</p>
                                                             <h2 id="total-nota-single">Carregando...</h2>
                                                             <!-- <p>Último trimestre</p> -->
@@ -335,7 +365,7 @@
                                                 </div>
                                                 <p>Calculo da quantia de dinheiro gerado por hora de cada agendamento.
                                                 </p>
-                                                <canvas style="padding-bottom: 30px;"
+                                                <canvas style="padding-bottom: 20px;"
                                                     id="chartValorTotalUltimoMesOperacional5"></canvas>
                                             </div>
                                         </div>
@@ -351,7 +381,7 @@
                                                 <div class="card">
                                                     <div class="indicator"></div>
                                                     <div class="card-content">
-                                                        <p style="font-size: 15px;">Tempo Médio de Conclusão de
+                                                        <p style="font-size: 15px; width: 310px;">Tempo Médio de Conclusão de
                                                             Agendamento</p>
                                                         <h2 id="tempo-medio-conclusao">Carregando...</h2>
                                                         <!-- <p>Último trimestre</p> -->
@@ -360,7 +390,7 @@
                                                     <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
                                                 </div>
                                             </div>
-                                            <div class="mini-square-usabilidade">
+                                            <!-- <div class="mini-square-usabilidade">
                                                 <div class="card">
                                                     <div class="indicator"></div>
                                                     <div class="card-content">
@@ -368,12 +398,12 @@
                                                             de
                                                             Agendamento</p>
                                                         <h2 id="clientes-inativos-count">Carregando...</h2>
-                                                        <!-- <p>Último trimestre</p> -->
-
-                                                    </div>
+                                                        <p>Último trimestre</p> -->
+<!-- 
+                                                    </div> -->
                                                     <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
-                                                </div>
-                                            </div>
+                                                <!-- </div>
+                                            </div> --> 
                                             <div class="mini-square-usabilidade">
                                                 <div class="card">
                                                     <div class="indicator"></div>
@@ -393,12 +423,12 @@
                                     <div class="square-usabilidade" style="background-color: white;">
                                         <div class="card-graficos">
                                             <div class="card-content-2">
-                                                <h1>Taxa de Conversão do Sistema de Agendamento</h1>
+                                                <h1 style="width: 600px;">Taxa de Conversão do Sistema de Agendamento</h1>
                                                 <p>Últimos 5 meses</p>
                                             </div>
-                                            <p>Comparação de leads e clientes gerados.</p>
-                                            <div class="caixa-grafico" style="width: 985px; height: 369px;">
-                                                <canvas id="chartUsabilidade1"></canvas>
+                                            <p style="margin-right: 415px;">Comparação de leads e clientes gerados.</p>
+                                            <div class="caixa-grafico" style="width: 985px; height: 349px; margin-left: 190px;">
+                                                <canvas id="chartUsabilidade1" style="margin-left: 100px;"></canvas>
                                             </div>
                                         </div>
                                     </div>

@@ -15,9 +15,9 @@ def enviar_email():
     if not email_destino:
         return jsonify({'error': 'Email é necessário'}), 400
 
-    # Configurações do servidor SMTP para Outlook
-    remetente = 'gyuliampiqueira@outlook.com'
-    senha = 'Gsrpiq654'  # Senha da sua conta do Outlook
+    # Configurações do servidor SMTP para Gmail
+    remetente = 'gyugyulia64@gmail.com'  # Coloque aqui o seu email do Gmail
+    senha = 'boca btpk cgbt patu'  # Coloque aqui sua senha de aplicativo do Gmail
 
     try:
         # Configurando a mensagem do email
@@ -41,8 +41,8 @@ def enviar_email():
         """
         msg.attach(MIMEText(corpo, 'html'))
 
-        # Conectando ao servidor SMTP do Outlook
-        servidor = smtplib.SMTP('smtp.office365.com', 587)
+        # Conectando ao servidor SMTP do Gmail
+        servidor = smtplib.SMTP('smtp.gmail.com', 587)
         servidor.starttls()
         servidor.login(remetente, senha)
 
