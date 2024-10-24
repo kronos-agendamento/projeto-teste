@@ -4,14 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Editar Agendamento | KronosBooking</title>
+    <title>Bloqueio Agendamento | KronosBooking</title>
 
     <!-- Favicons -->
     <link href="../../../assets/favicon.png" rel="icon" />
-
-    <link rel="stylesheet" href="editar-agendamento.css" />
+    <link rel="stylesheet" href="bloqueio-agendamento.css" />
     <link rel="stylesheet" href="../../agendamento.css" />
-    <script src="editar-agendamento.js"></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
@@ -100,8 +98,11 @@
       <main>
         <header>
           <div>
-            <h1>Agendamentos</h1>
-            <p>Essa página é destinada para edição de um novo agendamento.</p>
+            <h1>Gerenciamento de Horários de Agendamento</h1>
+            <p>
+              Essa página é destinada ao bloqueio e desbloqueio de horários de
+              agendamento.
+            </p>
           </div>
           <div id="notification" class="notification">
             <svg
@@ -119,95 +120,93 @@
             <span id="notification-message"></span>
           </div>
         </header>
-        <div class="back-content">
-          <div class="left-content">
-            <a href="../../agendamento.html" class="back-link"
-              >← Voltar para página de visualização dos agendamentos</a
-            >
+        <a href="../../agendamento.html" class="back-link"
+          >← Voltar para página de visualização dos agendamentos</a
+        >
+
+        <!-- Container principal com 2 linhas -->
+        <div class="main-content">
+          <!-- Linha superior: Formulários de bloqueio e desbloqueio -->
+          <div class="row top-row">
             <section class="form-section">
               <div class="form-title">
-                <h2>Dados dos Agendamentos</h2>
+                <h2>Bloquear Horário de Agendamento</h2>
               </div>
               <div class="content-form">
-                <div class="form-group form-mr form-input">
-                  <label for="clientes">Pesquisar nome do cliente:</label>
-                  <select id="clientes" name="clientes">
-                    <option value="">Selecione um cliente</option>
-                  </select>
+                <div class="form-group">
+                  <label for="diaEscolhido">Dia Escolhido:</label>
+                  <input type="date" id="diaEscolhido" required />
                 </div>
-                <form class="form-flex">
-                  <div class="form-group form-mr form-input">
-                    <label for="procedimentos">Procedimento:</label>
-                    <select id="procedimentos" name="procedimentos">
-                      <option value="">Selecione um procedimento</option>
-                    </select>
+                <div class="form-group">
+                  <label for="horaInicioBlock">Horário de Bloqueio:</label>
+                  <div class="content-box2">
+                    <div class="content-box">
+                      <label>De:</label>
+                      <input type="time" id="horaInicioBlock" required />
+                    </div>
+                    <div class="content-box">
+                      <label>Até:</label>
+                      <input type="time" id="horaFimBlock" required />
+                    </div>
                   </div>
-                  <div class="form-group form-input">
-                    <label for="tipo-atendimento">Tipo de Atendimento:</label>
-                    <select id="tipo-atendimento" name="tipo-atendimento">
-                      <option value="">Selecione o tipo de atendimento</option>
-                      <option value="Colocação">Primeira Vez</option>
-                      <option value="Manutenção">Manutenção</option>
-                      <option value="Retirada">Retirada</option>
-                    </select>
+                  <div class="button-container2">
+                    <br />
+                    <button class="save-button" id="bloqueio-button">
+                      Bloquear
+                    </button>
                   </div>
-                </form>
-                <div class="form-group form-mr form-input">
-                  <label for="especificacoes">Especificação:</label>
-                  <select
-                    id="especificacoes"
-                    name="especificacoes"
-                    disabled
-                    class="disabled-select"
-                  >
-                    <option value="">Selecione uma especificação</option>
-                  </select>
-                </div>
-                <div class="form-group form-mr form-input">
-                  <label for="data">Escolha o melhor dia:</label>
-                  <input type="date" id="data" name="data" />
-                  <p id="data-selecionada"></p>
-                </div>
-                <div class="form-group form-input">
-                  <label for="descricao"
-                    >Escolha o melhor horário dentro do dia:</label
-                  >
-                  <div id="horarios-disponiveis"></div>
-                </div>
-                <div class="button-container">
-                  <button
-                    type="button"
-                    class="save-button"
-                    id="save-agendamento-button"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      fill="white"
-                      class="bi bi-check-circle-fill"
-                      viewBox="0 0 16 16"
-                    >
-                      <path
-                        d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z"
-                      />
-                    </svg>
-                    Salvar
-                  </button>
                 </div>
               </div>
             </section>
           </div>
+
+          <!-- Linha inferior: Agenda de agendamentos -->
+          <div class="row bottom-row">
+            <section>
+              <div class="classe_linha_pagination">
+                <div class="pagination">
+                  <button id="prev-page-btn" class="filter-btn"><</button>
+                  <span class="current-page" id="current-page"></span>
+                  <button id="next-page-btn" class="filter-btn">></button>
+                  <button id="btn-voltar-home" class="filter-btn">
+                    Semana Atual
+                  </button>
+                </div>
+              </div>
+
+              <table class="agenda">
+                <thead>
+                  <tr>
+                    <th>Terça-feira<br />17/04</th>
+                    <th>Quarta-feira<br />18/04</th>
+                    <th>Quinta-feira<br />19/04</th>
+                    <th>Sexta-feira<br />20/04</th>
+                    <th>Sábado<br />21/04</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          </div>
         </div>
-        <script
-          type="module"
-          src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
-        ></script>
-        <script
-          nomodule
-          src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
-        ></script>
       </main>
+      <script src="bloqueio-agendamento.js"></script>
+      <script
+        type="module"
+        src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+      ></script>
+      <script
+        nomodule
+        src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+      ></script>
     </div>
   </body>
 </html>

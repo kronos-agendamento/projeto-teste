@@ -24,9 +24,8 @@ data class AgendamentoRequestDTO(
     @field:Min(value = 1, message = "Id da especificação deve ser maior que 0")
     var fk_especificacao: Int,
 
-    @field:NotNull(message = "O tempo não pode ser nulo")
     @field:Min(value = 1, message = "Id do tempo deve ser maior que 0")
-    var tempoAgendar: Int,
+    var tempoAgendar: Int? = null,
 
     @field:NotNull(message = "Id do status não pode ser nulo")
     @field:Min(value = 1, message = "Id do status deve ser maior que 0")

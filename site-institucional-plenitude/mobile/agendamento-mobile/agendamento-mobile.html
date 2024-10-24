@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7RnMgdvoROHW_o-4pQeM3LJyNMwxem6o&libraries=places"></script>
 
     <title>Agendamento | KronosBooking</title>
 
@@ -98,11 +99,25 @@
           <div class="form-group form-input hidden" id="tipo-atendimento">
             <label for="tipo-atendimento">Tipo de Atendimento:</label>
             <select name="tipo-atendimento" id="tipo-atendimento-select">
-              <option value="">Selecione o tipo de atendimento</option>
-              <option value="Colocação">Primeira Vez</option>
-              <option value="Manutenção">Manutenção</option>
-              <option value="Retirada">Remoção</option>
+                <option value="">Selecione o tipo de atendimento</option>
+                <option value="Colocação" id="opcao-colocacao">Primeira Vez</option>
+                <option value="Manutenção" id="opcao-manutencao">Manutenção</option>
+                <option value="Retirada" id="opcao-retirada">Remoção</option>
+                <option value="Homecare" id="opcao-homecare">Homecare</option>
+                <option value="Estudio" id="opcao-estudio">Estudio</option>
+                <option value="Evento" id="opcao-evento">Evento</option>
             </select>
+        </div>
+        
+        <div class="form-group form-input hidden" id="endereco-group">
+            <label for="endereco">Endereço:</label>
+            <input type="text" id="endereco" placeholder="Insira o endereço">
+            <button id="calcular-taxa-button" onclick="calcularTaxa()">Calcular Taxa</button>
+          </div>
+        
+          <div id="taxa-total" class="hidden">
+            <p>Taxa Total: <span id="valor-taxa"></span></p>
+            <p>Total de Km's: <span id="total-km"></span></p>
           </div>
 
           <div class="form-group form-mr form-input" id="data-div">
@@ -141,11 +156,14 @@
         </div>
       </section>
     </main>
+
   </body>
   <script
     type="module"
-    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
-  ></script>
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js">
+    window.onload = initAutocomplete;
+    let autocompleteEndereco;
+    </script>
   <script
     nomodule
     src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"

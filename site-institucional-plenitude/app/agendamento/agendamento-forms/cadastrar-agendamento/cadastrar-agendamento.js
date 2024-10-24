@@ -222,7 +222,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log(agendamento);
         showNotification("Agendamento criado com sucesso!");
         setTimeout(() => {
-          window.location.href = "../agendamentos.html";
+          window.location.href = "../../agendamento.html";
         }, 1000);
       } else {
         const errorMsg = await response.text();
