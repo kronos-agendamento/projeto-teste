@@ -90,9 +90,9 @@ navbar  lateral
 .navigation {
   height: auto;
   background: #d2135d;
-  width: 19vw;
-  top: 2vh;
-  margin-left: 3vw;
+  width: 263px;
+  margin-top: 20px;
+  margin-left: 32px;
   border-radius: 3vh;
   margin-bottom: 2vh;
   box-shadow: 10px 0 0 #ffffff;
@@ -157,24 +157,22 @@ main {
   width: 75vw;
 }
 header {
-  justify-content: space-between;
   background-color: #d2135d;
   color: white;
-  padding: 3vh;
+  padding: 2vh;
   border-radius: 3vh;
-  margin-bottom: 1rem;
-  margin-top: 1rem;
-  margin-left: 1.5rem;
-  margin-right: 0.8rem;
+  margin-bottom: 2vh;
+  margin-top: 2vh;
+  height: 10vh;
 }
 
 header h1 {
-  margin: 1vh;
+  margin: 1vh 0vh 0vh 2vh;
   font-size: 3vh;
 }
 
 header p {
-  margin: 1vh;
+  margin: 0vh 0vh 0vh 2vh;
   font-size: 2vh;
 }
 
@@ -368,7 +366,7 @@ Inicio Filtros
 .center-content {
   display: flex;
   flex-direction: column;
-  width: 68vw;
+  width: 153vh;
   height: auto;
   margin-top: 1vh;
   margin-left: 2vw;
@@ -377,8 +375,11 @@ Inicio Filtros
 }
 
 .actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  gap: 2px;
+  margin-left: 20px;
+  display: flex;
+  justify-content:flex-start;
 }
 
 .actions button {
@@ -388,7 +389,7 @@ Inicio Filtros
   height: 7vh;
   width: 20vw;
   justify-content: center;
-  margin: 2vh;
+  margin: 1vh;
   padding: 2vh;
   align-items: center;
   font-size: 16px;
@@ -467,11 +468,11 @@ Inicio Respostas
   display: flex;
   align-items: center;
   padding: 2vh;
-  border-radius: 0px 0px 5px;
+  border-radius: 5px 5px 0px 0px;
 }
 
 .form-section h2 {
-  font-size: 18px;
+  font-size: 16px;
   color: #fff;
 }
 

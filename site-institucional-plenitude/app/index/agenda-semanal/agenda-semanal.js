@@ -128,4 +128,67 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("userName").textContent = nome;
     document.getElementById("userInsta").textContent = instagram;
   }
+
+
+
 });
+
+// Array com os dias da semana em português
+const diasSemana = [
+  'Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira',
+  'Quinta-feira', 'Sexta-feira', 'Sábado'
+];
+
+// Certifique-se de que a saudação só é chamada após o DOM estar completamente carregado
+document.addEventListener("DOMContentLoaded", function () {
+  saudacao(); // Chama a função saudacao quando o DOM estiver pronto
+});
+
+function saudacao() {
+  const saudacaoElement1 = document.getElementById('greeting1');
+  const saudacaoElement2 = document.getElementById('greeting2');
+
+  // Verifica se os elementos existem antes de tentar modificar seu conteúdo
+  if (!saudacaoElement1 || !saudacaoElement2) {
+    console.error("Elementos de saudação não encontrados no DOM.");
+    return; // Sai da função se os elementos não existirem
+  }
+
+  const dataAtual = new Date();
+  const horaAtual = dataAtual.getHours();
+  const diaSemana = dataAtual.getDay();
+
+  let saudacaoTexto;
+  let diasDaSemana = [
+    { nome: "Domingo", genero: "um", otimo: "ótimo" },
+    { nome: "Segunda-feira", genero: "uma", otimo: "ótima" },
+    { nome: "Terça-feira", genero: "uma", otimo: "ótima" },
+    { nome: "Quarta-feira", genero: "uma", otimo: "ótima" },
+    { nome: "Quinta-feira", genero: "uma", otimo: "ótima" },
+    { nome: "Sexta-feira", genero: "uma", otimo: "ótima" },
+    { nome: "Sábado", genero: "um", otimo: "ótimo" }
+  ];
+
+  // Verifica a hora do dia para a saudação
+  if (horaAtual >= 0 && horaAtual < 12) {
+    saudacaoTexto = "Bom dia,";
+  } else if (horaAtual >= 12 && horaAtual < 18) {
+    saudacaoTexto = "Boa tarde,";
+  } else {
+    saudacaoTexto = "Boa noite,";
+  }
+
+  // Define o gênero correto para o "um/uma" de acordo com o dia da semana
+  const dia = diasDaSemana[diaSemana];
+  const genero = dia.genero;
+  const otimo = dia.otimo;
+
+  // Exibe a saudação com o dia da semana e o gênero correto
+  saudacaoElement1.textContent = `${saudacaoTexto}`;
+  saudacaoElement2.textContent = `Tenha ${genero} ${otimo} ${dia.nome}!`;
+}
+
+
+
+
+window.onload = saudacao;
