@@ -1,6 +1,10 @@
 -- drop database kronosbooking;
-CREATE DATABASE IF NOT EXISTS kronosbooking;
+create database if not exists kronosbooking;
 USE kronosbooking;
+
+select*from usuario;
+select*from login_logoff;
+
 
 DROP TABLE IF EXISTS login_logoff;
 DROP TABLE IF EXISTS feedback;
@@ -515,7 +519,85 @@ ALTER TABLE resposta
 ADD CONSTRAINT fk_resposta_pergunta
 FOREIGN KEY (fk_pergunta) REFERENCES pergunta(id_pergunta) ON DELETE CASCADE;
 
-SELECT * FROM usuario;	
-select * from especificacao;
-select * from agendamento;
-delete from agendamento where fk_especificacao_procedimento= 1;
+INSERT INTO login_logoff (logi, data_horario, fk_usuario) VALUES
+('LOGIN', '2023-01-01 09:00:00', 1),
+('LOGOF', '2023-01-01 10:00:00', 1),
+('LOGIN', '2023-02-15 09:00:00', 1),
+('LOGOF', '2023-02-15 10:00:00', 1),
+('LOGIN', '2023-04-01 09:00:00', 1),
+('LOGOF', '2023-04-01 10:00:00', 1),
+
+('LOGIN', '2023-01-05 11:00:00', 2),
+('LOGOF', '2023-01-05 12:00:00', 2),
+('LOGIN', '2023-01-25 09:00:00', 2),
+('LOGOF', '2023-01-25 10:00:00', 2),
+('LOGIN', '2023-02-05 09:00:00', 2),
+('LOGOF', '2023-02-05 10:00:00', 2),
+
+('LOGIN', '2023-02-10 08:00:00', 3),
+('LOGOF', '2023-02-10 09:00:00', 3),
+('LOGIN', '2023-03-15 08:00:00', 3),
+('LOGOF', '2023-03-15 09:00:00', 3),
+('LOGIN', '2023-05-20 08:00:00', 3),
+('LOGOF', '2023-05-20 09:00:00', 3),
+
+('LOGIN', '2023-02-15 13:00:00', 4),
+('LOGOF', '2023-02-15 14:00:00', 4),
+
+('LOGIN', '2023-01-01 08:00:00', 5),
+('LOGOF', '2023-01-01 09:00:00', 5),
+('LOGIN', '2023-03-05 08:00:00', 5),
+('LOGOF', '2023-03-05 09:00:00', 5),
+('LOGIN', '2023-06-15 08:00:00', 5),
+('LOGOF', '2023-06-15 09:00:00', 5),
+
+('LOGIN', '2023-03-10 09:30:00', 6),
+('LOGOF', '2023-03-10 10:00:00', 6),
+('LOGIN', '2023-04-15 09:30:00', 6),
+('LOGOF', '2023-04-15 10:30:00', 6),
+('LOGIN', '2023-05-25 09:30:00', 6),
+('LOGOF', '2023-05-25 10:30:00', 6),
+
+('LOGIN', '2023-05-01 08:00:00', 7),
+('LOGOF', '2023-05-01 09:00:00', 7),
+('LOGIN', '2023-05-20 08:00:00', 7),
+('LOGOF', '2023-05-20 09:00:00', 7),
+('LOGIN', '2023-06-01 08:00:00', 7),
+('LOGOF', '2023-06-01 09:00:00', 7),
+
+('LOGIN', '2023-04-10 09:00:00', 8),
+('LOGOF', '2023-04-10 10:00:00', 8),
+
+('LOGIN', '2023-01-01 09:00:00', 9),
+('LOGOF', '2023-01-01 10:00:00', 9),
+('LOGIN', '2023-02-01 09:00:00', 9),
+('LOGOF', '2023-02-01 10:00:00', 9),
+
+('LOGIN', '2023-01-01 07:00:00', 10),
+('LOGOF', '2023-01-01 08:00:00', 10),
+('LOGIN', '2023-01-20 07:00:00', 10),
+('LOGOF', '2023-01-20 08:00:00', 10),
+('LOGIN', '2023-03-05 07:00:00', 10),
+('LOGOF', '2023-03-05 08:00:00', 10);
+
+-- Inserindo agendamentos para garantir que os usuários fidelizados apareçam
+INSERT INTO agendamento (id_agendamento, data_horario, tipo_agendamento, tempo_para_agendar, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status) VALUES
+-- Agendamentos para Maria Silva (id_usuario = 7)
+(101, '2024-07-15 09:00:00', 'Manutencao', 30, 7, 1, 2, 1),
+(102, '2024-08-12 11:00:00', 'Colocacao', 40, 7, 1, 3, 1),
+(103, '2024-09-10 14:00:00', 'Retirada', 35, 7, 1, 1, 1),
+
+-- Agendamentos para Carla Borges (id_usuario = 8)
+(104, '2024-07-10 10:00:00', 'Manutencao', 20, 8, 2, 3, 1),
+(105, '2024-08-08 12:00:00', 'Colocacao', 30, 8, 2, 2, 1),
+(106, '2024-09-05 13:00:00', 'Retirada', 25, 8, 2, 1, 1),
+
+-- Agendamentos para Pedro Marques (id_usuario = 9)
+(107, '2024-07-20 09:30:00', 'Colocacao', 45, 9, 3, 1, 1),
+(108, '2024-08-18 10:00:00', 'Manutencao', 50, 9, 3, 2, 1),
+(109, '2024-09-15 11:00:00', 'Retirada', 30, 9, 3, 1, 1),
+
+-- Agendamentos para Ana Martins (id_usuario = 10)
+(110, '2024-07-05 09:00:00', 'Colocacao', 25, 10, 1, 3, 1),
+(111, '2024-08-02 10:30:00', 'Manutencao', 40, 10, 1, 2, 1),
+(112, '2024-09-12 12:00:00', 'Retirada', 35, 10, 1, 1, 1);
