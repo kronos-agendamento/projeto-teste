@@ -494,6 +494,20 @@
   }
 }
 
+.save-button {
+    display: flex; /* Botão visível */
+    align-items: start;
+    background-color: #e70069;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+    margin-left: 0%;
+  }
 
 /* Estilização do modal de ajuda */
 .modal-ajuda {
@@ -502,7 +516,7 @@
     z-index: 100;
     left: 0; /* Cobrir toda a tela */
     top: 0;  /* Cobrir toda a tela */
-    width: 100%; /* Cobrir toda a largura da tela */
+    width: 101%; /* Cobrir toda a largura da tela */
     height: 100%; /* Cobrir toda a altura da tela */
     background-color: rgba(0, 0, 0, 0.4); /* Fundo escurecido */
 }
@@ -511,7 +525,7 @@
 .modal-ajuda-content {
     position: absolute;
     left: 50%;
-    top: 27%;
+    top: 35%;
     transform: translate(-50%, -50%);
     background-color: white;
     padding: 30px;

@@ -35,7 +35,7 @@
             <div id="titulo-saudacao">
                 <h1>Home</h1>
             </div>
-            <div class="saudacao">
+            <div class="saudacao"> 
                 <div class="acessibilidade">
                     <div class="font-information">
                         <button id="information">i</button>
@@ -45,26 +45,49 @@
                         <button id="decrease-font">A-</button>
                     </div>
                 </div>
+            
                 <div id="greeting1">
-                    <span id="userNameSpan">Usuário</span>!</h1>
+                    <span id="saudacao-texto"></span> <!-- Saudação será inserida aqui -->
+                    <span id="userNameSpan"></span>!
                 </div>
-
-
+            
                 <div id="greeting2"></div>
             </div>
+            
 
 
             <div id="modal-ajuda" class="modal-ajuda">
                 <div class="modal-ajuda-content">
                     <span class="modal-ajuda-close">&times;</span>
-                    <h2>Como chegar ao estabelecimento</h2>
-                    <p>Endereço: Rua Exemplo, 123, Centro</p>
-                    <p>Cidade: São Paulo - SP</p>
-                    <p>CEP: 01234-567</p>
-                    <p>Telefone: (11) 1234-5678</p>
-                    <p>Veja no mapa: <a href="https://maps.google.com" target="_blank">Abrir no Google Maps</a></p>
+                    <h3>Quanto tempo eu levo para chegar até o estúdio <a style="color: #e70069;">"Plenitude no Olhar"</a>?</h3>
+            
+                    <!-- Calculadora de Tempo de Deslocamento -->
+                    <div style="margin-bottom: 5%;">
+                        <label for="origem" style="margin-bottom: 5%;">Sua <b>atual</b> localização:</label><br>
+                        <input type="text" id="origem" placeholder="Digite o local de origem" style="width: 90%; border: 1px solid #ccc; border-radius: 5px;  padding: 10px; font-size: 14px;  font-family: Poppins, Arial, sans-serif;">
+                    </div>
+            
+                    <div style="margin-bottom: 5%;">
+                        <label for="destino">Estúdio <b>"Plenitude no Olhar":</b></label><br>
+                        <input type="text" id="destino" placeholder="Digite o local de destino" value="Av. Professor Luiz Ignácio Anhaia Mello, 1359 - Vila Prudente, São Paulo - SP, 03155-000" style="width: 90%; border: 1px solid #ccc; border-radius: 5px;  padding: 10px; font-size: 14px;  font-family: Poppins, Arial, sans-serif;">
+                    </div>
+            
+                    <div style="margin-bottom: 5%;">
+                        <label for="modo">Modo de Transporte:</label><br>
+                        <select id="modo" style="width: 96%; border: 1px solid #ccc; border-radius: 5px;  padding: 10px; font-size: 14px;  font-family: Poppins, Arial, sans-serif;">
+                            <option value="DRIVING">Carro</option>
+                            <option value="WALKING">A pé</option>
+                            <option value="BICYCLING">Bicicleta</option>
+                            <option value="TRANSIT">Transporte Público</option>
+                        </select>
+                    </div>
+            
+                    <button onclick="calcularTempo()" class="save-button">Calcular Tempo</button>
+            
+                    <div id="resultado"></div>
                 </div>
             </div>
+            
         </header>
         <section id="navigation">
             <div class="nav-bar">
@@ -277,5 +300,60 @@
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7RnMgdvoROHW_o-4pQeM3LJyNMwxem6o&libraries=places"></script>
+
+<script>
+    let autocompleteOrigem, autocompleteDestino;
+
+    // Inicializar o Autocomplete nos campos de origem e destino
+    function initAutocomplete() {
+        const origemInput = document.getElementById('origem');
+        const destinoInput = document.getElementById('destino');
+
+        // Inicializa o Autocomplete no campo origem
+        autocompleteOrigem = new google.maps.places.Autocomplete(origemInput, {
+            types: ['geocode'],  // Limitar para endereços geográficos
+            componentRestrictions: { country: "br" } // Opcional: restringir ao Brasil
+        });
+
+        // Inicializa o Autocomplete no campo destino
+        autocompleteDestino = new google.maps.places.Autocomplete(destinoInput, {
+            types: ['geocode'],
+            componentRestrictions: { country: "br" }
+        });
+    }
+
+    function calcularTempo() {
+        const origem = document.getElementById('origem').value;
+        const destino = document.getElementById('destino').value;
+        const modo = document.getElementById('modo').value;
+
+        const service = new google.maps.DistanceMatrixService();
+        service.getDistanceMatrix(
+            {
+                origins: [origem],
+                destinations: [destino],
+                travelMode: modo,  // Aqui você define o modo de transporte
+                unitSystem: google.maps.UnitSystem.METRIC,
+            },
+            (response, status) => {
+                if (status !== 'OK') {
+                    alert('Erro ao calcular a distância: ' + status);
+                    return;
+                }
+
+                const resultado = response.rows[0].elements[0];
+                const distancia = resultado.distance.text;
+                const duracao = resultado.duration.text;
+
+                document.getElementById('resultado').innerHTML =
+                    `<b> <i class="fas fa-map-marker-alt" style="font-size: 18px; cursor: pointer;"></i> Distância: </b> ${distancia}. <br> <b> <i class="fas fa-clock" style="font-size: 15px; cursor: pointer;"></i> Tempo estimado:</b> ${duracao}.`;
+            }
+        );
+    }
+
+    // Inicializar o Autocomplete ao carregar a página
+    window.onload = initAutocomplete;
+</script>
 
 </html>
