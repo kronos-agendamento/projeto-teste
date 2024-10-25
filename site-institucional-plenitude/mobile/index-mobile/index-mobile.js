@@ -3,47 +3,131 @@ const usuarioId = localStorage.getItem('idUsuario');
 const agendamentoId = localStorage.getItem('idAgendamento')
 const apiUrl = `http://localhost:8080/api/agendamentos/agendamentos/usuario/${usuarioId}`;
 
+
 // Função para formatar a data
 function formatarData(dataHora) {
     const data = new Date(dataHora);
     return data.toLocaleDateString() + ' às ' + data.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
+// Função para buscar os dados do usuário
 async function buscarDadosUsuario() {
-    const usuarioId = localStorage.getItem("idUsuario");
-    if (!usuarioId) {
+  const usuarioId = localStorage.getItem("idUsuario");
+  if (!usuarioId) {
+      console.log("Nenhum ID de usuário encontrado no localStorage.");
       return null;
-    }
-
-    try {
-      const response = await fetch(`http://localhost:8080/usuarios/${usuarioId}`);
-      if (!response.ok) {
-        throw new Error("Erro ao buscar dados do usuário.");
-      }
-      return await response.json();
-    } catch (error) {
-      console.error("Erro ao buscar dados do usuário:", error);
-      return null;
-    }
   }
 
-      // Função para verificar se os campos obrigatórios do usuário estão preenchidos
-      function verificarDadosIncompletos(usuario) {
-        const camposObrigatorios = [
-          usuario.dataNasc,
-          usuario.genero,
-          usuario.indicacao,
-          usuario.endereco?.logradouro,
-          usuario.endereco?.cep,
-          usuario.endereco?.bairro,
-          usuario.endereco?.cidade,
-          usuario.endereco?.estado,
-          usuario.endereco?.numero,
-        ];
-    
-        // Verifica se algum campo obrigatório está vazio ou nulo
-        return camposObrigatorios.some((campo) => campo === null || campo === "");
+  try {
+      const response = await fetch(`http://localhost:8080/usuarios/${usuarioId}`);
+      if (!response.ok) {
+          throw new Error("Erro ao buscar dados do usuário.");
       }
+      const usuario = await response.json();
+
+      // Armazena os dados no localStorage para garantir consistência
+      localStorage.setItem('dataNasc', usuario.dataNasc || "");
+      localStorage.setItem('genero', usuario.genero || "");
+      localStorage.setItem('indicacao', usuario.indicacao || "");
+      localStorage.setItem('logradouro', usuario.endereco?.logradouro || "");
+      localStorage.setItem('cep', usuario.endereco?.cep || "");
+      localStorage.setItem('bairro', usuario.endereco?.bairro || "");
+      localStorage.setItem('cidade', usuario.endereco?.cidade || "");
+      localStorage.setItem('estado', usuario.endereco?.estado || "");
+      localStorage.setItem('numero', usuario.endereco?.numero || "");
+
+      console.log("Dados do usuário obtidos e armazenados no localStorage:", usuario);
+      return usuario;
+  } catch (error) {
+      console.error("Erro ao buscar dados do usuário:", error);
+      return null;
+  }
+}
+
+
+// Função para verificar se os campos obrigatórios do usuário estão preenchidos
+function verificarDadosIncompletos(usuario) {
+  const camposObrigatorios = [
+      usuario.dataNasc,
+      usuario.genero,
+      usuario.indicacao,
+      usuario.endereco?.logradouro,
+      usuario.endereco?.cep,
+      usuario.endereco?.bairro,
+      usuario.endereco?.cidade,
+      usuario.endereco?.estado,
+      usuario.endereco?.numero,
+  ];
+
+  // Verifica se algum campo obrigatório está vazio ou nulo
+  const incompletos = camposObrigatorios.some(campo => !campo || campo === "");
+  console.log("Verificando se há dados incompletos:", incompletos);
+  return incompletos;
+}
+
+// Verifica se os dados do usuário no localStorage estão completos
+function verificarDadosLocalStorage() {
+  const camposObrigatoriosLocalStorage = [
+      localStorage.getItem('dataNasc'),
+      localStorage.getItem('genero'),
+      localStorage.getItem('indicacao'),
+      localStorage.getItem('logradouro'),
+      localStorage.getItem('cep'),
+      localStorage.getItem('bairro'),
+      localStorage.getItem('cidade'),
+      localStorage.getItem('estado'),
+      localStorage.getItem('numero'),
+  ];
+
+  const completos = camposObrigatoriosLocalStorage.every(campo => campo && campo !== "");
+  console.log("Verificando dados do localStorage. Estão completos?", completos);
+  console.log("Dados no localStorage:", camposObrigatoriosLocalStorage);
+  return completos;
+}
+
+// Função para exibir o modal de cadastro se os dados estiverem incompletos
+function iniciarExibicaoModal() {
+  const dadosIncompletos = !verificarDadosLocalStorage();  // Verificar localStorage
+  
+  if (dadosIncompletos) {
+      console.log("Dados incompletos detectados. Exibindo modal.");
+      exibirModal();  // Exibe o modal se os dados estiverem incompletos
+  } else {
+      console.log("Todos os dados estão completos. Fechando modal.");
+      fecharModal();  // Caso os dados estejam completos, fecha o modal
+  }
+}
+
+// Função para exibir o modal
+function exibirModal() {
+  const modalCadastro = document.getElementById("modal-cadastro");
+  modalCadastro.style.display = "block";
+  console.log("Modal exibido.");
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const modalCloseButton = document.getElementById('modal-close');
+  
+  // Verifica se o elemento com ID 'modal-close' existe
+  if (modalCloseButton) {
+      modalCloseButton.addEventListener('click', fecharModal);
+      console.log("Evento de fechamento do modal adicionado.");
+  } else {
+      console.error("Elemento com ID 'modal-close' não encontrado.");
+  }
+});
+
+// Função para fechar o modal
+function fecharModal() {
+  const modal = document.getElementById('modal-cadastro');
+  if (modal) {
+      modal.style.display = 'none';
+      console.log("Modal fechado.");
+  } else {
+      console.error("Modal não encontrado.");
+  }
+}
+
 
 // Função para criar os elementos de agendamento no DOM
 function criarAgendamento(agendamento, isAnterior = false) {
@@ -177,6 +261,18 @@ function criarAgendamento(agendamento, isAnterior = false) {
 
     return boxAgendamento;
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+  const modalCloseButton = document.getElementById('modal-close');
+  
+  if (modalCloseButton) {
+      modalCloseButton.addEventListener('click', fecharModal);
+      console.log("Evento de fechamento do modal adicionado.");
+  } else {
+      console.error("Elemento com ID 'modal-close' não encontrado.");
+  }
+});
+
 
 function showNotification(message, isError = false) {
     const notification = document.getElementById("notification");
@@ -492,11 +588,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // Adiciona evento de mudança para salvar os IDs no localStorage e redirecionar
-  document
-    .getElementById("searchInput")
-    .addEventListener("change", salvarIdsNoLocalStorage);
-
+  document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("searchInput");
+  
+    if (searchInput) {
+      searchInput.addEventListener("change", salvarIdsNoLocalStorage);
+    } else {
+      console.error("Elemento 'searchInput' não foi encontrado.");
+    }
+  });
+  
   // Função para busca binária
   function buscaBinaria(arr, x) {
     let start = 0;
@@ -745,6 +846,43 @@ document.getElementById("usuarioForm").addEventListener("submit", async (event) 
       showNotification(error.message, true);
     }
   });
-  
 
   });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    // Obter referências aos elementos do modal de ajuda
+    const iconAjuda = document.getElementById('icon-ajuda');
+    const modalAjuda = document.getElementById('modal-ajuda');
+    const closeModalAjudaButton = document.querySelector('.modal-ajuda-close');
+
+    // Função para mostrar o modal de ajuda
+    function showModalAjuda() {
+        console.log('Abrindo modal de ajuda');
+        modalAjuda.style.display = 'block';
+    }
+
+    // Função para fechar o modal de ajuda
+    function closeModalAjuda() {
+        console.log('Fechando modal de ajuda');
+        modalAjuda.style.display = 'none';
+    }
+
+    // Verifique se o ícone de ajuda está presente no DOM
+    if (iconAjuda) {
+        // Mostrar o modal de ajuda ao clicar no ícone de ajuda
+        iconAjuda.addEventListener('click', showModalAjuda);
+
+        // Fechar o modal de ajuda ao clicar no "X"
+        closeModalAjudaButton.addEventListener('click', closeModalAjuda);
+
+        // Fechar o modal de ajuda se o usuário clicar fora dele
+        window.addEventListener('click', function (event) {
+            if (event.target === modalAjuda) {
+                closeModalAjuda();
+            }
+        });
+    } else {
+        console.error('Ícone de ajuda não encontrado no DOM.');
+    }
+});
+

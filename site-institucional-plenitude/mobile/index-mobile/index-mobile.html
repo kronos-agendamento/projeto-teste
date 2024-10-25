@@ -11,17 +11,24 @@
     <script src="index-mobile.js"></script>
     <link rel="stylesheet" href="index-mobile.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    
 
 </head>
 
 <body>
     <main>
         <header>
-            <div class="pesquisa">
-                <img src="../../assets/icons/lupa.png" alt="" id="lupa-icon" title="Pesquisar uma especificação para agendar" style="cursor: pointer;">
-                <button id="close-icon" style="display:none;">X</button>
-                <input type="text" id="searchInput" placeholder="Pesquisar..." style="display:none; width: 100%; border-radius: 20px;" list="especificacoesList">
-                <datalist id="especificacoesList"></datalist>
+            <div class="header-container" style="display: flex; align-items: center; justify-content: space-between;">
+                <div class="ajuda" title="Ajuda">
+                    <i id="icon-ajuda" class="fas fa-question-circle" style="font-size: 24px; cursor: pointer;"></i>
+                </div>
+        
+                <div class="pesquisa" style="display: flex; align-items: center; margin-left: 10px;">
+                    <img src="../../assets/icons/lupa.png" alt="" id="lupa-icon" title="Pesquisar uma especificação para agendar" style="cursor: pointer; margin-right: 10px;">
+                    <button id="close-icon" style="display:none;">X</button>
+                    <input type="text" id="searchInput" placeholder="Pesquisar..." style="display:none; width: 100%; border-radius: 20px;" list="especificacoesList">
+                    <datalist id="especificacoesList"></datalist>
+                </div>
             </div>
             <div id="resultados"></div>
             
@@ -44,6 +51,19 @@
 
 
                 <div id="greeting2"></div>
+            </div>
+
+
+            <div id="modal-ajuda" class="modal-ajuda">
+                <div class="modal-ajuda-content">
+                    <span class="modal-ajuda-close">&times;</span>
+                    <h2>Como chegar ao estabelecimento</h2>
+                    <p>Endereço: Rua Exemplo, 123, Centro</p>
+                    <p>Cidade: São Paulo - SP</p>
+                    <p>CEP: 01234-567</p>
+                    <p>Telefone: (11) 1234-5678</p>
+                    <p>Veja no mapa: <a href="https://maps.google.com" target="_blank">Abrir no Google Maps</a></p>
+                </div>
             </div>
         </header>
         <section id="navigation">
@@ -163,7 +183,7 @@
 
 <!-- Modal de Cadastro -->
 <div id="modal-cadastro" class="modal" >
-    <div class="modal-content" style="height: 630px; margin-top: 20px; margin-bottom: 100px;">
+    <div class="modal-content" style="height: 700px; margin-top: 20px; margin-bottom: 100px;">
         <span id="modal-close" class="close">&times;</span>
         <h2>Complete seu cadastro!</h2>
 

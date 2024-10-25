@@ -276,6 +276,7 @@
         overflow: auto;
         background-color: rgba(0, 0, 0, 0.4);
     }
+    
 
     .modal-content {
         background-color: #fefefe;
@@ -355,7 +356,7 @@
 .modal-content {
     background-color: #fefefe;
     margin: 15% auto;
-    padding: 20px;
+    padding: 30px;
     border: 1px solid #888;
     width: 80%;
     max-width: 400px;
@@ -494,3 +495,52 @@
 }
 
 
+/* Estilização do modal de ajuda */
+.modal-ajuda {
+    display: none; /* Escondido por padrão */
+    position: fixed;
+    z-index: 100;
+    left: 0; /* Cobrir toda a tela */
+    top: 0;  /* Cobrir toda a tela */
+    width: 100%; /* Cobrir toda a largura da tela */
+    height: 100%; /* Cobrir toda a altura da tela */
+    background-color: rgba(0, 0, 0, 0.4); /* Fundo escurecido */
+}
+
+/* Estilização do conteúdo do modal de ajuda */
+.modal-ajuda-content {
+    position: absolute;
+    left: 50%;
+    top: 27%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    width: 330px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    z-index: 101; /* Certifica-se que o conteúdo fique acima do fundo */
+}
+
+.modal-ajuda-close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+
+.modal-ajuda-content h2 {
+    margin-top: 0;
+}
+
+.modal-ajuda-content p {
+    margin-bottom: 15px;
+}
+
+
+/* Efeito de hover no ícone de ajuda */
+#icon-ajuda:hover {
+    color: #d9006c; /* Alterar cor ao passar o mouse */
+    cursor: pointer;
+}
