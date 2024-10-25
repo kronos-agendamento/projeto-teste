@@ -58,26 +58,30 @@ document.addEventListener("DOMContentLoaded", function () {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth() + 1; // getMonth() retorna de 0 a 11, então adicionamos +1
-
+  
     // Limpa as opções existentes no <select>
     selectMes.innerHTML = "";
-
+  
     // Adiciona os meses de janeiro até o mês atual
     for (let month = 1; month <= currentMonth; month++) {
       const monthString = month.toString().padStart(2, "0"); // Garante que o mês tenha 2 dígitos (ex: '01')
       const option = document.createElement("option");
       option.value = `${currentYear}-${monthString}`;
-      option.text = new Intl.DateTimeFormat("pt-BR", { month: "long" }).format(
+  
+      // Obtenha o nome do mês em português e coloque a primeira letra em maiúscula
+      let monthName = new Intl.DateTimeFormat("pt-BR", { month: "long" }).format(
         new Date(currentYear, month - 1)
-      ); // Nome do mês em português
+      );
+      monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1); // Primeira letra maiúscula
+  
+      option.text = monthName;
       selectMes.appendChild(option);
     }
-
+  
     // Define o mês atual como o selecionado por padrão
-    selectMes.value = `${currentYear}-${currentMonth
-      .toString()
-      .padStart(2, "0")}`;
+    selectMes.value = `${currentYear}-${currentMonth.toString().padStart(2, "0")}`;
   }
+  
 
   // Chama a função para popular o <select> com os meses ao carregar a página
   populateMonthSelect();
@@ -144,25 +148,47 @@ function createChartProcedimentosUsuarioMes(labels, dataChart) {
           label: "Quantidade de Procedimentos", // Rótulo da barra
           data: dataChart, // Quantidades de procedimentos
           backgroundColor: ["#f9b4c4", "#c4145a", "#e99fb8"], // Cores das barras
-          borderColor: "#4B0082", // Cor da borda
+          borderColor: ["#f9b4c4", "#c4145a", "#e99fb8"], // Cor da borda
           borderWidth: 1, // Largura da borda
+          
         },
       ],
     },
     options: {
       responsive: true, // Responsivo para diferentes tamanhos de tela
+      maintainAspectRatio: false, 
       scales: {
         y: {
           beginAtZero: true, // Eixo Y começa no zero
           title: {
             display: true,
             text: "Quantidade",
+            font: {
+              family: 'Poppins, sans-serif',
+              size: 18,
+              weight: 'bold',
+            },
           },
         },
         x: {
+          ticks: {
+            maxRotation: 35,  
+            minRotation: 35,
+            font: {
+                size: 12,
+                weight: 'bold',
+                family: 'Poppins, sans-serif'
+            },
+            
+          },
           title: {
             display: true,
             text: "Procedimentos",
+            font: {
+              family: 'Poppins, sans-serif',
+              size: 18,
+              weight: 'bold',
+            },
           },
         },
       },
@@ -229,7 +255,7 @@ async function gapUltimoAgendamento() {
 
       document.querySelector(
         ".descricao-aviso h2"
-      ).textContent = `${data} dias`;
+      ).textContent = ` ${data} dias`;
 
       localStorage.setItem("QtdDiaUltimoAgendamento", data);
     } else {
@@ -325,54 +351,84 @@ function formatDateTime(dateTimeString) {
   return new Date(dateTimeString).toLocaleString("pt-BR", options);
 }
 
-// Função para buscar os 3 principais procedimentos
-async function fetchProcedimentos() {
+async function fetchProcedimentos() { 
   const idUsuario = localStorage.getItem("idUsuario");
 
   if (!idUsuario) {
-    console.error("ID do usuário não encontrado em localDate.");
-    return;
+      console.error("ID do usuário não encontrado no localStorage.");
+      return;
   }
 
   try {
-    const response = await fetch(
-      `http://localhost:8080/api/procedimentos/top3/${idUsuario}`
-    );
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    const procedimentos = await response.json();
+      const response = await fetch(`http://localhost:8080/api/procedimentos/top3/${idUsuario}`);
+      if (!response.ok) {
+          throw new Error("Erro na resposta da rede");
+      }
+      const procedimentos = await response.json();
 
-    const container = document.querySelector(".box-agendamento");
-    container.innerHTML = ""; // Limpar conteúdo anterior
+      const container = document.querySelector(".box-agendamento-container");
+      container.innerHTML = ""; // Limpar o conteúdo anterior
 
-    procedimentos.forEach((procedimento) => {
-      const tipo_procedimento = procedimento[1]; // Tipo
-      const descricao_procedimento = procedimento[2]; // Descrição
-      const data_horario = procedimento[4]; // Data e horário mais recente
-      const foto = "../../assets/icons/profile.png"; // Imagem padrão
+      procedimentos.forEach((procedimento) => {
+          const tipo_procedimento = procedimento[1]; // Tipo
+          const descricao_procedimento = procedimento[2]; // Descrição
+          const data_horario = procedimento[4]; // Data e horário mais recente
 
-      const formattedDateTime = formatDateTime(data_horario);
+          // Verifica o tipo de procedimento e ajusta o ícone
+          let imgIconSrc = '../../assets/icons/profile.png'; // Ícone padrão
 
-      const agendamentoHTML = `
-                <div class="box-agendamento">
-                    <div class="box-agendamento2">
-                        <div class="icon-agendamento">
-                            <img src="${foto}" width="100" height="100" alt="${tipo_procedimento}">
-                        </div>
-                        <div class="procedimento-agendamento">
-                            <span id="agendamento">${tipo_procedimento}<br> ${descricao_procedimento}</span>
-                            <span id="agendamento">Último agendamento: ${formattedDateTime}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-      container.insertAdjacentHTML("beforeend", agendamentoHTML);
-    });
+          switch (tipo_procedimento) {
+              case 'Maquiagem':
+                  imgIconSrc = '../../assets/icons/maquiagem-mobile.png';
+                  break;
+              case 'Cílios':
+                  imgIconSrc = '../../assets/icons/cilios-mobile.png';
+                  break;
+              case 'Sobrancelha':
+                  imgIconSrc = '../../assets/icons/sobrancelha-mobile.png';
+                  break;
+              default:
+                  imgIconSrc = '../../assets/icons/profile.png'; // Ícone padrão
+                  break;
+          }
+
+          const formattedDateTime = formatDateTime(data_horario);
+
+          // Criar o HTML com o ícone e as informações do agendamento
+          const agendamentoHTML = `
+              <div class="box-agendamento">
+                  <div class="icon-agendamento">
+                      <div class="icon-procedimento" style="background-color: #ffffff; border: 2px solid #AD9393; width: 80px; height: 80px; margin-top: 10px; border-radius: 50%;">
+                          <img src="${imgIconSrc}" alt="${tipo_procedimento}" >
+                      </div>
+                  </div>
+                  <div class="procedimento-agendamento">
+                      <span id="agendamento"><strong style= "font-size: 18px;">${tipo_procedimento}</strong><br></span>
+                      <span id="agendamento"><strong>${descricao_procedimento}</strong><br></span>
+                      <span id="agendamento">Último agendamento: ${formattedDateTime}</span>
+                  </div>
+              </div>
+          `;
+          container.insertAdjacentHTML("beforeend", agendamentoHTML);
+      });
   } catch (error) {
-    console.error("Erro ao buscar procedimentos:", error);
+      console.error("Erro ao buscar procedimentos:", error);
   }
 }
+
+// Chamar a função ao carregar a página
+document.addEventListener('DOMContentLoaded', fetchProcedimentos);
+
+// Função para formatar data e horário
+function formatDateTime(data_horario) {
+  const data = new Date(data_horario);
+  return data.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' }) + 
+         ' às ' + data.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+}
+
+
+
+
 
 fetchProcedimentos();
 

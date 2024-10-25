@@ -420,7 +420,7 @@ function abrirModalAgendamento(agendamento) {
     modalProcedimento.innerHTML = `<i class="fas fa-star"></i> <strong>Procedimento:</strong> ${agendamento.tipoProcedimento}`;
     modalEspecificacao.innerHTML = `<i class="fas fa-list"></i> <strong>Especificação:</strong> ${agendamento.especificacaoProcedimento}`;
     modalProfissional.innerHTML = `<i class="fas fa-user-md"></i> <strong>Profissional:</strong> Priscila Rossato`;
-    modalLocal.innerHTML = `<i class="fas fa-map-marker-alt"></i> <strong>Local:</strong> Vila Prudente`;
+    modalLocal.innerHTML = `<i class="fas fa-map-marker-alt"></i> <strong>Local:</strong> R. das Gilias, 361 - Vila Bela, São Paulo - SP, 03201-070`;
     modalStatus.innerHTML = `<i class="fas fa-tasks"></i> <strong>Status:</strong> ${agendamento.statusAgendamento} `;
     
     // Exibe o modal

@@ -87,8 +87,8 @@
 
     /* Estilo dos ícones */
     .nav-bar .icon {
-        font-size: 24px;
-        color: #000;
+        font-size: 30px;
+        color: #ffffff;
     }
 
     .saudacao {
@@ -509,7 +509,6 @@
         transition: background-color 0.3s;
         font-family: Poppins, sans-serif;
     }
-}
 
 .save-button {
     display: flex;
@@ -594,3 +593,6 @@ input {
     font-family: Poppins, Arial, sans-serif;
 
 }
+
+}
+
