@@ -192,13 +192,14 @@
             <div class="modal-content">
                 <span onclick="fecharModal()" class="close">&times;</span>
                 <h2>Detalhes do Agendamento</h2>
-                <p id="modal-data"></p> <!-- Data -->
-                <p id="modal-horario"></p> <!-- Horário -->
-                <p id="modal-procedimento"></p> <!-- Procedimento -->
-                <p id="modal-especificacao"></p> <!-- Especificação -->
-                <p id="modal-profissional"></p> <!-- Profissional -->
-                <p id="modal-local"></p> <!-- Local -->
-                <p id="modal-status"></p> <!-- Local -->
+                <p id="modal-data"> <!-- Data --></p>
+                <p id="modal-horario"><i class="fas fa-clock"></i> <!-- Horário --></p>
+                <p id="modal-procedimento"><i class="fas fa-stethoscope"></i> <!-- Procedimento --></p>
+                <p id="modal-especificacao"><i class="fas fa-list"></i> <!-- Especificação --></p>
+                <p id="modal-profissional"><i class="fas fa-user-md"></i> <!-- Profissional --></p>
+                <p id="modal-local"><i class="fas fa-map-marker-alt"></i> <!-- Local --></p>
+                <p id="modal-status"><i class="fas fa-tasks"></i> <!-- Status --></p>
+                
             </div>
         </div>
 
@@ -206,22 +207,24 @@
 
 <!-- Modal de Cadastro -->
 <div id="modal-cadastro" class="modal" >
-    <div class="modal-content" style="height: 700px; margin-top: 20px; margin-bottom: 100px;">
+    <div class="modal-content" style="height: 850px; margin-top: 20px; margin-bottom: 100px;">
         <span id="modal-close" class="close">&times;</span>
-        <h2>Complete seu cadastro!</h2>
-
+        <div>
+        <a style="font-size: 24px; font-weight: bold;">Complete seu cadastro!</a><br>
+        <a style="color: #e70069; margin-bottom: 8%;"> * Há informações não preenchidas.</a>
+</div>
         <form id="usuarioForm" class="form">
-            <div class="form-group-row">
+            <div class="form-group-row" style="margin-top: 6%;">
                 <div class="form-group">
                     <label for="nascimento">Data de Nascimento:</label>
-                    <input type="date" id="nascimento" name="nascimento" required>
+                    <input type="date" style="width: 96%; border: 1px solid #ccc; border-radius: 5px;  padding: 10px; font-size: 14px;  font-family: Poppins, Arial, sans-serif; margin-bottom: 4%; " id="nascimento" name="nascimento" required>
                 </div>
             </div>
 
             <div class="form-group-row">
                 <div class="form-group">
                     <label for="genero">Gênero:</label>
-                    <select id="genero" name="genero" required>
+                    <select id="genero" style="width: 101%; border: 1px solid #ccc; border-radius: 5px;  padding: 13px; font-size: 14px;  font-family: Poppins, Arial, sans-serif; margin-bottom: 4%; color: black;" name="genero" required>
                         <option value="">Selecione</option>
                         <option value="Masculino">Masculino</option>
                         <option value="Feminino">Feminino</option>
@@ -233,7 +236,7 @@
                 </div>
                 <div class="form-group">
                     <label for="indicacao">Indicação:</label>
-                    <input type="text" id="indicacao" name="indicacao">
+                    <input type="text"  style="width: 96%; border: 1px solid #ccc; border-radius: 5px;  padding: 10px; font-size: 14px;  font-family: Poppins, Arial, sans-serif;" id="indicacao" name="indicacao">
                 </div>
             </div>
 
@@ -241,37 +244,37 @@
             <div class="form-group-row">
                 <div class="form-group">
                     <label for="cep">CEP:</label>
-                    <input type="text" id="cep" name="cep" required>
+                    <input type="text" style="width: 94%; border: 1px solid #ccc; border-radius: 5px;  padding: 10px; font-size: 14px;  font-family: Poppins, Arial, sans-serif; margin-bottom: 4%;" id="cep" name="cep" required>
                 </div>
                 <div class="form-group">
                     <label for="logradouro">Logradouro:</label>
-                    <input type="text" id="logradouro" name="logradouro" required>
+                    <input type="text" style="width: 94%; border: 1px solid #ccc; border-radius: 5px;  padding: 10px; font-size: 14px;  font-family: Poppins, Arial, sans-serif; margin-bottom: 4%;" id="logradouro" name="logradouro" required>
                 </div>
                 <div class="form-group">
                     <label for="numero">Número:</label>
-                    <input type="text" id="numero" name="numero" required>
+                    <input type="text" style="width: 94%; border: 1px solid #ccc; border-radius: 5px;  padding: 10px; font-size: 14px;  font-family: Poppins, Arial, sans-serif; margin-bottom: 4%;" id="numero" name="numero" required>
                 </div>
             </div>
 
             <div class="form-group-row">
                 <div class="form-group">
                     <label for="bairro">Bairro:</label>
-                    <input type="text" id="bairro" name="bairro" required>
+                    <input type="text" style="width: 94%; border: 1px solid #ccc; border-radius: 5px;  padding: 10px; font-size: 14px;  font-family: Poppins, Arial, sans-serif; margin-bottom: 4%;" id="bairro" name="bairro" required>
                 </div>
                 <div class="form-group">
                     <label for="cidade">Cidade:</label>
-                    <input type="text" id="cidade" name="cidade" required>
+                    <input type="text" style="width: 94%; border: 1px solid #ccc; border-radius: 5px;  padding: 10px; font-size: 14px;  font-family: Poppins, Arial, sans-serif; margin-bottom: 4%;" id="cidade" name="cidade" required>
                 </div>
                 <div class="form-group">
                     <label for="estado">Estado:</label>
-                    <input type="text" id="estado" name="estado" required>
+                    <input type="text" style="width: 94%; border: 1px solid #ccc; border-radius: 5px;  padding: 10px; font-size: 14px;  font-family: Poppins, Arial, sans-serif; margin-bottom: 4%;" id="estado" name="estado" required>
                 </div>
             </div>
 
             <div class="form-group-row">
                 <div class="form-group">
                     <label for="complemento">Complemento:</label>
-                    <input type="text" id="complemento" name="complemento">
+                    <input type="text" style="width: 94%; border: 1px solid #ccc; border-radius: 5px;  padding: 10px; font-size: 14px;  font-family: Poppins, Arial, sans-serif; margin-bottom: 3%;" id="complemento" name="complemento">
                 </div>
             </div>
 

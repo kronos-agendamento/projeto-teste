@@ -4,6 +4,7 @@ const agendamentoId = localStorage.getItem('idAgendamento')
 const apiUrl = `http://localhost:8080/api/agendamentos/agendamentos/usuario/${usuarioId}`;
 
 
+
 // Função para formatar a data
 function formatarData(dataHora) {
     const data = new Date(dataHora);
@@ -35,8 +36,25 @@ async function buscarDadosUsuario() {
       localStorage.setItem('cidade', usuario.endereco?.cidade || "");
       localStorage.setItem('estado', usuario.endereco?.estado || "");
       localStorage.setItem('numero', usuario.endereco?.numero || "");
+      localStorage.setItem('numero', usuario.endereco?.complemento || "");
 
-      console.log("Dados do usuário obtidos e armazenados no localStorage:", usuario);
+
+
+
+     console.log("Dados do usuário obtidos e armazenados no localStorage:", usuario);
+
+      // Preenche os campos do formulário com os dados do localStorage
+      document.getElementById('nascimento').value = localStorage.getItem('dataNasc');
+      document.getElementById('genero').value = localStorage.getItem('genero'); // Preenche o campo de gênero
+      document.getElementById('indicacao').value = localStorage.getItem('indicacao');
+      document.getElementById('logradouro').value = localStorage.getItem('logradouro');
+      document.getElementById('cep').value = localStorage.getItem('cep');
+      document.getElementById('bairro').value = localStorage.getItem('bairro');
+      document.getElementById('cidade').value = localStorage.getItem('cidade');
+      document.getElementById('estado').value = localStorage.getItem('estado');
+      document.getElementById('numero').value = localStorage.getItem('numero');
+      document.getElementById('complemento').value = localStorage.getItem('complemento');
+
       return usuario;
   } catch (error) {
       console.error("Erro ao buscar dados do usuário:", error);
@@ -397,13 +415,13 @@ function abrirModalAgendamento(agendamento) {
 
     // Atualiza os elementos com os dados do agendamento clicado
     // modalDiaSemana.textContent = dataFormatada.diaSemana;
-    modalData.innerHTML = `<strong>Data:</strong> ${dataFormatada.diaMesAno}`;
-    modalHorario.innerHTML = `<strong>Horário:</strong> ${dataFormatada.horario}`;
-    modalProcedimento.innerHTML = `<strong>Procedimento:</strong> ${agendamento.tipoProcedimento}`;
-    modalEspecificacao.innerHTML = `<strong>Especificação:</strong> ${agendamento.especificacaoProcedimento}`;
-    modalProfissional.innerHTML = `<strong>Profissional:</strong> Priscila Rossato`;
-    modalLocal.innerHTML = `<strong>Local:</strong> Vila Prudente`;
-    modalStatus.innerHTML = `<strong>Status:</strong> ${agendamento.statusAgendamento} `;
+    modalData.innerHTML = `<i class="fas fa-calendar-alt"></i> <strong>Data:</strong> ${dataFormatada.diaMesAno}`;
+    modalHorario.innerHTML = `<i class="fas fa-clock"></i> <strong>Horário:</strong> ${dataFormatada.horario}`;
+    modalProcedimento.innerHTML = `<i class="fas fa-star"></i> <strong>Procedimento:</strong> ${agendamento.tipoProcedimento}`;
+    modalEspecificacao.innerHTML = `<i class="fas fa-list"></i> <strong>Especificação:</strong> ${agendamento.especificacaoProcedimento}`;
+    modalProfissional.innerHTML = `<i class="fas fa-user-md"></i> <strong>Profissional:</strong> Priscila Rossato`;
+    modalLocal.innerHTML = `<i class="fas fa-map-marker-alt"></i> <strong>Local:</strong> Vila Prudente`;
+    modalStatus.innerHTML = `<i class="fas fa-tasks"></i> <strong>Status:</strong> ${agendamento.statusAgendamento} `;
     
     // Exibe o modal
     modal.style.display = 'block';
@@ -778,10 +796,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   
     // Função para pegar o CPF da URL
-    function getCpfFromUrl() {
-      const params = new URLSearchParams(window.location.search);
-      return params.get("cpf"); // Pega o valor do parâmetro 'cpf' na URL
-    }
+    // function getCpfFromUrl() {
+    //   const params = new URLSearchParams(window.location.search) || localStorage.getItem('C');
+    //   return params.get("cpf"); // Pega o valor do parâmetro 'cpf' na URL
+    // }
   
     // Função de envio do formulário (alterado para PATCH)
     // Função de envio do formulário (alterado para PATCH)
@@ -789,7 +807,7 @@ document.getElementById("usuarioForm").addEventListener("submit", async (event) 
     event.preventDefault();
   
     // Obter o CPF da URL
-    const cpf = getCpfFromUrl();
+    const cpf = localStorage.getItem('cpf');;
     if (!cpf) {
       showNotification("CPF não encontrado. Verifique a URL.", true);
       return;
