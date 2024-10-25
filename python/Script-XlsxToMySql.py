@@ -1,5 +1,6 @@
 import pandas as pd
 import mysql.connector
+from datetime import datetime
 
 # Função para mostrar notificações
 def show_notification(message, is_error=False):
@@ -8,25 +9,18 @@ def show_notification(message, is_error=False):
     else:
         print(f"Sucesso: {message}")
 
-# Função para formatar CPF
-def format_cpf(cpf):
-    cpf = cpf.replace('.', '').replace('-', '')  # Remove pontos e traços
-    if len(cpf) == 11:
-        formatted_cpf = f"{cpf[:3]}.{cpf[3:6]}.{cpf[6:9]}-{cpf[9:]}"
-        print(f"CPF: {formatted_cpf}")
-        return formatted_cpf
-    else:
-        show_notification("CPF inválido!", True)
-        return None
-
-# Função para formatar telefone (remover formatação)
+# Função para formatar telefone (remover formatação e validar)
 def format_phone(phone):
-    phone = phone.replace('', '').replace('', '').replace('', '').replace('', '')  # Remove formatação
-    if len(phone) == 11:
-        print(f"Telefone: {phone}")
-        return phone
-    else:
-        show_notification("Telefone inválido!", True)
+    try:
+        phone = int(phone)  # Converte para número inteiro
+        if len(str(phone)) >= 10:  # Verifica se tem pelo menos 10 dígitos
+            print(f"Telefone: {phone}")
+            return phone
+        else:
+            show_notification("Telefone inválido!", True)
+            return None
+    except ValueError:
+        show_notification("Formato de telefone inválido!", True)
         return None
 
 # Função para formatar Instagram
@@ -52,16 +46,10 @@ cnx = mysql.connector.connect(
 )
 cursor = cnx.cursor()
 
-# Comando SQL para inserir dados no usuário
-comando_insert_usuario = """
-INSERT INTO usuario (nome, email, cpf, telefone, instagram, senha)
+# Comando SQL para inserir dados na tabela Leads
+comando_insert_lead = """
+INSERT INTO Leads (nome, email, telefone, instagram, mensagem, data_criacao)
 VALUES (%s, %s, %s, %s, %s, %s)
-"""
-
-# Comando SQL para inserir dados na mensagem
-comando_insert_mensagem = """
-INSERT INTO mensagem (descricao, id_usuario)
-VALUES (%s, %s)
 """
 
 # Lê o arquivo XLSX
@@ -71,25 +59,18 @@ for index, linha in df.iterrows():
     # Formatação dos dados
     nome = capitalize_name(linha['Nome'])
     email = linha['Email'].lower()
-    cpf = format_cpf(linha['CPF'])
-    telefone = format_phone(linha['Telefone'])
+    telefone = format_phone(linha['Telefone'])  # Formata o telefone como inteiro
     instagram = format_instagram(linha['Instagram'])
-    senha = linha['Senha']  # Supondo que a senha já está devidamente tratada
+    mensagem = linha['Mensagem']  # Usa a mensagem da planilha
+    data_criacao = datetime.now()  # Data e hora atual
 
-    # Verifica se todos os dados estão formatados corretamente antes de inserir
-    if cpf and telefone:
-        dados_usuario = (nome, email, cpf, telefone, instagram, senha)
-        cursor.execute(comando_insert_usuario, dados_usuario)
-        user_id = cursor.lastrowid  # Obtém o ID do último usuário inserido
-        show_notification(f"Usuário {nome} inserido com sucesso!")
-
-        # Inserir mensagem associada ao usuário
-        mensagem = "Mensagem padrão para novos usuários"  # Altere conforme necessário
-        dados_mensagem = (mensagem, user_id)
-        cursor.execute(comando_insert_mensagem, dados_mensagem)
-        show_notification(f"Mensagem para o usuário {nome} inserida com sucesso!")
+    # Verifica se o telefone é válido antes de inserir
+    if telefone:
+        dados_lead = (nome, email, telefone, instagram, mensagem, data_criacao)
+        cursor.execute(comando_insert_lead, dados_lead)
+        show_notification(f"Lead {nome} inserido com sucesso!")
     else:
-        show_notification(f"Falha ao inserir o usuário {nome}.", True)
+        show_notification(f"Falha ao inserir o lead {nome}.", True)
 
 # Confirma as mudanças e fecha a conexão
 cnx.commit()
@@ -97,3 +78,4 @@ cursor.close()
 cnx.close()
 
 print("Dados importados com sucesso!")
+
