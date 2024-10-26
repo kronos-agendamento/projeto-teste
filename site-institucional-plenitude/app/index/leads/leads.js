@@ -91,3 +91,13 @@ document.addEventListener("DOMContentLoaded", function () {
     // Chama a função para buscar e renderizar os leads ao carregar a página
     fetchLeads();
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const nome = localStorage.getItem("nome");
+    const instagram = localStorage.getItem("instagram");
+  
+    if (nome && instagram) {
+        document.getElementById("userName").textContent = nome;
+        document.getElementById("userInsta").textContent = instagram;
+    }
+  });

@@ -1,330 +1,288 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Anamneses | KronosBooking</title>
-    <link rel="stylesheet" href="anamnese.css" />
-    <script src="anamnese.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-  </head>
 
-  <body>
-    <div class="corpo">
-      <div class="navigation">
-        <div class="perfil">
-          <div class="imagem-perfil">
-            <img src="../assets/Foto de Perfil.png" />
-          </div>
-          <li id="userName"></li>
-          <li id="userInsta"></li>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anamnese | KronosBooking</title>
+  <link rel="stylesheet" href="anamnese.css" />
+  <script src="anamnese.js"></script>
+  <link href="../assets/favicon.png" rel="icon" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+
+<body>
+  <div class="corpo">
+    <div class="navigation">
+      <li class="list" style="
+        width: 30px;
+        height: 30px;
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        margin-top: 5vh;
+      ">
+        <div class="imagem-perfil" style="
+          width: 20vh;
+          height: 20vh;
+          border-radius: 300px;
+          display: flex;
+          justify-content: center;
+        ">
+          <img src="../index/Foto de Perfil.png" style="
+            width: 53vh;
+            height: 23vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          " />
         </div>
+      </li>
+      <li id="userName" style="
+        margin-top: 20vh;
+        list-style: none;
+        color: white;
+        font-weight: 600;
+      "></li>
+      <li id="userInsta" style="
+        list-style: none;
+        color: white;
+        font-weight: 200;
+        font-size: 12px;
+      "></li>
 
-        <ul>
-          <li class="list">
-            <a href="../index/index.html">
-              <span class="icon"
-                ><ion-icon name="home-outline"></ion-icon
-              ></span>
-              <span class="title">Início </span>
-            </a>
-          </li>
-          <li class="list">
-            <a href="../perfil/perfil.html">
-              <span class="icon"
-                ><ion-icon name="people-outline"></ion-icon
-              ></span>
-              <span class="title">Perfil</span>
-            </a>
-          </li>
-          <li class="list">
-            <a href="../agendamento/agendamento.html">
-              <span class="icon"
-                ><ion-icon name="calendar-outline"></ion-icon
-              ></span>
-              <span class="title">Agendamentos</span>
-            </a>
-          </li>
-          <li class="list active">
-            <a href="anamnese.html">
-              <span class="icon"
-                ><ion-icon name="document-text-outline"></ion-icon
-              ></span>
-              <span class="title">Anamneses</span>
-            </a>
-          </li>
-          <li class="list">
-            <a href="../clientes/clientes.html">
-              <span class="icon"
-                ><ion-icon name="person-add-outline"></ion-icon
-              ></span>
-              <span class="title">Clientes</span>
-            </a>
-          </li>
-          <li class="list">
-            <a href="../procedimento/procedimento.html">
-              <span class="icon"
-                ><ion-icon name="brush-outline"></ion-icon
-              ></span>
-              <span class="title">Procedimentos</span>
-            </a>
-          </li>
-          <li class="list">
-            <a href="../dashboard/dashboard.html">
-              <span class="icon"
-                ><ion-icon name="stats-chart-outline"></ion-icon
-              ></span>
-              <span class="title">Dashboard</span>
-            </a>
-          </li>
-          <li class="list">
-            <a href="../../index.html">
-              <span class="icon"
-                ><ion-icon name="exit-outline"></ion-icon
-              ></span>
-              <span class="title">Sair</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-      <main>
-        <header>
-          <div>
-            <div id="greeting1">Ficha de Anamnese</div>
-            <div id="greeting2">
-              Preencha e garanta a segurança dos procedimentos feitos nos
-              clientes.
-            </div>
-          </div>
-
-          <div id="notification" class="notification">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              fill="white"
-              class="bi bi-check-circle-fill"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z"
-              />
-            </svg>
-            <span id="notification-message"></span>
-          </div>
-        </header>
-        <div class="main-content">
-          <div class="center-content">
-            <section class="actions">
-              <a
-                href="../anamnese/anamnese-forms/filtrar-anamnese/filtrar-anamnese.html"
-                ><button id="openFilterModalBtn" class="filter-btn">
-                  <img
-                    src="../../assets/icons/search.webp "
-                    alt="filter"
-                    style="margin-right: 20px"
-                  />
-                  Pesquisar Ficha Por Cliente
-                </button></a
-              >
-              <div class="right-actions">
-                <button
-                  class="planilha-btn"
-                  onclick="showForm2(), getDesativadas()"
-                >
-                  <img
-                    src="../../assets/icons/desativar.webp"
-                    alt="spreadsheet"
-                  />Perguntas Desativadas
-                </button>
-                <button class="criar-btn" onclick="showForm()">
-                  <img src="../../assets/icons/createNew.png" alt="createNew" />
-                  <span>Criar Pergunta</span>
-                </button>
-              </div>
-            </section>
-          </div>
-        </div>
-
-        <div class="main-content">
-          <div class="center-content">
-            <section class="form-section">
-              <div class="form-title">
-                <h2>Perguntas Ativas</h2>
-              </div>
-
-              <div class="direcionamento"></div>
-
-              <div class="content-box"></div>
-            </section>
-          </div>
-        </div>
-
-        <div id="questionModal" class="modal">
-          <div class="modal-content">
-            <div class="divTopoModal">
-              <h3>Criar Pergunta</h3>
-              <br />
-            </div>
-            <div>
-              <label for="descricao">Pergunta: </label>
-              <input
-                type="text"
-                id="descricaoPergunta"
-                name="descricaoPergunta"
-                placeholder="Digite a pergunta"
-              /><br /><br />
-              <label for="tipo">Tipo: </label>
-              <select
-                id="tipoPergunta"
-                name="tipoPergunta"
-                onchange="mostrarExemplo()"
-              >
-                <option value="Input">Texto</option>
-                <option value="Select">Seleção</option>
-                <option value="Check Box">Caixa de Seleção</option></select
-              ><br /><br />
-              <div id="exemploTipoPergunta" class="exemplo"></div>
-              <br />
-            </div>
-            <div>
-              <button
-                id="save-button"
-                class="btn btn-save"
-                onclick="criarPergunta(), closeModal()"
-              >
-                Salvar
-              </button>
-              <button onclick="closeModal()" class="btn btn-no">
-                Cancelar
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div id="modalDesativadas" class="modal">
-          <div class="modal-content" id="context-desativado" style="width: 50%">
-            <div class="divTopoModal">
-              <h3>Perguntas Desativadas:</h3>
-              <br />
-            </div>
-            <div style="display: flex; justify-content: center">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Pergunta</th>
-                    <th>Tipo</th>
-                    <th>Ação</th>
-                  </tr>
-                </thead>
-                <tbody id="tabelaDesativadas"></tbody>
-                <!-- Corpo da tabela onde os dados serão inseridos -->
-              </table>
-            </div>
-            <div>
-              <button onclick="closeModal2()" class="btn btn-no">Fechar</button>
-            </div>
-          </div>
-        </div>
-
-        <div id="modalDeletar" class="modal">
-          <div class="modal-content">
-            <div class="divTopoModal">
-              <h3>Deseja desativar a pergunta?</h3>
-              <br />
-              <p id="perguntaTexto"></p>
-              <p id="perguntaTipo"></p>
-            </div>
-            <div>
-              <button
-                id="delete-button"
-                class="btn btn-save"
-                onclick="desativarPergunta(perguntaIdGlobal), closeModal3()"
-              >
-                Sim
-              </button>
-              <button onclick="closeModal3()" class="btn btn-no">Não</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Modal para Editar Pergunta -->
-        <!-- Modal para Editar Pergunta -->
-        <div id="editQuestionModal" class="modal">
-          <div class="modal-content">
-            <div class="divTopoModal">
-              <h3>Editar Pergunta</h3>
-              <br />
-            </div>
-            <div>
-              <label for="editDescricaoPergunta">Pergunta: </label>
-              <input
-                type="text"
-                id="editDescricaoPergunta"
-                name="editDescricaoPergunta"
-              /><br /><br />
-              <label for="editTipoPergunta">Tipo: </label>
-              <select
-                id="editTipoPergunta"
-                name="editTipoPergunta"
-                onchange="mostrarExemploEditar()"
-              >
-                <option value="Input">Texto</option>
-                <option value="Select">Seleção</option>
-                <option value="Check Box">Caixa de Seleção</option></select
-              ><br /><br />
-              <div id="exemploTipoPerguntaEditar" class="exemplo"></div>
-              <br />
-            </div>
-            <div>
-              <button
-                id="edit-save-button"
-                class="btn btn-save"
-                onclick="atualizarPergunta()"
-              >
-                Salvar
-              </button>
-              <button onclick="closeEditModal()" class="btn btn-no">
-                Cancelar
-              </button>
-            </div>
-          </div>
-        </div>
-        <div id="modalExcluir" class="modal">
-          <div class="modal-content">
-            <div class="divTopoModal">
-              <h3>Deseja excluir a pergunta?</h3>
-              <br />
-              <p id="perguntaExcluirTexto"></p>
-              <p id="perguntaExcluirTipo"></p>
-            </div>
-            <div>
-              <button
-                id="confirm-excluir-button"
-                class="btn btn-save"
-                onclick="confirmarExcluirPergunta()"
-              >
-                Sim
-              </button>
-              <button onclick="closeExcluirModal()" class="btn btn-no">
-                Não
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <script
-          type="module"
-          src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
-        ></script>
-        <script
-          nomodule
-          src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
-        ></script>
-      </main>
+      <ul style="margin-top: 4%; position: absolute">
+        <li class="list">
+          <a href="../../app/index/index.html">
+            <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+            <span class="title">Início </span>
+          </a>
+        </li>
+        <li class="list">
+          <a href="../perfil/perfil.html">
+            <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
+            <span class="title">Perfil</span>
+          </a>
+        </li>
+        <li class="list">
+          <a href="../agendamento/agendamento.html">
+            <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
+            <span class="title">Agendamentos</span>
+          </a>
+        </li>
+        <li class="list active">
+          <a href="anamnese.html">
+            <span class="icon"><ion-icon name="document-text-outline"></ion-icon></span>
+            <span class="title">Anamneses</span>
+          </a>
+        </li>
+        <li class="list">
+          <a href="../clientes/clientes.html">
+            <span class="icon"><ion-icon name="person-add-outline"></ion-icon></span>
+            <span class="title">Clientes</span>
+          </a>
+        </li>
+        <li class="list">
+          <a href="../procedimento/procedimento.html">
+            <span class="icon"><ion-icon name="brush-outline"></ion-icon></span>
+            <span class="title">Procedimentos</span>
+          </a>
+        </li>
+        <li class="list">
+          <a href="../dashboard/dashboard.html">
+            <span class="icon"><ion-icon name="stats-chart-outline"></ion-icon></span>
+            <span class="title">Dashboard</span>
+          </a>
+        </li>
+        <li class="list">
+          <a href="../../index.html">
+            <span class="icon"><ion-icon name="exit-outline"></ion-icon></span>
+            <span class="title">Sair</span>
+          </a>
+        </li>
+      </ul>
     </div>
-  </body>
+    <main>
+      <header style="height: 14vh; width: 152vh; margin-left: 4.3%; margin-top: 23px;">
+        <div>
+          <h1>Ficha de Anamnese</h1>
+          <p>
+            Preencha e garanta a segurança dos procedimentos feitos nos
+            clientes.
+          </p>
+        </div>
+
+        <div id="notification" class="notification">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill"
+            viewBox="0 0 16 16">
+            <path
+              d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
+          </svg>
+          <span id="notification-message"></span>
+        </div>
+      </header>
+      <div class="main-content">
+        <div class="center-content">
+          <section class="actions">
+            <a href="../anamnese/anamnese-forms/filtrar-anamnese/filtrar-anamnese.html"><button id="openFilterModalBtn"
+                class="filter-btn" style="height: 7vh; margin-left: 1%; width: 50vh; border-radius: 10px;">
+                <i class="fas fa-search" style="margin-right: 10px; font-size: 24px;"></i>
+                <span style="font-weight: bold; font-size: 14px;">Pesquisar anamnese por cliente</span>
+              </button></a>
+            
+              <button class="planilha-btn" onclick="showForm2(), getDesativadas()" style="height: 7vh; width: 34vh; margin-right: 10px; border-radius: 10px;">
+                <i class="fas fa-folder" style="margin-right: 10px; font-size: 24px;"></i>
+                <span style="font-weight: bold; font-size: 14px;">Perguntas Inativas</span>
+              </button>
+              <button class="criar-btn" onclick="showForm()" style="height: 7vh; width: 30vh; margin-left: 0vh; border-radius: 10px;">
+                <i class="fas fa-plus-circle" style="margin-right: 10px; font-size: 24px;"></i>
+                <span style="font-weight: bold; font-size: 14px;">Criar Pergunta</span>
+              </button>
+      
+          </section>
+        </div>
+      </div>
+
+      <div class="main-content">
+        <div class="center-content">
+          <section class="form-section">
+            <div class="form-title">
+              <h2>Perguntas Ativas</h2>
+            </div>
+
+            <div class="direcionamento"></div>
+
+            <div class="content-box"></div>
+          </section>
+        </div>
+      </div>
+
+      <div id="questionModal" class="modal">
+        <div class="modal-content">
+          <div class="divTopoModal">
+            <h3>Criar Pergunta</h3>
+            <br />
+          </div>
+          <div>
+            <label for="descricao">Pergunta: </label>
+            <input type="text" id="descricaoPergunta" name="descricaoPergunta"
+              placeholder="Digite a pergunta" /><br /><br />
+            <label for="tipo">Tipo: </label>
+            <select id="tipoPergunta" name="tipoPergunta" onchange="mostrarExemplo()">
+              <option value="Input">Texto</option>
+              <option value="Select">Seleção - (Sim/Não)</option>
+              <!-- <option value="Check Box">Caixa de Seleção</option> -->
+            </select><br /><br />
+            <div id="exemploTipoPergunta" class="exemplo"></div>
+            <br />
+          </div>
+          <div>
+            <button id="save-button" class="btn btn-save" onclick="criarPergunta(), closeModal()">
+              Salvar
+            </button>
+            <button onclick="closeModal()" class="btn btn-no">
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="modalDesativadas" class="modal">
+        <div class="modal-content" id="context-desativado" style="width: 50%">
+          <div class="divTopoModal">
+            <h3>Perguntas Desativadas:</h3>
+            <br />
+          </div>
+          <div style="display: flex; justify-content: center">
+            <table>
+              <thead>
+                <tr>
+                  <th>Pergunta</th>
+                  <th>Tipo</th>
+                  <th>Ação</th>
+                </tr>
+              </thead>
+              <tbody id="tabelaDesativadas"></tbody>
+              <!-- Corpo da tabela onde os dados serão inseridos -->
+            </table>
+          </div>
+          <div>
+            <button onclick="closeModal2()" class="btn btn-no">Fechar</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="modalDeletar" class="modal">
+        <div class="modal-content">
+          <div class="divTopoModal">
+            <h3>Deseja desativar a pergunta?</h3>
+            <br />
+            <p id="perguntaTexto"></p>
+            <p id="perguntaTipo"></p>
+          </div>
+          <div>
+            <button id="delete-button" class="btn btn-save"
+              onclick="desativarPergunta(perguntaIdGlobal), closeModal3()">
+              Sim
+            </button>
+            <button onclick="closeModal3()" class="btn btn-no">Não</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal para Editar Pergunta -->
+      <!-- Modal para Editar Pergunta -->
+      <div id="editQuestionModal" class="modal">
+        <div class="modal-content">
+          <div class="divTopoModal">
+            <h3>Editar Pergunta</h3>
+            <br />
+          </div>
+          <div>
+            <label for="editDescricaoPergunta">Pergunta: </label>
+            <input type="text" id="editDescricaoPergunta" name="editDescricaoPergunta" /><br /><br />
+            <label for="editTipoPergunta">Tipo: </label>
+            <select id="editTipoPergunta" name="editTipoPergunta" onchange="mostrarExemploEditar()">
+              <option value="Input">Texto</option>
+              <option value="Select">Seleção - (Sim/Não)</option>
+              <!-- <option value="Check Box">Caixa de Seleção</option> -->
+            </select><br /><br />
+            <div id="exemploTipoPerguntaEditar" class="exemplo"></div>
+            <br />
+          </div>
+          <div>
+            <button id="edit-save-button" class="btn btn-save" onclick="atualizarPergunta()">
+              Salvar
+            </button>
+            <button onclick="closeEditModal()" class="btn btn-no">
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </div>
+      <div id="modalExcluir" class="modal">
+        <div class="modal-content">
+          <div class="divTopoModal">
+            <h3>Deseja excluir a pergunta?</h3>
+            <br />
+            <p id="perguntaExcluirTexto"></p>
+            <p id="perguntaExcluirTipo"></p>
+          </div>
+          <div>
+            <button id="confirm-excluir-button" class="btn btn-save" onclick="confirmarExcluirPergunta()">
+              Sim
+            </button>
+            <button onclick="closeExcluirModal()" class="btn btn-no">
+              Não
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+      <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    </main>
+  </div>
+</body>
+
 </html>

@@ -662,7 +662,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     label: 'Receita Total (R$)',
                     data: dataChartReceita, // Passando as receitas como dados
                     backgroundColor: ['#D2135D', '#E84E8A', '#F59DBF'],
-                    borderColor: '#4B0082',
+                    borderColor: ['#D2135D', '#E84E8A', '#F59DBF'],
                     borderWidth: 1
                 }]
             },
@@ -689,7 +689,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 label: 'Tempo Total Gasto (minutos)',  // Título do gráfico
                 data: dataChart,  // Tempos totais como dados
                 backgroundColor: ['#D2135D', '#E84E8A', '#F59DBF'],  // Cores para as barras
-                borderColor: '#4B0082',  // Cor da borda
+                borderColor: ['#D2135D', '#E84E8A', '#F59DBF'],  // Cor da borda
                 borderWidth: 1  // Largura da borda
             }]
         },
@@ -715,7 +715,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     label: 'Quantidade de Procedimentos Realizados',  // Rótulo da barra
                     data: dataChart,  // Quantidade total de procedimentos realizados
                     backgroundColor: ['#FF6384', '#D2135D', '#E84E8A', '#C13584', '#D94F4F'],  // Cores das barras
-                    borderColor: '#4B0082',  // Cor da borda
+                    borderColor: ['#FF6384', '#D2135D', '#E84E8A', '#C13584', '#D94F4F'],  // Cor da borda
                     borderWidth: 1  // Largura da borda
                 }]
             },
@@ -742,7 +742,7 @@ function createChartValorTotalUltimoMesOperacional5(labels, dataChart) {
                 label: 'Valor Total em R$ no Último Mês',  // Rótulo do gráfico
                 data: dataChart,  // Valores totais em dinheiro para cada procedimento
                 backgroundColor: ['#FF6384', '#D2135D', '#E84E8A', '#C13584', '#D94F4F'],  // Cores das barras
-                borderColor: '#4B0082',  // Cor da borda
+                borderColor: ['#FF6384', '#D2135D', '#E84E8A', '#C13584', '#D94F4F'],  // Cor da borda
                 borderWidth: 1  // Largura da borda
             }]
         },

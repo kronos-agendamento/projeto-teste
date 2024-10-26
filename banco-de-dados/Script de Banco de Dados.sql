@@ -1,4 +1,4 @@
--- drop database kronosbooking;
+drop database kronosbooking;
 CREATE DATABASE IF NOT EXISTS kronosbooking;
 USE kronosbooking;
 
@@ -293,13 +293,13 @@ VALUES
 ('Você tem alergia a algum produto?', TRUE, 'Input'),
 ('Já teve reações adversas em algum procedimento anterior?', TRUE, 'Input'),
 ('Você faz uso de medicamentos?', TRUE, 'Select'),
-('Você está grávida ou amamentando?', TRUE, 'Check Box'),
+('Você está grávida ou amamentando?', TRUE, 'Select'),
 ('Você tem problemas de pele?', TRUE, 'Select'),
-('Você já fez micropigmentação antes?', TRUE, 'Check Box'),
+('Você já fez micropigmentação antes?', TRUE, 'Select'),
 ('Você usa produtos específicos nos cílios ou sobrancelhas?', TRUE, 'Input'),
 ('Você já fez algum procedimento estético nos últimos 6 meses?', TRUE, 'Select'),
 ('Tem alguma doença crônica que deveríamos saber?', TRUE, 'Input'),
-('Está utilizando algum tratamento dermatológico?', TRUE, 'Check Box');
+('Está utilizando algum tratamento dermatológico?', TRUE, 'Select');
 
 -- Inserção de respostas para o usuário 2 (Ana Paula)
 INSERT INTO resposta (resposta, fk_pergunta, fk_ficha_anamnese, fk_usuario)

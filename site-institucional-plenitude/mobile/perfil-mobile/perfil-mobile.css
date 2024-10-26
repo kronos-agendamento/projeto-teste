@@ -91,8 +91,8 @@
 
     /* Ajuste de ícones da navbar */
     .nav-bar .icon {
-        font-size: 24px;
-        color: #000;
+        font-size: 30px;
+        color: #ffffff;
     }
 
     /* Saudação */
@@ -145,8 +145,25 @@
         border-radius: 1vh;
         display: flex;
         align-items: center;
-        border: 1px solid #7c7e80;
+        border: 1px solid #000000;
         font-weight: bold;
+        text-decoration: none;
+        color: #000;
+        font-family: Poppins, sans-serif;
+    }
+
+    .button-container button {
+        font-size: 18px;
+        font-family: Poppins, sans-serif;
+    }
+
+    .button-container button:hover {
+        background-color: #d9006c;
+        border: 1px solid #d9006c;
+    }
+
+    .button-container button a :hover {
+        color: #ffffff;
     }
 
     /* Aviso de procedimento */
@@ -155,24 +172,72 @@
         justify-content: center;
     }
 
-    .box-agendamento {
-        width: 100%; /* Garante que a largura seja relativa à tela */
-        padding: 2rem;
-        border-radius: 3vh;
-        box-shadow: 10px 0 0 #ffffff;
-        display: flex;
-        height: 8rem;
-        justify-content: space-between;
-        align-items: center;
-        flex-direction: column;
-    }
+    
+.box-agendamento-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+}
 
-    /* Ajustes de ícones e agendamentos */
-    .icon-agendamento img {
-        border-radius: 100%;
-        background-color: #FFF0F5;
-        padding: 0.2rem;
-    }
+.box-agendamento {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #FFF2F7;
+    border: 1px solid #AD9393;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.icon-agendamento {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon-procedimento img {
+    width: 70%;
+    height: auto;
+}
+
+.icon-procedimento {
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.procedimento-agendamento {
+    flex: 1;
+    margin-left: 0px;
+    display: flex;
+    flex-direction: column;
+}
+
+.procedimento-agendamento span {
+    font-size: 14px;
+    color: #333;
+}
+
+
+.button-flex {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.edit img {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+     
+      
 
     .procedimento-agendamento span {
         display: flex;
@@ -223,9 +288,14 @@
         box-sizing: border-box;
     }
 
+    #chartProcedimentosUsuarioMes {
+        height: 400px !important;
+    }
+    
+
     .caixa-grafico, #chart33 {
-        width: 100%; /* Corrigido para 100% da largura disponível */
-        max-width: 100%;
+        width: 108%; /* Corrigido para 100% da largura disponível */
+        max-width: 108%;
     }
 
     .card-graficos p {
@@ -244,6 +314,7 @@
 
     .personalidade {
         margin-bottom: 5rem;
+        margin-top: -12rem;
     }
 
     /* Corrigir problema de rolagem lateral para o box-agendamento2 */
@@ -255,7 +326,7 @@
 
     /* Espaço adicional entre a seção de indicações e Suas atividades */
     #atividades {
-        margin-top: 30rem; /* Aumenta o espaço antes da seção "Suas atividades" */
+        margin-top: 0rem; /* Aumenta o espaço antes da seção "Suas atividades" */
     }
 
     /* Espaço adicional entre as seções abaixo de Suas atividades */
@@ -273,4 +344,6 @@
     .frequencia h3, .frequencia span {
         margin: 0; /* Remove as margens para que os elementos fiquem ainda mais próximos */
     }
+
+    
 }
