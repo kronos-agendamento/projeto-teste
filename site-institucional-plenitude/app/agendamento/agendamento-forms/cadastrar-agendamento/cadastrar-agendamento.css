@@ -82,6 +82,12 @@
   margin-top: 20px;
 }
 
+
+.hidden {
+  display: none;
+}
+
+
 .save-button {
   display: flex;
   align-items: center;

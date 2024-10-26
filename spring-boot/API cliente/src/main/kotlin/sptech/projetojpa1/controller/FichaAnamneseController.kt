@@ -8,7 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import sptech.projetojpa1.dto.FichaCompletaResponseDTO
-import sptech.projetojpa1.dto.FichaRequest
+import sptech.projetojpa1.dto.ficha.FichaRequest
 import sptech.projetojpa1.service.FichaAnamneseService
 import java.time.LocalDate
 
@@ -71,6 +71,20 @@ class FichaAnamneseController(
         }
     }
 
+    @Operation(
+        summary = "Buscar ficha de anamnese por ID",
+        description = "Busca uma ficha de anamnese específica com base no ID fornecido."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Ficha encontrada com sucesso"),
+            ApiResponse(responseCode = "404", description = "Ficha não encontrada")
+        ]
+    )
+    @GetMapping("/{id}")
+    fun buscarFichaPorId(@PathVariable id: Long): FichaCompletaResponseDTO {
+        return fichaAnamneseService.buscarFichaPorId(id)
+    }
 
     @Operation(
         summary = "Buscar fichas de anamnese",
@@ -83,8 +97,8 @@ class FichaAnamneseController(
             ApiResponse(responseCode = "404", description = "Nenhuma ficha encontrada")
         ]
     )
-    @GetMapping("/fichas-anamnese")
-    fun buscarFichas(
+    @GetMapping("/filtro")
+    fun filtrarFichas(
         @RequestParam(required = false) nomeUsuario: String?,
         @RequestParam(required = false) cpf: String?,
         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) dataPreenchimento: LocalDate?
