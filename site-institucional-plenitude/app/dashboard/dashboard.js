@@ -160,6 +160,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     // Funções que atualizam as KPI's de usabilidade
     function updateTempoAgendamento(data) {
+         /*cálculo para somar a "lista" chegando ->*/ const total = data.reduce((acc, num) => acc + num, 0);
+
+
         const tempoMedioCount = document.getElementById('tempo-medio-conclusao');
         tempoMedioCount.textContent = data;
     }

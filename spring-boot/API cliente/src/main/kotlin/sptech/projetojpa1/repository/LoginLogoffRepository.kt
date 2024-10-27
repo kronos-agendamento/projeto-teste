@@ -10,9 +10,7 @@ interface LoginLogoffRepository : CrudRepository<LoginLogoff, Int> {
 
     @Query(value = """
         SELECT 
-    a.fk_usuario,
-    MIN(a.data_horario) AS primeiro_login,
-    MIN(b.data_horario) AS retorno_login
+    COUNT(a.fk_usuario) AS total_usuarios_com_retorno
 FROM 
     login_logoff a
 JOIN 
@@ -22,11 +20,8 @@ JOIN
 WHERE 
     a.logi = 'LOGIN'
     AND b.logi = 'LOGIN'
-    AND b.data_horario >= DATE_ADD(a.data_horario, INTERVAL 1 MONTH)
-GROUP BY 
-    a.fk_usuario
-HAVING 
-    retorno_login IS NOT NULL;
+    AND b.data_horario >= DATE_ADD(a.data_horario, INTERVAL 1 MONTH);
+
 
 
     """, nativeQuery = true)

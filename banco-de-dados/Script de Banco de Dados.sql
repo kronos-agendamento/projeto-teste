@@ -1,10 +1,6 @@
--- drop database kronosbooking;
+ -- drop database kronosbooking;
 create database if not exists kronosbooking;
 USE kronosbooking;
-
-select*from usuario;
-select*from login_logoff;
-
 
 DROP TABLE IF EXISTS login_logoff;
 DROP TABLE IF EXISTS feedback;
@@ -159,7 +155,6 @@ CREATE TABLE agendamento (
     FOREIGN KEY (fk_status) REFERENCES status(id_status_agendamento)
 );
 
-
 CREATE TABLE feedback (
     id_feedback INT AUTO_INCREMENT PRIMARY KEY,
     anotacoes VARCHAR(255),
@@ -172,14 +167,14 @@ CREATE TABLE feedback (
     FOREIGN KEY (fk_cliente_avaliado) REFERENCES usuario(id_usuario) ON DELETE CASCADE
 );
 
-	CREATE TABLE cliente (
+CREATE TABLE cliente (
     id_usuario INT PRIMARY KEY,
     experiencia_avaliada VARCHAR(255),
     frequencia INT,
     FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
 );
 
-	CREATE TABLE profissional (
+CREATE TABLE profissional (
 		id_usuario INT PRIMARY KEY,
 		numero_avaliacoes INT,
 		media_nota DOUBLE,
@@ -188,7 +183,7 @@ CREATE TABLE feedback (
 		FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
 	);
     
-    CREATE TABLE Leads (
+CREATE TABLE Leads (
     id_lead INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
@@ -360,88 +355,28 @@ VALUES
 ('Atrasado', '#CC3300', 'Cliente está atrasado para o procedimento'),
 ('Finalizado', '#3366CC', 'Atendimento finalizado com sucesso');
 
-DELIMITER //
+-- Inserindo agendamentos para garantir que os usuários fidelizados apareçam
+INSERT INTO agendamento (id_agendamento, data_horario, tipo_agendamento, tempo_para_agendar, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status) VALUES
+-- Agendamentos para Maria Silva (id_usuario = 7)
+(1, '2024-07-15 09:00:00', 'Manutencao', 30, 7, 1, 2, 1),
+(2, '2024-08-12 11:00:00', 'Colocacao', 40, 7, 1, 3, 1),
+(3, '2024-09-10 14:00:00', 'Retirada', 35, 7, 1, 1, 1),
 
-CREATE PROCEDURE gerar_agendamentos_aleatorios()
-BEGIN
-  DECLARE dia_atual DATE;
-  DECLARE fim DATE;
-  DECLARE qtd_agendamentos INT;
+-- Agendamentos para Carla Borges (id_usuario = 8)
+(4, '2024-07-10 10:00:00', 'Manutencao', 20, 8, 2, 3, 1),
+(5, '2024-08-08 12:00:00', 'Colocacao', 30, 8, 2, 2, 1),
+(6, '2024-09-05 13:00:00', 'Retirada', 25, 8, 2, 1, 1),
 
-  DECLARE hora_aleatoria TIME;
-  DECLARE mes_atual INT;
-  DECLARE usuario_fidelizado INT;
-  DECLARE tempo_aleatorio INT;
+-- Agendamentos para Pedro Marques (id_usuario = 9)
+(7, '2024-07-20 09:30:00', 'Colocacao', 45, 9, 3, 1, 1),
+(8, '2024-08-18 10:00:00', 'Manutencao', 50, 9, 3, 2, 1),
+(9, '2024-09-15 11:00:00', 'Retirada', 30, 9, 3, 1, 1),
 
-  SET @usuarios_fidelizados = '1,4,6';  -- IDs dos usuários a serem fidelizados
+-- Agendamentos para Ana Martins (id_usuario = 10)
+(10, '2024-07-05 09:00:00', 'Colocacao', 25, 10, 1, 3, 1),
+(11, '2024-08-02 10:30:00', 'Manutencao', 40, 10, 1, 2, 1),
+(12, '2024-09-12 12:00:00', 'Retirada', 35, 10, 1, 1, 1);
 
-  IF WEEKDAY(CURDATE()) = 0 THEN 
-    SET dia_atual = DATE_ADD(CURDATE(), INTERVAL 1 DAY);  -- Segunda-feira desta semana
-  ELSE 
-    SET dia_atual = DATE_ADD(CURDATE(), INTERVAL (8 - WEEKDAY(CURDATE())) DAY);  -- Segunda-feira da próxima semana
-  END IF;
-
-  SET fim = DATE_ADD(dia_atual, INTERVAL 5 DAY);
-
-  SET @min_agendamentos = 2;
-  SET @max_agendamentos = 6;
-
-  SET mes_atual = 0;
-
-  WHILE mes_atual < 3 DO
-    SET dia_atual = DATE_ADD(CURDATE(), INTERVAL - mes_atual MONTH);
-    SET fim = DATE_ADD(dia_atual, INTERVAL 5 DAY);
-
-    WHILE dia_atual <= fim DO
-      SET qtd_agendamentos = @min_agendamentos + FLOOR(RAND() * (@max_agendamentos - @min_agendamentos + 1));
-
-      WHILE qtd_agendamentos > 0 DO
-        SET hora_aleatoria = SEC_TO_TIME(FLOOR(RAND() * (10 * 3600)) + 8 * 3600);
-        SET tempo_aleatorio = 15 + FLOOR(RAND() * 106);
-        SET usuario_fidelizado = CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(@usuarios_fidelizados, ',', FLOOR(1 + (RAND() * 4))), ',', -1) AS UNSIGNED);
-
-        INSERT INTO agendamento (data_horario, tipo_agendamento, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status, tempo_para_agendar)
-        SELECT 
-          CONCAT(dia_atual, ' ', hora_aleatoria) AS data_horario, 
-          CASE FLOOR(RAND() * 2) 
-            WHEN 0 THEN 'Colocação'
-            ELSE 'Manutenção'
-          END AS tipo_agendamento, 
-          usuario_fidelizado AS fk_usuario, 
-          FLOOR(1 + (RAND() * 3)) AS fk_procedimento, 
-          FLOOR(1 + (RAND() * 10)) AS fk_especificacao_procedimento, 
-          FLOOR(1 + (RAND() * 10)) AS fk_status,  -- Gera um status aleatório entre 1 e 10
-          tempo_aleatorio AS tempo_para_agendar 
-        FROM (SELECT 1) AS dummy;
-
-        SET qtd_agendamentos = qtd_agendamentos - 1;
-      END WHILE;
-
-      SET dia_atual = DATE_ADD(dia_atual, INTERVAL 1 DAY);
-
-    END WHILE;
-
-    SET mes_atual = mes_atual + 1;
-  END WHILE;
-
-END //
-
-DELIMITER ;
-
-CALL gerar_agendamentos_aleatorios();
-
-INSERT INTO feedback (anotacoes, nota, fk_agendamento, fk_usuario, fk_cliente_avaliado)
-VALUES 
-('Ótimo atendimento, super recomendo!', 5, 1, 2, 3),
-('Satisfeita com o resultado!', 4, 2, 3, 4),
-('Procedimento excelente, volto sempre!', 5, 4, 5, 6),
-('Gostei do atendimento, mas acho que poderia melhorar a pontualidade.', 3, 5, 6, 7),
-('Muito bom, fiquei satisfeita com o serviço!', 5, 6, 7, 8),
-('Atendimento ótimo, o profissional foi muito atencioso.', 5, 8, 9, 10),
-('Sobrancelha perfeita! Adorei o resultado.', 5, 9, 10, 2),
-('Ótimo trabalho, mas o tempo de espera foi um pouco longo.', 4, 3, 4, 6),
-('Profissional muito educado e atencioso.', 5, 7, 8, 3),
-('Adorei o resultado final! Super recomendo.', 5, 10, 2, 5);
 
 INSERT INTO cliente (id_usuario, experiencia_avaliada, frequencia)
 VALUES 
@@ -454,6 +389,8 @@ VALUES
 (8, 'Positiva', 2),
 (9, 'Positiva', 4),
 (10, 'Positiva', 5);
+
+
 
 INSERT INTO profissional (id_usuario, numero_avaliacoes, media_nota, qualificacoes, especialidade)
 VALUES 
@@ -580,24 +517,90 @@ INSERT INTO login_logoff (logi, data_horario, fk_usuario) VALUES
 ('LOGIN', '2023-03-05 07:00:00', 10),
 ('LOGOF', '2023-03-05 08:00:00', 10);
 
--- Inserindo agendamentos para garantir que os usuários fidelizados apareçam
-INSERT INTO agendamento (id_agendamento, data_horario, tipo_agendamento, tempo_para_agendar, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status) VALUES
--- Agendamentos para Maria Silva (id_usuario = 7)
-(101, '2024-07-15 09:00:00', 'Manutencao', 30, 7, 1, 2, 1),
-(102, '2024-08-12 11:00:00', 'Colocacao', 40, 7, 1, 3, 1),
-(103, '2024-09-10 14:00:00', 'Retirada', 35, 7, 1, 1, 1),
 
--- Agendamentos para Carla Borges (id_usuario = 8)
-(104, '2024-07-10 10:00:00', 'Manutencao', 20, 8, 2, 3, 1),
-(105, '2024-08-08 12:00:00', 'Colocacao', 30, 8, 2, 2, 1),
-(106, '2024-09-05 13:00:00', 'Retirada', 25, 8, 2, 1, 1),
+DELIMITER //
 
--- Agendamentos para Pedro Marques (id_usuario = 9)
-(107, '2024-07-20 09:30:00', 'Colocacao', 45, 9, 3, 1, 1),
-(108, '2024-08-18 10:00:00', 'Manutencao', 50, 9, 3, 2, 1),
-(109, '2024-09-15 11:00:00', 'Retirada', 30, 9, 3, 1, 1),
+CREATE PROCEDURE gerar_agendamentos_aleatorios()
+BEGIN
+  DECLARE dia_atual DATE;
+  DECLARE fim DATE;
+  DECLARE qtd_agendamentos INT;
 
--- Agendamentos para Ana Martins (id_usuario = 10)
-(110, '2024-07-05 09:00:00', 'Colocacao', 25, 10, 1, 3, 1),
-(111, '2024-08-02 10:30:00', 'Manutencao', 40, 10, 1, 2, 1),
-(112, '2024-09-12 12:00:00', 'Retirada', 35, 10, 1, 1, 1);
+  DECLARE hora_aleatoria TIME;
+  DECLARE mes_atual INT;
+  DECLARE usuario_fidelizado INT;
+  DECLARE tempo_aleatorio INT;
+
+  SET @usuarios_fidelizados = '1,4,6';  -- IDs dos usuários a serem fidelizados
+
+  IF WEEKDAY(CURDATE()) = 0 THEN 
+    SET dia_atual = DATE_ADD(CURDATE(), INTERVAL 1 DAY);  -- Segunda-feira desta semana
+  ELSE 
+    SET dia_atual = DATE_ADD(CURDATE(), INTERVAL (8 - WEEKDAY(CURDATE())) DAY);  -- Segunda-feira da próxima semana
+  END IF;
+
+  SET fim = DATE_ADD(dia_atual, INTERVAL 5 DAY);
+
+  SET @min_agendamentos = 2;
+  SET @max_agendamentos = 6;
+
+  SET mes_atual = 0;
+
+  WHILE mes_atual < 5 DO  -- Alterado de 3 para 5 para incluir os últimos 5 meses
+    SET dia_atual = DATE_ADD(CURDATE(), INTERVAL - mes_atual MONTH);
+    SET fim = DATE_ADD(dia_atual, INTERVAL 5 DAY);
+
+    WHILE dia_atual <= fim DO
+      SET qtd_agendamentos = @min_agendamentos + FLOOR(RAND() * (@max_agendamentos - @min_agendamentos + 1));
+
+      WHILE qtd_agendamentos > 0 DO
+        SET hora_aleatoria = SEC_TO_TIME(FLOOR(RAND() * (10 * 3600)) + 8 * 3600);
+        SET tempo_aleatorio = 15 + FLOOR(RAND() * 106);
+        SET usuario_fidelizado = CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(@usuarios_fidelizados, ',', FLOOR(1 + (RAND() * 4))), ',', -1) AS UNSIGNED);
+
+        INSERT INTO agendamento (data_horario, tipo_agendamento, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status, tempo_para_agendar)
+        SELECT 
+          CONCAT(dia_atual, ' ', hora_aleatoria) AS data_horario, 
+          CASE FLOOR(RAND() * 2) 
+            WHEN 0 THEN 'Colocação'
+            ELSE 'Manutenção'
+          END AS tipo_agendamento, 
+          usuario_fidelizado AS fk_usuario, 
+          FLOOR(1 + (RAND() * 3)) AS fk_procedimento, 
+          FLOOR(1 + (RAND() * 10)) AS fk_especificacao_procedimento, 
+          FLOOR(1 + (RAND() * 10)) AS fk_status,  -- Gera um status aleatório entre 1 e 10
+          tempo_aleatorio AS tempo_para_agendar 
+        FROM (SELECT 1) AS dummy;
+
+        SET qtd_agendamentos = qtd_agendamentos - 1;
+      END WHILE;
+
+      SET dia_atual = DATE_ADD(dia_atual, INTERVAL 1 DAY);
+
+    END WHILE;
+
+    SET mes_atual = mes_atual + 1;
+  END WHILE;
+
+END //
+
+
+
+DELIMITER ;
+
+CALL gerar_agendamentos_aleatorios();
+CALL gerar_agendamentos_aleatorios();
+CALL gerar_agendamentos_aleatorios();
+
+INSERT INTO feedback (anotacoes, nota, fk_agendamento, fk_usuario, fk_cliente_avaliado)
+VALUES 
+('Ótimo atendimento, super recomendo!', 5, 1, 2, 3),
+('Satisfeita com o resultado!', 4, 2, 3, 4),
+('Procedimento excelente, volto sempre!', 5, 4, 5, 6),
+('Gostei do atendimento, mas acho que poderia melhorar a pontualidade.', 3, 5, 6, 7),
+('Muito bom, fiquei satisfeita com o serviço!', 5, 6, 7, 8),
+('Atendimento ótimo, o profissional foi muito atencioso.', 5, 8, 9, 10),
+('Sobrancelha perfeita! Adorei o resultado.', 5, 9, 10, 2),
+('Ótimo trabalho, mas o tempo de espera foi um pouco longo.', 4, 3, 4, 6),
+('Profissional muito educado e atencioso.', 5, 7, 8, 3),
+('Adorei o resultado final! Super recomendo.', 5, 10, 2, 5);

@@ -450,6 +450,31 @@ header p {
     box-sizing: border-box;
 }
 
+.caixa-graficoUsabilidade {
+  /* Define o tamanho máximo do contêiner */
+  width: 100%;
+  max-width: 100%; /* Garante que o gráfico não ultrapasse a largura da área branca */
+  height: 100%;
+  max-height: 100%; /* Evita que o gráfico ultrapasse a altura desejada */
+  
+  /* Centraliza o gráfico e ajusta a margem */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* Adiciona espaçamento interno, se necessário */
+  padding: 10px;
+  padding-right: 130px;
+
+  /* Garante que o conteúdo respeite as bordas */
+  overflow: hidden;
+  box-sizing: border-box; /* Inclui padding e borda no cálculo do tamanho */
+  
+  /* Define uma borda para realçar o contêiner (opcional) */
+  border-radius: 10px;
+  background-color: #ffffff; /* Define o fundo branco */
+}
+
 .caixa-grafico {
     width: 90%;
 

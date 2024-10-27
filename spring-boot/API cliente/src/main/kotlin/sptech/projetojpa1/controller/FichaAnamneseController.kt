@@ -8,7 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import sptech.projetojpa1.dto.FichaCompletaResponseDTO
-import sptech.projetojpa1.dto.ficha.FichaRequest
+import sptech.projetojpa1.dto.FichaRequest
 import sptech.projetojpa1.service.FichaAnamneseService
 import java.time.LocalDate
 
