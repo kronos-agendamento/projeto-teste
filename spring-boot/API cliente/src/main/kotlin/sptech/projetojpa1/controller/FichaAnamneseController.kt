@@ -87,6 +87,23 @@ class FichaAnamneseController(
     }
 
     @Operation(
+        summary = "Atualizar ficha de anamnese",
+        description = "Atualiza os dados de uma ficha de anamnese existente."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Ficha atualizada com sucesso"),
+            ApiResponse(responseCode = "404", description = "Ficha não encontrada com o ID fornecido"),
+            ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos para atualização da ficha")
+        ]
+    )
+    @PutMapping("/{id}")
+    fun atualizarFicha(@PathVariable id: Long, @RequestBody fichaRequest: FichaRequest): FichaCompletaResponseDTO {
+        return fichaAnamneseService.atualizarFichaPorId(id, fichaRequest)
+    }
+
+
+    @Operation(
         summary = "Buscar fichas de anamnese",
         description = "Busca as fichas de anamnese de acordo com os filtros: nome do usuário, CPF e data de preenchimento."
     )

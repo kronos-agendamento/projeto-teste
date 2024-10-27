@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import sptech.projetojpa1.domain.FichaAnamnese
 import java.time.LocalDate
+import sptech.projetojpa1.repository.UsuarioRepository
 
 // Repositório para a entidade FichaAnamnese
 interface FichaAnamneseRepository : JpaRepository<FichaAnamnese, Int> {

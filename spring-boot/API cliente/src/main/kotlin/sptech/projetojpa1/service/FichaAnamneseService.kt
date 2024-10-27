@@ -6,11 +6,13 @@ import sptech.projetojpa1.dto.FichaCompletaResponseDTO
 import sptech.projetojpa1.dto.ficha.FichaRequest
 import sptech.projetojpa1.dto.ficha.PerguntaRespostaDTO
 import sptech.projetojpa1.repository.FichaAnamneseRepository
+import sptech.projetojpa1.repository.UsuarioRepository
 import java.time.LocalDate
 
 @Service
 data class FichaAnamneseService(
-    val fichaAnamneseRepository: FichaAnamneseRepository
+    val fichaAnamneseRepository: FichaAnamneseRepository,
+    val usuarioRepository: UsuarioRepository
 ) {
     fun cadastrarFichaAnamnese(novaFichaAnamneseDTO: FichaRequest): FichaCompletaResponseDTO {
         val novaFichaAnamnese = FichaAnamnese(
@@ -49,7 +51,7 @@ data class FichaAnamneseService(
 
     fun buscarFichaPorId(id: Long): FichaCompletaResponseDTO {
         val ficha = fichaAnamneseRepository.findById(id.toInt())
-            .orElseThrow { NoSuchElementException("Ficha Anamnese com ID $id não encontrada") }
+            .orElseThrow { NoSuchElementException("Ficha Anamnese com ID $id nÃ£o encontrada") }
 
         val perguntasRespostas = ficha.respostas.map { resposta ->
             PerguntaRespostaDTO(
@@ -66,6 +68,37 @@ data class FichaAnamneseService(
             usuarioNome = ficha.usuario?.nome,
             usuarioCpf = ficha.usuario?.cpf,
             perguntasRespostas = perguntasRespostas
+        )
+    }
+
+    fun atualizarFichaPorId(id: Long, fichaRequest: FichaRequest): FichaCompletaResponseDTO {
+        val fichaExistente = fichaAnamneseRepository.findById(id.toInt())
+            .orElseThrow { NoSuchElementException("Ficha Anamnese com ID $id não encontrada") }
+
+        // Busca o usuário pelo ID fornecido
+        val usuario = usuarioRepository.findById(fichaRequest.usuarioId)
+            .orElseThrow { NoSuchElementException("Usuário com ID ${fichaRequest.usuarioId} não encontrado") }
+
+        // Atualiza os campos da FichaAnamnese com os novos valores de fichaRequest
+        fichaExistente.dataPreenchimento = fichaRequest.dataPreenchimento
+        fichaExistente.usuario = usuario
+
+        // Salva a ficha atualizada no repositório
+        val fichaAtualizada = fichaAnamneseRepository.save(fichaExistente)
+
+        // Retorna a ficha completa como DTO
+        return FichaCompletaResponseDTO(
+            codigoFicha = fichaAtualizada.codigoFicha,
+            dataPreenchimento = fichaAtualizada.dataPreenchimento,
+            usuarioId = fichaAtualizada.usuario?.codigo,
+            usuarioNome = fichaAtualizada.usuario?.nome,
+            perguntasRespostas = fichaAtualizada.respostas.map { resposta ->
+                PerguntaRespostaDTO(
+                    pergunta = resposta.pergunta.pergunta,
+                    perguntaTipo = resposta.pergunta.tipo,
+                    resposta = resposta.resposta
+                )
+            }
         )
     }
 

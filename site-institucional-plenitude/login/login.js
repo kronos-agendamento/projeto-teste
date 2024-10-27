@@ -32,8 +32,8 @@ document
 
     const nome = document.getElementById("nome").value;
     const email = document.getElementById("email").value;
-    const cpf = document.getElementById("cpfFormatado").value; // Usar o valor não formatado
-    const telefone = document.getElementById("telefoneFormatado").value; // Usar o valor não formatado
+    const cpf = document.getElementById("cpfFormatado").value;
+    const telefone = document.getElementById("telefoneFormatado").value;
     const instagram = document.getElementById("instagram").value;
     const senha = document.getElementById("senha").value;
     const confirmarSenha = document.getElementById("confirmarSenha").value;
@@ -73,7 +73,6 @@ document
       );
 
       if (response.ok) {
-        // Salva nome e email no localStorage
         localStorage.setItem("nome", nome);
         localStorage.setItem("email", email);
         localStorage.setItem("cpf", cpf);
@@ -90,7 +89,7 @@ document
     }
   });
 
-  document
+document
   .getElementById("loginForm")
   .addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -114,7 +113,10 @@ document
   
       if (response.ok) {
         const loginData = await response.json();
-  
+        
+        // Limpa o localStorage antes de salvar novos dados
+        localStorage.clear();
+
         // Salva o nome, email e cpf no localStorage
         localStorage.setItem("nome", loginData.nome);
         localStorage.setItem("email", loginData.email);
@@ -157,39 +159,36 @@ document
   });
 
 function showModalParaCompletarDados() {
-  // Código para exibir o modal de "Complete seus dados"
   const modalCadastro = document.getElementById("modal-cadastro");
   modalCadastro.style.display = "block";
 }
 
+async function registrarLogLoginLogoff(idUsuario) {
+  try {
+    const logData = {
+      logi: "LOGIN",
+      dataHorario: new Date().toISOString(),
+      fkUsuario: idUsuario,
+    };
   
-  // Função para registrar o log de login/logoff
-  async function registrarLogLoginLogoff(idUsuario) {
-    try {
-      const logData = {
-        logi: "LOGIN", // Marca como 'LOGIN'
-        dataHorario: new Date().toISOString(), // Pega a data/hora atual no formato ISO
-        fkUsuario: idUsuario, // O ID do usuário que acabou de logar
-      };
+    const response = await fetch("http://localhost:8080/login-logoff", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(logData),
+    });
   
-      const response = await fetch("http://localhost:8080/login-logoff", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(logData),
-      });
-  
-      if (!response.ok) {
-        throw new Error("Erro ao registrar log de login");
-      }
-  
-      console.log("Log de login registrado com sucesso!");
-    } catch (error) {
-      console.error("Erro ao registrar o log de login:", error);
+    if (!response.ok) {
+      throw new Error("Erro ao registrar log de login");
     }
-  }
   
+    console.log("Log de login registrado com sucesso!");
+  } catch (error) {
+    console.error("Erro ao registrar o log de login:", error);
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   const signInForm = document.getElementById("signInForm");
   const signUpForm = document.getElementById("signUpForm");
@@ -206,7 +205,6 @@ document.addEventListener("DOMContentLoaded", function () {
     signInForm.classList.remove("active");
   });
 
-  // Initialize by showing the register form
   signUpForm.classList.add("active");
 });
 
@@ -215,19 +213,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   instagramInput.addEventListener("input", function (e) {
     let value = instagramInput.value;
-
-    // Adiciona @ no início se ainda não tiver
     if (!value.startsWith("@")) {
       value = "@" + value;
     }
-
-    // Substitui espaços por sublinhados
-    value = value.replace(/\s+/g, "_");
-
-    // Transforma todas as letras em minúsculas
-    value = value.toLowerCase();
-
-    // Atualiza o valor do campo com as modificações
+    value = value.replace(/\s+/g, "_").toLowerCase();
     instagramInput.value = value;
   });
 });
@@ -248,30 +237,20 @@ function togglePasswordVisibility() {
 }
 
 document.getElementById("telefone").addEventListener("input", function (e) {
-  let input = e.target.value.replace(/\D/g, ""); // Remove caracteres não numéricos
-  // Limita o comprimento da string a 11 caracteres
-  input = input.slice(0, 11);
-
+  let input = e.target.value.replace(/\D/g, "").slice(0, 11);
   if (input.length > 2) {
     input = "(" + input.slice(0, 2) + ") " + input.slice(2);
   }
   if (input.length > 10) {
-    // Corrige para inserir o hífen após o décimo caractere
     input = input.slice(0, 10) + "-" + input.slice(10);
   }
-  e.target.value = input; // Atualiza o campo de telefone com a formatação
-
-  // Atualiza o campo oculto com o valor sem formatação
+  e.target.value = input;
   document.getElementById("telefoneFormatado").value = input.replace(/\D/g, "");
 });
 
 document.getElementById("cpf").addEventListener("input", function (e) {
-  let input = e.target.value.replace(/\D/g, ""); // Remove caracteres não numéricos
-
-  // Atualiza o campo oculto com o valor sem formatação antes de aplicar a formatação
+  let input = e.target.value.replace(/\D/g, "");
   document.getElementById("cpfFormatado").value = input;
-
-  // Formata com pontos e traço para exibição
   if (input.length > 9) {
     input =
       input.slice(0, 3) +
@@ -286,14 +265,11 @@ document.getElementById("cpf").addEventListener("input", function (e) {
   } else if (input.length > 3) {
     input = input.slice(0, 3) + "." + input.slice(3);
   }
-  e.target.value = input; // Atualiza o campo de CPF com a formatação
+  e.target.value = input;
 });
 
 document.getElementById("nome").addEventListener("input", function (e) {
-  // Remove números do valor do input
   let valueWithoutNumbers = e.target.value.replace(/\d/g, "");
-
-  // Aplica a capitalização para cada palavra, mantendo os espaços
   e.target.value = valueWithoutNumbers
     .split(" ")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
@@ -307,22 +283,14 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  // Seleciona todos os botões de alternância
   const togglePasswordButtons = document.querySelectorAll(".toggle-password");
 
   togglePasswordButtons.forEach((button) => {
     button.addEventListener("click", function () {
-      // Identifica o campo de senha correspondente
       const passwordInput = button.previousElementSibling;
-
-      // Verifica o tipo atual e alterna
-      const type =
-        passwordInput.getAttribute("type") === "password" ? "text" : "password";
+      const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
       passwordInput.setAttribute("type", type);
-
-      // Altera o ícone ou texto do botão, se necessário
-      // Exemplo: Alterna entre ícones de olho aberto e fechado
-      button.innerHTML = type === "password" ? "&#128065;" : "&#128584;"; // ícones são apenas exemplos
+      button.innerHTML = type === "password" ? "&#128065;" : "&#128584;";
     });
   });
 });

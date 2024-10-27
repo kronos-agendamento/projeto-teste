@@ -1,4 +1,109 @@
-// Defina a função submitForm fora do DOMContentLoaded para garantir que esteja no escopo global
+// Função para buscar e preencher o formulário com dados já respondidos
+async function preencherFormularioComRespostas(idUsuario) {
+    try {
+        const response = await fetch(`http://localhost:8080/api/ficha-anamnese/${idUsuario}`);
+        if (!response.ok) {
+            throw new Error("Erro ao buscar respostas preenchidas");
+        }
+        
+        const ficha = await response.json();
+
+        if (ficha.perguntasRespostas && ficha.perguntasRespostas.length > 0) {
+            // Se houver respostas, salvar o status "Respondido" no localStorage
+            localStorage.setItem("statusFormulario", "Respondido");
+            renderPerguntas(ficha.perguntasRespostas); // Renderiza perguntas e respostas preenchidas
+        } else {
+            // Se não houver respostas, carrega perguntas em branco
+            await fetchPerguntas();
+        }
+    } catch (error) {
+        console.error("Erro ao preencher o formulário:", error);
+    }
+}
+
+// Função para renderizar as perguntas dinamicamente e preencher as respostas, caso existam
+function renderPerguntas(perguntasRespostas) {
+    const contentDiv = document.getElementById('content');
+    contentDiv.innerHTML = ''; // Limpar o conteúdo atual
+
+    perguntasRespostas.forEach(perguntaResposta => {
+        const formGroup = document.createElement('div');
+        formGroup.classList.add('form-group');
+        formGroup.style.marginBottom = "20px";
+
+        const label = document.createElement('label');
+        label.textContent = perguntaResposta.pergunta;
+        label.style.fontWeight = "bold";
+        formGroup.appendChild(label);
+
+        let inputElement = null;
+        const resposta = perguntaResposta.resposta;
+
+        if (perguntaResposta.perguntaTipo === 'Input') {
+            inputElement = document.createElement('input');
+            inputElement.type = 'text';
+            inputElement.name = `pergunta_${perguntaResposta.perguntaId}`;
+            inputElement.value = resposta || '';
+            inputElement.required = true;
+            inputElement.style.marginTop = "10px";
+            inputElement.style.display = "block";
+            inputElement.style.width = "100%";
+        } else if (perguntaResposta.perguntaTipo === 'Check Box') {
+            inputElement = document.createElement('input');
+            inputElement.type = 'checkbox';
+            inputElement.name = `pergunta_${perguntaResposta.perguntaId}`;
+            inputElement.checked = resposta === 'Sim';
+            inputElement.style.marginTop = "10px";
+        } else if (perguntaResposta.perguntaTipo === 'Select') {
+            inputElement = document.createElement('select');
+            inputElement.name = `pergunta_${perguntaResposta.perguntaId}`;
+            inputElement.required = true;
+            inputElement.style.marginTop = "10px";
+
+            const optionSim = document.createElement('option');
+            optionSim.value = 'Sim';
+            optionSim.textContent = 'Sim';
+            optionSim.selected = resposta === 'Sim';
+
+            const optionNao = document.createElement('option');
+            optionNao.value = 'Não';
+            optionNao.textContent = 'Não';
+            optionNao.selected = resposta === 'Não';
+
+            inputElement.appendChild(optionSim);
+            inputElement.appendChild(optionNao);
+        }
+
+        if (inputElement) {
+            formGroup.appendChild(inputElement);
+        }
+
+        contentDiv.appendChild(formGroup);
+    });
+}
+
+// Função para buscar perguntas em branco ao carregar a página
+async function fetchPerguntas() {
+    try {
+        const response = await fetch('http://localhost:8080/api/perguntas');
+        if (response.status === 204) {
+            alert('Nenhuma pergunta encontrada.');
+            return;
+        }
+
+        const perguntas = await response.json();
+        renderPerguntas(perguntas.map(pergunta => ({
+            pergunta: pergunta.pergunta,
+            perguntaTipo: pergunta.tipo,
+            perguntaId: pergunta.idPergunta,
+            resposta: '' // Campo vazio para perguntas ainda não respondidas
+        })));
+    } catch (error) {
+        console.error('Erro ao buscar perguntas:', error);
+    }
+}
+
+// Função para enviar as respostas do formulário
 async function submitForm() {
     const idUsuario = localStorage.getItem("idUsuario");
     if (!idUsuario) {
@@ -6,20 +111,18 @@ async function submitForm() {
         return;
     }
 
+    const statusFormulario = localStorage.getItem("statusFormulario");
     const formData = {
-        fichaAnamnese: idUsuario,  // O ID da ficha de anamnese é igual ao ID do usuário
-        usuario: idUsuario,
+        dataPreenchimento: new Date().toISOString(),
+        usuario: {
+            codigo: parseInt(idUsuario),
+        },
         respostas: []
     };
 
-    // Coleta os valores dos inputs gerados
     document.querySelectorAll('input, select').forEach(input => {
-        const perguntaId = input.name.split('_')[1]; // Extrai o ID da pergunta
-
-        // Verificar se o ID da pergunta é válido
-        if (!perguntaId) {
-            return;
-        }
+        const perguntaId = input.name.split('_')[1];
+        if (!perguntaId) return;
 
         let resposta;
         if (input.type === 'checkbox') {
@@ -28,11 +131,12 @@ async function submitForm() {
             resposta = input.value;
         }
 
-        // Verifica se a resposta não está vazia
         if (resposta.trim() !== "") {
             formData.respostas.push({
                 resposta: resposta,
-                pergunta: parseInt(perguntaId)
+                pergunta: {
+                    idPergunta: parseInt(perguntaId),
+                }
             });
         }
     });
@@ -40,16 +144,28 @@ async function submitForm() {
     console.log('Dados do formulário:', formData);
 
     try {
-        const response = await fetch('http://localhost:8080/api/respostas', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-        });
+        let response;
+        if (statusFormulario === "Respondido") {
+            response = await fetch(`http://localhost:8080/api/ficha-anamnese/${idUsuario}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+        } else {
+            response = await fetch('http://localhost:8080/api/respostas', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+        }
 
         if (response.ok) {
             alert('Respostas enviadas com sucesso!');
+            localStorage.setItem("statusFormulario", "Respondido");
         } else {
             alert('Erro ao enviar respostas. Verifique os dados e tente novamente.');
         }
@@ -59,6 +175,11 @@ async function submitForm() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+    const idUsuario = localStorage.getItem("idUsuario");
+
+    // Carrega a ficha pelo ID ao carregar a página e define o status de formulário
+    preencherFormularioComRespostas(idUsuario);
+
     const increaseFontBtn = document.getElementById("increase-font");
     const decreaseFontBtn = document.getElementById("decrease-font");
     const rootElement = document.documentElement;
@@ -98,83 +219,4 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     });
-
-    // Função para buscar as perguntas da API
-    async function fetchPerguntas() {
-        try {
-            const response = await fetch('http://localhost:8080/api/perguntas');
-            if (response.status === 204) {
-                alert('Nenhuma pergunta encontrada.');
-                return;
-            }
-
-            const perguntas = await response.json();
-            renderPerguntas(perguntas);
-        } catch (error) {
-            console.error('Erro ao buscar perguntas:', error);
-        }
-    }
-
-    // Função para renderizar as perguntas dinamicamente
-    function renderPerguntas(perguntas) {
-        const contentDiv = document.getElementById('content');
-        contentDiv.innerHTML = ''; // Limpar o conteúdo atual
-
-        perguntas.forEach(pergunta => {
-            const formGroup = document.createElement('div');
-            formGroup.classList.add('form-group');
-            formGroup.style.marginBottom = "20px"; // Adicionar espaçamento entre perguntas
-
-            // Cria o rótulo da pergunta
-            const label = document.createElement('label');
-            label.textContent = pergunta.pergunta;
-            label.style.fontWeight = "bold";
-            formGroup.appendChild(label);
-
-            // Gerar o campo de acordo com o tipo da pergunta
-            let inputElement = null;
-
-            if (pergunta.tipo === 'Input') {
-                inputElement = document.createElement('input');
-                inputElement.type = 'text';
-                inputElement.name = `pergunta_${pergunta.idPergunta}`;
-                inputElement.required = true;
-                inputElement.style.marginTop = "10px"; // Espaçamento
-                inputElement.style.display = "block"; // Para garantir que fique abaixo da pergunta
-                inputElement.style.width = "100%";
-            } else if (pergunta.tipo === 'Check Box') {
-                inputElement = document.createElement('input');
-                inputElement.type = 'checkbox';
-                inputElement.name = `pergunta_${pergunta.idPergunta}`;
-                inputElement.style.marginTop = "10px"; // Espaçamento
-            } else if (pergunta.tipo === 'Select') {
-                inputElement = document.createElement('select');
-                inputElement.name = `pergunta_${pergunta.idPergunta}`;
-                inputElement.required = true;
-                inputElement.style.marginTop = "10px"; // Espaçamento
-
-                // Adiciona opções para o select
-                const optionSim = document.createElement('option');
-                optionSim.value = 'Sim';
-                optionSim.textContent = 'Sim';
-
-                const optionNao = document.createElement('option');
-                optionNao.value = 'Não';
-                optionNao.textContent = 'Não';
-
-                inputElement.appendChild(optionSim);
-                inputElement.appendChild(optionNao);
-            }
-
-            if (inputElement) {
-                formGroup.appendChild(inputElement); // Adiciona o input no grupo de formulário
-            }
-
-            // Adiciona o grupo de formulário ao conteúdo
-            contentDiv.appendChild(formGroup);
-        });
-    }
-
-    // Buscar perguntas ao carregar a página
-    window.onload = fetchPerguntas;
 });
