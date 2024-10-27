@@ -233,17 +233,17 @@ VALUES
 
 INSERT INTO empresa (nome, telefone, cnpj, fk_endereco, fk_horario_funcionamento)
 VALUES 
-('Plenitude no Olhar', '11987654321', '24.274.515/0001-48', 1, 1),
-('Beleza Suprema', '21987654322', '98.765.432/0002-10', 2, 2),
-('Olhar Perfeito', '31987654323', '22.333.444/0001-11', 3, 3),
-('Glamour Sobrancelhas', '41987654324', '44.555.666/0001-12', 4, 4),
-('Cílios de Diva', '51987654325', '55.666.777/0001-13', 5, 5),
-('Makeup Studio', '61987654326', '66.777.888/0001-14', 6, 6),
-('Estética Refinada', '71987654327', '77.888.999/0001-15', 7, 7),
-('Sobrancelhas de Ouro', '81987654328', '88.999.000/0001-16', 8, 8),
-('Cílios e Sobrancelhas', '91987654329', '99.000.111/0001-17', 9, 9),
-('Sobrancelhas Elegantes', '11987654330', '11.111.222/0001-18', 10, 10),
-('Kronos', '11987654330', '10.101.222/0001-18', 11, 11);
+('Plenitude no Olhar', '11987654321', '04.669.985/0001-01', 1, 1),
+('Beleza Suprema', '21987654322', '38.056.805/0001-20', 2, 2),
+('Olhar Perfeito', '31987654323', '10.735.721/0001-01', 3, 3),
+('Glamour Sobrancelhas', '41987654324', '39.555.755/0001-98', 4, 4),
+('Cílios de Diva', '51987654325', '07.159.343/0001-42', 5, 5),
+('Makeup Studio', '61987654326', '88.838.187/0001-48', 6, 6),
+('Estética Refinada', '71987654327', '20.461.436/0001-95', 7, 7),
+('Sobrancelhas de Ouro', '81987654328', '93.959.301/0001-28', 8, 8),
+('Cílios e Sobrancelhas', '91987654329', '18.053.709/0001-10', 9, 9),
+('Sobrancelhas Elegantes', '11987654330', '64.824.719/0001-20', 10, 10),
+('Kronos', '11987654330', '58.918.570/0001-45', 11, 11);
 
 INSERT INTO ficha_anamnese (data_preenchimento)
 VALUES 
@@ -261,16 +261,16 @@ VALUES
 
 INSERT INTO usuario (nome, email, senha, instagram, cpf, telefone, data_nasc, genero, indicacao, status, fk_nivel_acesso, fk_endereco, fk_empresa, fk_ficha_anamnese)
 VALUES 
-('Priscila Plenitude', 'priscila@plenitude.com', 'senhaAdmin', '@plenitudenoolhar', '133.747.670-60', 11987654321, '1980-01-01', 'Feminino', 'Instagram', TRUE, 1, 1, 1, NULL),
-('Ana Paula', 'ana@beleza.com', 'senha123', '@anabeauty', '469.674.588-09', 21987654321, '1992-02-02', 'Feminino', 'Indicação de Amiga', TRUE, 2, 2, 2, 2),
-('Carlos Eduardo', 'carlos@olharperfeito.com', 'senha123', '@carlosedu', '317.262.998-80', 31987654322, '1995-03-03', 'Masculino', 'Facebook', TRUE, 2, 3, 3, 3),
-('Juliana Costa', 'juliana@glamour.com', 'senha123', '@jucosta', '633.335.400-70', 41987654323, '1990-04-04', 'Feminino', 'Google', TRUE, 2, 4, 4, 4),
-('Roberta Silva', 'roberta@ciliosdiva.com', 'senha123', '@robdiva', '669.146.280-76', 51987654324, '1993-05-05', 'Feminino', 'Instagram', TRUE, 2, 5, 5, 5),
-('Daniel Souza', 'daniel@makeup.com', 'senha123', '@danmake', '730.940.230-88', 61987654325, '1991-06-06', 'Masculino', 'Indicação de Influencer', TRUE, 2, 6, 6, 6),
-('Larissa Nunes', 'larissa@refinada.com', 'senha123', '@larissarefinada', '224.744.500-41', 71987654326, '1987-07-07', 'Feminino', 'Instagram', TRUE, 2, 7, 7, 7),
-('Tatiana Melo', 'tatiana@ouro.com', 'senha123', '@tatiouro', '784.563.970-24', 81987654327, '1985-08-08', 'Feminino', 'Indicação de Amiga', TRUE, 2, 8, 8, 8),
-('Paula Gomes', 'paula@cilios.com', 'senha123', '@paulagomes', '999.999.999-99', 91987654328, '1982-09-09', 'Feminino', 'Indicação Familiar', TRUE, 2, 9, 9, 9),
-('Marília Costa', 'cecilia@elegantes.com', 'senha123', '@ceciliaelegantes', '101.010.101-10', 11987654329, '1989-10-19', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10);
+('Priscila Plenitude', 'priscila@plenitude.com', 'senhaAdmin', '@plenitudenoolhar', '401.235.740-99', 11987654321, '1980-01-01', 'Feminino', 'Instagram', TRUE, 1, 1, 1, NULL),
+('Ana Paula', 'ana@beleza.com', 'senha123', '@anabeauty', '363.813.610-85', 21987654321, '1992-02-02', 'Feminino', 'Indicação de Amiga', TRUE, 2, 2, 2, 2),
+('Carlos Eduardo', 'carlos@olharperfeito.com', 'senha123', '@carlosedu', '166.801.900-02', 31987654322, '1995-03-03', 'Masculino', 'Facebook', TRUE, 2, 3, 3, 3),
+('Juliana Costa', 'juliana@glamour.com', 'senha123', '@jucosta', '058.534.810-37', 41987654323, '1990-04-04', 'Feminino', 'Google', TRUE, 2, 4, 4, 4),
+('Roberta Silva', 'roberta@ciliosdiva.com', 'senha123', '@robdiva', '735.394.060-34', 51987654324, '1993-05-05', 'Feminino', 'Instagram', TRUE, 2, 5, 5, 5),
+('Daniel Souza', 'daniel@makeup.com', 'senha123', '@danmake', '756.507.960-09', 61987654325, '1991-06-06', 'Masculino', 'Indicação de Influencer', TRUE, 2, 6, 6, 6),
+('Larissa Nunes', 'larissa@refinada.com', 'senha123', '@larissarefinada', '418.774.800-88', 71987654326, '1987-07-07', 'Feminino', 'Instagram', TRUE, 2, 7, 7, 7),
+('Tatiana Melo', 'tatiana@ouro.com', 'senha123', '@tatiouro', '491.260.810-67', 81987654327, '1985-08-08', 'Feminino', 'Indicação de Amiga', TRUE, 2, 8, 8, 8),
+('Paula Gomes', 'paula@cilios.com', 'senha123', '@paulagomes', '701.221.130-04', 91987654328, '1982-09-09', 'Feminino', 'Indicação Familiar', TRUE, 2, 9, 9, 9),
+('Marília Costa', 'cecilia@elegantes.com', 'senha123', '@ceciliaelegantes', '701.221.130-04', 11987654329, '1989-10-19', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10);
 
 INSERT INTO procedimento (tipo, descricao)
 VALUES 
