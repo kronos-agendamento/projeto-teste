@@ -228,7 +228,7 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         } else {
           cell.innerHTML += `<div class="agendamento">
-            <strong>${horario}</strong><br>
+            <strong>${horario}</strong>
             ${agendamento.usuario}<br>
             ${agendamento.procedimento}
           </div>`;
@@ -252,4 +252,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Inicializar semana atual ao carregar a página
   renderWeek();
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const nome = localStorage.getItem("nome");
+  const instagram = localStorage.getItem("instagram");
+
+  if (nome && instagram) {
+    document.getElementById("userName").textContent = nome;
+    document.getElementById("userInsta").textContent = instagram;
+  }
 });

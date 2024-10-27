@@ -78,8 +78,8 @@
         </section>
         <section id="acesso">
         <div class="button-container">
-            <button type="button" class="access-button" id="access-perfil-button">
-                <a href="../perfil-mobile/mobile-dados/perfil-dados.html">
+            <button type="button" class="save-button" id="access-perfil-button">
+                <a href="../perfil-mobile/mobile-dados/perfil-dados.html" style="text-decoration: none; color: black;">
                     <span> Acessar dados pessoais</span>
                 </a>
             </button>
@@ -103,17 +103,16 @@
         </section>
         <section id="indicacao">
             <div class="indicacao">
-                <div id="titulo-aviso">
-                    <h2>Indicações:</h2>
-                    <span>
-                        De acordo com o seu histórico, aqui estão algumas indicações de horários e procedimentos que
-                        podem te agradar
-                    </span>
-                </div>
-    
-                <div class="box-agendamento"></div> <!-- Contêiner vazio para os procedimentos -->
+               <div id="titulo-aviso">
+                  <h2>Indicações:</h2>
+                  <span>De acordo com o seu histórico, aqui estão algumas indicações de horários e procedimentos que podem te agradar</span>
+               </div>
+               <div class="box-agendamento-container">
+                  <!-- Contêiner vazio para os procedimentos -->
+               </div>
             </div>
-        </section>
+         </section>
+         
         <section id="atividades">
             <div class="atividades">
                 <div id="titulo-atividades">
@@ -124,7 +123,7 @@
                 </div>
                 <div class="dashboard">
                         <div class="card-graficos">
-                            <div class="card-content-2">
+                            <!-- <div class="card-content-2">
                                 <div id="titulo-dash">
                                     <h4>
                                         Fique de olho no seu desconto!
@@ -133,7 +132,7 @@
                                 </div>
                                 <p>Quantidade</p>
                                 <p>Procedimento </p>
-                            </div>
+                            </div> -->
                             <select id="selectMes">
                                 <option value="2024-01">Janeiro</option>
                                 <option value="2024-02">Fevereiro</option>
@@ -144,7 +143,7 @@
                             </select>
                             
                             <div class="caixa-grafico">
-                                <canvas id="chartProcedimentosUsuarioMes"></canvas>
+                                <canvas id="chartProcedimentosUsuarioMes" style="height: 300rem;"></canvas>
                             </div>
                         </div>
                 
@@ -154,10 +153,10 @@
         <section id="Personalidade">
             <div class="personalidade">
                 <div class="frequencia">
-                    <h3 id="">Dia mais agendado:</h3> <span id="dMaisAgendados"></span>
+                    <h2 id="">Dia mais agendado:</h2> <span id="dMaisAgendados" style="font-size: 22px; font-weight: 900;color: #d9006c;"></span>
                     <div>
-                        <h3 id="hMaisAgendados">Horário mais agendado:</h3>
-                        <span id="horarioMaisAgendado">Carregando...</span>
+                        <h2 id="hMaisAgendados">Horário mais agendado:</h2>
+                        <span id="horarioMaisAgendado" style="font-size: 22px; font-weight: 900; color: #d9006c;">Carregando...</span>
                     </div>
                 </div>
             </div>

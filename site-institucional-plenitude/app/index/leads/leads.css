@@ -21,7 +21,7 @@ header {
   color: white;
   padding: 2vh;
   border-radius: 3vh;
-  margin-bottom: 2vh;
+  margin-bottom: 4vh;
   margin-top: 2vh;
   height: 10vh;
 }
@@ -53,6 +53,7 @@ header p {
   margin-left: 8vh;
   color: #000000;
   text-decoration: none;
+  margin-top: 2vh;
 }
 .actions button,
 .button-page {
@@ -278,7 +279,7 @@ header p {
 .navigation {
   height: 1020px;
   background: #d2135d;
-  width: 275px;
+  width: 263px;
   margin-top: 20px;
   margin-left: 32px;
   box-shadow: 10px 0 0 #ffffff;

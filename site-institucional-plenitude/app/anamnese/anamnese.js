@@ -254,12 +254,12 @@ function listarTodasPerguntasAtivas() {
             inputElement.appendChild(optionYes);
             inputElement.appendChild(optionNo);
             break;
-          case "Check Box":
-            inputElement = document.createElement("input");
-            inputElement.type = "checkbox";
-            inputElement.id = `idResposta${index + 1}`;
-            inputElement.name = `resposta${index + 1}`;
-            break;
+          // case "Check Box":
+          //   inputElement = document.createElement("input");
+          //   inputElement.type = "checkbox";
+          //   inputElement.id = `idResposta${index + 1}`;
+          //   inputElement.name = `resposta${index + 1}`;
+          //   break;
           default:
             inputElement = document.createElement("input");
             inputElement.type = "text";
@@ -375,15 +375,15 @@ function preencherTabelasDesativadas(perguntasDesativadas) {
           </div>
           `;
           break;
-        case "Check Box":
-          tipoElemento = document.createElement("div");
-          tipoElemento.innerHTML = `
-          <div style="display: flex; flex-direction: row;">
-            <span>${tipoFormatado}: </span>
-            <input type="checkbox"/>
-          </div>
-          `;
-          break;
+        // case "Check Box":
+        //   tipoElemento = document.createElement("div");
+        //   tipoElemento.innerHTML = `
+        //   <div style="display: flex; flex-direction: row;">
+        //     <span>${tipoFormatado}: </span>
+        //     <input type="checkbox"/>
+        //   </div>
+        //   `;
+        //   break;
         default:
           tipoElemento = document.createElement("span");
           tipoElemento.textContent = "Tipo não suportado";
@@ -501,10 +501,10 @@ function mostrarExemplo() {
       exemploElemento.appendChild(optionYes);
       exemploElemento.appendChild(optionNo);
       break;
-    case "Check Box":
-      exemploElemento = document.createElement("input");
-      exemploElemento.type = "checkbox";
-      break;
+    // case "Check Box":
+    //   exemploElemento = document.createElement("input");
+    //   exemploElemento.type = "checkbox";
+    //   break;
     default:
       exemploElemento = document.createTextNode("");
   }
@@ -558,10 +558,10 @@ function mostrarExemploEditar() {
       exemploElemento.appendChild(optionYes);
       exemploElemento.appendChild(optionNo);
       break;
-    case "Check Box":
-      exemploElemento = document.createElement("input");
-      exemploElemento.type = "checkbox";
-      break;
+    // case "Check Box":
+    //   exemploElemento = document.createElement("input");
+    //   exemploElemento.type = "checkbox";
+    //   break;
     default:
       exemploElemento = document.createTextNode("");
   }
@@ -656,8 +656,8 @@ function mapearTipoPergunta(tipo) {
       return "Texto";
     case "Select":
       return "Seleção";
-    case "Check Box":
-      return "Caixa de Seleção";
+    // case "Check Box":
+    //   return "Caixa de Seleção";
     default:
       return tipo; // Retorna o tipo original se não houver correspondência
   }

@@ -11,24 +11,33 @@
     <script src="index-mobile.js"></script>
     <link rel="stylesheet" href="index-mobile.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
 
 </head>
 
 <body>
     <main>
         <header>
-            <div class="pesquisa">
-                <img src="../../assets/icons/lupa.png" alt="" id="lupa-icon" title="Pesquisar uma especificação para agendar" style="cursor: pointer;">
-                <button id="close-icon" style="display:none;">X</button>
-                <input type="text" id="searchInput" placeholder="Pesquisar..." style="display:none; width: 100%; border-radius: 20px;" list="especificacoesList">
-                <datalist id="especificacoesList"></datalist>
+            <div class="header-container" style="display: flex; align-items: center; justify-content: space-between;">
+                <div class="ajuda" title="Ajuda">
+                    <i id="icon-ajuda" class="fas fa-question-circle" style="font-size: 24px; cursor: pointer;"></i>
+                </div>
+        
+                <div class="pesquisa" style="display: flex; align-items: center; margin-left: 10px;">
+                    <img src="../../assets/icons/lupa.png" alt="" id="lupa-icon" title="Pesquisar uma especificação para agendar" style="cursor: pointer; margin-right: 10px;">
+                    <button id="close-icon" style="display:none;">X</button>
+                    <input type="text" id="searchInput" placeholder="Pesquisar..." style="display:none; width: 100%; border-radius: 20px;" list="especificacoesList">
+                    <datalist id="especificacoesList"></datalist>
+                </div>
             </div>
             <div id="resultados"></div>
             
             <div id="titulo-saudacao">
                 <h1>Home</h1>
             </div>
-            <div class="saudacao">
+            <div class="saudacao"> 
                 <div class="acessibilidade">
                     <div class="font-information">
                         <button id="information">i</button>
@@ -38,13 +47,49 @@
                         <button id="decrease-font">A-</button>
                     </div>
                 </div>
+            
                 <div id="greeting1">
-                    <span id="userNameSpan">Usuário</span>!</h1>
+                    <span id="saudacao-texto"></span> <!-- Saudação será inserida aqui -->
+                    <span id="userNameSpan"></span>!
                 </div>
-
-
+            
                 <div id="greeting2"></div>
             </div>
+            
+
+
+            <div id="modal-ajuda" class="modal-ajuda">
+                <div class="modal-ajuda-content">
+                    <span class="modal-ajuda-close">&times;</span>
+                    <h3>Quanto tempo eu levo para chegar até o estúdio <a style="color: #e70069;">"Plenitude no Olhar"</a>?</h3>
+            
+                    <!-- Calculadora de Tempo de Deslocamento -->
+                    <div style="margin-bottom: 5%;">
+                        <label for="origem" style="margin-bottom: 5%;">Sua <b>atual</b> localização:</label><br>
+                        <input type="text" id="origem" placeholder="Digite o local de origem" style="width: 90%; border: 1px solid #ccc; border-radius: 5px;  padding: 10px; font-size: 14px;  font-family: Poppins, Arial, sans-serif;">
+                    </div>
+            
+                    <div style="margin-bottom: 5%;">
+                        <label for="destino">Estúdio <b>"Plenitude no Olhar":</b></label><br>
+                        <input type="text" id="destino" placeholder="Digite o local de destino" value="R. das Gilias, 361 - Vila Bela, São Paulo - SP, 03201-070" style="width: 90%; border: 1px solid #ccc; border-radius: 5px;  padding: 10px; font-size: 14px;  font-family: Poppins, Arial, sans-serif;">
+                    </div>
+            
+                    <div style="margin-bottom: 5%;">
+                        <label for="modo">Modo de Transporte:</label><br>
+                        <select id="modo" style="width: 96%; border: 1px solid #ccc; border-radius: 5px;  padding: 10px; font-size: 14px;  font-family: Poppins, Arial, sans-serif;">
+                            <option value="DRIVING">Carro</option>
+                            <option value="WALKING">A pé</option>
+                            <option value="BICYCLING">Bicicleta</option>
+                            <option value="TRANSIT">Transporte Público</option>
+                        </select>
+                    </div>
+            
+                    <button onclick="calcularTempo()" class="save-button">Calcular Tempo</button>
+            
+                    <div id="resultado"></div>
+                </div>
+            </div>
+            
         </header>
         <section id="navigation">
             <div class="nav-bar">
@@ -149,13 +194,14 @@
             <div class="modal-content">
                 <span onclick="fecharModal()" class="close">&times;</span>
                 <h2>Detalhes do Agendamento</h2>
-                <p id="modal-data"></p> <!-- Data -->
-                <p id="modal-horario"></p> <!-- Horário -->
-                <p id="modal-procedimento"></p> <!-- Procedimento -->
-                <p id="modal-especificacao"></p> <!-- Especificação -->
-                <p id="modal-profissional"></p> <!-- Profissional -->
-                <p id="modal-local"></p> <!-- Local -->
-                <p id="modal-status"></p> <!-- Local -->
+                <p id="modal-data"> <!-- Data --></p>
+                <p id="modal-horario"><i class="fas fa-clock"></i> <!-- Horário --></p>
+                <p id="modal-procedimento"><i class="fas fa-stethoscope"></i> <!-- Procedimento --></p>
+                <p id="modal-especificacao"><i class="fas fa-list"></i> <!-- Especificação --></p>
+                <p id="modal-profissional"><i class="fas fa-user-md"></i> <!-- Profissional --></p>
+                <p id="modal-local"><i class="fas fa-map-marker-alt"></i> <!-- Local --></p>
+                <p id="modal-status"><i class="fas fa-tasks"></i> <!-- Status --></p>
+                
             </div>
         </div>
 
@@ -163,22 +209,24 @@
 
 <!-- Modal de Cadastro -->
 <div id="modal-cadastro" class="modal" >
-    <div class="modal-content" style="height: 630px; margin-top: 20px; margin-bottom: 100px;">
+    <div class="modal-content" style="height: 850px; margin-top: 20px; margin-bottom: 100px;">
         <span id="modal-close" class="close">&times;</span>
-        <h2>Complete seu cadastro!</h2>
-
+        <div>
+        <a style="font-size: 24px; font-weight: bold;">Complete seu cadastro!</a><br>
+        <a style="color: #e70069; margin-bottom: 8%;"> * Há informações não preenchidas.</a>
+</div>
         <form id="usuarioForm" class="form">
-            <div class="form-group-row">
+            <div class="form-group-row" style="margin-top: 6%;">
                 <div class="form-group">
                     <label for="nascimento">Data de Nascimento:</label>
-                    <input type="date" id="nascimento" name="nascimento" required>
+                    <input type="date" style="width: 96%; border: 1px solid #ccc; border-radius: 5px;  padding: 10px; font-size: 14px;  font-family: Poppins, Arial, sans-serif; margin-bottom: 4%; " id="nascimento" name="nascimento" required>
                 </div>
             </div>
 
             <div class="form-group-row">
                 <div class="form-group">
                     <label for="genero">Gênero:</label>
-                    <select id="genero" name="genero" required>
+                    <select id="genero" style="width: 101%; border: 1px solid #ccc; border-radius: 5px;  padding: 13px; font-size: 14px;  font-family: Poppins, Arial, sans-serif; margin-bottom: 4%; color: black;" name="genero" required>
                         <option value="">Selecione</option>
                         <option value="Masculino">Masculino</option>
                         <option value="Feminino">Feminino</option>
@@ -190,7 +238,7 @@
                 </div>
                 <div class="form-group">
                     <label for="indicacao">Indicação:</label>
-                    <input type="text" id="indicacao" name="indicacao">
+                    <input type="text"  style="width: 96%; border: 1px solid #ccc; border-radius: 5px;  padding: 10px; font-size: 14px;  font-family: Poppins, Arial, sans-serif;" id="indicacao" name="indicacao">
                 </div>
             </div>
 
@@ -198,37 +246,37 @@
             <div class="form-group-row">
                 <div class="form-group">
                     <label for="cep">CEP:</label>
-                    <input type="text" id="cep" name="cep" required>
+                    <input type="text" style="width: 94%; border: 1px solid #ccc; border-radius: 5px;  padding: 10px; font-size: 14px;  font-family: Poppins, Arial, sans-serif; margin-bottom: 4%;" id="cep" name="cep" required>
                 </div>
                 <div class="form-group">
                     <label for="logradouro">Logradouro:</label>
-                    <input type="text" id="logradouro" name="logradouro" required>
+                    <input type="text" style="width: 94%; border: 1px solid #ccc; border-radius: 5px;  padding: 10px; font-size: 14px;  font-family: Poppins, Arial, sans-serif; margin-bottom: 4%;" id="logradouro" name="logradouro" required>
                 </div>
                 <div class="form-group">
                     <label for="numero">Número:</label>
-                    <input type="text" id="numero" name="numero" required>
+                    <input type="text" style="width: 94%; border: 1px solid #ccc; border-radius: 5px;  padding: 10px; font-size: 14px;  font-family: Poppins, Arial, sans-serif; margin-bottom: 4%;" id="numero" name="numero" required>
                 </div>
             </div>
 
             <div class="form-group-row">
                 <div class="form-group">
                     <label for="bairro">Bairro:</label>
-                    <input type="text" id="bairro" name="bairro" required>
+                    <input type="text" style="width: 94%; border: 1px solid #ccc; border-radius: 5px;  padding: 10px; font-size: 14px;  font-family: Poppins, Arial, sans-serif; margin-bottom: 4%;" id="bairro" name="bairro" required>
                 </div>
                 <div class="form-group">
                     <label for="cidade">Cidade:</label>
-                    <input type="text" id="cidade" name="cidade" required>
+                    <input type="text" style="width: 94%; border: 1px solid #ccc; border-radius: 5px;  padding: 10px; font-size: 14px;  font-family: Poppins, Arial, sans-serif; margin-bottom: 4%;" id="cidade" name="cidade" required>
                 </div>
                 <div class="form-group">
                     <label for="estado">Estado:</label>
-                    <input type="text" id="estado" name="estado" required>
+                    <input type="text" style="width: 94%; border: 1px solid #ccc; border-radius: 5px;  padding: 10px; font-size: 14px;  font-family: Poppins, Arial, sans-serif; margin-bottom: 4%;" id="estado" name="estado" required>
                 </div>
             </div>
 
             <div class="form-group-row">
                 <div class="form-group">
                     <label for="complemento">Complemento:</label>
-                    <input type="text" id="complemento" name="complemento">
+                    <input type="text" style="width: 94%; border: 1px solid #ccc; border-radius: 5px;  padding: 10px; font-size: 14px;  font-family: Poppins, Arial, sans-serif; margin-bottom: 3%;" id="complemento" name="complemento">
                 </div>
             </div>
 
@@ -257,5 +305,61 @@
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7RnMgdvoROHW_o-4pQeM3LJyNMwxem6o&libraries=places"></script>
+
+<script>
+    let autocompleteOrigem, autocompleteDestino;
+
+    // Inicializar o Autocomplete nos campos de origem e destino
+    function initAutocomplete() {
+        const origemInput = document.getElementById('origem');
+        const destinoInput = document.getElementById('destino');
+
+        // Inicializa o Autocomplete no campo origem
+        autocompleteOrigem = new google.maps.places.Autocomplete(origemInput, {
+            types: ['geocode'],  // Limitar para endereços geográficos
+            componentRestrictions: { country: "br" } // Opcional: restringir ao Brasil
+        });
+
+        // Inicializa o Autocomplete no campo destino
+        autocompleteDestino = new google.maps.places.Autocomplete(destinoInput, {
+            types: ['geocode'],
+            componentRestrictions: { country: "br" }
+        });
+    }
+
+    function calcularTempo() {
+        const origem = document.getElementById('origem').value;
+        const destino = document.getElementById('destino').value;
+        const modo = document.getElementById('modo').value;
+
+        const service = new google.maps.DistanceMatrixService();
+        service.getDistanceMatrix(
+            {
+                origins: [origem],
+                destinations: [destino],
+                travelMode: modo,  // Aqui você define o modo de transporte
+                unitSystem: google.maps.UnitSystem.METRIC,
+            },
+            (response, status) => {
+                if (status !== 'OK') {
+                    alert('Erro ao calcular a distância: ' + status);
+                    return;
+                }
+
+                const resultado = response.rows[0].elements[0];
+                const distancia = resultado.distance.text;
+                const duracao = resultado.duration.text;
+
+                document.getElementById('resultado').innerHTML =
+                    `<b> <i class="fas fa-map-marker-alt" style="font-size: 18px; cursor: pointer;"></i> Distância: </b> ${distancia}. <br> <b> <i class="fas fa-clock" style="font-size: 15px; cursor: pointer;"></i> Tempo estimado:</b> ${duracao}.`;
+            }
+        );
+    }
+    
+
+    // Inicializar o Autocomplete ao carregar a página
+    window.onload = initAutocomplete;
+</script>
 
 </html>
