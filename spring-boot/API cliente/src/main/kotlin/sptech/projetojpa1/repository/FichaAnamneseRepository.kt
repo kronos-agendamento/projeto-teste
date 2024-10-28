@@ -16,12 +16,14 @@ interface FichaAnamneseRepository : JpaRepository<FichaAnamnese, Int> {
         WHERE (:nomeUsuario IS NULL OR u.nome LIKE %:nomeUsuario%)
         AND (:cpf IS NULL OR u.cpf = :cpf)
         AND (:dataPreenchimento IS NULL OR f.dataPreenchimento = :dataPreenchimento)
+        AND (:idUsuario IS NULL OR u.codigo = :idUsuario)
     """
     )
     fun findByFilters(
         @Param("nomeUsuario") nomeUsuario: String?,
         @Param("cpf") cpf: String?,
-        @Param("dataPreenchimento") dataPreenchimento: LocalDate?
-    ): List<FichaAnamnese>
+        @Param("dataPreenchimento") dataPreenchimento: LocalDate?,
+        @Param("idUsuario") idUsuario: Int?
+        ): List<FichaAnamnese>
 
 }

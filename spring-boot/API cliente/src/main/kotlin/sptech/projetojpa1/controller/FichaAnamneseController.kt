@@ -101,9 +101,10 @@ class FichaAnamneseController(
     fun filtrarFichas(
         @RequestParam(required = false) nomeUsuario: String?,
         @RequestParam(required = false) cpf: String?,
-        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) dataPreenchimento: LocalDate?
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) dataPreenchimento: LocalDate?,
+        @RequestParam(required = false) idUsuario: Int?
     ): ResponseEntity<List<FichaCompletaResponseDTO>> {
-        val fichas = fichaAnamneseService.buscarFichasPorFiltros(nomeUsuario, cpf, dataPreenchimento)
+        val fichas = fichaAnamneseService.buscarFichasPorFiltros(nomeUsuario, cpf, dataPreenchimento, idUsuario)
 
         return if (fichas.isNotEmpty()) {
             ResponseEntity.ok(fichas)

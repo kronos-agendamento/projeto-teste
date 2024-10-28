@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   const params = new URLSearchParams(window.location.search);
-  const idUsuario = params.get("idUsuario") || localStorage.getItem("idUsuario");
+  const idUsuario =
+    params.get("idUsuario") || localStorage.getItem("idUsuario");
   const url = `http://localhost:8080/api/agendamentos/agendamentos/usuario/${idUsuario}`;
   const itemsPerPage = 5;
   let currentPage = 1;
@@ -16,13 +17,19 @@ document.addEventListener("DOMContentLoaded", function () {
   const dadosBtn = document.getElementById("dadosBtn");
 
   if (clienteNome) {
-    document.querySelector("header h1").textContent = `Mais informações de: ${clienteNome}`;
-
+    document.querySelector(
+      "header h1"
+    ).textContent = `Mais informações de: ${clienteNome}`;
   }
 
   dadosBtn.addEventListener("click", function () {
     // Redireciona para a página de agendamentos com o idUsuario na URL
     window.location.href = `../editar-cliente/editar-cliente.html?idUsuario=${idUsuario}`;
+  });
+
+  anamneseBtn.addEventListener("click", function () {
+    // Redireciona para a página de agendamentos com o idUsuario na URL
+    window.location.href = `../anamnese-cliente/anamnese-clientes.html?idUsuario=${idUsuario}`;
   });
 
   // Função para formatar a data e hora
@@ -43,19 +50,17 @@ document.addEventListener("DOMContentLoaded", function () {
         throw new Error("Erro ao carregar os agendamentos.");
       }
       const data = await response.json();
-      console.log(data);  // Verifique os dados retornados aqui
+      console.log(data); // Verifique os dados retornados aqui
       agendamentos = data;
       agendamentosOriginais = [...data]; // Armazenar uma cópia dos agendamentos originais
       agendamentosFiltrados = agendamentos;
       totalAgendamentos = agendamentos.length;
-
 
       renderTable();
     } catch (error) {
       console.error("Erro ao buscar os agendamentos:", error);
     }
   }
-
 
   // Função para renderizar a tabela de agendamentos
   function renderTable() {
@@ -99,7 +104,12 @@ document.addEventListener("DOMContentLoaded", function () {
       editButton.innerHTML = '<i class="fas fa-edit"></i>';
       editButton.addEventListener("click", (event) => {
         event.stopPropagation();
-        editarAgendamento(agendamento.idAgendamento, agendamento.usuarioId, agendamento.fkProcedimento, agendamento.fkEspecificacao);
+        editarAgendamento(
+          agendamento.idAgendamento,
+          agendamento.usuarioId,
+          agendamento.fkProcedimento,
+          agendamento.fkEspecificacao
+        );
       });
 
       const deleteButton = document.createElement("button");
@@ -119,23 +129,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Desabilita ou habilita os botões de navegação de página
       document.getElementById("prev-page-btn").disabled = currentPage === 1;
-      document.getElementById("next-page-btn").disabled = currentPage === totalPages;
+      document.getElementById("next-page-btn").disabled =
+        currentPage === totalPages;
     });
   }
 
   // Função para editar um agendamento
-  window.editarAgendamento = function (idAgendamento, usuarioId, fkProcedimento, fkEspecificacao) {
-    sessionStorage.setItem('id_usuario', usuarioId);
-    sessionStorage.setItem('id_agendamento', idAgendamento);
-    sessionStorage.setItem('procedimento', fkProcedimento);
-    sessionStorage.setItem('especificacao', fkEspecificacao);
+  window.editarAgendamento = function (
+    idAgendamento,
+    usuarioId,
+    fkProcedimento,
+    fkEspecificacao
+  ) {
+    sessionStorage.setItem("id_usuario", usuarioId);
+    sessionStorage.setItem("id_agendamento", idAgendamento);
+    sessionStorage.setItem("procedimento", fkProcedimento);
+    sessionStorage.setItem("especificacao", fkEspecificacao);
     window.location.href = `../../../agendamento/agendamento-forms/editar-agendamento/editar-agendamento.html?idAgendamento=${idAgendamento}&usuarioId=${usuarioId}&procedimento=${fkProcedimento}&especificacao=${fkEspecificacao}`;
   };
 
   // Função para excluir um agendamento
   window.excluirAgendamento = function (id) {
     agendamentoIdToDelete = id;
-    document.getElementById("procedimento").textContent = `ID do agendamento: ${id}`;
+    document.getElementById(
+      "procedimento"
+    ).textContent = `ID do agendamento: ${id}`;
     document.getElementById("modal").style.display = "block";
   };
 
@@ -143,9 +161,12 @@ document.addEventListener("DOMContentLoaded", function () {
   window.confirmDeletion = async function () {
     if (agendamentoIdToDelete !== null) {
       try {
-        const response = await fetch(`http://localhost:8080/api/agendamentos/excluir/${agendamentoIdToDelete}`, {
-          method: "DELETE",
-        });
+        const response = await fetch(
+          `http://localhost:8080/api/agendamentos/excluir/${agendamentoIdToDelete}`,
+          {
+            method: "DELETE",
+          }
+        );
         if (!response.ok) throw new Error("Erro ao excluir o agendamento.");
         await fetchAgendamentos();
         agendamentoIdToDelete = null;
@@ -197,8 +218,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Inicializa a busca de agendamentos ao carregar a página
   fetchAgendamentos();
-
-
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -206,7 +225,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const instagram = localStorage.getItem("instagram");
 
   if (nome && instagram) {
-      document.getElementById("userName").textContent = nome;
-      document.getElementById("userInsta").textContent = instagram;
+    document.getElementById("userName").textContent = nome;
+    document.getElementById("userInsta").textContent = instagram;
   }
 });
