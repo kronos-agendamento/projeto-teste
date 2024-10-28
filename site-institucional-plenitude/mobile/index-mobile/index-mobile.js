@@ -921,5 +921,104 @@ document.getElementById("usuarioForm").addEventListener("submit", async (event) 
     } else {
         console.error('Ícone de ajuda não encontrado no DOM.');
     }
+
+    
+  // Configuração da busca com lupa
+  const lupaIcon = document.getElementById("lupa-icon");
+  const closeIcon = document.getElementById("close-icon");
+  const searchInput = document.getElementById("searchInput");
+
+  if (lupaIcon && closeIcon && searchInput) {
+    lupaIcon.addEventListener("click", function () {
+      lupaIcon.style.display = "none";
+      searchInput.style.display = "block";
+      closeIcon.style.display = "block";
+      searchInput.focus();
+    });
+
+    closeIcon.addEventListener("click", function () {
+      closeIcon.style.display = "none";
+      searchInput.style.display = "none";
+      lupaIcon.style.display = "block";
+      searchInput.value = "";
+      document.getElementById("resultados").innerHTML = "";
+    });
+  }
+
+  searchInput?.addEventListener("input", filtrarEspecificacoes);
+  searchInput?.addEventListener("change", salvarIdsNoLocalStorage);
+  carregarEspecificacoes();
 });
+
+// Função para carregar as especificações no datalist
+function carregarEspecificacoes() {
+  fetch("http://localhost:8080/api/especificacoes")
+    .then((response) => (response.ok ? response.json() : []))
+    .then((data) => {
+      const dataList = document.getElementById("especificacoesList");
+      dataList.innerHTML = "";
+
+      data.sort((a, b) =>
+        normalizeString(
+          `${a.especificacao} - ${a.procedimento.tipo}`
+        ).localeCompare(
+          normalizeString(`${b.especificacao} - ${b.procedimento.tipo}`)
+        )
+      );
+
+      data.forEach((item) => {
+        const option = document.createElement("option");
+        option.value = `${item.especificacao} - ${item.procedimento.tipo}`;
+        option.dataset.normalized = normalizeString(option.value);
+        option.dataset.idEspecificacao = item.idEspecificacaoProcedimento;
+        option.dataset.idProcedimento = item.procedimento.idProcedimento;
+        dataList.appendChild(option);
+      });
+    })
+    .catch((error) => {
+      console.error("Erro:", error);
+    });
+}
+
+// Função para salvar IDs no localStorage e redirecionar
+function salvarIdsNoLocalStorage() {
+  const input = document.getElementById("searchInput");
+  const selectedOption = Array.from(
+    document.getElementById("especificacoesList").options
+  ).find((option) => option.value === input.value);
+
+  if (selectedOption) {
+    localStorage.setItem(
+      "idEspecificacao",
+      selectedOption.dataset.idEspecificacao
+    );
+    localStorage.setItem(
+      "idProcedimento",
+      selectedOption.dataset.idProcedimento
+    );
+    window.location.href = "../agendamento-mobile/agendamento-mobile.html";
+  }
+}
+
+// Função para filtrar opções usando busca binária
+function filtrarEspecificacoes() {
+  const input = document.getElementById("searchInput");
+  const filter = normalizeString(input.value);
+  const options = Array.from(
+    document.getElementById("especificacoesList").options
+  );
+
+  options.sort((a, b) =>
+    a.dataset.normalized.localeCompare(b.dataset.normalized)
+  );
+
+  const index = buscaBinaria(options, filter);
+
+  options.forEach((option, i) => {
+    option.style.display =
+      i === index || option.dataset.normalized.includes(filter) ? "" : "none";
+  });
+}
+
+
 

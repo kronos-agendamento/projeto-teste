@@ -221,6 +221,9 @@ class AgendamentoService(
             "Colocação" -> LocalTime.parse(especificacao.tempoColocacao)
             "Manutenção" -> LocalTime.parse(especificacao.tempoManutencao)
             "Retirada" -> LocalTime.parse(especificacao.tempoRetirada)
+            "Homecare" -> LocalTime.parse(especificacao.tempoColocacao)
+            "Estudio" -> LocalTime.parse(especificacao.tempoColocacao)
+            "Evento" -> LocalTime.parse(especificacao.tempoColocacao)
             else -> throw IllegalArgumentException("Tipo de agendamento inválido")
         }
 
