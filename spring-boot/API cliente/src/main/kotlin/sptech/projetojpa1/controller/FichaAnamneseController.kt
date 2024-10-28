@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import sptech.projetojpa1.dto.FichaCompletaResponseDTO
 import sptech.projetojpa1.dto.ficha.FichaRequest
+import sptech.projetojpa1.dto.ficha.PerguntasRespostasRequest
 import sptech.projetojpa1.service.FichaAnamneseService
 import java.time.LocalDate
 
@@ -97,10 +98,18 @@ class FichaAnamneseController(
             ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos para atualização da ficha")
         ]
     )
-    @PutMapping("/{id}")
-    fun atualizarFicha(@PathVariable id: Long, @RequestBody fichaRequest: FichaRequest): FichaCompletaResponseDTO {
-        return fichaAnamneseService.atualizarFichaPorId(id, fichaRequest)
+    @PatchMapping("/{idFicha}")
+    fun atualizarPerguntasRespostas(
+        @PathVariable idFicha: Long,
+        @RequestBody atualizacoes: PerguntasRespostasRequest
+    ): ResponseEntity<FichaCompletaResponseDTO> {
+        // Chama o serviço para atualizar as respostas de várias perguntas
+        val fichaAtualizada = fichaAnamneseService.atualizarPerguntasRespostas(idFicha, atualizacoes.perguntasRespostas)
+
+        // Retorna a ficha atualizada com o status HTTP 200 (OK)
+        return ResponseEntity.ok(fichaAtualizada)
     }
+
 
 
     @Operation(

@@ -39,10 +39,12 @@ function renderPerguntas(perguntasRespostas) {
         let inputElement = null;
         const resposta = perguntaResposta.resposta;
 
+        console.log("Atribuindo name com idPergunta:", `pergunta_${perguntaResposta.idPergunta}`); // Debug
+
         if (perguntaResposta.perguntaTipo === 'Input') {
             inputElement = document.createElement('input');
             inputElement.type = 'text';
-            inputElement.name = `pergunta_${perguntaResposta.perguntaId}`;
+            inputElement.name = `pergunta_${perguntaResposta.idPergunta}`;
             inputElement.value = resposta || '';
             inputElement.required = true;
             inputElement.style.marginTop = "10px";
@@ -51,12 +53,12 @@ function renderPerguntas(perguntasRespostas) {
         } else if (perguntaResposta.perguntaTipo === 'Check Box') {
             inputElement = document.createElement('input');
             inputElement.type = 'checkbox';
-            inputElement.name = `pergunta_${perguntaResposta.perguntaId}`;
+            inputElement.name = `pergunta_${perguntaResposta.idPergunta}`;
             inputElement.checked = resposta === 'Sim';
             inputElement.style.marginTop = "10px";
         } else if (perguntaResposta.perguntaTipo === 'Select') {
             inputElement = document.createElement('select');
-            inputElement.name = `pergunta_${perguntaResposta.perguntaId}`;
+            inputElement.name = `pergunta_${perguntaResposta.idPergunta}`;
             inputElement.required = true;
             inputElement.style.marginTop = "10px";
 
@@ -82,6 +84,8 @@ function renderPerguntas(perguntasRespostas) {
     });
 }
 
+
+
 // Função para buscar perguntas em branco ao carregar a página
 async function fetchPerguntas() {
     try {
@@ -103,7 +107,6 @@ async function fetchPerguntas() {
     }
 }
 
-// Função para enviar as respostas do formulário
 async function submitForm() {
     const idUsuario = localStorage.getItem("idUsuario");
     if (!idUsuario) {
@@ -112,17 +115,29 @@ async function submitForm() {
     }
 
     const statusFormulario = localStorage.getItem("statusFormulario");
+
+    // Inicialize o formData com o formato correto para o POST
     const formData = {
-        dataPreenchimento: new Date().toISOString(),
-        usuario: {
-            codigo: parseInt(idUsuario),
-        },
-        respostas: []
+        fichaAnamnese: 1, // Substitua pelo ID correto da ficha, se necessário
+        usuario: parseInt(idUsuario, 10), // Converte para inteiro o ID do usuário
+        respostas: [] // Respostas no formato esperado pelo backend
     };
 
+    console.log("ID do usuário:", idUsuario);
+    console.log("Status do formulário:", statusFormulario);
+
+    // Preenche as respostas do formulário
     document.querySelectorAll('input, select').forEach(input => {
-        const perguntaId = input.name.split('_')[1];
-        if (!perguntaId) return;
+        const perguntaIdStr = input.name.split('_')[1];
+        const perguntaId = parseInt(perguntaIdStr, 10); // Converte para inteiro base 10
+
+        console.log("Processando input:", input);
+        console.log("Extraído perguntaId:", perguntaId); // Debug para verificar o valor
+
+        if (isNaN(perguntaId)) {
+            console.warn("idPergunta inválido encontrado:", perguntaIdStr);
+            return; // Ignora se o id da pergunta não estiver presente
+        }
 
         let resposta;
         if (input.type === 'checkbox') {
@@ -131,37 +146,29 @@ async function submitForm() {
             resposta = input.value;
         }
 
+        console.log("Resposta extraída:", resposta);
+
         if (resposta.trim() !== "") {
             formData.respostas.push({
                 resposta: resposta,
-                pergunta: {
-                    idPergunta: parseInt(perguntaId),
-                }
+                pergunta: perguntaId // Corrigido para "pergunta" conforme o esperado pelo backend
             });
+            console.log("Adicionada ao formData.respostas:", { resposta, pergunta: perguntaId });
+        } else {
+            console.warn("Resposta vazia ignorada para perguntaId:", perguntaId);
         }
     });
 
-    console.log('Dados do formulário:', formData);
+    console.log('Dados do formulário para POST:', formData);
 
     try {
-        let response;
-        if (statusFormulario === "Respondido") {
-            response = await fetch(`http://localhost:8080/api/ficha-anamnese/${idUsuario}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
-        } else {
-            response = await fetch('http://localhost:8080/api/respostas', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
-        }
+        const response = await fetch('http://localhost:8080/api/respostas', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        });
 
         if (response.ok) {
             alert('Respostas enviadas com sucesso!');
@@ -173,6 +180,7 @@ async function submitForm() {
         console.error('Erro no envio das respostas:', error);
     }
 }
+
 
 document.addEventListener("DOMContentLoaded", function () {
     const idUsuario = localStorage.getItem("idUsuario");

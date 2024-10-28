@@ -24,5 +24,4 @@ interface FichaAnamneseRepository : JpaRepository<FichaAnamnese, Int> {
         @Param("cpf") cpf: String?,
         @Param("dataPreenchimento") dataPreenchimento: LocalDate?
     ): List<FichaAnamnese>
-
 }
