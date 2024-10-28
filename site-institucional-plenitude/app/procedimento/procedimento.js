@@ -1,3 +1,5 @@
+let procedimentos = [];
+
 document.addEventListener("DOMContentLoaded", function () {
   function showNotification(message, isError = false, duration = 3000) {
     const notification = document.getElementById("notification");
@@ -25,7 +27,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnYes = document.querySelector(".btn-yes");
   let currentPage = 1;
   const itemsPerPage = 5;
-  let procedimentos = [];
   let procedimentoParaDeletar = null;
 
   function fetchData(endpoint, id) {
@@ -171,36 +172,36 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   async function init() {
-    procedimentos = await fetchProcedures();
-    renderTable(procedimentos, currentPage);
+    procedimentos = await fetchProcedures();  // Carregar os procedimentos
+    renderTable(procedimentos, currentPage);  // Renderizar a tabela
 
     prevPageBtn.addEventListener("click", () => {
-      if (currentPage > 1) {
-        currentPage--;
-        renderTable(procedimentos, currentPage);
-      }
+        if (currentPage > 1) {
+            currentPage--;
+            renderTable(procedimentos, currentPage);  // Re-renderizar a tabela
+        }
     });
 
     nextPageBtn.addEventListener("click", () => {
-      const totalPages = Math.ceil(procedimentos.length / itemsPerPage);
-      if (currentPage < totalPages) {
-        currentPage++;
-        renderTable(procedimentos, currentPage);
-      }
+        const totalPages = Math.ceil(procedimentos.length / itemsPerPage);
+        if (currentPage < totalPages) {
+            currentPage++;
+            renderTable(procedimentos, currentPage);  // Re-renderizar a tabela
+        }
     });
 
     btnYes.addEventListener("click", async () => {
-      if (procedimentoParaDeletar !== null) {
-        await deleteProcedimento(
-          procedimentoParaDeletar.idEspecificacao,
-          procedimentoParaDeletar.idProcedimento
-        );
-        procedimentos = await fetchProcedures();
-        renderTable(procedimentos, currentPage);
-        closeModal();
-      }
+        if (procedimentoParaDeletar !== null) {
+            await deleteProcedimento(
+                procedimentoParaDeletar.idEspecificacao,
+                procedimentoParaDeletar.idProcedimento
+            );
+            procedimentos = await fetchProcedures();  // Recarregar os procedimentos após exclusão
+            renderTable(procedimentos, currentPage);  // Re-renderizar a tabela
+            closeModal();
+        }
     });
-  }
+}
 
   async function deleteProcedimento(idEspecificacao, idProcedimento) {
     try {
@@ -260,7 +261,7 @@ document.addEventListener("DOMContentLoaded", function () {
     } catch (error) {
       console.error("Erro ao deletar o procedimento:", error);
       showNotification(
-        "Erro ao deletar o procedimento. Tente novamente mais tarde.",
+        "Erro ao deletar o procedimento, porque existe vínculo com algum agendamento.",
         true
       );
     }
@@ -342,46 +343,182 @@ function exportTableToExcel(tableId, filename = "") {
   );
 }
 
+// Filtrar Procedimentos e Especificações
 document.addEventListener("DOMContentLoaded", function () {
   const procedimentoSelect = document.getElementById("procedimento-filtro");
   const especificacaoSelect = document.getElementById("especificacao-filtro");
 
-  // Função para popular as opções de Procedimento
   fetch("http://localhost:8080/api/procedimentos")
-    .then((response) => response.json())
-    .then((data) => {
-      data.forEach((item) => {
-        const option = document.createElement("option");
-        option.value = item.idProcedimento;
-        option.textContent = item.tipo;
-        procedimentoSelect.appendChild(option);
+      .then((response) => response.json())
+      .then((data) => {
+          if (data.length > 0) {
+              data.forEach((item) => {
+                  const option = document.createElement("option");
+                  option.value = item.idProcedimento;
+                  option.textContent = item.tipo;
+                  procedimentoSelect.appendChild(option);
+              });
+          } else {
+              console.error("Nenhum procedimento encontrado.");
+          }
+      })
+      .catch((error) => {
+          console.error("Erro ao carregar procedimentos:", error);
       });
-    });
 
-  // Função para popular as opções de Especificação conforme o Procedimento selecionado
   fetch("http://localhost:8080/api/especificacoes")
-    .then((response) => response.json())
-    .then((data) => {
-      // Ao mudar o procedimento
-      procedimentoSelect.addEventListener("change", function () {
-        especificacaoSelect.disabled = false;
-        especificacaoSelect.innerHTML = ""; // Limpa as opções anteriores
+      .then((response) => response.json())
+      .then((data) => {
+          procedimentoSelect.addEventListener("change", function () {
+              especificacaoSelect.disabled = procedimentoSelect.value === "";
+              especificacaoSelect.innerHTML = "";
 
-        const procedimentoId = procedimentoSelect.value;
+              const procedimentoId = procedimentoSelect.value;
 
-        // Filtra as especificações que pertencem ao procedimento selecionado
-        const especificacoesFiltradas = data.filter(
-          (item) => item.procedimento.idProcedimento == procedimentoId
-        );
+              const especificacoesFiltradas = data.filter(
+                  (item) => item.procedimento.idProcedimento == procedimentoId
+              );
 
-        // Popula o select de especificações
-        especificacoesFiltradas.forEach((item) => {
-          const option = document.createElement("option");
-          option.value = item.idEspecificacaoProcedimento;
-          option.textContent = item.especificacao;
-          especificacaoSelect.appendChild(option);
+              especificacoesFiltradas.forEach((item) => {
+                  const option = document.createElement("option");
+                  option.value = item.idEspecificacaoProcedimento;
+                  option.textContent = item.especificacao;
+                  especificacaoSelect.appendChild(option);
+              });
+          });
+      })
+      .catch((error) => {
+          console.error("Erro ao carregar especificações:", error);
+      });
+
+  // Aplicar Filtro
+  document.getElementById("apply-filter-button").addEventListener("click", function () {
+    const proceduresTbody = document.getElementById("procedures-tbody");
+    const itemsPerPage = 5;
+    const prevPageBtn = document.getElementById("prev-page-btn");
+    const nextPageBtn = document.getElementById("next-page-btn");
+    const currentPageSpan = document.getElementById("current-page");
+    const totalPagesSpan = document.getElementById("total-pages");
+
+    function formatDuration(duration) {
+      const [hours, minutes] = duration.split(":").map(Number);
+      return `${hours}h ${minutes} min`;
+    }
+
+    function renderTable(procedures, page) {
+      proceduresTbody.innerHTML = "";
+      const start = (page - 1) * itemsPerPage;
+      const end = page * itemsPerPage;
+      const paginatedProcedures = procedures.slice(start, end);
+  
+      paginatedProcedures.forEach((procedure) => {
+        const row = document.createElement("tr");
+  
+        const nome = procedure.procedimento.tipo;
+        const preco = `R$${procedure.precoColocacao
+          .toFixed(2)
+          .replace(".", ",")}`;
+        const duracao = formatDuration(procedure.tempoColocacao);
+        const especificacao = procedure.especificacao;
+        const procedimentoId = procedure.procedimento.idProcedimento; // ID do procedimento
+        const especificacaoId = procedure.idEspecificacaoProcedimento; // ID da especificação
+  
+        row.innerHTML = `
+                  <td>${nome}</td>
+                  <td>${preco}</td>
+                  <td>${duracao}</td>
+                  <td>${especificacao}</td>
+                 <td>
+      <!-- Botão de Editar com tooltip -->
+      <div class="tooltip-wrapper">
+          <button class="edit-btn" data-id-especificacao="${especificacaoId}" data-id-procedimento="${procedimentoId}" style="border: none; background: transparent; cursor: pointer;">
+              <img src="../../assets/icons/editar.png" alt="Editar" style="width: 25px; height: 25px; margin-top:8px; margin-left:5px;">
+          </button>
+          <div class="tooltip11">Editar</div>
+      </div>
+  
+      <!-- Botão de Excluir com tooltip -->
+      <div class="tooltip-wrapper">
+          <button class="delete-btn" data-id-especificacao="${especificacaoId}" data-id-procedimento="${procedimentoId}" data-tipo="${nome}" data-especificacao="${especificacao}" style="border: none; background: transparent; cursor: pointer;">
+              <img src="../../assets/icons/excluir.png" alt="Excluir" style="width: 25px; height: 25px; margin-top:8px; margin-left:2px;">
+          </button>
+          <div class="tooltip11">Excluir</div>
+      </div>
+  </td>
+              `;
+        proceduresTbody.appendChild(row);
+      });
+  
+      currentPageSpan.textContent = page;
+      const totalPages = Math.ceil(procedures.length / itemsPerPage);
+      totalPagesSpan.textContent = totalPages;
+  
+      // Desativar ou ativar botões de página
+      prevPageBtn.classList.toggle("button-disabled", page === 1);
+      nextPageBtn.classList.toggle("button-disabled", page === totalPages);
+  
+      prevPageBtn.disabled = page === 1;
+      nextPageBtn.disabled = page === totalPages;
+  
+      document.querySelectorAll(".delete-btn").forEach((button) => {
+        const especificacaoId = button.getAttribute("data-id-especificacao");
+        const procedimentoId = button.getAttribute("data-id-procedimento");
+        const tipo = button.getAttribute("data-tipo");
+        const especificacao = button.getAttribute("data-especificacao");
+  
+        button.addEventListener("click", (e) => {
+          procedimentoParaDeletar = {
+            idEspecificacao: especificacaoId,
+            idProcedimento: procedimentoId,
+          };
+          if (procedimentoParaDeletar.idEspecificacao) {
+            showModal(tipo, especificacao);
+          } else {
+            console.error("ID do procedimento é indefinido.");
+          }
         });
       });
-    });
-    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  
+      // Atualização da função de clique no botão de edição
+      document.querySelectorAll(".edit-btn").forEach((button) => {
+        button.addEventListener("click", (e) => {
+          const especificacaoId = e.currentTarget.getAttribute(
+            "data-id-especificacao"
+          );
+          const procedimentoId = e.currentTarget.getAttribute(
+            "data-id-procedimento"
+          );
+          // Corrigir a URL para enviar ambos os IDs
+          window.location.href = `procedimento-forms/editar-procedimento/editar-procedimento.html?idEspecificacao=${especificacaoId}&idProcedimento=${procedimentoId}`;
+        });
+      });
+    }
+    
+      const procedimentoId = procedimentoSelect.value;
+      const especificacaoId = especificacaoSelect.value;
+
+      if (procedimentoId && especificacaoId) {
+          const filteredProcedures = procedimentos.filter((procedure) => {
+              return (
+                  procedure.procedimento.idProcedimento == procedimentoId &&
+                  procedure.idEspecificacaoProcedimento == especificacaoId
+              );
+          });
+          renderTable(filteredProcedures, 1);
+      } else {
+          alert("Por favor, selecione o Procedimento e a Especificação.");
+      }
+
+      document.getElementById("filter-modal").style.display = "none";
+  });
+
+  // Abrir e Fechar o Modal
+  document.getElementById("open-filter-modal-btn").addEventListener("click", () => {
+      document.getElementById("filter-modal").style.display = "block";
+  });
+
+  document.getElementById("close-filter-modal").addEventListener("click", () => {
+      document.getElementById("filter-modal").style.display = "none";
+  });
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
 });

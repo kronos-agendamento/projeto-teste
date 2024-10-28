@@ -1,8 +1,8 @@
--- drop database kronosbooking;
-CREATE DATABASE IF NOT EXISTS kronosbooking;
+ -- drop database kronosbooking;
+create database if not exists kronosbooking;
 USE kronosbooking;
 
-
+DROP TABLE IF EXISTS login_logoff;
 DROP TABLE IF EXISTS feedback;
 DROP TABLE IF EXISTS cliente;
 DROP TABLE IF EXISTS profissional;
@@ -10,7 +10,6 @@ DROP TABLE IF EXISTS agendamento;
 DROP TABLE IF EXISTS resposta;
 DROP TABLE IF EXISTS pergunta;
 DROP TABLE IF EXISTS especificacao;
-DROP TABLE IF EXISTS tempo_procedimento;
 DROP TABLE IF EXISTS procedimento;
 DROP TABLE IF EXISTS usuario;
 DROP TABLE IF EXISTS ficha_anamnese;
@@ -147,15 +146,14 @@ CREATE TABLE agendamento (
     tipo_agendamento VARCHAR(255) NOT NULL,
     tempo_para_agendar INT,
     fk_usuario INT NOT NULL,
-    fk_procedimento INT NOT NULL,
-    fk_especificacao_procedimento INT NOT NULL,
+    fk_procedimento INT,
+    fk_especificacao_procedimento INT,
     fk_status INT NOT NULL,
     FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
     FOREIGN KEY (fk_procedimento) REFERENCES procedimento(id_procedimento),
     FOREIGN KEY (fk_especificacao_procedimento) REFERENCES especificacao(id_especificacao_procedimento),
     FOREIGN KEY (fk_status) REFERENCES status(id_status_agendamento)
 );
-
 
 CREATE TABLE feedback (
     id_feedback INT AUTO_INCREMENT PRIMARY KEY,
@@ -169,14 +167,14 @@ CREATE TABLE feedback (
     FOREIGN KEY (fk_cliente_avaliado) REFERENCES usuario(id_usuario) ON DELETE CASCADE
 );
 
-	CREATE TABLE cliente (
+CREATE TABLE cliente (
     id_usuario INT PRIMARY KEY,
     experiencia_avaliada VARCHAR(255),
     frequencia INT,
     FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
 );
 
-	CREATE TABLE profissional (
+CREATE TABLE profissional (
 		id_usuario INT PRIMARY KEY,
 		numero_avaliacoes INT,
 		media_nota DOUBLE,
@@ -185,7 +183,7 @@ CREATE TABLE feedback (
 		FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
 	);
     
-    CREATE TABLE Leads (
+CREATE TABLE Leads (
     id_lead INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
@@ -230,17 +228,17 @@ VALUES
 
 INSERT INTO empresa (nome, telefone, cnpj, fk_endereco, fk_horario_funcionamento)
 VALUES 
-('Plenitude no Olhar', '11987654321', '12.345.678/0001-90', 1, 1),
-('Beleza Suprema', '21987654322', '98.765.432/0002-10', 2, 2),
-('Olhar Perfeito', '31987654323', '22.333.444/0001-11', 3, 3),
-('Glamour Sobrancelhas', '41987654324', '44.555.666/0001-12', 4, 4),
-('Cílios de Diva', '51987654325', '55.666.777/0001-13', 5, 5),
-('Makeup Studio', '61987654326', '66.777.888/0001-14', 6, 6),
-('Estética Refinada', '71987654327', '77.888.999/0001-15', 7, 7),
-('Sobrancelhas de Ouro', '81987654328', '88.999.000/0001-16', 8, 8),
-('Cílios e Sobrancelhas', '91987654329', '99.000.111/0001-17', 9, 9),
-('Sobrancelhas Elegantes', '11987654330', '11.111.222/0001-18', 10, 10),
-('Kronos', '11987654330', '10.101.222/0001-18', 11, 11);
+('Plenitude no Olhar', '11987654321', '04.669.985/0001-01', 1, 1),
+('Beleza Suprema', '21987654322', '38.056.805/0001-20', 2, 2),
+('Olhar Perfeito', '31987654323', '10.735.721/0001-01', 3, 3),
+('Glamour Sobrancelhas', '41987654324', '39.555.755/0001-98', 4, 4),
+('Cílios de Diva', '51987654325', '07.159.343/0001-42', 5, 5),
+('Makeup Studio', '61987654326', '88.838.187/0001-48', 6, 6),
+('Estética Refinada', '71987654327', '20.461.436/0001-95', 7, 7),
+('Sobrancelhas de Ouro', '81987654328', '93.959.301/0001-28', 8, 8),
+('Cílios e Sobrancelhas', '91987654329', '18.053.709/0001-10', 9, 9),
+('Sobrancelhas Elegantes', '11987654330', '64.824.719/0001-20', 10, 10),
+('Kronos', '11987654330', '58.918.570/0001-45', 11, 11);
 
 INSERT INTO ficha_anamnese (data_preenchimento)
 VALUES 
@@ -258,28 +256,16 @@ VALUES
 
 INSERT INTO usuario (nome, email, senha, instagram, cpf, telefone, data_nasc, genero, indicacao, status, fk_nivel_acesso, fk_endereco, fk_empresa, fk_ficha_anamnese)
 VALUES 
-('Priscila Plenitude', 'priscila@plenitude.com', 'senhaAdmin', '@plenitudenoolhar', '111.111.111-11', 11987654321, '1980-01-01', 'Feminino', 'Instagram', TRUE, 1, 1, 1, NULL),
-('Ana Paula', 'ana@beleza.com', 'senha123', '@anabeauty', '469.674.588-09', 21987654321, '1992-02-02', 'Feminino', 'Indicação de Amiga', TRUE, 2, 2, 2, 2),
-('Carlos Eduardo', 'carlos@olharperfeito.com', 'senha123', '@carlosedu', '317.262.998-80', 31987654322, '1995-03-03', 'Masculino', 'Facebook', TRUE, 2, 3, 3, 3),
-('Juliana Costa', 'juliana@glamour.com', 'senha123', '@jucosta', '633.335.400-70', 41987654323, '1990-04-04', 'Feminino', 'Google', TRUE, 2, 4, 4, 4),
-('Roberta Silva', 'roberta@ciliosdiva.com', 'senha123', '@robdiva', '669.146.280-76', 51987654324, '1993-05-05', 'Feminino', 'Instagram', TRUE, 2, 5, 5, 5),
-('Daniel Souza', 'daniel@makeup.com', 'senha123', '@danmake', '730.940.230-88', 61987654325, '1991-06-06', 'Masculino', 'Indicação de Influencer', TRUE, 2, 6, 6, 6),
-('Larissa Nunes', 'larissa@refinada.com', 'senha123', '@larissarefinada', '224.744.500-41', 71987654326, '1987-07-07', 'Feminino', 'Instagram', TRUE, 2, 7, 7, 7),
-('Tatiana Melo', 'tatiana@ouro.com', 'senha123', '@tatiouro', '784.563.970-24', 81987654327, '1985-08-08', 'Feminino', 'Indicação de Amiga', TRUE, 2, 8, 8, 8),
-('Paula Gomes', 'paula@cilios.com', 'senha123', '@paulagomes', '999.999.999-99', 91987654328, '1982-09-09', 'Feminino', 'Indicação Familiar', TRUE, 2, 9, 9, 9),
-('Marília Costa', 'cecilia@elegantes.com', 'senha123', '@ceciliaelegantes', '101.010.101-10', 11987654329, '1989-10-19', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10),
-('Cecília Costa', 'cecilia@elegantes.com', 'senha123', '@ceciliaelegantes', '101.010.101-10', 11987654329, '1989-10-10', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10),
-('Lucas Lima', 'lucas@novidade.com', 'senha123', '@lucaslima', '111.111.111-12', 11987654322, '1981-11-01', 'Masculino', 'Instagram', TRUE, 1, 1, 1, NULL),
-('Fernanda Santos', 'fernanda@novidade.com', 'senha123', '@fernandasantos', '222.222.222-23', 22987654323, '1982-11-15', 'Feminino', 'Indicação Familiar', TRUE, 2, 2, 2, 2),
-('Jorge Almeida', 'jorge@novidade.com', 'senha123', '@jorgealmeida', '333.333.333-34', 33987654324, '1983-12-20', 'Masculino', 'Facebook', TRUE, 2, 3, 3, 3),
-('Camila Rocha', 'camila@novidade.com', 'senha123', '@camilarocha', '444.444.444-45', 44987654325, '1984-12-25', 'Feminino', 'Google', TRUE, 2, 4, 4, 4),
-('Renato Costa', 'renato@novidade.com', 'senha123', '@renatocosta', '555.555.555-56', 55987654326, '1985-01-30', 'Masculino', 'Instagram', TRUE, 2, 5, 5, 5),
-('Mariana Ferreira', 'mariana@novidade.com', 'senha123', '@marianaferreira', '666.666.666-67', 66987654327, '1986-01-15', 'Feminino', 'Indicação de Influencer', TRUE, 2, 6, 6, 6),
-('Ricardo Martins', 'ricardo@novidade.com', 'senha123', '@ricardomartins', '777.777.777-78', 77987654328, '1987-02-10', 'Masculino', 'Instagram', TRUE, 2, 7, 7, 7),
-('Letícia Silva', 'leticia@novidade.com', 'senha123', '@leticiasilva', '888.888.888-89', 88987654329, '1988-02-25', 'Feminino', 'Indicação de Amiga', TRUE, 2, 8, 8, 8),
-('Vinícius Oliveira', 'vinicius@novidade.com', 'senha123', '@viniciusoliveira', '999.999.999-00', 99987654321, '1989-03-05', 'Masculino', 'Indicação Familiar', TRUE, 2, 9, 9, 9),
-('Amanda Castro', 'amanda@novidade.com', 'senha123', '@amandacastro', '101.010.101-11', 10198765432, '1990-03-20', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10),
-('Ruan Cardozo', 'ruancrdz2004@gmail.com', 'ruancrdz2004', '@ruan_crdz', '526.107.418-55', 11944415361, '2004-10-02', 'Masculino', 'Instagram', TRUE, 1, 11, 11, 11);
+('Priscila Plenitude', 'priscila@plenitude.com', 'senhaAdmin', '@plenitudenoolhar', '401.235.740-99', 11987654321, '1980-01-01', 'Feminino', 'Instagram', TRUE, 1, 1, 1, NULL),
+('Ana Paula', 'ana@beleza.com', 'senha123', '@anabeauty', '363.813.610-85', 21987654321, '1992-02-02', 'Feminino', 'Indicação de Amiga', TRUE, 2, 2, 2, 2),
+('Carlos Eduardo', 'carlos@olharperfeito.com', 'senha123', '@carlosedu', '166.801.900-02', 31987654322, '1995-03-03', 'Masculino', 'Facebook', TRUE, 2, 3, 3, 3),
+('Juliana Costa', 'juliana@glamour.com', 'senha123', '@jucosta', '058.534.810-37', 41987654323, '1990-04-04', 'Feminino', 'Google', TRUE, 2, 4, 4, 4),
+('Roberta Silva', 'roberta@ciliosdiva.com', 'senha123', '@robdiva', '735.394.060-34', 51987654324, '1993-05-05', 'Feminino', 'Instagram', TRUE, 2, 5, 5, 5),
+('Daniel Souza', 'daniel@makeup.com', 'senha123', '@danmake', '756.507.960-09', 61987654325, '1991-06-06', 'Masculino', 'Indicação de Influencer', TRUE, 2, 6, 6, 6),
+('Larissa Nunes', 'larissa@refinada.com', 'senha123', '@larissarefinada', '418.774.800-88', 71987654326, '1987-07-07', 'Feminino', 'Instagram', TRUE, 2, 7, 7, 7),
+('Tatiana Melo', 'tatiana@ouro.com', 'senha123', '@tatiouro', '491.260.810-67', 81987654327, '1985-08-08', 'Feminino', 'Indicação de Amiga', TRUE, 2, 8, 8, 8),
+('Paula Gomes', 'paula@cilios.com', 'senha123', '@paulagomes', '701.221.130-04', 91987654328, '1982-09-09', 'Feminino', 'Indicação Familiar', TRUE, 2, 9, 9, 9),
+('Marília Costa', 'cecilia@elegantes.com', 'senha123', '@ceciliaelegantes', '701.221.130-04', 11987654329, '1989-10-19', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10);
 
 INSERT INTO procedimento (tipo, descricao)
 VALUES 
@@ -306,27 +292,55 @@ VALUES
 ('Você tem alergia a algum produto?', TRUE, 'Input'),
 ('Já teve reações adversas em algum procedimento anterior?', TRUE, 'Input'),
 ('Você faz uso de medicamentos?', TRUE, 'Select'),
-('Você está grávida ou amamentando?', TRUE, 'Check Box'),
+('Você está grávida ou amamentando?', TRUE, 'Select'),
 ('Você tem problemas de pele?', TRUE, 'Select'),
-('Você já fez micropigmentação antes?', TRUE, 'Check Box'),
+('Você já fez micropigmentação antes?', TRUE, 'Select'),
 ('Você usa produtos específicos nos cílios ou sobrancelhas?', TRUE, 'Input'),
 ('Você já fez algum procedimento estético nos últimos 6 meses?', TRUE, 'Select'),
 ('Tem alguma doença crônica que deveríamos saber?', TRUE, 'Input'),
-('Está utilizando algum tratamento dermatológico?', TRUE, 'Check Box');
+('Está utilizando algum tratamento dermatológico?', TRUE, 'Select');
 
-
+-- Inserção de respostas para o usuário 2 (Ana Paula)
 INSERT INTO resposta (resposta, fk_pergunta, fk_ficha_anamnese, fk_usuario)
 VALUES 
-('Não', 1, 1, 2),
-('Sim, a produtos de amônia', 2, 1, 2),
-('Não', 3, 2, 3),
-('Sim, estou amamentando', 4, 2, 3),
-('Sim, tenho dermatite', 5, 3, 4),
-('Sim, já fiz micropigmentação', 6, 3, 4),
-('Não', 7, 4, 5),
-('Sim, fiz alongamento de cílios', 8, 4, 5),
-('Não', 9, 5, 6),
-('Sim, uso produtos dermatológicos', 10, 5, 6);
+('Não', 1, 2, 2),
+('Não, nunca tive problemas com procedimentos.', 2, 2, 2),
+('Sim, tomo anti-inflamatórios regularmente.', 3, 2, 2),
+('Não, não estou grávida nem amamentando.', 4, 2, 2),
+('Não, minha pele está saudável.', 5, 2, 2),
+('Não, nunca fiz micropigmentação.', 6, 2, 2),
+('Sim, uso óleo de rícino nos cílios.', 7, 2, 2),
+('Não, não fiz nenhum procedimento estético nos últimos meses.', 8, 2, 2),
+('Não, não tenho nenhuma doença crônica.', 9, 2, 2),
+('Sim, estou em tratamento com ácido retinoico.', 10, 2, 2);
+
+-- Inserção de respostas para o usuário 3 (Carlos Eduardo)
+INSERT INTO resposta (resposta, fk_pergunta, fk_ficha_anamnese, fk_usuario)
+VALUES 
+('Sim, sou alérgico a látex.', 1, 3, 3),
+('Sim, já tive uma reação leve ao fazer extensão de cílios.', 2, 3, 3),
+('Sim, uso medicamento para hipertensão.', 3, 3, 3),
+('Não, minha parceira está grávida, mas eu não.', 4, 3, 3),
+('Sim, tenho psoríase leve.', 5, 3, 3),
+('Não, nunca fiz micropigmentação.', 6, 3, 3),
+('Sim, uso máscara específica para cílios diariamente.', 7, 3, 3),
+('Sim, fiz um tratamento estético no rosto há 3 meses.', 8, 3, 3),
+('Não, não tenho nenhuma doença crônica.', 9, 3, 3),
+('Não, não estou em nenhum tratamento dermatológico.', 10, 3, 3);
+
+-- Inserção de respostas para o usuário 4 (Juliana Costa)
+INSERT INTO resposta (resposta, fk_pergunta, fk_ficha_anamnese, fk_usuario)
+VALUES 
+('Não, não tenho alergia a nenhum produto.', 1, 4, 4),
+('Sim, já tive vermelhidão após um peeling químico.', 2, 4, 4),
+('Sim, estou tomando antibiótico para infecção.', 3, 4, 4),
+('Não, não estou grávida nem amamentando.', 4, 4, 4),
+('Sim, tenho acne ocasional.', 5, 4, 4),
+('Sim, fiz micropigmentação de sobrancelha há 2 anos.', 6, 4, 4),
+('Sim, uso soro fisiológico nos cílios.', 7, 4, 4),
+('Sim, fiz um tratamento de laser no rosto há 4 meses.', 8, 4, 4),
+('Sim, tenho hipotireoidismo.', 9, 4, 4),
+('Não, não estou em tratamento dermatológico no momento.', 10, 4, 4);
 
 INSERT INTO status (nome, cor, motivo)
 VALUES 
@@ -340,6 +354,171 @@ VALUES
 ('Em Andamento', '#009900', 'Procedimento está sendo realizado'),
 ('Atrasado', '#CC3300', 'Cliente está atrasado para o procedimento'),
 ('Finalizado', '#3366CC', 'Atendimento finalizado com sucesso');
+
+-- Inserindo agendamentos para garantir que os usuários fidelizados apareçam
+INSERT INTO agendamento (id_agendamento, data_horario, tipo_agendamento, tempo_para_agendar, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status) VALUES
+-- Agendamentos para Maria Silva (id_usuario = 7)
+(1, '2024-07-15 09:00:00', 'Manutencao', 30, 7, 1, 2, 1),
+(2, '2024-08-12 11:00:00', 'Colocacao', 40, 7, 1, 3, 1),
+(3, '2024-09-10 14:00:00', 'Retirada', 35, 7, 1, 1, 1),
+
+-- Agendamentos para Carla Borges (id_usuario = 8)
+(4, '2024-07-10 10:00:00', 'Manutencao', 20, 8, 2, 3, 1),
+(5, '2024-08-08 12:00:00', 'Colocacao', 30, 8, 2, 2, 1),
+(6, '2024-09-05 13:00:00', 'Retirada', 25, 8, 2, 1, 1),
+
+-- Agendamentos para Pedro Marques (id_usuario = 9)
+(7, '2024-07-20 09:30:00', 'Colocacao', 45, 9, 3, 1, 1),
+(8, '2024-08-18 10:00:00', 'Manutencao', 50, 9, 3, 2, 1),
+(9, '2024-09-15 11:00:00', 'Retirada', 30, 9, 3, 1, 1),
+
+-- Agendamentos para Ana Martins (id_usuario = 10)
+(10, '2024-07-05 09:00:00', 'Colocacao', 25, 10, 1, 3, 1),
+(11, '2024-08-02 10:30:00', 'Manutencao', 40, 10, 1, 2, 1),
+(12, '2024-09-12 12:00:00', 'Retirada', 35, 10, 1, 1, 1);
+
+
+INSERT INTO cliente (id_usuario, experiencia_avaliada, frequencia)
+VALUES 
+(2, 'Positiva', 5),
+(3, 'Positiva', 4),
+(4, 'Negativa', 1),
+(5, 'Positiva', 6),
+(6, 'Positiva', 3),
+(7, 'Negativa', 1),
+(8, 'Positiva', 2),
+(9, 'Positiva', 4),
+(10, 'Positiva', 5);
+
+
+
+INSERT INTO profissional (id_usuario, numero_avaliacoes, media_nota, qualificacoes, especialidade)
+VALUES 
+(2, 10, 4.9, 'Especialista em Extensão de Cílios', 'Cílios'),
+(3, 12, 4.8, 'Especialista em Design de Sobrancelhas', 'Sobrancelhas'),
+(4, 9, 4.7, 'Micropigmentadora', 'Sobrancelhas'),
+(5, 15, 5.0, 'Especialista em Maquiagem para Noivas', 'Maquiagem'),
+(6, 8, 4.6, 'Maquiadora Artística', 'Maquiagem'),
+(7, 7, 4.5, 'Especialista em Lifting de Cílios', 'Cílios'),
+(8, 6, 4.4, 'Técnica em Henna para Sobrancelhas', 'Sobrancelhas'),
+(9, 11, 4.8, 'Designer de Sobrancelhas', 'Sobrancelhas'),
+(10, 5, 4.3, 'Maquiadora Social', 'Maquiagem');
+
+INSERT INTO Leads (nome, email, telefone, instagram, mensagem, data_criacao)
+VALUES 
+('Maria Silva', 'maria.silva@example.com', 11987654321, '@mariasilva', 'Gostaria de saber mais sobre seus serviços.', NOW()),
+('João Pereira', 'joao.pereira@example.com', 11912345678, '@joaopereira', 'Tenho interesse em fazer uma extensão de cílios.', NOW()),
+('Ana Souza', 'ana.souza@example.com', 11987611234, '@anasouza', 'Quais são os valores para design de sobrancelha?', NOW()),
+('Carla Oliveira', 'carla.oliveira@example.com', 11933332222, '@carlaoliveira', 'Vi uma promoção no Instagram e quero mais detalhes.', NOW()),
+('Pedro Santos', 'pedro.santos@example.com', 11998765432, '@pedrosantos', 'Como funciona o procedimento de volume russo?', NOW());
+
+Select * from Leads;
+
+UPDATE usuario 
+SET dtype = 'Cliente' 
+WHERE fk_nivel_acesso = 2;
+
+UPDATE usuario 
+SET dtype = 'Profissional' 
+WHERE fk_nivel_acesso = 1;
+
+-- Tabela agendamento
+ALTER TABLE agendamento 
+ADD CONSTRAINT fk_usuario_agendamento 
+FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE;
+
+-- Tabela feedback
+ALTER TABLE feedback 
+ADD CONSTRAINT fk_usuario_feedback 
+FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE;
+
+-- Tabela cliente
+ALTER TABLE cliente 
+ADD CONSTRAINT fk_usuario_cliente 
+FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE;
+
+-- Tabela profissional
+ALTER TABLE profissional 
+ADD CONSTRAINT fk_usuario_profissional 
+FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE;
+
+-- Tabela login_logoff
+ALTER TABLE login_logoff 
+ADD CONSTRAINT fk_usuario_login_logoff 
+FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE;
+
+ALTER TABLE usuario 
+ADD CONSTRAINT fk_ficha_anamnese_usuario 
+FOREIGN KEY (fk_ficha_anamnese) REFERENCES ficha_anamnese(id_ficha) ON DELETE CASCADE;
+
+ALTER TABLE resposta 
+DROP FOREIGN KEY resposta_ibfk_1;
+
+ALTER TABLE resposta
+ADD CONSTRAINT fk_resposta_pergunta
+FOREIGN KEY (fk_pergunta) REFERENCES pergunta(id_pergunta) ON DELETE CASCADE;
+
+INSERT INTO login_logoff (logi, data_horario, fk_usuario) VALUES
+('LOGIN', '2023-01-01 09:00:00', 1),
+('LOGOF', '2023-01-01 10:00:00', 1),
+('LOGIN', '2023-02-15 09:00:00', 1),
+('LOGOF', '2023-02-15 10:00:00', 1),
+('LOGIN', '2023-04-01 09:00:00', 1),
+('LOGOF', '2023-04-01 10:00:00', 1),
+
+('LOGIN', '2023-01-05 11:00:00', 2),
+('LOGOF', '2023-01-05 12:00:00', 2),
+('LOGIN', '2023-01-25 09:00:00', 2),
+('LOGOF', '2023-01-25 10:00:00', 2),
+('LOGIN', '2023-02-05 09:00:00', 2),
+('LOGOF', '2023-02-05 10:00:00', 2),
+
+('LOGIN', '2023-02-10 08:00:00', 3),
+('LOGOF', '2023-02-10 09:00:00', 3),
+('LOGIN', '2023-03-15 08:00:00', 3),
+('LOGOF', '2023-03-15 09:00:00', 3),
+('LOGIN', '2023-05-20 08:00:00', 3),
+('LOGOF', '2023-05-20 09:00:00', 3),
+
+('LOGIN', '2023-02-15 13:00:00', 4),
+('LOGOF', '2023-02-15 14:00:00', 4),
+
+('LOGIN', '2023-01-01 08:00:00', 5),
+('LOGOF', '2023-01-01 09:00:00', 5),
+('LOGIN', '2023-03-05 08:00:00', 5),
+('LOGOF', '2023-03-05 09:00:00', 5),
+('LOGIN', '2023-06-15 08:00:00', 5),
+('LOGOF', '2023-06-15 09:00:00', 5),
+
+('LOGIN', '2023-03-10 09:30:00', 6),
+('LOGOF', '2023-03-10 10:00:00', 6),
+('LOGIN', '2023-04-15 09:30:00', 6),
+('LOGOF', '2023-04-15 10:30:00', 6),
+('LOGIN', '2023-05-25 09:30:00', 6),
+('LOGOF', '2023-05-25 10:30:00', 6),
+
+('LOGIN', '2023-05-01 08:00:00', 7),
+('LOGOF', '2023-05-01 09:00:00', 7),
+('LOGIN', '2023-05-20 08:00:00', 7),
+('LOGOF', '2023-05-20 09:00:00', 7),
+('LOGIN', '2023-06-01 08:00:00', 7),
+('LOGOF', '2023-06-01 09:00:00', 7),
+
+('LOGIN', '2023-04-10 09:00:00', 8),
+('LOGOF', '2023-04-10 10:00:00', 8),
+
+('LOGIN', '2023-01-01 09:00:00', 9),
+('LOGOF', '2023-01-01 10:00:00', 9),
+('LOGIN', '2023-02-01 09:00:00', 9),
+('LOGOF', '2023-02-01 10:00:00', 9),
+
+('LOGIN', '2023-01-01 07:00:00', 10),
+('LOGOF', '2023-01-01 08:00:00', 10),
+('LOGIN', '2023-01-20 07:00:00', 10),
+('LOGOF', '2023-01-20 08:00:00', 10),
+('LOGIN', '2023-03-05 07:00:00', 10),
+('LOGOF', '2023-03-05 08:00:00', 10);
+
 
 DELIMITER //
 
@@ -369,7 +548,7 @@ BEGIN
 
   SET mes_atual = 0;
 
-  WHILE mes_atual < 3 DO
+  WHILE mes_atual < 5 DO  -- Alterado de 3 para 5 para incluir os últimos 5 meses
     SET dia_atual = DATE_ADD(CURDATE(), INTERVAL - mes_atual MONTH);
     SET fim = DATE_ADD(dia_atual, INTERVAL 5 DAY);
 
@@ -407,8 +586,12 @@ BEGIN
 
 END //
 
+
+
 DELIMITER ;
 
+CALL gerar_agendamentos_aleatorios();
+CALL gerar_agendamentos_aleatorios();
 CALL gerar_agendamentos_aleatorios();
 
 INSERT INTO feedback (anotacoes, nota, fk_agendamento, fk_usuario, fk_cliente_avaliado)
@@ -423,51 +606,3 @@ VALUES
 ('Ótimo trabalho, mas o tempo de espera foi um pouco longo.', 4, 3, 4, 6),
 ('Profissional muito educado e atencioso.', 5, 7, 8, 3),
 ('Adorei o resultado final! Super recomendo.', 5, 10, 2, 5);
-
-INSERT INTO cliente (id_usuario, experiencia_avaliada, frequencia)
-VALUES 
-(2, 'Positiva', 5),
-(3, 'Positiva', 4),
-(4, 'Negativa', 1),
-(5, 'Positiva', 6),
-(6, 'Positiva', 3),
-(7, 'Negativa', 1),
-(8, 'Positiva', 2),
-(9, 'Positiva', 4),
-(10, 'Positiva', 5);
-
-INSERT INTO profissional (id_usuario, numero_avaliacoes, media_nota, qualificacoes, especialidade)
-VALUES 
-(2, 10, 4.9, 'Especialista em Extensão de Cílios', 'Cílios'),
-(3, 12, 4.8, 'Especialista em Design de Sobrancelhas', 'Sobrancelhas'),
-(4, 9, 4.7, 'Micropigmentadora', 'Sobrancelhas'),
-(5, 15, 5.0, 'Especialista em Maquiagem para Noivas', 'Maquiagem'),
-(6, 8, 4.6, 'Maquiadora Artística', 'Maquiagem'),
-(9, 11, 4.8, 'Designer de Sobrancelhas', 'Sobrancelhas'),
-(10, 5, 4.3, 'Maquiadora Social', 'Maquiagem');
-
-INSERT INTO Leads (nome, email, telefone, instagram, mensagem, data_criacao)
-VALUES 
-('Maria Silva', 'maria.silva@example.com', 11987654321, '@mariasilva', 'Gostaria de saber mais sobre seus serviços.', NOW()),
-('João Pereira', 'joao.pereira@example.com', 11912345678, '@joaopereira', 'Tenho interesse em fazer uma extensão de cílios.', NOW()),
-('Ana Souza', 'ana.souza@example.com', 11987611234, '@aninha', 'Quais são os valores para design de sobrancelha?', NOW()),
-('Carla Oliveira', 'carla.oliveira@example.com', 11933332222, '@carlaoliveira', 'Vi uma promoção no Instagram e quero mais detalhes.', NOW()),
-('Pedro Santos', 'pedro.santos@example.com', 11998765432, '@pedrosantos', 'Como funciona o procedimento de volume russo?', NOW());
-
-UPDATE usuario 
-SET dtype = 'Cliente' 
-WHERE fk_nivel_acesso = 2;
-
-UPDATE usuario 
-SET dtype = 'Profissional' 
-WHERE fk_nivel_acesso = 1;
-
-SELECT * FROM agendamento;
-select * from endereco;
-        SELECT l.id_lead, l.nome, l.email, l.telefone 
-                FROM leads l 
-                ORDER BY l.id_lead ASC;
-                
-                select * from pergunta;
-                
-                select * from resposta where fk_usuario = 2;

@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const apiUrlAgendamentos = "http://localhost:8080/api/agendamentos";
 
   const clientesSelect = document.getElementById("clientes");
-  const tempoAgendarSelect = null;
   const procedimentosSelect = document.getElementById("procedimentos");
   const especificacoesSelect = document.getElementById("especificacoes");
   const tipoAgendamentoSelect = document.getElementById("tipo-atendimento");
@@ -169,24 +168,99 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  let agendamentoData; // Definido no escopo mais alto, para ser reutilizado
+
   saveButton.addEventListener("click", async function () {
     const clienteId = clientesSelect.value;
     const tipoAtendimento = tipoAgendamentoSelect.value;
     const data = dataInput.value;
     const horarioButton = document.querySelector(".horario-button.selected");
     const horario = horarioButton ? horarioButton.textContent : null;
-    const tempoAgendar = tempoAgendarSelect;
-    const procedimentoId = procedimentosSelect.value || params.get("procedimento") || sessionStorage.getItem('procedimento') ;
-    const especificacaoId = especificacoesSelect.value || params.get("especificacao") || sessionStorage.getItem('especificacao');
-  
-    // Preenche os selects
-    procedimentosSelect.value = procedimentoId || '';
-    especificacoesSelect.value = especificacaoId || '';
-  
-    // Certifique-se de que os valores estão sendo capturados corretamente
-    console.log("Procedimento ID:", procedimentoId);
-    console.log("Especificação ID:", especificacaoId);
-    
+    let procedimentoId = procedimentosSelect.value;
+    let especificacaoId = especificacoesSelect.value;
+
+    const params = new URLSearchParams(window.location.search);
+    const agendamentoId = params.get("idAgendamento"); // Pega o ID do agendamento da URL
+
+    if (!agendamentoId) {
+      showNotification("ID do agendamento não encontrado", true);
+      return;
+    }
+
+    // Se procedimentoId ou especificacaoId não forem selecionados, use os valores originais do agendamento
+    try {
+      const urlBuscarAgendamento = `http://localhost:8080/api/agendamentos/buscar/${agendamentoId}`;
+      const responseBuscar = await fetch(urlBuscarAgendamento);
+      if (!responseBuscar.ok) {
+        throw new Error("Erro ao buscar dados do agendamento");
+      }
+
+      // Agora estamos atribuindo à variável `agendamentoData` do escopo mais alto
+      agendamentoData = await responseBuscar.json();
+      console.log("Dados do Agendamento:", agendamentoData);
+      console.log(
+        "Procedimento ID do Agendamento:",
+        agendamentoData.fkProcedimento
+      );
+      console.log(
+        "Especificação ID do Agendamento:",
+        agendamentoData.fkEspecificacao
+      );
+
+      // Log inicial dos IDs
+      console.log(
+        "Procedimento ID Inicial (capturado do select):",
+        procedimentoId
+      );
+      console.log(
+        "Especificação ID Inicial (capturado do select):",
+        especificacaoId
+      );
+
+      // Atribuir valores do `agendamentoData` caso `procedimentoId` ou `especificacaoId` sejam undefined, null ou uma string vazia
+      if (
+        !procedimentoId ||
+        procedimentoId === "undefined" ||
+        procedimentoId === "null"
+      ) {
+        procedimentoId = agendamentoData.fkProcedimento;
+        console.log(
+          "Procedimento ID estava vazio ou indefinido, usando valor do agendamentoData:",
+          procedimentoId
+        );
+      }
+
+      if (
+        !especificacaoId ||
+        especificacaoId === "undefined" ||
+        especificacaoId === "null"
+      ) {
+        especificacaoId = agendamentoData.fkEspecificacao;
+        console.log(
+          "Especificação ID estava vazio ou indefinida, usando valor do agendamentoData:",
+          especificacaoId
+        );
+      }
+
+      // Verificações adicionais, caso ainda estejam indefinidos
+      if (procedimentoId === undefined || procedimentoId === null) {
+        procedimentoId = agendamentoData.fkProcedimento;
+        console.log("Forçando Procedimento ID novamente:", procedimentoId);
+      }
+
+      if (especificacaoId === undefined || especificacaoId === null) {
+        especificacaoId = agendamentoData.fkEspecificacao;
+        console.log("Forçando Especificação ID novamente:", especificacaoId);
+      }
+
+      // Log final dos IDs para conferência
+      console.log("Procedimento ID Final:", procedimentoId);
+      console.log("Especificação ID Final:", especificacaoId);
+    } catch (error) {
+      console.error("Erro ao buscar dados do agendamento: ", error);
+      showNotification("Erro ao buscar dados do agendamento", true);
+      return;
+    }
 
     if (
       !clienteId ||
@@ -199,24 +273,22 @@ document.addEventListener("DOMContentLoaded", function () {
       showNotification("Todos os campos são obrigatórios", true);
       return;
     }
-    console.log(`${data}T${horario}.000Z`);
-    const dataHorario = new Date(`${data}T${horario}.000Z`).toISOString();
-    const params = new URLSearchParams(window.location.search);
 
+    // Formatar a data e o horário juntos corretamente
+    const dataHorario = `${data}T${horario}:00.000Z`;
+
+    // Agora, `agendamentoData` está acessível aqui, pois foi definido no escopo externo
     const agendamento = {
       fk_usuario: parseInt(clienteId, 10),
-      fk_procedimento: parseInt(procedimentoId, 10) || parseInt(params.get("procedimento"), 10) || parseInt(sessionStorage.getItem('procedimento'), 10),
-      fk_especificacao: parseInt(especificacaoId, 10) || parseInt(params.get("especificacao"), 10) || parseInt(sessionStorage.getItem('especificacao'), 10),
+      fk_procedimento: procedimentoId, // Usar o procedimentoId já processado
+      fk_especificacao: especificacaoId, // Usar a especificacaoId já processada
       fk_status: 1,
       tipoAgendamento: tipoAtendimento,
       dataHorario: dataHorario,
-      tempoAgendar: 50
     };
-    
+
     try {
       // Realiza a requisição PUT para atualizar o agendamento
-      const params = new URLSearchParams(window.location.search);
-      const agendamentoId = params.get("idAgendamento"); // Pega o ID do agendamento da URL
       const apiUrlEditarAgendamento = `http://localhost:8080/api/agendamentos/atualizar/${agendamentoId}`;
       const response = await fetch(apiUrlEditarAgendamento, {
         method: "PUT",
@@ -227,21 +299,21 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       if (response.ok) {
-        showNotification("Agendamento criado com sucesso!");
+        showNotification("Agendamento atualizado com sucesso!");
         setTimeout(() => {
           window.location.href = "../../agendamento.html";
         }, 1000);
       } else {
         const errorMsg = await response.text();
-        console.error("Erro ao criar agendamento: " + errorMsg);
+        console.error("Erro ao atualizar agendamento: " + errorMsg);
         showNotification(
-          "Já existe um agendamento para essa data e horário",
+          "Erro ao atualizar o agendamento. Verifique se os dados estão corretos.",
           true
         );
       }
     } catch (error) {
-      console.error("Erro ao criar agendamento: ", error);
-      showNotification("Erro ao criar agendamento", true);
+      console.error("Erro ao atualizar agendamento: ", error);
+      showNotification("Erro ao atualizar agendamento", true);
     }
   });
 
@@ -309,7 +381,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const clientesSelect = document.getElementById("clientes");
     const optionCliente = document.createElement("option");
     optionCliente.value = data.fk_usuario; // Usar o ID do usuário
-    optionCliente.value= params.get("usuarioId");
+    optionCliente.value = params.get("usuarioId");
     optionCliente.text = data.usuario; // Mostrar o nome
     optionCliente.selected = true;
     clientesSelect.appendChild(optionCliente);

@@ -46,7 +46,8 @@ interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
     )
     fun calcularTempoMedioEntreAgendamentosDoDia(): Double?
 
-        @Query("""
+    @Query(
+        """
         SELECT 
             sa.nome AS status_nome,
             COUNT(a.id_agendamento) AS quantidade
@@ -58,9 +59,9 @@ interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
             sa.nome IN ('Agendado', 'Confirmado', 'Concluído', 'Cancelado', 'Remarcado')  -- Apenas os status relevantes
         GROUP BY 
             sa.nome
-    """, nativeQuery = true)
-        fun contarAgendamentosPorStatus(): List<Map<String, Any>>
-
+    """, nativeQuery = true
+    )
+    fun contarAgendamentosPorStatus(): List<Map<String, Any>>
 
 
     @Query(
@@ -71,7 +72,6 @@ interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
     """
     )
     fun findTotalAgendamentosHoje(): Int
-
 
 
     @Query(
@@ -150,8 +150,8 @@ interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
     )
     fun findValorTotalUltimoMesPorProcedimento(): List<Array<Any>>
 
-        @Query(
-            nativeQuery = true, value = """
+    @Query(
+        nativeQuery = true, value = """
         SELECT 
     p.tipo AS Procedimento, 
     SUM(
@@ -177,9 +177,8 @@ ORDER BY
     p.tipo;
 
         """
-        )
-        fun findTempoGastoPorProcedimentoUltimoMes(): List<Array<Any>>  // Retorna uma lista de objetos com Procedimento e Tempo_Total
-
+    )
+    fun findTempoGastoPorProcedimentoUltimoMes(): List<Array<Any>>  // Retorna uma lista de objetos com Procedimento e Tempo_Total
 
 
     @Query(
@@ -244,7 +243,8 @@ ORDER BY
     fun buscarDiaMaisAgendadoPorUsuario(idUsuario: Int): String
 
 
-    @Query("""
+    @Query(
+        """
     SELECT 
         CASE 
             WHEN HOUR(a.data_horario) BETWEEN 0 AND 3 THEN '00:00 até 04:00'
@@ -259,7 +259,8 @@ ORDER BY
     GROUP BY IntervaloTempo
     ORDER BY COUNT(*) DESC
     LIMIT 1
-""", nativeQuery = true)
+""", nativeQuery = true
+    )
     fun findMostBookedTimeByUser(idUsuario: Int): String?
 
     @Query(
@@ -288,7 +289,8 @@ ORDER BY
         @Param("mesAno") mesAno: String
     ): List<Array<Any>>  // Retorna uma lista com Procedimento e a quantidade
 
-    @Query("""
+    @Query(
+        """
 SELECT new sptech.projetojpa1.dto.agendamento.AgendamentoDTO(
         u.nome, a.idAgendamento, a.usuario.id, a.dataHorario, a.tipoAgendamento, 
         p.tipo, e.especificacao, p.idProcedimento, e.idEspecificacaoProcedimento, s.nome
@@ -300,6 +302,11 @@ SELECT new sptech.projetojpa1.dto.agendamento.AgendamentoDTO(
     JOIN a.statusAgendamento s
     WHERE a.usuario.id = :usuarioId
     ORDER BY a.dataHorario DESC
-    """)
+    """
+    )
     fun listarAgendamentosPorUsuario(usuarioId: Int): List<AgendamentoDTO>
+
+    fun findAllByUsuario(usuario: Usuario): List<Agendamento>
+
+    fun findByTipoAgendamento(tipoAgendamento: String): List<Agendamento>
 }

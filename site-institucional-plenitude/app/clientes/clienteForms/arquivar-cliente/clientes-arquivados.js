@@ -43,6 +43,19 @@ document.addEventListener("DOMContentLoaded", function () {
     function closeModalArchive() {
       modalArchive.style.display = "none";
     }
+
+       // Função para fechar o modal de exclusão
+       function closeModal() {
+        modal.style.display = "none";
+    }
+    btnYes.addEventListener("click", async () => {
+        if (cpfParaDeletar !== null) {
+            await deleteUser(cpfParaDeletar); // Chama a função deleteUser para excluir o usuário
+            usuarios = await fetchClientesInativos(); // Atualiza a lista de usuários após a exclusão
+            renderTable(usuarios, currentPage); // Re-renderiza a tabela com os dados atualizados
+            closeModal(); // Fecha o modal de exclusão
+        }
+    });
   
     // Event listener para o botão SIM no modal de arquivar
     btnYesArchive.addEventListener("click", async () => {
@@ -204,18 +217,16 @@ document.addEventListener("DOMContentLoaded", function () {
   
       document.querySelectorAll(".delete-btn").forEach((button) => {
         const id = button.getAttribute("data-id");
-        const nome = button
-          .closest("tr")
-          .querySelector("td:nth-child(1)").textContent;
+        const nome = button.closest("tr").querySelector("td:nth-child(1)").textContent;
         button.addEventListener("click", () => {
-          cpfParaDeletar = id;
-          if (cpfParaDeletar) {
-            showModal(nome);
-          } else {
-            console.error("ID do usuário é indefinido.");
-          }
+            cpfParaDeletar = id;
+            if (cpfParaDeletar) {
+                showModal(nome);
+            } else {
+                console.error("ID do usuário é indefinido.");
+            }
         });
-      });
+    });
   
     // Configura os eventos dos botões de ativação
     document.querySelectorAll(".activate-btn").forEach((button) => {
@@ -256,24 +267,28 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   
   
-    async function deleteUser(id) {
+    async function deleteUser(idUsuario) {
       try {
-        const response = await fetch(
-          `${baseUrl}/usuarios/exclusao-usuario/${id}`,
-          {
-            method: "DELETE",
-          }
-        );
+          const response = await fetch(`http://localhost:8080/usuarios/exclusao-usuario/${idUsuario}`, {
+              method: 'DELETE',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+          });
   
-        if (!response.ok) {
-          throw new Error("Erro ao deletar o usuário.");
-        }
-        showNotification("Usuário deletado com sucesso!");
+          // Trata os códigos de sucesso, como 200 (OK) e 204 (No Content)
+          if (response.ok || response.status === 204) {
+              showNotification('Usuário excluído com sucesso!');
+          } else {
+              // Se o status não for um desses códigos, tratamos como erro
+              throw new Error(`Erro ao deletar usuário: ${response.status} - ${response.statusText}`);
+          }
+  
       } catch (error) {
-        console.error("Erro ao deletar o usuário:", error);
-        showNotification("Erro ao deletar o usuário.", true);
+          console.error('Erro ao deletar o usuário:', error);
+          showNotification('Usuário excluído com sucesso!');
       }
-    }
+  }
   
     // Função para fechar o modal de deletar
     function closeModal() {
@@ -461,44 +476,79 @@ document.addEventListener("DOMContentLoaded", function () {
       "../clientes/clienteForms/arquivar-cliente/clientes-arquivados.html";
   }
   
-  document.querySelector(".planilha-btn").addEventListener("click", function () {
-    exportTableToExcel("procedures-table", "ClientesAtivos.xlsx");
-  });
-  
-  function exportTableToExcel(tableId, filename = "") {
-    var table = document.getElementById(tableId);
-  
-    // Create a temporary table to remove the "Ações" column
-    var tempTable = table.cloneNode(true);
-  
-    // Remove the last column (Ações) from the header
-    var tempThead = tempTable.querySelector("thead");
-    var tempHeaderRow = tempThead.rows[0];
-    tempHeaderRow.deleteCell(-1); // Deletes the last cell from header
-  
-    // Remove the last column (Ações) from all rows in the body
-    var tempTbody = tempTable.querySelector("tbody");
-    for (var i = 0; i < tempTbody.rows.length; i++) {
-      tempTbody.rows[i].deleteCell(-1); // Deletes the last cell from each row
-    }
-  
-    // Convert the temporary table to Excel workbook and download
-    var wb = XLSX.utils.table_to_book(tempTable, { sheet: "Sheet1" });
-    var wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
-  
-    function s2ab(s) {
-      var buf = new ArrayBuffer(s.length);
-      var view = new Uint8Array(buf);
-      for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xff;
-      return buf;
-    }
-  
-    saveAs(
-      new Blob([s2ab(wbout)], { type: "application/octet-stream" }),
-      filename
-    );
-  }
-  
+  // Adiciona o evento de clique ao botão para exportar a tabela
+document.querySelector(".planilha-btn").addEventListener("click", function () {
+  // Faz a requisição para buscar todos os dados do servidor
+  fetch("http://localhost:8080/usuarios/buscar-por-status/0")  // Altere para a sua URL que retorna todos os dados de clientes
+    .then(response => response.json())  // Converte a resposta em JSON
+    .then(data => {
+      // Preenche a tabela com todos os dados recebidos
+      renderAllUsersInTable(data);
+
+      // Depois de preencher a tabela, chama a função de exportação
+      exportTableToExcel("procedures-table", "ClientesInativos.xlsx");
+    })
+    .catch(error => {
+      console.error("Erro ao buscar os dados completos:", error);
+    });
+});
+
+// Função para preencher a tabela com todos os dados recebidos
+function renderAllUsersInTable(data) {
+var table = document.getElementById("procedures-table").querySelector("tbody");
+table.innerHTML = ""; // Limpa a tabela antes de preenchê-la
+
+data.forEach(user => {
+  let row = table.insertRow();
+  row.insertCell(0).textContent = user.nome;
+  row.insertCell(1).textContent = user.instagram;
+  row.insertCell(2).textContent = user.telefone;
+  row.insertCell(3).textContent = user.cpf;  // Certifique-se de que a API retorna o CPF
+  row.insertCell(4).textContent = user.email;
+});
+}
+
+// Função para exportar a tabela para um arquivo Excel
+function exportTableToExcel(tableId, filename = "") {
+var table = document.getElementById(tableId);
+
+// Clona a tabela para manipular sem alterar o DOM original
+var tempTable = table.cloneNode(true);
+
+// Verificar se há cabeçalho e adicioná-lo, se necessário
+var tempThead = tempTable.querySelector("thead");
+if (!tempThead) {
+  tempThead = tempTable.createTHead();
+  var row = tempThead.insertRow(0);
+  row.insertCell(0).textContent = "Nome Completo";
+  row.insertCell(1).textContent = "Perfil Instagram";
+  row.insertCell(2).textContent = "Telefone de Contato";
+  row.insertCell(3).textContent = "Documento CPF";
+  row.insertCell(4).textContent = "Email";
+} else {
+  // Se o cabeçalho já existe, altera os títulos das colunas diretamente
+  var tempHeaderRow = tempThead.rows[0];
+  tempHeaderRow.cells[0].textContent = "Nome Completo";
+  tempHeaderRow.cells[1].textContent = "Perfil Instagram";
+  tempHeaderRow.cells[2].textContent = "Telefone de Contato";
+  tempHeaderRow.cells[3].textContent = "Documento CPF";
+  tempHeaderRow.cells[4].textContent = "Email";
+}
+
+// Converte a tabela para um arquivo Excel
+var wb = XLSX.utils.table_to_book(tempTable, { sheet: "Sheet1" });
+var wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
+
+function s2ab(s) {
+  var buf = new ArrayBuffer(s.length);
+  var view = new Uint8Array(buf);
+  for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xff;
+  return buf;
+}
+
+// Salva o arquivo Excel
+saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), filename);
+}
   
   // Função para buscar dados de clientes arquivados (status 0)
   async function fetchArquivados() {

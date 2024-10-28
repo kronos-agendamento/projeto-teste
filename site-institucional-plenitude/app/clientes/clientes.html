@@ -9,262 +9,278 @@
   <link href="" rel="icon" />
   <link href="../procedimento/image.png" rel="apple-touch-icon" />
   <script src="clientes.js" defer></script>
+  <link href="../assets/favicon.png" rel="icon" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.2/xlsx.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 </head>
 
 <body>
-  <div class="corpo">
-    <div class="navigation">
-      <div class="perfil">
-        <div class="imagem-perfil">
-          <img src="../assets/Foto de Perfil.png" />
-        </div>
-        <li id="userName"></li>
-        <li id="userInsta"></li>
+  <div class="navigation">
+    <li class="list" style="
+          width: 30px;
+          height: 30px;
+          list-style: none;
+          display: flex;
+          justify-content: center;
+          margin-top: 5vh;
+        ">
+      <div class="imagem-perfil" style="
+            width: 20vh;
+            height: 20vh;
+            border-radius: 300px;
+            display: flex;
+            justify-content: center;
+          ">
+        <img src="../index/Foto de Perfil.png" style="
+              width: 53vh;
+              height: 23vh;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            " />
       </div>
-      <ul>
-        <li class="list">
-          <a href="index.html">
-            <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
-            <span class="title">Início </span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../perfil/perfil.html">
-            <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
-            <span class="title">Perfil</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../agendamento/agendamento.html">
-            <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
-            <span class="title">Agendamentos</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../anamnese/anamnese.html">
-            <span class="icon"><ion-icon name="document-text-outline"></ion-icon></span>
-            <span class="title">Anamneses</span>
-          </a>
-        </li>
-        <li class="list active">
-          <a href="../clientes/clientes.html">
-            <span class="icon"><ion-icon name="person-add-outline"></ion-icon></span>
-            <span class="title">Clientes</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../procedimento/procedimento.html">
-            <span class="icon"><ion-icon name="brush-outline"></ion-icon></span>
-            <span class="title">Procedimentos</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../dashboard/dashboard.html">
-            <span class="icon"><ion-icon name="stats-chart-outline"></ion-icon></span>
-            <span class="title">Dashboard</span>
-          </a>
-        </li>
+    </li>
+    <li id="userName" style="
+          margin-top: 20vh;
+          list-style: none;
+          color: white;
+          font-weight: 600;
+        "></li>
+    <li id="userInsta" style="
+          list-style: none;
+          color: white;
+          font-weight: 200;
+          font-size: 12px;
+        "></li>
 
-        <li class="list">
-          <a href="../../index.html">
-            <span class="icon"><ion-icon name="exit-outline"></ion-icon></span>
-            <span class="title">Sair</span>
-          </a>
-        </li>
-      </ul>
+    <ul style="margin-top: 80%; position: absolute">
+      <li class="list">
+        <a href="../../app/index/index.html">
+          <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+          <span class="title">Início </span>
+        </a>
+      </li>
+      <li class="list">
+        <a href="../perfil/perfil.html">
+          <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
+          <span class="title">Perfil</span>
+        </a>
+      </li>
+      <li class="list">
+        <a href="../agendamento/agendamento.html">
+          <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
+          <span class="title">Agendamentos</span>
+        </a>
+      </li>
+      <li class="list">
+        <a href="../anamnese/anamnese.html">
+          <span class="icon"><ion-icon name="document-text-outline"></ion-icon></span>
+          <span class="title">Anamneses</span>
+        </a>
+      </li>
+      <li class="list active">
+        <a href="../clientes/clientes.html">
+          <span class="icon"><ion-icon name="person-add-outline"></ion-icon></span>
+          <span class="title">Clientes</span>
+        </a>
+      </li>
+      <li class="list">
+        <a href="../procedimento/procedimento.html">
+          <span class="icon"><ion-icon name="brush-outline"></ion-icon></span>
+          <span class="title">Procedimentos</span>
+        </a>
+      </li>
+      <li class="list">
+        <a href="../dashboard/dashboard.html">
+          <span class="icon"><ion-icon name="stats-chart-outline"></ion-icon></span>
+          <span class="title">Dashboard</span>
+        </a>
+      </li>
+      <li class="list">
+        <a href="../../index.html">
+          <span class="icon"><ion-icon name="exit-outline"></ion-icon></span>
+          <span class="title">Sair</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="main-content" style="margin-top: 1%">
+    <header style="height: 14vh; width: 152vh; margin-left: 4.3%">
+      <h1>Clientes</h1>
+      <p>
+        Essa página é destinada para visualização, cadastro, edição ou
+        exclusão de clientes.
+      </p>
+    </header>
+    <div id="notification" class="notification">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill"
+        viewBox="0 0 16 16">
+        <path
+          d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
+      </svg>
+      <span id="notification-message"></span>
     </div>
-    <main>
-      <header>
-        <div id="greeting1">Clientes</div>
-        <div id="greeting2">
-          Essa página é destinada para visualização, cadastro, edição ou
-          exclusão de clientes.
-        </div>
-        <div id="notification" class="notification">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill"
-            viewBox="0 0 16 16">
-            <path
-              d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
-          </svg>
-          <span id="notification-message"></span>
-        </div>
-      </header>
+    <div class="actions">
+      <button class="filter-btn" style="height: 7vh; margin-left: 3%; width: 22vh; margin-right: 10px;"
+        onclick="openModalPesquisa()">
+        <i class="fas fa-search" style="margin-right: 10px; font-size: 24px;"></i>Pesquisar
+      </button>
+      <div id="tooltip1" class="tooltip1">Clique para pesquisar clientes.</div>
 
-      <div class="main-content">
-        <div class="center-content">
-          <div class="actions">
+        <button class="arquivados-btn filter-btn " style="height: 7vh;" onclick="redirectToArchived()" id="btn-arquivar">
+          <i class="fas fa-folder" style="margin-right: 10px; font-size: 24px;"></i>
+          Inativos
+        </button>
+        <div id="tooltip2" class="tooltip2">Clique para ver clientes inativos.</div>
 
-            <button class="filter-btn" onclick="openModalPesquisa()">
-              <img src="../../assets/icons/lupa.png" alt="filter" />Pesquisar
-            </button>
-            <div id="tooltip1" class="tooltip1">Clique para pesquisar clientes.</div>
+        <!-- <button class="avaliar-btn filter-btn" style="height: 7vh; " onclick="openModalAvaliar()">
+          <img style="height: 4.5vh; width: 4.5vh; margin-top: 19%" src="../../assets/icons/estrela.png"
+            alt="spreadsheet" />Avaliar
+        </button>
+        <div id="tooltip3" class="tooltip3">Clique para avaliar um cliente.</div> -->
 
-            <button class="arquivados-btn filter-btn " onclick="redirectToArchived()"
-              id="btn-arquivar">
-              <img src="../../assets/icons/pasta-aberta.png" alt="spreadsheet" />
-              Inativos
-            </button>
-            <div id="tooltip2" class="tooltip2">Clique para ver clientes inativos.</div>
+        <button class="planilha-btn filter-btn" style="height: 7vh; margin-left: 0%">
+          <i class="fas fa-file" style="margin-right: 10px; font-size: 24px;"></i>Planilha
+        </button>
+        <div id="tooltip4" class="tooltip4">Clique para exportar lista com clientes.</div>
 
-            <button class="avaliar-btn filter-btn" onclick="openModalAvaliar()">
-              <img src="../../assets/icons/estrela.png" alt="spreadsheet" />Avaliar
-            </button>
-            <div id="tooltip3" class="tooltip3">Clique para avaliar um cliente.</div>
+        <button class="criar-btn filter-btn" onclick="showForm()" style="height: 7vh; width: 16vh">
+          <a style="width: max-content" href="clienteForms/cadastrar-cliente/cadastrar-cliente.html">
+            <i class="fas fa-plus-circle" style="margin-right: 10px; font-size: 24px;"></i> <span>Novo</span>
+          </a>
+        </button>
+        <div id="tooltip5" class="tooltip5">Clique para cadastrar clientes.</div>
+        <button class="btn-action undo-btn" id="btn-undo" onclick="undoAction()" style="display: none;">
+          <i class="fas fa-undo"></i> Desfazer
+        </button>
+        <button class="btn-action redo-btn" id="btn-redo" onclick="redoAction()"
+          style="margin-left: 1%; display: none;">
+          <i class="fas fa-redo"></i> Refazer
+        </button>
 
-            <button class="planilha-btn filter-btn">
-              <img src="../../assets/icons/spreadsheet.png" alt="spreadsheet" />Planilha
-            </button>
-            <div id="tooltip4" class="tooltip4">Clique para exportar lista com clientes.</div>
+        
+    </div>
+    <div class="actions" style="display: flex; align-items: center; justify-content: center;">
+      <a href="../clientes/clienteForms/mapa-cliente/mapa-cliente.html" class="filter-btn-origem">
+        <i class="fas fa-map" style="margin-right: 10px;"></i> Visualizar Dados Sobre Origem de Clientes
+      </a>
+    </div>
+    
+    <table id="procedures-table" class="procedures-table">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Instagram</th>
+          <th>Telefone</th>
+          <th>CPF</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="procedures-tbody"></tbody>
+    </table>
 
-            <button class="criar-btn filter-btn" onclick="showForm()">
-              <a style="width: max-content" href="clienteForms/cadastrar-cliente/cadastrar-cliente.html">
-                <img src="../../assets/icons/createNew.png"
-                  alt="createNew" /><span>Novo</span>
-              </a>
-            </button>
-
-            <div id="tooltip5" class="tooltip5">Clique para cadastrar clientes.</div>
-            <button class="btn-action undo-btn" id="btn-undo" onclick="undoAction()" style="display: none;">
-              <i class="fas fa-undo"></i> Desfazer
-            </button>
-
-            <button class="btn-action redo-btn" id="btn-redo" onclick="redoAction()"
-              style="margin-left: 1%; display: none;">
-              <i class="fas fa-redo"></i> Refazer
-            </button>
-          </div>
-
-
-          <div class="actions-center" style="display: flex; align-self: center;">
-            <a href="../clientes/clienteForms/mapa-cliente/mapa-cliente.html" class="filter-btn">
-              <i class="fas fa-map"></i> Visualizar Dados Sobre Origem de Clientes
-            </a>
-          </div>
-
-          <div class="conteiner">
-            <table id="procedures-table" class="procedures-table">
-              <thead>
-                <tr>
-                  <th>Nome</th>
-                  <th>Instagram</th>
-                  <th>Telefone</th>
-                  <th>CPF</th>
-                  <th>Ações</th>
-                </tr>
-              </thead>
-              <tbody id="procedures-tbody"></tbody>
-            </table>
-
-            <div class="pagination">
-              <button class="button-page" id="prev-page-btn" disabled>
-                Página Anterior
-              </button>
-              <span class="current-page" id="current-page">1</span> /
-              <span id="total-pages">1</span>
-              <button class="button-page" id="next-page-btn">Próxima Página</button>
-            </div>
-          </div>
-
-          <div class="stats">
-            <div class="stat-item" >
-              <h2 style="font-weight: normal">Clientes Ativos</h2>
-              <p id="mais-agendado" style="font-weight: bold">Carregando...</p>
-              <p style="font-size: 14px">Nos últimos 3 meses</p>
-              <a href="../clientes/clientes.html" style="font-weight: lighter" class="filter-btn">Ver todos >></a>
-              <div id="tooltip12" class="tooltip12">Clique para ver todos os clientes ativos.</div>
-            </div>
-            <div class="stat-item">
-              <h2 style="font-weight: normal">Clientes Inativos</h2>
-              <p id="menos-agendado" style="font-weight: bold">Carregando...</p>
-              <p style="font-size: 14px">Nos últimos 3 meses</p>
-              <a href="../clientes/clienteForms/arquivar-cliente/clientes-arquivados.html" style="font-weight: lighter"
-                class="filter-btn">Ver
-                todos >></a>
-              <div id="tooltip13" class="tooltip13">Clique para ver todos os clientes inativos.</div>
-            </div>
-            <div class="stat-item">
-              <h2 style="font-weight: normal">Clientes Fidelizados</h2>
-              <p id="fidelizado" style="font-weight: bold">Carregando...</p>
-              <p style="font-size: 14px">Nos últimos 3 meses</p>
-              <a href="../clientes/clienteForms/fidelizar-cliente/clientes-fidelizados.html" class="filter-btn">Ver
-                todos
-                >></a>
-              <div id="tooltip14" class="tooltip14">Clique para ver todos os clientes fidelizados.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
-    <div id="modal" class="modal" style="display: none">
-      <div class="modal-content">
-        <p>Tem certeza que deseja <b>excluir</b> o cliente?</p>
-        <p id="usu"></p>
-        <button id="btnYes" class="btn btn-yes">SIM</button>
-        <button class="btn btn-no" onclick="closeModal()">NÃO</button>
-      </div>
+    <div class="pagination">
+      <button class="button-page" id="prev-page-btn" disabled>
+        Página Anterior
+      </button>
+      <span class="current-page" id="current-page">1</span> /
+      <span id="total-pages">1</span>
+      <button class="button-page" id="next-page-btn">Próxima Página</button>
     </div>
 
-    <div id="modal-archive" class="modal" style="display: none">
-      <div class="modal-content">
-        <p>Você tem certeza que deseja <b>inativar</b> o usuário?</p>
-        <p id="usu-archive"></p>
-        <button id="btnYesArchive" class="btn btn-yes">SIM</button>
-        <button class="btn btn-no" onclick="closeModalArchive()">NÃO</button>
+    <div class="stats" style="margin-left: 8%; margin-top: 8%">
+      <div class="stat-item" style="width: 40vh">
+        <h2 style="font-weight: normal">Clientes Ativos</h2>
+        <p id="mais-agendado" style="font-weight: bold">Carregando...</p>
+        <p style="font-size: 14px">Nos últimos 3 meses</p>
+        <a href="../clientes/clientes.html" style="font-weight: lighter" class="filter-btn">Ver todos >></a>
+        <div id="tooltip12" class="tooltip12">Clique para ver todos os clientes ativos.</div>
+      </div>
+      <div class="stat-item" style="width: 40vh">
+        <h2 style="font-weight: normal">Clientes Inativos</h2>
+        <p id="menos-agendado" style="font-weight: bold">Carregando...</p>
+        <p style="font-size: 14px">Nos últimos 3 meses</p>
+        <a href="../clientes/clienteForms/arquivar-cliente/clientes-arquivados.html" style="font-weight: lighter" class="filter-btn">Ver
+          todos >></a>
+          <div id="tooltip13" class="tooltip13">Clique para ver todos os clientes inativos.</div>
+      </div>
+      <div class="stat-item" style="width: 40vh">
+        <h2 style="font-weight: normal">Clientes Fidelizados</h2>
+        <p id="fidelizado" style="font-weight: bold">Carregando...</p>
+        <p style="font-size: 14px">Nos últimos 3 meses</p>
+        <a href="../clientes/clienteForms/fidelizar-cliente/clientes-fidelizados.html" class="filter-btn">Ver todos >></a>
+        <div id="tooltip14" class="tooltip14">Clique para ver todos os clientes fidelizados.</div>
       </div>
     </div>
+  </div>
 
-    <div id="modal-pesquisa" class="modal-pesquisa" style="display: none">
-      <div class="modal-content">
-        <span class="close" onclick="closeModalPesquisa()">&times;</span>
-        <p><b>Pesquisa de Clientes</b></p>
-        <!-- <div class="form-group">
+  <div id="modal" class="modal" style="display: none">
+    <div class="modal-content">
+      <p>Tem certeza que deseja <b>excluir</b> o cliente?</p>
+      <p id="usu"></p>
+      <button id="btnYes" class="btn btn-yes">SIM</button>
+      <button class="btn btn-no" onclick="closeModal()">NÃO</button>
+    </div>
+  </div>  
+
+  <div id="modal-archive" class="modal" style="display: none">
+    <div class="modal-content">
+      <p>Você tem certeza que deseja <b>inativar</b> o usuário?</p>
+      <p id="usu-archive"></p>
+      <button id="btnYesArchive" class="btn btn-yes">SIM</button>
+      <button class="btn btn-no" onclick="closeModalArchive()">NÃO</button>
+    </div>
+  </div>
+
+  <div id="modal-pesquisa" class="modal-pesquisa" style="display: none">
+    <div class="modal-content">
+      <span class="close" onclick="closeModalPesquisa()">&times;</span>
+      <p><b>Pesquisa de Clientes</b></p>
+      <!-- <div class="form-group">
           <label for="nome">Nome:</label>
           <input type="text" id="nome" name="nome" />
         </div> -->
-        <div class="form-group-row">
-          <div class="form-group">
-            <label for="cpf">CPF:</label>
-            <input type="text" id="cpf" name="cpf" />
-          </div>
-          <div class="form-group">
-            <label for="codigo">Código:</label>
-            <input type="text" id="codigo" name="codigo" />
-          </div>
-        </div>
-        <button class="btn-pesquisar" onclick="pesquisarCliente()">
-          Pesquisar
-        </button>
-
-        <!-- Área para exibir o resultado -->
-        <div id="resultado" style="margin-top: 20px"></div>
-      </div>
-    </div>
-
-    <div id="modal-avaliacao" class="modal-avaliacao" style="display: none">
-      <div class="modal-content">
-        <span class="close" onclick="closeModalAvaliar()">&times;</span>
-        <p><b>Enviar avaliação do último atendimento</b></p>
+      <div class="form-group-row">
         <div class="form-group">
-          <label for="nome">Nome:</label>
-          <input type="text" id="nome" name="nome" />
+          <label for="cpf">CPF:</label>
+          <input type="text" id="cpf" name="cpf" />
         </div>
-        <div class="form-group-row">
-          <div class="form-group">
-            <label for="cpf">CPF:</label>
-            <input type="text" id="cpf" name="cpf" />
-          </div>
+        <div class="form-group">
+          <label for="codigo">Código:</label>
+          <input type="text" id="codigo" name="codigo" />
         </div>
-        <button class="btn-avaliar">Pesquisar</button>
       </div>
+      <button class="btn-pesquisar" onclick="pesquisarCliente()">
+        Pesquisar
+      </button>
+
+      <!-- Área para exibir o resultado -->
+      <div id="resultado" style="margin-top: 20px"></div>
     </div>
+  </div>
 
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <div id="modal-avaliacao" class="modal-avaliacao" style="display: none">
+    <div class="modal-content">
+      <span class="close" onclick="closeModalAvaliar()">&times;</span>
+      <p><b>Enviar avaliação do último atendimento</b></p>
+      <div class="form-group">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" />
+      </div>
+      <div class="form-group-row">
+        <div class="form-group">
+          <label for="cpf">CPF:</label>
+          <input type="text" id="cpf" name="cpf" />
+        </div>
+      </div>
+      <button class="btn-avaliar">Pesquisar</button>
+    </div>
+  </div>
 
-    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
     <div vw class="enabled">
         <div vw-access-button class="active"></div>
         <div vw-plugin-wrapper></div>

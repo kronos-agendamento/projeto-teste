@@ -1,69 +1,176 @@
-.divDados {
-    background-color: FFF0F5;
-    justify-content: space-between;
-    background-color: #FFF0F5;
-    display: flex;
-    justify-content: space-around;
-    padding: 8px;
-    /* border-radius: 5px; */
+body {
+  font-family: Poppins, sans-serif;
+  margin: 0;
+  padding: 0;
+}
 
+.navigation {
+  height: 1045px;
+  background: #d2135d;
+  width: 266px;
+  margin-top: 20px;
+  margin-left: 32px;
+  border-radius: 3vh;
+  margin-bottom: 10vh;
+  box-shadow: 10px 0 0 #ffffff;
+  border-left: 10px solid #d2135d;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.form-section {
+  background-color: #fff0f5;
+  margin-left: 42px;
+  margin-top: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #7b7b7b;
+  height: auto;
+  width: 150.5vh;
+  margin-bottom: 20px;
+}
+
+.divDados {
+  background-color: FFF0F5;
+  justify-content: space-between;
+  background-color: #fff0f5;
+  display: flex;
+  justify-content: space-around;
+  padding: 8px;
+  /* border-radius: 5px; */
 }
 
 .divDados span {
-    color: black;
-
-
+  color: black;
 }
 
 .titulo {
-    background-color: #e70069;
-    width: 98%;
-    border: solid black 0.5px;
-    border-radius: 5px;
-    margin-left: 2.1%;
-    color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #e70069;
+  width: 93%;
+  border: solid black 0.5px;
+  border-radius: 5px;
+  margin-left: 4.5%;
+  color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+.form-title {
+  background-color: #e70069;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 5px 5px 0px 0px;
+}
+
 
 
 .titulo span {
-    margin-left: 1%;
+  margin-left: 1%;
 }
 
-
 #juntandoDiv {
-    display: flex;
-    flex-direction: column;
-
+  display: flex;
+  flex-direction: column;
 }
 
 .center-content {
-    width: 100%;
-    margin-left: 0%;
+  width: 100%;
+  margin-left: 0%;
 }
 
 #juntandoDiv img {
-    width: 30px;
-    margin-left: 8%;
-
+  width: 30px;
+  margin-left: 8%;
 }
 
-
 a:link {
-    text-decoration: none;
-    color: black;
+  text-decoration: none;
+  color: black;
 }
 
 a:active {
-    text-decoration: none;
-    color: black
+  text-decoration: none;
+  color: black;
 }
 
 a:visited {
-    text-decoration: none;
-    color: black;
+  text-decoration: none;
+  color: black;
 }
 
 .spanVoltar {
-    margin-bottom: 5%;
+  margin-bottom: 5%;
+}
+
+.perfil #userName {
+  display: flex;
+  list-style: none;
+  color: white;
+  font-weight: 600;
+  margin-top: 6vh;
+  justify-content: center;
+}
+
+.perfil #userInsta {
+  list-style: none;
+  color: white;
+  font-weight: 200;
+  font-size: 12px;
+  margin-top: 0.5vh;
+  display: flex;
+  justify-content: center;
+}
+
+.input-content {
+  width: 100%;
+  padding-right: 10px;
+}
+
+.fas {
+  font-size: 1.5em;
+}
+
+.m {
+  margin-left: 10px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="file"],
+input[type="date"],
+select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.divVoltar {
+  margin-bottom: 20px;
+  margin-left: -70px;
+}
+
+.form-group {
+  width: 33%; /* 33% de largura para cada pergunta */
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap; /* Permite que novas rows sejam criadas automaticamente */
+  margin-bottom: 20px;
+}
+
+.input-content input {
+  width: 100%; /* Faz com que o input ocupe 100% da largura da div */
+}
+
+.resposta-text {
+  padding: 5px;
+  border: 1px solid transparent; /* Borda padrão transparente */
+  margin-top: 5px;
 }

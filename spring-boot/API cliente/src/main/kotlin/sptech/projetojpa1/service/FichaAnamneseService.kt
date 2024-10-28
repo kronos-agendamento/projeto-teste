@@ -6,6 +6,7 @@ import sptech.projetojpa1.dto.FichaCompletaResponseDTO
 import sptech.projetojpa1.dto.FichaRequest
 import sptech.projetojpa1.dto.ficha.PerguntaRespostaDTO
 import sptech.projetojpa1.repository.FichaAnamneseRepository
+import java.time.LocalDate
 
 @Service
 data class FichaAnamneseService(
@@ -29,7 +30,6 @@ data class FichaAnamneseService(
 
     fun listarFichasAnamnese(): List<FichaCompletaResponseDTO> {
         return fichaAnamneseRepository.findAll().map { ficha ->
-            // Obtenha as perguntas e respostas associadas à ficha
             val perguntasRespostas = ficha.respostas.map { resposta ->
                 PerguntaRespostaDTO(
                     pergunta = resposta.pergunta.pergunta,
@@ -37,7 +37,6 @@ data class FichaAnamneseService(
                 )
             }
 
-            // Retorne a ficha com as perguntas, respostas e informações do usuário
             FichaCompletaResponseDTO(
                 codigoFicha = ficha.codigoFicha,
                 dataPreenchimento = ficha.dataPreenchimento,
@@ -48,4 +47,51 @@ data class FichaAnamneseService(
         }
     }
 
+    fun buscarFichaPorId(id: Long): FichaCompletaResponseDTO {
+        val ficha = fichaAnamneseRepository.findById(id.toInt())
+            .orElseThrow { NoSuchElementException("Ficha Anamnese com ID $id não encontrada") }
+
+        val perguntasRespostas = ficha.respostas.map { resposta ->
+            PerguntaRespostaDTO(
+                pergunta = resposta.pergunta.pergunta,
+                perguntaTipo = resposta.pergunta.tipo,
+                resposta = resposta.resposta
+            )
+        }
+
+        return FichaCompletaResponseDTO(
+            codigoFicha = ficha.codigoFicha,
+            dataPreenchimento = ficha.dataPreenchimento,
+            usuarioId = ficha.usuario?.codigo,
+            usuarioNome = ficha.usuario?.nome,
+            usuarioCpf = ficha.usuario?.cpf,
+            perguntasRespostas = perguntasRespostas
+        )
+    }
+
+    fun buscarFichasPorFiltros(
+        nomeUsuario: String?,
+        cpf: String?,
+        dataPreenchimento: LocalDate?,
+        usuarioId: Int?
+    ): List<FichaCompletaResponseDTO> {
+        val fichas = fichaAnamneseRepository.findByFilters(nomeUsuario, cpf, dataPreenchimento, usuarioId)
+
+        return fichas.map { ficha ->
+            FichaCompletaResponseDTO(
+                codigoFicha = ficha.codigoFicha,
+                dataPreenchimento = ficha.dataPreenchimento,
+                usuarioId = ficha.usuario?.codigo,
+                usuarioNome = ficha.usuario?.nome,
+                usuarioCpf = ficha.usuario?.cpf,
+                perguntasRespostas = ficha.respostas.map { resposta ->
+                    PerguntaRespostaDTO(
+                        pergunta = resposta.pergunta.pergunta,
+                        perguntaTipo = resposta.pergunta.tipo,
+                        resposta = resposta.resposta
+                    )
+                }
+            )
+        }
+    }
 }

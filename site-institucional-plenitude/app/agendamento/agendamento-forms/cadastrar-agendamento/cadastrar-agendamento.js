@@ -11,11 +11,24 @@ document.addEventListener("DOMContentLoaded", function () {
   const clientesSelect = document.getElementById("clientes");
   const procedimentosSelect = document.getElementById("procedimentos");
   const especificacoesSelect = document.getElementById("especificacoes");
+
+  const tipoAtendimentoSelect = document.getElementById("tipo-atendimento");
   const tipoAgendamentoSelect = document.getElementById("tipo-atendimento");
   const dataInput = document.getElementById("data");
   const dataSelecionadaP = document.getElementById("data-selecionada");
   const horariosContainer = document.getElementById("horarios-disponiveis");
   const saveButton = document.getElementById("save-agendamento-button");
+  const enderecoGroup = document.getElementById("endereco-group"); // Div de endereço
+  const taxaTotalDiv = document.getElementById("taxa-total"); // Div de taxa total
+  const calcularTaxaButton = document.getElementById("calcular-taxa-button"); // Botão de calcular taxa
+  const valorTaxaSpan = document.getElementById("valor-taxa");
+  const totalKmSpan = document.getElementById("total-km");
+  const gasolina = 4; // Valor fixo médio da gasolina (exemplo)
+  const enderecoInput = document.getElementById("endereco");
+  const mediaValor = 50; // Valor por hora
+  const hora = 0.5; // Horas
+  const maoObra = mediaValor * hora; // Cálculo da mão de obra
+  const origem = "Rua das Gilias, 361 - Vila Bela, São Paulo - State of São Paulo, Brazil";
 
   let especificacoes = []; // Array para armazenar todas as especificações
 
@@ -104,6 +117,18 @@ document.addEventListener("DOMContentLoaded", function () {
       especificacoesSelect.classList.add("disabled-select");
     }
   });
+
+// Mostrar div de endereço somente se o tipo de atendimento for "Homecare" ou "Evento"
+tipoAtendimentoSelect.addEventListener("change", function () {
+  const tipoAtendimento = tipoAtendimentoSelect.value;
+
+  if (tipoAtendimento === "Homecare" || tipoAtendimento === "Evento") {
+    enderecoGroup.classList.remove("hidden"); // Mostra o endereço
+  } else {
+    enderecoGroup.classList.add("hidden"); // Esconde o endereço
+  }
+});
+
 
   dataInput.addEventListener("change", function () {
     const dataSelecionada = new Date(dataInput.value + "T00:00:00");
@@ -222,7 +247,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log(agendamento);
         showNotification("Agendamento criado com sucesso!");
         setTimeout(() => {
-          window.location.href = "../agendamentos.html";
+          window.location.href = "../../agendamento.html";
         }, 1000);
       } else {
         const errorMsg = await response.text();
@@ -237,6 +262,68 @@ document.addEventListener("DOMContentLoaded", function () {
       showNotification("Erro ao criar agendamento", true);
     }
   });
+
+  
+  // Função para calcular a distância
+  async function calcularDistancia(endereco) {
+    return new Promise((resolve, reject) => {
+      const service = new google.maps.DistanceMatrixService();
+
+      service.getDistanceMatrix(
+        {
+          origins: [origem],
+          destinations: [endereco],
+          travelMode: 'DRIVING', // Aqui define o modo de transporte
+          unitSystem: google.maps.UnitSystem.METRIC,
+        },
+        (response, status) => {
+          if (status === 'OK') {
+            const resultado = response.rows[0].elements[0];
+            const distanciaKm = resultado.distance.value / 1000; // Distância em quilômetros
+            resolve(distanciaKm);
+          } else {
+            reject('Erro ao calcular a distância: ' + status);
+          }
+        }
+      );
+    });
+  }
+
+ // Função para calcular a taxa total
+async function calcularTaxa() {
+  const endereco = enderecoInput.value; // Captura o valor do endereço
+
+  if (endereco) {
+    try {
+      const kmLoc = await calcularDistancia(endereco); // Calcula a distância
+
+      // Se a distância for calculada corretamente
+      if (kmLoc !== null) {
+        const taxaLoc = gasolina * kmLoc; // Cálculo da taxa de locomoção
+        const taxaTotal = taxaLoc + maoObra; // Soma da taxa de locomoção e mão de obra
+
+        valorTaxaSpan.textContent = `R$ ${taxaTotal.toFixed(2)}`; // Exibe o valor da taxa
+        totalKmSpan.textContent = `${kmLoc.toFixed(2)} km de distância`; // Exibe a distância total
+
+        // Mostra a div da taxa total
+        taxaTotalDiv.classList.remove("hidden"); 
+      } else {
+        valorTaxaSpan.textContent = "Distância não encontrada para o endereço.";
+        taxaTotalDiv.classList.remove("hidden");
+      }
+    } catch (error) {
+      console.error("Erro ao calcular a distância:", error);
+      valorTaxaSpan.textContent = "Erro ao calcular a distância. Tente novamente.";
+      taxaTotalDiv.classList.remove("hidden"); // Mostra a mensagem de erro
+    }
+  } else {
+    // Se o campo de endereço estiver vazio, oculta a div de taxa total
+    taxaTotalDiv.classList.add("hidden");
+  }
+}
+
+// Event listener para o botão de calcular taxa
+calcularTaxaButton.addEventListener("click", calcularTaxa);
 
   carregarClientes();
   carregarProcedimentos();
@@ -301,6 +388,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log(`Contagem parada em: ${seconds} segundos`);
       }
     });
+
 
     new window.VLibras.Widget('https://vlibras.gov.br/app');
     

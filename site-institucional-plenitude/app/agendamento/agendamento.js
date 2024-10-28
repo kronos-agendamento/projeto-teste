@@ -61,28 +61,99 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-  // Função para selecionar um status e atualizar
-  function selecionarStatus(id, nome) {
-    fetch(
-      `http://localhost:8080/api/agendamentos/atualizar-status/${selectedAgendamentoId}?statusId=${id}`,
-      {
-        method: "PUT",
+// Função para selecionar um status e atualizar
+function selecionarStatus(id, nome) {
+  fetch(`http://localhost:8080/api/agendamentos/atualizar-status/${selectedAgendamentoId}?statusId=${id}`, {
+      method: "PUT",
+  })
+  .then((response) => {
+      if (!response.ok) throw new Error("Erro ao atualizar o status.");
+      return response.json();
+  })
+  .then((data) => {
+      // Exibe uma notificação de sucesso
+      showNotification(`Status atualizado para "${nome}" com sucesso!`);
+      fetchAgendamentos(); // Atualizar a lista de agendamentos
+      closeCustomStatusModal(); // Fechar o modal
+      
+      // Após atualizar o status, busca o e-mail do cliente
+      buscarEmailCliente(selectedAgendamentoId, nome);  // Passa o ID do agendamento atualizado e o nome do novo status
+  })
+  .catch((error) => {
+      console.error("Erro ao atualizar o status:", error);
+      showNotification("Erro ao atualizar o status!", true);
+  });
+}
+
+async function buscarEmailCliente(selectedAgendamentoId, nome) {
+  try {
+      const response = await fetch(`http://localhost:8080/api/agendamentos/buscar/${selectedAgendamentoId}`);
+      if (!response.ok) {
+          throw new Error(`Erro ao buscar agendamento com ID: ${selectedAgendamentoId}`);
       }
-    )
-      .then((response) => {
-        if (!response.ok) throw new Error("Erro ao atualizar o status.");
-        return response.json();
-      })
-      .then((data) => {
-        showNotification(`Status atualizado para "${nome}" com sucesso!`);
-        fetchAgendamentos(); // Atualizar a lista de agendamentos
-        closeCustomStatusModal(); // Fechar o modal
-      })
-      .catch((error) => {
-        console.error("Erro ao atualizar o status:", error);
-        showNotification("Erro ao atualizar o status!", true);
-      });
+      const data = await response.json();
+
+      // Adiciona um log para verificar os dados da resposta
+      console.log('Resposta da API:', data);
+
+      // Aqui você ajusta conforme a resposta que você verá no console
+      const clienteEmail = data.email 
+      const nomeCliente = data.usuario 
+      const dataHoraAgendamento = new Date(data.dataHorario); // Supondo que você tem `dataHorario`
+const dataFormatada = dataHoraAgendamento.toLocaleDateString('pt-BR');
+const horaFormatada = dataHoraAgendamento.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+const dataAgend = `${dataFormatada} às ${horaFormatada}`;
+
+
+      const especificacao = data.especificacao
+
+
+      // Verificar se o e-mail está disponível
+      if (!clienteEmail) {
+          console.error("E-mail do cliente não encontrado.");
+          return;
+      }
+
+      // Enviar e-mail ao cliente sobre a atualização de status
+      enviarEmail(clienteEmail, nomeCliente, nome, dataAgend, especificacao);
+
+  } catch (error) {
+      console.error('Erro ao buscar o e-mail do cliente:', error);
   }
+}
+
+
+
+// Função para enviar o e-mail após a atualização do status
+async function enviarEmail(clienteEmail, nomeCliente, nome, dataAgend, especificacao) {
+  try {
+      const response = await fetch('http://127.0.0.1:5001/enviar-email-status', { // Rota do servidor Flask para enviar e-mail
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+              email: clienteEmail,      // E-mail do destinatário
+              nome: nomeCliente,        // Nome do cliente
+              mensagem: `Olá ${nomeCliente}, o status do seu agendamento do dia ${dataAgend} para o procedimento de ${especificacao} foi alterado para "${nome}".` // Mensagem personalizada
+          })
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+          console.log(`Email enviado com sucesso para ${clienteEmail}`);
+          showNotification("E-mail enviado com sucesso!");
+      } else {
+          console.error('Erro ao enviar o e-mail:', data.error);
+          showNotification('Erro ao enviar o e-mail.', true);
+      }
+  } catch (error) {
+      console.error('Erro ao enviar o e-mail:', error);
+      showNotification('Erro ao enviar o e-mail.', true);
+  }
+}
+
+
 
   // Função para fechar o modal de seleção de status
   function closeCustomStatusModal() {
@@ -105,7 +176,6 @@ document.addEventListener("DOMContentLoaded", function () {
       agendamento.statusAgendamento.nome !== "Cancelado"
   ).length;
 
-  // Atualiza a contagem de agendamentos e barra de progresso
   async function fetchAgendamentos() {
     try {
       const response = await fetch(url);
@@ -113,10 +183,14 @@ document.addEventListener("DOMContentLoaded", function () {
         throw new Error("Erro ao carregar os agendamentos.");
       }
       const data = await response.json();
-      agendamentos = data;
+
+      // Filtra para excluir os agendamentos de tipo "Bloqueio"
+      agendamentos = data.filter(
+        (agendamento) => agendamento.tipoAgendamento !== "Bloqueio"
+      );
 
       // Armazena uma cópia dos agendamentos originais para uso posterior
-      agendamentosOriginais = [...data];
+      agendamentosOriginais = [...agendamentos];
 
       agendamentosFiltrados = agendamentos;
 
@@ -154,15 +228,13 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("current-page").textContent = currentPage;
     document.getElementById("total-pages").textContent = totalPages;
 
-    // Corrige a paginação: filtra apenas os agendamentos que deveriam aparecer
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const agendamentosPaginaAtual = agendamentosFiltrados.slice(
       startIndex,
       endIndex
-    ); // Filtra somente a página atual
+    );
 
-    // Atualiza o botão de paginação
     document.getElementById("prev-page-btn").disabled = currentPage === 1;
     document.getElementById("next-page-btn").disabled =
       currentPage === totalPages;
@@ -185,14 +257,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const clienteTd = document.createElement("td");
       clienteTd.textContent = agendamento.usuario;
-      clienteTd.dataset.idUsuario = agendamento.usuarioId;  
+      clienteTd.dataset.idUsuario = agendamento.usuarioId;
       clienteTd.dataset.idAgendamento = agendamento.idAgendamento;
       tr.appendChild(clienteTd);
-      
-      console.log(`Cliente: ${clienteTd.textContent}, ID do Cliente: ${clienteTd.dataset.idUsuario}, ID agendamento: ${clienteTd.dataset.idAgendamento}`);
 
       const procedimentoTd = document.createElement("td");
-      procedimentoTd.textContent = agendamento.procedimento
+      procedimentoTd.textContent = agendamento.procedimento;
       procedimentoTd.dataset.fkProcedimento = agendamento.fkProcedimento;
       tr.appendChild(procedimentoTd);
 
@@ -201,7 +271,6 @@ document.addEventListener("DOMContentLoaded", function () {
       especificacaoTd.dataset.fkEspecificacao = agendamento.fkEspecificacao;
       tr.appendChild(especificacaoTd);
 
-      // Cria uma td para o status
       const statusTd = document.createElement("td");
       const statusColorDiv = document.createElement("div");
       statusColorDiv.style.backgroundColor = agendamento.statusAgendamento.cor;
@@ -219,61 +288,35 @@ document.addEventListener("DOMContentLoaded", function () {
       tr.appendChild(statusTd);
 
       const acoesTd = document.createElement("td");
+
+      // Botão de Editar
       const editButton = document.createElement("button");
-      editButton.classList.add("edit-btn");
-      editButton.classList.add("filter-btn");
+      editButton.classList.add("edit-btn", "filter-btn");
       editButton.dataset.id = agendamento.idAgendamento;
       editButton.innerHTML = '<i class="fas fa-edit"></i>';
-
-       // Tooltip
-       const tooltip2 = document.createElement("div");
-       tooltip2.classList.add("tooltip6");
-       tooltip2.innerText = "Clique para editar."; // Mensagem do tooltip
- 
-       // Adiciona o tooltip ao botão de exclusão
-       editButton.appendChild(tooltip2);
-
       editButton.addEventListener("click", (event) => {
-        event.stopPropagation();
-        editarAgendamento(clienteTd.dataset.idAgendamento, clienteTd.dataset.idUsuario, procedimentoTd.dataset.fkProcedimento, especificacaoTd.dataset.fkEspecificacao)
+        event.stopPropagation(); // Impede que o evento se propague para a linha
+        editarAgendamento(
+          clienteTd.dataset.idAgendamento,
+          clienteTd.dataset.idUsuario,
+          procedimentoTd.dataset.fkProcedimento,
+          especificacaoTd.dataset.fkEspecificacao
+        );
       });
+      acoesTd.appendChild(editButton);
 
-
-      
-
+      // Botão de Excluir
       const deleteButton = document.createElement("button");
-      deleteButton.classList.add("delete-btn");
-      deleteButton.classList.add("filter-btn");
+      deleteButton.classList.add("delete-btn", "filter-btn");
       deleteButton.dataset.id = agendamento.idAgendamento;
       deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
-
-      // Tooltip
-      const tooltip = document.createElement("div");
-      tooltip.classList.add("tooltip6");
-      tooltip.innerText = "Clique para excluir este status."; // Mensagem do tooltip
-
-      // Adiciona o tooltip ao botão de exclusão
-      deleteButton.appendChild(tooltip);
-
-      // Evento de clique para o botão de exclusão
       deleteButton.addEventListener("click", (event) => {
-          event.stopPropagation(); // Impede a propagação do evento
-          excluirAgendamento(agendamento.idAgendamento); // Chama a função de exclusão
+        event.stopPropagation(); // Impede que o evento se propague para a linha
+        excluirAgendamento(agendamento.idAgendamento);
       });
-
-      // Função de exemplo para excluir agendamento
-      function excluirAgendamento(id) {
-          console.log(`Agendamento ${id} excluído.`);
-          // Aqui você pode adicionar a lógica para excluir o agendamento
-      }
-
-      // Adiciona o botão de exclusão à página (opcional)
-      document.body.appendChild(deleteButton);
-
-      acoesTd.appendChild(editButton);
       acoesTd.appendChild(deleteButton);
-      tr.appendChild(acoesTd);
 
+      tr.appendChild(acoesTd);
       tr.addEventListener("click", () =>
         showDetalhesModal(agendamento.idAgendamento)
       );
@@ -281,6 +324,40 @@ document.addEventListener("DOMContentLoaded", function () {
       tbody.appendChild(tr);
     });
   }
+
+  window.excluirAgendamento = function (id) {
+    agendamentoIdToDelete = id;
+    document.getElementById(
+      "procedimento"
+    ).textContent = `ID do agendamento: ${id}`;
+    document.getElementById("modal").style.display = "block";
+  };
+
+  window.closeModal = function () {
+    document.getElementById("modal").style.display = "none";
+  };
+
+  window.confirmDeletion = async function () {
+    if (agendamentoIdToDelete !== null) {
+      try {
+        const response = await fetch(
+          `http://localhost:8080/api/agendamentos/excluir/${agendamentoIdToDelete}`,
+          {
+            method: "DELETE",
+          }
+        );
+
+        if (!response.ok) throw new Error("Erro ao excluir o agendamento.");
+        await fetchAgendamentos(); // Atualiza a lista de agendamentos após exclusão
+        agendamentoIdToDelete = null;
+        closeModal();
+        showNotification("Agendamento excluído com sucesso!");
+      } catch (error) {
+        console.error("Erro ao excluir o agendamento:", error);
+        showNotification("Erro ao excluir o agendamento!", true);
+      }
+    }
+  };
 
   function aplicarFiltroAtual() {
     if (filtroAtivo === "hoje") {
@@ -569,19 +646,22 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  // Função que será chamada ao clicar no botão de editar
+  window.editarAgendamento = function (
+    idAgendamento,
+    usuarioId,
+    fkProcedimento,
+    fkEspecificacao
+  ) {
+    // Salvando o id_usuario e o id_agendamento no sessionStorage
+    sessionStorage.setItem("id_usuario", usuarioId);
+    sessionStorage.setItem("id_agendamento", idAgendamento);
+    sessionStorage.setItem("procedimento", fkProcedimento);
+    sessionStorage.setItem("especificacao", fkEspecificacao);
 
-// Função que será chamada ao clicar no botão de editar
-window.editarAgendamento = function (idAgendamento, usuarioId,fkProcedimento, fkEspecificacao) {
-  // Salvando o id_usuario e o id_agendamento no sessionStorage
-  sessionStorage.setItem('id_usuario', usuarioId);
-  sessionStorage.setItem('id_agendamento', idAgendamento);
-  sessionStorage.setItem('procedimento', fkProcedimento);
-  sessionStorage.setItem('especificacao', fkEspecificacao);
-
-  // Redirecionando para a página com os parâmetros na URL
-  window.location.href = `agendamento-forms/editar-agendamento/editar-agendamento.html?idAgendamento=${idAgendamento}&usuarioId=${usuarioId}&procedimento=${fkProcedimento}&especificacao=${fkEspecificacao}`;
-};
-
+    // Redirecionando para a página com os parâmetros na URL
+    window.location.href = `agendamento-forms/editar-agendamento/editar-agendamento.html?idAgendamento=${idAgendamento}&usuarioId=${usuarioId}&procedimento=${fkProcedimento}&especificacao=${fkEspecificacao}`;
+  };
 
   window.excluirAgendamento = function (id) {
     agendamentoIdToDelete = id;

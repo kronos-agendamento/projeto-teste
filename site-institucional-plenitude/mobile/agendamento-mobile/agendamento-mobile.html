@@ -3,12 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7RnMgdvoROHW_o-4pQeM3LJyNMwxem6o&libraries=places"></script>
 
     <title>Agendamento | KronosBooking</title>
 
     <link href="../../assets/img/favicon.png" rel="icon" />
     <script src="agendamento-mobile.js"></script>
     <link rel="stylesheet" href="agendamento-mobile.css" />
+    <link
+      rel="stylesheet"
+      href="../ficha-anamnese-mobile/ficha-anamnese-mobile.css"
+    />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
@@ -18,10 +23,21 @@
   <body>
     <main>
       <header>
-        <div id="titulo-agendamento">
-          <h1>Agendar</h1>
+        <div id="resultados"></div>
+        <div class="introducao">
+          <div class="acessibilidade">
+            <div class="font-controls">
+              <button id="increase-font">A+</button>
+              <button id="decrease-font">A-</button>
+            </div>
+          </div>
+          <div id="titulo">Agendamentos</div>
+
+          <div id="subtitulo">
+            Agende seu procedimento
+          </div>
         </div>
-      </header>
+      </header><br>
       <section id="navigation">
         <div class="nav-bar">
           <ul>
@@ -99,10 +115,37 @@
             <label for="tipo-atendimento">Tipo de Atendimento:</label>
             <select name="tipo-atendimento" id="tipo-atendimento-select">
               <option value="">Selecione o tipo de atendimento</option>
-              <option value="Colocação">Primeira Vez</option>
-              <option value="Manutenção">Manutenção</option>
-              <option value="Retirada">Remoção</option>
+              <option value="Colocação" id="opcao-colocacao">
+                Primeira Vez
+              </option>
+              <option value="Manutenção" id="opcao-manutencao">
+                Manutenção
+              </option>
+              <option value="Retirada" id="opcao-retirada">Remoção</option>
+              <option value="Homecare" id="opcao-homecare">Homecare</option>
+              <option value="Estudio" id="opcao-estudio">Estudio</option>
+              <option value="Evento" id="opcao-evento">Evento</option>
             </select>
+          </div>
+
+          <div class="form-group form-input hidden" id="endereco-group">
+            <label for="endereco">Endereço:</label>
+            <input type="text" id="endereco" placeholder="Insira o endereço" />
+            <div class="button-container">
+              <button
+                type="button"
+                class="save-button"
+                id="calcular-taxa-button"
+                onclick="calcularTaxa()"
+              >
+                Calcular Taxa
+              </button>
+            </div>
+          </div>
+
+          <div id="taxa-total" class="hidden">
+            <p>Taxa Total: <span id="valor-taxa"></span></p>
+            <p>Total de Km's: <span id="total-km"></span></p>
           </div>
 
           <div class="form-group form-mr form-input" id="data-div">
@@ -145,7 +188,10 @@
   <script
     type="module"
     src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
-  ></script>
+  >
+    window.onload = initAutocomplete;
+    let autocompleteEndereco;
+  </script>
   <script
     nomodule
     src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"

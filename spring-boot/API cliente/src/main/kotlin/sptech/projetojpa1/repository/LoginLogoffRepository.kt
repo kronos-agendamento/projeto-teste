@@ -10,22 +10,19 @@ interface LoginLogoffRepository : CrudRepository<LoginLogoff, Int> {
 
     @Query(value = """
         SELECT 
-    ROUND(
-        (COUNT(DISTINCT a.fk_usuario) / (SELECT COUNT(DISTINCT fk_usuario) FROM login_logoff)) * 100, 2
-    ) AS porcentagem_retornos
+    COUNT(a.fk_usuario) AS total_usuarios_com_retorno
 FROM 
     login_logoff a
+JOIN 
+    login_logoff b
+    ON a.fk_usuario = b.fk_usuario
+    AND b.data_horario > a.data_horario
 WHERE 
-    EXISTS (
-        SELECT 1 
-        FROM login_logoff b
-        WHERE b.fk_usuario = a.fk_usuario 
-          AND b.data_horario > a.data_horario
-          AND b.data_horario <= DATE_ADD(a.data_horario, INTERVAL 1 MONTH)
-          AND a.logi = 'LOGIN'
-          AND b.logi = 'LOGIN'
-    )
-  AND a.logi = 'LOGIN';
+    a.logi = 'LOGIN'
+    AND b.logi = 'LOGIN'
+    AND b.data_horario >= DATE_ADD(a.data_horario, INTERVAL 1 MONTH);
+
+
 
     """, nativeQuery = true)
     fun findUsuariosQueRetornaramAposUmMes(): Int

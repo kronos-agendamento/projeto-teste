@@ -1,14 +1,14 @@
 .back-link {
-  margin-left: 30px;
+  margin-left: 50px;
   color: #000000;
   text-decoration: none;
 }
 
 .form-section {
-  width: 65vw;
+  width: 153vh;
   background-color: #fff0f5;
   margin-bottom: 20px;
-  margin-left: 20px;
+  margin-left: 50px;
   margin-top: 20px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -26,6 +26,7 @@
   display: flex;
   align-items: center;
   padding: 2vh;
+  border-radius: 5px 5px 0px 0px;
 }
 
 .form-section h2 {
@@ -81,6 +82,12 @@
   margin-top: 20px;
 }
 
+
+.hidden {
+  display: none;
+}
+
+
 .save-button {
   display: flex;
   align-items: center;
@@ -92,6 +99,7 @@
   font-size: 16px;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-family: Poppins, sans-serif;
 }
 
 .save-button svg {
