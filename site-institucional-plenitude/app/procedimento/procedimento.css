@@ -593,7 +593,7 @@ select {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 120px;
+  top: 100px;
   /* Ajuste conforme necessário */
   left: 33%;
   transform: translateX(-50%);
@@ -609,9 +609,9 @@ select {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 120px;
+  top: 100px;
   /* Ajuste conforme necessário */
-  left: 80%;
+  left: 40%;
   transform: translateX(-50%);
 }
 
@@ -625,9 +625,9 @@ select {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 120px;
+  top: 100px;
   /* Ajuste conforme necessário */
-  left: 90%;
+  left: 50%;
   transform: translateX(-50%);
 }
 
