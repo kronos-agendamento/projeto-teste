@@ -435,14 +435,14 @@
   
   /* Estilizando o select para ter a cor de fundo rosa */
   .form-group select {
-    background-color: #ffe4eb; /* Fundo rosa claro */
-    border: 1px solid #e70069; /* Borda de cor similar */
-    padding: 8px; /* Padding interno */
-    border-radius: 5px; /* Borda arredondada */
-    width: 100%; /* Preenche a largura total */
-    -webkit-appearance: none; /* Remove a aparência padrão em alguns navegadores */
-    -moz-appearance: none;
-    appearance: none;
+    padding: 3vw;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 0.2vw;
+    width: 98%;
+    justify-content: center;
+    background-color: #fff0f5;
+    font-family: Poppins, sans-serif;
   }
   
   /* Estilo opcional para remover a seta padrão do select */
@@ -501,6 +501,7 @@
     font-size: 16px;
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-family: Poppins, sans-serif;
   }
   
   .save-button svg {

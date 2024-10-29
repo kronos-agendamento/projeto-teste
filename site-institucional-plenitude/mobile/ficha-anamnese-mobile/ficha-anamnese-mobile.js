@@ -85,7 +85,7 @@ function renderPerguntas(perguntasRespostas) {
       inputElement.required = true;
       inputElement.style.marginTop = "10px";
       inputElement.style.display = "block";
-      inputElement.style.width = "100%";
+      inputElement.style.width = "95%";
     } else if (perguntaResposta.perguntaTipo === "Check Box") {
       inputElement = document.createElement("input");
       inputElement.type = "checkbox";

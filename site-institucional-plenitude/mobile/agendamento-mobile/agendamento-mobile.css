@@ -136,13 +136,14 @@
 
   .agendamento select,
   .agendamento input {
-    padding: 1vw;
+    padding: 3vw;
     border: 1px solid #ddd;
     border-radius: 5px;
     margin: 0.2vw;
-    width: 90%;
+    width: 98%;
     justify-content: center;
     background-color: #fff0f5;
+    font-family: Poppins, sans-serif;
   }
 
   .agendamento img {
