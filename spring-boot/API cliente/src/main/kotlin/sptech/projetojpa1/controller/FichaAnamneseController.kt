@@ -8,7 +8,8 @@ import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import sptech.projetojpa1.dto.FichaCompletaResponseDTO
-import sptech.projetojpa1.dto.FichaRequest
+import sptech.projetojpa1.dto.ficha.FichaRequest
+import sptech.projetojpa1.dto.ficha.PerguntasRespostasRequest
 import sptech.projetojpa1.service.FichaAnamneseService
 import java.time.LocalDate
 
@@ -85,6 +86,31 @@ class FichaAnamneseController(
     fun buscarFichaPorId(@PathVariable id: Long): FichaCompletaResponseDTO {
         return fichaAnamneseService.buscarFichaPorId(id)
     }
+
+    @Operation(
+        summary = "Atualizar ficha de anamnese",
+        description = "Atualiza os dados de uma ficha de anamnese existente."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Ficha atualizada com sucesso"),
+            ApiResponse(responseCode = "404", description = "Ficha não encontrada com o ID fornecido"),
+            ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos para atualização da ficha")
+        ]
+    )
+    @PatchMapping("/{idFicha}")
+    fun atualizarPerguntasRespostas(
+        @PathVariable idFicha: Long,
+        @RequestBody atualizacoes: PerguntasRespostasRequest
+    ): ResponseEntity<FichaCompletaResponseDTO> {
+        // Chama o serviço para atualizar as respostas de várias perguntas
+        val fichaAtualizada = fichaAnamneseService.atualizarPerguntasRespostas(idFicha, atualizacoes.perguntasRespostas)
+
+        // Retorna a ficha atualizada com o status HTTP 200 (OK)
+        return ResponseEntity.ok(fichaAtualizada)
+    }
+
+
 
     @Operation(
         summary = "Buscar fichas de anamnese",

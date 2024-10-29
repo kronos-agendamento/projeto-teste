@@ -3,14 +3,17 @@ package sptech.projetojpa1.service
 import org.springframework.stereotype.Service
 import sptech.projetojpa1.domain.FichaAnamnese
 import sptech.projetojpa1.dto.FichaCompletaResponseDTO
-import sptech.projetojpa1.dto.FichaRequest
+import sptech.projetojpa1.dto.ficha.FichaRequest
+import sptech.projetojpa1.dto.ficha.PerguntaRespostaAtualizacao
 import sptech.projetojpa1.dto.ficha.PerguntaRespostaDTO
 import sptech.projetojpa1.repository.FichaAnamneseRepository
+import sptech.projetojpa1.repository.UsuarioRepository
 import java.time.LocalDate
 
 @Service
 data class FichaAnamneseService(
-    val fichaAnamneseRepository: FichaAnamneseRepository
+    val fichaAnamneseRepository: FichaAnamneseRepository,
+    val usuarioRepository: UsuarioRepository
 ) {
     fun cadastrarFichaAnamnese(novaFichaAnamneseDTO: FichaRequest): FichaCompletaResponseDTO {
         val novaFichaAnamnese = FichaAnamnese(
@@ -51,8 +54,10 @@ data class FichaAnamneseService(
         val ficha = fichaAnamneseRepository.findById(id.toInt())
             .orElseThrow { NoSuchElementException("Ficha Anamnese com ID $id não encontrada") }
 
+        // Verifique se as respostas estão sendo carregadas
         val perguntasRespostas = ficha.respostas.map { resposta ->
             PerguntaRespostaDTO(
+                idPergunta = resposta.pergunta.idPergunta,
                 pergunta = resposta.pergunta.pergunta,
                 perguntaTipo = resposta.pergunta.tipo,
                 resposta = resposta.resposta
@@ -66,6 +71,45 @@ data class FichaAnamneseService(
             usuarioNome = ficha.usuario?.nome,
             usuarioCpf = ficha.usuario?.cpf,
             perguntasRespostas = perguntasRespostas
+        )
+    }
+
+
+    fun atualizarPerguntasRespostas(
+        idFicha: Long,
+        perguntasRespostas: List<PerguntaRespostaAtualizacao>
+    ): FichaCompletaResponseDTO {
+        // Busca a ficha de anamnese existente pelo ID fornecido
+        val fichaExistente = fichaAnamneseRepository.findById(idFicha.toInt())
+            .orElseThrow { NoSuchElementException("Ficha Anamnese com ID $idFicha não encontrada") }
+
+        // Para cada atualização, encontra a pergunta e atualiza a resposta
+        perguntasRespostas.forEach { atualizacao ->
+            val respostaExistente =
+                fichaExistente.respostas.find { it.pergunta.idPergunta == atualizacao.idPergunta.toInt() }
+                    ?: throw NoSuchElementException("Pergunta com ID ${atualizacao.idPergunta} não encontrada na ficha de anamnese com ID $idFicha")
+
+            // Atualiza a resposta da pergunta específica
+            respostaExistente.resposta = atualizacao.resposta
+        }
+
+        // Salva a ficha atualizada no repositório
+        val fichaAtualizada = fichaAnamneseRepository.save(fichaExistente)
+
+        // Retorna a ficha completa como DTO
+        return FichaCompletaResponseDTO(
+            codigoFicha = fichaAtualizada.codigoFicha,
+            dataPreenchimento = fichaAtualizada.dataPreenchimento,
+            usuarioId = fichaAtualizada.usuario?.codigo,
+            usuarioNome = fichaAtualizada.usuario?.nome,
+            perguntasRespostas = fichaAtualizada.respostas.map { resposta ->
+                PerguntaRespostaDTO(
+                    pergunta = resposta.pergunta.pergunta,
+                    perguntaTipo = resposta.pergunta.tipo,
+                    resposta = resposta.resposta,
+                    idPergunta = resposta.pergunta.idPergunta
+                )
+            }
         )
     }
 
