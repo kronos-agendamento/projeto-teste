@@ -1,4 +1,19 @@
 // Função para buscar e preencher o formulário com dados já respondidos
+function showNotification(message, isError = false) {
+    const notification = document.getElementById("notification");
+    const notificationMessage = document.getElementById("notification-message");
+    notificationMessage.textContent = message;
+    if (isError) {
+      notification.classList.add("error");
+    } else {
+      notification.classList.remove("error");
+    }
+    notification.classList.add("show");
+    setTimeout(() => {
+      notification.classList.remove("show");
+    }, 3000);
+  }
+
 async function preencherFormularioComRespostas(idUsuario) {
   try {
     const response = await fetch(
@@ -117,7 +132,7 @@ async function fetchPerguntas() {
   try {
     const response = await fetch("http://localhost:8080/api/perguntas");
     if (response.status === 204) {
-      alert("Nenhuma pergunta encontrada.");
+      showNotification("Nenhuma pergunta encontrada.", true);
       return;
     }
 
@@ -141,7 +156,7 @@ async function fetchPerguntas() {
 async function submitForm() {
   const idUsuario = localStorage.getItem("idUsuario");
   if (!idUsuario) {
-    alert("Usuário não está logado.");
+    showNotification("Usuário não está logado.", true);
     return;
   }
 
@@ -228,15 +243,17 @@ async function submitForm() {
     });
 
     if (response.ok) {
-      alert("Respostas enviadas com sucesso!");
-      location.reload();
+        showNotification("Respostas enviadas!");
+        setTimeout(() => {
+            location.reload();
+        }, 2000); // Atraso de 2 segundos (2000 milissegundos)
     } else {
-      console.error("Erro na resposta do servidor. Status:", response.status);
-      alert("Erro ao enviar respostas. Verifique os dados e tente novamente.");
-    }
+        console.error("Erro na resposta do servidor. Status:", response.status);
+        showNotification("Erro ao enviar respostas!", true);
+    }    
   } catch (error) {
     console.error("Erro no envio das respostas:", error);
-  }
+  } 
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -290,3 +307,5 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+
