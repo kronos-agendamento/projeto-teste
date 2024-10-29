@@ -147,11 +147,28 @@ async function submitForm() {
 
   const statusFormulario = localStorage.getItem("statusFormulario");
 
-  const formData = {
-    fichaAnamnese: parseInt(idUsuario, 10),
-    usuario: parseInt(idUsuario, 10),
-    respostas: [], // Respostas no formato esperado pelo backend
-  };
+  // Verifica se o status é "Respondido" para determinar o método e o formato de formData
+  let formData;
+  let method;
+  let url;
+
+  if (statusFormulario === "Respondido") {
+    // Estrutura para o método PATCH
+    formData = {
+      perguntasRespostas: [], // Adicionaremos perguntas e respostas específicas para o PATCH
+    };
+    method = "PATCH";
+    url = `http://localhost:8080/api/ficha-anamnese/${idUsuario}`;
+  } else {
+    // Estrutura para o método POST
+    formData = {
+      fichaAnamnese: parseInt(idUsuario, 10),
+      usuario: parseInt(idUsuario, 10),
+      respostas: [], // Adicionaremos respostas no formato esperado para o POST
+    };
+    method = "POST";
+    url = "http://localhost:8080/api/respostas";
+  }
 
   console.log("formData inicial:", formData);
 
@@ -173,10 +190,20 @@ async function submitForm() {
     }
 
     if (resposta.trim() !== "") {
-      formData.respostas.push({
-        resposta: resposta,
-        pergunta: perguntaId,
-      });
+      if (method === "PATCH") {
+        // Formato para PATCH
+        formData.perguntasRespostas.push({
+          idPergunta: perguntaId,
+          resposta: resposta,
+        });
+      } else {
+        // Formato para POST
+        formData.respostas.push({
+          resposta: resposta,
+          pergunta: perguntaId,
+        });
+      }
+
       console.log("Adicionando resposta ao formData:", {
         idPergunta: perguntaId,
         resposta: resposta,
@@ -190,12 +217,6 @@ async function submitForm() {
   );
 
   try {
-    const method = statusFormulario === "Respondido" ? "PATCH" : "POST";
-    const url =
-      method === "PATCH"
-        ? `http://localhost:8080/api/ficha-anamnese/${formData.fichaAnamnese}`
-        : "http://localhost:8080/api/respostas";
-
     console.log(`Enviando requisição para URL: ${url}, com método: ${method}`);
 
     const response = await fetch(url, {
@@ -208,6 +229,7 @@ async function submitForm() {
 
     if (response.ok) {
       alert("Respostas enviadas com sucesso!");
+      location.reload();
     } else {
       console.error("Erro na resposta do servidor. Status:", response.status);
       alert("Erro ao enviar respostas. Verifique os dados e tente novamente.");
