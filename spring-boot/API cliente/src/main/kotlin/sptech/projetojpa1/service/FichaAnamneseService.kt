@@ -116,9 +116,10 @@ data class FichaAnamneseService(
     fun buscarFichasPorFiltros(
         nomeUsuario: String?,
         cpf: String?,
-        dataPreenchimento: LocalDate?
+        dataPreenchimento: LocalDate?,
+        usuarioId: Int?
     ): List<FichaCompletaResponseDTO> {
-        val fichas = fichaAnamneseRepository.findByFilters(nomeUsuario, cpf, dataPreenchimento)
+        val fichas = fichaAnamneseRepository.findByFilters(nomeUsuario, cpf, dataPreenchimento, usuarioId)
 
         return fichas.map { ficha ->
             FichaCompletaResponseDTO(

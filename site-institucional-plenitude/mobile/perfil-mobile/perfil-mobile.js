@@ -21,36 +21,69 @@ document.addEventListener("DOMContentLoaded", function () {
   let decreaseClicks = 0;
   const maxClicks = 2; // Limitar o número de vezes que o tamanho da fonte pode ser alterado
 
-  // Função para aumentar o tamanho da fonte
-  increaseFontBtn?.addEventListener("click", function () {
-    if (increaseClicks < maxClicks) {
-      let newSize = parseFloat(currentFontSize) + 1; // Aumentar 1px
-      currentFontSize = `${newSize}px`;
-      rootElement.style.setProperty("--font-size-default", currentFontSize);
-      document.body.style.fontSize = currentFontSize; // Aplicar o novo tamanho ao body
-      localStorage.setItem("fontSize", currentFontSize);
-
-      increaseClicks++; // Incrementar o contador de cliques para aumentar
-      decreaseClicks = 0; // Resetar o contador de diminuir para permitir novo ciclo
-    }
-  });
-
-  // Função para diminuir o tamanho da fonte
-  decreaseFontBtn?.addEventListener("click", function () {
-    if (decreaseClicks < maxClicks) {
-      let newSize = parseFloat(currentFontSize) - 1; // Diminuir 1px
-      if (newSize >= 12) {
-        // Limitar o tamanho mínimo da fonte
+  // Verificar se os botões de aumento/diminuição de fonte existem antes de adicionar eventos
+  if (increaseFontBtn) {
+    increaseFontBtn.addEventListener("click", function () {
+      if (increaseClicks < maxClicks) {
+        let newSize = parseFloat(currentFontSize) + 1; // Aumentar 1px
         currentFontSize = `${newSize}px`;
         rootElement.style.setProperty("--font-size-default", currentFontSize);
         document.body.style.fontSize = currentFontSize; // Aplicar o novo tamanho ao body
         localStorage.setItem("fontSize", currentFontSize);
 
-        decreaseClicks++; // Incrementar o contador de cliques para diminuir
-        increaseClicks = 0; // Resetar o contador de aumentar para permitir novo ciclo
+        increaseClicks++; // Incrementar o contador de cliques para aumentar
+        decreaseClicks = 0; // Resetar o contador de diminuir para permitir novo ciclo
       }
-    }
-  });
+    });
+  }
+
+  if (decreaseFontBtn) {
+    decreaseFontBtn.addEventListener("click", function () {
+      if (decreaseClicks < maxClicks) {
+        let newSize = parseFloat(currentFontSize) - 1; // Diminuir 1px
+        if (newSize >= 12) {
+          // Limitar o tamanho mínimo da fonte
+          currentFontSize = `${newSize}px`;
+          rootElement.style.setProperty("--font-size-default", currentFontSize);
+          document.body.style.fontSize = currentFontSize; // Aplicar o novo tamanho ao body
+          localStorage.setItem("fontSize", currentFontSize);
+
+          decreaseClicks++; // Incrementar o contador de cliques para diminuir
+          increaseClicks = 0; // Resetar o contador de aumentar para permitir novo ciclo
+        }
+      }
+    });
+  }
+
+  // Configuração da busca com lupa
+  const lupaIcon = document.getElementById("lupa-icon");
+  const closeIcon = document.getElementById("close-icon");
+  const searchInput = document.getElementById("searchInput");
+
+  // Verificar se os elementos existem antes de adicionar eventos
+  if (lupaIcon && closeIcon && searchInput) {
+    lupaIcon.addEventListener("click", function () {
+      lupaIcon.style.display = "none";
+      searchInput.style.display = "block";
+      closeIcon.style.display = "block";
+      searchInput.focus(); // Focar no input
+    });
+
+    closeIcon.addEventListener("click", function () {
+      closeIcon.style.display = "none";
+      searchInput.style.display = "none";
+      lupaIcon.style.display = "block";
+      searchInput.value = "";
+      document.getElementById("resultados").innerHTML = "";
+    });
+  }
+
+  // Eventos de busca e seleção do datalist
+  searchInput?.addEventListener("input", filtrarEspecificacoes);
+  searchInput?.addEventListener("change", salvarIdsNoLocalStorage);
+
+  // Chamar a função para carregar as especificações ao iniciar a página
+  carregarEspecificacoes();
 
   // Função para popular o select com os meses do ano até o mês atual
   function populateMonthSelect() {
@@ -59,27 +92,24 @@ document.addEventListener("DOMContentLoaded", function () {
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth() + 1; // getMonth() retorna de 0 a 11, então adicionamos +1
 
-    // Limpa as opções existentes no <select>
-    selectMes.innerHTML = "";
+    selectMes.innerHTML = ""; // Limpa as opções existentes no <select>
 
-    // Adiciona os meses de janeiro até o mês atual
     for (let month = 1; month <= currentMonth; month++) {
-      const monthString = month.toString().padStart(2, "0"); // Garante que o mês tenha 2 dígitos (ex: '01')
+      const monthString = month.toString().padStart(2, "0");
       const option = document.createElement("option");
       option.value = `${currentYear}-${monthString}`;
-      option.text = new Intl.DateTimeFormat("pt-BR", { month: "long" }).format(
-        new Date(currentYear, month - 1)
-      ); // Nome do mês em português
+      let monthName = new Intl.DateTimeFormat("pt-BR", {
+        month: "long",
+      }).format(new Date(currentYear, month - 1));
+      monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
+      option.text = monthName;
       selectMes.appendChild(option);
     }
 
-    // Define o mês atual como o selecionado por padrão
     selectMes.value = `${currentYear}-${currentMonth
       .toString()
       .padStart(2, "0")}`;
   }
-
-  // Chama a função para popular o <select> com os meses ao carregar a página
   populateMonthSelect();
 
   // Pega o ID do usuário do localStorage
@@ -89,15 +119,13 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
-  // Captura o mês selecionado no <select> e chama o fetch
   document.getElementById("selectMes")?.addEventListener("change", function () {
-    const selectedMonth = this.value; // Pega o mês selecionado no formato YYYY-MM
-    fetchProcedimentosPorUsuarioEMes(idUsuario, selectedMonth); // Faz o fetch com o mês selecionado
+    const selectedMonth = this.value;
+    fetchProcedimentosPorUsuarioEMes(idUsuario, selectedMonth);
   });
 
-  // Inicializa o gráfico com o mês atual ao carregar a página
-  const defaultMonth = document.getElementById("selectMes")?.value; // Pega o mês atual do <select>
-  fetchProcedimentosPorUsuarioEMes(idUsuario, defaultMonth); // Faz o fetch inicial
+  const defaultMonth = document.getElementById("selectMes")?.value;
+  fetchProcedimentosPorUsuarioEMes(idUsuario, defaultMonth);
 });
 
 // Função para buscar os procedimentos por usuário e mês
@@ -114,59 +142,149 @@ function fetchProcedimentosPorUsuarioEMes(usuarioId, mesAno) {
     });
 }
 
-// Atualização dos dados do gráfico de perfil
+// Função para criar e atualizar o gráfico de perfil
 function updateChartProcedimentosUsuarioMes(data) {
-  const labels = Object.keys(data); // Os nomes dos procedimentos (ex: Volume Russo, Volume Fio a Fio)
-  const dataChart = Object.values(data); // Quantidade de procedimentos (ex: 3, 2, 1)
-
-  // Chama a função para criar ou atualizar o gráfico
+  const labels = Object.keys(data);
+  const dataChart = Object.values(data);
   createChartProcedimentosUsuarioMes(labels, dataChart);
 }
 
-// Criação do gráfico de perfil
+// Função para exibir o gráfico de perfil
 function createChartProcedimentosUsuarioMes(labels, dataChart) {
   const ctx = document
     .getElementById("chartProcedimentosUsuarioMes")
     .getContext("2d");
 
-  // Verifica se o gráfico já existe e o destrói antes de criar um novo
   if (window.chartProcedimentosUsuarioMes instanceof Chart) {
     window.chartProcedimentosUsuarioMes.destroy();
   }
 
-  // Criação do gráfico com Chart.js
   window.chartProcedimentosUsuarioMes = new Chart(ctx, {
-    type: "bar", // Tipo de gráfico: barra
+    type: "bar",
     data: {
-      labels: labels, // Procedimentos como rótulos (ex: Maquiagem, Sobrancelha)
+      labels: labels,
       datasets: [
         {
-          label: "Quantidade de Procedimentos", // Rótulo da barra
-          data: dataChart, // Quantidades de procedimentos
-          backgroundColor: ["#f9b4c4", "#c4145a", "#e99fb8"], // Cores das barras
-          borderColor: "#4B0082", // Cor da borda
-          borderWidth: 1, // Largura da borda
+          label: "Quantidade de Procedimentos",
+          data: dataChart,
+          backgroundColor: ["#f9b4c4", "#c4145a", "#e99fb8"],
+          borderColor: ["#f9b4c4", "#c4145a", "#e99fb8"],
+          borderWidth: 1,
         },
       ],
     },
     options: {
-      responsive: true, // Responsivo para diferentes tamanhos de tela
+      responsive: true,
+      maintainAspectRatio: false,
       scales: {
         y: {
-          beginAtZero: true, // Eixo Y começa no zero
+          beginAtZero: true,
           title: {
             display: true,
             text: "Quantidade",
+            font: { family: "Poppins, sans-serif", size: 18, weight: "bold" },
           },
         },
         x: {
+          ticks: {
+            maxRotation: 35,
+            minRotation: 35,
+            font: { size: 12, weight: "bold", family: "Poppins, sans-serif" },
+          },
           title: {
             display: true,
             text: "Procedimentos",
+            font: { family: "Poppins, sans-serif", size: 18, weight: "bold" },
           },
         },
       },
     },
+  });
+}
+
+// Função para carregar as especificações no datalist
+function carregarEspecificacoes() {
+  fetch("http://localhost:8080/api/especificacoes")
+    .then((response) => (response.ok ? response.json() : []))
+    .then((data) => {
+      const dataList = document.getElementById("especificacoesList");
+      dataList.innerHTML = "";
+
+      data.sort((a, b) =>
+        normalizeString(
+          `${a.especificacao} - ${a.procedimento.tipo}`
+        ).localeCompare(
+          normalizeString(`${b.especificacao} - ${b.procedimento.tipo}`)
+        )
+      );
+
+      data.forEach((item) => {
+        const option = document.createElement("option");
+        option.value = `${item.especificacao} - ${item.procedimento.tipo}`;
+        option.dataset.normalized = normalizeString(option.value);
+        option.dataset.idEspecificacao = item.idEspecificacaoProcedimento;
+        option.dataset.idProcedimento = item.procedimento.idProcedimento;
+        dataList.appendChild(option);
+      });
+    })
+    .catch((error) => {
+      console.error("Erro:", error);
+    });
+}
+
+// Função para salvar IDs no localStorage e redirecionar
+function salvarIdsNoLocalStorage() {
+  const input = document.getElementById("searchInput");
+  const selectedOption = Array.from(
+    document.getElementById("especificacoesList").options
+  ).find((option) => option.value === input.value);
+
+  if (selectedOption) {
+    localStorage.setItem(
+      "idEspecificacao",
+      selectedOption.dataset.idEspecificacao
+    );
+    localStorage.setItem(
+      "idProcedimento",
+      selectedOption.dataset.idProcedimento
+    );
+    window.location.href = "../agendamento-mobile/agendamento-mobile.html";
+  }
+}
+
+// Função de busca binária para filtrar o datalist
+function buscaBinaria(arr, x) {
+  let start = 0;
+  let end = arr.length - 1;
+
+  while (start <= end) {
+    let mid = Math.floor((start + end) / 2);
+    const midVal = arr[mid].dataset.normalized;
+
+    if (midVal.includes(x)) return mid;
+    midVal < x ? (start = mid + 1) : (end = mid - 1);
+  }
+
+  return -1;
+}
+
+// Função para filtrar opções usando busca binária
+function filtrarEspecificacoes() {
+  const input = document.getElementById("searchInput");
+  const filter = normalizeString(input.value);
+  const options = Array.from(
+    document.getElementById("especificacoesList").options
+  );
+
+  options.sort((a, b) =>
+    a.dataset.normalized.localeCompare(b.dataset.normalized)
+  );
+
+  const index = buscaBinaria(options, filter);
+
+  options.forEach((option, i) => {
+    option.style.display =
+      i === index || option.dataset.normalized.includes(filter) ? "" : "none";
   });
 }
 
@@ -229,7 +347,7 @@ async function gapUltimoAgendamento() {
 
       document.querySelector(
         ".descricao-aviso h2"
-      ).textContent = `${data} dias`;
+      ).textContent = ` ${data} dias`;
 
       localStorage.setItem("QtdDiaUltimoAgendamento", data);
     } else {
@@ -325,54 +443,84 @@ function formatDateTime(dateTimeString) {
   return new Date(dateTimeString).toLocaleString("pt-BR", options);
 }
 
-// Função para buscar os 3 principais procedimentos
-async function fetchProcedimentos() {
+async function fetchProcedimentos() { 
   const idUsuario = localStorage.getItem("idUsuario");
 
   if (!idUsuario) {
-    console.error("ID do usuário não encontrado em localDate.");
-    return;
+      console.error("ID do usuário não encontrado no localStorage.");
+      return;
   }
 
   try {
-    const response = await fetch(
-      `http://localhost:8080/api/procedimentos/top3/${idUsuario}`
-    );
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    const procedimentos = await response.json();
+      const response = await fetch(`http://localhost:8080/api/procedimentos/top3/${idUsuario}`);
+      if (!response.ok) {
+          throw new Error("Erro na resposta da rede");
+      }
+      const procedimentos = await response.json();
 
-    const container = document.querySelector(".box-agendamento");
-    container.innerHTML = ""; // Limpar conteúdo anterior
+      const container = document.querySelector(".box-agendamento-container");
+      container.innerHTML = ""; // Limpar o conteúdo anterior
 
-    procedimentos.forEach((procedimento) => {
-      const tipo_procedimento = procedimento[1]; // Tipo
-      const descricao_procedimento = procedimento[2]; // Descrição
-      const data_horario = procedimento[4]; // Data e horário mais recente
-      const foto = "../../assets/icons/profile.png"; // Imagem padrão
+      procedimentos.forEach((procedimento) => {
+          const tipo_procedimento = procedimento[1]; // Tipo
+          const descricao_procedimento = procedimento[2]; // Descrição
+          const data_horario = procedimento[4]; // Data e horário mais recente
 
-      const formattedDateTime = formatDateTime(data_horario);
+          // Verifica o tipo de procedimento e ajusta o ícone
+          let imgIconSrc = '../../assets/icons/profile.png'; // Ícone padrão
 
-      const agendamentoHTML = `
-                <div class="box-agendamento">
-                    <div class="box-agendamento2">
-                        <div class="icon-agendamento">
-                            <img src="${foto}" width="100" height="100" alt="${tipo_procedimento}">
-                        </div>
-                        <div class="procedimento-agendamento">
-                            <span id="agendamento">${tipo_procedimento}<br> ${descricao_procedimento}</span>
-                            <span id="agendamento">Último agendamento: ${formattedDateTime}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-      container.insertAdjacentHTML("beforeend", agendamentoHTML);
-    });
+          switch (tipo_procedimento) {
+              case 'Maquiagem':
+                  imgIconSrc = '../../assets/icons/maquiagem-mobile.png';
+                  break;
+              case 'Cílios':
+                  imgIconSrc = '../../assets/icons/cilios-mobile.png';
+                  break;
+              case 'Sobrancelha':
+                  imgIconSrc = '../../assets/icons/sobrancelha-mobile.png';
+                  break;
+              default:
+                  imgIconSrc = '../../assets/icons/profile.png'; // Ícone padrão
+                  break;
+          }
+
+          const formattedDateTime = formatDateTime(data_horario);
+
+          // Criar o HTML com o ícone e as informações do agendamento
+          const agendamentoHTML = `
+              <div class="box-agendamento">
+                  <div class="icon-agendamento">
+                      <div class="icon-procedimento" style="background-color: #ffffff; border: 2px solid #AD9393; width: 80px; height: 80px; margin-top: 10px; border-radius: 50%;">
+                          <img src="${imgIconSrc}" alt="${tipo_procedimento}" >
+                      </div>
+                  </div>
+                  <div class="procedimento-agendamento">
+                      <span id="agendamento"><strong style= "font-size: 18px;">${tipo_procedimento}</strong><br></span>
+                      <span id="agendamento"><strong>${descricao_procedimento}</strong><br></span>
+                      <span id="agendamento">Último agendamento: ${formattedDateTime}</span>
+                  </div>
+              </div>
+          `;
+          container.insertAdjacentHTML("beforeend", agendamentoHTML);
+      });
   } catch (error) {
-    console.error("Erro ao buscar procedimentos:", error);
+      console.error("Erro ao buscar procedimentos:", error);
   }
 }
+
+// Chamar a função ao carregar a página
+document.addEventListener('DOMContentLoaded', fetchProcedimentos);
+
+// Função para formatar data e horário
+function formatDateTime(data_horario) {
+  const data = new Date(data_horario);
+  return data.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' }) + 
+         ' às ' + data.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+}
+
+
+
+
 
 fetchProcedimentos();
 

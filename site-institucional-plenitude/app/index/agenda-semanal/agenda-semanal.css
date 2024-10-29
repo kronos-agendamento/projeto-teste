@@ -128,9 +128,9 @@ navbar  lateral
 .navigation {
   height: auto;
   background: #d2135d;
-  width: 19vw;
-  top: 2vh;
-  margin-left: 3vw;
+  width: 263px;
+  margin-top: 20px;
+  margin-left: 2.5vw;
   border-radius: 3vh;
   margin-bottom: 2vh;
   box-shadow: 10px 0 0 #ffffff;
@@ -140,6 +140,7 @@ navbar  lateral
   flex-direction: column;
   align-items: center;
   position: relative;
+  height: 1020px;
 }
 
 .perfil {
@@ -282,29 +283,39 @@ navbar  lateral
 
 main {
   background-color: #ffffff;
-  width: 75vw;
+  width: 70vw;
 }
 
 header {
-  display: flex;
   justify-content: space-between;
   background-color: #d2135d;
   color: white;
-  padding: 2vh;
+  padding: 3vh;
   border-radius: 3vh;
-  margin-bottom: 2vh;
-  margin-top: 2vh;
+  margin-bottom: 0rem;
+  margin-top: 22px;
   margin-left: 2%;
-  height: 14vh;
+  margin-right: 0.8rem;
 }
 
 header h1 {
-  margin: 1vh 0vh 0vh 2vh;
+  margin: 1vh;
   font-size: 3vh;
 }
 
 header p {
-  margin: 0vh 0vh 0vh 2vh;
+  margin: 1vh;
+  font-size: 2vh;
+}
+
+#greeting1 {
+  font-size: 3vh;
+  font-weight: bold;
+  margin: 0vh 0vh 0vh 1.3vh;
+}
+
+#greeting2 {
+  margin: 0vh 0vh 0vh 1.3vh;
   font-size: 2vh;
 }
 
@@ -427,35 +438,41 @@ header p {
   border-radius: 1vw;
 }
 
+/* Força as colunas da tabela a terem larguras iguais */
 .agenda {
-  width: 90%;
+  width: 70%;
+  table-layout: fixed; /* Garante que todas as colunas terão o mesmo tamanho */
   border-collapse: collapse;
-
-  margin: 40px 0 0 5vw;
+  margin-left: 45px;
+  margin-top: 20px;
 }
 
+.agenda th, .agenda td {
+  padding: 15px;
+  text-align: center;
+  border: 1px solid #f1f1f1;
+  width: 176px; /* Adiciona uma largura fixa */
+  vertical-align: top;
+}
+
+/* Ajusta o texto dos dias da semana para maiúsculas */
 .agenda th {
   background-color: #d90461;
   color: white;
   padding: 15px;
   text-align: center;
   font-weight: normal;
+  text-transform: capitalize; /* Para a primeira letra maiúscula */
+  /* Use text-transform: uppercase; se quiser todas as letras em maiúsculas */
 }
 
-.agenda td {
-  padding: 20px;
-  text-align: center;
-  border: 1px solid #f1f1f1;
-  position: relative;
-  width: 180px;
-  vertical-align: top;
-}
-
+/* Ajuste do layout dos compromissos para manter a consistência visual */
 .appointment {
   background-color: #fcdfe7;
   padding: 10px;
   border-radius: 10px;
   margin-bottom: 10px;
+  box-sizing: border-box;
 }
 
 .appointment p {
@@ -463,10 +480,12 @@ header p {
   font-size: 14px;
   line-height: 1.5;
 }
+
 .back-link {
-  margin-left: 30px;
+  margin-left: 47px;
   color: #000000;
   text-decoration: none;
+  margin-bottom: 1vh;
 }
 
 #btn-voltar-home {
@@ -509,7 +528,7 @@ header p {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 170px; /* Ajuste conforme necessário */
+  top: 150px; /* Ajuste conforme necessário */
   left: 72%;
   transform: translateX(-50%);
 }
@@ -524,8 +543,8 @@ header p {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 170px; /* Ajuste conforme necessário */
-  left: 47%;
+  top: 150px; /* Ajuste conforme necessário */
+  left: 40%;
   transform: translateX(-50%);
 }
 

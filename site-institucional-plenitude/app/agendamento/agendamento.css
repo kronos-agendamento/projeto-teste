@@ -17,6 +17,7 @@ body {
   background-color: #ffffff;
   height: 135vh;
   width: 97vw;
+  margin-bottom: 30%;
 }
 
 .container {
@@ -100,9 +101,9 @@ navbar  lateral
 .navigation {
   height: auto;
   background: #d2135d;
-  width: 19vw;
-  top: 2vh;
-  margin-left: 3vw;
+  width: 266px;
+  margin-top: 20px;
+  margin-left: 32px;
   border-radius: 3vh;
   margin-bottom: 2vh;
   box-shadow: 10px 0 0 #ffffff;
@@ -380,24 +381,27 @@ Inicio Filtros
 }
 
 .actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  margin-top: 10px;
+  gap: 2px;
+  margin-left: -1%;
+  display: flex;
+  justify-content:flex-start;
 }
 
 .actions button {
-  background-color: #ffffff;
-  display: flex;
-  font-family: Poppins, sans-serif;
-  height: 5vh;
-  width: 7vw;
-  justify-content: center;
-  margin: 2vh;
-  padding: 2vh;
-  align-items: center;
-  font-size: 16px;
-  border-radius: 1vh;
-  border: 1px solid black;
+  background-color: #ffffff00;
+  color: #000000;
+  border: 1px solid #000000;
+  padding: 2px 10px;
+  border-radius: 10px;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2px;
+  font-weight: bold;
+  font-family: "Poppins", Arial, sans-serif;
 }
 
 .right-actions {
@@ -448,14 +452,14 @@ Inicio Tabela de procedimentos
 ---------------------------------------------------------------*/
 
 .procedures-table {
-  width: 160vh;
+  width: 152vh;
   border-collapse: collapse;
   margin-top: 30px;
   background-color: #fff;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin-left: 2.3%;
+  margin-left: 4.3%;
   margin-right: auto;
 }
 
@@ -803,6 +807,8 @@ Inicio Tabela de procedimentos
   width: 146vh;
   justify-content: flex-end;
   margin-bottom: -30px;
+  font-family: "Poppins", Arial, sans-serif;
+  margin-left: 65px;
 }
 
 .tab-button {
@@ -814,6 +820,7 @@ Inicio Tabela de procedimentos
   padding: 10px 20px;
   cursor: pointer;
   width: 130px;
+  font-family: "Poppins", Arial, sans-serif;
 }
 
 .tab-button.active {
@@ -949,7 +956,7 @@ table tr.clickable-row:hover {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 120px; /* Ajuste conforme necessário */
+  top: 105px; /* Ajuste conforme necessário */
   left: 35%;
   transform: translateX(-50%);
 }
@@ -966,8 +973,8 @@ table tr.clickable-row:hover {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 120px; /* Ajuste conforme necessário */
-  left: 50%;
+  top: 105px; /* Ajuste conforme necessário */
+  left: 47%;
   transform: translateX(-50%);
 }
 
@@ -981,7 +988,7 @@ table tr.clickable-row:hover {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 120px; /* Ajuste conforme necessário */
+  top: 105px; /* Ajuste conforme necessário */
   left: 65%;
   transform: translateX(-50%);
 }
@@ -996,8 +1003,8 @@ table tr.clickable-row:hover {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 120px; /* Ajuste conforme necessário */
-  left: 75%;
+  top: 105px; /* Ajuste conforme necessário */
+  left: 79%;
   transform: translateX(-50%);
 }
 
@@ -1065,6 +1072,20 @@ table tr.clickable-row:hover {
   transform: translateX(-50%);
 }
 
+.tooltip9{
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 105px; /* Ajuste conforme necessário */
+  left: 79%;
+  transform: translateX(-50%);
+}
 
 
 
@@ -1091,6 +1112,11 @@ table tr.clickable-row:hover {
 }
 
 .filter-btn:hover + .tooltip5 {
+  display: block;
+  
+}
+
+.filter-btn:hover + .tooltip9 {
   display: block;
   
 }

@@ -8,7 +8,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const opcaoEspecificacaoDiv = document.getElementById("opcao-especificacao");
   const especificacaoSelect = document.getElementById("especificacao");
   const tipoAtendimentoDiv = document.getElementById("tipo-atendimento");
-  const tipoAtendimentoSelect = document.getElementById("tipo-atendimento-select");
+  const tipoAtendimentoSelect = document.getElementById(
+    "tipo-atendimento-select"
+  );
   const dataInputDiv = document.getElementById("data-div");
   const procedimentoId = procedimentoSelect.value;
   const dataInput = document.getElementById("data");
@@ -33,12 +35,21 @@ document.addEventListener("DOMContentLoaded", function () {
     // Habilitar ou desabilitar opções com base no procedimento
     for (let i = 0; i < options.length; i++) {
       console.log(`Verificando opção: ${options[i].value}`); // Log para verificação
-      if (procedimentoId == 1) { // Supondo que "1" seja o ID de Maquiagem
-        options[i].disabled = !["Homecare", "Estudio", "Evento"].includes(options[i].value);
+      if (procedimentoId == 1) {
+        // Supondo que "1" seja o ID de Maquiagem
+        options[i].disabled = !["Homecare", "Estudio", "Evento"].includes(
+          options[i].value
+        );
       } else {
-        options[i].disabled = !["Colocação", "Manutenção", "Retirada"].includes(options[i].value);
+        options[i].disabled = !["Colocação", "Manutenção", "Retirada"].includes(
+          options[i].value
+        );
       }
-      console.log(`Opção ${options[i].value} está ${options[i].disabled ? 'desabilitada' : 'habilitada'}`); // Log do estado da opção
+      console.log(
+        `Opção ${options[i].value} está ${
+          options[i].disabled ? "desabilitada" : "habilitada"
+        }`
+      ); // Log do estado da opção
     }
 
     tipoAtendimentoDiv.classList.remove("hidden"); // Mostrar a div do tipo de atendimento
@@ -68,9 +79,9 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         console.error(
           "Erro ao buscar procedimentos: " +
-          response.status +
-          " " +
-          response.statusText
+            response.status +
+            " " +
+            response.statusText
         );
       }
     } catch (error) {
@@ -87,9 +98,9 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         console.error(
           "Erro ao buscar especificações: " +
-          response.status +
-          " " +
-          response.statusText
+            response.status +
+            " " +
+            response.statusText
         );
       }
     } catch (error) {
@@ -186,7 +197,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const mediaValor = 50; // Valor por hora
   const hora = 0.5; // Horas
   const maoObra = mediaValor * hora; // Cálculo da mão de obra
-  const origem = "Rua das Gilias, 361 - Vila Bela, São Paulo - State of São Paulo, Brazil";
+  const origem =
+    "Rua das Gilias, 361 - Vila Bela, São Paulo - State of São Paulo, Brazil";
   const gasolina = 4; // Valor fixo médio da gasolina (exemplo)
   const enderecoInput = document.getElementById("endereco");
   const taxaTotalDiv = document.getElementById("taxa-total");
@@ -203,16 +215,16 @@ document.addEventListener("DOMContentLoaded", function () {
         {
           origins: [origem],
           destinations: [endereco],
-          travelMode: 'DRIVING', // Aqui define o modo de transporte
+          travelMode: "DRIVING", // Aqui define o modo de transporte
           unitSystem: google.maps.UnitSystem.METRIC,
         },
         (response, status) => {
-          if (status === 'OK') {
+          if (status === "OK") {
             const resultado = response.rows[0].elements[0];
             const distanciaKm = resultado.distance.value / 1000; // Distância em quilômetros
             resolve(distanciaKm);
           } else {
-            reject('Erro ao calcular a distância: ' + status);
+            reject("Erro ao calcular a distância: " + status);
           }
         }
       );
@@ -232,19 +244,20 @@ document.addEventListener("DOMContentLoaded", function () {
           const taxaLoc = gasolina * kmLoc; // Cálculo da taxa de locomoção
           const taxaTotal = taxaLoc + maoObra; // Cálculo da taxa total
           valorTaxaSpan.textContent = `R$ ${taxaTotal.toFixed(2)}, `; // Exibir a taxa total
-          totalKmSpan.textContent = `${kmLoc} de distância`
+          totalKmSpan.textContent = `${kmLoc} de distância`;
           taxaTotalDiv.classList.remove("hidden"); // Mostrar a taxa total
         } else {
-          valorTaxaSpan.textContent = "Distância não encontrada para o endereço."; // Mensagem se a distância não for encontrada
+          valorTaxaSpan.textContent =
+            "Distância não encontrada para o endereço."; // Mensagem se a distância não for encontrada
           taxaTotalDiv.classList.remove("hidden");
         }
       } catch (error) {
         console.error("Erro ao calcular a distância:", error);
-        valorTaxaSpan.textContent = "Erro ao calcular a distância. Tente novamente."; // Mensagem de erro
+        valorTaxaSpan.textContent =
+          "Erro ao calcular a distância. Tente novamente."; // Mensagem de erro
         taxaTotalDiv.classList.remove("hidden"); // Mostrar a mensagem de erro
       }
     } else {
-
       taxaTotalDiv.classList.add("hidden"); // Ocultar a taxa total se o endereço estiver vazio
     }
   }
@@ -283,9 +296,9 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         console.error(
           "Erro ao buscar procedimentos: " +
-          response.status +
-          " " +
-          response.statusText
+            response.status +
+            " " +
+            response.statusText
         );
       }
     } catch (error) {
@@ -302,9 +315,9 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         console.error(
           "Erro ao buscar especificações: " +
-          response.status +
-          " " +
-          response.statusText
+            response.status +
+            " " +
+            response.statusText
         );
       }
     } catch (error) {
@@ -406,7 +419,7 @@ document.addEventListener("DOMContentLoaded", function () {
   tipoAtendimentoSelect.addEventListener("change", function () {
     const tipoAtendimento = tipoAtendimentoSelect.value;
 
-    console.log(tipoAtendimento)
+    console.log(tipoAtendimento);
 
     if (tipoAtendimento) {
       dataInputDiv.classList.remove("hidden"); // Mostrar dataInputDiv
@@ -425,7 +438,6 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("endereco-group").classList.add("hidden");
     }
   });
-
 
   // Evento ao selecionar Data
   dataInput.addEventListener("change", function () {
@@ -567,4 +579,45 @@ document.addEventListener("DOMContentLoaded", function () {
       showNotification("Erro ao criar agendamento", true);
     }
   });
+
+  const increaseFontBtn = document.getElementById("increase-font");
+  const decreaseFontBtn = document.getElementById("decrease-font");
+  const rootElement = document.documentElement;
+
+  let currentFontSize = localStorage.getItem("fontSize") || "16px";
+  rootElement.style.setProperty("--font-size-default", currentFontSize);
+  document.body.style.fontSize = currentFontSize;
+
+  let increaseClicks = 0;
+  let decreaseClicks = 0;
+  const maxClicks = 2;
+
+  increaseFontBtn.addEventListener("click", function () {
+    if (increaseClicks < maxClicks) {
+      let newSize = parseFloat(currentFontSize) + 1;
+      currentFontSize = `${newSize}px`;
+      rootElement.style.setProperty("--font-size-default", currentFontSize);
+      document.body.style.fontSize = currentFontSize;
+      localStorage.setItem("fontSize", currentFontSize);
+
+      increaseClicks++;
+      decreaseClicks = 0;
+    }
+  });
+
+  decreaseFontBtn.addEventListener("click", function () {
+    if (decreaseClicks < maxClicks) {
+      let newSize = parseFloat(currentFontSize) - 1;
+      if (newSize >= 12) {
+        currentFontSize = `${newSize}px`;
+        rootElement.style.setProperty("--font-size-default", currentFontSize);
+        document.body.style.fontSize = currentFontSize;
+        localStorage.setItem("fontSize", currentFontSize);
+
+        decreaseClicks++;
+        increaseClicks = 0;
+      }
+    }
+  });
+new window.VLibras.Widget('https://vlibras.gov.br/app');
 });

@@ -26,7 +26,7 @@
         body {
             font-size: 14px;
         }
-    }    
+    }
 
     .nav-bar {
         position: fixed;
@@ -87,9 +87,11 @@
 
     /* Estilo dos ícones */
     .nav-bar .icon {
-        font-size: 24px;
-        color: #000;
+        font-size: 30px;
+        color: #ffffff;
     }
+
+    
 
     .saudacao {
         background-color: #d9006c;
@@ -147,10 +149,12 @@
         width: 25%;
         text-align: center;
     }
-    
+
     .icon-procedimento {
-        width: 90px; /* Defina o tamanho do círculo */
-        height: 90px; /* Defina o tamanho do círculo */
+        width: 90px;
+        /* Defina o tamanho do círculo */
+        height: 90px;
+        /* Defina o tamanho do círculo */
         background-color: #ffe3ed;
         border-radius: 50%;
         display: flex;
@@ -158,10 +162,12 @@
         align-items: center;
         border: 1px solid #ffbfd6;
     }
-    
-    .icon-procedimento img { 
-        width: 70%; /* Ajuste o tamanho da imagem para ser menor que o círculo */
-        height: auto; /* Mantém a proporção da imagem */
+
+    .icon-procedimento img {
+        width: 70%;
+        /* Ajuste o tamanho da imagem para ser menor que o círculo */
+        height: auto;
+        /* Mantém a proporção da imagem */
     }
 
     .icon-agendamento img {
@@ -180,7 +186,7 @@
     .button-flex {
         display: flex;
         flex-direction: column;
-        justify-content:space-around;
+        justify-content: space-around;
         margin-left: 0.1rem;
     }
 
@@ -200,34 +206,39 @@
         border-radius: 8px;
         height: min-content;
     }
-    
+
     .icon-agendamento img {
         width: 100px;
         height: 100px;
     }
-    
+
     .procedimento-agendamento {
         display: flex;
         flex-direction: column;
         justify-content: center;
         width: 150px;
     }
-    
+
     .button-flex {
         display: flex;
         gap: 10px;
     }
 
     button.edit {
-        border: none; /* Remove a borda */
-        outline: none; /* Remove o contorno ao clicar */
-        background-color: transparent; /* Remove a cor de fundo */
-        cursor: pointer; /* Muda o cursor para pointer ao passar o mouse */
-        padding: 0; /* Remove o padding extra, se necessário */
+        border: none;
+        /* Remove a borda */
+        outline: none;
+        /* Remove o contorno ao clicar */
+        background-color: transparent;
+        /* Remove a cor de fundo */
+        cursor: pointer;
+        /* Muda o cursor para pointer ao passar o mouse */
+        padding: 0;
+        /* Remove o padding extra, se necessário */
         justify-content: space-around;
         margin: -2px;
     }
-    
+
     .edit img {
         width: 20px;
         height: 20px;
@@ -252,7 +263,7 @@
         flex-grow: 1;
     } */
 
-    .procedimento-agendamento span{
+    .procedimento-agendamento span {
         font-size: smaller;
     }
 
@@ -276,6 +287,7 @@
         overflow: auto;
         background-color: rgba(0, 0, 0, 0.4);
     }
+
 
     .modal-content {
         background-color: #fefefe;
@@ -339,158 +351,250 @@
     }
 
     /* O modal (escondido por padrão) */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4); /* Fundo escurecido */
-}
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+        /* Fundo escurecido */
+    }
 
-/* Conteúdo do modal */
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 400px;
-    text-align: left;
-    border-radius: 10px;
-}
+    /* Conteúdo do modal */
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 30px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 400px;
+        text-align: left;
+        border-radius: 10px;
+    }
 
-/* Botão de fechar */
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
+    /* Botão de fechar */
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
 
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
 
-.modal-decisao {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .modal-decisao .modal-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-  }
-  
-  button {
-    margin: 10px;
-  }
+    .modal-decisao {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+    }
 
-  #confirmDeleteButton{
-    font-family: Poppins, sans-serif;
-    background-color: #28a745;
-    width: 60px;
-    height: 40px;
-    font-size: 16px;
-    border: 1px solid #ad939300;
-    border-radius: 2px;
-    font-weight: bold;
-    color: #fefefe;
-  }
+    .modal-decisao .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+    }
 
-  #cancelDeleteButton{
-    font-family: Poppins, sans-serif;
-    background-color: #c82333;
-    width: 90px;
-    height: 40px;
-    font-size: 16px;
-    border: 1px solid #ad939300;
-    border-radius: 2px;
-    font-weight: bold;
-    color: #fefefe;
-  }
-  .notification {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: #28a745; /* Cor de sucesso - verde */
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
+    button {
+        margin: 10px;
+    }
+
+    #confirmDeleteButton {
+        font-family: Poppins, sans-serif;
+        background-color: #28a745;
+        width: 60px;
+        height: 40px;
+        font-size: 16px;
+        border: 1px solid #ad939300;
+        border-radius: 2px;
+        font-weight: bold;
+        color: #fefefe;
+    }
+
+    #cancelDeleteButton {
+        font-family: Poppins, sans-serif;
+        background-color: #c82333;
+        width: 90px;
+        height: 40px;
+        font-size: 16px;
+        border: 1px solid #ad939300;
+        border-radius: 2px;
+        font-weight: bold;
+        color: #fefefe;
+    }
+
+    .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #28a745;
+        /* Cor de sucesso - verde */
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        font-size: 14px;
+        z-index: 1000;
+        /* Garante que a notificação fique acima de outros elementos */
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.5s ease-in-out, visibility 0s ease-in-out 1.5s;
+    }
+
+    .notification.show {
+        opacity: 1;
+        visibility: visible;
+        transition-delay: 0s;
+        /* Sem atraso ao exibir */
+    }
+
+    .notification.hide {
+        opacity: 0;
+        visibility: hidden;
+        transition-delay: 10s;
+        /* Atraso de 10 segundos para começar a desaparecer */
+    }
+
+    .notification.error {
+        background-color: #dc3545;
+        /* Cor de erro - vermelho */
+    }
+
+    .modal-content input {
+        width: 94%;
+        padding: 7px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        height: 7px;
+    }
+
+    .modal-content select {
+        width: 99.5%;
+        padding: 11px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        height: 10px;
+    }
+
+
+    .save-button {
+        display: block;
+        /* Botão visível */
+        align-items: center;
+        background-color: #e70069;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 8px 8px;
+        font-size: 12px;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s;
+        font-family: Poppins, sans-serif;
+    }
+
+.save-button {
     display: flex;
-    align-items: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    font-size: 14px;
-    z-index: 1000; /* Garante que a notificação fique acima de outros elementos */
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.5s ease-in-out, visibility 0s ease-in-out 1.5s;
-}
-
-.notification.show {
-    opacity: 1;
-    visibility: visible;
-    transition-delay: 0s; /* Sem atraso ao exibir */
-}
-
-.notification.hide {
-    opacity: 0;
-    visibility: hidden;
-    transition-delay: 10s; /* Atraso de 10 segundos para começar a desaparecer */
-}
-
-.notification.error {
-    background-color: #dc3545; /* Cor de erro - vermelho */
-}
-
-.modal-content input {
-  width: 94%;
-  padding: 7px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  height: 7px;
-}
-
-.modal-content select {
-    width: 99.5%;
-    padding: 11px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    height: 10px;
-  }
-  
-
-  .save-button {
-    display: block; /* Botão visível */
-    align-items: center;
+    /* Botão visível */
+    align-items: start;
     background-color: #e70069;
     color: white;
     border: none;
     border-radius: 10px;
-    padding: 8px 8px;
-    font-size: 12px;
+    padding: 10px 20px;
+    font-size: 16px;
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s;
-    font-family: Poppins, sans-serif;
-  }
+    margin-left: 0%;
 }
 
+/* Estilização do modal de ajuda */
+.modal-ajuda {
+    display: none;
+    /* Escondido por padrão */
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    /* Cobrir toda a tela */
+    top: 0;
+    /* Cobrir toda a tela */
+    width: 101%;
+    /* Cobrir toda a largura da tela */
+    height: 100%;
+    /* Cobrir toda a altura da tela */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Fundo escurecido */
+}
+
+/* Estilização do conteúdo do modal de ajuda */
+.modal-ajuda-content {
+    position: absolute;
+    left: 50%;
+    top: 35%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    width: 330px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    z-index: 101;
+    /* Certifica-se que o conteúdo fique acima do fundo */
+}
+
+.modal-ajuda-close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+
+.modal-ajuda-content h2 {
+    margin-top: 0;
+}
+
+.modal-ajuda-content p {
+    margin-bottom: 15px;
+}
+
+
+/* Efeito de hover no ícone de ajuda */
+#icon-ajuda:hover {
+    color: #d9006c;
+    /* Alterar cor ao passar o mouse */
+    cursor: pointer;
+}
+
+input {
+    width: 90%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 14px;
+    font-family: Poppins, Arial, sans-serif;
+
+}
+
+}
 

@@ -3,47 +3,149 @@ const usuarioId = localStorage.getItem('idUsuario');
 const agendamentoId = localStorage.getItem('idAgendamento')
 const apiUrl = `http://localhost:8080/api/agendamentos/agendamentos/usuario/${usuarioId}`;
 
+
+
 // Função para formatar a data
 function formatarData(dataHora) {
     const data = new Date(dataHora);
     return data.toLocaleDateString() + ' às ' + data.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
+// Função para buscar os dados do usuário
 async function buscarDadosUsuario() {
-    const usuarioId = localStorage.getItem("idUsuario");
-    if (!usuarioId) {
+  const usuarioId = localStorage.getItem("idUsuario");
+  if (!usuarioId) {
+      console.log("Nenhum ID de usuário encontrado no localStorage.");
       return null;
-    }
-
-    try {
-      const response = await fetch(`http://localhost:8080/usuarios/${usuarioId}`);
-      if (!response.ok) {
-        throw new Error("Erro ao buscar dados do usuário.");
-      }
-      return await response.json();
-    } catch (error) {
-      console.error("Erro ao buscar dados do usuário:", error);
-      return null;
-    }
   }
 
-      // Função para verificar se os campos obrigatórios do usuário estão preenchidos
-      function verificarDadosIncompletos(usuario) {
-        const camposObrigatorios = [
-          usuario.dataNasc,
-          usuario.genero,
-          usuario.indicacao,
-          usuario.endereco?.logradouro,
-          usuario.endereco?.cep,
-          usuario.endereco?.bairro,
-          usuario.endereco?.cidade,
-          usuario.endereco?.estado,
-          usuario.endereco?.numero,
-        ];
-    
-        // Verifica se algum campo obrigatório está vazio ou nulo
-        return camposObrigatorios.some((campo) => campo === null || campo === "");
+  try {
+      const response = await fetch(`http://localhost:8080/usuarios/${usuarioId}`);
+      if (!response.ok) {
+          throw new Error("Erro ao buscar dados do usuário.");
       }
+      const usuario = await response.json();
+
+      // Armazena os dados no localStorage para garantir consistência
+      localStorage.setItem('dataNasc', usuario.dataNasc || "");
+      localStorage.setItem('genero', usuario.genero || "");
+      localStorage.setItem('indicacao', usuario.indicacao || "");
+      localStorage.setItem('logradouro', usuario.endereco?.logradouro || "");
+      localStorage.setItem('cep', usuario.endereco?.cep || "");
+      localStorage.setItem('bairro', usuario.endereco?.bairro || "");
+      localStorage.setItem('cidade', usuario.endereco?.cidade || "");
+      localStorage.setItem('estado', usuario.endereco?.estado || "");
+      localStorage.setItem('numero', usuario.endereco?.numero || "");
+      localStorage.setItem('numero', usuario.endereco?.complemento || "");
+
+
+
+
+     console.log("Dados do usuário obtidos e armazenados no localStorage:", usuario);
+
+      // Preenche os campos do formulário com os dados do localStorage
+      document.getElementById('nascimento').value = localStorage.getItem('dataNasc');
+      document.getElementById('genero').value = localStorage.getItem('genero'); // Preenche o campo de gênero
+      document.getElementById('indicacao').value = localStorage.getItem('indicacao');
+      document.getElementById('logradouro').value = localStorage.getItem('logradouro');
+      document.getElementById('cep').value = localStorage.getItem('cep');
+      document.getElementById('bairro').value = localStorage.getItem('bairro');
+      document.getElementById('cidade').value = localStorage.getItem('cidade');
+      document.getElementById('estado').value = localStorage.getItem('estado');
+      document.getElementById('numero').value = localStorage.getItem('numero');
+      document.getElementById('complemento').value = localStorage.getItem('complemento');
+
+      return usuario;
+  } catch (error) {
+      console.error("Erro ao buscar dados do usuário:", error);
+      return null;
+  }
+}
+
+
+// Função para verificar se os campos obrigatórios do usuário estão preenchidos
+function verificarDadosIncompletos(usuario) {
+  const camposObrigatorios = [
+      usuario.dataNasc,
+      usuario.genero,
+      usuario.indicacao,
+      usuario.endereco?.logradouro,
+      usuario.endereco?.cep,
+      usuario.endereco?.bairro,
+      usuario.endereco?.cidade,
+      usuario.endereco?.estado,
+      usuario.endereco?.numero,
+  ];
+
+  // Verifica se algum campo obrigatório está vazio ou nulo
+  const incompletos = camposObrigatorios.some(campo => !campo || campo === "");
+  console.log("Verificando se há dados incompletos:", incompletos);
+  return incompletos;
+}
+
+// Verifica se os dados do usuário no localStorage estão completos
+function verificarDadosLocalStorage() {
+  const camposObrigatoriosLocalStorage = [
+      localStorage.getItem('dataNasc'),
+      localStorage.getItem('genero'),
+      localStorage.getItem('indicacao'),
+      localStorage.getItem('logradouro'),
+      localStorage.getItem('cep'),
+      localStorage.getItem('bairro'),
+      localStorage.getItem('cidade'),
+      localStorage.getItem('estado'),
+      localStorage.getItem('numero'),
+  ];
+
+  const completos = camposObrigatoriosLocalStorage.every(campo => campo && campo !== "");
+  console.log("Verificando dados do localStorage. Estão completos?", completos);
+  console.log("Dados no localStorage:", camposObrigatoriosLocalStorage);
+  return completos;
+}
+
+// Função para exibir o modal de cadastro se os dados estiverem incompletos
+function iniciarExibicaoModal() {
+  const dadosIncompletos = !verificarDadosLocalStorage();  // Verificar localStorage
+  
+  if (dadosIncompletos) {
+      console.log("Dados incompletos detectados. Exibindo modal.");
+      exibirModal();  // Exibe o modal se os dados estiverem incompletos
+  } else {
+      console.log("Todos os dados estão completos. Fechando modal.");
+      fecharModal();  // Caso os dados estejam completos, fecha o modal
+  }
+}
+
+// Função para exibir o modal
+function exibirModal() {
+  const modalCadastro = document.getElementById("modal-cadastro");
+  modalCadastro.style.display = "block";
+  console.log("Modal exibido.");
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const modalCloseButton = document.getElementById('modal-close');
+  
+  // Verifica se o elemento com ID 'modal-close' existe
+  if (modalCloseButton) {
+      modalCloseButton.addEventListener('click', fecharModal);
+      console.log("Evento de fechamento do modal adicionado.");
+  } else {
+      console.error("Elemento com ID 'modal-close' não encontrado.");
+  }
+});
+
+// Função para fechar o modal
+function fecharModal() {
+  const modal = document.getElementById('modal-cadastro');
+  if (modal) {
+      modal.style.display = 'none';
+      console.log("Modal fechado.");
+  } else {
+      console.error("Modal não encontrado.");
+  }
+}
+
 
 // Função para criar os elementos de agendamento no DOM
 function criarAgendamento(agendamento, isAnterior = false) {
@@ -178,6 +280,18 @@ function criarAgendamento(agendamento, isAnterior = false) {
     return boxAgendamento;
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+  const modalCloseButton = document.getElementById('modal-close');
+  
+  if (modalCloseButton) {
+      modalCloseButton.addEventListener('click', fecharModal);
+      console.log("Evento de fechamento do modal adicionado.");
+  } else {
+      console.error("Elemento com ID 'modal-close' não encontrado.");
+  }
+});
+
+
 function showNotification(message, isError = false) {
     const notification = document.getElementById("notification");
     const notificationMessage = document.getElementById("notification-message");
@@ -301,13 +415,13 @@ function abrirModalAgendamento(agendamento) {
 
     // Atualiza os elementos com os dados do agendamento clicado
     // modalDiaSemana.textContent = dataFormatada.diaSemana;
-    modalData.innerHTML = `<strong>Data:</strong> ${dataFormatada.diaMesAno}`;
-    modalHorario.innerHTML = `<strong>Horário:</strong> ${dataFormatada.horario}`;
-    modalProcedimento.innerHTML = `<strong>Procedimento:</strong> ${agendamento.tipoProcedimento}`;
-    modalEspecificacao.innerHTML = `<strong>Especificação:</strong> ${agendamento.especificacaoProcedimento}`;
-    modalProfissional.innerHTML = `<strong>Profissional:</strong> Priscila Rossato`;
-    modalLocal.innerHTML = `<strong>Local:</strong> Vila Prudente`;
-    modalStatus.innerHTML = `<strong>Status:</strong> ${agendamento.statusAgendamento} `;
+    modalData.innerHTML = `<i class="fas fa-calendar-alt"></i> <strong>Data:</strong> ${dataFormatada.diaMesAno}`;
+    modalHorario.innerHTML = `<i class="fas fa-clock"></i> <strong>Horário:</strong> ${dataFormatada.horario}`;
+    modalProcedimento.innerHTML = `<i class="fas fa-star"></i> <strong>Procedimento:</strong> ${agendamento.tipoProcedimento}`;
+    modalEspecificacao.innerHTML = `<i class="fas fa-list"></i> <strong>Especificação:</strong> ${agendamento.especificacaoProcedimento}`;
+    modalProfissional.innerHTML = `<i class="fas fa-user-md"></i> <strong>Profissional:</strong> Priscila Rossato`;
+    modalLocal.innerHTML = `<i class="fas fa-map-marker-alt"></i> <strong>Local:</strong> R. das Gilias, 361 - Vila Bela, São Paulo - SP, 03201-070`;
+    modalStatus.innerHTML = `<i class="fas fa-tasks"></i> <strong>Status:</strong> ${agendamento.statusAgendamento} `;
     
     // Exibe o modal
     modal.style.display = 'block';
@@ -377,45 +491,64 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+function saudacao() {
+  const saudacaoElement1 = document.getElementById('saudacao-texto');  // Para o texto de saudação
+  const saudacaoElement2 = document.getElementById('greeting2');  // Para o segundo texto
+  const userNameSpan = document.getElementById('userNameSpan');  // Para o nome do usuário
 
+  // Obter o nome do usuário do localStorage
+  let nomeUsuario = localStorage.getItem('nome') || 'Usuário';  // Caso não exista, exibe "Usuário" como padrão
 
-  function saudacao() {
-    const saudacaoElement1 = document.getElementById("greeting1");
-    const saudacaoElement2 = document.getElementById("greeting2");
+  // Pegar apenas o primeiro nome
+  nomeUsuario = nomeUsuario.split(' ')[0];  // Divide o nome completo em partes e pega a primeira
 
-    const dataAtual = new Date();
-    const horaAtual = dataAtual.getHours();
-    const diaSemana = dataAtual.getDay();
+  // Exibe o primeiro nome do usuário
+  userNameSpan.textContent = nomeUsuario;
 
-    let saudacaoTexto;
-    let diasDaSemana = [
-        { nome: "domingo", genero: "um", otimo: "ótimo" },
-        { nome: "segunda-feira", genero: "uma", otimo: "ótima" },
-        { nome: "terça-feira", genero: "uma", otimo: "ótima" },
-        { nome: "quarta-feira", genero: "uma", otimo: "ótima" },
-        { nome: "quinta-feira", genero: "uma", otimo: "ótima" },
-        { nome: "sexta-feira", genero: "uma", otimo: "ótima" },
-        { nome: "sábado", genero: "um", otimo: "ótimo"  }
-    ];
+  const dataAtual = new Date();
+  const horaAtual = dataAtual.getHours();
+  const diaSemana = dataAtual.getDay();
 
-    // Verifica a hora do dia para a saudação
-    if (horaAtual >= 0 && horaAtual < 12) {
-      saudacaoTexto = "Bom dia";
-    } else if (horaAtual >= 12 && horaAtual < 18) {
-      saudacaoTexto = "Boa tarde";
-    } else {
-      saudacaoTexto = "Boa noite";
-    }
+  let saudacaoTexto;
+  let diasDaSemana = [
+    { nome: "Domingo", genero: "um", otimo: "ótimo" },
+    { nome: "Segunda-feira", genero: "uma", otimo: "ótima" },
+    { nome: "Terça-feira", genero: "uma", otimo: "ótima" },
+    { nome: "Quarta-feira", genero: "uma", otimo: "ótima" },
+    { nome: "Quinta-feira", genero: "uma", otimo: "ótima" },
+    { nome: "Sexta-feira", genero: "uma", otimo: "ótima" },
+    { nome: "Sábado", genero: "um", otimo: "ótimo" }
+  ];
 
-    // Define o gênero correto para o "um/uma" de acordo com o dia da semana
-    const dia = diasDaSemana[diaSemana];
-    const genero = dia.genero;
-    const otimo = dia.otimo;
-
-    // Exibe a saudação com o dia da semana e o gênero correto
-    saudacaoElement1.textContent = `${saudacaoTexto}`;
-    saudacaoElement2.textContent = `Tenha ${genero} ${otimo} ${dia.nome}!`;
+  // Verifica a hora do dia para a saudação
+  if (horaAtual >= 0 && horaAtual < 12) {
+    saudacaoTexto = "Bom dia,";
+  } else if (horaAtual >= 12 && horaAtual < 18) {
+    saudacaoTexto = "Boa tarde,";
+  } else {
+    saudacaoTexto = "Boa noite,";
   }
+
+  // Define o gênero correto para o "um/uma" de acordo com o dia da semana
+  const dia = diasDaSemana[diaSemana];
+  const genero = dia.genero;
+  const otimo = dia.otimo;
+
+  // Exibe a saudação com o dia da semana e o gênero correto
+  saudacaoElement1.textContent = saudacaoTexto;
+  saudacaoElement2.textContent = `Tenha ${genero} ${otimo} ${dia.nome}!`;
+}
+
+// Certifique-se de chamar a função quando a página carregar
+document.addEventListener('DOMContentLoaded', saudacao);
+
+// Certifique-se de chamar a função quando a página carregar
+document.addEventListener('DOMContentLoaded', saudacao);
+
+
+// Certifique-se de chamar a função quando a página carregar
+document.addEventListener('DOMContentLoaded', saudacao);
+
 
   // Função para normalizar strings (remover acentos e converter para minúsculas)
   function normalizeString(str) {
@@ -492,11 +625,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // Adiciona evento de mudança para salvar os IDs no localStorage e redirecionar
-  document
-    .getElementById("searchInput")
-    .addEventListener("change", salvarIdsNoLocalStorage);
-
+  document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("searchInput");
+  
+    if (searchInput) {
+      searchInput.addEventListener("change", salvarIdsNoLocalStorage);
+    } else {
+      console.error("Elemento 'searchInput' não foi encontrado.");
+    }
+  });
+  
   // Função para busca binária
   function buscaBinaria(arr, x) {
     let start = 0;
@@ -658,10 +796,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   
     // Função para pegar o CPF da URL
-    function getCpfFromUrl() {
-      const params = new URLSearchParams(window.location.search);
-      return params.get("cpf"); // Pega o valor do parâmetro 'cpf' na URL
-    }
+    // function getCpfFromUrl() {
+    //   const params = new URLSearchParams(window.location.search) || localStorage.getItem('C');
+    //   return params.get("cpf"); // Pega o valor do parâmetro 'cpf' na URL
+    // }
   
     // Função de envio do formulário (alterado para PATCH)
     // Função de envio do formulário (alterado para PATCH)
@@ -669,7 +807,7 @@ document.getElementById("usuarioForm").addEventListener("submit", async (event) 
     event.preventDefault();
   
     // Obter o CPF da URL
-    const cpf = getCpfFromUrl();
+    const cpf = localStorage.getItem('cpf');;
     if (!cpf) {
       showNotification("CPF não encontrado. Verifique a URL.", true);
       return;
@@ -745,6 +883,142 @@ document.getElementById("usuarioForm").addEventListener("submit", async (event) 
       showNotification(error.message, true);
     }
   });
-  
 
   });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    // Obter referências aos elementos do modal de ajuda
+    const iconAjuda = document.getElementById('icon-ajuda');
+    const modalAjuda = document.getElementById('modal-ajuda');
+    const closeModalAjudaButton = document.querySelector('.modal-ajuda-close');
+
+    // Função para mostrar o modal de ajuda
+    function showModalAjuda() {
+        console.log('Abrindo modal de ajuda');
+        modalAjuda.style.display = 'block';
+    }
+
+    // Função para fechar o modal de ajuda
+    function closeModalAjuda() {
+        console.log('Fechando modal de ajuda');
+        modalAjuda.style.display = 'none';
+    }
+
+    // Verifique se o ícone de ajuda está presente no DOM
+    if (iconAjuda) {
+        // Mostrar o modal de ajuda ao clicar no ícone de ajuda
+        iconAjuda.addEventListener('click', showModalAjuda);
+
+        // Fechar o modal de ajuda ao clicar no "X"
+        closeModalAjudaButton.addEventListener('click', closeModalAjuda);
+
+        // Fechar o modal de ajuda se o usuário clicar fora dele
+        window.addEventListener('click', function (event) {
+            if (event.target === modalAjuda) {
+                closeModalAjuda();
+            }
+        });
+    } else {
+        console.error('Ícone de ajuda não encontrado no DOM.');
+    }
+
+    
+  // Configuração da busca com lupa
+  const lupaIcon = document.getElementById("lupa-icon");
+  const closeIcon = document.getElementById("close-icon");
+  const searchInput = document.getElementById("searchInput");
+
+  if (lupaIcon && closeIcon && searchInput) {
+    lupaIcon.addEventListener("click", function () {
+      lupaIcon.style.display = "none";
+      searchInput.style.display = "block";
+      closeIcon.style.display = "block";
+      searchInput.focus();
+    });
+
+    closeIcon.addEventListener("click", function () {
+      closeIcon.style.display = "none";
+      searchInput.style.display = "none";
+      lupaIcon.style.display = "block";
+      searchInput.value = "";
+      document.getElementById("resultados").innerHTML = "";
+    });
+  }
+
+  searchInput?.addEventListener("input", filtrarEspecificacoes);
+  searchInput?.addEventListener("change", salvarIdsNoLocalStorage);
+  carregarEspecificacoes();
+});
+
+// Função para carregar as especificações no datalist
+function carregarEspecificacoes() {
+  fetch("http://localhost:8080/api/especificacoes")
+    .then((response) => (response.ok ? response.json() : []))
+    .then((data) => {
+      const dataList = document.getElementById("especificacoesList");
+      dataList.innerHTML = "";
+
+      data.sort((a, b) =>
+        normalizeString(
+          `${a.especificacao} - ${a.procedimento.tipo}`
+        ).localeCompare(
+          normalizeString(`${b.especificacao} - ${b.procedimento.tipo}`)
+        )
+      );
+
+      data.forEach((item) => {
+        const option = document.createElement("option");
+        option.value = `${item.especificacao} - ${item.procedimento.tipo}`;
+        option.dataset.normalized = normalizeString(option.value);
+        option.dataset.idEspecificacao = item.idEspecificacaoProcedimento;
+        option.dataset.idProcedimento = item.procedimento.idProcedimento;
+        dataList.appendChild(option);
+      });
+    })
+    .catch((error) => {
+      console.error("Erro:", error);
+    });
+}
+
+// Função para salvar IDs no localStorage e redirecionar
+function salvarIdsNoLocalStorage() {
+  const input = document.getElementById("searchInput");
+  const selectedOption = Array.from(
+    document.getElementById("especificacoesList").options
+  ).find((option) => option.value === input.value);
+
+  if (selectedOption) {
+    localStorage.setItem(
+      "idEspecificacao",
+      selectedOption.dataset.idEspecificacao
+    );
+    localStorage.setItem(
+      "idProcedimento",
+      selectedOption.dataset.idProcedimento
+    );
+    window.location.href = "../agendamento-mobile/agendamento-mobile.html";
+  }
+}
+
+// Função para filtrar opções usando busca binária
+function filtrarEspecificacoes() {
+  const input = document.getElementById("searchInput");
+  const filter = normalizeString(input.value);
+  const options = Array.from(
+    document.getElementById("especificacoesList").options
+  );
+
+  options.sort((a, b) =>
+    a.dataset.normalized.localeCompare(b.dataset.normalized)
+  );
+
+  const index = buscaBinaria(options, filter);
+
+  options.forEach((option, i) => {
+    option.style.display =
+      i === index || option.dataset.normalized.includes(filter) ? "" : "none";
+  });
+}
+
+
+

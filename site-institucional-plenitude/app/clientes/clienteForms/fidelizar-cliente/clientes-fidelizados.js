@@ -580,3 +580,4 @@ saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), filename);
   // Chama a função para atualizar os KPIs ao carregar a página
   window.onload = updateKpiData;
   
+new window.VLibras.Widget('https://vlibras.gov.br/app');

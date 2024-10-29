@@ -2,7 +2,7 @@
 const apiUrlUsuarios = "http://localhost:8080/usuarios";
 
 // URL da API que retorna as fichas de anamnese com base no nome do usuário
-const apiUrlFichas = "http://localhost:8080/api/ficha-anamnese/fichas-anamnese";
+const apiUrlFichas = "http://localhost:8080/api/ficha-anamnese/filtro¢¢¬²";
 
 // Função para preencher o select com os nomes dos usuários
 async function carregarUsuarios() {

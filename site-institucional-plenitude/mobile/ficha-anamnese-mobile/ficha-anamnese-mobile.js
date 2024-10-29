@@ -1,47 +1,44 @@
-// Função para buscar e preencher o formulário com dados já respondidos
-function showNotification(message, isError = false) {
-    const notification = document.getElementById("notification");
-    const notificationMessage = document.getElementById("notification-message");
-    notificationMessage.textContent = message;
-    if (isError) {
-      notification.classList.add("error");
-    } else {
-      notification.classList.remove("error");
-    }
-    notification.classList.add("show");
-    setTimeout(() => {
-      notification.classList.remove("show");
-    }, 3000);
-  }
+// Função para normalizar strings (remover acentos e converter para minúsculas)
+function normalizeString(str) {
+  return str
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
 
+// Função para exibir notificações
+function showNotification(message, isError = false) {
+  const notification = document.getElementById("notification");
+  const notificationMessage = document.getElementById("notification-message");
+  notificationMessage.textContent = message;
+  if (isError) {
+    notification.classList.add("error");
+  } else {
+    notification.classList.remove("error");
+  }
+  notification.classList.add("show");
+  setTimeout(() => {
+    notification.classList.remove("show");
+  }, 3000);
+}
+
+// Função para buscar e preencher o formulário com dados já respondidos
 async function preencherFormularioComRespostas(idUsuario) {
   try {
-    const response = await fetch(
-      `http://localhost:8080/api/ficha-anamnese/${idUsuario}`
-    );
-    if (!response.ok) {
-      throw new Error("Erro ao buscar respostas preenchidas");
-    }
+    const response = await fetch(`http://localhost:8080/api/ficha-anamnese/${idUsuario}`);
+    if (!response.ok) throw new Error("Erro ao buscar respostas preenchidas");
 
     const ficha = await response.json();
     console.log("Ficha recebida:", ficha);
 
     if (ficha.perguntasRespostas && ficha.perguntasRespostas.length > 0) {
-      // Verifique se `idPergunta` está presente em cada objeto
       ficha.perguntasRespostas.forEach((item, index) => {
-        console.log(
-          `Pergunta ${index + 1} - ID: ${item.idPergunta}, Tipo: ${
-            item.perguntaTipo
-          }`
-        );
+        console.log(`Pergunta ${index + 1} - ID: ${item.idPergunta}, Tipo: ${item.perguntaTipo}`);
       });
-
       localStorage.setItem("statusFormulario", "Respondido");
-      renderPerguntas(ficha.perguntasRespostas); // Renderiza perguntas e respostas preenchidas
+      renderPerguntas(ficha.perguntasRespostas);
     } else {
-      console.log(
-        "Nenhuma resposta encontrada, carregando perguntas em branco."
-      );
+      console.log("Nenhuma resposta encontrada, carregando perguntas em branco.");
       await fetchPerguntas();
     }
   } catch (error) {
@@ -68,12 +65,8 @@ function renderPerguntas(perguntasRespostas) {
     const resposta = perguntaResposta.resposta;
     const idPergunta = perguntaResposta.idPergunta;
 
-    // Verificar se o ID da pergunta está presente
     if (!idPergunta) {
-      console.warn(
-        "ID da pergunta está undefined para a pergunta:",
-        perguntaResposta.pergunta
-      );
+      console.warn("ID da pergunta está undefined para a pergunta:", perguntaResposta.pergunta);
     }
 
     console.log("Renderizando pergunta:", {
@@ -122,7 +115,6 @@ function renderPerguntas(perguntasRespostas) {
     if (inputElement) {
       formGroup.appendChild(inputElement);
     }
-
     contentDiv.appendChild(formGroup);
   });
 }
@@ -143,8 +135,8 @@ async function fetchPerguntas() {
       perguntas.map((pergunta) => ({
         pergunta: pergunta.pergunta,
         perguntaTipo: pergunta.tipo,
-        idPergunta: pergunta.idPergunta, // Certifique-se de que `idPergunta` é capturado aqui
-        resposta: "", // Campo vazio para perguntas ainda não respondidas
+        idPergunta: pergunta.idPergunta,
+        resposta: "",
       }))
     );
   } catch (error) {
@@ -161,33 +153,24 @@ async function submitForm() {
   }
 
   const statusFormulario = localStorage.getItem("statusFormulario");
-
-  // Verifica se o status é "Respondido" para determinar o método e o formato de formData
   let formData;
   let method;
   let url;
 
   if (statusFormulario === "Respondido") {
-    // Estrutura para o método PATCH
-    formData = {
-      perguntasRespostas: [], // Adicionaremos perguntas e respostas específicas para o PATCH
-    };
+    formData = { perguntasRespostas: [] };
     method = "PATCH";
     url = `http://localhost:8080/api/ficha-anamnese/${idUsuario}`;
   } else {
-    // Estrutura para o método POST
     formData = {
       fichaAnamnese: parseInt(idUsuario, 10),
       usuario: parseInt(idUsuario, 10),
-      respostas: [], // Adicionaremos respostas no formato esperado para o POST
+      respostas: [],
     };
     method = "POST";
     url = "http://localhost:8080/api/respostas";
   }
 
-  console.log("formData inicial:", formData);
-
-  // Preenche as respostas do formulário
   document.querySelectorAll("input, select").forEach((input) => {
     const perguntaIdStr = input.name.split("_")[1];
     const perguntaId = parseInt(perguntaIdStr, 10);
@@ -197,76 +180,47 @@ async function submitForm() {
       return;
     }
 
-    let resposta;
-    if (input.type === "checkbox") {
-      resposta = input.checked ? "Sim" : "Não";
-    } else {
-      resposta = input.value;
-    }
+    let resposta = input.type === "checkbox" ? (input.checked ? "Sim" : "Não") : input.value;
 
     if (resposta.trim() !== "") {
       if (method === "PATCH") {
-        // Formato para PATCH
-        formData.perguntasRespostas.push({
-          idPergunta: perguntaId,
-          resposta: resposta,
-        });
+        formData.perguntasRespostas.push({ idPergunta: perguntaId, resposta: resposta });
       } else {
-        // Formato para POST
-        formData.respostas.push({
-          resposta: resposta,
-          pergunta: perguntaId,
-        });
+        formData.respostas.push({ resposta: resposta, pergunta: perguntaId });
       }
-
-      console.log("Adicionando resposta ao formData:", {
-        idPergunta: perguntaId,
-        resposta: resposta,
-      });
+      console.log("Adicionando resposta ao formData:", { idPergunta: perguntaId, resposta: resposta });
     }
   });
 
-  console.log(
-    "formData final (antes do envio):",
-    JSON.stringify(formData, null, 2)
-  );
+  console.log("formData final (antes do envio):", JSON.stringify(formData, null, 2));
 
   try {
-    console.log(`Enviando requisição para URL: ${url}, com método: ${method}`);
-
     const response = await fetch(url, {
       method: method,
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
     });
 
     if (response.ok) {
-        showNotification("Respostas enviadas!");
-        setTimeout(() => {
-            location.reload();
-        }, 2000); // Atraso de 2 segundos (2000 milissegundos)
+      showNotification("Respostas enviadas!");
+      setTimeout(() => location.reload(), 2000);
     } else {
-        console.error("Erro na resposta do servidor. Status:", response.status);
-        showNotification("Erro ao enviar respostas!", true);
-    }    
+      console.error("Erro na resposta do servidor. Status:", response.status);
+      showNotification("Erro ao enviar respostas!", true);
+    }
   } catch (error) {
     console.error("Erro no envio das respostas:", error);
-  } 
+  }
 }
 
+// Carrega o formulário ao carregar a página
 document.addEventListener("DOMContentLoaded", function () {
   const idUsuario = localStorage.getItem("idUsuario");
   preencherFormularioComRespostas(idUsuario);
 });
 
+// Aumentar e diminuir a fonte
 document.addEventListener("DOMContentLoaded", function () {
-  const idUsuario = localStorage.getItem("idUsuario");
-
-  // Carrega a ficha pelo ID ao carregar a página e define o status de formulário
-  preencherFormularioComRespostas(idUsuario);
-
   const increaseFontBtn = document.getElementById("increase-font");
   const decreaseFontBtn = document.getElementById("decrease-font");
   const rootElement = document.documentElement;
@@ -274,7 +228,6 @@ document.addEventListener("DOMContentLoaded", function () {
   let currentFontSize = localStorage.getItem("fontSize") || "16px";
   rootElement.style.setProperty("--font-size-default", currentFontSize);
   document.body.style.fontSize = currentFontSize;
-
   let increaseClicks = 0;
   let decreaseClicks = 0;
   const maxClicks = 2;
@@ -286,7 +239,6 @@ document.addEventListener("DOMContentLoaded", function () {
       rootElement.style.setProperty("--font-size-default", currentFontSize);
       document.body.style.fontSize = currentFontSize;
       localStorage.setItem("fontSize", currentFontSize);
-
       increaseClicks++;
       decreaseClicks = 0;
     }
@@ -300,7 +252,6 @@ document.addEventListener("DOMContentLoaded", function () {
         rootElement.style.setProperty("--font-size-default", currentFontSize);
         document.body.style.fontSize = currentFontSize;
         localStorage.setItem("fontSize", currentFontSize);
-
         decreaseClicks++;
         increaseClicks = 0;
       }
@@ -308,4 +259,57 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+// Função para carregar as especificações no datalist
+function carregarEspecificacoes() {
+  fetch("http://localhost:8080/api/especificacoes")
+    .then((response) => (response.ok ? response.json() : []))
+    .then((data) => {
+      const dataList = document.getElementById("especificacoesList");
+      dataList.innerHTML = "";
 
+      data.sort((a, b) =>
+        normalizeString(`${a.especificacao} - ${a.procedimento.tipo}`).localeCompare(
+          normalizeString(`${b.especificacao} - ${b.procedimento.tipo}`)
+        )
+      );
+
+      data.forEach((item) => {
+        const option = document.createElement("option");
+        option.value = `${item.especificacao} - ${item.procedimento.tipo}`;
+        option.dataset.normalized = normalizeString(option.value);
+        option.dataset.idEspecificacao = item.idEspecificacaoProcedimento;
+        option.dataset.idProcedimento = item.procedimento.idProcedimento;
+        dataList.appendChild(option);
+      });
+    })
+    .catch((error) => console.error("Erro:", error));
+}
+
+// Salvar IDs no localStorage e redirecionar
+function salvarIdsNoLocalStorage() {
+  const input = document.getElementById("searchInput");
+  const selectedOption = Array.from(document.getElementById("especificacoesList").options).find(
+    (option) => option.value === input.value
+  );
+
+  if (selectedOption) {
+    localStorage.setItem("idEspecificacao", selectedOption.dataset.idEspecificacao);
+    localStorage.setItem("idProcedimento", selectedOption.dataset.idProcedimento);
+    window.location.href = "../agendamento-mobile/agendamento-mobile.html";
+  }
+}
+
+// Função para filtrar opções usando busca binária
+function filtrarEspecificacoes() {
+  const input = document.getElementById("searchInput");
+  const filter = normalizeString(input.value);
+  const options = Array.from(document.getElementById("especificacoesList").options);
+
+  options.sort((a, b) => a.dataset.normalized.localeCompare(b.dataset.normalized));
+
+  const index = buscaBinaria(options, filter);
+
+  options.forEach((option, i) => {
+    option.style.display = i === index || option.dataset.normalized.includes(filter) ? "" : "none";
+  });
+}

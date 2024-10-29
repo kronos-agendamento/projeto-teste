@@ -4,11 +4,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Clientes | KronosBooking</title>
+  <title>Leads | KronosBooking</title>
   <link rel="stylesheet" href="leads.css" />
   <link href="" rel="icon" />
   <link href="../procedimento/image.png" rel="apple-touch-icon" />
   <script src="leads.js" defer></script>
+  <link href="../../assets/favicon.png" rel="icon" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.2/xlsx.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
@@ -55,49 +56,49 @@
 
     <ul style="margin-top: 80%; position: absolute">
       <li class="list active">
-        <a href="../index/index.html">
+        <a href="../../index/index.html">
           <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
           <span class="title">Início </span>
         </a>
       </li>
       <li class="list">
-        <a href="../perfil/perfil.html">
+        <a href="../../perfil/perfil.html">
           <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
           <span class="title">Perfil</span>
         </a>
       </li>
       <li class="list">
-        <a href="../agendamento/agendamento.html">
+        <a href="../../agendamento/agendamento.html">
           <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
           <span class="title">Agendamentos</span>
         </a>
       </li>
       <li class="list">
-        <a href="../anamnese/anamnese.html">
+        <a href="../../anamnese/anamnese.html">
           <span class="icon"><ion-icon name="document-text-outline"></ion-icon></span>
           <span class="title">Anamneses</span>
         </a>
       </li>
       <li class="list">
-        <a href="../clientes/clientes.html">
+        <a href="../../clientes/clientes.html">
           <span class="icon"><ion-icon name="person-add-outline"></ion-icon></span>
           <span class="title">Clientes</span>
         </a>
       </li>
       <li class="list">
-        <a href="../procedimento/procedimento.html">
+        <a href="../../procedimento/procedimento.html">
           <span class="icon"><ion-icon name="brush-outline"></ion-icon></span>
           <span class="title">Procedimentos</span>
         </a>
       </li>
       <li class="list">
-        <a href="../dashboard/dashboard.html">
+        <a href="../../dashboard/dashboard.html">
           <span class="icon"><ion-icon name="stats-chart-outline"></ion-icon></span>
           <span class="title">Dashboard</span>
         </a>
       </li>
       <li class="list">
-        <a href="../../index.html">
+        <a href="../../../index.html">
           <span class="icon"><ion-icon name="exit-outline"></ion-icon></span>
           <span class="title">Sair</span>
         </a>
@@ -108,7 +109,7 @@
     <header style="height: 14vh; width: 152vh; margin-left: 4.3%">
       <h1>Leads</h1>
       <p>
-        Visitantes que chegaram a partir do formulário de contato do site
+        Essa página é destinada para visualização de visitantes que chegaram a partir do formulário de contato do site.
       </p>
     </header>
     <div id="notification" class="notification">
@@ -150,6 +151,12 @@
 
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper></div> 
+    </div>
 </body>
 
 </html>

@@ -64,7 +64,7 @@
                     </a>
                 </li>
                 <li class="list">
-                    <a href="../agendamento.html">
+                    <a href="../agendamento/agendamento.html">
                         <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
                         <span class="title">Agendamentos</span>
                     </a>
@@ -183,7 +183,7 @@
                                                     <h1>Conversão de Clientes</h1>
                                                     <p>Últimos 5 meses</p>
                                                 </div>
-                                                <p>Comparação de leads e clientes gerados.</p>
+                                                <p>Comparação de Clientes e Clientes Fidelizados.</p>
                                                 <div class="caixa-grafico">
                                                     <canvas id="chart2"></canvas>
                                                 </div>
@@ -408,8 +408,7 @@
                                                 <div class="card">
                                                     <div class="indicator"></div>
                                                     <div class="card-content">
-                                                        <p style="font-size: 15px;">Taxa Média de Retorno de Usuários ao
-                                                            Sistema
+                                                        <p style="font-size: 15px;">Quantidade de Usuários Retornando ao Sistema
                                                         </p>
                                                         <h2 id="retorno-login-count">Carregando...</h2>
                                                         <!-- <p>Último trimestre</p> -->
@@ -427,7 +426,7 @@
                                                 <p>Últimos 5 meses</p>
                                             </div>
                                             <p style="margin-right: 415px;">Comparação de leads e clientes gerados.</p>
-                                            <div class="caixa-grafico" style="width: 985px; height: 349px; margin-left: 190px;">
+                                            <div class="caixa-graficoUsabilidade">
                                                 <canvas id="chartUsabilidade1" style="margin-left: 100px;"></canvas>
                                             </div>
                                         </div>
@@ -500,7 +499,11 @@
                     gerencialBtn.classList.add('active');
 
                 </script>
-
+                <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+                <div vw class="enabled">
+                    <div vw-access-button class="active"></div>
+                    <div vw-plugin-wrapper></div>
+                </div>
         </main>
 </body>
 

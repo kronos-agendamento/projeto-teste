@@ -1104,7 +1104,7 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 155px; /* Ajuste conforme necessário */
+  top: 135px; /* Ajuste conforme necessário */
   left: 33%;
   transform: translateX(-50%);
 }
@@ -1119,7 +1119,7 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 155px; /* Ajuste conforme necessário */
+  top: 135px;  /* Ajuste conforme necessário */
   left: 45%;
   transform: translateX(-50%);
 }
@@ -1134,7 +1134,7 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 155px; /* Ajuste conforme necessário */
+  top: 135px; /* Ajuste conforme necessário */
   left: 60%;
   transform: translateX(-50%);
 }
@@ -1149,7 +1149,7 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 155px; /* Ajuste conforme necessário */
+  top: 135px; /* Ajuste conforme necessário */
   left: 73%;
   transform: translateX(-50%);
 }

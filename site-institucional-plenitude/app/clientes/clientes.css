@@ -710,7 +710,7 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 120px; /* Ajuste conforme necessário */
+  top: 105px; /* Ajuste conforme necessário */
   left: 30%;
   transform: translateX(-50%);
 }
@@ -725,7 +725,7 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 120px; /* Ajuste conforme necessário */
+  top: 105px; /* Ajuste conforme necessário */
   left: 40%;
   transform: translateX(-50%);
 }
@@ -740,7 +740,7 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 120px; /* Ajuste conforme necessário */
+  top: 105px; /* Ajuste conforme necessário */
   left: 49%;
   transform: translateX(-50%);
 }
@@ -755,7 +755,7 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 120px; /* Ajuste conforme necessário */
+  top: 105px; /* Ajuste conforme necessário */
   left: 57%;
   transform: translateX(-50%);
 }
@@ -770,7 +770,7 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 120px; /* Ajuste conforme necessário */
+  top: 105px;/* Ajuste conforme necessário */
   left: 66%;
   transform: translateX(-50%);
 }

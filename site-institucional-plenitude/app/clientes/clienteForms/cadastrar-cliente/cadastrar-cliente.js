@@ -277,6 +277,7 @@ document.addEventListener("DOMContentLoaded", function () {
         showNotification(error.message, true);
       }
     });
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
 });
 
 

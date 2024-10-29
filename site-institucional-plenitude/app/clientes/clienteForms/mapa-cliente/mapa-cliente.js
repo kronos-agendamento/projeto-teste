@@ -177,3 +177,5 @@
             document.getElementById("userInsta").textContent = instagram;
         }
       });
+
+    new window.VLibras.Widget('https://vlibras.gov.br/app');

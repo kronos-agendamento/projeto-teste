@@ -82,9 +82,9 @@
 
   /* Estilo dos ícones */
   .nav-bar .icon {
-    font-size: 24px;
-    color: #000;
-  }
+    font-size: 30px;
+    color: #ffffff;
+}
 
   .pesquisa img {
     width: 1.5rem;
@@ -172,12 +172,18 @@
   }
 
   .save-button {
-    padding: 1vw;
-    background-color: #fff0f5;
-    border-radius: 1vh;
-    display: flex;
-    align-items: center;
-    border: 1px solid #7c7e80;
+  display: flex;
+  align-items: center;
+  background-color: #e70069;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 5px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-family: Poppins, sans-serif;
+  margin-top: 5%;
   }
 
   #icon-save {

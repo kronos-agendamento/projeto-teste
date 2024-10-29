@@ -186,6 +186,7 @@ document.addEventListener("DOMContentLoaded", function () {
       fileNameSpan.textContent = "Nenhum arquivo escolhido";
     }
   });
+new window.VLibras.Widget('https://vlibras.gov.br/app');
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -197,3 +198,5 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("userInsta").textContent = instagram;
   }
 });
+
+
