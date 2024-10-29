@@ -257,7 +257,35 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   });
+  const lupaIcon = document.getElementById("lupa-icon");
+  const closeIcon = document.getElementById("close-icon");
+  const searchInput = document.getElementById("searchInput");
+
+  if (lupaIcon && closeIcon && searchInput) {
+    lupaIcon.addEventListener("click", function () {
+      lupaIcon.style.display = "none";
+      searchInput.style.display = "block";
+      closeIcon.style.display = "block";
+      searchInput.focus();
+    });
+
+    closeIcon.addEventListener("click", function () {
+      closeIcon.style.display = "none";
+      searchInput.style.display = "none";
+      lupaIcon.style.display = "block";
+      searchInput.value = "";
+      document.getElementById("resultados").innerHTML = "";
+    });
+  }
+
+  searchInput?.addEventListener("input", filtrarEspecificacoes);
+  searchInput?.addEventListener("change", salvarIdsNoLocalStorage);
+  carregarEspecificacoes();
+new window.VLibras.Widget('https://vlibras.gov.br/app');
 });
+
+// Função para carregar as especificações no datalist
+
 
 // Função para carregar as especificações no datalist
 function carregarEspecificacoes() {
@@ -268,7 +296,9 @@ function carregarEspecificacoes() {
       dataList.innerHTML = "";
 
       data.sort((a, b) =>
-        normalizeString(`${a.especificacao} - ${a.procedimento.tipo}`).localeCompare(
+        normalizeString(
+          `${a.especificacao} - ${a.procedimento.tipo}`
+        ).localeCompare(
           normalizeString(`${b.especificacao} - ${b.procedimento.tipo}`)
         )
       );
@@ -282,19 +312,27 @@ function carregarEspecificacoes() {
         dataList.appendChild(option);
       });
     })
-    .catch((error) => console.error("Erro:", error));
+    .catch((error) => {
+      console.error("Erro:", error);
+    });
 }
 
-// Salvar IDs no localStorage e redirecionar
+// Função para salvar IDs no localStorage e redirecionar
 function salvarIdsNoLocalStorage() {
   const input = document.getElementById("searchInput");
-  const selectedOption = Array.from(document.getElementById("especificacoesList").options).find(
-    (option) => option.value === input.value
-  );
+  const selectedOption = Array.from(
+    document.getElementById("especificacoesList").options
+  ).find((option) => option.value === input.value);
 
   if (selectedOption) {
-    localStorage.setItem("idEspecificacao", selectedOption.dataset.idEspecificacao);
-    localStorage.setItem("idProcedimento", selectedOption.dataset.idProcedimento);
+    localStorage.setItem(
+      "idEspecificacao",
+      selectedOption.dataset.idEspecificacao
+    );
+    localStorage.setItem(
+      "idProcedimento",
+      selectedOption.dataset.idProcedimento
+    );
     window.location.href = "../agendamento-mobile/agendamento-mobile.html";
   }
 }
@@ -303,13 +341,18 @@ function salvarIdsNoLocalStorage() {
 function filtrarEspecificacoes() {
   const input = document.getElementById("searchInput");
   const filter = normalizeString(input.value);
-  const options = Array.from(document.getElementById("especificacoesList").options);
+  const options = Array.from(
+    document.getElementById("especificacoesList").options
+  );
 
-  options.sort((a, b) => a.dataset.normalized.localeCompare(b.dataset.normalized));
+  options.sort((a, b) =>
+    a.dataset.normalized.localeCompare(b.dataset.normalized)
+  );
 
   const index = buscaBinaria(options, filter);
 
   options.forEach((option, i) => {
-    option.style.display = i === index || option.dataset.normalized.includes(filter) ? "" : "none";
+    option.style.display =
+      i === index || option.dataset.normalized.includes(filter) ? "" : "none";
   });
 }
