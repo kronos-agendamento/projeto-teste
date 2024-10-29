@@ -432,4 +432,7 @@ document.addEventListener("DOMContentLoaded", function () {
       button.classList.add("selected");
     });
   }
+
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
+  
 });
