@@ -528,7 +528,7 @@ header p {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 170px; /* Ajuste conforme necessário */
+  top: 150px; /* Ajuste conforme necessário */
   left: 72%;
   transform: translateX(-50%);
 }
@@ -543,8 +543,8 @@ header p {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 170px; /* Ajuste conforme necessário */
-  left: 47%;
+  top: 150px; /* Ajuste conforme necessário */
+  left: 40%;
   transform: translateX(-50%);
 }
 

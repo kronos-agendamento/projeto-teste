@@ -17,6 +17,7 @@ body {
   background-color: #ffffff;
   height: 135vh;
   width: 97vw;
+  margin-bottom: 30%;
 }
 
 .container {
@@ -955,7 +956,7 @@ table tr.clickable-row:hover {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 120px; /* Ajuste conforme necessário */
+  top: 105px; /* Ajuste conforme necessário */
   left: 35%;
   transform: translateX(-50%);
 }
@@ -972,8 +973,8 @@ table tr.clickable-row:hover {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 120px; /* Ajuste conforme necessário */
-  left: 50%;
+  top: 105px; /* Ajuste conforme necessário */
+  left: 47%;
   transform: translateX(-50%);
 }
 
@@ -987,7 +988,7 @@ table tr.clickable-row:hover {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 120px; /* Ajuste conforme necessário */
+  top: 105px; /* Ajuste conforme necessário */
   left: 65%;
   transform: translateX(-50%);
 }
@@ -1002,8 +1003,8 @@ table tr.clickable-row:hover {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 120px; /* Ajuste conforme necessário */
-  left: 75%;
+  top: 105px; /* Ajuste conforme necessário */
+  left: 79%;
   transform: translateX(-50%);
 }
 
@@ -1071,6 +1072,20 @@ table tr.clickable-row:hover {
   transform: translateX(-50%);
 }
 
+.tooltip9{
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 105px; /* Ajuste conforme necessário */
+  left: 79%;
+  transform: translateX(-50%);
+}
 
 
 
@@ -1097,6 +1112,11 @@ table tr.clickable-row:hover {
 }
 
 .filter-btn:hover + .tooltip5 {
+  display: block;
+  
+}
+
+.filter-btn:hover + .tooltip9 {
   display: block;
   
 }
