@@ -358,24 +358,24 @@ VALUES
 -- Inserindo agendamentos para garantir que os usuários fidelizados apareçam
 INSERT INTO agendamento (id_agendamento, data_horario, tipo_agendamento, tempo_para_agendar, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status) VALUES
 -- Agendamentos para Maria Silva (id_usuario = 7)
-(1, '2024-10-29 09:00:00', 'Manutencao', 30, 7, 1, 2, 1),
+(1, '2024-07-15 09:00:00', 'Manutencao', 30, 7, 1, 2, 1),
 (2, '2024-08-12 11:00:00', 'Colocacao', 40, 7, 1, 3, 1),
 (3, '2024-09-10 14:00:00', 'Retirada', 35, 7, 1, 1, 1),
 
 -- Agendamentos para Carla Borges (id_usuario = 8)
-(4, '2024-07-10 10:00:00', 'Manutencao', 20, 8, 2, 3, 1),
-(5, '2024-10-29 12:00:00', 'Colocacao', 30, 8, 2, 2, 1),
+(4, '2024-10-29 10:00:00', 'Manutencao', 20, 8, 2, 3, 1),
+(5, '2024-08-08 12:00:00', 'Colocacao', 30, 8, 2, 2, 1),
 (6, '2024-09-05 13:00:00', 'Retirada', 25, 8, 2, 1, 1),
 
 -- Agendamentos para Pedro Marques (id_usuario = 9)
 (7, '2024-07-20 09:30:00', 'Colocacao', 45, 9, 3, 1, 1),
-(8, '2024-08-18 10:00:00', 'Manutencao', 50, 9, 3, 2, 1),
-(9, '2024-10-29 11:00:00', 'Retirada', 30, 9, 3, 1, 1),
+(8, '2024-10-29 10:00:00', 'Manutencao', 50, 9, 3, 2, 1),
+(9, '2024-09-15 11:00:00', 'Retirada', 30, 9, 3, 1, 1),
 
 -- Agendamentos para Ana Martins (id_usuario = 10)
 (10, '2024-07-05 09:00:00', 'Colocacao', 25, 10, 1, 3, 1),
 (11, '2024-08-02 10:30:00', 'Manutencao', 40, 10, 1, 2, 1),
-(12, '2024-09-12 12:00:00', 'Retirada', 35, 10, 1, 1, 1);
+(12, '2024-10-29 12:00:00', 'Retirada', 35, 10, 1, 1, 1);
 
 
 INSERT INTO cliente (id_usuario, experiencia_avaliada, frequencia)
@@ -605,5 +605,8 @@ VALUES
 ('Profissional muito educado e atencioso.', 5, 7, 8, 3),
 ('Adorei o resultado final! Super recomendo.', 5, 10, 2, 5);
 
-delete from agendamento where id_agendamento in ('15','13','40', '41', '43');
+select * from usuario;
 
+select * from agendamento where fk_usuario=4;
+
+delete from agendamento where id_agendamento in ('15','13','40', '41', '43');
