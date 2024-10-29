@@ -19,7 +19,7 @@ def enviar_email():
 
     # Configurações do servidor SMTP para Gmail
     remetente = 'gyugyulia64@gmail.com'  # Seu email do Gmail
-    senha = 'bfzf asbi vdul ikwr'   # Senha de aplicativo do Gmail
+    senha = 'pbkl ptza asbo uywo'   # Senha de aplicativo do Gmail
 
     try:
         # Configurando a mensagem do email
