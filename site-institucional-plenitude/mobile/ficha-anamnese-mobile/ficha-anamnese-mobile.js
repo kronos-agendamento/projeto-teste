@@ -9,13 +9,24 @@ async function preencherFormularioComRespostas(idUsuario) {
     }
 
     const ficha = await response.json();
+    console.log("Ficha recebida:", ficha);
 
     if (ficha.perguntasRespostas && ficha.perguntasRespostas.length > 0) {
-      // Se houver respostas, salvar o status "Respondido" no localStorage
+      // Verifique se `idPergunta` está presente em cada objeto
+      ficha.perguntasRespostas.forEach((item, index) => {
+        console.log(
+          `Pergunta ${index + 1} - ID: ${item.idPergunta}, Tipo: ${
+            item.perguntaTipo
+          }`
+        );
+      });
+
       localStorage.setItem("statusFormulario", "Respondido");
       renderPerguntas(ficha.perguntasRespostas); // Renderiza perguntas e respostas preenchidas
     } else {
-      // Se não houver respostas, carrega perguntas em branco
+      console.log(
+        "Nenhuma resposta encontrada, carregando perguntas em branco."
+      );
       await fetchPerguntas();
     }
   } catch (error) {
@@ -23,6 +34,7 @@ async function preencherFormularioComRespostas(idUsuario) {
   }
 }
 
+// Função para renderizar as perguntas dinamicamente e preencher as respostas, caso existam
 function renderPerguntas(perguntasRespostas) {
   const contentDiv = document.getElementById("content");
   contentDiv.innerHTML = ""; // Limpar o conteúdo atual
@@ -41,7 +53,14 @@ function renderPerguntas(perguntasRespostas) {
     const resposta = perguntaResposta.resposta;
     const idPergunta = perguntaResposta.idPergunta;
 
-    // Verificar os dados da pergunta e da resposta
+    // Verificar se o ID da pergunta está presente
+    if (!idPergunta) {
+      console.warn(
+        "ID da pergunta está undefined para a pergunta:",
+        perguntaResposta.pergunta
+      );
+    }
+
     console.log("Renderizando pergunta:", {
       idPergunta: idPergunta,
       pergunta: perguntaResposta.pergunta,
@@ -49,6 +68,7 @@ function renderPerguntas(perguntasRespostas) {
       resposta: resposta,
     });
 
+    // Renderizar o tipo de input correto
     if (perguntaResposta.perguntaTipo === "Input") {
       inputElement = document.createElement("input");
       inputElement.type = "text";
@@ -102,11 +122,13 @@ async function fetchPerguntas() {
     }
 
     const perguntas = await response.json();
+    console.log("Perguntas carregadas:", perguntas);
+
     renderPerguntas(
       perguntas.map((pergunta) => ({
         pergunta: pergunta.pergunta,
         perguntaTipo: pergunta.tipo,
-        perguntaId: pergunta.idPergunta,
+        idPergunta: pergunta.idPergunta, // Certifique-se de que `idPergunta` é capturado aqui
         resposta: "", // Campo vazio para perguntas ainda não respondidas
       }))
     );
@@ -125,9 +147,8 @@ async function submitForm() {
 
   const statusFormulario = localStorage.getItem("statusFormulario");
 
-  // Define o formData para o POST em /api/respostas e PATCH em /api/ficha-anamnese/{idUsuario}
   const formData = {
-    fichaAnamnese: parseInt(idUsuario, 10), // Usando o idUsuario como o id da ficha de anamnese
+    fichaAnamnese: parseInt(idUsuario, 10),
     usuario: parseInt(idUsuario, 10),
     respostas: [], // Respostas no formato esperado pelo backend
   };
@@ -136,13 +157,12 @@ async function submitForm() {
 
   // Preenche as respostas do formulário
   document.querySelectorAll("input, select").forEach((input) => {
-    // Verifica o ID da pergunta no nome do input (ex: pergunta_1)
     const perguntaIdStr = input.name.split("_")[1];
     const perguntaId = parseInt(perguntaIdStr, 10);
 
     if (isNaN(perguntaId)) {
       console.warn("idPergunta inválido encontrado:", perguntaIdStr);
-      return; // Ignora se o id da pergunta não estiver presente
+      return;
     }
 
     let resposta;
@@ -152,7 +172,6 @@ async function submitForm() {
       resposta = input.value;
     }
 
-    // Adiciona resposta se houver conteúdo válido
     if (resposta.trim() !== "") {
       formData.respostas.push({
         resposta: resposta,
@@ -165,14 +184,12 @@ async function submitForm() {
     }
   });
 
-  // Verifica o formData final antes do envio
   console.log(
     "formData final (antes do envio):",
     JSON.stringify(formData, null, 2)
   );
 
   try {
-    // Define o método e a URL com base no status do formulário
     const method = statusFormulario === "Respondido" ? "PATCH" : "POST";
     const url =
       method === "PATCH"
@@ -202,49 +219,7 @@ async function submitForm() {
 
 document.addEventListener("DOMContentLoaded", function () {
   const idUsuario = localStorage.getItem("idUsuario");
-
-  // Carrega a ficha pelo ID ao carregar a página e define o status de formulário
   preencherFormularioComRespostas(idUsuario);
-
-  const increaseFontBtn = document.getElementById("increase-font");
-  const decreaseFontBtn = document.getElementById("decrease-font");
-  const rootElement = document.documentElement;
-
-  let currentFontSize = localStorage.getItem("fontSize") || "16px";
-  rootElement.style.setProperty("--font-size-default", currentFontSize);
-  document.body.style.fontSize = currentFontSize;
-
-  let increaseClicks = 0;
-  let decreaseClicks = 0;
-  const maxClicks = 2;
-
-  increaseFontBtn.addEventListener("click", function () {
-    if (increaseClicks < maxClicks) {
-      let newSize = parseFloat(currentFontSize) + 1;
-      currentFontSize = `${newSize}px`;
-      rootElement.style.setProperty("--font-size-default", currentFontSize);
-      document.body.style.fontSize = currentFontSize;
-      localStorage.setItem("fontSize", currentFontSize);
-
-      increaseClicks++;
-      decreaseClicks = 0;
-    }
-  });
-
-  decreaseFontBtn.addEventListener("click", function () {
-    if (decreaseClicks < maxClicks) {
-      let newSize = parseFloat(currentFontSize) - 1;
-      if (newSize >= 12) {
-        currentFontSize = `${newSize}px`;
-        rootElement.style.setProperty("--font-size-default", currentFontSize);
-        document.body.style.fontSize = currentFontSize;
-        localStorage.setItem("fontSize", currentFontSize);
-
-        decreaseClicks++;
-        increaseClicks = 0;
-      }
-    }
-  });
 });
 
 document.addEventListener("DOMContentLoaded", function () {
