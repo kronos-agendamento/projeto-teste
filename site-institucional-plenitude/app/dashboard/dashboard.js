@@ -784,7 +784,7 @@ function createChartValorTotalUltimoMesOperacional5(labels, dataChart) {
     // Atualiza os KPIs e gráficos em intervalos regulares (opcional)
     setInterval(updateKPIs, 30000); // Exemplo de atualização a cada 30 segundos
 
-   //  new window.VLibras.Widget('https://vlibras.gov.br/app');
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
 });
 
 document.addEventListener('DOMContentLoaded', function () {

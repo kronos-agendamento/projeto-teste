@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Chama a função para buscar e renderizar os leads ao carregar a página
     fetchLeads();
 
-   //  new window.VLibras.Widget('https://vlibras.gov.br/app');
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
 });
 
 document.addEventListener("DOMContentLoaded", function () {
