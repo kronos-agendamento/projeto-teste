@@ -116,23 +116,17 @@ async function submitForm() {
 
     const statusFormulario = localStorage.getItem("statusFormulario");
 
-    // Inicialize o formData com o formato correto para o POST
+    // Estrutura do formData para o POST em /api/respostas e PATCH em /api/ficha-anamnese/{idFicha}
     const formData = {
         fichaAnamnese: 1, // Substitua pelo ID correto da ficha, se necessário
-        usuario: parseInt(idUsuario, 10), // Converte para inteiro o ID do usuário
+        usuario: parseInt(idUsuario, 10), // ID do usuário
         respostas: [] // Respostas no formato esperado pelo backend
     };
-
-    console.log("ID do usuário:", idUsuario);
-    console.log("Status do formulário:", statusFormulario);
 
     // Preenche as respostas do formulário
     document.querySelectorAll('input, select').forEach(input => {
         const perguntaIdStr = input.name.split('_')[1];
-        const perguntaId = parseInt(perguntaIdStr, 10); // Converte para inteiro base 10
-
-        console.log("Processando input:", input);
-        console.log("Extraído perguntaId:", perguntaId); // Debug para verificar o valor
+        const perguntaId = parseInt(perguntaIdStr, 10);
 
         if (isNaN(perguntaId)) {
             console.warn("idPergunta inválido encontrado:", perguntaIdStr);
@@ -146,24 +140,23 @@ async function submitForm() {
             resposta = input.value;
         }
 
-        console.log("Resposta extraída:", resposta);
-
         if (resposta.trim() !== "") {
             formData.respostas.push({
                 resposta: resposta,
-                pergunta: perguntaId // Corrigido para "pergunta" conforme o esperado pelo backend
+                pergunta: perguntaId
             });
-            console.log("Adicionada ao formData.respostas:", { resposta, pergunta: perguntaId });
-        } else {
-            console.warn("Resposta vazia ignorada para perguntaId:", perguntaId);
         }
     });
 
-    console.log('Dados do formulário para POST:', formData);
-
     try {
-        const response = await fetch('http://localhost:8080/api/respostas', {
-            method: 'POST',
+        // Define o método e a URL com base no status do formulário
+        const method = statusFormulario === "Respondido" ? "PATCH" : "POST";
+        const url = method === "PATCH" 
+            ? `http://localhost:8080/api/ficha-anamnese/${formData.fichaAnamnese}`
+            : 'http://localhost:8080/api/respostas';
+
+        const response = await fetch(url, {
+            method: method,
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -180,6 +173,8 @@ async function submitForm() {
         console.error('Erro no envio das respostas:', error);
     }
 }
+
+
 
 
 document.addEventListener("DOMContentLoaded", function () {
