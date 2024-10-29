@@ -186,7 +186,7 @@ function createChartProcedimentosUsuarioMes(labels, dataChart) {
           },
         },
         x: {
-          ticks: {
+          ticks: {x
             maxRotation: 35,
             minRotation: 35,
             font: { size: 12, weight: "bold", family: "Poppins, sans-serif" },

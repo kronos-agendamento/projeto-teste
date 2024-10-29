@@ -520,5 +520,5 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("close-filter-modal").addEventListener("click", () => {
       document.getElementById("filter-modal").style.display = "none";
   });
-  new window.VLibras.Widget('https://vlibras.gov.br/app');
+ //  new window.VLibras.Widget('https://vlibras.gov.br/app');
 });

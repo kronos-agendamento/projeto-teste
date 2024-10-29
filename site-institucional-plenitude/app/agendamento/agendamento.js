@@ -1084,6 +1084,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("userInsta").textContent = instagram;
   }
 
-  new window.VLibras.Widget('https://vlibras.gov.br/app');
+ //  new window.VLibras.Widget('https://vlibras.gov.br/app');
   
 });

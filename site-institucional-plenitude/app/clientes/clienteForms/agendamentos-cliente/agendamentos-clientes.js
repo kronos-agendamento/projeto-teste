@@ -219,7 +219,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Inicializa a busca de agendamentos ao carregar a página
   fetchAgendamentos();
 
-  new window.VLibras.Widget('https://vlibras.gov.br/app');
+ //  new window.VLibras.Widget('https://vlibras.gov.br/app');
 });
 
 document.addEventListener("DOMContentLoaded", function () {
