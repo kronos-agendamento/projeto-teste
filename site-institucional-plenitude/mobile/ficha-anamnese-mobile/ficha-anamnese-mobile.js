@@ -193,6 +193,7 @@ document.addEventListener("DOMContentLoaded", function () {
   searchInput?.addEventListener("input", filtrarEspecificacoes);
   searchInput?.addEventListener("change", salvarIdsNoLocalStorage);
   carregarEspecificacoes();
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
 });
 
 // Função para carregar as especificações no datalist

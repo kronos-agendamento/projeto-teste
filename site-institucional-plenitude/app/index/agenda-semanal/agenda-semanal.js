@@ -130,6 +130,8 @@ document
 // Chama o fetchAgendamentos ao carregar a página para exibir a semana atual
 fetchAgendamentos();
 
+
+
 document.addEventListener("DOMContentLoaded", function () {
   const nome = localStorage.getItem("nome");
   const instagram = localStorage.getItem("instagram");
@@ -202,3 +204,4 @@ function saudacao() {
 
 
 window.onload = saudacao;
+new window.VLibras.Widget('https://vlibras.gov.br/app');

@@ -518,3 +518,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   }
 });
+
+
+new window.VLibras.Widget('https://vlibras.gov.br/app');

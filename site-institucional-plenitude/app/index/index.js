@@ -643,7 +643,9 @@ function renderLeads(leads) {
 
     leadsTableBody.appendChild(row);
   });
+
 }
+
 
 // Chama a função para buscar e renderizar os leads ao carregar a página
 fetchLeads();
@@ -653,3 +655,4 @@ fetchLeads();
 window.onload = saudacao;
 
 
+new window.VLibras.Widget('https://vlibras.gov.br/app');
