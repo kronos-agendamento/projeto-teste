@@ -186,7 +186,7 @@ function createChartProcedimentosUsuarioMes(labels, dataChart) {
           },
         },
         x: {
-          ticks: {x
+          ticks: {
             maxRotation: 35,
             minRotation: 35,
             font: { size: 12, weight: "bold", family: "Poppins, sans-serif" },
@@ -287,3 +287,363 @@ function filtrarEspecificacoes() {
       i === index || option.dataset.normalized.includes(filter) ? "" : "none";
   });
 }
+
+// Função de saudação
+function saudacao() {
+  const saudacaoElement1 = document.getElementById("greeting1");
+  const saudacaoElement2 = document.getElementById("greeting2");
+
+  const dataAtual = new Date();
+  const horaAtual = dataAtual.getHours();
+  const diaSemana = dataAtual.getDay();
+
+  let saudacaoTexto;
+  let diasDaSemana = [
+    { nome: "Domingo", genero: "um", otimo: "ótimo" },
+    { nome: "Segunda-feira", genero: "uma", otimo: "ótima" },
+    { nome: "Terça-feira", genero: "uma", otimo: "ótima" },
+    { nome: "Quarta-feira", genero: "uma", otimo: "ótima" },
+    { nome: "Quinta-feira", genero: "uma", otimo: "ótima" },
+    { nome: "Sexta-feira", genero: "uma", otimo: "ótima" },
+    { nome: "Sábado", genero: "um", otimo: "ótimo" },
+  ];
+
+  // Verifica a hora do dia para a saudação
+  if (horaAtual >= 0 && horaAtual < 12) {
+    saudacaoTexto = "Bom dia";
+  } else if (horaAtual >= 12 && horaAtual < 18) {
+    saudacaoTexto = "Boa tarde";
+  } else {
+    saudacaoTexto = "Boa noite";
+  }
+
+  // Define o gênero correto para o "um/uma" de acordo com o dia da semana
+  const dia = diasDaSemana[diaSemana];
+  const genero = dia.genero;
+  const otimo = dia.otimo;
+
+  // Exibe a saudação com o dia da semana e o gênero correto
+  saudacaoElement1.textContent = `${saudacaoTexto}`;
+  saudacaoElement2.textContent = `Aqui você pode gerenciar suas atividades!`;
+}
+
+// Função que faz a chamada à API e insere o resultado no <h2>
+async function gapUltimoAgendamento() {
+  let idUsuario = localStorage.getItem("idUsuario");
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/agendamentos/count-dias-ultimo-agendamento/${idUsuario}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+
+      document.querySelector(
+        ".descricao-aviso h2"
+      ).textContent = ` ${data} dias`;
+
+      localStorage.setItem("QtdDiaUltimoAgendamento", data);
+    } else {
+      console.error("Erro na resposta:", response.status);
+      document.querySelector(".descricao-aviso h2").textContent =
+        "Erro ao obter dados";
+    }
+  } catch (error) {
+    console.error("Erro na requisição:", error);
+    document.querySelector(".descricao-aviso h2").textContent =
+      "Erro ao obter dados";
+  }
+}
+
+// Chama ambas as funções ao carregar a página
+window.onload = function () {
+  saudacao();
+  gapUltimoAgendamento();
+  carregarEspecificacoes();
+};
+
+// Função para buscar o dia mais agendado
+function getDiaMaisAgendado() {
+  const idUsuario = localStorage.getItem("idUsuario");
+
+  if (!idUsuario) {
+    console.error("ID do usuário não encontrado no localStorage");
+    document.getElementById("dMaisAgendados").innerText =
+      "ID do usuário não encontrado";
+    return;
+  }
+
+  fetch(`http://localhost:8080/api/agendamentos/dia-mais-agendado/${idUsuario}`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Erro na requisição, status " + response.status);
+      }
+      return response.text(); // Lendo a resposta como texto
+    })
+    .then((data) => {
+      document.getElementById("dMaisAgendados").innerText = data;
+    })
+    .catch((error) => {
+      console.error("Erro ao buscar o dia mais agendado:", error);
+      document.getElementById("dMaisAgendados").innerText = "Erro ao carregar";
+    });
+}
+
+getDiaMaisAgendado();
+
+// Função para buscar o horário mais agendado
+function getHorarioMaisAgendado() {
+  const idUsuario = localStorage.getItem("idUsuario");
+
+  if (!idUsuario) {
+    console.error("ID do usuário não encontrado no localStorage");
+    document.getElementById("horarioMaisAgendado").innerText =
+      "ID do usuário não encontrado";
+    return;
+  }
+
+  fetch(
+    `http://localhost:8080/api/agendamentos/usuarios/${idUsuario}/intervalo-mais-agendado`
+  )
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Erro ao buscar o horário mais agendado");
+      }
+      return response.text(); // A resposta será texto (o intervalo de tempo)
+    })
+    .then((data) => {
+      document.getElementById("horarioMaisAgendado").innerText = data;
+    })
+    .catch((error) => {
+      console.error("Erro:", error);
+      document.getElementById("horarioMaisAgendado").innerText =
+        "Erro ao carregar";
+    });
+}
+
+getHorarioMaisAgendado();
+
+// Função para formatar a data e hora
+function formatDateTime(dateTimeString) {
+  const options = {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  };
+  return new Date(dateTimeString).toLocaleString("pt-BR", options);
+}
+
+async function fetchProcedimentos() { 
+  const idUsuario = localStorage.getItem("idUsuario");
+
+  if (!idUsuario) {
+      console.error("ID do usuário não encontrado no localStorage.");
+      return;
+  }
+
+  try {
+      const response = await fetch(`http://localhost:8080/api/procedimentos/top3/${idUsuario}`);
+      if (!response.ok) {
+          throw new Error("Erro na resposta da rede");
+      }
+      const procedimentos = await response.json();
+
+      const container = document.querySelector(".box-agendamento-container");
+      container.innerHTML = ""; // Limpar o conteúdo anterior
+
+      procedimentos.forEach((procedimento) => {
+          const tipo_procedimento = procedimento[1]; // Tipo
+          const descricao_procedimento = procedimento[2]; // Descrição
+          const data_horario = procedimento[4]; // Data e horário mais recente
+
+          // Verifica o tipo de procedimento e ajusta o ícone
+          let imgIconSrc = '../../assets/icons/profile.png'; // Ícone padrão
+
+          switch (tipo_procedimento) {
+              case 'Maquiagem':
+                  imgIconSrc = '../../assets/icons/maquiagem-mobile.png';
+                  break;
+              case 'Cílios':
+                  imgIconSrc = '../../assets/icons/cilios-mobile.png';
+                  break;
+              case 'Sobrancelha':
+                  imgIconSrc = '../../assets/icons/sobrancelha-mobile.png';
+                  break;
+              default:
+                  imgIconSrc = '../../assets/icons/profile.png'; // Ícone padrão
+                  break;
+          }
+
+          const formattedDateTime = formatDateTime(data_horario);
+
+          // Criar o HTML com o ícone e as informações do agendamento
+          const agendamentoHTML = `
+              <div class="box-agendamento">
+                  <div class="icon-agendamento">
+                      <div class="icon-procedimento" style="background-color: #ffffff; border: 2px solid #AD9393; width: 80px; height: 80px; margin-top: 10px; border-radius: 50%;">
+                          <img src="${imgIconSrc}" alt="${tipo_procedimento}" >
+                      </div>
+                  </div>
+                  <div class="procedimento-agendamento">
+                      <span id="agendamento"><strong style= "font-size: 18px;">${tipo_procedimento}</strong><br></span>
+                      <span id="agendamento"><strong>${descricao_procedimento}</strong><br></span>
+                      <span id="agendamento">Último agendamento: ${formattedDateTime}</span>
+                  </div>
+              </div>
+          `;
+          container.insertAdjacentHTML("beforeend", agendamentoHTML);
+      });
+  } catch (error) {
+      console.error("Erro ao buscar procedimentos:", error);
+  }
+}
+
+// Chamar a função ao carregar a página
+document.addEventListener('DOMContentLoaded', fetchProcedimentos);
+
+// Função para formatar data e horário
+function formatDateTime(data_horario) {
+  const data = new Date(data_horario);
+  return data.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' }) + 
+         ' às ' + data.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+}
+
+
+
+
+
+fetchProcedimentos();
+
+// Função para carregar as especificações no datalist
+function carregarEspecificacoes() {
+  fetch("http://localhost:8080/api/especificacoes")
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else if (response.status === 204) {
+        console.log("Nenhuma especificação encontrada.");
+        return [];
+      } else {
+        throw new Error("Erro ao carregar especificações");
+      }
+    })
+    .then((data) => {
+      const dataList = document.getElementById("especificacoesList");
+      dataList.innerHTML = ""; // Limpa as opções anteriores
+
+      data.sort((a, b) => {
+        const normalizedA = normalizeString(
+          `${a.especificacao} - ${a.procedimento.tipo}`
+        );
+        const normalizedB = normalizeString(
+          `${b.especificacao} - ${b.procedimento.tipo}`
+        );
+        return normalizedA.localeCompare(normalizedB);
+      });
+
+      data.forEach((item) => {
+        const option = document.createElement("option");
+        option.value = `${item.especificacao} - ${item.procedimento.tipo}`;
+        option.dataset.normalized = normalizeString(option.value);
+        option.dataset.idEspecificacao = item.idEspecificacaoProcedimento;
+        option.dataset.idProcedimento = item.procedimento.idProcedimento;
+        dataList.appendChild(option);
+      });
+    })
+    .catch((error) => {
+      console.error("Erro:", error);
+    });
+}
+
+// Função para salvar os IDs no localStorage e redirecionar para a tela de agendamento
+function salvarIdsNoLocalStorage() {
+  const input = document.getElementById("searchInput");
+  const selectedOption = Array.from(
+    document.getElementById("especificacoesList").options
+  ).find((option) => option.value === input.value);
+
+  if (selectedOption) {
+    const idEspecificacao = selectedOption.dataset.idEspecificacao;
+    const idProcedimento = selectedOption.dataset.idProcedimento;
+
+    localStorage.setItem("idEspecificacao", idEspecificacao);
+    localStorage.setItem("idProcedimento", idProcedimento);
+
+    window.location.href = "../agendamento-mobile/agendamento-mobile.html";
+  }
+}
+
+// Função de busca binária
+function buscaBinaria(arr, x) {
+  let start = 0;
+  let end = arr.length - 1;
+
+  while (start <= end) {
+    let mid = Math.floor((start + end) / 2);
+    const midVal = arr[mid].dataset.normalized;
+
+    if (midVal.includes(x)) {
+      return mid;
+    } else if (midVal < x) {
+      start = mid + 1;
+    } else {
+      end = mid - 1;
+    }
+  }
+
+  return -1;
+}
+
+// Função para filtrar as opções do datalist usando busca binária
+function filtrarEspecificacoes() {
+  const input = document.getElementById("searchInput");
+  const filter = normalizeString(input.value);
+  const dataList = document.getElementById("especificacoesList");
+  const options = Array.from(dataList.getElementsByTagName("option"));
+
+  options.sort((a, b) =>
+    a.dataset.normalized.localeCompare(b.dataset.normalized)
+  );
+
+  const index = buscaBinaria(options, filter);
+
+  options.forEach((option, i) => {
+    option.style.display =
+      i === index || option.dataset.normalized.includes(filter) ? "" : "none";
+  });
+}
+
+// Adiciona eventos de interação aos elementos de busca
+document.getElementById("lupa-icon")?.addEventListener("click", function () {
+  this.style.display = "none";
+  const searchInput = document.getElementById("searchInput");
+  searchInput.style.display = "block";
+  document.getElementById("close-icon").style.display = "block";
+  searchInput.focus();
+});
+
+document.getElementById("close-icon")?.addEventListener("click", function () {
+  this.style.display = "none";
+  document.getElementById("searchInput").style.display = "none";
+  document.getElementById("lupa-icon").style.display = "block";
+  document.getElementById("searchInput").value = "";
+  document.getElementById("resultados").innerHTML = "";
+});
+
+document
+  .getElementById("searchInput")
+  ?.addEventListener("input", filtrarEspecificacoes);
+
+document
+  .getElementById("searchInput")
+  ?.addEventListener("change", salvarIdsNoLocalStorage);

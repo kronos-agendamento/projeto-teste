@@ -1,4 +1,4 @@
- -- drop database kronosbooking;
+drop database kronosbooking;
 create database if not exists kronosbooking;
 USE kronosbooking;
 
@@ -408,11 +408,9 @@ INSERT INTO Leads (nome, email, telefone, instagram, mensagem, data_criacao)
 VALUES 
 ('Maria Silva', 'maria.silva@example.com', 11987654321, '@mariasilva', 'Gostaria de saber mais sobre seus serviços.', NOW()),
 ('João Pereira', 'joao.pereira@example.com', 11912345678, '@joaopereira', 'Tenho interesse em fazer uma extensão de cílios.', NOW()),
-('Ana Souza', 'ana.souza@example.com', 11987611234, '@anasouza', 'Quais são os valores para design de sobrancelha?', NOW()),
+('Ana Souza', 'ana.souza@example.com', 11987611234, NULL, 'Quais são os valores para design de sobrancelha?', NOW()),
 ('Carla Oliveira', 'carla.oliveira@example.com', 11933332222, '@carlaoliveira', 'Vi uma promoção no Instagram e quero mais detalhes.', NOW()),
 ('Pedro Santos', 'pedro.santos@example.com', 11998765432, '@pedrosantos', 'Como funciona o procedimento de volume russo?', NOW());
-
-Select * from Leads;
 
 UPDATE usuario 
 SET dtype = 'Cliente' 
@@ -590,8 +588,8 @@ END //
 
 DELIMITER ;
 
-CALL gerar_agendamentos_aleatorios();
-CALL gerar_agendamentos_aleatorios();
+-- CALL gerar_agendamentos_aleatorios();
+-- CALL gerar_agendamentos_aleatorios();
 CALL gerar_agendamentos_aleatorios();
 
 INSERT INTO feedback (anotacoes, nota, fk_agendamento, fk_usuario, fk_cliente_avaliado)
@@ -606,3 +604,5 @@ VALUES
 ('Ótimo trabalho, mas o tempo de espera foi um pouco longo.', 4, 3, 4, 6),
 ('Profissional muito educado e atencioso.', 5, 7, 8, 3),
 ('Adorei o resultado final! Super recomendo.', 5, 10, 2, 5);
+
+delete from agendamento where id_agendamento in ('15','13','40', '41', '43');
