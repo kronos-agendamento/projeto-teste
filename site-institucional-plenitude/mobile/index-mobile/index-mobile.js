@@ -133,6 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
   } else {
       console.error("Elemento com ID 'modal-close' não encontrado.");
   }
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
 });
 
 // Função para fechar o modal

@@ -126,6 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const defaultMonth = document.getElementById("selectMes")?.value;
   fetchProcedimentosPorUsuarioEMes(idUsuario, defaultMonth);
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
 });
 
 // Função para buscar os procedimentos por usuário e mês

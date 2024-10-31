@@ -578,6 +578,7 @@ function mostrarExemploEditar() {
 document.addEventListener("DOMContentLoaded", () => {
   listarTodasPerguntasAtivas();
   mostrarExemplo(); // Chama a função para exibir o exemplo inicial
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
 });
 
 function ativarPergunta(perguntaId) {

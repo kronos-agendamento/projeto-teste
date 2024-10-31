@@ -252,6 +252,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Inicializar semana atual ao carregar a página
   renderWeek();
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
 });
 
 document.addEventListener("DOMContentLoaded", function () {
