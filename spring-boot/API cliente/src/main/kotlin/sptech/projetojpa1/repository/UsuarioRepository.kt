@@ -205,4 +205,6 @@ ORDER BY
     @Transactional
     @Query("DELETE FROM Usuario u WHERE u.codigo = :id")
     fun deletarPorId(@Param("id") id: Int): Int
+
+    fun findAllByEmpresaIdEmpresa(empresaId: Int): List<Usuario>
 }

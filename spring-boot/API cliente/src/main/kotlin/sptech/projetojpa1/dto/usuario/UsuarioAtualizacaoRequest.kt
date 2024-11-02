@@ -12,5 +12,6 @@ data class UsuarioAtualizacaoRequest(
     var genero: String?,
     var indicacao: String?,
     var senha: String?,
-    var endereco: Endereco?
-    )
+    var endereco: Endereco?,
+    var nivelAcesso: Int?
+)

@@ -273,13 +273,15 @@ class UsuarioController(
     @PostMapping("/upload-foto/{cpf}", consumes = ["multipart/form-data"])
     fun uploadFoto(
         @PathVariable cpf: String,
-        @Parameter(description = "Arquivo de imagem do usuário", required = true, content = [
-            Content(mediaType = "image/png"),
-            Content(mediaType = "image/jpeg"),
-            Content(mediaType = "image/jpg")
-        ])
+        @Parameter(
+            description = "Arquivo de imagem do usuário", required = true, content = [
+                Content(mediaType = "image/png"),
+                Content(mediaType = "image/jpeg"),
+                Content(mediaType = "image/jpg")
+            ]
+        )
         @RequestParam("file") file: MultipartFile
-    ): ResponseEntity<String>  {
+    ): ResponseEntity<String> {
         return try {
             // Verificar o tipo de arquivo
             if (!file.contentType?.startsWith("image")!!) {
@@ -478,6 +480,20 @@ class UsuarioController(
         return ResponseEntity.ok(leads)
     }
 
-
+    @Operation(
+        summary = "Busca Usuário por ID da Empresa",
+        description = "Retorna o nome, a foto e o nível de acesso do usuário associado ao ID da empresa."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Usuário encontrado"),
+            ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+        ]
+    )
+    @GetMapping("/empresa/{empresaId}")
+    fun getUsuariosPorIdEmpresa(@PathVariable empresaId: Int): List<UsuarioEmpresaDTO> {
+        return usuarioService.getUsuariosPorIdEmpresa(empresaId)
+    }
 }
 

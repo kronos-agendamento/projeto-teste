@@ -12,6 +12,7 @@ import sptech.projetojpa1.dto.agendamento.AgendamentoDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoRequestDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoResponseDTO
 import sptech.projetojpa1.dto.agendamento.BloqueioRequestDTO
+import sptech.projetojpa1.dto.usuario.UsuarioEmpresaDTO
 import sptech.projetojpa1.service.AgendamentoService
 import java.time.LocalDate
 import java.time.LocalTime
@@ -385,47 +386,39 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
 
     }
 
-    @RestController
-    @RequestMapping("/api/agendamentos")
-    class AgendamentoController(
-        private val agendamentoService: AgendamentoService
-    ) {
+    @Operation(
+        summary = "Desbloquear horários de agendamento",
+        description = "Remove todos os agendamentos do tipo 'Bloqueio' para um determinado dia e intervalo de tempo."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Horários desbloqueados com sucesso"),
+            ApiResponse(
+                responseCode = "404",
+                description = "Nenhum horário bloqueado encontrado no intervalo especificado"
+            ),
+            ApiResponse(responseCode = "400", description = "Erro nos parâmetros de entrada")
+        ]
+    )
+    @DeleteMapping("/desbloquear")
+    fun desbloquearHorarios(
+        @RequestParam dia: LocalDate,
+        @RequestParam horaInicio: LocalTime
+    ): ResponseEntity<String> {
+        return try {
+            // Chama o serviço para desbloquear o horário
+            agendamentoService.desbloquearHorarios(dia, horaInicio)
 
-        @Operation(
-            summary = "Desbloquear horários de agendamento",
-            description = "Remove todos os agendamentos do tipo 'Bloqueio' para um determinado dia e intervalo de tempo."
-        )
-        @ApiResponses(
-            value = [
-                ApiResponse(responseCode = "200", description = "Horários desbloqueados com sucesso"),
-                ApiResponse(
-                    responseCode = "404",
-                    description = "Nenhum horário bloqueado encontrado no intervalo especificado"
-                ),
-                ApiResponse(responseCode = "400", description = "Erro nos parâmetros de entrada")
-            ]
-        )
-        @DeleteMapping("/desbloquear")
-        fun desbloquearHorarios(
-            @RequestParam dia: LocalDate,
-            @RequestParam horaInicio: LocalTime
-        ): ResponseEntity<String> {
-            return try {
-                // Chama o serviço para desbloquear o horário
-                agendamentoService.desbloquearHorarios(dia, horaInicio)
-
-                // Retorna uma resposta de sucesso
-                ResponseEntity.ok("Horário de bloqueio desbloqueado com sucesso!")
-            } catch (e: IllegalArgumentException) {
-                // Retorna uma resposta de erro se nenhum bloqueio for encontrado
-                ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.message)
-            } catch (e: Exception) {
-                // Retorna uma resposta genérica de erro para outras exceções
-                ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao desbloquear horário.")
-            }
+            // Retorna uma resposta de sucesso
+            ResponseEntity.ok("Horário de bloqueio desbloqueado com sucesso!")
+        } catch (e: IllegalArgumentException) {
+            // Retorna uma resposta de erro se nenhum bloqueio for encontrado
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.message)
+        } catch (e: Exception) {
+            // Retorna uma resposta genérica de erro para outras exceções
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao desbloquear horário.")
         }
     }
-
 }
 
 

@@ -56,22 +56,6 @@ document.addEventListener("DOMContentLoaded", function () {
     e.target.value = valueWithoutNumbers;
   });
 
-  document.getElementById("indicacao").addEventListener("input", function (e) {
-    let input = e.target.value;
-
-    // Remove números do valor do input
-    let valueWithoutNumbers = input.replace(/\d/g, "");
-
-    // Divide as palavras, capitaliza a primeira letra de cada uma, e une de volta
-    valueWithoutNumbers = valueWithoutNumbers
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(" ");
-
-    // Atualiza o campo de nome com a nova formatação
-    e.target.value = valueWithoutNumbers;
-  });
-
   document.getElementById("telefone").addEventListener("input", function (e) {
     let input = e.target.value.replace(/\D/g, ""); // Remove caracteres não numéricos
     // Limita o comprimento da string a 11 caracteres
@@ -110,17 +94,6 @@ document.addEventListener("DOMContentLoaded", function () {
       input = input.slice(0, 3) + "." + input.slice(3);
     }
     e.target.value = input; // Atualiza o campo de CPF com a formatação
-  });
-
-  document.getElementById("nome").addEventListener("input", function (e) {
-    // Remove números do valor do input
-    let valueWithoutNumbers = e.target.value.replace(/\d/g, "");
-
-    // Aplica a capitalização para cada palavra, mantendo os espaços
-    e.target.value = valueWithoutNumbers
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(" ");
   });
 
   document.getElementById("email").addEventListener("input", function (e) {
@@ -187,7 +160,10 @@ document.addEventListener("DOMContentLoaded", function () {
       const senha = document.getElementById("senha").value;
       const dataNasc = document.getElementById("nascimento").value;
       const genero = document.getElementById("genero").value;
-      const indicacao = document.getElementById("indicacao").value;
+      const nivelAcessoId = document.getElementById("nivelAcesso").value; // Captura o valor do nível de acesso
+
+      // Captura o valor de empresa do localStorage
+      const empresaId = localStorage.getItem("empresa");
 
       const logradouro = document.getElementById("logradouro").value;
       const numero = parseInt(document.getElementById("numero").value);
@@ -235,7 +211,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const enderecoId = await ultimoEnderecoResponse.json();
         console.log("Último endereço cadastrado com ID:", enderecoId);
 
-        // Continua com o cadastro do usuário usando o ID do último endereço
+        // Continua com o cadastro do funcionário usando o ID do último endereço, nível de acesso e empresaId
         const usuarioResponse = await fetch(
           "http://localhost:8080/usuarios/cadastro-usuario",
           {
@@ -252,76 +228,70 @@ document.addEventListener("DOMContentLoaded", function () {
               cpf,
               dataNasc,
               genero,
-              indicacao,
               status: true,
-              nivelAcessoId: 3,
-              enderecoId, // Utiliza o ID do último endereço cadastrado
+              nivelAcessoId: parseInt(nivelAcessoId), // Converte o valor para número antes de enviar
+              enderecoId,
+              empresaId: parseInt(empresaId), // Converte o valor de empresaId para número antes de enviar
             }),
           }
         );
 
         if (usuarioResponse.ok) {
-          console.log("Usuário cadastrado com sucesso.");
+          console.log("Funcionário cadastrado com sucesso.");
 
           showNotification(
             "Cadastro realizado com sucesso!",
             false,
-            "../../clientes.html"
+            "../../perfil.html"
           );
         } else {
           const errorText = await usuarioResponse.text();
-          throw new Error("Erro ao realizar cadastro de usuário: " + errorText);
+          throw new Error(
+            "Erro ao realizar cadastro de funcionário: " + errorText
+          );
         }
       } catch (error) {
         console.error("Erro geral:", error);
         showNotification(error.message, true);
       }
     });
-  new window.VLibras.Widget('https://vlibras.gov.br/app');
-});
 
+  // Configuração adicional e carregamento de imagem (opcional)
+  async function carregarImagem2() {
+    const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução
+    const perfilImage = document.getElementById("perfilImage");
 
-document.addEventListener("DOMContentLoaded", function () {
-  const nome = localStorage.getItem("nome");
-  const instagram = localStorage.getItem("instagram");
-
-  if (nome && instagram) {
-      document.getElementById("userName").textContent = nome;
-      document.getElementById("userInsta").textContent = instagram;
-  }
-});
-
-async function carregarImagem2() {
-  const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução
-  const perfilImage = document.getElementById("perfilImage");
-
-  if (!cpf) {
+    if (!cpf) {
       console.log("CPF não encontrado.");
       return;
-  }
+    }
 
-  try {
-      const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario/${cpf}`, {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/usuarios/busca-imagem-usuario/${cpf}`,
+        {
           method: "GET",
-      });
+        }
+      );
 
       if (response.ok) {
-          const blob = await response.blob(); // Recebe a imagem como Blob
-          const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
+        const blob = await response.blob(); // Recebe a imagem como Blob
+        const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
 
-          // Define a URL da imagem carregada como src do img
-          perfilImage.src = imageUrl;
-          perfilImage.alt = "Foto do usuário";
-          perfilImage.style.width = "20vh";
-          perfilImage.style.height = "20vh";
-          perfilImage.style.borderRadius = "300px";
+        // Define a URL da imagem carregada como src do img
+        perfilImage.src = imageUrl;
+        perfilImage.alt = "Foto do usuário";
+        perfilImage.style.width = "20vh";
+        perfilImage.style.height = "20vh";
+        perfilImage.style.borderRadius = "300px";
       } else {
-          console.log("Imagem não encontrada para o CPF informado.");
+        console.log("Imagem não encontrada para o CPF informado.");
       }
-  } catch (error) {
+    } catch (error) {
       console.error("Erro ao buscar a imagem:", error);
+    }
   }
-}
 
-// Carrega a imagem automaticamente quando a página termina de carregar
-window.onload = carregarImagem2;
+  // Carrega a imagem automaticamente quando a página termina de carregar
+  window.onload = carregarImagem2;
+});
