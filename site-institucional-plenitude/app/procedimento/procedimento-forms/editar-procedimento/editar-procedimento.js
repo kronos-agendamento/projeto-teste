@@ -255,3 +255,38 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 new window.VLibras.Widget('https://vlibras.gov.br/app');
+
+async function carregarImagem2() {
+  const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução
+  const perfilImage = document.getElementById("perfilImage");
+
+  if (!cpf) {
+      console.log("CPF não encontrado.");
+      return;
+  }
+
+  try {
+      const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario/${cpf}`, {
+          method: "GET",
+      });
+
+      if (response.ok) {
+          const blob = await response.blob(); // Recebe a imagem como Blob
+          const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
+
+          // Define a URL da imagem carregada como src do img
+          perfilImage.src = imageUrl;
+          perfilImage.alt = "Foto do usuário";
+          perfilImage.style.width = "20vh";
+          perfilImage.style.height = "20vh";
+          perfilImage.style.borderRadius = "300px";
+      } else {
+          console.log("Imagem não encontrada para o CPF informado.");
+      }
+  } catch (error) {
+      console.error("Erro ao buscar a imagem:", error);
+  }
+}
+
+// Carrega a imagem automaticamente quando a página termina de carregar
+window.onload = carregarImagem2;
