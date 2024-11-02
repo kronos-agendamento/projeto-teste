@@ -224,7 +224,8 @@ class UsuarioService(
         return usuarioRepository.save(usuario)
     }
 
-    fun getFoto(codigo: Int): ByteArray? = usuarioRepository.findFotoByCodigo(codigo)
+
+    fun getFoto(cpf: String): ByteArray? = usuarioRepository.findFotoByCpf(cpf)
 
     fun getUsuariosByNivelAcesso(codigo: Int): List<Usuario> {
         val nivelAcesso = nivelAcessoRepository.findById(codigo).orElse(null)

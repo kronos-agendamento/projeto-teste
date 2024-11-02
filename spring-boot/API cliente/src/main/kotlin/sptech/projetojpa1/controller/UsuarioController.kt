@@ -1,6 +1,7 @@
 package sptech.projetojpa1.controller
 
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.validation.Valid
@@ -11,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile
 import sptech.projetojpa1.domain.Usuario
 import sptech.projetojpa1.dto.usuario.*
 import sptech.projetojpa1.service.UsuarioService
+import io.swagger.v3.oas.annotations.media.Content
 
 @RestController
 @RequestMapping("/usuarios")
@@ -248,11 +250,11 @@ class UsuarioController(
         ]
     )
     @GetMapping(
-        value = ["/busca-imagem-usuario/{codigo}"],
+        value = ["/busca-imagem-usuario/{cpf}"],
         produces = ["image/jpeg", "image/png", "image/gif", "image/jpg"]
     )
-    fun getFoto(@PathVariable codigo: Int): ResponseEntity<ByteArray> {
-        val foto = usuarioService.getFoto(codigo)
+    fun getFoto(@PathVariable cpf: String): ResponseEntity<ByteArray> {
+        val foto = usuarioService.getFoto(cpf)
         return if (foto != null) {
             ResponseEntity.ok(foto)
         } else {
@@ -268,12 +270,27 @@ class UsuarioController(
             ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
         ]
     )
-    @PostMapping("/upload-foto/{cpf}")
+    @PostMapping("/upload-foto/{cpf}", consumes = ["multipart/form-data"])
     fun uploadFoto(
         @PathVariable cpf: String,
+        @Parameter(description = "Arquivo de imagem do usuário", required = true, content = [
+            Content(mediaType = "image/png"),
+            Content(mediaType = "image/jpeg"),
+            Content(mediaType = "image/jpg")
+        ])
         @RequestParam("file") file: MultipartFile
-    ): ResponseEntity<String> {
+    ): ResponseEntity<String>  {
         return try {
+            // Verificar o tipo de arquivo
+            if (!file.contentType?.startsWith("image")!!) {
+                return ResponseEntity.status(400).body("Arquivo inválido. Somente imagens são permitidas.")
+            }
+            // Verificar tamanho do arquivo
+            if (file.size > 5 * 1024 * 1024) { // Limite de 5 MB, por exemplo
+                return ResponseEntity.status(400).body("Arquivo muito grande. O tamanho máximo permitido é de 5MB.")
+            }
+
+            // Atualizar a foto no banco
             val usuario = usuarioService.atualizarFotoUsuario(cpf, file.bytes)
             if (usuario != null) {
                 ResponseEntity.status(200).body("Foto enviada com sucesso")

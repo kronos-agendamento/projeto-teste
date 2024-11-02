@@ -872,5 +872,160 @@ document.addEventListener("DOMContentLoaded", function () {
 new window.VLibras.Widget('https://vlibras.gov.br/app');
 
 
+document.addEventListener("DOMContentLoaded", () => {
+  let isEditingPersonal = false; // Controle da edição dos dados pessoais
+
+  // Função para alternar a edição dos campos do formulário de usuário e do upload de foto
+  function toggleEditing() {
+    isEditingPersonal = !isEditingPersonal;
+
+    // Seleciona os campos de input e o botão de envio de foto
+    const lockIcons = document.querySelectorAll("#personalForm .lock-icon");
+    const fields = document.querySelectorAll("#personalForm input, #personalForm select");
+    const saveButton = document.getElementById("save-usuario-button");
+
+    const fileInput = document.getElementById("file"); // Campo de upload de foto
+    const uploadButton = document.getElementById("uploadButton"); // Botão de envio da foto
+
+    if (isEditingPersonal) {
+      lockIcons.forEach((lockIcon) => (lockIcon.style.display = "inline")); // Exibe ícones de cadeado
+      fields.forEach((field) => (field.disabled = false)); // Habilita todos os campos
+      saveButton.disabled = false; // Habilita o botão de salvar
+
+      // Habilita o campo e o botão de upload de foto
+      fileInput.disabled = false;
+      uploadButton.disabled = false;
+    } else {
+      lockIcons.forEach((lockIcon) => (lockIcon.style.display = "none")); // Oculta ícones de cadeado
+      fields.forEach((field) => (field.disabled = true)); // Desabilita todos os campos
+      saveButton.disabled = true; // Desabilita o botão de salvar
+
+      // Desabilita o campo e o botão de upload de foto
+      fileInput.disabled = true;
+      uploadButton.disabled = true;
+    }
+  }
+
+  // Adiciona o event listener ao botão de edição de dados pessoais
+  const editIconUsuario = document.getElementById("editIconUsuario");
+  if (editIconUsuario) {
+    editIconUsuario.addEventListener("click", toggleEditing);
+  }
+
+  // Event listener para o formulário de upload de foto
+  document.getElementById("uploadForm").addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const cpf = document.getElementById("cpf").value;
+    const fileInput = document.getElementById("file");
+
+    if (!cpf || fileInput.files.length === 0) {
+      alert("Por favor, insira o CPF e selecione uma imagem.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", fileInput.files[0]);
+
+    try {
+      const response = await fetch(`http://localhost:8080/usuarios/upload-foto/${cpf}`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.text();
+      const responseMessage = document.getElementById("responseMessage");
+
+      if (response.ok) {
+        responseMessage.textContent = "Foto enviada com sucesso! Recarregue a página para ter acesso a foto atuliazada.";
+        responseMessage.style.color = "green";
+      } else {
+        responseMessage.textContent = `Erro: ${result}`;
+        responseMessage.style.color = "red";
+      }
+
+      // Desabilita o upload após a submissão
+      toggleEditing();
+
+    } catch (error) {
+      console.error("Erro ao enviar a foto:", error);
+      document.getElementById("responseMessage").textContent = "Erro ao enviar a foto.";
+    }
+  });
+});
 
 
+
+async function carregarImagem() {
+  const cpf = document.getElementById("cpf").value.trim(); // Captura o valor do CPF a cada execução
+  const imageContainer = document.getElementById("imageContainer");
+
+  // Limpa o contêiner de imagem antes da nova busca
+  imageContainer.innerHTML = "";
+
+  if (!cpf) {
+      imageContainer.innerHTML = "<p style='color: red;'>CPF não encontrado.</p>";
+      return;
+  }
+
+  try {
+      const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario/${cpf}`, {
+          method: "GET",
+      });
+
+      if (response.ok) {
+          const blob = await response.blob(); // Recebe a imagem como Blob
+          const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
+
+          // Cria um elemento de imagem e exibe na div
+          const img = document.createElement("img");
+          img.src = imageUrl;
+          img.alt = "Foto do usuário";
+          imageContainer.appendChild(img);
+      } else {
+          imageContainer.innerHTML = "<p style='color: red;'>Imagem não encontrada para o CPF informado.</p>";
+      }
+  } catch (error) {
+      console.error("Erro ao buscar a imagem:", error);
+      imageContainer.innerHTML = "<p style='color: red;'>Erro ao buscar a imagem. Tente novamente.</p>";
+  }
+}
+
+// Carrega a imagem automaticamente quando a página termina de carregar
+window.onload = carregarImagem;
+
+
+async function carregarImagem2() {
+  const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução
+  const perfilImage = document.getElementById("perfilImage");
+
+  if (!cpf) {
+      console.log("CPF não encontrado.");
+      return;
+  }
+
+  try {
+      const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario/${cpf}`, {
+          method: "GET",
+      });
+
+      if (response.ok) {
+          const blob = await response.blob(); // Recebe a imagem como Blob
+          const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
+
+          // Define a URL da imagem carregada como src do img
+          perfilImage.src = imageUrl;
+          perfilImage.alt = "Foto do usuário";
+          perfilImage.style.width = "20vh";
+          perfilImage.style.height = "20vh";
+          perfilImage.style.borderRadius = "300px";
+      } else {
+          console.log("Imagem não encontrada para o CPF informado.");
+      }
+  } catch (error) {
+      console.error("Erro ao buscar a imagem:", error);
+  }
+}
+
+// Carrega a imagem automaticamente quando a página termina de carregar
+window.onload = carregarImagem2;

@@ -39,8 +39,8 @@ interface UsuarioRepository : JpaRepository<Usuario, Int> {
     fun findByEmailIgnoreCase(email: String): Usuario?
 
     // Encontra a foto do usuário pelo código
-    @Query("select u.foto from Usuario u where u.codigo = ?1")
-    fun findFotoByCodigo(codigo: Int): ByteArray?
+    @Query("select u.foto from Usuario u where u.cpf = ?1")
+    fun findFotoByCpf(cpf: String): ByteArray?
 
     fun findByNivelAcesso(nivelAcesso: NivelAcesso): List<Usuario>
 
