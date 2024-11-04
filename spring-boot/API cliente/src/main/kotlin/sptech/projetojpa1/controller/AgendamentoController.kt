@@ -232,9 +232,14 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
 
 
     @GetMapping("/agendamentos-realizados-ultimos-cinco-meses")
-    fun agendamentosRealizadosUltimos5Meses(): ResponseEntity<List<Int>> {
-        val quantidadeConcluidos = agendamentoService.agendamentosRealizadosUltimos5Meses()
-        return ResponseEntity.ok(quantidadeConcluidos)
+    fun getAgendamentosMensal(
+        @RequestParam("startDate") startDate: String,
+        @RequestParam("endDate") endDate: String
+    ): List<Array<Any>> {
+        val start = LocalDate.parse(startDate)
+        val end = LocalDate.parse(endDate)
+
+        return agendamentoService.getAgendamentosPorIntervalo(start, end)
     }
 
     @Operation(
