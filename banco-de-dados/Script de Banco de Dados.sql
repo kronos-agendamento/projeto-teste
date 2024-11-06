@@ -1,6 +1,8 @@
-drop database kronosbooking;
+ -- drop database kronosbooking;
 create database if not exists kronosbooking;
 USE kronosbooking;
+
+select*from agendamento where fk_usuario = 4;
 
 DROP TABLE IF EXISTS login_logoff;
 DROP TABLE IF EXISTS feedback;
@@ -364,19 +366,19 @@ INSERT INTO agendamento (id_agendamento, data_horario, tipo_agendamento, tempo_p
 (3, '2024-09-10 14:00:00', 'Retirada', 35, 7, 1, 1, 1),
 
 -- Agendamentos para Carla Borges (id_usuario = 8)
-(4, '2024-10-29 10:00:00', 'Manutencao', 20, 8, 2, 3, 1),
+(4, '2024-07-10 10:00:00', 'Manutencao', 20, 8, 2, 3, 1),
 (5, '2024-08-08 12:00:00', 'Colocacao', 30, 8, 2, 2, 1),
 (6, '2024-09-05 13:00:00', 'Retirada', 25, 8, 2, 1, 1),
 
 -- Agendamentos para Pedro Marques (id_usuario = 9)
 (7, '2024-07-20 09:30:00', 'Colocacao', 45, 9, 3, 1, 1),
-(8, '2024-10-29 10:00:00', 'Manutencao', 50, 9, 3, 2, 1),
+(8, '2024-08-18 10:00:00', 'Manutencao', 50, 9, 3, 2, 1),
 (9, '2024-09-15 11:00:00', 'Retirada', 30, 9, 3, 1, 1),
 
 -- Agendamentos para Ana Martins (id_usuario = 10)
 (10, '2024-07-05 09:00:00', 'Colocacao', 25, 10, 1, 3, 1),
 (11, '2024-08-02 10:30:00', 'Manutencao', 40, 10, 1, 2, 1),
-(12, '2024-10-29 12:00:00', 'Retirada', 35, 10, 1, 1, 1);
+(12, '2024-09-12 12:00:00', 'Retirada', 35, 10, 1, 1, 1);
 
 
 INSERT INTO cliente (id_usuario, experiencia_avaliada, frequencia)
@@ -589,8 +591,8 @@ END //
 
 DELIMITER ;
 
--- CALL gerar_agendamentos_aleatorios();
--- CALL gerar_agendamentos_aleatorios();
+CALL gerar_agendamentos_aleatorios();
+CALL gerar_agendamentos_aleatorios();
 CALL gerar_agendamentos_aleatorios();
 
 INSERT INTO feedback (anotacoes, nota, fk_agendamento, fk_usuario, fk_cliente_avaliado)
@@ -606,8 +608,11 @@ VALUES
 ('Profissional muito educado e atencioso.', 5, 7, 8, 3),
 ('Adorei o resultado final! Super recomendo.', 5, 10, 2, 5);
 
-select * from usuario;
+INSERT INTO agendamento (data_horario, tipo_agendamento, tempo_para_agendar, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status)
+VALUES
+('2022-05-15 10:30:00', 'Manutenção', 80, 4, 2, 1, 7),
+( '2023-08-12 14:20:00', 'Colocação', 65, 4, 1, 1, 5),
+( '2023-09-20 09:45:00', 'Manutenção', 95, 4, 3, 1, 8),
+('2022-11-25 16:15:00', 'Colocação', 50, 4, 2, 1, 5);
 
-select * from agendamento where fk_usuario=4;
 
-delete from agendamento where id_agendamento in ('15','13','40', '41', '43');

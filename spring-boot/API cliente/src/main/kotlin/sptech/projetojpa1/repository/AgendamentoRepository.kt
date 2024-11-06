@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository
 import sptech.projetojpa1.domain.Agendamento
 import sptech.projetojpa1.domain.Usuario
 import sptech.projetojpa1.dto.agendamento.AgendamentoDTO
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Repository
@@ -196,20 +197,25 @@ ORDER BY
     fun findAgendamentosConcluidosUltimoTrimestre(): Int
 
     @Query(
-        nativeQuery = true, value = """ 
-        SELECT 
-                COUNT(*) AS quantidade_agendamentos
-            FROM 
-                agendamento
-            WHERE 
-                data_horario >= DATE_SUB(CURDATE(), INTERVAL 5 MONTH)
-            GROUP BY 
-                YEAR(data_horario), MONTH(data_horario)
-            ORDER BY 
-                YEAR(data_horario) DESC, MONTH(data_horario) DESC;
         """
+        SELECT 
+            DATE_FORMAT(MIN(data_horario), '%Y-%m-01') AS data_horario,
+            COUNT(*) AS quantidade_agendamentos
+        FROM 
+            agendamento
+        WHERE 
+            data_horario BETWEEN :startDate AND :endDate
+        GROUP BY 
+            YEAR(data_horario), MONTH(data_horario)
+        ORDER BY 
+            YEAR(data_horario) DESC, MONTH(data_horario) DESC
+        """,
+        nativeQuery = true
     )
-    fun findAgendamentosConcluidosUltimos5Meses(): List<Int>
+    fun findAgendamentosPorIntervalo(
+        @Param("startDate") startDate: LocalDate,
+        @Param("endDate") endDate: LocalDate
+    ): List<Array<Any>>
 
     @Query("SELECT a FROM Agendamento a WHERE a.dataHorario BETWEEN :dataInicio AND :dataFim")
     fun findByDataHorarioBetween(
@@ -277,7 +283,6 @@ ORDER BY
         WHERE 
             u.id_usuario = :usuarioId  -- ID do usuário específico
             AND DATE_FORMAT(a.data_horario, '%Y-%m') = :mesAno  -- Mês e ano específicos no formato YYYY-MM
-            AND a.data_horario >= CURDATE() - INTERVAL 1 YEAR  -- Apenas procedimentos do último ano
         GROUP BY 
             e.especificacao
         ORDER BY 
