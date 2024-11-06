@@ -1266,3 +1266,63 @@ width: 100rem;
   background-color: #f9f9f9;
 }
 
+/* Tooltip Base */
+.tooltip1, .tooltip2, .tooltip3, .tooltip4, .tooltip5,
+.tooltip6, .tooltip7, .tooltip8, .tooltip9, .tooltip10,
+.tooltip12 {
+  display: none; /* Inicialmente escondidos */
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  text-align: center;
+}
+
+/* Exibição do Tooltip no Hover */
+.filter-btn:hover + .tooltip1,
+.filter-btn:hover + .tooltip2,
+.filter-btn:hover + .tooltip3,
+.filter-btn:hover + .tooltip4,
+.filter-btn:hover + .tooltip5,
+.filter-btn:hover + .tooltip6,
+.filter-btn:hover + .tooltip7,
+.filter-btn:hover + .tooltip8,
+.filter-btn:hover + .tooltip9,
+.filter-btn:hover + .tooltip10,
+.filter-btn:hover + .tooltip12 {
+  display: block; /* Mostrar tooltip quando hover no botão */
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .tooltip1, .tooltip2, .tooltip3, .tooltip4, .tooltip5,
+  .tooltip6, .tooltip7, .tooltip8, .tooltip9, .tooltip10,
+  .tooltip12 {
+    font-size: 10px; /* Texto menor para telas menores */
+    padding: 4px 8px; /* Padding ajustado */
+    bottom: auto;
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px); /* Centralizar */
+  }
+}
+
+@media (max-width: 480px) {
+  .tooltip1, .tooltip2, .tooltip3, .tooltip4, .tooltip5,
+  .tooltip6, .tooltip7, .tooltip8, .tooltip9, .tooltip10,
+  .tooltip12 {
+    font-size: 8px;
+    padding: 3px 6px;
+    bottom: 110%;
+  }
+}
+
+/* Para garantir a consistência */
+.filter-btn {
+  position: relative; /* Necessário para posicionamento relativo do tooltip */
+}
+
+
