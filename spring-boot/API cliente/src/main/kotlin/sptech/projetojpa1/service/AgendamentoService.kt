@@ -8,6 +8,7 @@ import sptech.projetojpa1.dto.agendamento.AgendamentoRequestDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoResponseDTO
 import sptech.projetojpa1.repository.*
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.util.*
 
@@ -171,8 +172,8 @@ class AgendamentoService(
             }
     }
 
-    fun agendamentosRealizadosUltimos5Meses(): List<Int> {
-        return agendamentoRepository.findAgendamentosConcluidosUltimos5Meses()
+    fun getAgendamentosPorIntervalo(startDate: LocalDate, endDate: LocalDate): List<Array<Any>> {
+        return agendamentoRepository.findAgendamentosPorIntervalo(startDate, endDate)
     }
 
     fun listarHorariosDisponiveis(
