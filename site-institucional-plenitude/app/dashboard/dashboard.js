@@ -1,7 +1,22 @@
 document.addEventListener('DOMContentLoaded', function () {
-    
-    
     const baseUrl = 'http://localhost:8080';
+
+    // Função para realizar a requisição e obter os dados
+    function fetchData(endpoint, callback) {
+        fetch(baseUrl + endpoint)
+            .then(response => response.json())
+            .then(data => {
+                if (data !== null && data !== undefined) {
+                    callback(data);
+                } else {
+                    console.error('Dados não disponíveis para endpoint:', endpoint);
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao buscar dados para endpoint:', endpoint, error);
+            });
+    }
+
     function getLastFiveMonths() {
         const result = [];
         const today = new Date();
@@ -22,152 +37,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     const lastFiveMonths = getLastFiveMonths();
 
-    {/*// Seleção de datas --------------------------------------------------------------------------------------------------------------
-    function createDateSelectors(monthSelectId, yearSelectId) {
-        const selectAno = document.getElementById(yearSelectId);
-        const selectMes = document.getElementById(monthSelectId);
-        const currentDate = new Date();
-        const currentYear = currentDate.getFullYear();
-        const startYear = 2000; // Ajuste o ano de início conforme necessário
-      
-        // Função para preencher o seletor de anos
-        function populateYearSelect() {
-          selectAno.innerHTML = ""; // Limpa as opções existentes no <select>
-      
-          for (let year = currentYear; year >= startYear; year--) {
-            const option = document.createElement("option");
-            option.value = year;
-            option.text = year;
-            selectAno.appendChild(option);
-          }
-      
-          selectAno.value = currentYear; // Define o ano atual como padrão
-        }
-      
-        // Função para preencher o seletor de meses com base no ano selecionado
-        function populateMonthSelect() {
-          const selectedYear = parseInt(selectAno.value);
-          const lastMonth = selectedYear === currentYear ? currentDate.getMonth() + 1 : 12;
-      
-          selectMes.innerHTML = ""; // Limpa as opções existentes no <select>
-      
-          for (let month = 1; month <= lastMonth; month++) {
-            const monthString = month.toString().padStart(2, "0");
-            const option = document.createElement("option");
-            option.value = `${selectedYear}-${monthString}`; // Mantém o formato "YYYY-MM"
-      
-            // Formata o nome do mês em português com a primeira letra maiúscula
-            let monthName = new Intl.DateTimeFormat("pt-BR", {
-              month: "long",
-            }).format(new Date(selectedYear, month - 1));
-            monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
-            option.text = monthName;
-      
-            selectMes.appendChild(option);
-          }
-      
-          // Define o mês atual como padrão se o ano for o atual
-          if (selectedYear === currentYear) {
-            selectMes.value = `${currentYear}-${(currentDate.getMonth() + 1).toString().padStart(2, "0")}`;
-          } else {
-            selectMes.value = `${selectedYear}-01`; // Define o primeiro mês para anos anteriores ao atual
-          }
-        }
-      
-        // Atualiza os meses quando o ano é alterado
-        selectAno.addEventListener("change", populateMonthSelect);
-      
-        // Inicializa ambos os selects
-        populateYearSelect();
-        populateMonthSelect();
-      }
-
-      createDateSelectors("selectMesGerencial1", "selectAnoGerencial1");
-      createDateSelectors("selectMesUsabilidade1", "selectAnoUsabilidade1");
-
-      // Seleção de datas --------------------------------------------------------------------------------------------------------------
-    */}
-
-    // Função genérica para buscar dados com parâmetros dinâmicos
-    function fetchData2(url, params = {}, callback) {
-        // Monta a URL com os parâmetros
-        const queryString = new URLSearchParams(params).toString();
-        const fullUrl = `${url}?${queryString}`;
-
-        // Faz a requisição
-        fetch(baseUrl + fullUrl)
-            .then((response) => response.json())
-            .then((data) => {
-                callback(data); // Executa a função de callback com os dados
-            })
-            .catch((error) => {
-                console.error("Erro ao buscar dados para o gráfico:", error);
-            });
-    }
-
-
-    // Função para realizar a requisição e obter os dados
-    function fetchData(endpoint, callback) {
-        fetch(baseUrl + endpoint)
-            .then(response => response.json())
-            .then(data => {
-                if (data !== null && data !== undefined) {
-                    callback(data);
-                } else {
-                    console.error('Dados não disponíveis para endpoint:', endpoint);
-                }
-            })
-            .catch(error => {
-                console.error('Erro ao buscar dados para endpoint:', endpoint, error);
-            });
-    }
-
-    function buscarDadosPorGrafico(url, startDateId, endDateId, callback) {
-        const startDateInput = document.getElementById(startDateId);
-        const endDateInput = document.getElementById(endDateId);
-
-        // Verifica se os elementos de data existem
-        if (!startDateInput || !endDateInput) {
-            console.error(`Elementos com IDs ${startDateId} ou ${endDateId} não foram encontrados.`);
-            return;
-        }
-
-        const startDate = startDateInput.value;
-        const endDate = endDateInput.value;
-
-        // Verifica se as datas foram selecionadas
-        if (!startDate || !endDate) {
-            console.error("Por favor, selecione as datas de início e término.");
-            alert("Por favor, selecione as datas de início e término.");
-            return;
-        }
-
-        // Faz a chamada para fetchData2 com os parâmetros dinâmicos
-        fetchData2(
-            url,
-            { startDate: startDate, endDate: endDate },
-            callback
-        );
-    }
-
-    
-    
-    document.getElementById("buscarButton").addEventListener("click", function () {
-        buscarDadosPorGrafico(
-            "/api/agendamentos/agendamentos-realizados-ultimos-cinco-meses",         // URL para o gráfico 1
-            "startDateUsabilidade1",              // ID do campo de data de início para o gráfico 1
-            "endDateUsabilidade1",                // ID do campo de data de término para o gráfico 1
-            updateChartUsabilidade1                    // Callback específico para atualizar o gráfico 1
-        );
-    });
-    
-
-
 
     // Atualiza os KPIs dos clientes ativos, inativos e fidelizados
     function updateKPIs() {
         const endpoints = {
-
+            
 
 
             // KPI's - Gerencial
@@ -261,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchData(endpoints.agendamentosValorTotalUltimoMes, updateChartValorTotalUltimoMesOperacional5);
 
         // Chamada para atualizar os dados do gráfico 1 - Usabilidade
-        // fetchData2(endpoints.ultimosAgendamentosRealizados5Meses, {startDateUsabilidade1, endDateUsabilidade1}, updateChartUsabilidade1)
+        fetchData(endpoints.ultimosAgendamentosRealizados5Meses, updateChartUsabilidade1)
 
 
     }
@@ -344,11 +218,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // constantes dos gráficos de usabilidade
     let dataChartUsabilidade1 = null;
-    let labelsChartUsabilidade1 = null;
+    let labelsChartUsabilidade1 = lastFiveMonths;
     const ctxUsabilidade1 = document.getElementById('chartUsabilidade1').getContext('2d');
     let chartUsabilidade1;
-    //const startDateInput = document.getElementById("startDateUsabilidade1");
-    // const endDateInput = document.getElementById("endDateUsabilidade1");
 
     // constantes dos gráficos operacionais
     let dataChartOperacional1 = null;
@@ -371,68 +243,68 @@ document.addEventListener('DOMContentLoaded', function () {
     const ctxOperacional5 = document.getElementById('chartValorTotalUltimoMesOperacional5').getContext('2d');
     let chartValorTotalUltimoMesOperacional5;
 
-
+    
 
 
     // Funções para atualização operacional
     function updateChartOperacional1(data) {
-        // Mapeia os dados de status a partir do objeto
-        const statusAgendamentos = {
-            agendados: data.agendados || 0,  // Valor padrão caso a propriedade não esteja presente
-            confirmados: data.confirmados || 0,
-            realizados: data.realizados || 0,
-            cancelados: data.cancelados || 0,
-            reagendados: data.reagendados || 0
-        };
+    // Mapeia os dados de status a partir do objeto
+    const statusAgendamentos = {
+        agendados: data.agendados || 0,  // Valor padrão caso a propriedade não esteja presente
+        confirmados: data.confirmados || 0,
+        realizados: data.realizados || 0,
+        cancelados: data.cancelados || 0,
+        reagendados: data.reagendados || 0
+    };
 
-        // Atualiza os dados do gráfico na ordem desejada, independentemente da ordem de chegada
-        dataChartOperacional1 = [
-            statusAgendamentos.agendados,
-            statusAgendamentos.confirmados,
-            statusAgendamentos.realizados,
-            statusAgendamentos.cancelados,
-            statusAgendamentos.reagendados
-        ];
+    // Atualiza os dados do gráfico na ordem desejada, independentemente da ordem de chegada
+    dataChartOperacional1 = [
+        statusAgendamentos.agendados,
+        statusAgendamentos.confirmados,
+        statusAgendamentos.realizados,
+        statusAgendamentos.cancelados,
+        statusAgendamentos.reagendados
+    ];
 
-        // Chama a função para criar/atualizar o gráfico
-        createChartOperacional1();
+    // Chama a função para criar/atualizar o gráfico
+    createChartOperacional1();
     }
     function updateChartReceitaProcedimentosOperacional4(data) {
         // Usando Object.entries() para obter as chaves (procedimentos) e valores (receita)
         const labels = Object.keys(data);  // Isso pega as chaves: ["Maquiagem", "Sobrancelha", "Cilios"]
         const dataChartReceita = Object.values(data);  // Isso pega os valores: [4550, 2540, 1720]
-
+    
         // Agora você pode passar os 'labels' e 'dataChartReceita' para a função de criação do gráfico
         createChartReceitaProcedimentosOperacional4(labels, dataChartReceita);
     }
     function updateChartTempoGastoOperacional2(data) {
-        // Mapeia os dados recebidos (objeto) para labels e valores do gráfico
-        const labels = Object.keys(data);  // Procedimentos (ex: Maquiagem, Sobrancelha, etc.)
-        const dataChart = Object.values(data);  // Tempos totais (ex: 350, 120, etc.)
+         // Mapeia os dados recebidos (objeto) para labels e valores do gráfico
+    const labels = Object.keys(data);  // Procedimentos (ex: Maquiagem, Sobrancelha, etc.)
+    const dataChart = Object.values(data);  // Tempos totais (ex: 350, 120, etc.)
 
-        // Se o gráfico já foi criado, apenas atualiza os dados e rótulos
-
+    // Se o gráfico já foi criado, apenas atualiza os dados e rótulos
+    
         // Se o gráfico ainda não existe, cria-o pela primeira vez
         createChartTempoGastoProcedimentosOperacional2(labels, dataChart);
-
+    
     }
     function updateChartProcedimentoRealizadosTrimestreOperacional3(data) {
-        // Mapeia os dados recebidos (objeto) para labels e valores do gráfico
-        const labels = Object.keys(data);  // Procedimentos (ex: Maquiagem, Sobrancelha, etc.)
-        const dataChart = Object.values(data);  // Tempos totais (ex: 350, 120, etc.)
+         // Mapeia os dados recebidos (objeto) para labels e valores do gráfico
+    const labels = Object.keys(data);  // Procedimentos (ex: Maquiagem, Sobrancelha, etc.)
+    const dataChart = Object.values(data);  // Tempos totais (ex: 350, 120, etc.)
 
-        // Se o gráfico já foi criado, apenas atualiza os dados e rótulos
-
+    // Se o gráfico já foi criado, apenas atualiza os dados e rótulos
+    
         // Se o gráfico ainda não existe, cria-o pela primeira vez
         createChartProcedimentosRealizadosTrimestreOperacional3(labels, dataChart);
     }
-    function updateChartValorTotalUltimoMesOperacional5(data) {
-        // Mapeia os dados recebidos (objeto) para labels e valores do gráfico
-        const labels = Object.keys(data);  // Procedimentos (ex: Maquiagem, Sobrancelha, etc.)
-        const dataChart = Object.values(data);  // Tempos totais (ex: 350, 120, etc.)
+    function updateChartValorTotalUltimoMesOperacional5(data){
+             // Mapeia os dados recebidos (objeto) para labels e valores do gráfico
+    const labels = Object.keys(data);  // Procedimentos (ex: Maquiagem, Sobrancelha, etc.)
+    const dataChart = Object.values(data);  // Tempos totais (ex: 350, 120, etc.)
 
-        // Se o gráfico já foi criado, apenas atualiza os dados e rótulos
-
+    // Se o gráfico já foi criado, apenas atualiza os dados e rótulos
+    
         // Se o gráfico ainda não existe, cria-o pela primeira vez
         createChartValorTotalUltimoMesOperacional5(labels, dataChart);
     }
@@ -493,17 +365,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
     function updateChartUsabilidade1(data) {
-        labelsChartUsabilidade1 = data.map(item => {
-            const [year, month] = item[0].split("-"); // Divide "YYYY-MM-DD" em [year, month, day]
-            const date = new Date(year, month - 1);   // Cria uma data usando ano e mês (mês é zero-based)
-            return date.toLocaleDateString("pt-BR", { month: "long" }).charAt(0).toUpperCase() +
-                   date.toLocaleDateString("pt-BR", { month: "long" }).slice(1);
-        });
-
-    dataChartUsabilidade1 = data.map(item => item[1]);
-
-
-    createChartUsabilidade1();
+        dataChartUsabilidade1 = data
+        createChartUsabilidade1();
     }
 
 
@@ -633,8 +496,8 @@ document.addEventListener('DOMContentLoaded', function () {
             options: {
                 indexAxis: 'y',
                 responsive: true,
-                maintainAspectRatio: false, // Permite ajustar a proporção do gráfico
-                aspectRatio: 2,
+    maintainAspectRatio: false, // Permite ajustar a proporção do gráfico
+    aspectRatio: 2,
                 plugins: {
                     subtitle: {
                         display: true,
@@ -711,7 +574,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     // Criação de gráficos - Usabilidade
     function createChartUsabilidade1() {
-        if (!dataChartUsabilidade1 || !labelsChartUsabilidade1) return;
+        if (!dataChartUsabilidade1  || !labelsChartUsabilidade1) return;
 
         if (chartUsabilidade1) chartUsabilidade1.destroy();
 
@@ -730,6 +593,31 @@ document.addEventListener('DOMContentLoaded', function () {
             options: {
                 indexAxis: 'y',
                 responsive: true,
+                // plugins: {
+                //     subtitle: {
+                //         display: true,
+                //         text: '',
+                //         font: {
+                //             size: 14
+                //         }
+                //     },
+                //     legend: {
+                //         display: true, // Mostra a legenda
+                //        // position: 'top', // Posição da legenda (topo, neste caso)
+                //         align: 'center', // Alinha a legenda ao centro
+                //         title: {
+                //             display: true
+                //         }
+                //     },
+                //     title: {
+                //         display: true
+                //     }
+                // },
+                // scales: {
+                //     y: {
+                //         beginAtZero: true
+                //     }
+                // }
             }
         });
     }
@@ -737,9 +625,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // Criação de gráficos - Operacional
     function createChartOperacional1() {
         if (!dataChartOperacional1) return;
-
+    
         if (chartOperacional1) chartOperacional1.destroy();
-
+    
         chartOperacional1 = new Chart(ctxOperacional1, {
             type: 'bar',
             data: {
@@ -747,7 +635,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 datasets: [{
                     label: 'Qtd Agendamentos',
                     data: dataChartOperacional1,
-                    backgroundColor: ['#FF6384', '#D2135D', '#E84E8A', '#D94F4F', '#C13584']
+                    backgroundColor: ['#FF6384',  '#D2135D', '#E84E8A', '#D94F4F','#C13584']
 
                     ,
                     borderColor: '#D2135D',
@@ -767,7 +655,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     function createChartReceitaProcedimentosOperacional4(labels, dataChartReceita) {
         const ctx = document.getElementById('chartReceitaProcedimentosOperacional4').getContext('2d');
-
+    
         // Criação do novo gráfico
         window.chartReceitaProcedimentosOperacional4 = new Chart(ctx, {
             type: 'bar',
@@ -793,34 +681,34 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     // Função para criar o gráfico pela primeira vez
     function createChartTempoGastoProcedimentosOperacional2(labels, dataChart) {
-        const ctxOperacional2 = document.getElementById('chartTempoGastoProcedimentosOperacional2').getContext('2d');
+    const ctxOperacional2 = document.getElementById('chartTempoGastoProcedimentosOperacional2').getContext('2d');
 
-        // Criação do gráfico com Chart.js
-        chartTempoGastoProcedimentos = new Chart(ctxOperacional2, {
-            type: 'bar',  // Tipo de gráfico (barras)
-            data: {
-                labels: labels,  // Procedimentos como rótulos (ex: Maquiagem, Sobrancelha)
-                datasets: [{
-                    label: 'Tempo Total Gasto (minutos)',  // Título do gráfico
-                    data: dataChart,  // Tempos totais como dados
-                    backgroundColor: ['#D2135D', '#E84E8A', '#F59DBF'],  // Cores para as barras
-                    borderColor: ['#D2135D', '#E84E8A', '#F59DBF'],  // Cor da borda
-                    borderWidth: 1  // Largura da borda
-                }]
-            },
-            options: {
-                responsive: true,  // Responsivo para diferentes tamanhos de tela
-                scales: {
-                    y: {
-                        beginAtZero: true  // Eixo Y começa no zero
-                    }
+    // Criação do gráfico com Chart.js
+    chartTempoGastoProcedimentos = new Chart(ctxOperacional2, {
+        type: 'bar',  // Tipo de gráfico (barras)
+        data: {
+            labels: labels,  // Procedimentos como rótulos (ex: Maquiagem, Sobrancelha)
+            datasets: [{
+                label: 'Tempo Total Gasto (minutos)',  // Título do gráfico
+                data: dataChart,  // Tempos totais como dados
+                backgroundColor: ['#D2135D', '#E84E8A', '#F59DBF'],  // Cores para as barras
+                borderColor: ['#D2135D', '#E84E8A', '#F59DBF'],  // Cor da borda
+                borderWidth: 1  // Largura da borda
+            }]
+        },
+        options: {
+            responsive: true,  // Responsivo para diferentes tamanhos de tela
+            scales: {
+                y: {
+                    beginAtZero: true  // Eixo Y começa no zero
                 }
             }
-        });
+        }
+    });
     }
     function createChartProcedimentosRealizadosTrimestreOperacional3(labels, dataChart) {
         const ctx = document.getElementById('chartProcedimentosRealizadosTrimestreOperacional3').getContext('2d');
-
+    
         // Criação do gráfico com Chart.js
         window.chartProcedimentosRealizadosTrimestreOperacional3 = new Chart(ctx, {
             type: 'bar',  // Tipo de gráfico: barra
@@ -845,42 +733,42 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
     // Função para criar o gráfico de valor total por procedimento no último mês
-    function createChartValorTotalUltimoMesOperacional5(labels, dataChart) {
-        const ctxOperacional5 = document.getElementById('chartValorTotalUltimoMesOperacional5').getContext('2d');
+function createChartValorTotalUltimoMesOperacional5(labels, dataChart) {
+    const ctxOperacional5 = document.getElementById('chartValorTotalUltimoMesOperacional5').getContext('2d');
 
-        // Criação do gráfico com Chart.js
-        window.chartValorTotalUltimoMesOperacional5 = new Chart(ctxOperacional5, {
-            type: 'bar',  // Tipo de gráfico: barra
-            data: {
-                labels: labels,  // Procedimentos como rótulos (ex: Maquiagem, Sobrancelha)
-                datasets: [{
-                    label: 'Valor Total em R$ no Último Mês',  // Rótulo do gráfico
-                    data: dataChart,  // Valores totais em dinheiro para cada procedimento
-                    backgroundColor: ['#FF6384', '#D2135D', '#E84E8A', '#C13584', '#D94F4F'],  // Cores das barras
-                    borderColor: ['#FF6384', '#D2135D', '#E84E8A', '#C13584', '#D94F4F'],  // Cor da borda
-                    borderWidth: 1  // Largura da borda
-                }]
-            },
-            options: {
-                responsive: true,  // Responsivo para diferentes tamanhos de tela
-                scales: {
-                    y: {
-                        beginAtZero: true,  // Eixo Y começa no zero
-                        title: {
-                            display: true,
-                            text: 'Valor em R$'
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Procedimentos'
-                        }
+    // Criação do gráfico com Chart.js
+    window.chartValorTotalUltimoMesOperacional5 = new Chart(ctxOperacional5, {
+        type: 'bar',  // Tipo de gráfico: barra
+        data: {
+            labels: labels,  // Procedimentos como rótulos (ex: Maquiagem, Sobrancelha)
+            datasets: [{
+                label: 'Valor Total em R$ no Último Mês',  // Rótulo do gráfico
+                data: dataChart,  // Valores totais em dinheiro para cada procedimento
+                backgroundColor: ['#FF6384', '#D2135D', '#E84E8A', '#C13584', '#D94F4F'],  // Cores das barras
+                borderColor: ['#FF6384', '#D2135D', '#E84E8A', '#C13584', '#D94F4F'],  // Cor da borda
+                borderWidth: 1  // Largura da borda
+            }]
+        },
+        options: {
+            responsive: true,  // Responsivo para diferentes tamanhos de tela
+            scales: {
+                y: {
+                    beginAtZero: true,  // Eixo Y começa no zero
+                    title: {
+                        display: true,
+                        text: 'Valor em R$'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Procedimentos'
                     }
                 }
             }
-        });
-    }
+        }
+    });
+}
 
 
 
@@ -891,12 +779,12 @@ document.addEventListener('DOMContentLoaded', function () {
         return valor.toFixed(0); // Formata o número para exibir como inteiro
     }
 
-
+    
 
     // Atualiza os KPIs e gráficos em intervalos regulares (opcional)
     setInterval(updateKPIs, 30000); // Exemplo de atualização a cada 30 segundos
 
-    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
 });
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -911,23 +799,21 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-
-
 // // timer para o marcar tempo que leva para realizar um agendamento!
 
 //     let seconds = 0; // Variável para armazenar o tempo em segundos
-
+    
 //     const timer = setInterval(() => {
 //       seconds++; // Incrementa a variável a cada segundo
 //       console.log(`Segundos: ${seconds}`);
 //     }, 1000); // 1000 ms = 1 segundo
-
+    
 //     // Para parar o timer depois de um tempo, por exemplo, após 10 segundos:
 //     setTimeout(() => {
 //       clearInterval(timer); // Para o timer
 //       console.log("Timer parado");
 //     }, 10000); // 10000 ms = 10 segundos
-
+    
 
 
 //     function sendSecondsToServer() {
@@ -947,21 +833,21 @@ document.addEventListener('DOMContentLoaded', function () {
 async function carregarImagem2() {
     const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução
     const perfilImage = document.getElementById("perfilImage");
-
+  
     if (!cpf) {
         console.log("CPF não encontrado.");
         return;
     }
-
+  
     try {
         const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario/${cpf}`, {
             method: "GET",
         });
-
+  
         if (response.ok) {
             const blob = await response.blob(); // Recebe a imagem como Blob
             const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
-
+  
             // Define a URL da imagem carregada como src do img
             perfilImage.src = imageUrl;
             perfilImage.alt = "Foto do usuário";
@@ -974,7 +860,7 @@ async function carregarImagem2() {
     } catch (error) {
         console.error("Erro ao buscar a imagem:", error);
     }
-}
-
-// Carrega a imagem automaticamente quando a página termina de carregar
-window.onload = carregarImagem2;
+  }
+  
+  // Carrega a imagem automaticamente quando a página termina de carregar
+  window.onload = carregarImagem2;

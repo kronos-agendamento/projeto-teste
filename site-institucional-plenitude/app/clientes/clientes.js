@@ -433,6 +433,7 @@ function pesquisarCliente() {
   } else if (cpf) {
       url = `http://localhost:8080/usuarios/buscar-por-cpf/${cpf}`;
   } else {
+      alert("Por favor, preencha ao menos um dos campos.");
       return;
   }
 

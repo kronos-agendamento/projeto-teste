@@ -8,7 +8,6 @@ import sptech.projetojpa1.dto.agendamento.AgendamentoRequestDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoResponseDTO
 import sptech.projetojpa1.repository.*
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
 import java.util.*
 
@@ -19,7 +18,8 @@ class AgendamentoService(
     private val procedimentoRepository: ProcedimentoRepository,
     private val especificacaoRepository: EspecificacaoRepository,
     private val statusRepository: StatusRepository,
-    private val empresaRepository: EmpresaRepository
+    private val empresaRepository: EmpresaRepository,
+
 ) {
     fun listarTodosAgendamentos(): List<AgendamentoResponseDTO> {
         val agendamentos = agendamentoRepository.findAll()
@@ -174,6 +174,10 @@ class AgendamentoService(
 
     fun getAgendamentosPorIntervalo(startDate: LocalDate, endDate: LocalDate): List<Array<Any>> {
         return agendamentoRepository.findAgendamentosPorIntervalo(startDate, endDate)
+    }
+
+    fun agendamentosRealizadosUltimos5Meses(): List<Int> {
+        return agendamentoRepository.findAgendamentosConcluidosUltimos5Meses()
     }
 
     fun listarHorariosDisponiveis(
@@ -479,5 +483,11 @@ class AgendamentoService(
     fun getMostBookedTimeByUser(idUsuario: Int): String? {
         return agendamentoRepository.findMostBookedTimeByUser(idUsuario)
     }
+
+    // Função de cálculo de orçamento
+    fun obterPrecoOrcamento(idEspecificacao: Int, tipoAgendamento: String): Double? {
+        return agendamentoRepository.findPrecoByTipoAgendamento(idEspecificacao, tipoAgendamento)
+    }
+
 }
     

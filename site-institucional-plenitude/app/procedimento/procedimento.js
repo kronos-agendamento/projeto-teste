@@ -506,6 +506,7 @@ document.addEventListener("DOMContentLoaded", function () {
           });
           renderTable(filteredProcedures, 1);
       } else {
+          alert("Por favor, selecione o Procedimento e a Especificação.");
       }
 
       document.getElementById("filter-modal").style.display = "none";

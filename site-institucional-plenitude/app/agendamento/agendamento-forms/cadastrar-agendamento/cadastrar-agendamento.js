@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const clientesSelect = document.getElementById("clientes");
   const procedimentosSelect = document.getElementById("procedimentos");
   const especificacoesSelect = document.getElementById("especificacoes");
-
+  const procedimentoSelect = document.getElementById("procedimento");
   const tipoAtendimentoSelect = document.getElementById("tipo-atendimento");
   const tipoAgendamentoSelect = document.getElementById("tipo-atendimento");
   const dataInput = document.getElementById("data");
@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const totalKmSpan = document.getElementById("total-km");
   const gasolina = 4; // Valor fixo médio da gasolina (exemplo)
   const enderecoInput = document.getElementById("endereco");
-  const mediaValor = 50; // Valor por hora
+  const mediaValor = 30; // Valor por hora
   const hora = 0.5; // Horas
   const maoObra = mediaValor * hora; // Cálculo da mão de obra
   const origem = "Rua das Gilias, 361 - Vila Bela, São Paulo - State of São Paulo, Brazil";
@@ -118,16 +118,16 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-// Mostrar div de endereço somente se o tipo de atendimento for "Homecare" ou "Evento"
-tipoAtendimentoSelect.addEventListener("change", function () {
-  const tipoAtendimento = tipoAtendimentoSelect.value;
+  // Mostrar div de endereço somente se o tipo de atendimento for "Homecare" ou "Evento"
+  tipoAtendimentoSelect.addEventListener("change", function () {
+    const tipoAtendimento = tipoAtendimentoSelect.value;
 
-  if (tipoAtendimento === "Homecare" || tipoAtendimento === "Evento") {
-    enderecoGroup.classList.remove("hidden"); // Mostra o endereço
-  } else {
-    enderecoGroup.classList.add("hidden"); // Esconde o endereço
-  }
-});
+    if (tipoAtendimento === "Homecare" || tipoAtendimento === "Evento") {
+      enderecoGroup.classList.remove("hidden"); // Mostra o endereço
+    } else {
+      enderecoGroup.classList.add("hidden"); // Esconde o endereço
+    }
+  });
 
 
   dataInput.addEventListener("change", function () {
@@ -263,7 +263,7 @@ tipoAtendimentoSelect.addEventListener("change", function () {
     }
   });
 
-  
+
   // Função para calcular a distância
   async function calcularDistancia(endereco) {
     return new Promise((resolve, reject) => {
@@ -289,63 +289,147 @@ tipoAtendimentoSelect.addEventListener("change", function () {
     });
   }
 
- // Função para calcular a taxa total
-async function calcularTaxa() {
-  const endereco = enderecoInput.value; // Captura o valor do endereço
+  // Função para calcular a taxa total
+  async function calcularTaxa() {
+    const endereco = enderecoInput.value;
 
-  if (endereco) {
-    try {
-      const kmLoc = await calcularDistancia(endereco); // Calcula a distância
+    if (endereco) {
+      try {
+        const kmLoc = await calcularDistancia(endereco);
+        if (kmLoc !== null) {
+          const taxaLoc = gasolina * kmLoc; // Taxa de locomoção
+          const taxaTotal = taxaLoc + maoObra; // Taxa total incluindo mão de obra
 
-      // Se a distância for calculada corretamente
-      if (kmLoc !== null) {
-        const taxaLoc = gasolina * kmLoc; // Cálculo da taxa de locomoção
-        const taxaTotal = taxaLoc + maoObra; // Soma da taxa de locomoção e mão de obra
+          valorTaxaSpan.textContent = `R$ ${taxaTotal.toFixed(2)}`;
+          totalKmSpan.textContent = `${kmLoc.toFixed(2)} km de distância`;
+          taxaTotalDiv.classList.remove("hidden");
 
-        valorTaxaSpan.textContent = `R$ ${taxaTotal.toFixed(2)}`; // Exibe o valor da taxa
-        totalKmSpan.textContent = `${kmLoc.toFixed(2)} km de distância`; // Exibe a distância total
-
-        // Mostra a div da taxa total
-        taxaTotalDiv.classList.remove("hidden"); 
-      } else {
-        valorTaxaSpan.textContent = "Distância não encontrada para o endereço.";
+          return taxaTotal; // Retorna o valor da taxa
+        } else {
+          valorTaxaSpan.textContent = "Distância não encontrada.";
+          taxaTotalDiv.classList.remove("hidden");
+        }
+      } catch (error) {
+        console.error("Erro ao calcular a distância:", error);
+        valorTaxaSpan.textContent = "Erro ao calcular a distância.";
         taxaTotalDiv.classList.remove("hidden");
       }
-    } catch (error) {
-      console.error("Erro ao calcular a distância:", error);
-      valorTaxaSpan.textContent = "Erro ao calcular a distância. Tente novamente.";
-      taxaTotalDiv.classList.remove("hidden"); // Mostra a mensagem de erro
+    } else {
+      taxaTotalDiv.classList.add("hidden");
     }
-  } else {
-    // Se o campo de endereço estiver vazio, oculta a div de taxa total
-    taxaTotalDiv.classList.add("hidden");
+    return 0; // Retorna zero se não houver taxa
   }
-}
 
-// Event listener para o botão de calcular taxa
-calcularTaxaButton.addEventListener("click", calcularTaxa);
+  // Event listener para o botão de calcular taxa
+  calcularTaxaButton.addEventListener("click", calcularTaxa);
 
   carregarClientes();
   carregarProcedimentos();
   carregarEspecificacoes(); // Carrega todas as especificações no início
-});
 
-function showNotification(message, isError = false) {
-  const notification = document.getElementById("notification");
-  const notificationMessage = document.getElementById("notification-message");
-  notificationMessage.textContent = message;
-  if (isError) {
-    notification.classList.add("error");
-  } else {
-    notification.classList.remove("error");
+
+  async function buscarOrcamento() {
+    const fkProcedimento = procedimentosSelect.value;
+    const fkEspecificacao = especificacoesSelect.value;
+    const tipoAgendamento = tipoAtendimentoSelect.value;
+    const horarioButton = document.querySelector(".horario-button.selected");
+  
+    if (!fkProcedimento || !fkEspecificacao || !tipoAgendamento || !horarioButton) {
+      document.getElementById("orcamento-container").classList.add("hidden");
+      return;
+    }
+  
+    try {
+      let taxa = 0;
+      // Calcula a taxa se o tipo de atendimento for Homecare ou Evento
+      if (tipoAgendamento === "Homecare" || tipoAgendamento === "Evento") {
+        taxa = await calcularTaxa();
+      } else {
+        valorTaxaSpan.textContent = "R$ 0.00"; // Define a taxa como zero para outros tipos
+      }
+  
+      let orcamentoBase = 0;
+
+      // URL do endpoint do orçamento
+      const url = `http://localhost:8080/api/agendamentos/calcular-orcamento?fkProcedimento=${fkProcedimento}&fkEspecificacao=${fkEspecificacao}&tipoAgendamento=${tipoAgendamento}`;
+      const response = await fetch(url);
+  
+      if (response.ok) {
+        orcamentoBase = await response.json();
+      } else if (response.status === 404) {
+        console.warn("Orçamento base não encontrado.");
+        showNotification("Orçamento base não disponível. Considerando apenas a taxa.", true);
+      } else {
+        console.error("Erro ao obter o orçamento:", response.status);
+        showNotification("Erro ao calcular o orçamento. Tente novamente.", true);
+        return;
+      }
+  
+      // Soma a taxa ao orçamento base, se aplicável
+      const orcamentoTotal = orcamentoBase + taxa;
+  
+      // Atualiza o valor no elemento `id="orcamento"`
+      document.getElementById("orcamento").textContent = `R$ ${orcamentoTotal.toFixed(2)}`;
+      document.getElementById("orcamento-detalhe").textContent = 
+        `Valor do procedimento: R$ ${orcamentoBase.toFixed(2)}, 
+         taxa adicional: R$ ${taxa.toFixed(2)}, 
+         total: R$ ${orcamentoTotal.toFixed(2)}`;
+  
+      // Exibe o contêiner do orçamento
+      document.getElementById("orcamento-container").classList.remove("hidden");
+    } catch (error) {
+      console.error("Erro ao buscar orçamento:", error);
+      showNotification("Erro ao buscar orçamento. Tente novamente.", true);
+    }
   }
-  notification.classList.add("show");
-  setTimeout(() => {
-    notification.classList.remove("show");
-  }, 3000);
-}
 
-document.addEventListener("DOMContentLoaded", function () {
+  // Evento para calcular taxa e exibir endereço apenas para Homecare ou Evento
+  tipoAtendimentoSelect.addEventListener("change", async function () {
+    const tipoAtendimento = tipoAtendimentoSelect.value;
+
+    if (tipoAtendimento === "Homecare" || tipoAtendimento === "Evento") {
+      enderecoGroup.classList.remove("hidden");
+      await calcularTaxa();
+    } else {
+      enderecoGroup.classList.add("hidden");
+      valorTaxaSpan.textContent = "R$ 0.00";
+    }
+  });
+
+  // Evento de mudança na data para carregar horários e calcular o orçamento
+  dataInput.addEventListener("change", function () {
+    const dataSelecionada = dataInput.value;
+    if (dataSelecionada) {
+      carregarHorariosDisponiveis(dataSelecionada);
+    }
+  });
+
+  // Evento para calcular o orçamento após selecionar o horário
+  horariosContainer.addEventListener("click", (event) => {
+    if (event.target.classList.contains("horario-button")) {
+      document.querySelectorAll(".horario-button").forEach(btn => btn.classList.remove("selected"));
+      event.target.classList.add("selected");
+      buscarOrcamento(); // Chama a função de orçamento após selecionar o horário
+    }
+  });
+
+
+
+  function showNotification(message, isError = false) {
+    const notification = document.getElementById("notification");
+    const notificationMessage = document.getElementById("notification-message");
+    notificationMessage.textContent = message;
+    if (isError) {
+      notification.classList.add("error");
+    } else {
+      notification.classList.remove("error");
+    }
+    notification.classList.add("show");
+    setTimeout(() => {
+      notification.classList.remove("show");
+    }, 3000);
+  }
+
   const nome = localStorage.getItem("nome");
   const instagram = localStorage.getItem("instagram");
 
@@ -353,12 +437,9 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("userName").textContent = nome;
     document.getElementById("userInsta").textContent = instagram;
   }
-});
 
-// timer para o marcar tempo que leva para realizar um agendamento!
+  // timer para o marcar tempo que leva para realizar um agendamento!
 
-// Função que será executada quando o valor do select mudar
-document.addEventListener("DOMContentLoaded", function () {
   // Variável que irá armazenar o intervalo
 
   // Função que será executada quando o valor do select mudar
@@ -391,54 +472,55 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   new window.VLibras.Widget('https://vlibras.gov.br/app');
-    
-});
 
-//     function sendSecondsToServer() {
-//         fetch('http://localhost:8080/api/agendamentos/', { // Substitua pela URL do seu servidor
-//             method: 'PUT',
-//             headers: {
-//                 'Content-Type': 'application/json' // Define que o conteúdo é JSON
-//             },
-//             body: JSON.stringify({ time: seconds }) // Envia o valor dos segundos
-//         })
-//         .then(response => response.json())
-//         .then(data => console.log('Sucesso:', data))
-//         .catch(error => console.error('Erro:', error));
-//     }
 
-async function carregarImagem2() {
-  const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução
-  const perfilImage = document.getElementById("perfilImage");
 
-  if (!cpf) {
+  //     function sendSecondsToServer() {
+  //         fetch('http://localhost:8080/api/agendamentos/', { // Substitua pela URL do seu servidor
+  //             method: 'PUT',
+  //             headers: {
+  //                 'Content-Type': 'application/json' // Define que o conteúdo é JSON
+  //             },
+  //             body: JSON.stringify({ time: seconds }) // Envia o valor dos segundos
+  //         })
+  //         .then(response => response.json())
+  //         .then(data => console.log('Sucesso:', data))
+  //         .catch(error => console.error('Erro:', error));
+  //     }
+
+  async function carregarImagem2() {
+    const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução
+    const perfilImage = document.getElementById("perfilImage");
+
+    if (!cpf) {
       console.log("CPF não encontrado.");
       return;
-  }
+    }
 
-  try {
+    try {
       const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario/${cpf}`, {
-          method: "GET",
+        method: "GET",
       });
 
       if (response.ok) {
-          const blob = await response.blob(); // Recebe a imagem como Blob
-          const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
+        const blob = await response.blob(); // Recebe a imagem como Blob
+        const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
 
-          // Define a URL da imagem carregada como src do img
-          perfilImage.src = imageUrl;
-          perfilImage.alt = "Foto do usuário";
-          perfilImage.style.width = "20vh";
-          perfilImage.style.height = "20vh";
-          perfilImage.style.borderRadius = "300px";
+        // Define a URL da imagem carregada como src do img
+        perfilImage.src = imageUrl;
+        perfilImage.alt = "Foto do usuário";
+        perfilImage.style.width = "20vh";
+        perfilImage.style.height = "20vh";
+        perfilImage.style.borderRadius = "300px";
       } else {
-          console.log("Imagem não encontrada para o CPF informado.");
+        console.log("Imagem não encontrada para o CPF informado.");
       }
-  } catch (error) {
+    } catch (error) {
       console.error("Erro ao buscar a imagem:", error);
+    }
   }
-}
 
-window.onload = function () {
-  carregarImagem2();
-};
+  window.onload = function () {
+    carregarImagem2();
+  };
+});

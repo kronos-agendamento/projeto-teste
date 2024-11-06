@@ -57,6 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .catch((error) => {
         console.error("Erro:", error.message);
+        alert(error.message);
       });
   }
 
@@ -810,6 +811,7 @@ async function enviarEmail(clienteEmail, nomeCliente, nome, dataAgend, especific
       })
       .catch((error) => {
         console.error("Erro:", error.message);
+        alert(error.message);
       });
   };
 

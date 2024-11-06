@@ -1,213 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7RnMgdvoROHW_o-4pQeM3LJyNMwxem6o&libraries=places"></script>
 
-    <title>Agendamento | KronosBooking</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7RnMgdvoROHW_o-4pQeM3LJyNMwxem6o&libraries=places"></script>
 
-    <link href="../../assets/img/favicon.png" rel="icon" />
-    <script src="agendamento-mobile.js"></script>
-    <link rel="stylesheet" href="agendamento-mobile.css" />
-    <link
-      rel="stylesheet"
-      href="../ficha-anamnese-mobile/ficha-anamnese-mobile.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-  </head>
+  <title>Agendamento | KronosBooking</title>
 
-  <body>
-    <main>
-      <header>
-        <div id="resultados"></div>
-        <div class="introducao">
-          <div class="acessibilidade">
-            <div class="font-controls">
-              <button id="increase-font">A+</button>
-              <button id="decrease-font">A-</button>
-            </div>
-          </div>
-          <div id="titulo">Agendamentos</div>
+  <link href="../../assets/img/favicon.png" rel="icon" />
+  <script src="agendamento-mobile.js"></script>
+  <link rel="stylesheet" href="agendamento-mobile.css" />
+  <link rel="stylesheet" href="../ficha-anamnese-mobile/ficha-anamnese-mobile.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
 
-          <div id="subtitulo">
-            Agende seu procedimento
+<body>
+  <main>
+    <header>
+      <div id="resultados"></div>
+      <div class="introducao">
+        <div class="acessibilidade">
+          <div class="font-controls">
+            <button id="increase-font">A+</button>
+            <button id="decrease-font">A-</button>
           </div>
         </div>
-      </header><br>
-      <section id="navigation">
-        <div class="nav-bar">
-          <ul>
-            <li class="list">
-              <a href="../index-mobile/index-mobile.html">
-                <span class="icon"
-                  ><ion-icon name="home-outline"></ion-icon
-                ></span>
-              </a>
-            </li>
-            <li class="list">
-              <a href="../ficha-anamnese-mobile/ficha-anamnese-mobile.html">
-                <span class="icon"
-                  ><ion-icon name="document-text-outline"></ion-icon
-                ></span>
-              </a>
-            </li>
-            <li class="list">
-              <a href="../agendamento-mobile/agendamento-mobile.html">
-                <span class="icon"
-                  ><ion-icon name="calendar-outline"></ion-icon
-                ></span>
-              </a>
-            </li>
-            <li class="list active">
-              <a href="../perfil-mobile/perfil-mobile.html">
-                <span class="icon"
-                  ><ion-icon name="people-outline"></ion-icon
-                ></span>
-              </a>
-            </li>
-            <li class="list">
-              <a href="../../index.html">
-                <span class="icon"
-                  ><ion-icon name="exit-outline"></ion-icon
-                ></span>
-              </a>
-            </li>
-          </ul>
+        <div id="titulo">Agendamentos</div>
+
+        <div id="subtitulo">
+          Agende seu procedimento
         </div>
-      </section>
-      <div id="notification" class="notification">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          fill="white"
-          class="bi bi-check-circle-fill"
-          viewBox="0 0 16 16"
-        >
-          <path
-            d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z"
-          />
-        </svg>
-        <span id="notification-message"></span>
       </div>
-      <section id="agendamento">
-        <div class="agendamento">
-          <!-- Select de Procedimento -->
-          <div class="form-group form-input">
-            <label for="procedimento">Procedimento:</label>
-            <select id="procedimento" name="procedimento">
-              <option value="">Selecione o procedimento</option>
-            </select>
-          </div>
+    </header><br>
+    <section id="navigation">
+      <div class="nav-bar">
+        <ul>
+          <li class="list">
+            <a href="../index-mobile/index-mobile.html">
+              <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../ficha-anamnese-mobile/ficha-anamnese-mobile.html">
+              <span class="icon"><ion-icon name="document-text-outline"></ion-icon></span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../agendamento-mobile/agendamento-mobile.html">
+              <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
+            </a>
+          </li>
+          <li class="list active">
+            <a href="../perfil-mobile/perfil-mobile.html">
+              <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../../index.html">
+              <span class="icon"><ion-icon name="exit-outline"></ion-icon></span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+    <div id="notification" class="notification">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill"
+        viewBox="0 0 16 16">
+        <path
+          d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
+      </svg>
+      <span id="notification-message"></span>
+    </div>
+    <section id="agendamento">
+      <div class="agendamento">
+        <!-- Select de Procedimento -->
+        <div class="form-group form-input">
+          <label for="procedimento">Procedimento:</label>
+          <select id="procedimento" name="procedimento">
+            <option value="">Selecione o procedimento</option>
+          </select>
+        </div>
 
-          <div class="form-group form-input hidden" id="opcao-especificacao">
-            <label for="especificacao">Especificação:</label>
-            <select id="especificacao" name="especificacao">
-              <option value="">Selecione a especificação</option>
-            </select>
-          </div>
+        <div class="form-group form-input hidden" id="opcao-especificacao">
+          <label for="especificacao">Especificação:</label>
+          <select id="especificacao" name="especificacao">
+            <option value="">Selecione a especificação</option>
+          </select>
+        </div>
 
-          <div class="form-group form-input hidden" id="tipo-atendimento">
-            <label for="tipo-atendimento">Tipo de Atendimento:</label>
-            <select name="tipo-atendimento" id="tipo-atendimento-select">
-              <option value="">Selecione o tipo de atendimento</option>
-              <option value="Colocação" id="opcao-colocacao">
-                Primeira Vez
-              </option>
-              <option value="Manutenção" id="opcao-manutencao">
-                Manutenção
-              </option>
-              <option value="Retirada" id="opcao-retirada">Remoção</option>
-              <option value="Homecare" id="opcao-homecare">Homecare</option>
-              <option value="Estudio" id="opcao-estudio">Estudio</option>
-              <option value="Evento" id="opcao-evento">Evento</option>
-            </select>
-          </div>
+        <div class="form-group form-input hidden" id="tipo-atendimento">
+          <label for="tipo-atendimento">Tipo de Atendimento:</label>
+          <select name="tipo-atendimento" id="tipo-atendimento-select">
+            <option value="">Selecione o tipo de atendimento</option>
+            <option value="Colocação" id="opcao-colocacao">
+              Primeira Vez
+            </option>
+            <option value="Manutenção" id="opcao-manutencao">
+              Manutenção
+            </option>
+            <option value="Retirada" id="opcao-retirada">Remoção</option>
+            <option value="Homecare" id="opcao-homecare">Homecare</option>
+            <option value="Estudio" id="opcao-estudio">Estudio</option>
+            <option value="Evento" id="opcao-evento">Evento</option>
+          </select>
+        </div>
 
-          <div class="form-group form-input hidden" id="endereco-group">
-            <label for="endereco">Endereço:</label>
-            <input type="text" id="endereco" placeholder="Insira o endereço" />
-            <div class="button-container">
-              <button
-                type="button"
-                class="save-button"
-                id="calcular-taxa-button"
-                onclick="calcularTaxa()"
-              >
-                Calcular Taxa
-              </button>
-            </div>
-          </div>
-
-          <div id="taxa-total" class="hidden">
-            <p>Taxa Total: <span id="valor-taxa"></span></p>
-            <p>Total de Km's: <span id="total-km"></span></p>
-          </div>
-
-          <div class="form-group form-mr form-input" id="data-div">
-            <label for="data">Escolha o melhor dia:</label>
-            <input type="date" id="data" name="data" />
-            <p id="data-selecionada"></p>
-          </div>
-          <div class="form-group form-input" id="horarios-div">
-            <label for="descricao"
-              >Escolha o melhor horário dentro do dia:</label
-            >
-            <div id="horarios-disponiveis"></div>
-
-            <div class="button-container" id="botaoAgendarDiv">
-              <button
-                type="button"
-                class="save-button"
-                id="save-agendamento-button"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  fill="white"
-                  class="bi bi-check-circle-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z"
-                  />
-                </svg>
-                Agendar
-              </button>
-            </div>
+        <div class="form-group form-input hidden" id="endereco-group">
+          <label for="endereco">Endereço:</label>
+          <input type="text" id="endereco" placeholder="Insira o endereço" />
+          <div class="button-container">
+            <button type="button" class="save-button" id="calcular-taxa-button" onclick="calcularTaxa()">
+              Calcular Taxa
+            </button>
           </div>
         </div>
-      </section>
-    </main>
-  </body>
-  <script
-    type="module"
-    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
-  >
-    window.onload = initAutocomplete;
-    let autocompleteEndereco;
-  </script>
-  <script
-    nomodule
-    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
-  ></script>
-  <script
-    type="module"
-    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
-  ></script>
-  <script
-    nomodule
-    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
-  ></script>
 
-  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-    <div vw class="enabled">
-        <div vw-access-button class="active"></div>
-        <div vw-plugin-wrapper></div> 
-    </div>
+        <div id="taxa-total" class="hidden">
+          <p>Taxa Total: <span id="valor-taxa"></span></p>
+          <p>Total de Km's: <span id="total-km"></span></p>
+        </div>
+
+        
+        <div class="form-group form-mr form-input" id="data-div">
+          <label for="data">Escolha o melhor dia:</label>
+          <input type="date" id="data" name="data" />
+          <p id="data-selecionada"></p>
+        </div>
+        <div class="form-group form-input" id="horarios-div">
+          <label for="descricao">Escolha o melhor horário dentro do dia:</label>
+          <div id="horarios-disponiveis"></div>
+
+          <div id="orcamento-container" class="hidden">
+            <p>Orçamento: <span id="orcamento"></span></p>
+            <p id="orcamento-detalhe"></p>
+          </div>
+          
+          <div class="button-container" id="botaoAgendarDiv">
+            <button type="button" class="save-button" id="save-agendamento-button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
+                class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                <path
+                  d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
+              </svg>
+              Agendar
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js">
+  window.onload = initAutocomplete;
+  let autocompleteEndereco;
+</script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<div vw class="enabled">
+  <div vw-access-button class="active"></div>
+  <div vw-plugin-wrapper></div>
+</div>
+
 </html>
