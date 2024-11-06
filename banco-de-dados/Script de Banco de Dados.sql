@@ -112,6 +112,7 @@ CREATE TABLE especificacao (
     tempo_colocacao VARCHAR(5) NOT NULL,
     tempo_manutencao VARCHAR(5) NOT NULL,
     tempo_retirada VARCHAR(5) NOT NULL,
+    homecare BOOLEAN NOT NULL,
     foto LONGBLOB,
     fk_procedimento INT NOT NULL,
     FOREIGN KEY (fk_procedimento) REFERENCES procedimento(id_procedimento)
@@ -275,19 +276,18 @@ VALUES
 ('Sobrancelha', 'Modelagem e tratamento de sobrancelhas'),
 ('Cílios', 'Alongamento e volume de cílios');
 
-INSERT INTO especificacao (especificacao, preco_colocacao, preco_manutencao, preco_retirada, tempo_colocacao, tempo_manutencao, tempo_retirada, fk_procedimento)
+INSERT INTO especificacao (especificacao, preco_colocacao, preco_manutencao, preco_retirada, tempo_colocacao, tempo_manutencao, tempo_retirada, homecare, fk_procedimento)
 VALUES 
-('Extensão de Cílios Fio a Fio', 150.00, 100.00, 50.00, '02:00', '01:30', '01:00', 3),
-('Extensão de Cílios Volume Russo', 200.00, 120.00, 70.00, '02:30', '01:40', '01:10', 3),
-('Design de Sobrancelhas', 80.00, 50.00, 30.00, '00:40', '00:30', '00:20', 2),
-('Micropigmentação de Sobrancelhas', 250.00, 150.00, 80.00, '03:00', '02:00', '01:30', 2),
-('Henna para Sobrancelhas', 70.00, 40.00, 20.00, '01:00', '00:45', '00:30', 2),
-('Maquiagem Social', 100.00, 0.00, 0.00, '01:30', '00:00', '00:00', 1),
-('Maquiagem para Noivas', 300.00, 0.00, 0.00, '03:00', '00:00', '00:00', 1),
-('Lifting de Cílios', 120.00, 80.00, 40.00, '01:30', '01:00', '00:45', 3),
-('Maquiagem Artística', 200.00, 0.00, 0.00, '02:00', '00:00', '00:00', 1),
-('Maquiagem para Eventos', 150.00, 0.00, 0.00, '02:00', '00:00', '00:00', 1);
-
+('Extensão de Cílios Fio a Fio', 150.00, 100.00, 50.00, '02:00', '01:30', '01:00', false, 3),
+('Extensão de Cílios Volume Russo', 200.00, 120.00, 70.00, '02:30', '01:40', '01:10', false, 3),
+('Design de Sobrancelhas', 80.00, 50.00, 30.00, '00:40', '00:30', '00:20', false, 2),
+('Micropigmentação de Sobrancelhas', 250.00, 150.00, 80.00, '03:00', '02:00', '01:30', false, 2),
+('Henna para Sobrancelhas', 70.00, 40.00, 20.00, '01:00', '00:45', '00:30', false, 2),
+('Maquiagem Social', 100.00, 0.00, 0.00, '01:30', '00:00', '00:00', true, 1),
+('Maquiagem para Noivas', 300.00, 0.00, 0.00, '03:00', '00:00', '00:00', true, 1),
+('Lifting de Cílios', 120.00, 80.00, 40.00, '01:30', '01:00', '00:45', false, 3),
+('Maquiagem Artística', 200.00, 0.00, 0.00, '02:00', '00:00', '00:00', true, 1),
+('Maquiagem para Eventos', 150.00, 0.00, 0.00, '02:00', '00:00', '00:00', true, 1);
 
 INSERT INTO pergunta (pergunta, pergunta_ativa, pergunta_tipo)
 VALUES 
@@ -379,7 +379,6 @@ INSERT INTO agendamento (id_agendamento, data_horario, tipo_agendamento, tempo_p
 (11, '2024-08-02 10:30:00', 'Manutencao', 40, 10, 1, 2, 1),
 (12, '2024-09-12 12:00:00', 'Retirada', 35, 10, 1, 1, 1);
 
-
 INSERT INTO cliente (id_usuario, experiencia_avaliada, frequencia)
 VALUES 
 (2, 'Positiva', 5),
@@ -391,8 +390,6 @@ VALUES
 (8, 'Positiva', 2),
 (9, 'Positiva', 4),
 (10, 'Positiva', 5);
-
-
 
 INSERT INTO profissional (id_usuario, numero_avaliacoes, media_nota, qualificacoes, especialidade)
 VALUES 

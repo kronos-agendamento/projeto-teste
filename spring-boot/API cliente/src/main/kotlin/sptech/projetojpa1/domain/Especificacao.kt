@@ -54,6 +54,8 @@ data class Especificacao(
     @Column(name = "tempo_retirada")
     var tempoRetirada: String,
 
+    var homecare: Boolean,
+
     @field:Column(length = 100 * 1024 * 1024)
     @JsonIgnore
     var foto: ByteArray?,

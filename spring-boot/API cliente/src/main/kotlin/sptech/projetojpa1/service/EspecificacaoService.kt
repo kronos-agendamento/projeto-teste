@@ -24,6 +24,7 @@ class EspecificacaoService(
             tempoColocacao = dto.tempoColocacao!!,
             tempoManutencao = dto.tempoManutencao!!,
             tempoRetirada = dto.tempoRetirada!!,
+            homecare = dto.homecare!!,
             foto = null,
             procedimento = procedimento
         )
@@ -51,6 +52,9 @@ class EspecificacaoService(
                     IllegalArgumentException("Procedimento não encontrado com o ID: $it")
                 }
             }
+        }
+        dto.homecare?.let {
+            especificacaoExistente.homecare = it
         }
 
         return repository.save(especificacaoExistente)

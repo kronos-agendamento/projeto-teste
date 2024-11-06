@@ -8,6 +8,7 @@ import sptech.projetojpa1.domain.Agendamento
 import sptech.projetojpa1.domain.Usuario
 import sptech.projetojpa1.dto.agendamento.AgendamentoDTO
 import java.time.LocalDateTime
+import java.time.LocalDate
 
 @Repository
 interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
@@ -242,6 +243,26 @@ ORDER BY
     )
     fun buscarDiaMaisAgendadoPorUsuario(idUsuario: Int): String
 
+    @Query(
+        """
+        SELECT 
+            DATE_FORMAT(MIN(data_horario), '%Y-%m-01') AS data_horario,
+            COUNT(*) AS quantidade_agendamentos
+        FROM 
+            agendamento
+        WHERE 
+            data_horario BETWEEN :startDate AND :endDate
+        GROUP BY 
+            YEAR(data_horario), MONTH(data_horario)
+        ORDER BY 
+            YEAR(data_horario) DESC, MONTH(data_horario) DESC
+        """,
+        nativeQuery = true
+    )
+    fun findAgendamentosPorIntervalo(
+        @Param("startDate") startDate: LocalDate,
+        @Param("endDate") endDate: LocalDate
+    ): List<Array<Any>>
 
     @Query(
         """
