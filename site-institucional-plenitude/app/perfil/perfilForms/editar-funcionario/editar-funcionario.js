@@ -1,16 +1,17 @@
 document.addEventListener("DOMContentLoaded", async function () {
-  let isEditingPersonal = false; // Para alternar edição de Dados Pessoais
-  let isEditingAddress = false; // Para alternar edição de Dados de Endereço
-  let clienteData = {}; // Variável para armazenar os dados do cliente
-  let originalData = {}; // Para armazenar os dados originais do cliente
-  let undoStack = []; // Stack para desfazer ações
-  let redoStack = []; // Stack para refazer ações
-  let undoRedoTimeout; // Variável para o timeout
+  // Variáveis de controle
+  let isEditingPersonal = false;
+  let isEditingAddress = false;
+  let clienteData = {};
+  let originalData = {};
+  let undoStack = [];
+  let redoStack = [];
+  let undoRedoTimeout;
 
   const urlParams = new URLSearchParams(window.location.search);
-  const idUsuario = urlParams.get("codigo"); // Obtendo exclusivamente da URL
-      const idEndereco = urlParams.get("endereco");
-  const clienteNome = localStorage.getItem("clienteNome"); // Mantido no localStorage para o nome
+  const idUsuario = urlParams.get("codigo");
+  const idEndereco = urlParams.get("endereco");
+  const clienteNome = localStorage.getItem("clienteNome");
 
   if (clienteNome) {
     document.querySelector(
@@ -18,36 +19,41 @@ document.addEventListener("DOMContentLoaded", async function () {
     ).textContent = `Mais informações de: ${clienteNome}`;
   }
 
+  // Fetch de dados do usuário
   if (idUsuario) {
     try {
       clienteData = await fetchUsuarioPorId(idUsuario);
       if (clienteData) {
         originalData = JSON.parse(JSON.stringify(clienteData));
-
-        setFieldValue("codigo", clienteData.idUsuario);
-        setFieldValue("nome", clienteData.nome);
-        setFieldValue("nascimento", formatDate(clienteData.dataNasc));
-        setFieldValue("instagram", clienteData.instagram);
-        setFieldValue("cpf", clienteData.cpf);
-        setFieldValue("telefone", clienteData.telefone);
-        setFieldValue("genero", clienteData.genero);
-        setFieldValue("email", clienteData.email);
-        setFieldValue("nivelAcesso", clienteData.nivelAcesso);
-
-        if (clienteData.endereco) {
-          setFieldValue("logradouro", clienteData.endereco.logradouro);
-          setFieldValue("numero", clienteData.endereco.numero);
-          setFieldValue("cep", clienteData.endereco.cep);
-          setFieldValue("bairro", clienteData.endereco.bairro);
-          setFieldValue("cidade", clienteData.endereco.cidade);
-          setFieldValue("estado", clienteData.endereco.estado);
-          setFieldValue("complemento", clienteData.endereco.complemento);
-        } else {
-          console.error("Endereço não encontrado para o ID fornecido.");
-        }
+        preencherCampos(clienteData);
       }
     } catch (error) {
       console.error("Erro ao buscar os dados do cliente:", error);
+    }
+  }
+
+  // Função para preencher campos
+  function preencherCampos(data) {
+    setFieldValue("codigo", data.idUsuario);
+    setFieldValue("nome", data.nome);
+    setFieldValue("nascimento", formatDate(data.dataNasc));
+    setFieldValue("instagram", data.instagram);
+    setFieldValue("cpf", data.cpf);
+    setFieldValue("telefone", data.telefone);
+    setFieldValue("genero", data.genero);
+    setFieldValue("email", data.email);
+    setFieldValue("nivelAcesso", data.nivelAcesso);
+
+    if (data.endereco) {
+      setFieldValue("logradouro", data.endereco.logradouro);
+      setFieldValue("numero", data.endereco.numero);
+      setFieldValue("cep", data.endereco.cep);
+      setFieldValue("bairro", data.endereco.bairro);
+      setFieldValue("cidade", data.endereco.cidade);
+      setFieldValue("estado", data.endereco.estado);
+      setFieldValue("complemento", data.endereco.complemento);
+    } else {
+      console.error("Endereço não encontrado para o ID fornecido.");
     }
   }
 
@@ -56,9 +62,8 @@ document.addEventListener("DOMContentLoaded", async function () {
       const response = await fetch(
         `http://localhost:8080/usuarios/${idUsuario}`
       );
-      if (!response.ok) {
+      if (!response.ok)
         throw new Error(`Erro ao buscar usuário com ID: ${idUsuario}`);
-      }
       return await response.json();
     } catch (error) {
       console.error("Erro ao buscar usuário:", error);
@@ -77,16 +82,15 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   function setFieldValue(fieldId, value) {
     const field = document.getElementById(fieldId);
-    if (!value || value === "") {
-      field.value = "Não há registro desse dado*";
-      field.style.color = "red";
-    } else {
-      field.value = value;
-      field.style.color = ""; // Reseta a cor para o padrão
+    if (!field) {
+      console.error(`Campo com id "${fieldId}" não foi encontrado.`);
+      return;
     }
+    field.value = value || "Não há registro desse dado*";
+    field.style.color = value ? "" : "red";
   }
 
-  // Função para mostrar ou esconder ícones de cadeado
+  // Funções de edição e ícones de cadeado
   function toggleLockIcons(formId, show) {
     const lockIcons = document.querySelectorAll(`#${formId} .lock-icon`);
     lockIcons.forEach((lockIcon) => {
@@ -95,70 +99,88 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   function togglePersonalEditing() {
-    isEditingPersonal = !isEditingPersonal; // Alterna o estado de edição
-    if (isEditingPersonal) {
-      document
-        .querySelectorAll("#personalForm input, #personalForm select")
-        .forEach((field) => {
-          field.disabled = false; // Habilita os campos de Dados Pessoais, incluindo select
-        });
-      document.getElementById("saveButton").disabled = false; // Habilita o botão de salvar de Dados Pessoais
-      toggleLockIcons("personalForm", true); // Mostra ícones de cadeado para Dados Pessoais
-    } else {
-      document
-        .querySelectorAll("#personalForm input, #personalForm select")
-        .forEach((field) => {
-          field.disabled = true; // Desabilita os campos de Dados Pessoais, incluindo select
-        });
-      document.getElementById("saveButton").disabled = true; // Desabilita o botão de salvar de Dados Pessoais
-      toggleLockIcons("personalForm", false); // Esconde ícones de cadeado para Dados Pessoais
-    }
+    isEditingPersonal = !isEditingPersonal;
+    document
+      .querySelectorAll("#personalForm input, #personalForm select")
+      .forEach((field) => {
+        field.disabled = !isEditingPersonal;
+      });
+    document.getElementById("saveButton").disabled = !isEditingPersonal;
+    document.getElementById("deleteButton").style.display = isEditingPersonal
+      ? "inline"
+      : "none";
+    toggleLockIcons("personalForm", isEditingPersonal);
   }
 
-  // Função para alternar a edição de "Dados de Endereço"
   function toggleAddressEditing() {
-    isEditingAddress = !isEditingAddress; // Alterna o estado de edição
-    if (isEditingAddress) {
-      document.querySelectorAll("#addressForm input").forEach((field) => {
-        field.disabled = false; // Habilita os campos de Dados de Endereço
-      });
-      document.getElementById("saveButtonAddress").disabled = false; // Habilita o botão de salvar de Endereço
-      toggleLockIcons("addressForm", true); // Mostra ícones de cadeado para Dados de Endereço
-    } else {
-      document.querySelectorAll("#addressForm input").forEach((field) => {
-        field.disabled = true; // Desabilita os campos de Dados de Endereço
-      });
-      document.getElementById("saveButtonAddress").disabled = true; // Desabilita o botão de salvar de Endereço
-      toggleLockIcons("addressForm", false); // Esconde ícones de cadeado para Dados de Endereço
-    }
+    isEditingAddress = !isEditingAddress;
+    document.querySelectorAll("#addressForm input").forEach((field) => {
+      field.disabled = !isEditingAddress;
+    });
+    document.getElementById("saveButtonAddress").disabled = !isEditingAddress;
+    toggleLockIcons("addressForm", isEditingAddress);
   }
 
-  // Vincula os eventos de clique aos botões de edição de cada formulário
-  document
-    .getElementById("editIconPessoal")
-    .addEventListener("click", togglePersonalEditing);
-  document
-    .getElementById("editIconAdress")
-    .addEventListener("click", toggleAddressEditing);
-
+  // Funções de notificações
   function showNotification(message, isError = false) {
     const notification = document.getElementById("notification");
     const notificationMessage = document.getElementById("notification-message");
     notificationMessage.textContent = message;
-    if (isError) {
-      notification.classList.add("error");
-    } else {
-      notification.classList.remove("error");
-    }
+    notification.classList.toggle("error", isError);
     notification.classList.add("show");
     setTimeout(() => {
       notification.classList.remove("show");
     }, 3000);
   }
 
+  // Função para atualizar os botões de desfazer/refazer
+  function updateUndoRedoButtons() {
+    const btnUndo = document.getElementById("btn-undo");
+    const btnRedo = document.getElementById("btn-redo");
+
+    if (btnUndo && btnRedo) {
+      btnUndo.style.display = undoStack.length > 0 ? "inline" : "none";
+      btnRedo.style.display = redoStack.length > 0 ? "inline" : "none";
+
+      clearTimeout(undoRedoTimeout);
+
+      if (undoStack.length > 0 || redoStack.length > 0) {
+        undoRedoTimeout = setTimeout(() => {
+          btnUndo.style.display = "none";
+          btnRedo.style.display = "none";
+        }, 10000);
+      }
+    }
+  }
+
+  // Função de exclusão do usuário
+  async function deleteUser() {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/usuarios/exclusao-usuario/${idUsuario}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (response.ok) {
+        showNotification("Usuário excluído com sucesso!");
+
+        // Aguarda 2 segundos antes de redirecionar para a página anterior
+        setTimeout(() => {
+          window.location.href = "../../perfil.html";
+        }, 2000);
+      } else {
+        showNotification("Erro ao excluir o usuário.", true);
+      }
+    } catch (error) {
+      console.error("Erro ao excluir o usuário:", error);
+      showNotification("Erro ao excluir o usuário.", true);
+    }
+  }
+
+  // Função para atualizar dados pessoais
   async function updatePersonalData(event) {
     event.preventDefault();
-
     undoStack.push(JSON.parse(JSON.stringify(clienteData)));
     redoStack = [];
 
@@ -171,44 +193,27 @@ document.addEventListener("DOMContentLoaded", async function () {
         parseInt(document.getElementById("telefone").value) ||
         clienteData.telefone,
       genero: document.getElementById("genero").value || clienteData.genero,
-      nivelAcesso: parseInt(document.getElementById("nivelAcesso").value), // Enviar somente o código como número
+      nivelAcesso: parseInt(document.getElementById("nivelAcesso").value),
       cpf: document.getElementById("cpf").value || clienteData.cpf,
     };
-
-    // Logs para verificar o estado de updatedData antes do envio
-    console.log("Dados atualizados:", updatedData);
-    console.log(
-      "Valor do campo nivelAcesso:",
-      document.getElementById("nivelAcesso").value
-    );
-    console.log(
-      "Tipo do valor de nivelAcesso:",
-      typeof document.getElementById("nivelAcesso").value
-    );
 
     try {
       const response = await fetch(
         `http://localhost:8080/usuarios/${idUsuario}`,
         {
           method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(updatedData),
         }
       );
-
-      // Log da resposta para análise
-      console.log("Resposta do servidor:", response);
 
       if (response.ok) {
         clienteData = { ...clienteData, ...updatedData };
         showNotification("Dados atualizados com sucesso!");
         updateUndoRedoButtons();
-        togglePersonalEditing(); // Desabilita edição após salvar
+        togglePersonalEditing();
       } else {
         showNotification("Erro ao atualizar os dados.", true);
-        console.error("Erro na resposta do servidor:", await response.json());
       }
     } catch (error) {
       console.error("Erro ao enviar os dados atualizados:", error);
@@ -216,7 +221,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   }
 
-  // Função para atualizar os dados de endereço
+  // Função para atualizar dados de endereço
   async function updateAddressData(event) {
     event.preventDefault();
 
@@ -238,15 +243,12 @@ document.addEventListener("DOMContentLoaded", async function () {
         clienteData.endereco.complemento,
     };
 
-    // Usando idEndereco extraído da URL
     try {
       const response = await fetch(
-        `http://localhost:8080/api/enderecos/${idEndereco}`, // `idEndereco` direto na URL
+        `http://localhost:8080/api/enderecos/${idEndereco}`,
         {
           method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(updatedAddress),
         }
       );
@@ -255,7 +257,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         clienteData.endereco = updatedAddress;
         showNotification("Endereço atualizado com sucesso!");
         updateUndoRedoButtons();
-        toggleAddressEditing(); // Desabilita edição após salvar
+        toggleAddressEditing();
       } else {
         showNotification("Erro ao atualizar o endereço.", true);
       }
@@ -265,287 +267,73 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   }
 
-  function undoAction() {
-    if (undoStack.length > 0) {
-      const lastData = undoStack.pop();
-      redoStack.push(JSON.parse(JSON.stringify(clienteData)));
-
-      setFieldValue("nome", lastData.nome);
-      setFieldValue("email", lastData.email);
-      setFieldValue("instagram", lastData.instagram);
-      setFieldValue("telefone", lastData.telefone);
-      setFieldValue("genero", lastData.genero);
-      setFieldValue("nivelAcesso", lastData.nivelAcesso);
-      setFieldValue("cpf", lastData.cpf);
-
-      if (lastData.endereco) {
-        setFieldValue("logradouro", lastData.endereco.logradouro);
-        setFieldValue("numero", lastData.endereco.numero);
-        setFieldValue("cep", lastData.endereco.cep);
-        setFieldValue("bairro", lastData.endereco.bairro);
-        setFieldValue("cidade", lastData.endereco.cidade);
-        setFieldValue("estado", lastData.endereco.estado);
-        setFieldValue("complemento", lastData.endereco.complemento);
-      }
-
-      clienteData = lastData;
-      showNotification("Alterações desfeitas.");
-      updateUndoRedoButtons();
-    } else {
-      showNotification("Nenhuma alteração para desfazer.", true);
-    }
+  // Função para controlar os modais de confirmação
+  function openModal(modalId) {
+    document.getElementById(modalId).style.display = "block";
   }
 
-  function redoAction() {
-    if (redoStack.length > 0) {
-      const lastRedoData = redoStack.pop();
-      undoStack.push(JSON.parse(JSON.stringify(clienteData)));
-
-      setFieldValue("nome", lastRedoData.nome);
-      setFieldValue("email", lastRedoData.email);
-      setFieldValue("instagram", lastRedoData.instagram);
-      setFieldValue("telefone", lastRedoData.telefone);
-      setFieldValue("genero", lastRedoData.genero);
-      setFieldValue("nivelAcesso", lastRedoData.nivelAcesso);
-      setFieldValue("cpf", lastRedoData.cpf);
-
-      if (lastRedoData.endereco) {
-        setFieldValue("logradouro", lastRedoData.endereco.logradouro);
-        setFieldValue("numero", lastRedoData.numero);
-        setFieldValue("cep", lastRedoData.endereco.cep);
-        setFieldValue("bairro", lastRedoData.endereco.bairro);
-        setFieldValue("cidade", lastRedoData.endereco.cidade);
-        setFieldValue("estado", lastRedoData.endereco.estado);
-        setFieldValue("complemento", lastRedoData.endereco.complemento);
-      }
-
-      clienteData = lastRedoData;
-      showNotification("Alterações refeitas.");
-      updateUndoRedoButtons();
-    } else {
-      showNotification("Nenhuma alteração para refazer.", true);
-    }
+  function closeModal(modalId) {
+    document.getElementById(modalId).style.display = "none";
   }
 
-  function updateUndoRedoButtons() {
-    const btnUndo = document.getElementById("btn-undo");
-    const btnRedo = document.getElementById("btn-redo");
-
-    // Verifica se os botões existem antes de manipular
-    if (btnUndo && btnRedo) {
-      btnUndo.style.display = undoStack.length > 0 ? "inline" : "none";
-      btnRedo.style.display = redoStack.length > 0 ? "inline" : "none";
-
-      clearTimeout(undoRedoTimeout);
-
-      if (undoStack.length > 0 || redoStack.length > 0) {
-        undoRedoTimeout = setTimeout(() => {
-          btnUndo.style.display = "none";
-          btnRedo.style.display = "none";
-        }, 10000);
-      }
-    }
-  }
+  // Confirmar ações ao clicar nos botões de confirmação
+  document
+    .getElementById("confirmSavePersonalButton")
+    ?.addEventListener("click", async () => {
+      await updatePersonalData(new Event("submit"));
+      closeModal("confirmSavePersonalModal");
+    });
 
   document
-    .getElementById("personalForm")
-    .addEventListener("submit", updatePersonalData);
+    .getElementById("confirmSaveAddressButton")
+    ?.addEventListener("click", async () => {
+      await updateAddressData(new Event("submit"));
+      closeModal("confirmSaveAddressModal");
+    });
+
   document
-    .getElementById("addressForm")
-    .addEventListener("submit", updateAddressData);
+    .getElementById("confirmDeleteButton")
+    ?.addEventListener("click", async () => {
+      await deleteUser();
+      closeModal("confirmDeleteModal");
+    });
 
-  document.getElementById("btn-undo").addEventListener("click", undoAction);
-  document.getElementById("btn-redo").addEventListener("click", redoAction);
-
-  updateUndoRedoButtons(); // Atualiza os botões ao carregar a página
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-  const nome = localStorage.getItem("nome");
-  const instagram = localStorage.getItem("instagram");
-
-  if (nome && instagram) {
-    document.getElementById("userName").textContent = nome;
-    document.getElementById("userInsta").textContent = instagram;
-  }
-});
-
-// Selecionando os elementos do formulário
-const cepInput = document.querySelector("#cep");
-const logradouroInput = document.querySelector("#logradouro");
-const bairroInput = document.querySelector("#bairro");
-const cidadeInput = document.querySelector("#cidade");
-const estadoInput = document.querySelector("#estado");
-
-// Função para buscar o endereço pelo CEP
-const buscaEndereco = async (cep) => {
-  try {
-    const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-    const data = await response.json();
-
-    if (data.erro) {
-      alert("CEP não encontrado.");
-      return;
-    }
-
-    // Populando os campos com os dados recebidos
-    logradouroInput.value = data.logradouro;
-    bairroInput.value = data.bairro;
-    cidadeInput.value = data.localidade;
-    estadoInput.value = data.uf;
-  } catch (error) {
-    console.error("Erro ao buscar o endereço:", error);
-  }
-};
-
-// Evento que detecta quando o usuário terminou de digitar o CEP
-cepInput.addEventListener("blur", () => {
-  const cep = cepInput.value.replace(/\D/g, ""); // Remove qualquer caractere que não seja número
-  if (cep.length === 8) {
-    // Verifica se o CEP tem 8 dígitos
-    buscaEndereco(cep);
-  } else {
-    alert("Por favor, insira um CEP válido.");
-  }
-});
-
-// Função para definir o valor de um campo de entrada
-function setFieldValue(fieldId, value) {
-  const field = document.getElementById(fieldId);
-  if (!field) {
-    console.error(`Campo com id "${fieldId}" não foi encontrado.`);
-    return;
-  }
-
-  if (!value || value === "") {
-    field.value = "Não há registro desse dado*";
-    field.style.color = "red"; // Muda a cor do texto para vermelho para indicar ausência de dado
-  } else {
-    field.value = value;
-    field.style.color = ""; // Reseta a cor para o padrão
-  }
-}
-
-document.addEventListener("DOMContentLoaded", async function () {
-  function showNotification(message, isError = false) {
-    const notification = document.getElementById("notification");
-    const notificationMessage = document.getElementById("notification-message");
-
-    notificationMessage.textContent = message;
-    notification.classList.toggle("error", isError); // Usa toggle para adicionar ou remover a classe
-    notification.classList.add("show");
-
-    setTimeout(() => {
-      notification.classList.remove("show");
-    }, 3000);
-  }
-
-  const enviarEmailButton = document.getElementById("enviarEmailButton");
-  const emailInput = document.getElementById("email"); // Pegar o input do email
-
-  let clienteData = {}; // Variável para armazenar os dados do cliente
-  console.log(clienteData);
-
-  // Verifique se o idUsuario está nos parâmetros da URL ou no localStorage
-  const urlParams = new URLSearchParams(window.location.search);
-  const idUsuario =
-    urlParams.get("idUsuario") || localStorage.getItem("idUsuario");
-  const clienteNome = localStorage.getItem("clienteNome");
-
-  // Se o nome do cliente estiver armazenado, exibe no cabeçalho
-  if (clienteNome) {
-    document.querySelector(
-      "header h1"
-    ).textContent = `Mais informações de: ${clienteNome}`;
-  }
-
-  // Função para capturar o valor do campo de email e enviar o e-mail
-  enviarEmailButton.addEventListener("click", function () {
-    // Captura o email diretamente do campo de input
-    const emailCliente = emailInput.value;
-    const nomeCliente = clienteData.nome || "Cliente";
-
-    // Verificar se o campo de email tem um valor
-    if (!emailCliente) {
-      showNotification("O cliente não possui um e-mail cadastrado.", true);
-      return;
-    }
-
-    // Mensagem de feedback
-    const mensagem =
-      "Por favor, nos dê seu feedback sobre os nossos serviços preenchendo o formulário no link abaixo.";
-
-    // Chama a função para enviar o e-mail
-    enviarEmail(emailCliente, nomeCliente, mensagem);
+  // Botões de cancelamento para fechar modais
+  document.querySelectorAll(".btn-no").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      const modalId = event.target.closest(".modal").id;
+      closeModal(modalId);
+    });
   });
 
-  // Função para enviar o e-mail
-  async function enviarEmail(email, nome, mensagem) {
-    try {
-      const response = await fetch("http://127.0.0.1:5000/enviar-email", {
-        // Rota do servidor Flask para enviar e-mail
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email, // E-mail do destinatário
-          nome: nome, // Nome do cliente
-          mensagem: mensagem, // Mensagem personalizada
-        }),
-      });
+  // Eventos de clique para alternar edição
+  document
+    .getElementById("editIconPessoal")
+    ?.addEventListener("click", togglePersonalEditing);
+  document
+    .getElementById("editIconAdress")
+    ?.addEventListener("click", toggleAddressEditing);
 
-      const data = await response.json();
-      if (response.ok) {
-        console.log(`Email enviado com sucesso para ${email}`);
-        showNotification("E-mail enviado com sucesso!");
-      } else {
-        console.error("Erro ao enviar o e-mail:", data.error);
-        showNotification("Erro ao enviar o e-mail.", true);
-      }
-    } catch (error) {
-      console.error("Erro ao enviar o e-mail:", error);
-      showNotification("Erro ao enviar o e-mail.", true);
-    }
-  }
+  // Eventos de clique para abrir modais de confirmação
+  document.getElementById("saveButton")?.addEventListener("click", (event) => {
+    event.preventDefault();
+    openModal("confirmSavePersonalModal");
+  });
+  document
+    .getElementById("saveButtonAddress")
+    ?.addEventListener("click", (event) => {
+      event.preventDefault();
+      openModal("confirmSaveAddressModal");
+    });
+  document
+    .getElementById("deleteButton")
+    ?.addEventListener("click", (event) => {
+      event.preventDefault();
+      openModal("confirmDeleteModal");
+    });
+
+  // Funções de Undo e Redo
+  document.getElementById("btn-undo")?.addEventListener("click", undoAction);
+  document.getElementById("btn-redo")?.addEventListener("click", redoAction);
+  updateUndoRedoButtons(); // Inicializar Undo e Redo ao carregar a página
 });
-
-new window.VLibras.Widget("https://vlibras.gov.br/app");
-
-async function carregarImagem2() {
-  const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução
-  const perfilImage = document.getElementById("perfilImage");
-
-  if (!cpf) {
-    console.log("CPF não encontrado.");
-    return;
-  }
-
-  try {
-    const response = await fetch(
-      `http://localhost:8080/usuarios/busca-imagem-usuario/${cpf}`,
-      {
-        method: "GET",
-      }
-    );
-
-    if (response.ok) {
-      const blob = await response.blob(); // Recebe a imagem como Blob
-      const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
-
-      // Define a URL da imagem carregada como src do img
-      perfilImage.src = imageUrl;
-      perfilImage.alt = "Foto do usuário";
-      perfilImage.style.width = "20vh";
-      perfilImage.style.height = "20vh";
-      perfilImage.style.borderRadius = "300px";
-    } else {
-      console.log("Imagem não encontrada para o CPF informado.");
-    }
-  } catch (error) {
-    console.error("Erro ao buscar a imagem:", error);
-  }
-}
-
-// Carrega a imagem automaticamente quando a página termina de carregar
-window.onload = carregarImagem2;

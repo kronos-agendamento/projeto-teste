@@ -380,39 +380,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     return phoneNumber;
   }
 
-  // document
-  //   .getElementById("bloqueio-button")
-  //   .addEventListener("click", async function () {
-  //     console.log("Botão de bloqueio clicado!");
-  //     const diaEscolhido = document.getElementById("diaEscolhido").value;
-  //     const horaInicioBlock = document.getElementById("horaInicioBlock").value;
-  //     const horaFimBlock = document.getElementById("horaFimBlock").value;
-  //     const idUsuario = parseInt(localStorage.getItem("idUsuario"), 10);
-  //     const data = {
-  //       dia: diaEscolhido,
-  //       horaInicio: horaInicioBlock,
-  //       horaFim: horaFimBlock,
-  //       usuarioId: idUsuario,
-  //     };
-  //     fetch("http://localhost:8080/api/agendamentos/bloquear", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(data),
-  //     })
-  //       .then((response) => response.json())
-  //       .then((data) => {
-  //         console.log("Sucesso:", data);
-  //         alert("Horário bloqueado com sucesso!");
-  //       })
-  //       .catch((error) => {
-  //         console.error("Erro:", error);
-  //         alert("Erro ao bloquear horário.");
-  //       });
-  //   });
-
-  // Adiciona o event listener após o DOM estar carregado
   document
     .getElementById("save-usuario-button")
     .addEventListener("click", async function () {
@@ -467,7 +434,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       const cpf = localStorage.getItem("cpf");
 
       if (!cpf) {
-        alert("CPF não encontrado no localStorage.");
         return;
       }
 
@@ -600,7 +566,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       const data = await response.json();
 
       if (data.erro) {
-        alert("CEP não encontrado.");
         return;
       }
 
@@ -621,7 +586,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Verifica se o CEP tem 8 dígitos
       buscaEndereco(cep);
     } else {
-      alert("Por favor, insira um CEP válido.");
     }
   });
 });
@@ -955,7 +919,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const fileInput = document.getElementById("file");
 
       if (!cpf || fileInput.files.length === 0) {
-        alert("Por favor, insira o CPF e selecione uma imagem.");
         return;
       }
 

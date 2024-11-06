@@ -391,7 +391,6 @@ const buscaEndereco = async (cep) => {
     const data = await response.json();
 
     if (data.erro) {
-      alert("CEP não encontrado.");
       return;
     }
 
@@ -412,7 +411,6 @@ cepInput.addEventListener("blur", () => {
     // Verifica se o CEP tem 8 dígitos
     buscaEndereco(cep);
   } else {
-    alert("Por favor, insira um CEP válido.");
   }
 });
 
