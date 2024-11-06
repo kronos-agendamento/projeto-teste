@@ -75,6 +75,7 @@ CREATE TABLE usuario (
     genero VARCHAR(50),
     indicacao VARCHAR(255),
     foto LONGBLOB,
+    avaliacao int,
     status BOOLEAN DEFAULT TRUE,
 	dtype VARCHAR(31),  -- Adiciona o campo dtype para o discriminador
     fk_nivel_acesso INT,

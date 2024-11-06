@@ -22,7 +22,8 @@
             style="width: 30px; height: 30px; list-style: none;; display: flex; justify-content: center; margin-top: 5vh;">
             <div class="imagem-perfil"
                 style="width: 20vh; height: 20vh; border-radius: 300px; display: flex; justify-content: center;">
-                <img id="perfilImage"  alt="Foto do usuário" style="width: 53vh; height: 23vh;  display: flex; justify-content: center; align-items: center;">
+                <img id="perfilImage" alt="Foto do usuário"
+                    style="width: 53vh; height: 23vh;  display: flex; justify-content: center; align-items: center;">
             </div>
         </li>
         <li id="userName" style="margin-top: 20vh;list-style: none; color: white; font-weight: 600;">
@@ -150,16 +151,18 @@
 
             </h2>
             <form id="personalForm" class="form">
+            
                 <div class="form-group-row">
-                    <div class="form-group">
+                    <div class="imagem-perfil" style=" width: 34vh; height: 20vh; border-radius: 10px; display: flex; justify-content: center; margin-left: 0%;">
+                            <img id="perfilClienteImage" alt="Foto do usuário" style="width: 34vh; height: 23vh; display: flex; justify-content: center; align-items: center;" />
+                    </div>
+                    <div class="form-group" style="margin-left: 2.5%;">
                         <label for="nome">Código do Cliente:</label>
                         <div style="display: flex; align-items: center;">
                             <input type="text" id="codigo" name="codigo" required disabled>
                             <span class="lock-icon" id="codigo-lock">🔒</span>
                         </div>
                     </div>
-                </div>
-                <div class="form-group-row">
                     <div class="form-group">
                         <label for="nome">Nome:</label>
                         <div style="display: flex; align-items: center;">
@@ -167,6 +170,8 @@
                             <span class="lock-icon" id="nome-lock">🔓</span>
                         </div>
                     </div>
+                </div>
+                <div class="form-group-row" style="margin-left: 26.5%;">
                     <div class="form-group">
                         <label for="nascimento">Data de Nascimento:</label>
                         <div style="display: flex; align-items: center;">
@@ -198,8 +203,6 @@
                             <span class="lock-icon" id="telefone-lock">🔓</span>
                         </div>
                     </div>
-                </div>
-                <div class="form-group-row">
                     <div class="form-group">
                         <label for="genero">Gênero:</label>
                         <div style="display: flex; align-items: center;">
@@ -207,6 +210,9 @@
                             <span class="lock-icon" id="genero-lock">🔓</span>
                         </div>
                     </div>
+                </div>
+                <div class="form-group-row">
+                
                     <div class="form-group">
                         <label for="email">Email:</label>
                         <div style="display: flex; align-items: center;">
@@ -221,6 +227,16 @@
                             <span class="lock-icon" id="indicacao-lock">🔓</span>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="avaliacao">Avaliação:</label>
+                        <div id="avaliacao" class="star-rating-display">
+                            <span class="star" data-value="1">&#9733;</span>
+                            <span class="star" data-value="2">&#9733;</span>
+                            <span class="star" data-value="3">&#9733;</span>
+                            <span class="star" data-value="4">&#9733;</span>
+                            <span class="star" data-value="5">&#9733;</span>
+                        </div>
+                      </div>
                 </div>
                 <div class="button-container">
                     <button type="submit" class="save-button" id="saveButton" disabled>Salvar Dados Pessoais</button>
@@ -362,10 +378,10 @@
         <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
         <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-    <div vw class="enabled">
-        <div vw-access-button class="active"></div>
-        <div vw-plugin-wrapper></div> 
-    </div>
+        <div vw class="enabled">
+            <div vw-access-button class="active"></div>
+            <div vw-plugin-wrapper></div>
+        </div>
 </body>
 
 </html>

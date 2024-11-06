@@ -33,11 +33,18 @@ document.addEventListener("DOMContentLoaded", async function () {
     ).textContent = `Mais informações de: ${clienteNome}`;
   }
 
+ 
+  
+  
+  
+
   if (idUsuario) {
     try {
       clienteData = await fetchUsuarioPorId(idUsuario);
       if (clienteData) {
-        originalData = JSON.parse(JSON.stringify(clienteData));
+        console.log("Dados do cliente:", clienteData);
+        console.log("Avaliação do cliente:", clienteData.avaliacao); // Verifique o valor de avaliação aqui
+  
 
         setFieldValue("codigo", clienteData.idUsuario);
         setFieldValue("nome", clienteData.nome);
@@ -48,6 +55,14 @@ document.addEventListener("DOMContentLoaded", async function () {
         setFieldValue("genero", clienteData.genero);
         setFieldValue("email", clienteData.email);
         setFieldValue("indicacao", clienteData.indicacao);
+
+        if (clienteData.avaliacao != null) {
+          console.log(clienteData.avaliacao)
+          localStorage.setItem("avaliacao", clienteData.avaliacao); // Salva a avaliação no localStorage
+          mostrarAvaliacaoEstrelas(clienteData.avaliacao); // Exibe a avaliação como estrelas
+        } else {
+          mostrarAvaliacaoEstrelas(0); // Exibe 0 estrelas se não houver avaliação
+        }
 
         if (clienteData.endereco) {
           setFieldValue("logradouro", clienteData.endereco.logradouro);
@@ -63,6 +78,23 @@ document.addEventListener("DOMContentLoaded", async function () {
       }
     } catch (error) {
       console.error("Erro ao buscar os dados do cliente:", error);
+    }
+  }
+
+  function mostrarAvaliacaoEstrelas(pontuacao) {
+    const avaliacaoElement = document.getElementById("avaliacao");
+    avaliacaoElement.innerHTML = ""; // Limpa o conteúdo atual
+  
+    for (let i = 1; i <= 5; i++) {
+      const star = document.createElement("span");
+      star.classList.add("star");
+      if (i <= pontuacao) {
+        star.classList.add("filled"); // Adiciona a classe para estrelas preenchidas
+        star.innerHTML = "★"; // Caractere de estrela preenchida
+      } else {
+        star.innerHTML = "☆"; // Caractere de estrela vazia
+      }
+      avaliacaoElement.appendChild(star);
     }
   }
 
@@ -168,51 +200,81 @@ document.addEventListener("DOMContentLoaded", async function () {
     }, 3000);
   }
 
-  async function updatePersonalData(event) {
-    event.preventDefault();
-
-    undoStack.push(JSON.parse(JSON.stringify(clienteData)));
-    redoStack = [];
-
-    const updatedData = {
-      nome: document.getElementById("nome").value || clienteData.nome,
-      email: document.getElementById("email").value || clienteData.email,
-      instagram:
-        document.getElementById("instagram").value || clienteData.instagram,
-      telefone:
-        parseInt(document.getElementById("telefone").value) ||
-        clienteData.telefone,
-      genero: document.getElementById("genero").value || clienteData.genero,
-      indicacao:
-        document.getElementById("indicacao").value || clienteData.indicacao,
-      cpf: document.getElementById("cpf").value || clienteData.cpf,
-    };
-
-    try {
-      const response = await fetch(
-        `http://localhost:8080/usuarios/${idUsuario}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedData),
+  document.addEventListener("DOMContentLoaded", function () {
+    let avaliacaoSelecionada = 0; // Variável para armazenar a avaliação atual
+  
+    // Seleciona todas as estrelas e adiciona um evento de clique a cada uma
+    document.querySelectorAll(".star-rating .star").forEach(star => {
+      star.addEventListener("click", function () {
+        avaliacaoSelecionada = parseInt(this.getAttribute("data-value")); // Captura o valor da estrela clicada
+        atualizarEstrelas(avaliacaoSelecionada); // Atualiza a exibição das estrelas
+      });
+    });
+  
+    // Função para atualizar a exibição das estrelas com base na avaliação
+    function atualizarEstrelas(pontuacao) {
+      document.querySelectorAll(".star-rating .star").forEach(star => {
+        // Preenche ou desmarca as estrelas com base no valor de pontuação
+        if (parseInt(star.getAttribute("data-value")) <= pontuacao) {
+          star.classList.add("filled"); // Marca estrela como preenchida
+        } else {
+          star.classList.remove("filled"); // Remove marcação de preenchido
         }
-      );
+      });
+    }
+  });
+  
 
-      if (response.ok) {
-        clienteData = updatedData;
-        showNotification("Dados atualizados com sucesso!");
-        updateUndoRedoButtons();
-        togglePersonalEditing(); // Desabilita edição após salvar
-      } else {
-        showNotification("Erro ao atualizar os dados.", true);
+
+// Função para obter a avaliação e incluir no envio de dados ao backend
+async function updatePersonalData(event) {
+  event.preventDefault();
+  console.log("Atualizando dados pessoais..."); // Verifique se a função está sendo chamada
+
+  undoStack.push(JSON.parse(JSON.stringify(clienteData)));
+  redoStack = [];
+
+  // Inclui a avaliação selecionada no objeto updatedData
+  const updatedData = {
+    nome: document.getElementById("nome").value || clienteData.nome,
+    email: document.getElementById("email").value || clienteData.email,
+    instagram: document.getElementById("instagram").value || clienteData.instagram,
+    telefone: parseInt(document.getElementById("telefone").value) || clienteData.telefone,
+    genero: document.getElementById("genero").value || clienteData.genero,
+    indicacao: document.getElementById("indicacao").value || clienteData.indicacao,
+    cpf: document.getElementById("cpf").value || clienteData.cpf,
+    avaliacao: avaliacaoSelecionada // Inclui a avaliação selecionada
+  };
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/usuarios/${idUsuario}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedData),
       }
-    } catch (error) {
-      console.error("Erro ao enviar os dados atualizados:", error);
+    );
+
+    if (response.ok) {
+      clienteData = { ...clienteData, ...updatedData };
+      localStorage.setItem("avaliacao", avaliacaoSelecionada); // Armazena no localStorage
+      showNotification("Dados atualizados com sucesso!");
+      updateUndoRedoButtons();
+      togglePersonalEditing();
+    } else {
       showNotification("Erro ao atualizar os dados.", true);
     }
+  } catch (error) {
+    console.error("Erro ao enviar os dados atualizados:", error);
+    showNotification("Erro ao atualizar os dados.", true);
   }
+}
+
+
+
 
   async function updateAddressData(event) {
     event.preventDefault();
@@ -554,5 +616,45 @@ async function carregarImagem2() {
   }
 }
 
-// Carrega a imagem automaticamente quando a página termina de carregar
-window.onload = carregarImagem2;
+async function carregarImagem3() {
+  // Captura o valor do CPF a partir da URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const cpf = urlParams.get("cpf"); // Obtém o valor do parâmetro 'cpf'
+  const perfilClienteImage = document.getElementById("perfilClienteImage");
+
+  if (!cpf) {
+      console.log("CPF não encontrado na URL.");
+      return;
+  }
+
+  try {
+      const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario/${cpf}`, {
+          method: "GET",
+      });
+
+      if (response.ok) {
+          const blob = await response.blob(); // Recebe a imagem como Blob
+          const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
+
+          // Define a URL da imagem carregada como src do img
+          perfilClienteImage.src = imageUrl;
+          perfilClienteImage.alt = "Foto do usuário";
+          perfilClienteImage.style.width = "34vh";
+          perfilClienteImage.style.height = "34vh";
+          perfilClienteImage.style.borderRadius = "20px";
+      } else {
+          console.log("Imagem não encontrada para o CPF informado.");
+      }
+  } catch (error) {
+      console.error("Erro ao buscar a imagem:", error);
+  }
+}
+
+
+window.onload = function () {
+  carregarImagem2();
+  carregarImagem3();
+};
+
+
+

@@ -478,6 +478,17 @@ class UsuarioController(
         return ResponseEntity.ok(leads)
     }
 
+    @PostMapping("/avaliar/{cpf}")
+    fun avaliarUsuario(@RequestBody avaliacaoRequest: AvaliacaoRequest): ResponseEntity<String> {
+        val usuario = usuarioService.atualizarAvaliacao(avaliacaoRequest.cpf, avaliacaoRequest.pontuacao)
+
+        return if (usuario != null) {
+            ResponseEntity.status(HttpStatus.OK).body("Avaliação atualizada com sucesso!")
+        } else {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado.")
+        }
+    }
+
 
 }
 

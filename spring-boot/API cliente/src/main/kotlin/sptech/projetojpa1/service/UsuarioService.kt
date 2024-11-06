@@ -126,6 +126,7 @@ class UsuarioService(
             telefone = dto.telefone ?: telefone
             genero = dto.genero ?: genero
             indicacao = dto.indicacao ?: indicacao
+            avaliacao = dto.avaliacao ?: avaliacao
             senha = dto.senha?: senha
         }
 
@@ -144,6 +145,7 @@ class UsuarioService(
             telefone = dto.telefone ?: telefone
             genero = dto.genero ?: genero
             indicacao = dto.indicacao ?: indicacao
+            avaliacao = dto.avaliacao ?: avaliacao
         }
         return usuarioRepository.save(usuario)
     }
@@ -178,7 +180,8 @@ class UsuarioService(
                 instagram = usuario.instagram,
                 telefone = usuario.telefone,
                 cpf = usuario.cpf,
-                status = usuario.status
+                status = usuario.status,
+                avaliacao = usuario.avaliacao
             )
         }
     }
@@ -198,6 +201,7 @@ class UsuarioService(
             genero = usuario.genero,
             senha = usuario.senha,
             email = usuario.email,
+            avaliacao = usuario.avaliacao
         )
     }
 
@@ -213,7 +217,8 @@ class UsuarioService(
                 cpf = usuario.cpf,
                 dataNasc = usuario.dataNasc,
                 status = usuario.status,
-                endereco = usuario.endereco
+                endereco = usuario.endereco,
+                avaliacao = usuario.avaliacao
             )
         }
     }
@@ -250,7 +255,8 @@ class UsuarioService(
                 cpf = usuario.cpf,
                 dataNasc = usuario.dataNasc,
                 status = usuario.status,
-                endereco = usuario.endereco
+                endereco = usuario.endereco,
+                avaliacao = usuario.avaliacao
             )
         } else {
             null
@@ -293,7 +299,8 @@ class UsuarioService(
                     telefone = usuario.telefone,
                     cpf = usuario.cpf,
                     dataNasc = usuario.dataNasc,
-                    status = usuario.status
+                    status = usuario.status,
+                    avaliacao = usuario.avaliacao
                 )
             }
             usuario.status = false
@@ -307,7 +314,8 @@ class UsuarioService(
                 telefone = usuario.telefone,
                 cpf = usuario.cpf,
                 dataNasc = usuario.dataNasc,
-                status = usuario.status
+                status = usuario.status,
+                avaliacao = usuario.avaliacao
             )
         } else {
             println("Usuário não encontrado para o CPF: $cpf")
@@ -326,7 +334,8 @@ class UsuarioService(
                     idUsuario = usuario.codigo,
                     cpf = usuario.cpf,
                     nome = usuario.nome,
-                    status = usuario.status
+                    status = usuario.status,
+                    avaliacao = usuario.avaliacao
                 )
             }
             usuario.status = true
@@ -337,7 +346,8 @@ class UsuarioService(
                 idUsuario = usuario.codigo,
                 cpf = usuario.cpf,
                 nome = usuario.nome,
-                status = usuario.status
+                status = usuario.status,
+                avaliacao = usuario.avaliacao
             )
         } else {
             println("Usuário não encontrado para o CPF: $cpf")
@@ -357,7 +367,8 @@ class UsuarioService(
                     telefone = usuario.telefone,
                     cpf = usuario.cpf,
                     dataNasc = usuario.dataNasc,
-                    status = usuario.status
+                    status = usuario.status,
+                    avaliacao = usuario.avaliacao
                 )
             }
             usuario.status = false
@@ -374,7 +385,8 @@ class UsuarioService(
                 telefone = usuario.telefone,
                 cpf = usuario.cpf,
                 dataNasc = usuario.dataNasc,
-                status = usuario.status
+                status = usuario.status,
+                avaliacao = usuario.avaliacao
             )
         } else {
             null
@@ -392,7 +404,8 @@ class UsuarioService(
                     telefone = usuario.telefone,
                     cpf = usuario.cpf,
                     dataNasc = usuario.dataNasc,
-                    status = usuario.status
+                    status = usuario.status,
+                    avaliacao = usuario.avaliacao
                 )
             }
             usuario.status = true
@@ -404,7 +417,8 @@ class UsuarioService(
                 telefone = usuario.telefone,
                 cpf = usuario.cpf,
                 dataNasc = usuario.dataNasc,
-                status = usuario.status
+                status = usuario.status,
+                avaliacao = usuario.avaliacao
             )
         } else {
             null
@@ -456,7 +470,8 @@ class UsuarioService(
                 email = row["email"] as String?,
                 genero = row["genero"] as String?,
                 indicacao = row["indicacao"] as String?,
-                endereco = null // Ajuste conforme necessário
+                endereco = null,
+                avaliacao = row["avaliacao"] as Int?// Ajuste conforme necessário
             )
         }
     }
@@ -497,4 +512,15 @@ class UsuarioService(
     fun listarLeads(): List<Map<String, Any>> = usuarioRepository.listarLeads()
 
 
+    fun atualizarAvaliacao(cpf: String, pontuacao: Int): Usuario? {
+        val usuario = usuarioRepository.findByCpf(cpf)
+
+        return if (usuario != null) {
+            // Sobrescreve a pontuação atual com a nova avaliação
+            usuario.avaliacao = pontuacao
+            usuarioRepository.save(usuario) // Salva o usuário com a nova avaliação
+        } else {
+            null
+        }
+    }
 }
