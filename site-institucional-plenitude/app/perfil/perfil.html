@@ -1,453 +1,602 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perfil | KronosBooking</title>
 
-  <title>Perfil | KronosBooking</title>
+    <link href="../assets/favicon.png" rel="icon" />
+    <link rel="stylesheet" href="perfil.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
 
-  <link href="../assets/favicon.png" rel="icon">
-
-  <link rel="stylesheet" href="perfil.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-</head>
-
-<body>
-
-
-  <div class="corpo">
-    <div class="navigation">
-      <li class="list" style="
-      width: 30px;
-      height: 30px;
-      list-style: none;
-      display: flex;
-      justify-content: center;
-      margin-top: 5vh;
-    ">
-  <div class="imagem-perfil" style="
-        width: 20vh;
-        height: 20vh;
-        border-radius: 300px;
-        display: flex;
-        justify-content: center;
-      ">
-  <img id="perfilImage"  alt="Foto do usuário" style="
-          width: 53vh;
-          height: 23vh;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        " />
-  </div>
-</li>
-<li id="userName" style="
-      margin-top: 20vh;
-      list-style: none;
-      color: white;
-      font-weight: 600;
-    "></li>
-<li id="userInsta" style="
-      list-style: none;
-      color: white;
-      font-weight: 200;
-      font-size: 12px;
-    "></li>
-
-<ul style="margin-top: 3%; position: absolute">
-  <li class="list">
-    <a href="../index/index.html">
-      <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
-      <span class="title">Início </span>
-    </a>
-  </li>
-        <li class="list active">
-          <a href="perfil.html">
-            <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
-            <span class="title">Perfil</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../agendamento/agendamento.html">
-            <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
-            <span class="title">Agendamentos</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../anamnese/anamnese.html">
-            <span class="icon"><ion-icon name="document-text-outline"></ion-icon></span>
-            <span class="title">Anamneses</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../clientes/clientes.html">
-            <span class="icon"><ion-icon name="person-add-outline"></ion-icon></span>
-            <span class="title">Clientes</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../procedimento/procedimento.html">
-            <span class="icon"><ion-icon name="brush-outline"></ion-icon></span>
-            <span class="title">Procedimentos</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../dashboard/dashboard.html">
-            <span class="icon"><ion-icon name="stats-chart-outline"></ion-icon></span>
-            <span class="title">Dashboard</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../../index.html">
-            <span class="icon"><ion-icon name="exit-outline"></ion-icon></span>
-            <span class="title">Sair</span>
-          </a>
-        </li>
-      </ul>
-    </div>
-
-    <main>
-      <header style="height: 14vh; width: 152vh; margin-left: 4.3%">
-        <div>
-          <h1>Perfil</h1>
-          <p>Boas-vindas ao seu perfil, tenha controle dos seus dados e mantenha-os atualizados!</p>
-        </div>
-
-
-        <div id="notification" class="notification">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill"
-            viewBox="0 0 16 16">
-            <path
-              d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
-          </svg>
-          <span id="notification-message"></span>
-        </div>
-
-      </header>
-
-      <section class="form-section" id="personalInfoForm">
-
-        <h2>
-          <div class="form-group-row">
-            &nbsp;&nbsp;&nbsp; Dados Pessoais
-            <button class="edit-icon-btn" id="editIconUsuario" aria-label="Editar Dados Pessoais">
-              <img src="../../assets/icons/editar.branco.png" alt="Editar"
-                style="width: 20px; height: 20px; border-radius: 0px;">
-            </button>
+  <body>
+    <div class="corpo">
+      <div class="navigation">
+        <li
+          class="list"
+          style="
+            width: 30px;
+            height: 30px;
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            margin-top: 5vh;
+          "
+        >
+          <div
+            class="imagem-perfil"
+            style="
+              width: 20vh;
+              height: 20vh;
+              border-radius: 300px;
+              display: flex;
+              justify-content: center;
+            "
+          >
+            <img
+              id="perfilImage"
+              alt="Foto do usuário"
+              style="
+                width: 53vh;
+                height: 23vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            />
           </div>
-        </h2>
-        <div class="form-group" style="margin-bottom: 1rem;">
-          <label for="file">Foto de Perfil:</label>
-          <form id="uploadForm" style="display: flex; align-items: center;">
-            <input type="file" id="file" name="file" accept="image/*" required style="flex: 1;" disabled>
-            <button class="save-button" type="submit" id="uploadButton" disabled>Enviar Foto</button>
+        </li>
+        <li
+          id="userName"
+          style="
+            margin-top: 20vh;
+            list-style: none;
+            color: white;
+            font-weight: 600;
+          "
+        ></li>
+        <li
+          id="userInsta"
+          style="
+            list-style: none;
+            color: white;
+            font-weight: 200;
+            font-size: 12px;
+          "
+        ></li>
+
+        <ul style="margin-top: 3%; position: absolute">
+          <li class="list">
+            <a href="../index/index.html">
+              <span class="icon"
+                ><ion-icon name="home-outline"></ion-icon
+              ></span>
+              <span class="title">Início </span>
+            </a>
+          </li>
+          <li class="list active">
+            <a href="perfil.html">
+              <span class="icon"
+                ><ion-icon name="people-outline"></ion-icon
+              ></span>
+              <span class="title">Perfil</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../agendamento/agendamento.html">
+              <span class="icon"
+                ><ion-icon name="calendar-outline"></ion-icon
+              ></span>
+              <span class="title">Agendamentos</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../anamnese/anamnese.html">
+              <span class="icon"
+                ><ion-icon name="document-text-outline"></ion-icon
+              ></span>
+              <span class="title">Anamneses</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../clientes/clientes.html">
+              <span class="icon"
+                ><ion-icon name="person-add-outline"></ion-icon
+              ></span>
+              <span class="title">Clientes</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../procedimento/procedimento.html">
+              <span class="icon"
+                ><ion-icon name="brush-outline"></ion-icon
+              ></span>
+              <span class="title">Procedimentos</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../dashboard/dashboard.html">
+              <span class="icon"
+                ><ion-icon name="stats-chart-outline"></ion-icon
+              ></span>
+              <span class="title">Dashboard</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../../index.html">
+              <span class="icon"
+                ><ion-icon name="exit-outline"></ion-icon
+              ></span>
+              <span class="title">Sair</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <main>
+        <header style="height: 14vh; width: 152vh; margin-left: 4.3%">
+          <div>
+            <h1>Perfil</h1>
+            <p>
+              Boas-vindas ao seu perfil, tenha controle dos seus dados e
+              mantenha-os atualizados!
+            </p>
+          </div>
+
+          <div id="notification" class="notification">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              fill="white"
+              class="bi bi-check-circle-fill"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z"
+              />
+            </svg>
+            <span id="notification-message"></span>
+          </div>
+        </header>
+
+        <section class="form-section" id="personalInfoForm">
+          <h2>
+            <div class="form-group-row">
+              &nbsp;&nbsp;&nbsp; Dados Pessoais
+              <button
+                class="edit-icon-btn"
+                id="editIconUsuario"
+                aria-label="Editar Dados Pessoais"
+              >
+                <img
+                  src="../../assets/icons/editar.branco.png"
+                  alt="Editar"
+                  style="width: 20px; height: 20px; border-radius: 0px"
+                />
+              </button>
+            </div>
+          </h2>
+          <div class="form-group" style="margin-bottom: 1rem">
+            <label for="file">Foto de Perfil:</label>
+            <form id="uploadForm" style="display: flex; align-items: center">
+              <input
+                type="file"
+                id="file"
+                name="file"
+                accept="image/*"
+                required
+                style="flex: 1"
+                disabled
+              />
+              <button
+                class="save-button"
+                type="submit"
+                id="uploadButton"
+                disabled
+              >
+                Enviar Foto
+              </button>
+            </form>
+            <p id="responseMessage" style="font-size: 14px"></p>
+          </div>
+
+          <form id="personalForm" class="form">
+            <div class="form-group-row">
+              <div class="form-group">
+                <label for="nome">Nome:</label>
+                <div style="display: flex; align-items: center">
+                  <input type="text" id="nome" name="nome" required disabled />
+                  <span class="lock-icon" id="nome-lock">🔓</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="nascimento">Data de Nascimento:</label>
+                <div style="display: flex; align-items: center">
+                  <input
+                    type="date"
+                    id="nascimento"
+                    name="nascimento"
+                    required
+                    disabled
+                  />
+                  <span class="lock-icon" id="nascimento-lock">🔒</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group-row">
+              <div class="form-group">
+                <label for="instagram">Instagram:</label>
+                <div style="display: flex; align-items: center">
+                  <input
+                    type="text"
+                    id="instagram"
+                    name="instagram"
+                    required
+                    disabled
+                  />
+                  <span class="lock-icon" id="instagram-lock">🔓</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="cpf">CPF:</label>
+                <div style="display: flex; align-items: center">
+                  <input type="text" id="cpf" name="cpf" required disabled />
+                  <span class="lock-icon" id="cpf-lock">🔒</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="telefone">Celular:</label>
+                <div style="display: flex; align-items: center">
+                  <input
+                    type="text"
+                    id="telefone"
+                    name="telefone"
+                    required
+                    disabled
+                  />
+                  <span class="lock-icon" id="telefone-lock">🔓</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group-row">
+              <div class="form-group">
+                <label for="genero">Gênero:</label>
+                <div style="display: flex; align-items: center">
+                  <select id="genero" required disabled>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Feminino">Feminino</option>
+                    <option value="Não-binário">Não-binário</option>
+                    <option value="Prefiro não dizer">Prefiro não dizer</option>
+                    <option value="Outro">Outro</option>
+                  </select>
+                  <span class="lock-icon" id="genero-lock">🔓</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="email">Email:</label>
+                <div style="display: flex; align-items: center">
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    disabled
+                  />
+                  <span class="lock-icon" id="email-lock">🔓</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="senha">Senha:</label>
+                <div style="display: flex; align-items: center">
+                  <input
+                    type="text"
+                    id="senha"
+                    name="senha"
+                    required
+                    disabled
+                  />
+                  <span class="lock-icon" id="senha-lock">🔓</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="button-container">
+              <button
+                type="submit"
+                class="save-button"
+                id="save-usuario-button"
+                disabled
+              >
+                Salvar Dados Pessoais
+              </button>
+            </div>
           </form>
-          <p id="responseMessage" style="font-size: 14px;"></p>
-        </div>
-        
-       
-        <form id="personalForm" class="form">
-          <div class="form-group-row">
-            <div class="form-group">
-              <label for="nome">Nome:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="text" id="nome" name="nome" required disabled>
-                <span class="lock-icon" id="nome-lock">🔓</span>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="nascimento">Data de Nascimento:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="date" id="nascimento" name="nascimento" required disabled>
-                <span class="lock-icon" id="nascimento-lock">🔒</span>
-              </div>
-            </div>
-          
-          </div>
+        </section>
 
-          <div class="form-group-row">
-            <div class="form-group">
-              <label for="instagram">Instagram:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="text" id="instagram" name="instagram" required disabled>
-                <span class="lock-icon" id="instagram-lock">🔓</span>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="cpf">CPF:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="text" id="cpf" name="cpf" required disabled>
-                <span class="lock-icon" id="cpf-lock">🔒</span>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="telefone">Celular:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="text" id="telefone" name="telefone" required disabled>
-                <span class="lock-icon" id="telefone-lock">🔓</span>
-              </div>
-            </div>
-
-          
-          </div>
-          <div class="form-group-row">
-            <div class="form-group">
-              <label for="genero">Gênero:</label>
-              <div style="display: flex; align-items: center;">
-                <select id="genero" required disabled>
-                  <option value="Masculino">Masculino</option>
-                  <option value="Feminino">Feminino</option>
-                  <option value="Não-binário">Não-binário</option>
-                  <option value="Prefiro não dizer">Prefiro não dizer</option>
-                  <option value="Outro">Outro</option>
-                </select>
-                <span class="lock-icon" id="genero-lock">🔓</span>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="email">Email:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="email" id="email" name="email" required disabled>
-                <span class="lock-icon" id="email-lock">🔓</span>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="senha">Senha:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="text" id="senha" name="senha" required disabled>
-                <span class="lock-icon" id="senha-lock">🔓</span>
-              </div>
-            </div>
-          </div>
-          <div class="button-container">
-            <button type="submit" class="save-button" id="save-usuario-button" disabled>Salvar Dados Pessoais</button>
-          </div>
-        </form>
-      </section>
-
-      <section class="form-section" id="personalInfoForm">
-
-        <h2>
-          <div class="form-group-row">
-            &nbsp;&nbsp;&nbsp; Dados Empresariais
-            <button class="edit-icon-btn" id="editIconEmpresa" aria-label="Editar Dados Pessoais">
-              <img src="../../assets/icons/editar.branco.png" alt="Editar"
-                style="width: 20px; height: 20px; border-radius: 0px;">
-            </button>
-          </div>
-
-        </h2>
-        <form id="empresaForm" class="form">
-          <div class="form-group-row">
-            <div class="form-group">
-              <label for="nome">Nome da empresa:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="text" id="empresa" name="empresa" required disabled>
-                <span class="lock-icon" id="empresa-lock">🔓</span>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="cnpj">CNPJ:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="text" id="cnpj" name="cnpj" required disabled>
-                <span class="lock-icon" id="cnpj-lock">🔒</span>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="telefone">Telefone:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="text" id="telefone-empresa" name="telefone" required disabled>
-                <span class="lock-icon" id="telefone-empresa-lock">🔓</span>
-              </div>
-            </div>
-          </div>
-          <div class="form-group-row">
-            <div class="form-group">
-              <label for="dias">Dias de funcionamento:</label>
-              <p>De:</p>
-              <select name="" id="diaInicio" required >
-                <option value="Domingo">Domingo</option>
-                <option value="Segunda">Segunda</option>
-                <option value="Terça">Terça</option>
-                <option value="Quarta">Quarta</option>
-                <option value="Quinta">Quinta</option>
-                <option value="Sexta">Sexta</option>
-                <option value="Sábado">Sábado</option>
-              </select>
-              <span class="lock-icon" id="diaInicio-lock">🔓</span>
-            </div>
-            <div class="form-group" >
-              <label for="diaFim" style="height: 20px;"></label>
-              <p>Até:</p>
-              <select name="" id="diaFim" required  >
-                <option value="Domingo">Domingo</option>
-                <option value="Segunda">Segunda</option>
-                <option value="Terça">Terça</option>
-                <option value="Quarta">Quarta</option>
-                <option value="Quinta">Quinta</option>
-                <option value="Sexta">Sexta</option>
-                <option value="Sábado">Sábado</option>
-              </select>
-              <span class="lock-icon" id="diaFim-lock">🔓</span>
-            </div>
-          </div>
-          <div class="form-group-row">
-            <div class="form-group">
-              <label for="dias">Horários de funcionamento:</label>
-              <p>Horário Início:</p>
-              <input type="time" id="horaInicio" name="horaInicio" required >
-              <span class="lock-icon" id="horaInicio-lock">🔓</span>
-            </div>
-            <div class="form-group">
-              <label for="diaFim" style="height: 20px;"></label>
-              <p>Horário Fim:</p>
-              <input type="time" id="horaFim" name="horaFim" required >
-              <span class="lock-icon" id="horaFim-lock">🔓</span>
-            </div>
-          </div>
-          <div class="form-group-row">
-            <div class="form-group">
-              <label for="cep">CEP:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="text" id="cep" name="cep" required disabled >
-                <span class="lock-icon" id="cep-lock">🔓</span>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="logradouro">Logradouro:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="text" id="logradouro" name="logradouro" required disabled>
-                <span class="lock-icon" id="logradouro-lock">🔒</span>
-              </div>
-            </div>
-          </div>
-          <div class="form-group-row">
-            <div class="form-group">
-              <label for="numero">Número:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="text" id="numero" name="numero" required disabled>
-                <span class="lock-icon" id="numero-lock">🔓</span>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="bairro">Bairro:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="text" id="bairro" name="bairro" required disabled>
-                <span class="lock-icon" id="bairro-lock">🔓</span>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="cidade">Cidade:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="text" id="cidade-empresa" name="cidade" required disabled>
-                <span class="lock-icon" id="cidade-lock">🔓</span>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="estado">Estado:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="text" id="estado-empresa" name="estado" required disabled>
-                <span class="lock-icon" id="estado-lock">🔓</span>
-              </div>
-            </div>
-          </div>
-          <div class="form-group-row">
-            <div class="form-group">
-              <label for="complemento">Complemento:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="text" id="complemento" name="complemento" required disabled>
-                <span class="lock-icon" id="complemento-lock">🔓</span>
-              </div>
-            </div>
-          </div>
-          <div class="button-container">
-            <button type="submit" class="save-button" id="save-empresa-button" disabled>Salvar Dados Empresariais</button>
-          </div>
-        </form>
-      </section>
-
-      <!-- <div class="right-content">
-        <div class="table-header">
-          <h1>Bloqueio de agendamentos</h1>
-        </div>
-        <div class="content-form">
-          <div class="form-group form-mr form-input">
-
-            <div class="label">
-              <p>Dia Escolhido:</p>
-              <input type="date" id="diaEscolhido" required>
-            </div>
-          </div>
-        </div>
-        <div class="content-form" id="horarioBlock">
-          <div class="form-group form-mr form-input">
-            <div class="label">
-              <p>Horário de Bloqueio:</p>
-
-              <div class="content-box2">
-                <div class="content-box">
-                  <p>De:</p>
-                  <input type="time" id="horaInicioBlock" name="horaInicioBlock" required><br><br>
-                </div>
-
-                <div class="content-box">
-                  <p>Até:</p>
-                  <input type="time" id="horaFimBlock" name="horaFimBlock" required><br><br>
-                </div>
-              </div>
-
-
-              <div class="button-container2">
-                <button type="button" class="save-button" id="bloqueio-button">
-                  Adicionar
+        <div class="empresa-container">
+          <section class="form-section" id="empresaInfoForm">
+            <h2>
+              <div class="form-group-row">
+                &nbsp;&nbsp;&nbsp; Dados Empresariais
+                <button
+                  class="edit-icon-btn"
+                  id="editIconEmpresa"
+                  aria-label="Editar Dados Empresariais"
+                >
+                  <img
+                    src="../../assets/icons/editar.branco.png"
+                    alt="Editar"
+                    style="width: 20px; height: 20px; border-radius: 0px"
+                  />
                 </button>
               </div>
+            </h2>
+            <div class="form-add">
+              <form id="empresaForm" class="form">
+                <div class="form-group-row">
+                  <div class="form-group">
+                    <label for="nome">Nome da empresa:</label>
+                    <div style="display: flex; align-items: center">
+                      <input
+                        type="text"
+                        id="empresa"
+                        name="empresa"
+                        required
+                        disabled
+                      />
+                      <span class="lock-icon" id="empresa-lock">🔓</span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="cnpj">CNPJ:</label>
+                    <div style="display: flex; align-items: center">
+                      <input
+                        type="text"
+                        id="cnpj"
+                        name="cnpj"
+                        required
+                        disabled
+                      />
+                      <span class="lock-icon" id="cnpj-lock">🔒</span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="telefone">Telefone:</label>
+                    <div style="display: flex; align-items: center">
+                      <input
+                        type="text"
+                        id="telefone-empresa"
+                        name="telefone"
+                        required
+                        disabled
+                      />
+                      <span class="lock-icon" id="telefone-empresa-lock"
+                        >🔓</span
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group-row">
+                  <div class="form-group">
+                    <label for="dias">Dias de funcionamento:</label>
+                    <p>De:</p>
+                    <select name="" id="diaInicio" required>
+                      <option value="Domingo">Domingo</option>
+                      <option value="Segunda">Segunda</option>
+                      <option value="Terça">Terça</option>
+                      <option value="Quarta">Quarta</option>
+                      <option value="Quinta">Quinta</option>
+                      <option value="Sexta">Sexta</option>
+                      <option value="Sábado">Sábado</option>
+                    </select>
+                    <span class="lock-icon" id="diaInicio-lock">🔓</span>
+                  </div>
+                  <div class="form-group">
+                    <label for="diaFim" style="height: 20px"></label>
+                    <p>Até:</p>
+                    <select name="" id="diaFim" required>
+                      <option value="Domingo">Domingo</option>
+                      <option value="Segunda">Segunda</option>
+                      <option value="Terça">Terça</option>
+                      <option value="Quarta">Quarta</option>
+                      <option value="Quinta">Quinta</option>
+                      <option value="Sexta">Sexta</option>
+                      <option value="Sábado">Sábado</option>
+                    </select>
+                    <span class="lock-icon" id="diaFim-lock">🔓</span>
+                  </div>
+                </div>
+                <div class="form-group-row">
+                  <div class="form-group">
+                    <label for="dias">Horários de funcionamento:</label>
+                    <p>Horário Início:</p>
+                    <input
+                      type="time"
+                      id="horaInicio"
+                      name="horaInicio"
+                      required
+                    />
+                    <span class="lock-icon" id="horaInicio-lock">🔓</span>
+                  </div>
+                  <div class="form-group">
+                    <label for="diaFim" style="height: 20px"></label>
+                    <p>Horário Fim:</p>
+                    <input type="time" id="horaFim" name="horaFim" required />
+                    <span class="lock-icon" id="horaFim-lock">🔓</span>
+                  </div>
+                </div>
+                <div class="form-group-row">
+                  <div class="form-group">
+                    <label for="cep">CEP:</label>
+                    <div style="display: flex; align-items: center">
+                      <input
+                        type="text"
+                        id="cep"
+                        name="cep"
+                        required
+                        disabled
+                      />
+                      <span class="lock-icon" id="cep-lock">🔓</span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="logradouro">Logradouro:</label>
+                    <div style="display: flex; align-items: center">
+                      <input
+                        type="text"
+                        id="logradouro"
+                        name="logradouro"
+                        required
+                        disabled
+                      />
+                      <span class="lock-icon" id="logradouro-lock">🔒</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group-row">
+                  <div class="form-group">
+                    <label for="numero">Número:</label>
+                    <div style="display: flex; align-items: center">
+                      <input
+                        type="text"
+                        id="numero"
+                        name="numero"
+                        required
+                        disabled
+                      />
+                      <span class="lock-icon" id="numero-lock">🔓</span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="bairro">Bairro:</label>
+                    <div style="display: flex; align-items: center">
+                      <input
+                        type="text"
+                        id="bairro"
+                        name="bairro"
+                        required
+                        disabled
+                      />
+                      <span class="lock-icon" id="bairro-lock">🔓</span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="cidade">Cidade:</label>
+                    <div style="display: flex; align-items: center">
+                      <input
+                        type="text"
+                        id="cidade-empresa"
+                        name="cidade"
+                        required
+                        disabled
+                      />
+                      <span class="lock-icon" id="cidade-lock">🔓</span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="estado">Estado:</label>
+                    <div style="display: flex; align-items: center">
+                      <input
+                        type="text"
+                        id="estado-empresa"
+                        name="estado"
+                        required
+                        disabled
+                      />
+                      <span class="lock-icon" id="estado-lock">🔓</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group-row">
+                  <div class="form-group">
+                    <label for="complemento">Complemento:</label>
+                    <div style="display: flex; align-items: center">
+                      <input
+                        type="text"
+                        id="complemento"
+                        name="complemento"
+                        required
+                        disabled
+                      />
+                      <span class="lock-icon" id="complemento-lock">🔓</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="button-container">
+                  <button
+                    type="submit"
+                    class="save-button"
+                    id="save-empresa-button"
+                    disabled
+                  >
+                    Salvar Dados Empresariais
+                  </button>
+                </div>
+              </form>
+              <div class="adicionar-funcionario">
+                <!-- Carrossel de Funcionários -->
+                <div class="funcionario-carrossel">
+                  <button class="carrossel-btn prev">&#10094;</button>
+                  <div class="clicavel">
+                    <div class="funcionario-info">
+                      <!-- Imagem do funcionário -->
+                      <img
+                        class="foto-funcionario"
+                        src="icon.png"
+                        alt="Foto do Funcionário"
+                      />
+
+                      <!-- Informações do funcionário -->
+                      <div class="funcionario-info">
+                        <h4 class="funcionario-nome">Nome do Funcionário</h4>
+                        <p class="funcionario-cargo">Cargo: Funcionário</p>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="carrossel-btn next">&#10095;</button>
+                </div>
+
+                <hr class="divider" />
+
+                <!-- Seção de Adicionar Novo Funcionário -->
+                <div class="adicionar-novo-funcionario">
+                  <h3>Adicionar um funcionário na sua empresa:</h3>
+                  <button
+                    class="adicionar-button"
+                    onclick="window.location.href='perfilForms/cadastrar-funcionario/cadastrar-cliente.html'"
+                  >
+                    Adicionar
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
+          </section>
         </div>
-      </div> -->
-  </div>
-  </div>
-  </div>
-  <!-- Modal de Confirmação -->
-  <!-- <div id="confirmModal" class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <p>Deseja realmente atualizar a foto do perfil?</p>
-      <button id="confirmButton">Sim</button>
-      <button id="cancelButton">Não</button>
+      </main>
     </div>
-  </div> -->
 
-
-
-  <!-- <footer id="footer">
-    <div class="footer_container">
-      <div class="copyright">
-        &copy; Copyright <strong><span>KRONOS</span></strong>. All Rights Reserved
-      </div>
-    </div>
-  </footer>End  Footer -->
-
-  </main>
-
-  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
     <div vw class="enabled">
-        <div vw-access-button class="active"></div>
-        <div vw-plugin-wrapper></div> 
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper></div>
     </div>
-    
-  </div>
-  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-  <script src="perfil.js"></script>
 
-  </div>
-
-  
-</body>
-
-
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
+    <script src="perfil.js"></script>
+  </body>
 </html>
