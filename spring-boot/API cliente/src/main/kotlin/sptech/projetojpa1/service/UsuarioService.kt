@@ -284,9 +284,10 @@ class UsuarioService(
 
     fun getIndicacoesFontes(): List<Usuario> = usuarioRepository.findClientesPorOrigem()
 
-    fun getClientesAtivos(): Int {
-        return usuarioRepository.findClientesAtivos()
+    fun getClientesAtivos(startDate: String?, endDate: String?): Int {
+        return usuarioRepository.findClientesAtivos(startDate, endDate)
     }
+
 
     fun findTop3Indicacoes(): List<String> {
         return usuarioRepository.findTop3Indicacoes()
@@ -296,13 +297,15 @@ class UsuarioService(
         return usuarioRepository.buscarNumerosDivulgacao()
     }
 
-    fun getClientesInativos(): Int {
-        return usuarioRepository.findClientesInativos()
+    fun getClientesInativos(startDate: String?, endDate: String?): Int {
+        return usuarioRepository.findClientesInativos(startDate, endDate)
     }
 
-    fun getClientesFidelizadosUltimosTresMeses(): Int {
-        return usuarioRepository.findClientesFidelizadosUltimosTresMeses()
+
+    fun getClientesFidelizadosUltimosTresMeses(startDate: String?, endDate: String?): Int {
+        return usuarioRepository.findClientesFidelizadosUltimosTresMeses(startDate, endDate)
     }
+
 
     @Transactional
     fun atualizarStatusParaInativo(cpf: String): UsuarioResponseDTO? {

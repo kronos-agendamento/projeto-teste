@@ -202,10 +202,14 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
         ]
     )
     @GetMapping("/agendamentos-realizados")
-    fun agendamentosRealizadosUltimoTrimestre(): ResponseEntity<Int> {
-        val quantidadeConcluidos = agendamentoService.agendamentosRealizadosTrimestre()
+    fun agendamentosRealizadosUltimoTrimestre(
+        @RequestParam(required = false) startDate: String?,
+        @RequestParam(required = false) endDate: String?
+    ): ResponseEntity<Int> {
+        val quantidadeConcluidos = agendamentoService.agendamentosRealizadosTrimestre(startDate, endDate)
         return ResponseEntity.ok(quantidadeConcluidos)
     }
+
 
     @GetMapping("/tempo-para-agendar")
     fun tempoParaAgendar(

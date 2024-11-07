@@ -191,16 +191,23 @@ ORDER BY
     @Query(
         nativeQuery = true, value = """ 
         SELECT
-                COUNT(a.id_agendamento) AS quantidade_concluidos
-                FROM
-                agendamento a
-                INNER JOIN
-                status s ON a.fk_status = s.id_status_agendamento
-                WHERE
-                s.nome = 'Concluído'
-                AND a.data_horario >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH);"""
+            COUNT(a.id_agendamento) AS quantidade_concluidos
+        FROM
+            agendamento a
+        INNER JOIN
+            status s ON a.fk_status = s.id_status_agendamento
+        WHERE
+            s.nome = 'Concluído'
+        AND
+            a.data_horario BETWEEN COALESCE(:startDate, DATE_SUB(CURDATE(), INTERVAL 3 MONTH))
+                            AND COALESCE(:endDate, CURDATE());
+    """
     )
-    fun findAgendamentosConcluidosUltimoTrimestre(): Int
+    fun findAgendamentosConcluidosUltimoTrimestre(
+        @Param("startDate") startDate: String?,
+        @Param("endDate") endDate: String?
+    ): Int
+
 
     @Query(
         """

@@ -148,14 +148,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const startDateString12MesesAtras = startDate12.toISOString().split("T")[0];
 
         // Chamadas para atualizar os KPIs de clientes - Gerencial
-        fetchData(endpoints.clientesAtivos, updateClientesAtivos);
-        fetchData(endpoints.clientesInativos, updateClientesInativos);
-        fetchData(endpoints.clientesFidelizados, updateClientesFidelizados);
-        fetchData(endpoints.agendamentosRealizados, updateAgendamentosRealizados);
+        fetchData2(endpoints.clientesAtivos, {},updateClientesAtivos); // ok
+        fetchData2(endpoints.clientesInativos, {},updateClientesInativos); // ok
+        fetchData2(endpoints.clientesFidelizados, {},updateClientesFidelizados); // ok
+        fetchData2(endpoints.agendamentosRealizados, {},updateAgendamentosRealizados); // ok
 
-        // Chamadas para atualizar os KPI's de - Usabilidade
-        fetchData2(endpoints.tempoAgendamento, {}, updateTempoAgendamento);
-        fetchData2(endpoints.retornoLogin, { startDate: startDateString12MesesAtras, endDate: endDateDiaAtual }, updateRetornoLogin);
+        // Chamadas para atualizar os KPI's de - Usabilidade - ok
+        fetchData2(endpoints.tempoAgendamento, {}, updateTempoAgendamento); // ok
+        fetchData2(endpoints.retornoLogin, { startDate: startDateString12MesesAtras, endDate: endDateDiaAtual }, updateRetornoLogin); // ok
 
         // Chamadas para atualizar os KPI's de - Operacional
         fetchData(endpoints.totalAgendamentosHoje, updateTotalAgendamentosHoje);
@@ -202,6 +202,7 @@ document.addEventListener('DOMContentLoaded', function () {
             buscarDadosPorGrafico(url, startDateId, endDateId, callback);
         });
     }
+    // Atualização dos botões da página de usabilidade
     addFilterListener(
         "buscarUsabilidadeGrafico1Button",                                     // ID do botão
         "/api/agendamentos/agendamentos-realizados-ultimos-cinco-meses", // URL da API
@@ -223,6 +224,36 @@ document.addEventListener('DOMContentLoaded', function () {
         "endDateUsabilidadeKPI2",
         updateTempoAgendamento
     );
+    // atualização dos botões da página Gerencial
+    addFilterListener(
+        "buscarGerencialKPI1Button",
+        "/usuarios/clientes-ativos",
+        "startDateGerencialKPI1",
+        "endDateGerencialKPI1",
+        updateClientesAtivos
+    );
+    addFilterListener(
+        "buscarGerencialKPI2Button",
+        "/usuarios/clientes-inativos",
+        "startDateGerencialKPI2",
+        "endDateGerencialKPI2",
+        updateClientesInativos
+    );
+    addFilterListener(
+        "buscarGerencialKPI3Button",
+        "/api/agendamentos/agendamentos-realizados",
+        "startDateGerencialKPI3",
+        "endDateGerencialKPI3",
+        updateAgendamentosRealizados
+    );
+    addFilterListener(
+        "buscarGerencialKPI4Button",
+        "/usuarios/clientes-fidelizados-ultimos-tres-meses",
+        "startDateGerencialKPI4",
+        "endDateGerencialKPI4",
+        updateClientesFidelizados
+    );
+    
 
 
     // Funções que atualizam as KPI's do gerencial

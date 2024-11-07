@@ -340,22 +340,34 @@ class UsuarioController(
     }
 
     @GetMapping("/clientes-ativos")
-    fun getClientesAtivosUltimosTresMeses(): ResponseEntity<Int> {
-        val numeroClientes = usuarioService.getClientesAtivos()
+    fun getClientesAtivosUltimosTresMeses(
+        @RequestParam(required = false) startDate: String?,
+        @RequestParam(required = false) endDate: String?
+    ): ResponseEntity<Int> {
+        val numeroClientes = usuarioService.getClientesAtivos(startDate, endDate)
         return ResponseEntity.ok(numeroClientes)
     }
 
+
     @GetMapping("/clientes-inativos")
-    fun getClientesInativos(): ResponseEntity<Int> {
-        val clientes = usuarioService.getClientesInativos()
+    fun getClientesInativos(
+        @RequestParam(required = false) startDate: String?,
+        @RequestParam(required = false) endDate: String?
+    ): ResponseEntity<Int> {
+        val clientes = usuarioService.getClientesInativos(startDate, endDate)
         return ResponseEntity.ok(clientes)
     }
 
+
     @GetMapping("/clientes-fidelizados-ultimos-tres-meses")
-    fun getClientesFidelizadosUltimosTresMeses(): ResponseEntity<Int> {
-        val clientes = usuarioService.getClientesFidelizadosUltimosTresMeses()
+    fun getClientesFidelizadosUltimosTresMeses(
+        @RequestParam("startDate", required = false) startDate: String?,
+        @RequestParam("endDate", required = false) endDate: String?
+    ): ResponseEntity<Int> {
+        val clientes = usuarioService.getClientesFidelizadosUltimosTresMeses(startDate, endDate)
         return ResponseEntity.ok(clientes)
     }
+
 
     @GetMapping("/clientes-fidelizados-ultimos-cinco-meses")
     fun listarClientesFidelizadosUltimos5Meses(): ResponseEntity<List<Int>> {
