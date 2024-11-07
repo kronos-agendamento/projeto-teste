@@ -23,10 +23,16 @@ interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
     FROM
         agendamento a
     WHERE
-        a.tempo_para_agendar IS NOT NULL;
+        a.tempo_para_agendar IS NOT NULL
+        AND a.data_horario >= COALESCE(:startDate, a.data_horario)
+        AND a.data_horario <= COALESCE(:endDate, a.data_horario);
     """
     )
-    fun tempoParaAgendar(): List<Int>
+    fun tempoParaAgendar(
+        @Param("startDate") startDate: String?,
+        @Param("endDate") endDate: String?
+    ): List<Int>
+
 
     @Query(
         """

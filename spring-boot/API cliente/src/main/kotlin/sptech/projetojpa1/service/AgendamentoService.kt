@@ -124,9 +124,10 @@ class AgendamentoService(
         return agendamentoRepository.findAgendamentosConcluidosUltimoTrimestre()
     }
 
-    fun tempoParaAgendar(): List<Int> {
-        return agendamentoRepository.tempoParaAgendar()
+    fun tempoParaAgendar(startDate: String?, endDate: String?): List<Int> {
+        return agendamentoRepository.tempoParaAgendar(startDate, endDate)
     }
+
 
     fun totalAgendamentosHoje(): Int {
         return agendamentoRepository.findTotalAgendamentosHoje()

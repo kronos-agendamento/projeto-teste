@@ -404,7 +404,16 @@
                                                         de
                                                         Agendamento</p>
                                                     <h2 id="tempo-medio-conclusao">Carregando...</h2>
-                                                    <!-- <p>Último trimestre</p> -->
+                                                    <p>  <!-- Campo para selecionar a data de início -->
+                                                        <label for="startDateUsabilidadeKPI2">Data de Início:</label>
+                                                        <input type="date" id="startDateUsabilidadeKPI2">
+        
+                                                        <!-- Campo para selecionar a data de término -->
+                                                        <label for="endDateUsabilidadeKPI2">Data de Término:</label>
+                                                        <input type="date" id="endDateUsabilidadeKPI2">
+        
+                                                        <!-- Botão para buscar os dados -->
+                                                        <button id="buscarUsabilidadeKPI2Button">Buscar Dados</button></p>
 
                                                 </div>
                                                 <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
@@ -432,7 +441,16 @@
                                                         Sistema
                                                     </p>
                                                     <h2 id="retorno-login-count">Carregando...</h2>
-                                                    <!-- <p>Último trimestre</p> -->
+                                                    <p>  <!-- Campo para selecionar a data de início -->
+                                                        <label for="startDateUsabilidadeKPI1">Data de Início:</label>
+                                                        <input type="date" id="startDateUsabilidadeKPI1">
+        
+                                                        <!-- Campo para selecionar a data de término -->
+                                                        <label for="endDateUsabilidadeKPI1">Data de Término:</label>
+                                                        <input type="date" id="endDateUsabilidadeKPI1">
+        
+                                                        <!-- Botão para buscar os dados -->
+                                                        <button id="buscarUsabilidadeKPI1Button">Buscar Dados</button></p>
 
                                                 </div>
                                                 <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
@@ -454,7 +472,7 @@
                                                 <input type="date" id="endDateUsabilidade1">
 
                                                 <!-- Botão para buscar os dados -->
-                                                <button id="buscarButton">Buscar Dados</button>
+                                                <button id="buscarUsabilidadeGrafico1Button">Buscar Dados</button>
                                             </p>
                                         </div>
                                         <p style="margin-right: 415px;">Quantidade de agendamentos gerados.</p>
@@ -525,10 +543,6 @@
                     showContent(gerencialContent);
                     gerencialBtn.classList.add('active');
                 });
-
-                // Exibir por padrão o conteúdo "Gerencial"
-                showContent(gerencialContent);
-                gerencialBtn.classList.add('active');
 
             </script>
             <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
