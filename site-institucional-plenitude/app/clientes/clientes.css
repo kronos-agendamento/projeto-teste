@@ -515,6 +515,8 @@ img {
   margin-left: 74%;
 }
 
+
+
 .modal-pesquisa .modal-content .btn-pesquisar:hover {
   background-color: #fdc0d5;
   color: #000000;
@@ -1056,3 +1058,47 @@ img {
   background-color: #d2135d; /* Cor de fundo rosa */
   color: white; /* Texto branco */
 }
+
+/* Estilização das estrelas */
+.star-rating {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  font-size: 2em; /* Aumente o tamanho das estrelas */
+  color: gray;
+  cursor: pointer;
+}
+
+.star-rating .star.selected {
+  color: gold;
+}
+
+.btn-submit {
+  background-color: #ff0066;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.btn-submit-pesquisa {
+  background-color: #ff0066;
+  color: #fff;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+.input-field input{
+width: 50%;
+padding: 10px;
+font-size: 14px;
+border: 1px solid #ccc;
+border-radius: 5px;
+}
+
