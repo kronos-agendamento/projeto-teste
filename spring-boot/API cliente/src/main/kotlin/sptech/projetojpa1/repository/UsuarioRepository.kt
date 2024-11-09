@@ -85,27 +85,39 @@ interface UsuarioRepository : JpaRepository<Usuario, Int> {
     fun buscarNumerosDivulgacao(): List<Int>
 
     @Query(
-        nativeQuery = true, value =
-        "SELECT COUNT(DISTINCT u.id_usuario) AS total_clientes " +
-                "FROM usuario u " +
-                "JOIN agendamento a ON u.id_usuario = a.fk_usuario " +
-                "WHERE a.data_horario BETWEEN DATE_SUB(NOW(), INTERVAL 3 MONTH) AND NOW()"
+        nativeQuery = true,
+        value = """
+        SELECT COUNT(DISTINCT u.id_usuario) AS total_clientes
+FROM usuario u
+JOIN agendamento a ON u.id_usuario = a.fk_usuario
+WHERE a.data_horario BETWEEN COALESCE(:startDate, DATE_SUB(NOW(), INTERVAL 3 MONTH))
+                        AND COALESCE(:endDate, NOW());
+
+    """
     )
-    fun findClientesAtivos(): Int
+    fun findClientesAtivos(
+        @Param("startDate") startDate: String?,
+        @Param("endDate") endDate: String?
+    ): Int
+
 
     @Query(
-        nativeQuery = true, value =
-        """
+        nativeQuery = true, value = """
         SELECT COUNT(u.id_usuario) AS qtd_clientes_inativos
         FROM usuario u
         WHERE u.id_usuario NOT IN (
             SELECT DISTINCT a.fk_usuario
             FROM agendamento a
-            WHERE a.data_horario BETWEEN DATE_SUB(NOW(), INTERVAL 3 MONTH) AND NOW()
-            );
-        """
+            WHERE a.data_horario BETWEEN COALESCE(:startDate, DATE_SUB(NOW(), INTERVAL 3 MONTH)) 
+                                    AND COALESCE(:endDate, NOW())
+        );
+    """
     )
-    fun findClientesInativos(): Int
+    fun findClientesInativos(
+        @Param("startDate") startDate: String?,
+        @Param("endDate") endDate: String?
+    ): Int
+
 
     @Query(
         nativeQuery = true, value = """
@@ -114,13 +126,18 @@ interface UsuarioRepository : JpaRepository<Usuario, Int> {
     JOIN (
         SELECT a.fk_usuario
         FROM agendamento a
-        WHERE a.data_horario BETWEEN DATE_SUB(NOW(), INTERVAL 3 MONTH) AND NOW()
+        WHERE a.data_horario BETWEEN COALESCE(:startDate, DATE_SUB(NOW(), INTERVAL 3 MONTH))
+                                AND COALESCE(:endDate, NOW())
         GROUP BY a.fk_usuario
         HAVING COUNT(DISTINCT MONTH(a.data_horario)) = 3
     ) fidelizados ON u.id_usuario = fidelizados.fk_usuario;
     """
     )
-    fun findClientesFidelizadosUltimosTresMeses(): Int
+    fun findClientesFidelizadosUltimosTresMeses(
+        @Param("startDate") startDate: String?,
+        @Param("endDate") endDate: String?
+    ): Int
+
 
     @Query(
         nativeQuery = true, value = """
@@ -205,4 +222,6 @@ ORDER BY
     @Transactional
     @Query("DELETE FROM Usuario u WHERE u.codigo = :id")
     fun deletarPorId(@Param("id") id: Int): Int
+
+    fun findAllByEmpresaIdEmpresa(empresaId: Int): List<Usuario>
 }

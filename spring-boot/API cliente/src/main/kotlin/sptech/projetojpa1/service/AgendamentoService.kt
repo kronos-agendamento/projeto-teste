@@ -120,13 +120,15 @@ class AgendamentoService(
         return agendamentoRepository.calcularTempoMedioEntreAgendamentosDoDia()
     }
 
-    fun agendamentosRealizadosTrimestre(): Int {
-        return agendamentoRepository.findAgendamentosConcluidosUltimoTrimestre()
+    fun agendamentosRealizadosTrimestre(startDate: String?, endDate: String?): Int {
+        return agendamentoRepository.findAgendamentosConcluidosUltimoTrimestre(startDate, endDate)
     }
 
-    fun tempoParaAgendar(): List<Int> {
-        return agendamentoRepository.tempoParaAgendar()
+
+    fun tempoParaAgendar(startDate: String?, endDate: String?): List<Int> {
+        return agendamentoRepository.tempoParaAgendar(startDate, endDate)
     }
+
 
     fun totalAgendamentosHoje(): Int {
         return agendamentoRepository.findTotalAgendamentosHoje()

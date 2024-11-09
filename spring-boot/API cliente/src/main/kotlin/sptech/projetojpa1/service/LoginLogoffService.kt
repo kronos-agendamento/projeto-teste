@@ -8,8 +8,8 @@ class LoginLogoffService(
     private val loginLogoffRepository: LoginLogoffRepository
 ) {
 
-    fun getUsuariosQueRetornaramAposUmMes(): Int {
-        return loginLogoffRepository.findUsuariosQueRetornaramAposUmMes()
+    fun getUsuariosQueRetornaramAposUmMes(startDate: String?, endDate: String?): Int {
+        return loginLogoffRepository.findUsuariosQueRetornaramAposUmMes(startDate, endDate)
     }
 
 

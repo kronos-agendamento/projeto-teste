@@ -597,6 +597,32 @@ header p {
     font-size: 30fpx;
 }
 
+.date-filter {
+    position: absolute;
+    bottom: 10px; /* Ajusta para posicionar no rodapé do card */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 5px;
+}
+
+.date-filter label, .date-filter input {
+    font-size: 0.1px;
+    margin: 0;
+}
+
+.date-filters {
+    display: flex;
+    flex-direction: column; /* Ajuste se necessário */
+    gap: 5px; /* Espaçamento entre os campos */
+    margin-top: 10px;
+    width: 100%; /* Ou defina um tamanho fixo */
+}
+
+button {
+    align-self: center; /* Centraliza o botão no card */
+}
+
 .arrow-up {
     width: 0;
     height: 0;
@@ -629,7 +655,7 @@ header p {
 .mini-square {
     display: flex;
     width: 184px;
-    height: 150px;
+    height: 200px;
     background-color: rgb(255, 255, 255);
     border-radius: 10px;
 }

@@ -19,52 +19,74 @@ class UsuarioService(
     @Autowired private val enderecoRepository: EnderecoRepository,
     @Autowired private val empresaRepository: EmpresaRepository,
     @Autowired private val fichaAnamneseRepository: FichaAnamneseRepository,
-    @Autowired private val respostaRepository: RespostaRepository,
-    @Autowired private val feedbackRepository: FeedbackRepository,
-    @Autowired private val clienteRepository: ClienteRepository,
-    @Autowired private val profissionalRepository: ProfissionalRepository,
-    @Autowired private val agendamentoRepository: AgendamentoRepository,
     @Autowired private val entityManager: EntityManager,
 ) {
     fun salvarUsuario(dto: UsuarioRequest): Usuario {
-        val usuario: Usuario = if (dto.nivelAcessoId == 1) {
-            Cliente(
-                codigo = dto.codigo,
-                nome = dto.nome,
-                email = dto.email,
-                senha = dto.senha,
-                instagram = dto.instagram,
-                cpf = dto.cpf,
-                telefone = dto.telefone,
-                dataNasc = dto.dataNasc,
-                genero = dto.genero,
-                indicacao = dto.indicacao,
-                foto = null,
-                status = dto.status,
-                nivelAcesso = dto.nivelAcessoId.let { nivelAcessoRepository.findById(it).orElse(null) },
-                endereco = dto.enderecoId?.let { enderecoRepository.findById(it).orElse(null) },
-                empresa = dto.empresaId?.let { empresaRepository.findById(it).orElse(null) },
-                fichaAnamnese = dto.fichaAnamneseId?.let { fichaAnamneseRepository.findById(it).orElse(null) }
-            )
-        } else {
-            Profissional(
-                codigo = dto.codigo,
-                nome = dto.nome,
-                email = dto.email,
-                senha = dto.senha,
-                instagram = dto.instagram,
-                cpf = dto.cpf,
-                telefone = dto.telefone,
-                dataNasc = dto.dataNasc,
-                genero = dto.genero,
-                indicacao = dto.indicacao,
-                foto = null,
-                status = dto.status,
-                nivelAcesso = dto.nivelAcessoId?.let { nivelAcessoRepository.findById(it).orElse(null) },
-                endereco = dto.enderecoId?.let { enderecoRepository.findById(it).orElse(null) },
-                empresa = dto.empresaId?.let { empresaRepository.findById(it).orElse(null) },
-                especialidade = ""
-            )
+        val usuario: Usuario = when (dto.nivelAcessoId) {
+            1 -> { // Nível 1 é Administrador ou Profissional
+                Profissional(
+                    codigo = dto.codigo,
+                    nome = dto.nome,
+                    email = dto.email,
+                    senha = dto.senha,
+                    instagram = dto.instagram,
+                    cpf = dto.cpf,
+                    telefone = dto.telefone,
+                    dataNasc = dto.dataNasc,
+                    genero = dto.genero,
+                    indicacao = dto.indicacao,
+                    foto = null,
+                    status = dto.status,
+                    nivelAcesso = dto.nivelAcessoId?.let { nivelAcessoRepository.findById(it).orElse(null) },
+                    endereco = dto.enderecoId?.let { enderecoRepository.findById(it).orElse(null) },
+                    empresa = dto.empresaId?.let { empresaRepository.findById(it).orElse(null) },
+                    especialidade = "" // ajuste para a especialidade conforme necessário
+                )
+            }
+
+            2 -> { // Nível 2 é Profissional
+                Profissional(
+                    codigo = dto.codigo,
+                    nome = dto.nome,
+                    email = dto.email,
+                    senha = dto.senha,
+                    instagram = dto.instagram,
+                    cpf = dto.cpf,
+                    telefone = dto.telefone,
+                    dataNasc = dto.dataNasc,
+                    genero = dto.genero,
+                    indicacao = dto.indicacao,
+                    foto = null,
+                    status = dto.status,
+                    nivelAcesso = dto.nivelAcessoId?.let { nivelAcessoRepository.findById(it).orElse(null) },
+                    endereco = dto.enderecoId?.let { enderecoRepository.findById(it).orElse(null) },
+                    empresa = dto.empresaId?.let { empresaRepository.findById(it).orElse(null) },
+                    especialidade = "" // ajuste para a especialidade conforme necessário
+                )
+            }
+
+            3 -> { // Nível 3 é Cliente
+                Cliente(
+                    codigo = dto.codigo,
+                    nome = dto.nome,
+                    email = dto.email,
+                    senha = dto.senha,
+                    instagram = dto.instagram,
+                    cpf = dto.cpf,
+                    telefone = dto.telefone,
+                    dataNasc = dto.dataNasc,
+                    genero = dto.genero,
+                    indicacao = dto.indicacao,
+                    foto = null,
+                    status = dto.status,
+                    nivelAcesso = dto.nivelAcessoId.let { nivelAcessoRepository.findById(it).orElse(null) },
+                    endereco = dto.enderecoId?.let { enderecoRepository.findById(it).orElse(null) },
+                    empresa = dto.empresaId?.let { empresaRepository.findById(it).orElse(null) },
+                    fichaAnamnese = dto.fichaAnamneseId?.let { fichaAnamneseRepository.findById(it).orElse(null) }
+                )
+            }
+
+            else -> throw IllegalArgumentException("Nível de acesso inválido: ${dto.nivelAcessoId}")
         }
 
         return usuarioRepository.save(usuario)
@@ -146,6 +168,7 @@ class UsuarioService(
             genero = dto.genero ?: genero
             indicacao = dto.indicacao ?: indicacao
             avaliacao = dto.avaliacao ?: avaliacao
+            nivelAcesso = dto.nivelAcesso?.let { nivelAcessoRepository.findById(it).orElse(null) } ?: nivelAcesso
         }
         return usuarioRepository.save(usuario)
     }
@@ -246,6 +269,7 @@ class UsuarioService(
         return if (usuario != null) {
             UsuarioResponseDTO(
                 idUsuario = usuario.codigo,
+                nivelAcesso = usuario.nivelAcesso?.codigo,
                 nome = usuario.nome,
                 instagram = usuario.instagram,
                 telefone = usuario.telefone,
@@ -265,9 +289,10 @@ class UsuarioService(
 
     fun getIndicacoesFontes(): List<Usuario> = usuarioRepository.findClientesPorOrigem()
 
-    fun getClientesAtivos(): Int {
-        return usuarioRepository.findClientesAtivos()
+    fun getClientesAtivos(startDate: String?, endDate: String?): Int {
+        return usuarioRepository.findClientesAtivos(startDate, endDate)
     }
+
 
     fun findTop3Indicacoes(): List<String> {
         return usuarioRepository.findTop3Indicacoes()
@@ -277,13 +302,15 @@ class UsuarioService(
         return usuarioRepository.buscarNumerosDivulgacao()
     }
 
-    fun getClientesInativos(): Int {
-        return usuarioRepository.findClientesInativos()
+    fun getClientesInativos(startDate: String?, endDate: String?): Int {
+        return usuarioRepository.findClientesInativos(startDate, endDate)
     }
 
-    fun getClientesFidelizadosUltimosTresMeses(): Int {
-        return usuarioRepository.findClientesFidelizadosUltimosTresMeses()
+
+    fun getClientesFidelizadosUltimosTresMeses(startDate: String?, endDate: String?): Int {
+        return usuarioRepository.findClientesFidelizadosUltimosTresMeses(startDate, endDate)
     }
+
 
     @Transactional
     fun atualizarStatusParaInativo(cpf: String): UsuarioResponseDTO? {
@@ -511,6 +538,18 @@ class UsuarioService(
 
     fun listarLeads(): List<Map<String, Any>> = usuarioRepository.listarLeads()
 
+    fun getUsuariosPorIdEmpresa(empresaId: Int): List<UsuarioEmpresaDTO> {
+        val usuarios = usuarioRepository.findAllByEmpresaIdEmpresa(empresaId)
+        return usuarios.map {
+            UsuarioEmpresaDTO(
+                codigo = it.codigo,
+                nome = it.nome,
+                foto = it.foto,
+                nivelAcesso = it.nivelAcesso?.nivel,
+                endereco = it.endereco?.idEndereco,
+            )
+        }
+    }
 
     fun atualizarAvaliacao(cpf: String, pontuacao: Int): Usuario? {
         val usuario = usuarioRepository.findByCpf(cpf)

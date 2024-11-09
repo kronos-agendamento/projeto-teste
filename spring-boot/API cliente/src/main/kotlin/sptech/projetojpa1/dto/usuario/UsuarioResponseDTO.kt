@@ -18,5 +18,6 @@ data class UsuarioResponseDTO(
     var avaliacao: Int?,
     var empresa: Empresa? = null,
     var senha: String? = null,
-    var endereco: Endereco? = null
+    var endereco: Endereco? = null,
+    var nivelAcesso: Int? = null,
 )

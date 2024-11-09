@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
-    
-    
+
     const baseUrl = 'http://localhost:8080';
+
     function getLastFiveMonths() {
         const result = [];
         const today = new Date();
@@ -21,90 +21,6 @@ document.addEventListener('DOMContentLoaded', function () {
         return result;
     }
     const lastFiveMonths = getLastFiveMonths();
-
-    {/*// Seleção de datas --------------------------------------------------------------------------------------------------------------
-    function createDateSelectors(monthSelectId, yearSelectId) {
-        const selectAno = document.getElementById(yearSelectId);
-        const selectMes = document.getElementById(monthSelectId);
-        const currentDate = new Date();
-        const currentYear = currentDate.getFullYear();
-        const startYear = 2000; // Ajuste o ano de início conforme necessário
-      
-        // Função para preencher o seletor de anos
-        function populateYearSelect() {
-          selectAno.innerHTML = ""; // Limpa as opções existentes no <select>
-      
-          for (let year = currentYear; year >= startYear; year--) {
-            const option = document.createElement("option");
-            option.value = year;
-            option.text = year;
-            selectAno.appendChild(option);
-          }
-      
-          selectAno.value = currentYear; // Define o ano atual como padrão
-        }
-      
-        // Função para preencher o seletor de meses com base no ano selecionado
-        function populateMonthSelect() {
-          const selectedYear = parseInt(selectAno.value);
-          const lastMonth = selectedYear === currentYear ? currentDate.getMonth() + 1 : 12;
-      
-          selectMes.innerHTML = ""; // Limpa as opções existentes no <select>
-      
-          for (let month = 1; month <= lastMonth; month++) {
-            const monthString = month.toString().padStart(2, "0");
-            const option = document.createElement("option");
-            option.value = `${selectedYear}-${monthString}`; // Mantém o formato "YYYY-MM"
-      
-            // Formata o nome do mês em português com a primeira letra maiúscula
-            let monthName = new Intl.DateTimeFormat("pt-BR", {
-              month: "long",
-            }).format(new Date(selectedYear, month - 1));
-            monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
-            option.text = monthName;
-      
-            selectMes.appendChild(option);
-          }
-      
-          // Define o mês atual como padrão se o ano for o atual
-          if (selectedYear === currentYear) {
-            selectMes.value = `${currentYear}-${(currentDate.getMonth() + 1).toString().padStart(2, "0")}`;
-          } else {
-            selectMes.value = `${selectedYear}-01`; // Define o primeiro mês para anos anteriores ao atual
-          }
-        }
-      
-        // Atualiza os meses quando o ano é alterado
-        selectAno.addEventListener("change", populateMonthSelect);
-      
-        // Inicializa ambos os selects
-        populateYearSelect();
-        populateMonthSelect();
-      }
-
-      createDateSelectors("selectMesGerencial1", "selectAnoGerencial1");
-      createDateSelectors("selectMesUsabilidade1", "selectAnoUsabilidade1");
-
-      // Seleção de datas --------------------------------------------------------------------------------------------------------------
-    */}
-
-    // Função genérica para buscar dados com parâmetros dinâmicos
-    function fetchData2(url, params = {}, callback) {
-        // Monta a URL com os parâmetros
-        const queryString = new URLSearchParams(params).toString();
-        const fullUrl = `${url}?${queryString}`;
-
-        // Faz a requisição
-        fetch(baseUrl + fullUrl)
-            .then((response) => response.json())
-            .then((data) => {
-                callback(data); // Executa a função de callback com os dados
-            })
-            .catch((error) => {
-                console.error("Erro ao buscar dados para o gráfico:", error);
-            });
-    }
-
 
     // Função para realizar a requisição e obter os dados
     function fetchData(endpoint, callback) {
@@ -134,41 +50,39 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const startDate = startDateInput.value;
         const endDate = endDateInput.value;
+            
 
-        // Verifica se as datas foram selecionadas
-        if (!startDate || !endDate) {
-            console.error("Por favor, selecione as datas de início e término.");
-            alert("Por favor, selecione as datas de início e término.");
-            return;
-        }
+            
 
-        // Faz a chamada para fetchData2 com os parâmetros dinâmicos
-        fetchData2(
-            url,
-            { startDate: startDate, endDate: endDate },
-            callback
-        );
+            // Prossiga com a lógica da requisição
+            fetchData2(url, { startDate, endDate }, callback);
+        
     }
 
-    
-    
-    document.getElementById("buscarButton").addEventListener("click", function () {
-        buscarDadosPorGrafico(
-            "/api/agendamentos/agendamentos-realizados-ultimos-cinco-meses",         // URL para o gráfico 1
-            "startDateUsabilidade1",              // ID do campo de data de início para o gráfico 1
-            "endDateUsabilidade1",                // ID do campo de data de término para o gráfico 1
-            updateChartUsabilidade1                    // Callback específico para atualizar o gráfico 1
-        );
-    });
-    
+
+
+    // Função genérica para buscar dados com parâmetros dinâmicos
+    function fetchData2(url, params = {}, callback) {
+        // Monta a URL com os parâmetros
+        const queryString = new URLSearchParams(params).toString();
+        const fullUrl = `${url}?${queryString}`;
+
+        // Faz a requisição
+        fetch(baseUrl + fullUrl)
+            .then((response) => response.json())
+            .then((data) => {
+                callback(data); // Executa a função de callback com os dados
+            })
+            .catch((error) => {
+                console.error("Erro ao buscar dados para o gráfico:", error);
+            });
+    }
 
 
 
-    // Atualiza os KPIs dos clientes ativos, inativos e fidelizados
+    // Atualiza os KPIs e os gráficos
     function updateKPIs() {
         const endpoints = {
-
-
 
             // KPI's - Gerencial
             clientesAtivos: '/usuarios/clientes-ativos',
@@ -176,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
             clientesFidelizados: '/usuarios/clientes-fidelizados-ultimos-tres-meses',
             agendamentosRealizados: '/api/agendamentos/agendamentos-realizados',
 
-            // KPI's - Usabilidade
+            // KPI's - Usabilidade - ok
             tempoAgendamento: '/api/agendamentos/tempo-para-agendar',
             retornoLogin: '/login-logoff/retorno-usuarios-login',
 
@@ -213,19 +127,35 @@ document.addEventListener('DOMContentLoaded', function () {
             agendamentosProcedimentosRealizadosTrimestre: '/api/agendamentos/procedimentos-realizados-trimestre',
             agendamentosValorTotalUltimoMes: '/api/agendamentos/valor-total-ultimo-mes',
 
-            // Gráfico 1 - Usabilidade
+            // Gráfico 1 - Usabilidade - ok
             ultimosAgendamentosRealizados5Meses: '/api/agendamentos/agendamentos-realizados-ultimos-cinco-meses'
         };
 
-        // Chamadas para atualizar os KPIs de clientes - Gerencial
-        fetchData(endpoints.clientesAtivos, updateClientesAtivos);
-        fetchData(endpoints.clientesInativos, updateClientesInativos);
-        fetchData(endpoints.clientesFidelizados, updateClientesFidelizados);
-        fetchData(endpoints.agendamentosRealizados, updateAgendamentosRealizados);
+        // Chamada específica para o gráfico de usabilidade com startDate e endDate automáticos
+        const endDateDiaAtual = new Date().toISOString().split("T")[0];
 
-        // Chamadas para atualizar os KPI's de - Usabilidade
-        fetchData(endpoints.tempoAgendamento, updateTempoAgendamento);
-        fetchData(endpoints.retornoLogin, updateRetornoLogin);
+        const startDate1 = new Date();
+        startDate1.setMonth(startDate1.getMonth() - 1);
+
+        const startDate3 = new Date();
+        startDate3.setMonth(startDate3.getMonth() - 3);
+
+        const startDate12 = new Date();
+        startDate12.setMonth(startDate12.getMonth() - 12);
+
+        const startDateString1MesesAtras = startDate1.toISOString().split("T")[0];
+        const startDateString3MesesAtras = startDate3.toISOString().split("T")[0];
+        const startDateString12MesesAtras = startDate12.toISOString().split("T")[0];
+
+        // Chamadas para atualizar os KPIs de clientes - Gerencial
+        fetchData2(endpoints.clientesAtivos, {},updateClientesAtivos); // ok
+        fetchData2(endpoints.clientesInativos, {},updateClientesInativos); // ok
+        fetchData2(endpoints.clientesFidelizados, {},updateClientesFidelizados); // ok
+        fetchData2(endpoints.agendamentosRealizados, {},updateAgendamentosRealizados); // ok
+
+        // Chamadas para atualizar os KPI's de - Usabilidade - ok
+        fetchData2(endpoints.tempoAgendamento, {}, updateTempoAgendamento); // ok
+        fetchData2(endpoints.retornoLogin, { startDate: startDateString12MesesAtras, endDate: endDateDiaAtual }, updateRetornoLogin); // ok
 
         // Chamadas para atualizar os KPI's de - Operacional
         fetchData(endpoints.totalAgendamentosHoje, updateTotalAgendamentosHoje);
@@ -260,14 +190,75 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchData(endpoints.agendamentosProcedimentosRealizadosTrimestre, updateChartProcedimentoRealizadosTrimestreOperacional3);
         fetchData(endpoints.agendamentosValorTotalUltimoMes, updateChartValorTotalUltimoMesOperacional5);
 
-        // Chamada para atualizar os dados do gráfico 1 - Usabilidade
-        // fetchData2(endpoints.ultimosAgendamentosRealizados5Meses, {startDateUsabilidade1, endDateUsabilidade1}, updateChartUsabilidade1)
-
-
+        // Chamada para atualiazar o gráfico de usabilidade - Usabilidade
+        fetchData2(
+            endpoints.ultimosAgendamentosRealizados5Meses,
+            { startDate: startDateString3MesesAtras, endDate: endDateDiaAtual },
+            updateChartUsabilidade1
+        );
     }
+    function addFilterListener(buttonId, url, startDateId, endDateId, callback) {
+        document.getElementById(buttonId).addEventListener("click", function () {
+            buscarDadosPorGrafico(url, startDateId, endDateId, callback);
+        });
+    }
+    // Atualização dos botões da página de usabilidade
+    addFilterListener(
+        "buscarUsabilidadeGrafico1Button",                                     // ID do botão
+        "/api/agendamentos/agendamentos-realizados-ultimos-cinco-meses", // URL da API
+        "startDateUsabilidade1",                            // ID do campo de data de início
+        "endDateUsabilidade1",                              // ID do campo de data de término
+        updateChartUsabilidade1                  // Callback específico para atualizar o gráfico 1
+    );
+    addFilterListener(
+        "buscarUsabilidadeKPI1Button",                                  // Outro botão
+        "/login-logoff/retorno-usuarios-login",                      // Outra URL da API
+        "startDateUsabilidadeKPI1",                                     // ID do campo de data de início
+        "endDateUsabilidadeKPI1",                                       // ID do campo de data de término
+        updateRetornoLogin                                  // Callback específico do KPI
+    );
+    addFilterListener(
+        "buscarUsabilidadeKPI2Button",
+        "/api/agendamentos/tempo-para-agendar",
+        "startDateUsabilidadeKPI2",
+        "endDateUsabilidadeKPI2",
+        updateTempoAgendamento
+    );
+    // atualização dos botões da página Gerencial
+    addFilterListener(
+        "buscarGerencialKPI1Button",
+        "/usuarios/clientes-ativos",
+        "startDateGerencialKPI1",
+        "endDateGerencialKPI1",
+        updateClientesAtivos
+    );
+    addFilterListener(
+        "buscarGerencialKPI2Button",
+        "/usuarios/clientes-inativos",
+        "startDateGerencialKPI2",
+        "endDateGerencialKPI2",
+        updateClientesInativos
+    );
+    addFilterListener(
+        "buscarGerencialKPI3Button",
+        "/api/agendamentos/agendamentos-realizados",
+        "startDateGerencialKPI3",
+        "endDateGerencialKPI3",
+        updateAgendamentosRealizados
+    );
+    addFilterListener(
+        "buscarGerencialKPI4Button",
+        "/usuarios/clientes-fidelizados-ultimos-tres-meses",
+        "startDateGerencialKPI4",
+        "endDateGerencialKPI4",
+        updateClientesFidelizados
+    );
+    
+
 
     // Funções que atualizam as KPI's do gerencial
     updateKPIs();
+
     function updateClientesAtivos(data) {
         const clientesAtivosCount = document.getElementById('clientes-ativos-count');
         clientesAtivosCount.textContent = formatarNumero(data);
@@ -315,7 +306,10 @@ document.addEventListener('DOMContentLoaded', function () {
         tempoMedioHoje.textContent = data;
     }
 
+
+
     // Constantes dos gráficos
+
     let dataChart2_2 = null
     let dataChart2_1 = null;
     let labelsChart2 = lastFiveMonths;
@@ -347,8 +341,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let labelsChartUsabilidade1 = null;
     const ctxUsabilidade1 = document.getElementById('chartUsabilidade1').getContext('2d');
     let chartUsabilidade1;
-    //const startDateInput = document.getElementById("startDateUsabilidade1");
-    // const endDateInput = document.getElementById("endDateUsabilidade1");
 
     // constantes dos gráficos operacionais
     let dataChartOperacional1 = null;
@@ -497,13 +489,13 @@ document.addEventListener('DOMContentLoaded', function () {
             const [year, month] = item[0].split("-"); // Divide "YYYY-MM-DD" em [year, month, day]
             const date = new Date(year, month - 1);   // Cria uma data usando ano e mês (mês é zero-based)
             return date.toLocaleDateString("pt-BR", { month: "long" }).charAt(0).toUpperCase() +
-                   date.toLocaleDateString("pt-BR", { month: "long" }).slice(1);
+                date.toLocaleDateString("pt-BR", { month: "long" }).slice(1);
         });
 
-    dataChartUsabilidade1 = data.map(item => item[1]);
+        dataChartUsabilidade1 = data.map(item => item[1]);
 
 
-    createChartUsabilidade1();
+        createChartUsabilidade1();
     }
 
 
@@ -908,6 +900,9 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById("userName").textContent = nome;
         document.getElementById("userInsta").textContent = instagram;
     }
+
+    showContent(usabilidadeContent);
+    usabilidadeBtn.classList.add('active');
 });
 
 
