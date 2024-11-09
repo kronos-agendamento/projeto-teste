@@ -2,10 +2,17 @@ document.addEventListener("DOMContentLoaded", function () {
   // Obtém o idUsuario da URL
   const params = new URLSearchParams(window.location.search);
   const idUsuario = params.get("idUsuario");
+  const clienteNome = localStorage.getItem("clienteNome");
 
   if (!idUsuario) {
     console.error("ID do usuário não encontrado na URL.");
     return;
+  }
+
+  if (clienteNome) {
+    document.querySelector(
+      "header h1"
+    ).textContent = `Mais informações de: ${clienteNome}`;
   }
 
   // Função para buscar e exibir perguntas e respostas

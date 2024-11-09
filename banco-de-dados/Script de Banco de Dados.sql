@@ -1,8 +1,6 @@
- -- drop database kronosbooking;
+drop database kronosbooking;
 create database if not exists kronosbooking;
 USE kronosbooking;
-
-select*from agendamento where fk_usuario = 4;
 
 DROP TABLE IF EXISTS login_logoff;
 DROP TABLE IF EXISTS feedback;

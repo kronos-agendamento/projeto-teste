@@ -107,7 +107,7 @@ async function fetchUserDataByCpf(cpf) {
   document.addEventListener("DOMContentLoaded", () => {
   
     // Event listener para o formulário de upload de foto
-    document.getElementById("uploadForm").addEventListener("submit", async (event) => {
+    document.getElementById("uploadForm2").addEventListener("submit", async (event) => {
       event.preventDefault();
   
       const cpf = document.getElementById("cpf").value;
