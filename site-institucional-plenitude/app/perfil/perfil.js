@@ -1119,3 +1119,5 @@ function iniciarAutoSlide() {
 
 // Chama a função para carregar os funcionários ao carregar a página
 document.addEventListener("DOMContentLoaded", carregarFuncionarios);
+
+

@@ -632,3 +632,42 @@ window.onload = function () {
   carregarImagem2();
   updateKpiData();
 };
+
+document.addEventListener("DOMContentLoaded", function () {
+  const tooltips = document.querySelectorAll(
+    ".tooltip6, .tooltip7, .tooltip8, .tooltip9"
+  );
+
+  tooltips.forEach((tooltip) => {
+    const targetButton = tooltip.previousElementSibling;
+
+    targetButton.addEventListener("mouseenter", () => {
+      tooltip.style.visibility = "hidden"; // Esconde temporariamente para cálculo
+      tooltip.style.display = "block"; // Torna visível para cálculo de posição
+      positionTooltip(tooltip, targetButton);
+      tooltip.style.visibility = "visible"; // Exibe após posicionamento
+    });
+
+    targetButton.addEventListener("mouseleave", () => {
+      tooltip.style.display = "none"; // Esconde ao sair do hover
+    });
+
+    window.addEventListener("resize", () => {
+      if (tooltip.style.display === "block") {
+        positionTooltip(tooltip, targetButton); // Recalcula posição no redimensionamento
+      }
+    });
+  });
+
+  function positionTooltip(tooltip, target) {
+    const targetRect = target.getBoundingClientRect();
+    const tooltipRect = tooltip.getBoundingClientRect();
+
+    // Calcula posição central acima do botão
+    const topPosition = targetRect.top - tooltipRect.height - 5;
+    const leftPosition = targetRect.left + (targetRect.width / 0) - (tooltipRect.width / 0);
+
+    tooltip.style.top = `${topPosition + window.scrollY}px`;
+    tooltip.style.left = `${leftPosition + window.scrollX}px`;
+  }
+});

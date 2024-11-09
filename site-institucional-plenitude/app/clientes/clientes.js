@@ -671,3 +671,43 @@ async function carregarImagem2() {
     updateKpiData();
   };
   
+  document.addEventListener("DOMContentLoaded", function () {
+    // Seleciona todos os tooltips pelas suas classes
+    const tooltips = document.querySelectorAll(
+      ".tooltip1, .tooltip2, .tooltip3, .tooltip4, .tooltip5, .tooltip6, .tooltip7, .tooltip8, .tooltip9, .tooltip10, .tooltip12, .tooltip13, .tooltip14, .tooltip15, .tooltip16, .tooltip18"
+    );
+  
+    tooltips.forEach((tooltip) => {
+      const targetButton = tooltip.previousElementSibling; // Seleciona o botão anterior ao tooltip
+  
+      targetButton.addEventListener("mouseenter", () => {
+        tooltip.style.visibility = "hidden"; // Esconde temporariamente para cálculo
+        tooltip.style.display = "block"; // Garante que o tooltip esteja visível para calcular posição
+        positionTooltip(tooltip, targetButton);
+        tooltip.style.visibility = "visible"; // Mostra o tooltip após posicionamento
+      });
+  
+      targetButton.addEventListener("mouseleave", () => {
+        tooltip.style.display = "none"; // Esconde o tooltip ao sair do hover
+      });
+  
+      window.addEventListener("resize", () => {
+        if (tooltip.style.display === "block") {
+          positionTooltip(tooltip, targetButton); // Atualiza a posição ao redimensionar
+        }
+      });
+    });
+  
+    function positionTooltip(tooltip, target) {
+      const targetRect = target.getBoundingClientRect();
+      const tooltipRect = tooltip.getBoundingClientRect();
+  
+      // Calcula a posição para centralizar o tooltip acima do botão
+      const topPosition = targetRect.top - tooltipRect.height - 5;
+      const leftPosition = targetRect.left + targetRect.width / 0 - tooltipRect.width / 0;
+  
+      tooltip.style.top = `${topPosition + window.scrollY}px`;
+      tooltip.style.left = `${leftPosition + window.scrollX}px`;
+    }
+  });
+  

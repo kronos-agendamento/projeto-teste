@@ -710,8 +710,8 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 105px; /* Ajuste conforme necessário */
-  left: 30%;
+  top: 124px; /* Ajuste conforme necessário */
+  left: 34%;
   transform: translateX(-50%);
 }
 
@@ -725,8 +725,8 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 105px; /* Ajuste conforme necessário */
-  left: 40%;
+  top: 124px; /* Ajuste conforme necessário */
+  left: 43%;
   transform: translateX(-50%);
 }
 
@@ -740,8 +740,8 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 105px; /* Ajuste conforme necessário */
-  left: 49%;
+  top: 124px; /* Ajuste conforme necessário */
+  left: 45%;
   transform: translateX(-50%);
 }
 
@@ -755,8 +755,8 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 105px; /* Ajuste conforme necessário */
-  left: 57%;
+  top: 124px; /* Ajuste conforme necessário */
+  left: 53%;
   transform: translateX(-50%);
 }
 
@@ -770,8 +770,8 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 105px;/* Ajuste conforme necessário */
-  left: 66%;
+  top: 124px;/* Ajuste conforme necessário */
+  left: 59%;
   transform: translateX(-50%);
 }
 
@@ -785,8 +785,8 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 800px; /* Ajuste conforme necessário */
-  left: 67%;
+  top: 550px; /* Ajuste conforme necessário */
+  left: 60%;
   transform: translateX(-50%);
 }
 
@@ -800,8 +800,8 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 800px; /* Ajuste conforme necessário */
-  left: 45%;
+  top: 550px; /* Ajuste conforme necessário */
+  left: 37%;
   transform: translateX(-50%);
 }
 
@@ -815,8 +815,8 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 800px; /* Ajuste conforme necessário */
-  left: 90%;
+  top: 550px; /* Ajuste conforme necessário */
+  left: 82%;
   transform: translateX(-50%);
 }
 
@@ -830,7 +830,7 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 120px; /* Ajuste conforme necessário */
+  top: 123px; /* Ajuste conforme necessário */
   left: 35%;
   transform: translateX(-50%);
 }
@@ -860,8 +860,8 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 1030px; /* Ajuste conforme necessário */
-  left: 35%;
+  top: 1035px; /* Ajuste conforme necessário */
+  left: 37%;
   transform: translateX(-50%);
 }
 
@@ -875,8 +875,8 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 1030px; /* Ajuste conforme necessário */
-  left: 55%;
+  top: 1035px; /* Ajuste conforme necessário */
+  left: 59%;
   transform: translateX(-50%);
 }
 
@@ -890,8 +890,8 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 1030px; /* Ajuste conforme necessário */
-  left: 77%;
+  top: 1035px; /* Ajuste conforme necessário */
+  left: 82%;
   transform: translateX(-50%);
 }
 
@@ -921,7 +921,70 @@ img {
   white-space: nowrap;
   z-index: 1000;
   top: 950px; /* Ajuste conforme necessário */
-  left: 77%;
+  left: 76%;
+  transform: translateX(-50%);
+}
+
+.tooltip18 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 197px; /* Ajuste conforme necessário */
+  left: 70%;
+  transform: translateX(-50%);
+}
+
+
+.tooltip21 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 827px; /* Ajuste conforme necessário */
+  left: 37%;
+  transform: translateX(-50%);
+}
+
+
+.tooltip22 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 827px; /* Ajuste conforme necessário */
+  left: 59%;
+  transform: translateX(-50%);
+}
+
+
+.tooltip23 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 827px; /* Ajuste conforme necessário */
+  left: 82%;
   transform: translateX(-50%);
 }
 
@@ -1000,6 +1063,25 @@ img {
   
 }
 
+.filter-btn:hover + .tooltip18 {
+  display: block;
+  
+}
+
+.filter-btn:hover + .tooltip21 {
+  display: block;
+  
+}
+
+.filter-btn:hover + .tooltip22 {
+  display: block;
+  
+}
+
+.filter-btn:hover + .tooltip23 {
+  display: block;
+  
+}
 
 
 .tooltip-wrapper {

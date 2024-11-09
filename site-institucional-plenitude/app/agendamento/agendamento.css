@@ -956,8 +956,8 @@ table tr.clickable-row:hover {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 105px; /* Ajuste conforme necessário */
-  left: 35%;
+  top: 120px; /* Ajuste conforme necessário */
+  left: 32%;
   transform: translateX(-50%);
 }
 
@@ -973,8 +973,8 @@ table tr.clickable-row:hover {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 105px; /* Ajuste conforme necessário */
-  left: 47%;
+  top: 120px; /* Ajuste conforme necessário */
+  left: 40%;
   transform: translateX(-50%);
 }
 
@@ -988,7 +988,7 @@ table tr.clickable-row:hover {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 105px; /* Ajuste conforme necessário */
+  top: 120px; /* Ajuste conforme necessário */
   left: 65%;
   transform: translateX(-50%);
 }
@@ -1003,7 +1003,7 @@ table tr.clickable-row:hover {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 105px; /* Ajuste conforme necessário */
+  top: 120px; /* Ajuste conforme necessário */
   left: 79%;
   transform: translateX(-50%);
 }
@@ -1082,12 +1082,55 @@ table tr.clickable-row:hover {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
+  top: 120px; /* Ajuste conforme necessário */
+  left: 75%;
+  transform: translateX(-50%);
+}
+
+.tooltip12{
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
   top: 105px; /* Ajuste conforme necessário */
   left: 79%;
   transform: translateX(-50%);
 }
 
+.tooltip29{
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 120px; /* Ajuste conforme necessário */
+  left: 90%;
+  transform: translateX(-50%);
+}
 
+.tooltip30{
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 120px; /* Ajuste conforme necessário */
+  left: 53%;
+  transform: translateX(-50%);
+}
 
 .filter-btn:hover + .tooltip {
   display: block;
@@ -1137,7 +1180,20 @@ table tr.clickable-row:hover {
   
 }
 
+.filter-btn:hover + .tooltip11 {
+  display: block;
+  
+}
 
+.filter-btn:hover + .tooltip29 {
+  display: block;
+  
+}
+
+.filter-btn:hover + .tooltip30 {
+  display: block;
+  
+}
 
 
 .tooltip-wrapper {
