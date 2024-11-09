@@ -949,7 +949,7 @@ async function carregarImagem2() {
     }
 
     try {
-        const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario/${cpf}`, {
+        const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario-cpf/${cpf}`, {
             method: "GET",
         });
 

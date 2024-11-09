@@ -254,6 +254,7 @@ class UsuarioService(
 
 
     fun getFoto(cpf: String): ByteArray? = usuarioRepository.findFotoByCpf(cpf)
+    fun getFotoPorNome(nome: String): ByteArray? = usuarioRepository.findFotoByNomeContainsIgnoreCase(nome)
 
     fun getUsuariosByNivelAcesso(codigo: Int): List<Usuario> {
         val nivelAcesso = nivelAcessoRepository.findById(codigo).orElse(null)
@@ -544,7 +545,6 @@ class UsuarioService(
             UsuarioEmpresaDTO(
                 codigo = it.codigo,
                 nome = it.nome,
-                foto = it.foto,
                 nivelAcesso = it.nivelAcesso?.nivel,
                 endereco = it.endereco?.idEndereco,
             )

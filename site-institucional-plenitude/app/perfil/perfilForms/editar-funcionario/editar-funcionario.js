@@ -11,7 +11,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   const urlParams = new URLSearchParams(window.location.search);
   const idUsuario = urlParams.get("codigo");
   const idEndereco = urlParams.get("endereco");
-  const clienteNome = localStorage.getItem("clienteNome");
+  const clienteNome = urlParams.get("nome");
+  
 
   if (clienteNome) {
     document.querySelector(
@@ -337,3 +338,49 @@ document.addEventListener("DOMContentLoaded", async function () {
   document.getElementById("btn-redo")?.addEventListener("click", redoAction);
   updateUndoRedoButtons(); // Inicializar Undo e Redo ao carregar a página
 });
+
+async function carregarImagem2() {
+  const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução
+  const perfilImage = document.getElementById("perfilImage");
+
+  if (!cpf) {
+    console.log("CPF não encontrado.");
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/usuarios/busca-imagem-usuario-cpf/${cpf}`,
+      {
+        method: "GET",
+      }
+    );
+
+    if (response.ok) {
+      const blob = await response.blob(); // Recebe a imagem como Blob
+      const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
+
+      // Define a URL da imagem carregada como src do img
+      perfilImage.src = imageUrl;
+      perfilImage.alt = "Foto do usuário";
+      perfilImage.style.width = "20vh";
+      perfilImage.style.height = "20vh";
+      perfilImage.style.borderRadius = "300px";
+    } else {
+      console.log("Imagem não encontrada para o CPF informado.");
+    }
+  } catch (error) {
+    console.error("Erro ao buscar a imagem:", error);
+  }
+}
+
+// Carrega a imagem automaticamente quando a página termina de carregar
+window.onload = carregarImagem2;
+
+const nome = localStorage.getItem("nome");
+  const instagram = localStorage.getItem("instagram");
+
+if (nome && instagram) {
+  document.getElementById("userName").textContent = nome;
+  document.getElementById("userInsta").textContent = instagram;
+}

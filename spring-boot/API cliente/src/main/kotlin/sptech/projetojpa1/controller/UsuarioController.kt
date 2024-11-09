@@ -250,7 +250,7 @@ class UsuarioController(
         ]
     )
     @GetMapping(
-        value = ["/busca-imagem-usuario/{cpf}"],
+        value = ["/busca-imagem-usuario-cpf/{cpf}"],
         produces = ["image/jpeg", "image/png", "image/gif", "image/jpg"]
     )
     fun getFoto(@PathVariable cpf: String): ResponseEntity<ByteArray> {
@@ -518,6 +518,27 @@ class UsuarioController(
     @GetMapping("/empresa/{empresaId}")
     fun getUsuariosPorIdEmpresa(@PathVariable empresaId: Int): List<UsuarioEmpresaDTO> {
         return usuarioService.getUsuariosPorIdEmpresa(empresaId)
+    }
+
+    @Operation(summary = "Buscar foto de usuário")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o usuário encontrado"),
+            ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
+    @GetMapping(
+        value = ["/busca-imagem-usuario-nome/{nome}"],
+        produces = ["image/jpeg", "image/png", "image/gif", "image/jpg"]
+    )
+    fun getFotoPorNome(@PathVariable nome: String): ResponseEntity<ByteArray> {
+        val foto = usuarioService.getFotoPorNome(nome)
+        return if (foto != null) {
+            ResponseEntity.ok(foto)
+        } else {
+            ResponseEntity.status(404).body(null)
+        }
     }
 }
 

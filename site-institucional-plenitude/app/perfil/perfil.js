@@ -970,7 +970,7 @@ async function carregarImagem() {
 
   try {
     const response = await fetch(
-      `http://localhost:8080/usuarios/busca-imagem-usuario/${cpf}`,
+      `http://localhost:8080/usuarios/busca-imagem-usuario-cpf/${cpf}`,
       {
         method: "GET",
       }
@@ -1010,7 +1010,7 @@ async function carregarImagem2() {
 
   try {
     const response = await fetch(
-      `http://localhost:8080/usuarios/busca-imagem-usuario/${cpf}`,
+      `http://localhost:8080/usuarios/busca-imagem-usuario-cpf/${cpf}`,
       {
         method: "GET",
       }
@@ -1061,12 +1061,28 @@ async function carregarFuncionarios() {
   }
 
   try {
-    // Requisição para obter funcionários da empresa
-    const response = await fetch(
-      `http://localhost:8080/usuarios/empresa/${empresaId}`
-    );
+    // Requisição para obter funcionários da empresa (nome e cargo)
+    const response = await fetch(`http://localhost:8080/usuarios/empresa/${empresaId}`);
     if (response.ok) {
       funcionarios = await response.json();
+
+      // Para cada funcionário, buscar a foto separadamente
+      for (let i = 0; i < funcionarios.length; i++) {
+        const nome = encodeURIComponent(funcionarios[i].nome); // Encode nome para URL
+        try {
+          const fotoResponse = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario-nome/${nome}`);
+          if (fotoResponse.ok) {
+            const blob = await fotoResponse.blob();
+            funcionarios[i].foto = URL.createObjectURL(blob); // Gera URL local da imagem
+          } else {
+            funcionarios[i].foto = fotoGenerica; // Imagem genérica em caso de erro
+          }
+        } catch (fotoError) {
+          console.error("Erro ao buscar foto:", fotoError);
+          funcionarios[i].foto = fotoGenerica;
+        }
+      }
+
       mostrarFuncionario(funcionarioIndex); // Mostrar o primeiro funcionário após carregar
       iniciarAutoSlide(); // Iniciar troca automática após carregar
     } else {
@@ -1077,10 +1093,10 @@ async function carregarFuncionarios() {
   }
 }
 
+
 function mostrarFuncionario(index) {
   const funcionario = funcionarios[index];
-  const nivelAcessoText =
-    funcionario.nivelAcesso === 1 ? "Administrador" : "Funcionário";
+  const nivelAcessoText = funcionario.nivelAcesso === 1 ? "Administrador" : "Funcionário";
 
   // Atualiza conteúdo do carrossel
   funcionarioFoto.src = funcionario.foto || fotoGenerica;
@@ -1089,7 +1105,7 @@ function mostrarFuncionario(index) {
 
   // Adiciona o evento de clique na área "clicavel"
   document.querySelector(".clicavel").onclick = () => {
-    window.location.href = `perfilForms/editar-funcionario/editar-funcionario.html?codigo=${funcionario.codigo}&endereco=${funcionario.endereco}`;
+    window.location.href = `perfilForms/editar-funcionario/editar-funcionario.html?codigo=${funcionario.codigo}&endereco=${funcionario.endereco}&nome=${funcionario.nome}`;
   };
 }
 
