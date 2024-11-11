@@ -130,13 +130,22 @@ class AgendamentoService(
     }
 
 
-    fun totalAgendamentosHoje(): Int {
-        return agendamentoRepository.findTotalAgendamentosHoje()
+    fun obterMediaTempoEntreAgendamentos(startDate: String?, endDate: String?): Double {
+            return agendamentoRepository.calcularMediaTempoEntreAgendamentos(startDate, endDate) ?: 0.0
     }
 
-    fun obterTotalAgendamentosFuturos(): Int {
-        return agendamentoRepository.findTotalAgendamentosFuturos()
+
+
+
+    fun getTotalAgendamentosPorDia(specificDate: String?): Int {
+        return agendamentoRepository.findTotalAgendamentosPorDia(specificDate)
     }
+
+
+    fun obterTotalAgendamentosFuturos(startDate: String?, endDate: String?): Int {
+        return agendamentoRepository.findTotalAgendamentosFuturos(startDate, endDate)
+    }
+
 
     fun obterTotalReceitaUltimosTresMeses(): Map<String, Double> {
         return agendamentoRepository.findTotalReceitaUltimosTresMeses().associate {
