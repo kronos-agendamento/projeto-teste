@@ -42,6 +42,10 @@ interface UsuarioRepository : JpaRepository<Usuario, Int> {
     @Query("select u.foto from Usuario u where u.cpf = ?1")
     fun findFotoByCpf(cpf: String): ByteArray?
 
+    @Query("select u.foto from Usuario u where lower(u.nome) like lower(concat('%', ?1, '%'))")
+    fun findFotoByNomeContainsIgnoreCase(nome: String): ByteArray?
+
+
     fun findByNivelAcesso(nivelAcesso: NivelAcesso): List<Usuario>
 
     @Query(

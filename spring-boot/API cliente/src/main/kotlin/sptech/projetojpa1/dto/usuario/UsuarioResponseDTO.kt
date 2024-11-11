@@ -15,6 +15,7 @@ data class UsuarioResponseDTO(
     var email: String? = null,
     var genero: String? = null,
     var indicacao: String? = null,
+    var avaliacao: Int?,
     var empresa: Empresa? = null,
     var senha: String? = null,
     var endereco: Endereco? = null,

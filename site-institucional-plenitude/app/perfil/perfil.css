@@ -126,7 +126,7 @@ navbar  lateral
 --------------------------------------------------------------*/
 
 .navigation {
-  height: 81rem;
+  height: 83rem;
   background: #d2135d;
   width: 263px;
   margin-left: 32px;
@@ -909,10 +909,10 @@ td {
 }
 
 .adicionar-funcionario {
-  width: 20%;
+  width: 50%;
   height: auto;
   padding: 20px;
-  margin-left: 10%;
+  margin-left: 6%;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -939,10 +939,12 @@ td {
 }
 
 .foto-funcionario {
-  width: 70%;
-  border-radius: 50%;
+  width: 150px;
+  border-radius: 300px;
   margin-bottom: 10px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  height: 150px;
+  margin-top: 10%;
 }
 
 .carrossel-btn {
@@ -961,7 +963,7 @@ h4 {
 
 p {
   font-size: 0.9em;
-  color: #777;
+  color: #ffffff;
   margin: 5px 0 0 0px;
 }
 
@@ -1019,6 +1021,7 @@ p {
   margin-top: -50px; /* Espaçamento acima e abaixo do divisor */
   z-index: 1; /* Aumenta o z-index para garantir que apareça sobreposto */
   width: 100%; /* Certifica-se de que ocupa toda a largura do contêiner */
+  margin-top: 3%;
 }
 
 .clicavel {

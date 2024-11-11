@@ -47,6 +47,8 @@ abstract class Usuario(
     @field:Column(length = 100 * 1024 * 1024)
     var foto: ByteArray? = null,
 
+    var avaliacao: Int?,
+
     var status: Boolean?,
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -104,3 +104,81 @@ async function fetchUserDataByCpf(cpf) {
   }
   
   
+  document.addEventListener("DOMContentLoaded", () => {
+  
+    // Event listener para o formulário de upload de foto
+    document.getElementById("uploadForm2").addEventListener("submit", async (event) => {
+      event.preventDefault();
+  
+      const cpf = document.getElementById("cpf").value;
+      const fileInput = document.getElementById("file");
+  
+      if (!cpf || fileInput.files.length === 0) {
+        alert("Por favor, insira o CPF e selecione uma imagem.");
+        return;
+      }
+  
+      const formData = new FormData();
+      formData.append("file", fileInput.files[0]);
+  
+      try {
+        const response = await fetch(`http://localhost:8080/usuarios/upload-foto/${cpf}`, {
+          method: "POST",
+          body: formData,
+        });
+  
+        const result = await response.text();
+        const responseMessage = document.getElementById("responseMessage");
+  
+        if (response.ok) {
+          responseMessage.textContent = "Foto enviada com sucesso! Recarregue a página para ter acesso a foto atuliazada.";
+          responseMessage.style.color = "green";
+        } else {
+          responseMessage.textContent = `Erro: ${result}`;
+          responseMessage.style.color = "red";
+        }
+  
+  
+  
+      } catch (error) {
+        console.error("Erro ao enviar a foto:", error);
+        document.getElementById("responseMessage").textContent = "Erro ao enviar a foto.";
+      }
+    });
+  });
+  
+
+  async function carregarImagem2() {
+    const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução
+    const perfilImage = document.getElementById("perfilImage");
+  
+    if (!cpf) {
+        console.log("CPF não encontrado.");
+        return;
+    }
+  
+    try {
+        const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario-cpf/${cpf}`, {
+            method: "GET",
+        });
+  
+        if (response.ok) {
+            const blob = await response.blob(); // Recebe a imagem como Blob
+            const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
+  
+            // Define a URL da imagem carregada como src do img
+            perfilImage.src = imageUrl;
+            perfilImage.alt = "Foto do usuário";
+            perfilImage.style.width = "20vh";
+            perfilImage.style.height = "20vh";
+            perfilImage.style.borderRadius = "300px";
+        } else {
+            console.log("Imagem não encontrada para o CPF informado.");
+        }
+    } catch (error) {
+        console.error("Erro ao buscar a imagem:", error);
+    }
+  }
+  
+  // Carrega a imagem automaticamente quando a página termina de carregar
+  window.onload = carregarImagem2;

@@ -151,6 +151,11 @@
           </a>
         </button>
         <div id="tooltip5" class="tooltip5">Clique para cadastrar clientes.</div>
+
+        <button onclick="abrirModalAv()" style="margin-left: 1%; margin-right: 3%;">
+          <i class="fas fa-star" style="margin-right: 10px; font-size: 24px;" ></i>
+          Avaliar</button>
+          
         <button class="btn-action undo-btn" id="btn-undo" onclick="undoAction()" style="display: none;">
           <i class="fas fa-undo"></i> Desfazer
         </button>
@@ -260,7 +265,7 @@
     </div>
   </div>
 
-  <div id="modal-avaliacao" class="modal-avaliacao" style="display: none">
+  <!-- <div id="modal-avaliacao" class="modal-avaliacao" style="display: none">
     <div class="modal-content">
       <span class="close" onclick="closeModalAvaliar()">&times;</span>
       <p><b>Enviar avaliação do último atendimento</b></p>
@@ -276,7 +281,36 @@
       </div>
       <button class="btn-avaliar">Pesquisar</button>
     </div>
+  </div> -->
+
+  <div id="modal-avaliacao" class="modal" style="height: 130vh; ">
+    <div class="modal-content" style="margin-top: 65px; height: 70vh;">
+      <span style="margin-left: 95%; cursor: pointer;" class="close" onclick="closeModalAv()">&times;</span>
+      <h3>Enviar avaliação de clientes</h3>
+      <div class="input-field" >
+        <label for="cpf">CPF:</label>
+        <input type="text" id="cpf-avaliacao" placeholder="Digite o CPF">
+        <button class="btn-submit-pesquisa" onclick="buscarNome()" > 
+          <i class="fas fa-search" style="margin-right: 10px; font-size: 18px;"></i> Pesquisar
+        </button>
+      </div>
+      <div class="input-field" style="margin-top: 5%; width: 143%; margin-left: -21%;">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" readonly>
+      </div>
+      <p style="margin-top: 5%;">Avaliar atendimento:</p>
+      <div class="star-rating" id="starRating">
+        <span class="star" onclick="selecionarEstrela(1)">&#9733;</span>
+        <span class="star" onclick="selecionarEstrela(2)">&#9733;</span>
+        <span class="star" onclick="selecionarEstrela(3)">&#9733;</span>
+        <span class="star" onclick="selecionarEstrela(4)">&#9733;</span>
+        <span class="star" onclick="selecionarEstrela(5)">&#9733;</span>
+      </div>
+      <button class="btn-submit" onclick="enviarAvaliacao()">Enviar Avaliação</button>
+    </div>
   </div>
+
+
 
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>

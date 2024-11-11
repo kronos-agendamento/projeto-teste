@@ -2,10 +2,17 @@ document.addEventListener("DOMContentLoaded", function () {
   // Obtém o idUsuario da URL
   const params = new URLSearchParams(window.location.search);
   const idUsuario = params.get("idUsuario");
+  const clienteNome = localStorage.getItem("clienteNome");
 
   if (!idUsuario) {
     console.error("ID do usuário não encontrado na URL.");
     return;
+  }
+
+  if (clienteNome) {
+    document.querySelector(
+      "header h1"
+    ).textContent = `Mais informações de: ${clienteNome}`;
   }
 
   // Função para buscar e exibir perguntas e respostas
@@ -90,7 +97,7 @@ async function carregarImagem2() {
   }
 
   try {
-      const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario/${cpf}`, {
+      const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario-cpf/${cpf}`, {
           method: "GET",
       });
 
