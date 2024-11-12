@@ -238,90 +238,111 @@ async function enviarEmail(clienteEmail, nomeCliente, nome, dataAgend, especific
     document.getElementById("next-page-btn").disabled =
       currentPage === totalPages;
 
-    agendamentosPaginaAtual.forEach((agendamento) => {
-      const tr = document.createElement("tr");
-      tr.classList.add("clickable-row");
-
-      // Ajustar para o horário local
-      const dataHora = new Date(agendamento.dataHorario);
-      const dia = String(dataHora.getDate()).padStart(2, "0");
-      const mes = String(dataHora.getMonth() + 1).padStart(2, "0");
-      const horas = String(dataHora.getHours()).padStart(2, "0");
-      const minutos = String(dataHora.getMinutes()).padStart(2, "0");
-      const dataHoraFormatada = `${dia}/${mes} - ${horas}:${minutos}`;
-
-      const dataHoraTd = document.createElement("td");
-      dataHoraTd.textContent = dataHoraFormatada;
-      tr.appendChild(dataHoraTd);
-
-      const clienteTd = document.createElement("td");
-      clienteTd.textContent = agendamento.usuario;
-      clienteTd.dataset.idUsuario = agendamento.usuarioId;
-      clienteTd.dataset.idAgendamento = agendamento.idAgendamento;
-      tr.appendChild(clienteTd);
-
-      const procedimentoTd = document.createElement("td");
-      procedimentoTd.textContent = agendamento.procedimento;
-      procedimentoTd.dataset.fkProcedimento = agendamento.fkProcedimento;
-      tr.appendChild(procedimentoTd);
-
-      const especificacaoTd = document.createElement("td");
-      especificacaoTd.textContent = agendamento.especificacao;
-      especificacaoTd.dataset.fkEspecificacao = agendamento.fkEspecificacao;
-      tr.appendChild(especificacaoTd);
-
-      const statusTd = document.createElement("td");
-      const statusColorDiv = document.createElement("div");
-      statusColorDiv.style.backgroundColor = agendamento.statusAgendamento.cor;
-      statusColorDiv.style.width = "10px";
-      statusColorDiv.style.height = "10px";
-      statusColorDiv.style.borderRadius = "100px";
-      statusColorDiv.style.display = "inline-block";
-      statusColorDiv.style.marginRight = "5px";
-
-      const statusNomeSpan = document.createElement("span");
-      statusNomeSpan.textContent = agendamento.statusAgendamento.nome;
-
-      statusTd.appendChild(statusColorDiv);
-      statusTd.appendChild(statusNomeSpan);
-      tr.appendChild(statusTd);
-
-      const acoesTd = document.createElement("td");
-
-      // Botão de Editar
-      const editButton = document.createElement("button");
-      editButton.classList.add("edit-btn", "filter-btn");
-      editButton.dataset.id = agendamento.idAgendamento;
-      editButton.innerHTML = '<i class="fas fa-edit"></i>';
-      editButton.addEventListener("click", (event) => {
-        event.stopPropagation(); // Impede que o evento se propague para a linha
-        editarAgendamento(
-          clienteTd.dataset.idAgendamento,
-          clienteTd.dataset.idUsuario,
-          procedimentoTd.dataset.fkProcedimento,
-          especificacaoTd.dataset.fkEspecificacao
+      agendamentosPaginaAtual.forEach((agendamento) => {
+        const tr = document.createElement("tr");
+        tr.classList.add("clickable-row");
+      
+        // Ajustar para o horário local
+        const dataHora = new Date(agendamento.dataHorario);
+        const dia = String(dataHora.getDate()).padStart(2, "0");
+        const mes = String(dataHora.getMonth() + 1).padStart(2, "0");
+        const horas = String(dataHora.getHours()).padStart(2, "0");
+        const minutos = String(dataHora.getMinutes()).padStart(2, "0");
+        const dataHoraFormatada = `${dia}/${mes} - ${horas}:${minutos}`;
+      
+        const dataHoraTd = document.createElement("td");
+        dataHoraTd.textContent = dataHoraFormatada;
+        tr.appendChild(dataHoraTd);
+      
+        const clienteTd = document.createElement("td");
+        clienteTd.textContent = agendamento.usuario;
+        clienteTd.dataset.idUsuario = agendamento.usuarioId;
+        clienteTd.dataset.idAgendamento = agendamento.idAgendamento;
+        tr.appendChild(clienteTd);
+      
+        const procedimentoTd = document.createElement("td");
+        procedimentoTd.textContent = agendamento.procedimento;
+        procedimentoTd.dataset.fkProcedimento = agendamento.fkProcedimento;
+        tr.appendChild(procedimentoTd);
+      
+        const especificacaoTd = document.createElement("td");
+        especificacaoTd.textContent = agendamento.especificacao;
+        especificacaoTd.dataset.fkEspecificacao = agendamento.fkEspecificacao;
+        tr.appendChild(especificacaoTd);
+      
+        const statusTd = document.createElement("td");
+        const statusColorDiv = document.createElement("div");
+        statusColorDiv.style.backgroundColor = agendamento.statusAgendamento.cor;
+        statusColorDiv.style.width = "10px";
+        statusColorDiv.style.height = "10px";
+        statusColorDiv.style.borderRadius = "100px";
+        statusColorDiv.style.display = "inline-block";
+        statusColorDiv.style.marginRight = "5px";
+      
+        const statusNomeSpan = document.createElement("span");
+        statusNomeSpan.textContent = agendamento.statusAgendamento.nome;
+      
+        statusTd.appendChild(statusColorDiv);
+        statusTd.appendChild(statusNomeSpan);
+        tr.appendChild(statusTd);
+      
+        const acoesTd = document.createElement("td");
+      
+        // Função para criar tooltips
+        function addTooltip(element, text) {
+          const tooltip = document.createElement("span");
+          tooltip.classList.add("tooltip-40");
+          tooltip.innerText = text;
+          element.appendChild(tooltip);
+      
+          element.addEventListener("mouseover", () => {
+            tooltip.style.visibility = "visible";
+            tooltip.style.opacity = "1";
+          });
+      
+          element.addEventListener("mouseout", () => {
+            tooltip.style.visibility = "hidden";
+            tooltip.style.opacity = "0";
+          });
+        }
+      
+        // Botão de Editar
+        const editButton = document.createElement("button");
+        editButton.classList.add("edit-btn", "filter-btn");
+        editButton.dataset.id = agendamento.idAgendamento;
+        editButton.innerHTML = '<i class="fas fa-edit"></i>';
+        addTooltip(editButton, "Editar");
+        editButton.addEventListener("click", (event) => {
+          event.stopPropagation(); // Impede que o evento se propague para a linha
+          editarAgendamento(
+            clienteTd.dataset.idAgendamento,
+            clienteTd.dataset.idUsuario,
+            procedimentoTd.dataset.fkProcedimento,
+            especificacaoTd.dataset.fkEspecificacao
+          );
+        });
+        acoesTd.appendChild(editButton);
+      
+        // Botão de Excluir
+        const deleteButton = document.createElement("button");
+        deleteButton.classList.add("delete-btn", "filter-btn");
+        deleteButton.dataset.id = agendamento.idAgendamento;
+        deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
+        addTooltip(deleteButton, "Excluir");
+        deleteButton.addEventListener("click", (event) => {
+          event.stopPropagation(); // Impede que o evento se propague para a linha
+          excluirAgendamento(agendamento.idAgendamento);
+        });
+        acoesTd.appendChild(deleteButton);
+      
+        tr.appendChild(acoesTd);
+        tr.addEventListener("click", () =>
+          showDetalhesModal(agendamento.idAgendamento)
         );
+      
+        tbody.appendChild(tr);
       });
-      acoesTd.appendChild(editButton);
-
-      // Botão de Excluir
-      const deleteButton = document.createElement("button");
-      deleteButton.classList.add("delete-btn", "filter-btn");
-      deleteButton.dataset.id = agendamento.idAgendamento;
-      deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
-      deleteButton.addEventListener("click", (event) => {
-        event.stopPropagation(); // Impede que o evento se propague para a linha
-        excluirAgendamento(agendamento.idAgendamento);
-      });
-      acoesTd.appendChild(deleteButton);
-
-      tr.appendChild(acoesTd);
-      tr.addEventListener("click", () =>
-        showDetalhesModal(agendamento.idAgendamento)
-      );
-
-      tbody.appendChild(tr);
-    });
+      
   }
 
   window.excluirAgendamento = function (id) {
@@ -1121,3 +1142,45 @@ async function carregarImagem2() {
 window.onload = function () {
   carregarImagem2();
 };
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  const tooltips = document.querySelectorAll(
+    ".tooltip, .tooltip2, .tooltip3, .tooltip4, .tooltip5, .tooltip6, .tooltip7, .tooltip8, .tooltip9, .tooltip12, .tooltip29, .tooltip30"
+  );
+
+  tooltips.forEach((tooltip) => {
+    const targetButton = tooltip.previousElementSibling;
+
+    targetButton.addEventListener("mouseenter", () => {
+      tooltip.style.visibility = "hidden"; // Oculta temporariamente para cálculo
+      tooltip.style.display = "block"; // Exibe para cálculo
+      positionTooltip(tooltip, targetButton);
+      tooltip.style.visibility = "visible"; // Mostra após posicionamento
+    });
+
+    targetButton.addEventListener("mouseleave", () => {
+      tooltip.style.display = "none"; // Oculta quando sai do hover
+    });
+
+    window.addEventListener("resize", () => {
+      if (tooltip.style.display === "block") {
+        positionTooltip(tooltip, targetButton); // Recalcula posição em redimensionamento
+      }
+    });
+  });
+
+  function positionTooltip(tooltip, target) {
+    const targetRect = target.getBoundingClientRect();
+    const tooltipRect = tooltip.getBoundingClientRect();
+
+    // Centraliza horizontalmente e posiciona acima do botão
+    const topPosition = targetRect.top - tooltipRect.height - 5;
+    const leftPosition =
+      targetRect.left + targetRect.width / 0 - tooltipRect.width / 0;
+
+    tooltip.style.top = `${topPosition + window.scrollY}px`;
+    tooltip.style.left = `${leftPosition + window.scrollX}px`;
+  }
+});
+

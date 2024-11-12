@@ -155,10 +155,11 @@
         <button onclick="abrirModalAv()" style="margin-left: 1%; margin-right: 3%;">
           <i class="fas fa-star" style="margin-right: 10px; font-size: 24px;" ></i>
           Avaliar</button>
-          
+          <div id="tooltip6" class="tooltip6">Clique para avaliar um cliente.</div>
         <button class="btn-action undo-btn" id="btn-undo" onclick="undoAction()" style="display: none;">
           <i class="fas fa-undo"></i> Desfazer
         </button>
+        
         <button class="btn-action redo-btn" id="btn-redo" onclick="redoAction()"
           style="margin-left: 1%; display: none;">
           <i class="fas fa-redo"></i> Refazer
@@ -166,11 +167,12 @@
 
         
     </div>
-    <div class="actions" style="display: flex; align-items: center; justify-content: center;">
+    <div class="actions filter-btn" style="display: flex; align-items: center; justify-content: center;">
       <a href="../clientes/clienteForms/mapa-cliente/mapa-cliente.html" class="filter-btn-origem">
         <i class="fas fa-map" style="margin-right: 10px;"></i> Visualizar Dados Sobre Origem de Clientes
       </a>
     </div>
+    <div id="tooltip18" class="tooltip18">Localização dos clientes</div>
     
     <table id="procedures-table" class="procedures-table">
       <thead>

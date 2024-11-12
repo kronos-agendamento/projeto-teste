@@ -1135,6 +1135,36 @@ img {
   transform: translateX(-50%);
 }
 
+.tooltip20 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: -22px; /* Ajuste conforme necessário */
+  left: 97.5%;
+  transform: translateX(-50%);
+}
+
+.tooltip21 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: -22px; /* Ajuste conforme necessário */
+  left: 97.5%;
+  transform: translateX(-50%);
+}
+
 .filter-btn:hover + .tooltip15 {
   display: block;
 }
@@ -1148,6 +1178,14 @@ img {
 }
 
 .filter-btn:hover + .tooltip18 {
+  display: block;
+}
+
+.filter-btn:hover + .tooltip20 {
+  display: block;
+}
+
+.filter-btn:hover + .tooltip21 {
   display: block;
 }
 
