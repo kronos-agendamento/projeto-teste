@@ -40,8 +40,12 @@ class LoginLogoffController(
         return ResponseEntity("Log registrado com sucesso!", HttpStatus.CREATED)
     }
     @GetMapping("/retorno-usuarios-login")
-    fun getUsuariosQueRetornaramAposUmMes(): ResponseEntity<Int> {
-        val usuarios = loginLogoffService.getUsuariosQueRetornaramAposUmMes()
+    fun getUsuariosQueRetornaramAposUmMes(
+        @RequestParam startDate: String?,
+        @RequestParam endDate: String?
+    ): ResponseEntity<Int> {
+        val usuarios = loginLogoffService.getUsuariosQueRetornaramAposUmMes(startDate, endDate)
         return ResponseEntity.ok(usuarios)
     }
+
 }

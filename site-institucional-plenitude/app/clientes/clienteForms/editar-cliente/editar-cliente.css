@@ -1213,3 +1213,13 @@ img {
   display: block;
   
 }
+
+.star-rating-display .star {
+  font-size: 1.5em;
+  color: gray; /* Cor padrão para estrelas vazias */
+  cursor: default; /* Remove o cursor pointer se as estrelas forem só para exibição */
+}
+
+.star-rating-display .star.filled {
+  color: gold; /* Cor para estrelas preenchidas */
+}

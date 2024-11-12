@@ -250,7 +250,7 @@ class UsuarioController(
         ]
     )
     @GetMapping(
-        value = ["/busca-imagem-usuario/{cpf}"],
+        value = ["/busca-imagem-usuario-cpf/{cpf}"],
         produces = ["image/jpeg", "image/png", "image/gif", "image/jpg"]
     )
     fun getFoto(@PathVariable cpf: String): ResponseEntity<ByteArray> {
@@ -340,22 +340,34 @@ class UsuarioController(
     }
 
     @GetMapping("/clientes-ativos")
-    fun getClientesAtivosUltimosTresMeses(): ResponseEntity<Int> {
-        val numeroClientes = usuarioService.getClientesAtivos()
+    fun getClientesAtivosUltimosTresMeses(
+        @RequestParam(required = false) startDate: String?,
+        @RequestParam(required = false) endDate: String?
+    ): ResponseEntity<Int> {
+        val numeroClientes = usuarioService.getClientesAtivos(startDate, endDate)
         return ResponseEntity.ok(numeroClientes)
     }
 
+
     @GetMapping("/clientes-inativos")
-    fun getClientesInativos(): ResponseEntity<Int> {
-        val clientes = usuarioService.getClientesInativos()
+    fun getClientesInativos(
+        @RequestParam(required = false) startDate: String?,
+        @RequestParam(required = false) endDate: String?
+    ): ResponseEntity<Int> {
+        val clientes = usuarioService.getClientesInativos(startDate, endDate)
         return ResponseEntity.ok(clientes)
     }
 
+
     @GetMapping("/clientes-fidelizados-ultimos-tres-meses")
-    fun getClientesFidelizadosUltimosTresMeses(): ResponseEntity<Int> {
-        val clientes = usuarioService.getClientesFidelizadosUltimosTresMeses()
+    fun getClientesFidelizadosUltimosTresMeses(
+        @RequestParam("startDate", required = false) startDate: String?,
+        @RequestParam("endDate", required = false) endDate: String?
+    ): ResponseEntity<Int> {
+        val clientes = usuarioService.getClientesFidelizadosUltimosTresMeses(startDate, endDate)
         return ResponseEntity.ok(clientes)
     }
+
 
     @GetMapping("/clientes-fidelizados-ultimos-cinco-meses")
     fun listarClientesFidelizadosUltimos5Meses(): ResponseEntity<List<Int>> {
@@ -480,6 +492,18 @@ class UsuarioController(
         return ResponseEntity.ok(leads)
     }
 
+    @PostMapping("/avaliar/{cpf}")
+    fun avaliarUsuario(@RequestBody avaliacaoRequest: AvaliacaoRequest): ResponseEntity<String> {
+        val usuario = usuarioService.atualizarAvaliacao(avaliacaoRequest.cpf, avaliacaoRequest.pontuacao)
+
+        return if (usuario != null) {
+            ResponseEntity.status(HttpStatus.OK).body("Avaliação atualizada com sucesso!")
+        } else {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado.")
+        }
+    }
+
+
     @Operation(
         summary = "Busca Usuário por ID da Empresa",
         description = "Retorna o nome, a foto e o nível de acesso do usuário associado ao ID da empresa."
@@ -494,6 +518,27 @@ class UsuarioController(
     @GetMapping("/empresa/{empresaId}")
     fun getUsuariosPorIdEmpresa(@PathVariable empresaId: Int): List<UsuarioEmpresaDTO> {
         return usuarioService.getUsuariosPorIdEmpresa(empresaId)
+    }
+
+    @Operation(summary = "Buscar foto de usuário")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Operação bem-sucedida. Retorna o usuário encontrado"),
+            ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            ApiResponse(responseCode = "500", description = "Erro interno do servidor. Retorna uma mensagem de erro")
+        ]
+    )
+    @GetMapping(
+        value = ["/busca-imagem-usuario-nome/{nome}"],
+        produces = ["image/jpeg", "image/png", "image/gif", "image/jpg"]
+    )
+    fun getFotoPorNome(@PathVariable nome: String): ResponseEntity<ByteArray> {
+        val foto = usuarioService.getFotoPorNome(nome)
+        return if (foto != null) {
+            ResponseEntity.ok(foto)
+        } else {
+            ResponseEntity.status(404).body(null)
+        }
     }
 }
 

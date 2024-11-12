@@ -1174,6 +1174,8 @@ img {
   flex-direction: column;
   gap: 15px;
   margin-top: 20px;
+  width:  152vh;
+  margin-left: 4%;
 }
 
 .perguntas-respostas-row {

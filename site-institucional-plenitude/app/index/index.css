@@ -316,7 +316,7 @@ header p {
 #greeting1 {
   font-size: 3vh;
   font-weight: bold;
-  margin: -1.4vh 0vh 0vh 1.3vh;
+  margin: -1.4vh 0vh 0vh 0vh;
 }
 
 #greeting2 {

@@ -276,25 +276,6 @@ header p {
 /* nav */
 
 /* navbar */
-.navigation {
-  height: auto;
-  background: #d2135d;
-  width: 275px;
-  margin-top: 20px;
-  margin-left: 32px;
-  box-shadow: 10px 0 0 #ffffff;
-  border-left: 10px solid #d2135d;
-  overflow-y: auto;
-  /* Permite rolagem vertical se necessário */
-  overflow-x: hidden;
-  /* Remove a rolagem horizontal */
-  border-radius: 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 50px;
-  position: relative;
-}
 
 .navigation ul {
   position: absolute !important;
@@ -860,7 +841,7 @@ img {
 .navigation {
   height: auto;
   background: #d2135d;
-  width: 275px;
+  width: 263px;
   margin-top: 20px;
   margin-left: 32px;
   box-shadow: 10px 0 0 #ffffff;

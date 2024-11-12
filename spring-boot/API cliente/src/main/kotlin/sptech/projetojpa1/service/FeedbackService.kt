@@ -67,9 +67,11 @@ class FeedbackService(
         return feedbackRepository.buscarMediaNotas()
     }
 
-    fun calcularMediaNotas(): Double {
-        return feedbackRepository.buscarMediaNotasSingle()
+    fun buscarMediaNotasSingle(startDate: String?, endDate: String?): Double {
+        return feedbackRepository.buscarMediaNotasSingle(startDate, endDate)
     }
+
+
 
     fun buscarFeedbackPorId(id: Int): FeedbackResponseDTO? {
         val feedback = feedbackRepository.findById(id).orElse(null) ?: return null

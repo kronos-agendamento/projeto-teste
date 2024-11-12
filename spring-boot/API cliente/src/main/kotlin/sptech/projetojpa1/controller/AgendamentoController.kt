@@ -202,28 +202,52 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
         ]
     )
     @GetMapping("/agendamentos-realizados")
-    fun agendamentosRealizadosUltimoTrimestre(): ResponseEntity<Int> {
-        val quantidadeConcluidos = agendamentoService.agendamentosRealizadosTrimestre()
+    fun agendamentosRealizadosUltimoTrimestre(
+        @RequestParam(required = false) startDate: String?,
+        @RequestParam(required = false) endDate: String?
+    ): ResponseEntity<Int> {
+        val quantidadeConcluidos = agendamentoService.agendamentosRealizadosTrimestre(startDate, endDate)
         return ResponseEntity.ok(quantidadeConcluidos)
     }
 
+
     @GetMapping("/tempo-para-agendar")
-    fun tempoParaAgendar(): ResponseEntity<List<Int>> {
-        val tempoPara = agendamentoService.tempoParaAgendar()
+    fun tempoParaAgendar(
+        @RequestParam(required = false) startDate: String?,
+        @RequestParam(required = false) endDate: String?
+    ): ResponseEntity<List<Int>> {
+        val tempoPara = agendamentoService.tempoParaAgendar(startDate, endDate)
         return ResponseEntity.ok(tempoPara)
     }
 
+    @GetMapping("/media-tempo-entre-agendamentos")
+    fun getMediaTempoEntreAgendamentos(
+        @RequestParam(required = false) startDate: String?,
+        @RequestParam(required = false) endDate: String?
+    ): ResponseEntity<Double> {
+        val mediaTempo = agendamentoService.obterMediaTempoEntreAgendamentos(startDate, endDate)
+        return ResponseEntity.ok(mediaTempo)
+    }
+
+
     @GetMapping("/total-agendamentos-hoje")
-    fun totalAgendamentosHoje(): ResponseEntity<Int> {
-        val tempoPara = agendamentoService.totalAgendamentosHoje()
-        return ResponseEntity.ok(tempoPara)
+    fun getTotalAgendamentosPorDia(
+        @RequestParam(required = false) specificDate: String?
+    ): ResponseEntity<Int> {
+        print(specificDate)
+        val totalAgendamentos = agendamentoService.getTotalAgendamentosPorDia(specificDate)
+        return ResponseEntity.ok(totalAgendamentos)
     }
 
     @GetMapping("/futuros")
-    fun getTotalAgendamentosFuturos(): ResponseEntity<Int> {
-        val agenFuturos = agendamentoService.obterTotalAgendamentosFuturos()
+    fun getTotalAgendamentosFuturos(
+        @RequestParam(required = false) startDate: String?,
+        @RequestParam(required = false) endDate: String?
+    ): ResponseEntity<Int> {
+        val agenFuturos = agendamentoService.obterTotalAgendamentosFuturos(startDate, endDate)
         return ResponseEntity.ok(agenFuturos)
     }
+
 
     @GetMapping("/receita-ultimos-tres-meses")
     fun getTotalReceitaUltimosTresMeses(): ResponseEntity<Map<String, Double>> {

@@ -268,7 +268,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/usuarios/busca-imagem-usuario/${cpf}`,
+        `http://localhost:8080/usuarios/busca-imagem-usuario-cpf/${cpf}`,
         {
           method: "GET",
         }
@@ -294,4 +294,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Carrega a imagem automaticamente quando a página termina de carregar
   window.onload = carregarImagem2;
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  const nome = localStorage.getItem("nome");
+  const instagram = localStorage.getItem("instagram");
+
+  if (nome && instagram) {
+    document.getElementById("userName").textContent = nome;
+    document.getElementById("userInsta").textContent = instagram;
+  }
 });
