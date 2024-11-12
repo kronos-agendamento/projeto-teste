@@ -15,20 +15,20 @@ document.addEventListener("DOMContentLoaded", async function () {
     );
     const procedimento = await response.json();
 
+    // Preenche os campos com os dados recebidos
     document.getElementById("procedimento").value =
       procedimento.procedimento.tipo;
     document.getElementById("descricao").value =
       procedimento.procedimento.descricao;
     document.getElementById("especificacao").value = procedimento.especificacao;
-    document.getElementById(
-      "valor-colocacao"
-    ).value = `${procedimento.precoColocacao.toFixed(2).replace(".", ",")}`;
-    document.getElementById(
-      "valor-retirada"
-    ).value = `${procedimento.precoRetirada.toFixed(2).replace(".", ",")}`;
-    document.getElementById(
-      "valor-manutencao"
-    ).value = `${procedimento.precoManutencao.toFixed(2).replace(".", ",")}`;
+    document.getElementById("valor-colocacao").value =
+      procedimento.precoColocacao.toFixed(2).replace(".", ",");
+    document.getElementById("valor-retirada").value = procedimento.precoRetirada
+      .toFixed(2)
+      .replace(".", ",");
+    document.getElementById("valor-manutencao").value =
+      procedimento.precoManutencao.toFixed(2).replace(".", ",");
+    document.getElementById("homecare").checked = procedimento.homecare;
 
     function parseTempoMinutos(tempo) {
       const [horas, minutos] = tempo.split(":").map(Number);
@@ -55,75 +55,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     showNotification("Erro ao carregar procedimento!", true);
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
-    function formatValue(value) {
-      return `${parseFloat(value).toFixed(2).replace(".", ",")}`;
-    }
-
-    function parseValue(value) {
-      const parsedValue = parseFloat(
-        value.replace("R$", "").replace(",", ".").trim()
-      );
-      return isNaN(parsedValue) ? 0 : parsedValue;
-    }
-
-    const valorColocacaoInput = document.getElementById("valor-colocacao");
-
-    valorColocacaoInput.addEventListener("input", function () {
-      const numericValue = parseValue(valorColocacaoInput.value);
-      if (isNaN(numericValue)) {
-        valorColocacaoInput.value = formatValue(0);
-      } else {
-        valorColocacaoInput.value = formatValue(numericValue);
-      }
-    });
-
-    document
-      .querySelector(".save-button")
-      .addEventListener("click", async function (event) {
-        event.preventDefault();
-
-        const especificacao = {
-          especificacao: document.getElementById("especificacao").value,
-          precoColocacao:
-            parseValue(document.getElementById("valor-colocacao").value) || 0,
-          precoManutencao:
-            parseValue(document.getElementById("valor-manutencao").value) || 0,
-          precoRetirada:
-            parseValue(document.getElementById("valor-retirada").value) || 0,
-          tempoColocacao: tempoColocacao,
-          tempoManutencao: tempoManutencao,
-          tempoRetirada: tempoRetirada,
-          procedimento: idProcedimento,
-        };
-
-        try {
-          const response = await fetch(
-            `${baseUrl}/especificacoes/${idEspecificacao}`,
-            {
-              method: "PATCH",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(especificacao),
-            }
-          );
-
-          if (response.ok) {
-            showNotification("Especificação atualizada com sucesso!");
-          } else {
-            const errorData = await response.json();
-            console.error("Server response:", errorData);
-            showNotification(
-              "Erro ao atualizar especificação! Verifique os campos.",
-              true
-            );
-          }
-        } catch (error) {
-          console.error("Erro ao atualizar a especificação:", error);
-          showNotification("Erro ao salvar especificação!", true);
-        }
-      });
-  });
-
+  // Listener para salvar os dados
   document
     .querySelector(".save-button")
     .addEventListener("click", async function (event) {
@@ -139,13 +71,11 @@ document.addEventListener("DOMContentLoaded", async function () {
       )}:${formatTime(
         document.getElementById("duracao-colocacao-minutos").value
       )}`;
-
       const tempoManutencao = `${formatTime(
         document.getElementById("duracao-manutencao-horas").value
       )}:${formatTime(
         document.getElementById("duracao-manutencao-minutos").value
       )}`;
-
       const tempoRetirada = `${formatTime(
         document.getElementById("duracao-retirada-horas").value
       )}:${formatTime(
@@ -154,79 +84,62 @@ document.addEventListener("DOMContentLoaded", async function () {
 
       const especificacao = {
         especificacao: document.getElementById("especificacao").value,
-        precoColocacao: parseFloat(
-          document
-            .getElementById("valor-colocacao")
-            .value.replace("R$", "")
-            .replace(",", ".")
+        precoColocacao: parseValue(
+          document.getElementById("valor-colocacao").value
         ),
-        precoManutencao: parseFloat(
-          document
-            .getElementById("valor-manutencao")
-            .value.replace("R$", "")
-            .replace(",", ".")
+        precoManutencao: parseValue(
+          document.getElementById("valor-manutencao").value
         ),
-        precoRetirada: parseFloat(
-          document
-            .getElementById("valor-retirada")
-            .value.replace("", "")
-            .replace(",", ".")
+        precoRetirada: parseValue(
+          document.getElementById("valor-retirada").value
         ),
         tempoColocacao: tempoColocacao,
         tempoManutencao: tempoManutencao,
         tempoRetirada: tempoRetirada,
+        homecare: document.getElementById("homecare").checked,
         procedimento: idProcedimento,
       };
 
-      const updateEspecificacao = fetch(
-        `${baseUrl}/especificacoes/${idEspecificacao}`,
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(especificacao),
-        }
-      );
-
-      const updateProcedimento = fetch(
-        `${baseUrl}/procedimentos/${idProcedimento}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(procedimento),
-        }
-      );
-
       try {
         const [especificacaoResponse, procedimentoResponse] = await Promise.all(
-          [updateEspecificacao, updateProcedimento]
+          [
+            fetch(`${baseUrl}/especificacoes/${idEspecificacao}`, {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(especificacao),
+            }),
+            fetch(`${baseUrl}/procedimentos/${idProcedimento}`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(procedimento),
+            }),
+          ]
         );
 
-        const messages = [];
-        if (especificacaoResponse.ok)
-          messages.push("Especificação atualizada com sucesso!");
-        if (procedimentoResponse.ok)
-          messages.push("Procedimento atualizado com sucesso!");
-
-        if (messages.length === 2) {
+        if (especificacaoResponse.ok && procedimentoResponse.ok) {
           showNotification("Todos os dados foram atualizados com sucesso!");
           setTimeout(() => {
-            window.location.href = "../../procedimento.html"; // Redireciona para o arquivo HTML desejado após 3 segundos
+            window.location.href = "../../procedimento.html"; // Redireciona após salvar
           }, 1000);
         } else {
-          messages.forEach((message) => showNotification(message));
-          if (messages.length < 2) {
-            showNotification("Nem todos os dados foram atualizados!", true);
-          }
+          showNotification("Erro ao atualizar os dados!", true);
         }
       } catch (error) {
-        console.error("Erro ao atualizar o procedimento:", error);
-        showNotification("Erro ao salvar procedimento!", true);
+        console.error("Erro ao atualizar os dados:", error);
+        showNotification("Erro ao salvar os dados!", true);
       }
     });
 });
 
 function formatTime(value) {
   return value.toString().padStart(2, "0");
+}
+
+function parseValue(value) {
+  const parsedValue = parseFloat(
+    value.replace("R$", "").replace(",", ".").trim()
+  );
+  return isNaN(parsedValue) ? 0 : parsedValue;
 }
 
 function showNotification(message, isError = false) {
@@ -254,37 +167,40 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-new window.VLibras.Widget('https://vlibras.gov.br/app');
+new window.VLibras.Widget("https://vlibras.gov.br/app");
 
 async function carregarImagem2() {
   const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução
   const perfilImage = document.getElementById("perfilImage");
 
   if (!cpf) {
-      console.log("CPF não encontrado.");
-      return;
+    console.log("CPF não encontrado.");
+    return;
   }
 
   try {
-      const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario/${cpf}`, {
-          method: "GET",
-      });
-
-      if (response.ok) {
-          const blob = await response.blob(); // Recebe a imagem como Blob
-          const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
-
-          // Define a URL da imagem carregada como src do img
-          perfilImage.src = imageUrl;
-          perfilImage.alt = "Foto do usuário";
-          perfilImage.style.width = "20vh";
-          perfilImage.style.height = "20vh";
-          perfilImage.style.borderRadius = "300px";
-      } else {
-          console.log("Imagem não encontrada para o CPF informado.");
+    const response = await fetch(
+      `http://localhost:8080/usuarios/busca-imagem-usuario/${cpf}`,
+      {
+        method: "GET",
       }
+    );
+
+    if (response.ok) {
+      const blob = await response.blob(); // Recebe a imagem como Blob
+      const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
+
+      // Define a URL da imagem carregada como src do img
+      perfilImage.src = imageUrl;
+      perfilImage.alt = "Foto do usuário";
+      perfilImage.style.width = "20vh";
+      perfilImage.style.height = "20vh";
+      perfilImage.style.borderRadius = "300px";
+    } else {
+      console.log("Imagem não encontrada para o CPF informado.");
+    }
   } catch (error) {
-      console.error("Erro ao buscar a imagem:", error);
+    console.error("Erro ao buscar a imagem:", error);
   }
 }
 

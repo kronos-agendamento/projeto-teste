@@ -189,7 +189,6 @@ header p {
   font-size: 2vh;
 }
 
-
 #greeting1 {
   font-size: 3.5vh;
   font-weight: bold;
@@ -386,7 +385,7 @@ Inicio Filtros
   gap: 2px;
   margin-left: -1%;
   display: flex;
-  justify-content:flex-start;
+  justify-content: flex-start;
 }
 
 .actions button {
@@ -961,7 +960,6 @@ table tr.clickable-row:hover {
   transform: translateX(-50%);
 }
 
-
 /* Estilos do tooltip */
 .tooltip2 {
   display: none;
@@ -978,7 +976,7 @@ table tr.clickable-row:hover {
   transform: translateX(-50%);
 }
 
-.tooltip3{
+.tooltip3 {
   display: none;
   position: absolute;
   background-color: #333;
@@ -993,7 +991,7 @@ table tr.clickable-row:hover {
   transform: translateX(-50%);
 }
 
-.tooltip4{
+.tooltip4 {
   display: none;
   position: absolute;
   background-color: #333;
@@ -1008,9 +1006,7 @@ table tr.clickable-row:hover {
   transform: translateX(-50%);
 }
 
-
-
-.tooltip5{
+.tooltip5 {
   display: none;
   position: absolute;
   background-color: #333;
@@ -1025,9 +1021,8 @@ table tr.clickable-row:hover {
   transform: translateX(-50%);
 }
 
-
- /* Estilos do tooltip */
- .tooltip6 {
+/* Estilos do tooltip */
+.tooltip6 {
   display: none; /* Oculta por padrão */
   position: absolute; /* Para que o tooltip flutue em relação ao botão */
   background-color: #333; /* Cor de fundo do tooltip */
@@ -1042,7 +1037,7 @@ table tr.clickable-row:hover {
   transform: translateX(-50%); /* Ajusta a posição para centralizar */
 }
 
-.tooltip7{
+.tooltip7 {
   display: none;
   position: absolute;
   background-color: #333;
@@ -1057,7 +1052,7 @@ table tr.clickable-row:hover {
   transform: translateX(-50%);
 }
 
-.tooltip8{
+.tooltip8 {
   display: none;
   position: absolute;
   background-color: #333;
@@ -1072,7 +1067,7 @@ table tr.clickable-row:hover {
   transform: translateX(-50%);
 }
 
-.tooltip9{
+.tooltip9 {
   display: none;
   position: absolute;
   background-color: #333;
@@ -1087,40 +1082,29 @@ table tr.clickable-row:hover {
   transform: translateX(-50%);
 }
 
-
-
 .filter-btn:hover + .tooltip {
   display: block;
-  
 }
-
 
 .filter-btn:hover + .tooltip2 {
   display: block;
-  
 }
-
 
 .filter-btn:hover + .tooltip3 {
   display: block;
-  
 }
 
 .filter-btn:hover + .tooltip4 {
   display: block;
-  
 }
 
 .filter-btn:hover + .tooltip5 {
   display: block;
-  
 }
 
 .filter-btn:hover + .tooltip9 {
   display: block;
-  
 }
-
 
 /* Exibe o tooltip quando o botão de exclusão é hover */
 .filter-btn:hover .tooltip6 {
@@ -1129,16 +1113,11 @@ table tr.clickable-row:hover {
 
 .filter-btn:hover + .tooltip7 {
   display: block;
-  
 }
 
 .filter-btn:hover + .tooltip8 {
   display: block;
-  
 }
-
-
-
 
 .tooltip-wrapper {
   position: relative;
@@ -1177,5 +1156,3 @@ table tr.clickable-row:hover {
   visibility: visible;
   opacity: 1;
 }
-
-

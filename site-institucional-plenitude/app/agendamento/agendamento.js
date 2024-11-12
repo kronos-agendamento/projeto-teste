@@ -61,99 +61,112 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-// Função para selecionar um status e atualizar
-function selecionarStatus(id, nome) {
-  fetch(`http://localhost:8080/api/agendamentos/atualizar-status/${selectedAgendamentoId}?statusId=${id}`, {
-      method: "PUT",
-  })
-  .then((response) => {
-      if (!response.ok) throw new Error("Erro ao atualizar o status.");
-      return response.json();
-  })
-  .then((data) => {
-      // Exibe uma notificação de sucesso
-      showNotification(`Status atualizado para "${nome}" com sucesso!`);
-      fetchAgendamentos(); // Atualizar a lista de agendamentos
-      closeCustomStatusModal(); // Fechar o modal
-      
-      // Após atualizar o status, busca o e-mail do cliente
-      buscarEmailCliente(selectedAgendamentoId, nome);  // Passa o ID do agendamento atualizado e o nome do novo status
-  })
-  .catch((error) => {
-      console.error("Erro ao atualizar o status:", error);
-      showNotification("Erro ao atualizar o status!", true);
-  });
-}
+  // Função para selecionar um status e atualizar
+  function selecionarStatus(id, nome) {
+    fetch(
+      `http://localhost:8080/api/agendamentos/atualizar-status/${selectedAgendamentoId}?statusId=${id}`,
+      {
+        method: "PUT",
+      }
+    )
+      .then((response) => {
+        if (!response.ok) throw new Error("Erro ao atualizar o status.");
+        return response.json();
+      })
+      .then((data) => {
+        // Exibe uma notificação de sucesso
+        showNotification(`Status atualizado para "${nome}" com sucesso!`);
+        fetchAgendamentos(); // Atualizar a lista de agendamentos
+        closeCustomStatusModal(); // Fechar o modal
 
-async function buscarEmailCliente(selectedAgendamentoId, nome) {
-  try {
-      const response = await fetch(`http://localhost:8080/api/agendamentos/buscar/${selectedAgendamentoId}`);
+        // Após atualizar o status, busca o e-mail do cliente
+        buscarEmailCliente(selectedAgendamentoId, nome); // Passa o ID do agendamento atualizado e o nome do novo status
+      })
+      .catch((error) => {
+        console.error("Erro ao atualizar o status:", error);
+        showNotification("Erro ao atualizar o status!", true);
+      });
+  }
+
+  async function buscarEmailCliente(selectedAgendamentoId, nome) {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/agendamentos/buscar/${selectedAgendamentoId}`
+      );
       if (!response.ok) {
-          throw new Error(`Erro ao buscar agendamento com ID: ${selectedAgendamentoId}`);
+        throw new Error(
+          `Erro ao buscar agendamento com ID: ${selectedAgendamentoId}`
+        );
       }
       const data = await response.json();
 
       // Adiciona um log para verificar os dados da resposta
-      console.log('Resposta da API:', data);
+      console.log("Resposta da API:", data);
 
       // Aqui você ajusta conforme a resposta que você verá no console
-      const clienteEmail = data.email 
-      const nomeCliente = data.usuario 
+      const clienteEmail = data.email;
+      const nomeCliente = data.usuario;
       const dataHoraAgendamento = new Date(data.dataHorario); // Supondo que você tem `dataHorario`
-const dataFormatada = dataHoraAgendamento.toLocaleDateString('pt-BR');
-const horaFormatada = dataHoraAgendamento.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-const dataAgend = `${dataFormatada} às ${horaFormatada}`;
+      const dataFormatada = dataHoraAgendamento.toLocaleDateString("pt-BR");
+      const horaFormatada = dataHoraAgendamento.toLocaleTimeString("pt-BR", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      const dataAgend = `${dataFormatada} às ${horaFormatada}`;
 
-
-      const especificacao = data.especificacao
-
+      const especificacao = data.especificacao;
 
       // Verificar se o e-mail está disponível
       if (!clienteEmail) {
-          console.error("E-mail do cliente não encontrado.");
-          return;
+        console.error("E-mail do cliente não encontrado.");
+        return;
       }
 
       // Enviar e-mail ao cliente sobre a atualização de status
       enviarEmail(clienteEmail, nomeCliente, nome, dataAgend, especificacao);
-
-  } catch (error) {
-      console.error('Erro ao buscar o e-mail do cliente:', error);
+    } catch (error) {
+      console.error("Erro ao buscar o e-mail do cliente:", error);
+    }
   }
-}
 
-
-
-// Função para enviar o e-mail após a atualização do status
-async function enviarEmail(clienteEmail, nomeCliente, nome, dataAgend, especificacao) {
-  try {
-      const response = await fetch('http://127.0.0.1:5001/enviar-email-status', { // Rota do servidor Flask para enviar e-mail
-          method: 'POST',
+  // Função para enviar o e-mail após a atualização do status
+  async function enviarEmail(
+    clienteEmail,
+    nomeCliente,
+    nome,
+    dataAgend,
+    especificacao
+  ) {
+    try {
+      const response = await fetch(
+        "http://127.0.0.1:5001/enviar-email-status",
+        {
+          // Rota do servidor Flask para enviar e-mail
+          method: "POST",
           headers: {
-              'Content-Type': 'application/json'
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
-              email: clienteEmail,      // E-mail do destinatário
-              nome: nomeCliente,        // Nome do cliente
-              mensagem: `Olá ${nomeCliente}, o status do seu agendamento do dia ${dataAgend} para o procedimento de ${especificacao} foi alterado para "${nome}".` // Mensagem personalizada
-          })
-      });
+            email: clienteEmail, // E-mail do destinatário
+            nome: nomeCliente, // Nome do cliente
+            mensagem: `Olá ${nomeCliente}, o status do seu agendamento do dia ${dataAgend} para o procedimento de ${especificacao} foi alterado para "${nome}".`, // Mensagem personalizada
+          }),
+        }
+      );
 
       const data = await response.json();
       if (response.ok) {
-          console.log(`Email enviado com sucesso para ${clienteEmail}`);
-          showNotification("E-mail enviado com sucesso!");
+        console.log(`Email enviado com sucesso para ${clienteEmail}`);
+        showNotification("E-mail enviado com sucesso!");
       } else {
-          console.error('Erro ao enviar o e-mail:', data.error);
-          showNotification('Erro ao enviar o e-mail.', true);
+        console.error("Erro ao enviar o e-mail:", data.error);
+        showNotification("Erro ao enviar o e-mail.", true);
       }
-  } catch (error) {
-      console.error('Erro ao enviar o e-mail:', error);
-      showNotification('Erro ao enviar o e-mail.', true);
+    } catch (error) {
+      console.error("Erro ao enviar o e-mail:", error);
+      showNotification("Erro ao enviar o e-mail.", true);
+    }
   }
-}
-
-
 
   // Função para fechar o modal de seleção de status
   function closeCustomStatusModal() {
@@ -1084,8 +1097,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("userInsta").textContent = instagram;
   }
 
-new window.VLibras.Widget('https://vlibras.gov.br/app');
-  
+  new window.VLibras.Widget("https://vlibras.gov.br/app");
 });
 
 async function carregarImagem2() {
@@ -1093,30 +1105,33 @@ async function carregarImagem2() {
   const perfilImage = document.getElementById("perfilImage");
 
   if (!cpf) {
-      console.log("CPF não encontrado.");
-      return;
+    console.log("CPF não encontrado.");
+    return;
   }
 
   try {
-      const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario/${cpf}`, {
-          method: "GET",
-      });
-
-      if (response.ok) {
-          const blob = await response.blob(); // Recebe a imagem como Blob
-          const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
-
-          // Define a URL da imagem carregada como src do img
-          perfilImage.src = imageUrl;
-          perfilImage.alt = "Foto do usuário";
-          perfilImage.style.width = "20vh";
-          perfilImage.style.height = "20vh";
-          perfilImage.style.borderRadius = "300px";
-      } else {
-          console.log("Imagem não encontrada para o CPF informado.");
+    const response = await fetch(
+      `http://localhost:8080/usuarios/busca-imagem-usuario/${cpf}`,
+      {
+        method: "GET",
       }
+    );
+
+    if (response.ok) {
+      const blob = await response.blob(); // Recebe a imagem como Blob
+      const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
+
+      // Define a URL da imagem carregada como src do img
+      perfilImage.src = imageUrl;
+      perfilImage.alt = "Foto do usuário";
+      perfilImage.style.width = "20vh";
+      perfilImage.style.height = "20vh";
+      perfilImage.style.borderRadius = "300px";
+    } else {
+      console.log("Imagem não encontrada para o CPF informado.");
+    }
   } catch (error) {
-      console.error("Erro ao buscar a imagem:", error);
+    console.error("Erro ao buscar a imagem:", error);
   }
 }
 

@@ -223,14 +223,24 @@
               id="procedimento-dropdown"
               name="procedimento-dropdown"
             ></select>
-            <div class="form-group">
-              <label for="especificacao">Especificação:</label>
-              <input
-                type="text"
-                id="especificacao"
-                name="especificacao"
-                placeholder="Ex: Francesinha, Glitter"
-              />
+            <div class="form-group" style="margin-top: 20px;">
+              <label for="homecare">Especificação:</label>
+              <div class="form-group-home">
+                <input
+                  type="text"
+                  id="especificacao"
+                  name="especificacao"
+                  placeholder="Ex: Francesinha, Glitter"
+                  style="margin-right: 10px; width: 85%; height: 40px;"
+                />
+                <div class="switch-container" style="margin-top: -20px;">
+                  <span class="switch-label">Aceita Homecare?</span>
+                  <label class="switch">
+                    <input type="checkbox" id="homecare" name="homecare" />
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
           <div class="form-flex">
@@ -325,10 +335,6 @@
                   placeholder="Ex: R$ 60,00"
                 />
               </div>
-            </div>
-            <div class="form-group">
-              <label for="homecare">Especificação Homecare:</label>
-              <input type="checkbox" id="homecare" name="homecare" />
             </div>
           </div>
           <div class="button-container">

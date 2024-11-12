@@ -81,29 +81,24 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("save-especificacao-button")
     .addEventListener("click", function () {
       const especificacao = document.getElementById("especificacao").value;
+      const homecare = document.getElementById("homecare").checked;
 
-      let duracaoColocacaoHoras = document.getElementById(
-        "duracao-colocacao-horas"
-      ).value;
-      let duracaoColocacaoMinutos = document.getElementById(
-        "duracao-colocacao-minutos"
-      ).value;
+      let duracaoColocacaoHoras =
+        document.getElementById("duracao-colocacao-horas").value || "00";
+      let duracaoColocacaoMinutos =
+        document.getElementById("duracao-colocacao-minutos").value || "00";
 
-      let duracaoManutencaoHoras = document.getElementById(
-        "duracao-manutencao-horas"
-      ).value;
-      let duracaoManutencaoMinutos = document.getElementById(
-        "duracao-manutencao-minutos"
-      ).value;
+      let duracaoManutencaoHoras =
+        document.getElementById("duracao-manutencao-horas").value || "00";
+      let duracaoManutencaoMinutos =
+        document.getElementById("duracao-manutencao-minutos").value || "00";
 
-      let duracaoRetiradaHoras = document.getElementById(
-        "duracao-retirada-horas"
-      ).value;
-      let duracaoRetiradaMinutos = document.getElementById(
-        "duracao-retirada-minutos"
-      ).value;
+      let duracaoRetiradaHoras =
+        document.getElementById("duracao-retirada-horas").value || "00";
+      let duracaoRetiradaMinutos =
+        document.getElementById("duracao-retirada-minutos").value || "00";
 
-      // Padronizar horas e minutos para dois dígitos
+      // Padroniza os campos para formato HH:MM
       duracaoColocacaoHoras = duracaoColocacaoHoras.padStart(2, "0");
       duracaoColocacaoMinutos = duracaoColocacaoMinutos.padStart(2, "0");
 
@@ -115,22 +110,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const especificacaoData = {
         especificacao: especificacao,
-        precoColocacao: parseFloat(
-          document.getElementById("valor-colocacao").value
-        ),
-        precoManutencao: parseFloat(
-          document.getElementById("valor-manutencao").value
-        ),
-        precoRetirada: parseFloat(
-          document.getElementById("valor-retirada").value
-        ),
-        procedimento: document.getElementById("procedimento-dropdown").value,
+        precoColocacao:
+          parseFloat(document.getElementById("valor-colocacao").value) || 0,
+        precoManutencao:
+          parseFloat(document.getElementById("valor-manutencao").value) || 0,
+        precoRetirada:
+          parseFloat(document.getElementById("valor-retirada").value) || 0,
         tempoColocacao: `${duracaoColocacaoHoras}:${duracaoColocacaoMinutos}`,
         tempoManutencao: `${duracaoManutencaoHoras}:${duracaoManutencaoMinutos}`,
         tempoRetirada: `${duracaoRetiradaHoras}:${duracaoRetiradaMinutos}`,
+        homecare: homecare,
+        procedimento: parseInt(
+          document.getElementById("procedimento-dropdown").value,
+          10
+        ),
       };
 
-      return fetch("http://localhost:8080/api/especificacoes", {
+      fetch("http://localhost:8080/api/especificacoes", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -144,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function () {
           return response.json();
         })
         .then((especificacaoResponse) => {
-          showNotification("Especificação salva com sucesso!", false, 5000); // Notificação de sucesso com duração maior
+          showNotification("Especificação salva com sucesso!", false, 5000);
         })
         .catch((error) => {
           console.error("Erro ao salvar especificação:", error);
@@ -186,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
       fileNameSpan.textContent = "Nenhum arquivo escolhido";
     }
   });
-new window.VLibras.Widget('https://vlibras.gov.br/app');
+  new window.VLibras.Widget("https://vlibras.gov.br/app");
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -199,36 +195,38 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-
 async function carregarImagem2() {
   const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução
   const perfilImage = document.getElementById("perfilImage");
 
   if (!cpf) {
-      console.log("CPF não encontrado.");
-      return;
+    console.log("CPF não encontrado.");
+    return;
   }
 
   try {
-      const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario/${cpf}`, {
-          method: "GET",
-      });
-
-      if (response.ok) {
-          const blob = await response.blob(); // Recebe a imagem como Blob
-          const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
-
-          // Define a URL da imagem carregada como src do img
-          perfilImage.src = imageUrl;
-          perfilImage.alt = "Foto do usuário";
-          perfilImage.style.width = "20vh";
-          perfilImage.style.height = "20vh";
-          perfilImage.style.borderRadius = "300px";
-      } else {
-          console.log("Imagem não encontrada para o CPF informado.");
+    const response = await fetch(
+      `http://localhost:8080/usuarios/busca-imagem-usuario/${cpf}`,
+      {
+        method: "GET",
       }
+    );
+
+    if (response.ok) {
+      const blob = await response.blob(); // Recebe a imagem como Blob
+      const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
+
+      // Define a URL da imagem carregada como src do img
+      perfilImage.src = imageUrl;
+      perfilImage.alt = "Foto do usuário";
+      perfilImage.style.width = "20vh";
+      perfilImage.style.height = "20vh";
+      perfilImage.style.borderRadius = "300px";
+    } else {
+      console.log("Imagem não encontrada para o CPF informado.");
+    }
   } catch (error) {
-      console.error("Erro ao buscar a imagem:", error);
+    console.error("Erro ao buscar a imagem:", error);
   }
 }
 

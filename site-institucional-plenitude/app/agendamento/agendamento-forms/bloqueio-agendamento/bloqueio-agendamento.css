@@ -4,8 +4,6 @@
   text-decoration: none;
 }
 
-
-
 .form-section {
   width: 156vh;
   background-color: #fff0f5;
@@ -35,7 +33,6 @@
 }
 
 .form-section h4 {
-
   color: #fff;
   padding: 10px;
   background-color: #e70069;
@@ -177,9 +174,9 @@
 }
 
 .agenda {
-  width: 153vh; margin-left: 2%;
+  width: 153vh;
+  margin-left: 2%;
   border-collapse: collapse;
-
 }
 
 .agenda th {
@@ -190,7 +187,6 @@
   font-weight: normal;
   text-transform: capitalize;
 }
-
 
 .agenda td {
   padding: 20px;
