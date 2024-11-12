@@ -47,9 +47,12 @@ class FeedbackController(private val feedbackService: FeedbackService) {
     }
 
     @GetMapping("/media-notas-single")
-    fun getMediaNotas(): ResponseEntity<Double> {
-        val resultado = feedbackService.calcularMediaNotas()
-        return ResponseEntity.ok(resultado)
+    fun buscarMediaNotasSingle(
+        @RequestParam(required = false) startDate: String?,
+        @RequestParam(required = false) endDate: String?
+    ): ResponseEntity<Double> {
+        val mediaNotas = feedbackService.buscarMediaNotasSingle(startDate, endDate)
+        return ResponseEntity.ok(mediaNotas)
     }
 
     @Operation(summary = "Atualizar feedback")

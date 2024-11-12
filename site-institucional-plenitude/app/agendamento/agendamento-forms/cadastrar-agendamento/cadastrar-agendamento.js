@@ -642,10 +642,8 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    try {
-      const response = await fetch(
-        `http://localhost:8080/usuarios/busca-imagem-usuario/${cpf}`,
-        {
+  try {
+      const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario-cpf/${cpf}`, {
           method: "GET",
         }
       );

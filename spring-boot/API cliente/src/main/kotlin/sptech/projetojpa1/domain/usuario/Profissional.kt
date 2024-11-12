@@ -21,6 +21,7 @@ class Profissional(
     genero: String? = null,
     indicacao: String? = null,
     foto: ByteArray? = null,
+    avaliacao: Int? = null,  // <-- Adicione aqui para alinhar ao parâmetro esperado
     status: Boolean? = true,
     nivelAcesso: NivelAcesso? = null,
     endereco: Endereco? = null,
@@ -45,6 +46,7 @@ class Profissional(
     genero,
     indicacao,
     foto,
+    avaliacao, // <-- Passa o parâmetro avaliacao explicitamente para corresponder ao tipo
     status,
     nivelAcesso,
     endereco,

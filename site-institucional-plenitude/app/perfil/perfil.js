@@ -969,9 +969,12 @@ async function carregarImagem() {
   }
 
   try {
-      const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario/${cpf}`, {
-          method: "GET",
-      });
+    const response = await fetch(
+      `http://localhost:8080/usuarios/busca-imagem-usuario-cpf/${cpf}`,
+      {
+        method: "GET",
+      }
+    );
 
       if (response.ok) {
           const blob = await response.blob(); // Recebe a imagem como Blob
@@ -1005,9 +1008,12 @@ async function carregarImagem2() {
   }
 
   try {
-      const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario/${cpf}`, {
-          method: "GET",
-      });
+    const response = await fetch(
+      `http://localhost:8080/usuarios/busca-imagem-usuario-cpf/${cpf}`,
+      {
+        method: "GET",
+      }
+    );
 
       if (response.ok) {
           const blob = await response.blob(); // Recebe a imagem como Blob
@@ -1029,3 +1035,102 @@ async function carregarImagem2() {
 
 // Carrega a imagem automaticamente quando a página termina de carregar
 window.onload = carregarImagem2;
+
+// Selecionar elementos de navegação
+const prevButton = document.querySelector(".prev");
+const nextButton = document.querySelector(".next");
+const funcionarioFoto = document.querySelector(".foto-funcionario");
+const funcionarioNome = document.querySelector(".funcionario-info h4");
+const funcionarioCargo = document.querySelector(".funcionario-info p");
+
+// URL padrão para imagem de perfil genérica
+const fotoGenerica = "icon.png";
+
+// Variáveis de controle
+let funcionarios = [];
+let funcionarioIndex = 0;
+let autoSlideInterval;
+
+// Função para carregar os funcionários com base no ID da empresa
+async function carregarFuncionarios() {
+  const empresaId = localStorage.getItem("empresa"); // Obtém o ID da empresa do localStorage
+  if (!empresaId) {
+    console.warn("ID da empresa não encontrado no localStorage.");
+    return;
+  }
+
+  try {
+    // Requisição para obter funcionários da empresa (nome e cargo)
+    const response = await fetch(`http://localhost:8080/usuarios/empresa/${empresaId}`);
+    if (response.ok) {
+      funcionarios = await response.json();
+
+      // Para cada funcionário, buscar a foto separadamente
+      for (let i = 0; i < funcionarios.length; i++) {
+        const nome = encodeURIComponent(funcionarios[i].nome); // Encode nome para URL
+        try {
+          const fotoResponse = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario-nome/${nome}`);
+          if (fotoResponse.ok) {
+            const blob = await fotoResponse.blob();
+            funcionarios[i].foto = URL.createObjectURL(blob); // Gera URL local da imagem
+          } else {
+            funcionarios[i].foto = fotoGenerica; // Imagem genérica em caso de erro
+          }
+        } catch (fotoError) {
+          console.error("Erro ao buscar foto:", fotoError);
+          funcionarios[i].foto = fotoGenerica;
+        }
+      }
+
+      mostrarFuncionario(funcionarioIndex); // Mostrar o primeiro funcionário após carregar
+      iniciarAutoSlide(); // Iniciar troca automática após carregar
+    } else {
+      console.error(`Erro ao buscar funcionários: ${response.status}`);
+    }
+  } catch (error) {
+    console.error("Erro ao buscar dados dos funcionários:", error);
+  }
+}
+
+
+function mostrarFuncionario(index) {
+  const funcionario = funcionarios[index];
+  const nivelAcessoText = funcionario.nivelAcesso === 1 ? "Administrador" : "Funcionário";
+
+  // Atualiza conteúdo do carrossel
+  funcionarioFoto.src = funcionario.foto || fotoGenerica;
+  funcionarioNome.textContent = funcionario.nome;
+  funcionarioCargo.textContent = `Cargo: ${nivelAcessoText}`;
+
+  // Adiciona o evento de clique na área "clicavel"
+  document.querySelector(".clicavel").onclick = () => {
+    window.location.href = `perfilForms/editar-funcionario/editar-funcionario.html?codigo=${funcionario.codigo}&endereco=${funcionario.endereco}&nome=${funcionario.nome}`;
+  };
+}
+
+// Eventos de navegação do carrossel
+prevButton.addEventListener("click", () => {
+  clearInterval(autoSlideInterval); // Parar troca automática ao clicar
+  funcionarioIndex =
+    (funcionarioIndex - 1 + funcionarios.length) % funcionarios.length;
+  mostrarFuncionario(funcionarioIndex);
+  iniciarAutoSlide(); // Reiniciar troca automática
+});
+
+nextButton.addEventListener("click", () => {
+  clearInterval(autoSlideInterval); // Parar troca automática ao clicar
+  funcionarioIndex = (funcionarioIndex + 1) % funcionarios.length;
+  mostrarFuncionario(funcionarioIndex);
+  iniciarAutoSlide(); // Reiniciar troca automática
+});
+
+// Função para iniciar a troca automática
+function iniciarAutoSlide() {
+  autoSlideInterval = setInterval(() => {
+    funcionarioIndex = (funcionarioIndex + 1) % funcionarios.length;
+    mostrarFuncionario(funcionarioIndex);
+  }, 5000); // Troca a cada 5 segundos
+}
+
+// Chama a função para carregar os funcionários ao carregar a página
+document.addEventListener("DOMContentLoaded", carregarFuncionarios);

@@ -275,12 +275,9 @@ async function carregarImagem2() {
   }
 
   try {
-    const response = await fetch(
-      `http://localhost:8080/usuarios/busca-imagem-usuario/${cpf}`,
-      {
-        method: "GET",
-      }
-    );
+      const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario-cpf/${cpf}`, {
+          method: "GET",
+      });
 
     if (response.ok) {
       const blob = await response.blob(); // Recebe a imagem como Blob

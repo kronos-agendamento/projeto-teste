@@ -141,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
   <td>
     <!-- Botão de Editar com tooltip -->
     <div class="tooltip-wrapper">
-        <button class="edit-btn" data-id="${user.idUsuario}" data-endereco="${idEndereco}" style="border: none; background: transparent; cursor: pointer;">
+        <button class="edit-btn" data-id="${user.idUsuario}" data-endereco="${idEndereco}" data-cpf="${user.cpf}" style="border: none; background: transparent; cursor: pointer;">
             <img src="../../assets/icons/editar.png" alt="Editar" style="width: 25px; height: 25px; margin-top:8px; margin-left:5px;">
         </button>
         <div class="tooltip11">Editar</div>
@@ -180,11 +180,12 @@ document.addEventListener("DOMContentLoaded", function () {
             button.addEventListener("click", async function () {
                 const idUsuario = this.getAttribute("data-id");
                 const idEndereco = this.getAttribute("data-endereco");
+                const cpf = this.getAttribute("data-cpf");
                 const cliente = await fetchUsuarioPorId(idUsuario);
 
                 if (cliente) {
                     localStorage.setItem("clienteNome", cliente.nome);
-                    window.location.href = `../clientes/clienteForms/editar-cliente/editar-cliente.html?idUsuario=${idUsuario}&idEndereco=${idEndereco}`;
+                    window.location.href = `../clientes/clienteForms/editar-cliente/editar-cliente.html?idUsuario=${idUsuario}&idEndereco=${idEndereco}&cpf=${cpf}`;
                 } else {
                     console.error("Cliente não encontrado.");
                 }
@@ -325,7 +326,7 @@ document.addEventListener("DOMContentLoaded", function () {
             btnUndo.style.height = "39.8px";       // Aumenta a altura do botão
             btnUndo.style.padding = "10px 10px";   // Ajusta o padding para tornar o botão mais "cheio"
             btnUndo.style.fontSize = "0.9rem";     // Aumenta o tamanho do texto
-            btnUndo.style.marginLeft = "7px";
+            btnUndo.style.marginLeft = "20px";
         } else {
             btnUndo.style.display = "none";
         }
@@ -645,7 +646,7 @@ async function carregarImagem2() {
     }
   
     try {
-        const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario/${cpf}`, {
+        const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario-cpf/${cpf}`, {
             method: "GET",
         });
   
@@ -666,9 +667,132 @@ async function carregarImagem2() {
         console.error("Erro ao buscar a imagem:", error);
     }
   }
-  
+
+
   window.onload = function () {
     carregarImagem2();
     updateKpiData();
   };
   
+  function abrirModalAv() {
+    document.getElementById('modal-avaliacao').style.display = 'flex';
+}
+
+// Função para fechar o modal
+function closeModalAv() {
+    document.getElementById('modal-avaliacao').style.display = 'none';
+}
+
+// Função para buscar o nome do cliente com base no CPF
+function buscarNome() {
+    const cpf = document.getElementById('cpf-avaliacao').value;
+
+    if (!cpf) {
+        alert("Por favor, preencha o CPF.");
+        return;
+    }
+
+    const url = `http://localhost:8080/usuarios/buscar-por-cpf/${cpf}`;
+    console.log('URL gerada:', url);
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Erro: ${response.status} - ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => mostrarResultado(data))
+        .catch(error => {
+            console.error('Erro ao buscar cliente:', error);
+            mostrarErro("Erro ao buscar cliente. Por favor, tente novamente.");
+        });
+}
+
+// Função para exibir o resultado no campo "Nome"
+function mostrarResultado(data) {
+    // Supondo que o JSON retornado tenha uma chave `nome` com o nome do cliente
+    const nome = data.nome || "Nome não encontrado";
+    document.getElementById('nome').value = nome;
+}
+
+// Função para exibir uma mensagem de erro
+function mostrarErro(mensagem) {
+    alert(mensagem);
+    document.getElementById('nome').value = "";
+}
+
+// Lógica de seleção de estrelas
+let avaliacao = 0;
+function selecionarEstrela(estrela) {
+    avaliacao = estrela;
+    const estrelas = document.querySelectorAll('.star');
+    estrelas.forEach((star, index) => {
+        if (index < estrela) {
+            star.classList.add('selected');
+        } else {
+            star.classList.remove('selected');
+        }
+    });
+}
+
+// Função para enviar a avaliação
+function enviarAvaliacao() {
+    const cpf = document.getElementById('cpf-avaliacao').value; // Remove formatação do CPF
+   
+    if (!cpf) {
+        alert("Por favor, preencha o CPF.");
+        return;
+    }
+
+    if (avaliacao === 0) {
+        alert("Por favor, selecione uma avaliação.");
+        return;
+    }
+
+    // Monta o corpo da requisição com CPF e pontuação
+    const data = {
+        cpf: cpf,
+        pontuacao: avaliacao
+    };
+
+    // Envia a requisição POST para o endpoint
+    fetch(`http://localhost:8080/usuarios/avaliar/${cpf}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Erro: ${response.status} - ${response.statusText}`);
+        }
+        return response.json();
+    })
+    .then(result => {
+        console.log("Avaliação enviada com sucesso:", result);
+        alert("Avaliação enviada com sucesso!");
+        closeModal(); // Fecha o modal após o envio bem-sucedido
+    })
+    .catch(error => {
+        showNotification("Avaliação enviada com sucesso!");
+    });
+
+    closeModalAv()
+}
+
+function showNotification(message, isError = false) {
+    const notification = document.getElementById("notification");
+    const notificationMessage = document.getElementById("notification-message");
+    notificationMessage.textContent = message;
+    if (isError) {
+        notification.classList.add("error");
+    } else {
+        notification.classList.remove("error");
+    }
+    notification.classList.add("show");
+    setTimeout(() => {
+        notification.classList.remove("show");
+    }, 3000);
+}

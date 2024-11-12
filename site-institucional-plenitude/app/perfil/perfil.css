@@ -128,7 +128,7 @@ navbar  lateral
 --------------------------------------------------------------*/
 
 .navigation {
-  height: 81rem;
+  height: 83rem;
   background: #d2135d;
   width: 263px;
   margin-left: 32px;
@@ -893,8 +893,136 @@ td {
   display: none; /* Inicialmente escondido */
 }
 
+.empresa-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
 
+.adicionar-funcionario {
+  width: 50%;
+  height: auto;
+  padding: 20px;
+  margin-left: 6%;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
+/* Carrossel de Funcionários */
+.funcionario-carrossel {
+  width: 100%;
+  height: 60%; /* Ocupa maior parte da coluna */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
 
+.funcionario-info {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
 
+.foto-funcionario {
+  width: 150px;
+  border-radius: 300px;
+  margin-bottom: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  height: 150px;
+  margin-top: 10%;
+}
 
+.carrossel-btn {
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #d2135d;
+}
+
+h4 {
+  font-size: 1.1em;
+  margin: 5px 0 0 0px;
+  color: #333;
+}
+
+p {
+  font-size: 0.9em;
+  color: #ffffff;
+  margin: 5px 0 0 0px;
+}
+
+/* Seção de Adicionar Novo Funcionário */
+.adicionar-novo-funcionario {
+  width: 100%;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.adicionar-novo-funcionario h3 {
+  font-size: 1em;
+  color: #d2135d;
+  margin-bottom: 10px;
+}
+
+.adicionar-button {
+  background-color: #e70069;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.adicionar-button:hover {
+  background-color: #d6005c;
+}
+
+.form-add {
+  display: flex;
+}
+
+.usuario-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.usuario-foto {
+  margin-right: 15px;
+}
+
+.usuario-info p {
+  margin: 0;
+}
+
+.divider {
+  border: none;
+  height: 2px; /* Ajusta a espessura do divisor */
+  background-color: #c5c5c5; /* Cor de maior contraste */
+  margin-top: -50px; /* Espaçamento acima e abaixo do divisor */
+  z-index: 1; /* Aumenta o z-index para garantir que apareça sobreposto */
+  width: 100%; /* Certifica-se de que ocupa toda a largura do contêiner */
+  margin-top: 3%;
+}
+
+.clicavel {
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 10px;
+  transition: box-shadow 0.3s ease;
+}
+
+.clicavel:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border: 1px solid #d2135d;
+}

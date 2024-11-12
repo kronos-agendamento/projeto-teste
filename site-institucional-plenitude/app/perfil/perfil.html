@@ -227,169 +227,248 @@
         </form>
       </section>
 
-      <section class="form-section" id="personalInfoForm">
+        <div class="empresa-container">
+          <section class="form-section" id="empresaInfoForm">
+            <h2>
+              <div class="form-group-row">
+                &nbsp;&nbsp;&nbsp; Dados Empresariais
+                <button
+                  class="edit-icon-btn"
+                  id="editIconEmpresa"
+                  aria-label="Editar Dados Empresariais"
+                >
+                  <img
+                    src="../../assets/icons/editar.branco.png"
+                    alt="Editar"
+                    style="width: 20px; height: 20px; border-radius: 0px"
+                  />
+                </button>
+              </div>
+            </h2>
+            <div class="form-add">
+              <form id="empresaForm" class="form">
+                <div class="form-group-row">
+                  <div class="form-group">
+                    <label for="nome">Nome da empresa:</label>
+                    <div style="display: flex; align-items: center">
+                      <input
+                        type="text"
+                        id="empresa"
+                        name="empresa"
+                        required
+                        disabled
+                      />
+                      <span class="lock-icon" id="empresa-lock">🔓</span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="cnpj">CNPJ:</label>
+                    <div style="display: flex; align-items: center">
+                      <input
+                        type="text"
+                        id="cnpj"
+                        name="cnpj"
+                        required
+                        disabled
+                      />
+                      <span class="lock-icon" id="cnpj-lock">🔒</span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="telefone">Telefone:</label>
+                    <div style="display: flex; align-items: center">
+                      <input
+                        type="text"
+                        id="telefone-empresa"
+                        name="telefone"
+                        required
+                        disabled
+                      />
+                      <span class="lock-icon" id="telefone-empresa-lock"
+                        >🔓</span
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group-row">
+                  <div class="form-group">
+                    <label for="dias">Dias de funcionamento:</label>
+                    <p>De:</p>
+                    <select name="" id="diaInicio" required>
+                      <option value="Domingo">Domingo</option>
+                      <option value="Segunda">Segunda</option>
+                      <option value="Terça">Terça</option>
+                      <option value="Quarta">Quarta</option>
+                      <option value="Quinta">Quinta</option>
+                      <option value="Sexta">Sexta</option>
+                      <option value="Sábado">Sábado</option>
+                    </select>
+                    <span class="lock-icon" id="diaInicio-lock">🔓</span>
+                  </div>
+                  <div class="form-group">
+                    <label for="diaFim" style="height: 20px"></label>
+                    <p>Até:</p>
+                    <select name="" id="diaFim" required>
+                      <option value="Domingo">Domingo</option>
+                      <option value="Segunda">Segunda</option>
+                      <option value="Terça">Terça</option>
+                      <option value="Quarta">Quarta</option>
+                      <option value="Quinta">Quinta</option>
+                      <option value="Sexta">Sexta</option>
+                      <option value="Sábado">Sábado</option>
+                    </select>
+                    <span class="lock-icon" id="diaFim-lock">🔓</span>
+                  </div>
+                </div>
+                <div class="form-group-row">
+                  <div class="form-group">
+                    <label for="dias">Horários de funcionamento:</label>
+                    <p>Horário Início:</p>
+                    <input
+                      type="time"
+                      id="horaInicio"
+                      name="horaInicio"
+                      required
+                    />
+                    <span class="lock-icon" id="horaInicio-lock">🔓</span>
+                  </div>
+                  <div class="form-group">
+                    <label for="diaFim" style="height: 20px"></label>
+                    <p>Horário Fim:</p>
+                    <input type="time" id="horaFim" name="horaFim" required />
+                    <span class="lock-icon" id="horaFim-lock">🔓</span>
+                  </div>
+                </div>
+                <div class="form-group-row">
+                  <div class="form-group">
+                    <label for="cep">CEP:</label>
+                    <div style="display: flex; align-items: center">
+                      <input
+                        type="text"
+                        id="cep"
+                        name="cep"
+                        required
+                        disabled
+                      />
+                      <span class="lock-icon" id="cep-lock">🔓</span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="logradouro">Logradouro:</label>
+                    <div style="display: flex; align-items: center">
+                      <input
+                        type="text"
+                        id="logradouro"
+                        name="logradouro"
+                        required
+                        disabled
+                      />
+                      <span class="lock-icon" id="logradouro-lock">🔒</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group-row">
+                  <div class="form-group">
+                    <label for="numero">Número:</label>
+                    <div style="display: flex; align-items: center">
+                      <input
+                        type="text"
+                        id="numero"
+                        name="numero"
+                        required
+                        disabled
+                      />
+                      <span class="lock-icon" id="numero-lock">🔓</span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="bairro">Bairro:</label>
+                    <div style="display: flex; align-items: center">
+                      <input
+                        type="text"
+                        id="bairro"
+                        name="bairro"
+                        required
+                        disabled
+                      />
+                      <span class="lock-icon" id="bairro-lock">🔓</span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="cidade">Cidade:</label>
+                    <div style="display: flex; align-items: center">
+                      <input
+                        type="text"
+                        id="cidade-empresa"
+                        name="cidade"
+                        required
+                        disabled
+                      />
+                      <span class="lock-icon" id="cidade-lock">🔓</span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="estado">Estado:</label>
+                    <div style="display: flex; align-items: center">
+                      <input
+                        type="text"
+                        id="estado-empresa"
+                        name="estado"
+                        required
+                        disabled
+                      />
+                      <span class="lock-icon" id="estado-lock">🔓</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group-row">
+                  <div class="form-group">
+                    <label for="complemento">Complemento:</label>
+                    <div style="display: flex; align-items: center">
+                      <input
+                        type="text"
+                        id="complemento"
+                        name="complemento"
+                        required
+                        disabled
+                      />
+                      <span class="lock-icon" id="complemento-lock">🔓</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="button-container">
+                  <button
+                    type="submit"
+                    class="save-button"
+                    id="save-empresa-button"
+                    disabled
+                    style="margin-right: -10px;"
+                  >
+                    Salvar Dados Empresariais
+                  </button>
+                </div>
+              </form>
+              <div class="adicionar-funcionario">
+                <!-- Carrossel de Funcionários -->
+                <div class="funcionario-carrossel">
+                  <button class="carrossel-btn prev">&#10094;</button>
+                  <div class="clicavel">
+                    <div class="funcionario-info">
+                      <!-- Imagem do funcionário -->
+                      <img
+                        class="foto-funcionario"
+                        src="icon.png"
+                        alt="Foto do Funcionário"
+                      />
 
-        <h2>
-          <div class="form-group-row">
-            &nbsp;&nbsp;&nbsp; Dados Empresariais
-            <button class="edit-icon-btn" id="editIconEmpresa" aria-label="Editar Dados Pessoais">
-              <img src="../../assets/icons/editar.branco.png" alt="Editar"
-                style="width: 20px; height: 20px; border-radius: 0px;">
-            </button>
-          </div>
-
-        </h2>
-        <form id="empresaForm" class="form">
-          <div class="form-group-row">
-            <div class="form-group">
-              <label for="nome">Nome da empresa:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="text" id="empresa" name="empresa" required disabled>
-                <span class="lock-icon" id="empresa-lock">🔓</span>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="cnpj">CNPJ:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="text" id="cnpj" name="cnpj" required disabled>
-                <span class="lock-icon" id="cnpj-lock">🔒</span>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="telefone">Telefone:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="text" id="telefone-empresa" name="telefone" required disabled>
-                <span class="lock-icon" id="telefone-empresa-lock">🔓</span>
-              </div>
-            </div>
-          </div>
-          <div class="form-group-row">
-            <div class="form-group">
-              <label for="dias">Dias de funcionamento:</label>
-              <p>De:</p>
-              <select name="" id="diaInicio" required >
-                <option value="Domingo">Domingo</option>
-                <option value="Segunda">Segunda</option>
-                <option value="Terça">Terça</option>
-                <option value="Quarta">Quarta</option>
-                <option value="Quinta">Quinta</option>
-                <option value="Sexta">Sexta</option>
-                <option value="Sábado">Sábado</option>
-              </select>
-              <span class="lock-icon" id="diaInicio-lock">🔓</span>
-            </div>
-            <div class="form-group" >
-              <label for="diaFim" style="height: 20px;"></label>
-              <p>Até:</p>
-              <select name="" id="diaFim" required  >
-                <option value="Domingo">Domingo</option>
-                <option value="Segunda">Segunda</option>
-                <option value="Terça">Terça</option>
-                <option value="Quarta">Quarta</option>
-                <option value="Quinta">Quinta</option>
-                <option value="Sexta">Sexta</option>
-                <option value="Sábado">Sábado</option>
-              </select>
-              <span class="lock-icon" id="diaFim-lock">🔓</span>
-            </div>
-          </div>
-          <div class="form-group-row">
-            <div class="form-group">
-              <label for="dias">Horários de funcionamento:</label>
-              <p>Horário Início:</p>
-              <input type="time" id="horaInicio" name="horaInicio" required >
-              <span class="lock-icon" id="horaInicio-lock">🔓</span>
-            </div>
-            <div class="form-group">
-              <label for="diaFim" style="height: 20px;"></label>
-              <p>Horário Fim:</p>
-              <input type="time" id="horaFim" name="horaFim" required >
-              <span class="lock-icon" id="horaFim-lock">🔓</span>
-            </div>
-          </div>
-          <div class="form-group-row">
-            <div class="form-group">
-              <label for="cep">CEP:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="text" id="cep" name="cep" required disabled >
-                <span class="lock-icon" id="cep-lock">🔓</span>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="logradouro">Logradouro:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="text" id="logradouro" name="logradouro" required disabled>
-                <span class="lock-icon" id="logradouro-lock">🔒</span>
-              </div>
-            </div>
-          </div>
-          <div class="form-group-row">
-            <div class="form-group">
-              <label for="numero">Número:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="text" id="numero" name="numero" required disabled>
-                <span class="lock-icon" id="numero-lock">🔓</span>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="bairro">Bairro:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="text" id="bairro" name="bairro" required disabled>
-                <span class="lock-icon" id="bairro-lock">🔓</span>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="cidade">Cidade:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="text" id="cidade-empresa" name="cidade" required disabled>
-                <span class="lock-icon" id="cidade-lock">🔓</span>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="estado">Estado:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="text" id="estado-empresa" name="estado" required disabled>
-                <span class="lock-icon" id="estado-lock">🔓</span>
-              </div>
-            </div>
-          </div>
-          <div class="form-group-row">
-            <div class="form-group">
-              <label for="complemento">Complemento:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="text" id="complemento" name="complemento" required disabled>
-                <span class="lock-icon" id="complemento-lock">🔓</span>
-              </div>
-            </div>
-          </div>
-          <div class="button-container">
-            <button type="submit" class="save-button" id="save-empresa-button" disabled>Salvar Dados Empresariais</button>
-          </div>
-        </form>
-      </section>
-
-      <!-- <div class="right-content">
-        <div class="table-header">
-          <h1>Bloqueio de agendamentos</h1>
-        </div>
-        <div class="content-form">
-          <div class="form-group form-mr form-input">
-
-            <div class="label">
-              <p>Dia Escolhido:</p>
-              <input type="date" id="diaEscolhido" required>
-            </div>
-          </div>
-        </div>
-        <div class="content-form" id="horarioBlock">
-          <div class="form-group form-mr form-input">
-            <div class="label">
-              <p>Horário de Bloqueio:</p>
-
-              <div class="content-box2">
-                <div class="content-box">
-                  <p>De:</p>
-                  <input type="time" id="horaInicioBlock" name="horaInicioBlock" required><br><br>
+                      <!-- Informações do funcionário -->
+                      <div class="funcionario-info">
+                        <h4 class="funcionario-nome">Nome do Funcionário</h4>
+                        <p class="funcionario-cargo" style="color: rgb(0, 0, 0);">Cargo: Funcionário</p>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="carrossel-btn next">&#10095;</button>
                 </div>
 
                 <div class="content-box">

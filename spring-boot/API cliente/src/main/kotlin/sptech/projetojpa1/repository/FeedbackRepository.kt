@@ -2,6 +2,7 @@ package sptech.projetojpa1.repository
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
 import sptech.projetojpa1.domain.Feedback
 import sptech.projetojpa1.domain.usuario.Cliente
@@ -31,13 +32,22 @@ interface FeedbackRepository : JpaRepository<Feedback, Int> {
     )
     fun buscarMediaNotas(): List<Double>
 
-    @Query(
-        nativeQuery = true, value = """
+
+
+        @Query(
+            nativeQuery = true, value = """
         SELECT SUM(nota) / COUNT(*) AS media_notas
         FROM feedback
-    """
-    )
-    fun buscarMediaNotasSingle(): Double
+        WHERE data_horario BETWEEN COALESCE(:startDate, DATE_SUB(CURDATE(), INTERVAL 1 MONTH))
+                              AND COALESCE(:endDate, CURDATE())
+        """
+        )
+        fun buscarMediaNotasSingle(
+            @Param("startDate") startDate: String?,
+            @Param("endDate") endDate: String?
+        ): Double
+
+
 
     fun findAllByClienteAvaliado(cliente: Cliente): List<Feedback>
 

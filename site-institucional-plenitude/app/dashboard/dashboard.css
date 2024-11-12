@@ -588,13 +588,38 @@ header p {
 
 .card-content p {
     margin: 5px 0;
-    font-size: 18px;
+    font-size: 13px;
 
 }
 
 .card-content h2 {
-    margin: 5px 0;
-    font-size: 30fpx;
+    font-size: 15px;
+}
+
+.date-filter {
+    position: absolute;
+    bottom: 10px; /* Ajusta para posicionar no rodapé do card */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 5px;
+}
+
+.date-filter label, .date-filter input {
+    font-size: 0.1px;
+    margin: 0;
+}
+
+.date-filters {
+    display: flex;
+    flex-direction: column; /* Ajuste se necessário */
+    gap: 5px; /* Espaçamento entre os campos */
+    margin-top: 10px;
+    width: 100%; /* Ou defina um tamanho fixo */
+}
+
+button {
+    align-self: center; /* Centraliza o botão no card */
 }
 
 .arrow-up {
@@ -626,13 +651,61 @@ header p {
     grid-gap: 20px;
 }
 
+.kpis_com_filtro label {
+    font-size: 10px; /* Ajusta o tamanho da fonte dos labels para consistência */
+    margin-bottom: 2px; /* Pequeno espaçamento entre label e input */
+}
+
+.kpis_com_filtro input[type="date"] {
+    height: 15px;
+    width: 17px; /* Reduz a largura */
+    font-size: 6px; /* Ajusta o tamanho da fonte */
+    padding: 2px; /* Ajusta o preenchimento interno */
+    margin: 2px 0; /* Margem reduzida */
+    border-radius: 4px; /* Mantém bordas arredondadas */
+}
+
+.kpis_com_filtro button {
+    height: 20px;
+    width: 85px; /* Reduz a largura do botão */
+    font-size: 10px; /* Ajusta o tamanho da fonte do botão */
+    padding: 5px; /* Reduz o espaçamento interno */
+    border-radius: 4px; /* Borda arredondada para manter consistência */
+    margin-top: 4px; /* Adiciona um pequeno espaçamento acima do botão */
+}
+
+
+.kpis_com_filtro {
+    display: flex;
+    width: 100%;
+    text-align: center;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+
 .mini-square {
     display: flex;
-    width: 184px;
-    height: 150px;
-    background-color: rgb(255, 255, 255);
+    flex-direction: column; /* Certifica que os elementos dentro do card fiquem empilhados */
+    justify-content: center; /* Espaça os elementos internamente */
+    align-items: center; /* Centraliza os elementos */
+    width: 100%; /* Garante que todos os cards ocupem o mesmo espaço no grid */
+    height: 163px; /* Define uma altura uniforme */
+    background-color: #ffffff;
     border-radius: 10px;
+    padding: 10px; /* Ajusta o preenchimento interno */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
 }
+
+.mini-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Ajuste o número de colunas */
+    gap: 10px; /* Ajuste o espaçamento entre os quadrados */
+    width: 100%; /* Ocupa toda a largura disponível */
+}
+
+
 
 .mini-square-usabilidade {
     display: flex;
@@ -640,14 +713,6 @@ header p {
     height: 167px;
     background-color: rgb(255, 255, 255);
     border-radius: 10px;
-}
-
-.mini-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    gap: 30px;
-    row-gap: 33px;
 }
 
 .mini-grid-usabilidade {

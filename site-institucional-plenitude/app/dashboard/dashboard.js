@@ -1,21 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const baseUrl = 'http://localhost:8080';
 
-    // Função para realizar a requisição e obter os dados
-    function fetchData(endpoint, callback) {
-        fetch(baseUrl + endpoint)
-            .then(response => response.json())
-            .then(data => {
-                if (data !== null && data !== undefined) {
-                    callback(data);
-                } else {
-                    console.error('Dados não disponíveis para endpoint:', endpoint);
-                }
-            })
-            .catch(error => {
-                console.error('Erro ao buscar dados para endpoint:', endpoint, error);
-            });
-    }
+    const baseUrl = 'http://localhost:8080';
 
     function getLastFiveMonths() {
         const result = [];
@@ -37,20 +22,117 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     const lastFiveMonths = getLastFiveMonths();
 
+    // Função para realizar a requisição e obter os dados
+    function fetchData(endpoint, callback) {
+        fetch(baseUrl + endpoint)
+            .then(response => response.json())
+            .then(data => {
+                if (data !== null && data !== undefined) {
+                    callback(data);
+                } else {
+                    console.error('Dados não disponíveis para endpoint:', endpoint);
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao buscar dados para endpoint:', endpoint, error);
+            });
+    }
 
-    // Atualiza os KPIs dos clientes ativos, inativos e fidelizados
-    function updateKPIs() {
-        const endpoints = {
+    function buscarDadosPorGrafico(url, startDateId, endDateId, callback) {
+        const startDateInput = document.getElementById(startDateId);
+        const endDateInput = document.getElementById(endDateId);
+
+        // Verifica se os elementos de data existem
+        if (!startDateInput || !endDateInput) {
+            console.error(`Elementos com IDs ${startDateId} ou ${endDateId} não foram encontrados.`);
+            return;
+        }
+
+        const startDate = startDateInput.value;
+        const endDate = endDateInput.value;
             
 
+            
 
-            // KPI's - Gerencial
+            // Prossiga com a lógica da requisição
+            fetchData2(url, { startDate, endDate }, callback);
+        
+    }
+
+    function buscarDadosPorGrafico2(url, startDateId,  callback) {
+        const startDateInput = document.getElementById(startDateId);
+        console.log(`Oii, sou a data do startDate ${startDateInput}`)
+        // Verifica se os elementos de data existem
+        if (!startDateInput) {
+            
+            console.error(`Elemento com ID ${startDateId}não foi encontrado.`);
+            return;
+        }
+
+        const startDate = startDateInput.value;
+            
+
+            
+
+            // Prossiga com a lógica da requisição
+            fetchData2(url, {startDate}, callback);
+        
+    }
+
+
+
+    // Função genérica para buscar dados com parâmetros dinâmicos
+function fetchData2(url, params = {}, callback) {
+    try {
+        // Verifica se os parâmetros estão corretos
+        if (!url) {
+            throw new Error("A URL é obrigatória.");
+        }
+
+        // Monta a URL com os parâmetros
+        const queryString = new URLSearchParams(params).toString();
+        const fullUrl = `${baseUrl}${url}${queryString ? `?${queryString}` : ''}`;
+
+        console.log(`URL de requisição: ${fullUrl}`); // Log da URL completa
+
+        // Faz a requisição
+        fetch(fullUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Erro na resposta da requisição: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Dados recebidos:", data); // Log dos dados recebidos
+                if (typeof callback === "function") {
+                    callback(data); // Executa a função de callback com os dados
+                } else {
+                    console.warn("Callback fornecido não é uma função.");
+                }
+            })
+            .catch(error => {
+                console.error("Erro ao buscar dados para o gráfico:", error);
+            });
+    } catch (error) {
+        console.error("Erro no fetchData2:", error);
+    }
+}
+
+
+
+
+    // Atualiza os KPIs e os gráficos
+    function updateKPIs() {
+        const endpoints = {
+
+            // KPI's - Gerencial - ok
             clientesAtivos: '/usuarios/clientes-ativos',
             clientesInativos: '/usuarios/clientes-inativos',
             clientesFidelizados: '/usuarios/clientes-fidelizados-ultimos-tres-meses',
             agendamentosRealizados: '/api/agendamentos/agendamentos-realizados',
 
-            // KPI's - Usabilidade
+            // KPI's - Usabilidade - ok
             tempoAgendamento: '/api/agendamentos/tempo-para-agendar',
             retornoLogin: '/login-logoff/retorno-usuarios-login',
 
@@ -58,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function () {
             totalAgendamentosHoje: '/api/agendamentos/total-agendamentos-hoje',
             totalAgendamentosFuturos: '/api/agendamentos/futuros',
             notasFeedbacks: '/api/feedbacks/media-notas-single',
-            tempoMedio: '/api/agendamentos/tempo-para-agendar',
+            tempoMedio: '/api/agendamentos/media-tempo-entre-agendamentos',
 
             // Gráfico 1 - Gerencial
             listarTop3Indicacoes: '/usuarios/buscar-top3-indicacoes',
@@ -87,25 +169,41 @@ document.addEventListener('DOMContentLoaded', function () {
             agendamentosProcedimentosRealizadosTrimestre: '/api/agendamentos/procedimentos-realizados-trimestre',
             agendamentosValorTotalUltimoMes: '/api/agendamentos/valor-total-ultimo-mes',
 
-            // Gráfico 1 - Usabilidade
+            // Gráfico 1 - Usabilidade - ok
             ultimosAgendamentosRealizados5Meses: '/api/agendamentos/agendamentos-realizados-ultimos-cinco-meses'
         };
 
-        // Chamadas para atualizar os KPIs de clientes - Gerencial
-        fetchData(endpoints.clientesAtivos, updateClientesAtivos);
-        fetchData(endpoints.clientesInativos, updateClientesInativos);
-        fetchData(endpoints.clientesFidelizados, updateClientesFidelizados);
-        fetchData(endpoints.agendamentosRealizados, updateAgendamentosRealizados);
+        // Chamada específica para o gráfico de usabilidade com startDate e endDate automáticos
+        const endDateDiaAtual = new Date().toISOString().split("T")[0];
 
-        // Chamadas para atualizar os KPI's de - Usabilidade
-        fetchData(endpoints.tempoAgendamento, updateTempoAgendamento);
-        fetchData(endpoints.retornoLogin, updateRetornoLogin);
+        const startDate1 = new Date();
+        startDate1.setMonth(startDate1.getMonth() - 1);
+
+        const startDate3 = new Date();
+        startDate3.setMonth(startDate3.getMonth() - 3);
+
+        const startDate12 = new Date();
+        startDate12.setMonth(startDate12.getMonth() - 12);
+
+        const startDateString1MesesAtras = startDate1.toISOString().split("T")[0];
+        const startDateString3MesesAtras = startDate3.toISOString().split("T")[0];
+        const startDateString12MesesAtras = startDate12.toISOString().split("T")[0];
+
+        // Chamadas para atualizar os KPIs de clientes - Gerencial
+        fetchData2(endpoints.clientesAtivos, {},updateClientesAtivos); // ok
+        fetchData2(endpoints.clientesInativos, {},updateClientesInativos); // ok
+        fetchData2(endpoints.clientesFidelizados, {},updateClientesFidelizados); // ok
+        fetchData2(endpoints.agendamentosRealizados, {},updateAgendamentosRealizados); // ok
+
+        // Chamadas para atualizar os KPI's de - Usabilidade - ok
+        fetchData2(endpoints.tempoAgendamento, {}, updateTempoAgendamento); // ok
+        fetchData2(endpoints.retornoLogin, { startDate: startDateString12MesesAtras, endDate: endDateDiaAtual }, updateRetornoLogin); // ok
 
         // Chamadas para atualizar os KPI's de - Operacional
-        fetchData(endpoints.totalAgendamentosHoje, updateTotalAgendamentosHoje);
-        fetchData(endpoints.totalAgendamentosFuturos, updateTotalAgendamentosFuturos);
-        fetchData(endpoints.notasFeedbacks, updateNotaSingle);
-        fetchData(endpoints.tempoMedio, updateTempoMedio);
+        fetchData2(endpoints.totalAgendamentosHoje, {},updateTotalAgendamentosHoje);
+        fetchData2(endpoints.totalAgendamentosFuturos, {},updateTotalAgendamentosFuturos);
+        fetchData2(endpoints.notasFeedbacks, {},updateNotaSingle);
+        fetchData2(endpoints.tempoMedio, {},updateTempoMedio);
 
         // Chamadas para atualizar os dados do gráfico 1 - Gerencial
         fetchData(endpoints.listarTop3Indicacoes, updateListarTop3Indicacoes);
@@ -134,14 +232,111 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchData(endpoints.agendamentosProcedimentosRealizadosTrimestre, updateChartProcedimentoRealizadosTrimestreOperacional3);
         fetchData(endpoints.agendamentosValorTotalUltimoMes, updateChartValorTotalUltimoMesOperacional5);
 
-        // Chamada para atualizar os dados do gráfico 1 - Usabilidade
-        fetchData(endpoints.ultimosAgendamentosRealizados5Meses, updateChartUsabilidade1)
-
-
+        // Chamada para atualiazar o gráfico de usabilidade - Usabilidade
+        fetchData2(
+            endpoints.ultimosAgendamentosRealizados5Meses,
+            { startDate: startDateString3MesesAtras, endDate: endDateDiaAtual },
+            updateChartUsabilidade1
+        );
     }
+    function addFilterListener(buttonId, url, startDateId, endDateId, callback) {
+        document.getElementById(buttonId).addEventListener("click", function () {
+            buscarDadosPorGrafico(url, startDateId, endDateId, callback);
+        });
+    }
+    function addFilterListener2(buttonId, url, startDateId, callback) { // esse diferentemente do primeiro addFilterListener não possui o endDateId
+        document.getElementById(buttonId).addEventListener("click", function () {
+            buscarDadosPorGrafico2(url, startDateId, callback);
+        });
+    }
+    // Atualização dos botões de filtro da página de usabilidade
+    addFilterListener(
+        "buscarUsabilidadeGrafico1Button",                                     // ID do botão
+        "/api/agendamentos/agendamentos-realizados-ultimos-cinco-meses", // URL da API
+        "startDateUsabilidade1",                            // ID do campo de data de início
+        "endDateUsabilidade1",                              // ID do campo de data de término
+        updateChartUsabilidade1                  // Callback específico para atualizar o gráfico 1
+    );
+    addFilterListener(
+        "buscarUsabilidadeKPI1Button",                                  // Outro botão
+        "/login-logoff/retorno-usuarios-login",                      // Outra URL da API
+        "startDateUsabilidadeKPI1",                                     // ID do campo de data de início
+        "endDateUsabilidadeKPI1",                                       // ID do campo de data de término
+        updateRetornoLogin                                  // Callback específico do KPI
+    );
+    addFilterListener(
+        "buscarUsabilidadeKPI2Button",
+        "/api/agendamentos/tempo-para-agendar",
+        "startDateUsabilidadeKPI2",
+        "endDateUsabilidadeKPI2",
+        updateTempoAgendamento
+    );
+    // atualização dos botões de filtro da página Gerencial
+    addFilterListener(
+        "buscarGerencialKPI1Button",
+        "/usuarios/clientes-ativos",
+        "startDateGerencialKPI1",
+        "endDateGerencialKPI1",
+        updateClientesAtivos
+    );
+    addFilterListener(
+        "buscarGerencialKPI2Button",
+        "/usuarios/clientes-inativos",
+        "startDateGerencialKPI2",
+        "endDateGerencialKPI2",
+        updateClientesInativos
+    );
+    addFilterListener(
+        "buscarGerencialKPI3Button",
+        "/api/agendamentos/agendamentos-realizados",
+        "startDateGerencialKPI3",
+        "endDateGerencialKPI3",
+        updateAgendamentosRealizados
+    );
+    addFilterListener(
+        "buscarGerencialKPI4Button",
+        "/api/feedbacks/media-notas-single",
+        "startDateGerencialKPI4",
+        "endDateGerencialKPI4",
+        updateClientesFidelizados
+    );
+
+
+    // atualização dos botões de filtro da página Operacional
+    addFilterListener2(
+        "buscarOperacionalKPI1Button",
+        "/api/agendamentos/total-agendamentos-hoje",
+        "startDateOperacionalKPI1",
+        updateTotalAgendamentosHoje
+    );
+    addFilterListener(
+        "buscarOperacionalKPI2Button",
+        "/api/agendamentos/futuros",
+        "startDateOperacionalKPI2",
+        "endDateOperacionalKPI2",
+        updateTotalAgendamentosFuturos
+    );
+    addFilterListener(
+        "buscarOperacionalKPI3Button",
+        "/api/agendamentos/media-tempo-entre-agendamentos",
+        "startDateOperacionalKPI3",
+        "endDateOperacionalKPI3",
+        updateTempoMedio
+    );
+
+    addFilterListener(
+        "buscarOperacionalKPI4Button",
+        "/api/agendamentos/media-tempo-entre-agendamentos",
+        "startDateOperacionalKPI4",
+        "endDateOperacionalKPI4",
+        updateNotaSingle
+    );
+    
+
 
     // Funções que atualizam as KPI's do gerencial
     updateKPIs();
+
     function updateClientesAtivos(data) {
         const clientesAtivosCount = document.getElementById('clientes-ativos-count');
         clientesAtivosCount.textContent = formatarNumero(data);
@@ -174,7 +369,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Funções que atualizam as KPI's de operacional
     function updateTotalAgendamentosHoje(data) {
         const totalAgendamentosHoje = document.getElementById('total-agendamentos-hoje');
-        totalAgendamentosHoje.textContent = data;
+        totalAgendamentosHoje.textContent = formatarNumero(data);
     }
     function updateTotalAgendamentosFuturos(data) {
         const totalAgendamentosFuturos = document.getElementById('total-agendamentos-futuros');
@@ -189,7 +384,10 @@ document.addEventListener('DOMContentLoaded', function () {
         tempoMedioHoje.textContent = data;
     }
 
+
+
     // Constantes dos gráficos
+
     let dataChart2_2 = null
     let dataChart2_1 = null;
     let labelsChart2 = lastFiveMonths;
@@ -365,7 +563,16 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
     function updateChartUsabilidade1(data) {
-        dataChartUsabilidade1 = data
+        labelsChartUsabilidade1 = data.map(item => {
+            const [year, month] = item[0].split("-"); // Divide "YYYY-MM-DD" em [year, month, day]
+            const date = new Date(year, month - 1);   // Cria uma data usando ano e mês (mês é zero-based)
+            return date.toLocaleDateString("pt-BR", { month: "long" }).charAt(0).toUpperCase() +
+                date.toLocaleDateString("pt-BR", { month: "long" }).slice(1);
+        });
+
+        dataChartUsabilidade1 = data.map(item => item[1]);
+
+
         createChartUsabilidade1();
     }
 
@@ -782,7 +989,7 @@ function createChartValorTotalUltimoMesOperacional5(labels, dataChart) {
     
 
     // Atualiza os KPIs e gráficos em intervalos regulares (opcional)
-    setInterval(updateKPIs, 30000); // Exemplo de atualização a cada 30 segundos
+    setInterval(updateKPIs, 60000); // Exemplo de atualização a cada 30 segundos
 
   new window.VLibras.Widget('https://vlibras.gov.br/app');
 });
@@ -796,6 +1003,9 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById("userName").textContent = nome;
         document.getElementById("userInsta").textContent = instagram;
     }
+
+    showContent(usabilidadeContent);
+    usabilidadeBtn.classList.add('active');
 });
 
 
@@ -840,7 +1050,7 @@ async function carregarImagem2() {
     }
   
     try {
-        const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario/${cpf}`, {
+        const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario-cpf/${cpf}`, {
             method: "GET",
         });
   

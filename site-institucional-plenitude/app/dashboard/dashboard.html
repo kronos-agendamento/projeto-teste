@@ -116,281 +116,460 @@
                 </div>
             </header>
             <div class="main-content">
-                    <div class="chartContainer">
-                        <div class="conteudo" >
-                            <div class="tabs">
-                                <button class="tab-button" id="usabilidadeBtn">Usabilidade</button>
-                                <button class="tab-button" id="operacionalBtn">Operacional</button>
-                                <button class="tab-button" id="gerencialBtn">Gerencial</button>
-                            </div>
-                            <div id="gerencial-content" class="tab-content">
-                                <div class="charts">
-                                    <div class="grid">
-                                        <div class="square">
-                                            <div class="mini-grid">
-                                                <div class="mini-square">
-                                                    <div class="card">
-                                                        <div class="indicator"></div>
-                                                        <div class="card-content">
-                                                            <p>Clientes Ativos</p>
-                                                            <h2 id="clientes-ativos-count">Carregando...</h2>
-                                                            <!-- <p>Último trimestre</p> -->
-
-                                                        </div>
-                                                        <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
-                                                    </div>
-                                                </div>
-                                                <div class="mini-square">
-                                                    <div class="card">
-                                                        <div class="indicator"></div>
-                                                        <div class="card-content">
-                                                            <p>Clientes Inativos</p>
-                                                            <h2 id="clientes-inativos-count">Carregando...</h2>
-                                                            <!-- <p>Último trimestre</p> -->
-
-                                                        </div>
-                                                        <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
-                                                    </div>
-                                                </div>
-                                                <div class="mini-square">
-                                                    <div class="card">
-                                                        <div class="indicator" style="width: 6px;"></div>
-                                                        <div class="card-content">
-                                                            <p>Agendamentos Realizados</p>
-                                                            <h2 id="agendamentos-realizados-count">Carregando...</h2>
-                                                            <!-- <p>Último trimestre</p> -->
-
-                                                        </div>
-                                                        <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
-                                                    </div>
-                                                </div>
-                                                <div class="mini-square">
-                                                    <div class="card">
-                                                        <div class="indicator" style="width: 5px;"></div>
-                                                        <div class="card-content">
-                                                            <p>Clientes Fidelizados</p>
-                                                            <h2 id="clientes-fidelizados-count">Carregando...</h2>
-                                                            <!-- <p>Último trimestre</p> -->
-                                                        </div>
-                                                        <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="square" style="background-color: white;">
-                                            <div class="card-graficos">
-                                                <div class="card-content-3">
-                                                    <h1>Conversão de Clientes</h1>
-                                                    <p>Últimos 5 meses</p>
-                                                </div>
-                                                <p>Comparação de Clientes e Clientes Fidelizados.</p>
-                                                <div class="caixa-grafico">
-                                                    <canvas id="chart2"></canvas>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="square" style="background-color: white;">
-                                            <div class="card-graficos">
-                                                <div class="card-content-2">
-                                                    <h1>Procedimentos Mais Realizados</h1>
-                                                    <p>Último Trimestre</p>
-                                                </div>
-                                                <p>Procedimentos mais famosos no estúdio e quantas vezes eles foram
-                                                    agendados no
-                                                    último
-                                                    trimestre.</p>
-                                                <div class="caixa-grafico" style="margin-top: -8%">
-                                                    <canvas id="chart4"></canvas>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="square" style="background-color: white;">
-                                            <div class="card-graficos">
-                                                <div class="card-content-2">
-                                                    <h1>Procedimentos com Melhor Avaliação</h1>
-                                                    <p>Últimos 5 meses</p>
-                                                </div>
-                                                <p>Procedimentos mais bem avaliados no estúdio e uma média de nota no
-                                                    último
-                                                    trimestre.
-                                                </p>
-                                                <div class="caixa-grafico">
-                                                    <canvas id="chart33"></canvas>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="square" style="background-color: white;">
-                                            <div class="card-graficos">
-                                                <div class="card-content-2">
-                                                    <h1>Receita Acumulada</h1>
-                                                    <p>Últimos 5 meses</p>
-                                                </div>
-                                                <p>Cálculo realizado em cima dos atendimentos concluídos e dos valores
-                                                    dos
-                                                    procedimentos.
-                                                </p>
-                                                <div class="caixa-grafico">
-                                                    <canvas id="chart3"></canvas>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="square" style="background-color: white;">
-                                            <div class="card-graficos">
-                                                <div class="card-content-2">
-                                                    <h1>Canais de Divulgação</h1>
-                                                    <p>Últimos 5 meses</p>
-                                                </div>
-                                                <p>Por qual meio de comunicação os clientes chegam no estúdio.</p>
-                                                <canvas style="padding-bottom: 30px;" id="chart1"></canvas>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="operacional-content" class="tab-content">
-                                <div class="charts">
-                                    <div class="grid">
-                                        <div class="square">
-                                            <div class="mini-grid">
-                                                <div class="mini-square">
-                                                    <div class="card">
-                                                        <div class="indicator"></div>
-                                                        <div class="card-content">
-                                                            <p style="font-size: 16px;">Agendamentos<br>Marcados</p>
-                                                            <h2 id="total-agendamentos-hoje">Carregando...</h2>
-                                                            <!-- <p>Último trimestre</p> -->
-
-                                                        </div>
-                                                        <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
-                                                    </div>
-                                                </div>
-                                                <div class="mini-square">
-                                                    <div class="card">
-                                                        <div class="indicator"></div>
-                                                        <div class="card-content">
-                                                            <p style="font-size: 16px;">Agendamentos <br>Futuros</p>
-                                                            <h2 id="total-agendamentos-futuros">Carregando...</h2>
-                                                            <!-- <p>Último trimestre</p> -->
-
-                                                        </div>
-                                                        <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
-                                                    </div>
-                                                </div>
-                                                <div class="mini-square">
-                                                    <div class="card">
-                                                        <div class="indicator"></div>
-                                                        <div class="card-content">
-                                                            <p style="font-size: 16px;">Tempo Médio
-                                                                Entre<br>Atendimentos</p>
-                                                            <h2 id="tempo-medio-hoje">Carregando...</h2>
-                                                            <!-- <p>Último trimestre</p> -->
-
-                                                        </div>
-                                                        <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
-                                                    </div>
-                                                </div>
-                                                <div class="mini-square">
-                                                    <div class="card">
-                                                        <div class="indicator" style="width: 8px;"></div>
-                                                        <div class="card-content">
-                                                            <p style="font-size: 16px;">Média de Avaliação dos
-                                                                Atendimentos</p>
-                                                            <h2 id="total-nota-single">Carregando...</h2>
-                                                            <!-- <p>Último trimestre</p> -->
-                                                        </div>
-                                                        <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="square" style="background-color: white;">
-                                            <div class="card-graficos">
-                                                <div class="card-content-2">
-                                                    <h1>Agendamentos</h1>
-                                                    <p>Últimos 5 meses</p>
-                                                </div>
-                                                <p>Distribuição das categorias dos agendamentos do dia de hoje.</p>
-                                                <div class="caixa-grafico">
-                                                    <canvas id="chartOperacional1"></canvas>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="square" style="background-color: white;">
-                                            <div class="card-graficos">
-                                                <div class="card-content-2">
-                                                    <h1>Procedimentos<br>Realizados</h1>
-                                                    <p>Último Trimestre</p>
-                                                </div>
-                                                <p>Total de procedimentos realizados nos últimos 3 meses</p>
-                                                <div class="caixa-grafico">
-                                                    <canvas
-                                                        id="chartProcedimentosRealizadosTrimestreOperacional3"></canvas>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="square" style="background-color: white;">
-                                            <div class="card-graficos">
-                                                <div class="card-content-2">
-                                                    <h1>Tempo Médio de<br>Atendimento</h1>
-                                                    <p>Últimos mês</p>
-                                                </div>
-                                                <p>Tempo médio de atendimento investido em cada procedimento.
-                                                </p>
-                                                <div class="caixa-grafico">
-                                                    <canvas id="chartTempoGastoProcedimentosOperacional2"></canvas>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="square" style="background-color: white;">
-                                            <div class="card-graficos">
-                                                <div class="card-content-2">
-                                                    <h1>Receita Média Gerada</h1>
-                                                    <p>Últimos 5 meses</p>
-                                                </div>
-                                                <p>Receita média gerada nos últimos 3 meses com os procedimentos
-                                                    realizados.
-                                                </p>
-                                                <div class="caixa-grafico">
-                                                    <canvas id="chartReceitaProcedimentosOperacional4"></canvas>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="square" style="background-color: white;">
-                                            <div class="card-graficos">
-                                                <div class="card-content-2">
-                                                    <h1>Valor da hora<br>de Procedimento</h1>
-                                                    <p>Últimos 5 meses</p>
-                                                </div>
-                                                <p>Calculo da quantia de dinheiro gerado por hora de cada agendamento.
-                                                </p>
-                                                <canvas style="padding-bottom: 20px;"
-                                                    id="chartValorTotalUltimoMesOperacional5"></canvas>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="usabilidade-content" class="tab-content">
-                                <div class="charts-usabilidade">
-
-                                    <div class="triple-square">
-                                        <div class="mini-grid-usabilidade">
-                                            <div class="mini-square-usabilidade">
+                <div class="chartContainer">
+                    <div class="conteudo">
+                        <div class="tabs">
+                            <button class="tab-button" id="usabilidadeBtn">Usabilidade</button>
+                            <button class="tab-button" id="operacionalBtn">Operacional</button>
+                            <button class="tab-button" id="gerencialBtn">Gerencial</button>
+                        </div>
+                        <div id="gerencial-content" class="tab-content">
+                            <div class="charts">
+                                <div class="grid">
+                                    <div class="square">
+                                        <div class="mini-grid">
+                                            <div class="mini-square">
                                                 <div class="card">
                                                     <div class="indicator"></div>
                                                     <div class="card-content">
-                                                        <p style="font-size: 15px; width: 310px;">Tempo Médio de Conclusão de
-                                                            Agendamento</p>
-                                                        <h2 id="tempo-medio-conclusao">Carregando...</h2>
-                                                        <!-- <p>Último trimestre</p> -->
+                                                        <p>Clientes Ativos</p>
+                                                        <h2 id="clientes-ativos-count">Carregando...</h2>
+                                                        <div class="kpis_com_filtro">
+                                                            <!-- Campo para selecionar a data de início -->
+                                                            <div>
+                                                                <label for="startDateGerencialKPI1">Data de
+                                                                    Início:</label>
+                                                                <input type="date" id="startDateGerencialKPI1">
+                                                            </div>
+
+                                                            <!-- Campo para selecionar a data de término -->
+                                                            <div>
+                                                                <label for="endDateGerencialKPI1">Data de
+                                                                    Término:</label>
+                                                                <input type="date" id="endDateGerencialKPI1">
+                                                            </div>
+
+                                                            <!-- Botão para buscar os dados -->
+                                                            <button id="buscarGerencialKPI1Button">Buscar Dados</button>
+                                                        </div>
 
                                                     </div>
                                                     <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
                                                 </div>
                                             </div>
-                                            <!-- <div class="mini-square-usabilidade">
+                                            <div class="mini-square">
+                                                <div class="card">
+                                                    <div class="indicator"></div>
+                                                    <div class="card-content">
+                                                        <p>Clientes Inativos</p>
+                                                        <h2 id="clientes-inativos-count">Carregando...</h2>
+                                                        <div class="kpis_com_filtro">
+                                                            <div>
+                                                                <!-- Campo para selecionar a data de início -->
+                                                                <label style="size: 10px;"
+                                                                    for="startDateGerencialKPI2">Data
+                                                                    de Início:</label>
+                                                                <input type="date" id="startDateGerencialKPI2">
+                                                            </div>
+
+                                                            <div>
+                                                                <!-- Campo para selecionar a data de término -->
+                                                                <label style="size: 10px;"
+                                                                    for="endDateGerencialKPI2">Data
+                                                                    de Término:</label>
+                                                                <input style="size: 10px;" type="date"
+                                                                    id="endDateGerencialKPI2">
+                                                            </div>
+                                                            <!-- Botão para buscar os dados -->
+                                                            <button id="buscarGerencialKPI2Button">Buscar Dados</button>
+                                                        </div>
+
+                                                    </div>
+                                                    <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
+                                                </div>
+                                            </div>
+                                            <div class="mini-square">
+                                                <div class="card">
+                                                    <div class="indicator" style="width: 6px;"></div>
+                                                    <div class="card-content">
+                                                        <p style="font-size: 10px;">Agendamentos Realizados</p>
+                                                        <h2 id="agendamentos-realizados-count">Carregando...</h2>
+                                                        <div class="kpis_com_filtro">
+                                                            <!-- Campo para selecionar a data de início -->
+                                                            <div>
+                                                                <label style="size: 10px;"
+                                                                    for="startDateGerencialKPI3">Data
+                                                                    de Início:</label>
+                                                                <input type="date" id="startDateGerencialKPI3">
+                                                            </div>
+
+                                                            <div>
+                                                                <!-- Campo para selecionar a data de término -->
+                                                                <label style="size: 10px;"
+                                                                    for="endDateGerencialKPI3">Data
+                                                                    de Término:</label>
+                                                                <input style="size: 10px;" type="date"
+                                                                    id="endDateGerencialKPI3">
+                                                            </div>
+                                                            <!-- Botão para buscar os dados -->
+                                                            <button id="buscarGerencialKPI3Button">Buscar Dados</button>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                                <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
+                                            </div>
+                                            <div class="mini-square">
+                                                <div class="card">
+                                                    <div class="indicator" style="width: 5px;"></div>
+                                                    <div class="card-content">
+                                                        <p>Clientes Fidelizados</p>
+                                                        <h2 id="clientes-fidelizados-count">Carregando...</h2>
+                                                        <div class="kpis_com_filtro">
+
+                                                            <div>
+                                                                <!-- Campo para selecionar a data de início -->
+                                                                <label style="size: 5px;"
+                                                                    for="startDateGerencialKPI4">Data
+                                                                    de
+                                                                    Início:</label>
+                                                                <input style="size: 5px;" type="date"
+                                                                    id="startDateGerencialKPI4">
+                                                            </div>
+
+                                                            <div>
+                                                                <!-- Campo para selecionar a data de término -->
+                                                                <label style="size: 10px;"
+                                                                    for="endDateGerencialKPI4">Data
+                                                                    de
+                                                                    Término:</label>
+                                                                <input style="size: 10px;" type="date"
+                                                                    id="endDateGerencialKPI4">
+                                                            </div>
+                                                            <!-- Botão para buscar os dados -->
+                                                            <button id="buscarGerencialKPI4Button">Buscar Dados</button>
+                                                        </div>
+
+                                                    </div>
+                                                    <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="square" style="background-color: white;">
+                                        <div class="card-graficos">
+                                            <div class="card-content-3">
+                                                <h1>Conversão de Clientes</h1>
+                                                <p>
+                                                    <select id="selectMesGerencial1">
+                                                        <option value="2024-01">Janeiro</option>
+                                                        <option value="2024-02">Fevereiro</option>
+                                                        <option value="2024-03">Março</option>
+                                                        <option value="2024-04">Abril</option>
+                                                        <option value="2024-05">Maio</option>
+                                                        <!-- Adicione mais meses conforme necessário -->
+                                                    </select>
+                                                    <select id="selectAnoGerencial1"></select>
+                                                </p>
+                                            </div>
+                                            <p>Comparação de Clientes e Clientes Fidelizados.</p>
+                                            <div class="caixa-grafico">
+                                                <canvas id="chart2"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="square" style="background-color: white;">
+                                        <div class="card-graficos">
+                                            <div class="card-content-2">
+                                                <h1>Procedimentos Mais Realizados</h1>
+                                                <p>
+                                                    <select id="selectMes">
+                                                        <option value="2024-01">Janeiro</option>
+                                                        <option value="2024-02">Fevereiro</option>
+                                                        <option value="2024-03">Março</option>
+                                                        <option value="2024-04">Abril</option>
+                                                        <option value="2024-05">Maio</option>
+                                                        <!-- Adicione mais meses conforme necessário -->
+                                                    </select>
+                                                    <select id="selectAno"></select>
+                                                </p>
+                                            </div>
+                                            <p>Procedimentos mais famosos no estúdio e quantas vezes eles foram
+                                                agendados no
+                                                último
+                                                trimestre.</p>
+                                            <div class="caixa-grafico" style="margin-top: -8%">
+                                                <canvas id="chart4"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="square" style="background-color: white;">
+                                        <div class="card-graficos">
+                                            <div class="card-content-2">
+                                                <h1>Procedimentos com Melhor Avaliação</h1>
+                                                <p>Últimos 5 meses</p>
+                                            </div>
+                                            <p>Procedimentos mais bem avaliados no estúdio e uma média de nota no
+                                                último
+                                                trimestre.
+                                            </p>
+                                            <div class="caixa-grafico">
+                                                <canvas id="chart33"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="square" style="background-color: white;">
+                                        <div class="card-graficos">
+                                            <div class="card-content-2">
+                                                <h1>Receita Acumulada</h1>
+                                                <p>Últimos 5 meses</p>
+                                            </div>
+                                            <p>Cálculo realizado em cima dos atendimentos concluídos e dos valores
+                                                dos
+                                                procedimentos.
+                                            </p>
+                                            <div class="caixa-grafico">
+                                                <canvas id="chart3"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="square" style="background-color: white;">
+                                        <div class="card-graficos">
+                                            <div class="card-content-2">
+                                                <h1>Canais de Divulgação</h1>
+                                                <p>Últimos 5 meses</p>
+                                            </div>
+                                            <p>Por qual meio de comunicação os clientes chegam no estúdio.</p>
+                                            <canvas style="padding-bottom: 30px;" id="chart1"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="operacional-content" class="tab-content">
+                        <div class="charts">
+                            <div class="grid">
+                                <div class="square">
+                                    <div class="mini-grid">
+                                        <div class="mini-square">
+                                            <div class="card">
+                                                <div class="indicator"></div>
+                                                <div class="card-content">
+                                                    <p style="font-size: 16px;">Agendamentos<br>Marcados</p>
+                                                    <h2 id="total-agendamentos-hoje">Carregando...</h2>
+                                                    <div class="kpis_com_filtro">
+                                                        <div>
+                                                            <!-- Campo para selecionar a data de início -->
+                                                            <label style="size: 5px;"
+                                                                for="startDateOperacionalKPI1">Data Exibida:</label>
+                                                            <input style="size: 5px;" type="date"
+                                                                id="startDateOperacionalKPI1">
+                                                        </div>
+
+                                                        <!-- Botão para buscar os dados -->
+                                                        <button id="buscarOperacionalKPI1Button">Buscar Dados</button>
+                                                    </div>
+
+
+                                                </div>
+                                                <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
+                                            </div>
+                                        </div>
+                                        <div class="mini-square">
+                                            <div class="card">
+                                                <div class="indicator"></div>
+                                                <div class="card-content">
+                                                    <p style="font-size: 16px;">Agendamentos <br>Futuros</p>
+                                                    <h2 id="total-agendamentos-futuros">Carregando...</h2>
+                                                    <div class="kpis_com_filtro">
+                                                        <div>
+                                                            <!-- Campo para selecionar a data de início -->
+                                                            <label style="size: 5px;"
+                                                                for="startDateOperacionalKPI2">Data de Início:</label>
+                                                            <input style="size: 5px;" type="date"
+                                                                id="startDateOperacionalKPI2">
+                                                        </div>
+                                                        <div>
+                                                            <!-- Campo para selecionar a data de início -->
+                                                            <label style="size: 5px;"
+                                                                for="endDateOperacionalKPI2">Data de Término:</label>
+                                                            <input style="size: 5px;" type="date"
+                                                                id="endDateOperacionalKPI2">
+                                                        </div>
+
+                                                        <!-- Botão para buscar os dados -->
+                                                        <button id="buscarOperacionalKPI2Button">Buscar Dados</button>
+                                                    </div>
+
+                                                </div>
+                                                <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
+                                            </div>
+                                        </div>
+                                        <div class="mini-square">
+                                            <div class="card">
+                                                <div class="indicator"></div>
+                                                <div class="card-content">
+                                                    <p style="font-size: 16px;">Tempo Médio
+                                                        Entre<br>Atendimentos</p>
+                                                    <h2 id="tempo-medio-hoje">Carregando...</h2>
+                                                    <div class="kpis_com_filtro">
+                                                        <div>
+                                                            <!-- Campo para selecionar a data de início -->
+                                                            <label style="size: 5px;"
+                                                                for="startDateOperacionalKPI3">Data de Início:</label>
+                                                            <input style="size: 5px;" type="date"
+                                                                id="startDateOperacionalKPI3">
+                                                        </div>
+                                                        <div>
+                                                            <!-- Campo para selecionar a data de início -->
+                                                            <label style="size: 5px;"
+                                                                for="endDateOperacionalKPI3">Data de Término:</label>
+                                                            <input style="size: 5px;" type="date"
+                                                                id="endDateOperacionalKPI3">
+                                                        </div>
+
+                                                        <!-- Botão para buscar os dados -->
+                                                        <button id="buscarOperacionalKPI3Button">Buscar Dados</button>
+                                                    </div>
+
+                                                </div>
+                                                <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
+                                            </div>
+                                        </div>
+                                        <div class="mini-square">
+                                            <div class="card">
+                                                <div class="indicator" style="width: 8px;"></div>
+                                                <div class="card-content">
+                                                    <p style="font-size: 16px;">Média de Avaliação dos
+                                                        Atendimentos</p>
+                                                    <h2 id="total-nota-single">Carregando...</h2>
+                                                    <div class="kpis_com_filtro">
+                                                        <div>
+                                                            <!-- Campo para selecionar a data de início -->
+                                                            <label style="size: 5px;"
+                                                                for="startDateOperacionalKPI4">Data de Início:</label>
+                                                            <input style="size: 5px;" type="date"
+                                                                id="startDateOperacionalKPI4">
+                                                        </div>
+                                                        <div>
+                                                            <!-- Campo para selecionar a data de início -->
+                                                            <label style="size: 5px;"
+                                                                for="endDateOperacionalKPI4">Data de Término:</label>
+                                                            <input style="size: 5px;" type="date"
+                                                                id="endDateOperacionalKPI4">
+                                                        </div>
+
+                                                        <!-- Botão para buscar os dados -->
+                                                        <button id="buscarOperacionalKPI4Button">Buscar Dados</button>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="square" style="background-color: white;">
+                                    <div class="card-graficos">
+                                        <div class="card-content-2">
+                                            <h1>Agendamentos</h1>
+                                            <p>Últimos 5 meses</p>
+                                        </div>
+                                        <p>Distribuição das categorias dos agendamentos do dia de hoje.</p>
+                                        <div class="caixa-grafico">
+                                            <canvas id="chartOperacional1"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="square" style="background-color: white;">
+                                    <div class="card-graficos">
+                                        <div class="card-content-2">
+                                            <h1>Procedimentos<br>Realizados</h1>
+                                            <p>Último Trimestre</p>
+                                        </div>
+                                        <p>Total de procedimentos realizados nos últimos 3 meses</p>
+                                        <div class="caixa-grafico">
+                                            <canvas id="chartProcedimentosRealizadosTrimestreOperacional3"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="square" style="background-color: white;">
+                                    <div class="card-graficos">
+                                        <div class="card-content-2">
+                                            <h1>Tempo Médio de<br>Atendimento</h1>
+                                            <p>Últimos mês</p>
+                                        </div>
+                                        <p>Tempo médio de atendimento investido em cada procedimento.
+                                        </p>
+                                        <div class="caixa-grafico">
+                                            <canvas id="chartTempoGastoProcedimentosOperacional2"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="square" style="background-color: white;">
+                                    <div class="card-graficos">
+                                        <div class="card-content-2">
+                                            <h1>Receita Média Gerada</h1>
+                                            <p>Últimos 5 meses</p>
+                                        </div>
+                                        <p>Receita média gerada nos últimos 3 meses com os procedimentos
+                                            realizados.
+                                        </p>
+                                        <div class="caixa-grafico">
+                                            <canvas id="chartReceitaProcedimentosOperacional4"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="square" style="background-color: white;">
+                                    <div class="card-graficos">
+                                        <div class="card-content-2">
+                                            <h1>Valor da hora<br>de Procedimento</h1>
+                                            <p>Últimos 5 meses</p>
+                                        </div>
+                                        <p>Calculo da quantia de dinheiro gerado por hora de cada agendamento.
+                                        </p>
+                                        <canvas style="padding-bottom: 20px;"
+                                            id="chartValorTotalUltimoMesOperacional5"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="usabilidade-content" class="tab-content">
+                        <div class="charts-usabilidade">
+
+                            <div class="triple-square">
+                                <div class="mini-grid-usabilidade">
+                                    <div class="mini-square-usabilidade">
+                                        <div class="card">
+                                            <div class="indicator"></div>
+                                            <div class="card-content">
+                                                <p style="font-size: 15px; width: 310px;">Tempo Médio de Conclusão
+                                                    de
+                                                    Agendamento</p>
+                                                <h2 id="tempo-medio-conclusao">Carregando...</h2>
+                                                <div> <!-- Campo para selecionar a data de início -->
+                                                    <label for="startDateUsabilidadeKPI2">Data de Início:</label>
+                                                    <input type="date" id="startDateUsabilidadeKPI2">
+
+                                                    <!-- Campo para selecionar a data de término -->
+                                                    <label for="endDateUsabilidadeKPI2">Data de Término:</label>
+                                                    <input type="date" id="endDateUsabilidadeKPI2">
+
+                                                    <!-- Botão para buscar os dados -->
+                                                    <button id="buscarUsabilidadeKPI2Button">Buscar Dados</button>
+                                                </div>
+
+                                            </div>
+                                            <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
+                                        </div>
+                                    </div>
+                                    <!-- <div class="mini-square-usabilidade">
                                                 <div class="card">
                                                     <div class="indicator"></div>
                                                     <div class="card-content">
@@ -399,112 +578,130 @@
                                                             Agendamento</p>
                                                         <h2 id="clientes-inativos-count">Carregando...</h2>
                                                         <p>Último trimestre</p> -->
-<!-- 
+                                    <!-- 
                                                     </div> -->
-                                                    <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
-                                                <!-- </div>
-                                            </div> --> 
-                                            <div class="mini-square-usabilidade">
-                                                <div class="card">
-                                                    <div class="indicator"></div>
-                                                    <div class="card-content">
-                                                        <p style="font-size: 15px;">Quantidade de Usuários Retornando ao Sistema
-                                                        </p>
-                                                        <h2 id="retorno-login-count">Carregando...</h2>
-                                                        <!-- <p>Último trimestre</p> -->
+                                    <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
+                                    <!-- </div>
+                                            </div> -->
+                                    <div class="mini-square-usabilidade">
+                                        <div class="card">
+                                            <div class="indicator"></div>
+                                            <div class="card-content">
+                                                <p style="font-size: 15px;">Quantidade de Usuários Retornando ao
+                                                    Sistema
+                                                </p>
+                                                <h2 id="retorno-login-count">Carregando...</h2>
+                                                <div> <!-- Campo para selecionar a data de início -->
+                                                    <label for="startDateUsabilidadeKPI1">Data de Início:</label>
+                                                    <input type="date" id="startDateUsabilidadeKPI1">
 
-                                                    </div>
-                                                    <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
+                                                    <!-- Campo para selecionar a data de término -->
+                                                    <label for="endDateUsabilidadeKPI1">Data de Término:</label>
+                                                    <input type="date" id="endDateUsabilidadeKPI1">
+
+                                                    <!-- Botão para buscar os dados -->
+                                                    <button id="buscarUsabilidadeKPI1Button">Buscar Dados</button>
                                                 </div>
+
                                             </div>
+                                            <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
                                         </div>
                                     </div>
-                                    <div class="square-usabilidade" style="background-color: white;">
-                                        <div class="card-graficos">
-                                            <div class="card-content-2">
-                                                <h1 style="width: 600px;">Taxa de Conversão do Sistema de Agendamento</h1>
-                                                <p>Últimos 5 meses</p>
-                                            </div>
-                                            <p style="margin-right: 415px;">Comparação de leads e clientes gerados.</p>
-                                            <div class="caixa-graficoUsabilidade">
-                                                <canvas id="chartUsabilidade1" style="margin-left: 100px;"></canvas>
-                                            </div>
+                                </div>
+                            </div>
+                            <div class="square-usabilidade" style="background-color: white;">
+                                <div class="card-graficos">
+                                    <div class="card-content-2">
+                                        <h1 style="width: 600px;">Taxa do uso do Sistema de Agendamento</h1>
+                                        <div>
+                                            <!-- Campo para selecionar a data de início -->
+                                            <label for="startDateUsabilidade1">Data de Início:</label>
+                                            <input type="date" id="startDateUsabilidade1">
+
+                                            <!-- Campo para selecionar a data de término -->
+                                            <label for="endDateUsabilidade1">Data de Término:</label>
+                                            <input type="date" id="endDateUsabilidade1">
+
+                                            <!-- Botão para buscar os dados -->
+                                            <button id="buscarUsabilidadeGrafico1Button">Buscar Dados</button>
                                         </div>
+                                    </div>
+                                    <p style="margin-right: 415px;">Quantidade de agendamentos gerados.</p>
+                                    <div class="caixa-graficoUsabilidade">
+                                        <canvas id="chartUsabilidade1" style="margin-left: 100px;"></canvas>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+    </div>
 
-                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                <script src="dashboard.js"></script>
-                <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-                <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-                <script>document.querySelectorAll('.tab-button').forEach(button => {
-                        button.addEventListener('click', function () {
-                            // Remove a classe 'selected' de todos os botões
-                            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('selected'));
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="dashboard.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script>document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', function () {
+                // Remove a classe 'selected' de todos os botões
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('selected'));
 
-                            // Adiciona a classe 'selected' ao botão clicado
-                            this.classList.add('selected');
-                        });
-                    });
-                </script>
-                <script>
-                    // Seleciona os botões
-                    const usabilidadeBtn = document.getElementById('usabilidadeBtn');
-                    const operacionalBtn = document.getElementById('operacionalBtn');
-                    const gerencialBtn = document.getElementById('gerencialBtn');
+                // Adiciona a classe 'selected' ao botão clicado
+                this.classList.add('selected');
+            });
+        });
+    </script>
+    <script>
+        // Seleciona os botões
+        const usabilidadeBtn = document.getElementById('usabilidadeBtn');
+        const operacionalBtn = document.getElementById('operacionalBtn');
+        const gerencialBtn = document.getElementById('gerencialBtn');
 
-                    // Seleciona os conteúdos
-                    const usabilidadeContent = document.getElementById('usabilidade-content');
-                    const operacionalContent = document.getElementById('operacional-content');
-                    const gerencialContent = document.getElementById('gerencial-content');
+        // Seleciona os conteúdos
+        const usabilidadeContent = document.getElementById('usabilidade-content');
+        const operacionalContent = document.getElementById('operacional-content');
+        const gerencialContent = document.getElementById('gerencial-content');
 
-                    // Função para esconder todos os conteúdos e mostrar o selecionado
-                    function showContent(content) {
-                        // Esconde todos os conteúdos
-                        usabilidadeContent.style.display = 'none';
-                        operacionalContent.style.display = 'none';
-                        gerencialContent.style.display = 'none';
+        // Função para esconder todos os conteúdos e mostrar o selecionado
+        function showContent(content) {
+            // Esconde todos os conteúdos
+            usabilidadeContent.style.display = 'none';
+            operacionalContent.style.display = 'none';
+            gerencialContent.style.display = 'none';
 
-                        // Remove a classe 'active' de todos os botões
-                        usabilidadeBtn.classList.remove('active');
-                        operacionalBtn.classList.remove('active');
-                        gerencialBtn.classList.remove('active');
+            // Remove a classe 'active' de todos os botões
+            usabilidadeBtn.classList.remove('active');
+            operacionalBtn.classList.remove('active');
+            gerencialBtn.classList.remove('active');
 
-                        // Exibe o conteúdo selecionado e adiciona a classe 'active' ao botão clicado
-                        content.style.display = 'block';
-                    }
+            // Exibe o conteúdo selecionado e adiciona a classe 'active' ao botão clicado
+            content.style.display = 'block';
+        }
 
-                    // Adiciona eventos para mostrar os gráficos corretos ao clicar nos botões
-                    usabilidadeBtn.addEventListener('click', function () {
-                        showContent(usabilidadeContent);
-                        usabilidadeBtn.classList.add('active');
-                    });
+        // Adiciona eventos para mostrar os gráficos corretos ao clicar nos botões
+        usabilidadeBtn.addEventListener('click', function () {
+            showContent(usabilidadeContent);
+            usabilidadeBtn.classList.add('active');
+        });
 
-                    operacionalBtn.addEventListener('click', function () {
-                        showContent(operacionalContent);
-                        operacionalBtn.classList.add('active');
-                    });
+        operacionalBtn.addEventListener('click', function () {
+            showContent(operacionalContent);
+            operacionalBtn.classList.add('active');
+        });
 
-                    gerencialBtn.addEventListener('click', function () {
-                        showContent(gerencialContent);
-                        gerencialBtn.classList.add('active');
-                    });
+        gerencialBtn.addEventListener('click', function () {
+            showContent(gerencialContent);
+            gerencialBtn.classList.add('active');
+        });
 
-                    // Exibir por padrão o conteúdo "Gerencial"
-                    showContent(gerencialContent);
-                    gerencialBtn.classList.add('active');
-
-                </script>
-                <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-                <div vw class="enabled">
-                    <div vw-access-button class="active"></div>
-                    <div vw-plugin-wrapper></div>
-                </div>
-        </main>
+    </script>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper></div>
+    </div>
+    </main>
 </body>
 
 </html>

@@ -23,10 +23,52 @@ interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
     FROM
         agendamento a
     WHERE
-        a.tempo_para_agendar IS NOT NULL;
+        a.tempo_para_agendar IS NOT NULL
+        AND a.data_horario >= COALESCE(:startDate, a.data_horario)
+        AND a.data_horario <= COALESCE(:endDate, a.data_horario);
     """
     )
-    fun tempoParaAgendar(): List<Int>
+    fun tempoParaAgendar(
+        @Param("startDate") startDate: String?,
+        @Param("endDate") endDate: String?
+    ): List<Int>
+
+    @Query(
+        """
+    SELECT 
+    AVG(
+        CASE 
+            WHEN DATE(data_horario) = DATE(proximo_agendamento) 
+                THEN TIMESTAMPDIFF(MINUTE, data_horario, proximo_agendamento)
+            ELSE TIMESTAMPDIFF(MINUTE, data_horario, proximo_agendamento) 
+                 - TIMESTAMPDIFF(MINUTE, '18:00:00', '08:00:00')
+        END
+    ) AS media_tempo_entre_agendamentos
+FROM (
+    SELECT 
+        data_horario,
+        LEAD(data_horario) OVER (ORDER BY data_horario) AS proximo_agendamento
+    FROM 
+        agendamento
+    WHERE 
+        data_horario BETWEEN COALESCE(:startDate, DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) 
+                         AND COALESCE(:endDate, CURDATE())
+        AND TIME(data_horario) BETWEEN '08:00:00' AND '18:00:00' -- Considera apenas o horário comercial
+) AS intervalo
+WHERE 
+    proximo_agendamento IS NOT NULL;
+
+
+
+    """,
+        nativeQuery = true
+    )
+    fun calcularMediaTempoEntreAgendamentos(
+        @Param("startDate") startDate: String?,
+        @Param("endDate") endDate: String?
+    ): Double?
+
+
 
     @Query(
         """
@@ -67,22 +109,31 @@ interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
 
     @Query(
         nativeQuery = true, value = """ 
-        SELECT COUNT(*) AS agendamentos_marcados_hoje
-        FROM agendamento
-        WHERE DATE(data_horario) = CURDATE();
+    SELECT COUNT(*) AS agendamentos_no_dia
+    FROM agendamento
+    WHERE DATE(data_horario) = COALESCE(:specificDate, CURDATE());
     """
     )
-    fun findTotalAgendamentosHoje(): Int
+    fun findTotalAgendamentosPorDia(
+        @Param("specificDate") specificDate: String?
+    ): Int
+
 
 
     @Query(
         nativeQuery = true, value = """
-    SELECT COUNT(*) AS agendamentos_futuros
+    SELECT COUNT(*) AS total_agendamentos_futuros
     FROM agendamento
-    WHERE DATE(data_horario) > CURDATE();
+    WHERE data_horario > NOW()
+    AND data_horario >= COALESCE(:startDate, NOW())
+    AND data_horario <= COALESCE(:endDate, DATE_ADD(NOW(), INTERVAL 1 YEAR));
     """
     )
-    fun findTotalAgendamentosFuturos(): Int
+    fun findTotalAgendamentosFuturos(
+        @Param("startDate") startDate: String?,
+        @Param("endDate") endDate: String?
+    ): Int
+
 
     @Query(
         nativeQuery = true, value = """
@@ -185,16 +236,23 @@ ORDER BY
     @Query(
         nativeQuery = true, value = """ 
         SELECT
-                COUNT(a.id_agendamento) AS quantidade_concluidos
-                FROM
-                agendamento a
-                INNER JOIN
-                status s ON a.fk_status = s.id_status_agendamento
-                WHERE
-                s.nome = 'Concluído'
-                AND a.data_horario >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH);"""
+            COUNT(a.id_agendamento) AS quantidade_concluidos
+        FROM
+            agendamento a
+        INNER JOIN
+            status s ON a.fk_status = s.id_status_agendamento
+        WHERE
+            s.nome = 'Concluído'
+        AND
+            a.data_horario BETWEEN COALESCE(:startDate, DATE_SUB(CURDATE(), INTERVAL 3 MONTH))
+                            AND COALESCE(:endDate, CURDATE());
+    """
     )
-    fun findAgendamentosConcluidosUltimoTrimestre(): Int
+    fun findAgendamentosConcluidosUltimoTrimestre(
+        @Param("startDate") startDate: String?,
+        @Param("endDate") endDate: String?
+    ): Int
+
 
     @Query(
         nativeQuery = true, value = """ 
