@@ -569,7 +569,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (response.ok) {
         showNotification("Agendamento criado com sucesso!");
-        window.location.href = "../agendamento-mobile/agendamento-mobile.html";
+        
+        setTimeout(() => {
+          window.location.href = "../index-mobile/index-mobile.html";
+      }, 5000); // 5000 milissegundos = 5 segundos
       } else {
         console.error("Erro ao criar agendamento: " + response.statusText);
         showNotification("Erro ao criar agendamento", true);
