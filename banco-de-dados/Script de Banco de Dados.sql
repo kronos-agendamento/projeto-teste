@@ -148,6 +148,7 @@ CREATE TABLE agendamento (
     data_horario DATETIME NOT NULL,
     tipo_agendamento VARCHAR(255) NOT NULL,
     tempo_para_agendar INT,
+    homecare BOOLEAN,
     fk_usuario INT NOT NULL,
     fk_procedimento INT,
     fk_especificacao_procedimento INT,
@@ -516,7 +517,7 @@ INSERT INTO login_logoff (logi, data_horario, fk_usuario) VALUES
 ('LOGIN', '2023-03-05 07:00:00', 10),
 ('LOGOF', '2023-03-05 08:00:00', 10);
 
-
+DELIMITER //
 DELIMITER //
 
 CREATE PROCEDURE gerar_agendamentos_aleatorios()
@@ -557,7 +558,7 @@ BEGIN
         SET tempo_aleatorio = 15 + FLOOR(RAND() * 106);
         SET usuario_fidelizado = CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(@usuarios_fidelizados, ',', FLOOR(1 + (RAND() * 4))), ',', -1) AS UNSIGNED);
 
-        INSERT INTO agendamento (data_horario, tipo_agendamento, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status, tempo_para_agendar)
+        INSERT INTO agendamento (data_horario, tipo_agendamento, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status, tempo_para_agendar, homecare)
         SELECT 
           CONCAT(dia_atual, ' ', hora_aleatoria) AS data_horario, 
           CASE FLOOR(RAND() * 2) 
@@ -568,7 +569,11 @@ BEGIN
           FLOOR(1 + (RAND() * 3)) AS fk_procedimento, 
           FLOOR(1 + (RAND() * 10)) AS fk_especificacao_procedimento, 
           FLOOR(1 + (RAND() * 10)) AS fk_status,  -- Gera um status aleatório entre 1 e 10
-          tempo_aleatorio AS tempo_para_agendar 
+          tempo_aleatorio AS tempo_para_agendar,
+          CASE FLOOR(RAND() * 2) 
+            WHEN 0 THEN TRUE
+            ELSE FALSE
+          END AS homecare -- Valor booleano aleatório
         FROM (SELECT 1) AS dummy;
 
         SET qtd_agendamentos = qtd_agendamentos - 1;
@@ -583,12 +588,8 @@ BEGIN
 
 END //
 
-
-
 DELIMITER ;
 
-CALL gerar_agendamentos_aleatorios();
-CALL gerar_agendamentos_aleatorios();
 CALL gerar_agendamentos_aleatorios();
 
 INSERT INTO feedback (anotacoes, nota, fk_agendamento, fk_usuario, fk_cliente_avaliado)
@@ -604,11 +605,11 @@ VALUES
 ('Profissional muito educado e atencioso.', 5, 7, 8, 3),
 ('Adorei o resultado final! Super recomendo.', 5, 10, 2, 5);
 
-INSERT INTO agendamento (data_horario, tipo_agendamento, tempo_para_agendar, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status)
+INSERT INTO agendamento (data_horario, tipo_agendamento, tempo_para_agendar, homecare, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status)
 VALUES
-('2022-05-15 10:30:00', 'Manutenção', 80, 4, 2, 1, 7),
-( '2023-08-12 14:20:00', 'Colocação', 65, 4, 1, 1, 5),
-( '2023-09-20 09:45:00', 'Manutenção', 95, 4, 3, 1, 8),
-('2022-11-25 16:15:00', 'Colocação', 50, 4, 2, 1, 5);
+('2022-05-15 10:30:00', 'Manutenção', 80, true,  4, 2, 1, 7),
+( '2023-08-12 14:20:00', 'Colocação', 65, 4, false, 1, 1, 5),
+( '2023-09-20 09:45:00', 'Manutenção', 95, true, 4, 3, 1, 8),
+('2022-11-25 16:15:00', 'Colocação', 50, 4, false, 2, 1, 5);
 
 

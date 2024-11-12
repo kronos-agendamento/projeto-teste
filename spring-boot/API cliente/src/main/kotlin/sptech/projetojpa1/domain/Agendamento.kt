@@ -33,6 +33,9 @@ class Agendamento(
     @Column(name = "tempo_para_agendar")
     var tempoAgendar: Int? = null,
 
+    @Column(name = "homecare")
+    var homecare: Boolean? = null,
+
     @ManyToOne
     @JoinColumn(name = "fk_especificacao_procedimento")
     var especificacao: Especificacao? = null,

@@ -20,7 +20,7 @@ class AgendamentoService(
     private val statusRepository: StatusRepository,
     private val empresaRepository: EmpresaRepository,
 
-) {
+    ) {
     fun listarTodosAgendamentos(): List<AgendamentoResponseDTO> {
         val agendamentos = agendamentoRepository.findAll()
 
@@ -33,6 +33,7 @@ class AgendamentoService(
                 usuario = usuario.nome,
                 usuarioTelefone = usuario.telefone?.toString(),
                 tempoAgendar = agendamento.tempoAgendar,
+                homecare = agendamento.homecare,
                 usuarioCpf = usuario.cpf ?: "CPF não disponível",
                 usuarioId = usuario.codigo,
                 procedimento = agendamento.procedimento?.tipo,
@@ -72,6 +73,7 @@ class AgendamentoService(
             dataHorario = agendamentoRequestDTO.dataHorario,
             tipoAgendamento = agendamentoRequestDTO.tipoAgendamento,
             tempoAgendar = agendamentoRequestDTO.tempoAgendar,
+            homecare = agendamentoRequestDTO.homecare,
             usuario = "Processando...",  // Indicador de que o processo ainda está em andamento
             procedimento = "Processando...",
             especificacao = "Processando...",
