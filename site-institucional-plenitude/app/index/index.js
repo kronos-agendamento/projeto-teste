@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   buttons.forEach((button) => {
     button.addEventListener("click", () => { });
   });
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
 });
 
 const list = document.querySelectorAll(".list");
@@ -655,7 +656,7 @@ fetchLeads();
 window.onload = saudacao;
 
 
-new window.VLibras.Widget('https://vlibras.gov.br/app');
+
 
 async function carregarImagem2() {
   const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução

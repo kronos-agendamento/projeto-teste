@@ -113,6 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return null;
         }
     }
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
 
     function renderTable(users, page) {
         proceduresTbody.innerHTML = "";
@@ -633,7 +634,7 @@ async function updateKpiData() {
 }
 
 
-new window.VLibras.Widget('https://vlibras.gov.br/app');
+
 
 async function carregarImagem2() {
     const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução

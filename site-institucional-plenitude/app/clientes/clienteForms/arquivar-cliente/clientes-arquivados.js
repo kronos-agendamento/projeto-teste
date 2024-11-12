@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
         notification.classList.remove("show");
       }, 3000);
     }
-  
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
     const baseUrl = "http://localhost:8080";
     const proceduresTbody = document.getElementById("procedures-tbody");
     const itemsPerPage = 5;
@@ -226,6 +226,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.error("ID do usuário é indefinido.");
             }
         });
+        
     });
   
     // Configura os eventos dos botões de ativação
@@ -258,6 +259,7 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         });
       });
+      
     }
   
     // Função para mostrar o modal de deletar
@@ -594,7 +596,7 @@ saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), filename);
   }
   
 
-new window.VLibras.Widget('https://vlibras.gov.br/app');
+
   
 async function carregarImagem2() {
   const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução
