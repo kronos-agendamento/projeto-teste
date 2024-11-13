@@ -11,5 +11,6 @@ data class UsuarioLoginResponse(
     var cpf: String,
     val instagram: String,
     val empresa: Empresa?,
+    val nivelAcesso: Int?,
     val idUsuario: Int?
 )
