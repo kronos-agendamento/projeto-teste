@@ -1,6 +1,7 @@
 package sptech.projetojpa1.dto.usuario
 
 import sptech.projetojpa1.domain.Empresa
+import sptech.projetojpa1.domain.NivelAcesso
 import sptech.projetojpa1.domain.Usuario
 
 
@@ -11,6 +12,6 @@ data class UsuarioLoginResponse(
     var cpf: String,
     val instagram: String,
     val empresa: Empresa?,
-    val nivelAcesso: Int?,
+    val nivelAcesso: NivelAcesso?,
     val idUsuario: Int?
 )
