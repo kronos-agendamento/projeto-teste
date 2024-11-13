@@ -74,8 +74,10 @@
                     <span style="font-size: 18px; margin-bottom: 20px;">
                         Edite suas informações:
                     </span>
-                    <div class="imagem-perfil" style=" width: 20vh; height: 20vh; border-radius: 300px; display: flex; justify-content: center; align-items: center; margin-left: 28%; margin-top: 10%;">
-                        <img id="perfilImage" alt="Foto do usuário" style=" width: 53vh; height: 23vh; display: flex; justify-content: center; align-items: center;" />
+                    <div class="imagem-perfil"
+                        style=" width: 20vh; height: 20vh; border-radius: 300px; display: flex; justify-content: center; align-items: center; margin-left: 28%; margin-top: 10%;">
+                        <img id="perfilImage" alt="Foto do usuário"
+                            style=" width: 53vh; height: 23vh; display: flex; justify-content: center; align-items: center;" />
                     </div>
                     <!-- <div class="box-imagem" style="margin-top: 20px;">
                         <div class="imagem">
@@ -90,12 +92,14 @@
                     <div class="form-group" style="margin-top: 5%;">
                         <label for="file" style="font-size: 18px;">Foto de Perfil:</label>
                         <form id="uploadForm" style="display: flex; align-items: center;">
-                            <input type="file" id="file" name="file" accept="image/*" required style="flex: 1; font-size: 18px; background-color: #fff0f5;"><br>
+                            <input type="file" id="file" name="file" accept="image/*" required
+                                style="flex: 1; font-size: 18px; background-color: #fff0f5;"><br>
                         </form>
                         <form id="uploadForm2" style="display: flex; align-items: center; justify-content: center;">
-                            <button class="save-button" type="submit" id="uploadButton"> <i class="fas fa-upload" ></i> Enviar Foto</button>
+                            <button class="save-button" type="submit" id="uploadButton"> <i class="fas fa-upload"></i>
+                                Enviar Foto</button>
                         </form>
-                        
+
                         <p id="responseMessage" style="font-size: 14px;"></p>
                     </div>
 
@@ -109,8 +113,8 @@
 
                         <div class="label">
                             <p style="font-size: 18px;">Data de Nascimento:🔒</p>
-                            <input style="font-size: 18px; font-family: Poppins, sans-serif; color: #8c8c8c;" type="date"
-                                id="nascimento" required readonly>
+                            <input style="font-size: 18px; font-family: Poppins, sans-serif; color: #8c8c8c;"
+                                type="date" id="nascimento" required readonly>
                         </div>
 
                         <div class="label">
@@ -133,13 +137,14 @@
 
                         <div class="label">
                             <p style="font-size: 18px;">CPF:🔒</p>
-                            <input style="font-size: 18px; font-family: Poppins, sans-serif; color: #8c8c8c;" type="text" id="cpf"
-                                placeholder="000.000.000-00" required readonly>
+                            <input style="font-size: 18px; font-family: Poppins, sans-serif; color: #8c8c8c;"
+                                type="text" id="cpf" placeholder="000.000.000-00" required readonly>
                         </div>
 
                         <div class="label">
                             <p style="font-size: 18px;">Gênero:🔓</p>
-                            <select style="font-size: 18px; font-family: Poppins, sans-serif;width: 98%;" id="genero" required>
+                            <select style="font-size: 18px; font-family: Poppins, sans-serif;width: 98%;" id="genero"
+                                required>
                                 <option value="Masculino">Masculino</option>
                                 <option value="Feminino">Feminino</option>
                                 <option value="Não-binário">Não-binário</option>
@@ -150,7 +155,8 @@
 
                         <div class="label">
                             <p style="font-size: 18px;">Indicação:🔓</p>
-                            <select style="font-size: 18px; font-family: Poppins, sans-serif; width: 98%;" id="indicacao" required>
+                            <select style="font-size: 18px; font-family: Poppins, sans-serif; width: 98%;"
+                                id="indicacao" required>
                                 <option value="Internet">Internet</option>
                                 <option value="Anúncio">Anúncio</option>
                                 <option value="Amigo contou">Amigo contou</option>
@@ -162,25 +168,78 @@
 
                         <div class="button-container" id="button-alterar">
                             <button type="button" class="save-button" id="save-usuario-button">
-                                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  fill="white"
-                  class="bi bi-check-circle-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z"
-                  />
-                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
+                                    class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
+                                </svg>
                                 Salvar Alterações
 
                             </button>
+                        </div>
 
+                        <div class="label" style="display: none;">
+                            <p style="font-size: 18px;">ID:🔓</p>
+                            <input style="font-size: 18px; font-family: Poppins, sans-serif;" type="text"
+                                id="idEndereco" placeholder="0" required>
+                        </div>
+
+                        <div class="label">
+                            <p style="font-size: 18px;">CEP:🔓</p>
+                            <input style="font-size: 18px; font-family: Poppins, sans-serif;" type="text" id="cep"
+                                placeholder="00000-000" required>
+                        </div>
+
+                        <div class="label">
+                            <p style="font-size: 18px;">Logradouro:🔓</p>
+                            <input style="font-size: 18px; font-family: Poppins, sans-serif;" type="text"
+                                id="logradouro" placeholder="00000-000" required>
+                        </div>
+
+                        <div class="label">
+                            <p style="font-size: 18px;">Número:🔓</p>
+                            <input style="font-size: 18px; font-family: Poppins, sans-serif;" type="text" id="numero"
+                                placeholder="00000-000" required>
+                        </div>
+
+                        <div class="label">
+                            <p style="font-size: 18px;">Bairro:🔓</p>
+                            <input style="font-size: 18px; font-family: Poppins, sans-serif;" type="text" id="bairro"
+                                placeholder="00000-000" required>
+                        </div>
+
+                        <div class="label">
+                            <p style="font-size: 18px;">Cidade:🔓</p>
+                            <input style="font-size: 18px; font-family: Poppins, sans-serif;" type="text" id="cidade"
+                                placeholder="00000-000" required>
+                        </div>
+
+                        <div class="label">
+                            <p style="font-size: 18px;">Estado:🔓</p>
+                            <input style="font-size: 18px; font-family: Poppins, sans-serif;" type="text" id="estado"
+                                placeholder="00000-000" required>
+                        </div>
+
+                        <div class="label">
+                            <p style="font-size: 18px;">Complemento:🔓</p>
+                            <input style="font-size: 18px; font-family: Poppins, sans-serif;" type="text"
+                                id="complemento" placeholder="" required>
+                        </div>
+
+                        <div class="button-container" id="button-alterar">
+                            <button type="button" class="save-button" id="save-endereco-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
+                                    class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
+                                </svg>
+                                Salvar Alterações
+
+                            </button>
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
         </section>
 
@@ -189,6 +248,14 @@
                 <p>Deseja realmente alterar os dados pessoais?</p>
                 <button id="confirmUpdateButton">Sim</button>
                 <button id="cancelUpdateButton" onclick="fecharModalDecisao()">Cancelar</button>
+            </div>
+        </div>
+
+        <div id="modalDecisaoEndereco" class="modal-decisao">
+            <div class="modal-content">
+                <p>Deseja realmente alterar os dados de endereço?</p>
+                <button id="confirmUpdateButtonEndereco">Sim</button>
+                <button id="cancelUpdateButtonEndereco" onclick="fecharModalDecisaoEndereco()">Cancelar</button>
             </div>
         </div>
 

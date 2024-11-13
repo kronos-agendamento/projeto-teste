@@ -7,7 +7,7 @@
     <title>Acessar Conta | KronosBooking</title>
 
     <!-- Favicons -->
-    <link href="../../../assets/favicon.png" rel="icon" />
+    <link href="../../site-institucional-plenitude/assets/img/favicon.png"  rel="icon" />
 
     <link
       rel="stylesheet"
@@ -76,13 +76,20 @@
             placeholder="Confirme sua senha"
             required
           />
+         
           <button type="submit">Cadastrar</button>
 
           <div class="mobile-toggle">
-            <button type="button" id="mobileLoginBtn">Fazer login</button>
+            <a style="cursor: pointer; font-size: 16px;"id="mobileLoginBtn"> Já tem uma conta? Faça o <b style="cursor: pointer;">login</b>!</a>
           </div>
+ <div class="back">
+            <a href="../index.html" class="back-link" style=" margin-top: 20vh;">Voltar para <a style="font-style: italic; cursor: pointer;">home</a> </a>
+        </div>
+
         </form>
       </div>
+
+      
       <div class="form-container sign-in" id="signInForm">
         <form id="loginForm">
           <h1>Boas-vindas!</h1>
@@ -95,14 +102,19 @@
             required
           />
           <a href="#">Esqueceu sua senha?</a>
+         
           <button type="submit">Entrar</button>
 
           <div class="g-signin2" data-onsuccess="onSignIn"></div>
           <!-- Entrar com google -->
 
           <div class="mobile-toggle">
-            <button type="button" id="mobileRegisterBtn">Cadastrar</button>
+            <a style="cursor: pointer; font-size: 16px;" id="mobileRegisterBtn"> Não tem uma conta? Faça o <b>cadastro</b>!</a>
           </div>
+
+          <div class="back">
+            <a href="../index.html" class="back-link" style=" margin-top: 20vh;">Voltar para <a style="font-style: italic; cursor: pointer;">home</a> </a>
+        </div>
         </form>
       </div>
       <div class="toggle-container">
