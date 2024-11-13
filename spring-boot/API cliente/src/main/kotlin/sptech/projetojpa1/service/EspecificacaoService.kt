@@ -60,10 +60,9 @@ class EspecificacaoService(
         repository.deleteById(id)
     }
 
-    fun getReceitaAcumulada(): List<Double> {
-        return repository.findReceitaSemestralAcumulada()
+    fun getReceitaAcumulada(startDate: String?, endDate: String?): List<Map<String, Any>> {
+        return repository.findReceitaSemestralAcumulada(startDate, endDate)
     }
-
     fun getReceitaAcumuladaLabels(): List<String> {
         return repository.findMesesUltimosSeisMeses()
     }

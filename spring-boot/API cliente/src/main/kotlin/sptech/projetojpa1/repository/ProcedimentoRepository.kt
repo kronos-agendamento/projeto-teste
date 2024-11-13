@@ -33,38 +33,59 @@ interface ProcedimentoRepository : JpaRepository<Procedimento, Int> {
 
     @Query(
         nativeQuery = true, value = """
-            SELECT 
-                COUNT(a.id_agendamento) AS quantidade_agendamentos
-            FROM 
-                procedimento p
-            LEFT JOIN 
-                agendamento a ON p.id_procedimento = a.fk_procedimento
-            GROUP BY 
-                p.id_procedimento
-        """
+        SELECT 
+            ep.especificacao AS nome_especificacao, 
+            COUNT(a.id_agendamento) AS quantidade_agendamentos
+        FROM 
+            especificacao ep
+        LEFT JOIN 
+            agendamento a ON ep.id_especificacao_procedimento = a.fk_especificacao_procedimento
+        WHERE 
+            (a.data_horario BETWEEN COALESCE(:startDate, DATE_SUB(CURDATE(), INTERVAL 5 MONTH)) 
+                                AND COALESCE(:endDate, CURDATE()) OR :startDate IS NULL)
+        GROUP BY 
+            ep.id_especificacao_procedimento, ep.especificacao
+        ORDER BY 
+            quantidade_agendamentos DESC
+    """
     )
-    fun findQuantidadeAgendamentosPorProcedimento(): List<Int>
+    fun findQuantidadeAgendamentosPorEspecificacao(
+        @Param("startDate") startDate: String?,
+        @Param("endDate") endDate: String?
+    ): List<Map<String, Any>>
+
+
 
     @Query(
         nativeQuery = true, value = """
-        SELECT 
-            p.tipo AS tipo_procedimento
-        FROM 
-            procedimento p
-        INNER JOIN 
-            especificacao ep ON p.id_procedimento = ep.fk_procedimento
-        INNER JOIN 
-            agendamento a ON p.id_procedimento = a.fk_procedimento
-        INNER JOIN 
-            feedback f ON a.id_agendamento = f.fk_agendamento
-        GROUP BY 
-            p.id_procedimento, p.tipo
-        ORDER BY 
-            AVG(f.nota) DESC
-        LIMIT 3
+       SELECT 
+    p.tipo AS tipo_procedimento,
+    ROUND(AVG(f.nota), 2) AS nota_media
+FROM 
+    procedimento p
+LEFT JOIN 
+    especificacao ep ON p.id_procedimento = ep.fk_procedimento
+LEFT JOIN 
+    agendamento a ON ep.id_especificacao_procedimento = a.fk_especificacao_procedimento
+LEFT JOIN 
+    feedback f ON a.id_agendamento = f.fk_agendamento
+WHERE 
+    a.data_horario BETWEEN COALESCE(:startDate, DATE_SUB(CURDATE(), INTERVAL 3 MONTH)) 
+                       AND COALESCE(:endDate, CURDATE())
+GROUP BY 
+    p.id_procedimento, p.tipo
+ORDER BY 
+    nota_media DESC
+LIMIT 3;
+
     """
     )
-    fun findProcedimentosBemAvaliados(): List<String>
+    fun findProcedimentosBemAvaliados(
+        @Param("startDate") startDate: String?,
+        @Param("endDate") endDate: String?
+    ): List<Map<String, Any>>
+
+
 
     @Query("SELECT MAX(p.idProcedimento) FROM Procedimento p")
     fun findMaxId(): Int?

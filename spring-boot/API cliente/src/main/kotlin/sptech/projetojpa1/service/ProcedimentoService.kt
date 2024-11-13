@@ -84,10 +84,9 @@ class ProcedimentoService(private val procedimentoRepository: ProcedimentoReposi
         )
     }
 
-    fun listarProcedimentosBemAvaliados(): List<String> {
-        return procedimentoRepository.findProcedimentosBemAvaliados()
+    fun listarProcedimentosBemAvaliados(startDate: String?, endDate: String?): List<Map<String, Any>> {
+        return procedimentoRepository.findProcedimentosBemAvaliados(startDate, endDate)
     }
-
     fun getProcedimentoComMelhorNota(): ProcedimentoEstatisticaDTO? {
         val result = procedimentoRepository.findProcedimentoComMelhorNota().firstOrNull() ?: return null
         return ProcedimentoEstatisticaDTO(
@@ -97,9 +96,13 @@ class ProcedimentoService(private val procedimentoRepository: ProcedimentoReposi
         )
     }
 
-    fun getQuantidadeAgendamentosPorProcedimento(): List<Int> {
-        return procedimentoRepository.findQuantidadeAgendamentosPorProcedimento()
+
+
+    fun getQuantidadeAgendamentosPorEspecificacao(startDate: String?, endDate: String?): List<Map<String, Any>> {
+        return procedimentoRepository.findQuantidadeAgendamentosPorEspecificacao(startDate, endDate)
     }
+
+
 
     fun getTop3ProcedimentosByUsuario(idUsuario: Int): List<Any> {
         return procedimentoRepository.findTop3ProcedimentosByUsuario(idUsuario)

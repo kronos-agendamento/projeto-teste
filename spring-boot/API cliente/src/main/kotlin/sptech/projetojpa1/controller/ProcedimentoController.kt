@@ -85,9 +85,13 @@ class ProcedimentoController(private val procedimentoService: ProcedimentoServic
             ApiResponse(responseCode = "204", description = "Nenhum procedimento bem avaliado encontrado")
         ]
     )
+
     @GetMapping("/listar-bem-avaliados")
-    fun listarProcedimentosBemAvaliados(): ResponseEntity<List<String>> {
-        val procedimentos = procedimentoService.listarProcedimentosBemAvaliados()
+    fun listarProcedimentosBemAvaliados(
+        @RequestParam(required = false) startDate: String?,
+        @RequestParam(required = false) endDate: String?
+    ): ResponseEntity<List<Map<String, Any>>> {
+        val procedimentos = procedimentoService.listarProcedimentosBemAvaliados(startDate, endDate)
         return if (procedimentos.isNotEmpty()) {
             ResponseEntity(procedimentos, HttpStatus.OK)
         } else {
@@ -214,9 +218,14 @@ class ProcedimentoController(private val procedimentoService: ProcedimentoServic
             )
         ]
     )
-    @GetMapping("/quantidade-agendamentos-procedimentos")
-    fun getQuantidadeAgendamentos(): ResponseEntity<List<Int>> {
-        val quantidadeAgendamentos = procedimentoService.getQuantidadeAgendamentosPorProcedimento()
+
+
+    @GetMapping("/quantidade-agendamentos-especificacao")
+    fun getQuantidadeAgendamentosPorEspecificacao(
+        @RequestParam(required = false) startDate: String?,
+        @RequestParam(required = false) endDate: String?
+    ): ResponseEntity<List<Map<String, Any>>> {
+        val quantidadeAgendamentos = procedimentoService.getQuantidadeAgendamentosPorEspecificacao(startDate, endDate)
         return ResponseEntity.ok(quantidadeAgendamentos)
     }
 
