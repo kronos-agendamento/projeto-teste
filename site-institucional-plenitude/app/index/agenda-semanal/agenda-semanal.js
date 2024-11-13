@@ -141,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("userInsta").textContent = instagram;
   }
 
-
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
 
 });
 
@@ -201,7 +201,7 @@ function saudacao() {
 }
 
 window.onload = saudacao;
-new window.VLibras.Widget('https://vlibras.gov.br/app');
+
 
 async function carregarImagem2() {
   const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução
@@ -237,3 +237,42 @@ async function carregarImagem2() {
 
 // Carrega a imagem automaticamente quando a página termina de carregar
 window.onload = carregarImagem2;
+
+document.addEventListener("DOMContentLoaded", function () {
+  const tooltips = document.querySelectorAll(".tooltip12, .tooltip13");
+
+  tooltips.forEach((tooltip) => {
+    const targetButton = tooltip.previousElementSibling; // O botão anterior ao tooltip
+
+    targetButton.addEventListener("mouseenter", () => {
+      tooltip.style.visibility = "hidden"; // Torna o tooltip invisível antes de posicionar
+      tooltip.style.display = "block"; // Garante que o cálculo da posição ocorra com o tooltip visível
+      positionTooltip(tooltip, targetButton);
+      tooltip.style.visibility = "visible"; // Exibe o tooltip após a posição estar correta
+    });
+
+    targetButton.addEventListener("mouseleave", () => {
+      tooltip.style.display = "none"; // Esconde o tooltip
+    });
+
+    window.addEventListener("resize", () => {
+      if (tooltip.style.display === "block") {
+        positionTooltip(tooltip, targetButton); // Reposiciona o tooltip durante redimensionamento
+      }
+    });
+  });
+
+  function positionTooltip(tooltip, target) {
+    const targetRect = target.getBoundingClientRect();
+    const tooltipRect = tooltip.getBoundingClientRect();
+
+    const topPosition = targetRect.top - tooltipRect.height - 9; // Ajuste para posicionar o tooltip acima do botão
+    const leftPosition = targetRect.left + targetRect.width / 30 - tooltipRect.width / 30; // Centraliza o tooltip horizontalmente
+
+    tooltip.style.top = `${topPosition + window.scrollY}px`;
+    tooltip.style.left = `${leftPosition + window.scrollX}px`;
+  }
+});
+
+
+

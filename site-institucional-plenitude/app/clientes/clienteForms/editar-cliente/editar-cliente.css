@@ -1104,7 +1104,7 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 135px; /* Ajuste conforme necessário */
+  top: 154px; /* Ajuste conforme necessário */
   left: 33%;
   transform: translateX(-50%);
 }
@@ -1119,7 +1119,7 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 135px;  /* Ajuste conforme necessário */
+  top: 154px;  /* Ajuste conforme necessário */
   left: 45%;
   transform: translateX(-50%);
 }
@@ -1134,7 +1134,7 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 135px; /* Ajuste conforme necessário */
+  top: 154px; /* Ajuste conforme necessário */
   left: 60%;
   transform: translateX(-50%);
 }
@@ -1149,8 +1149,38 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 135px; /* Ajuste conforme necessário */
+  top: 154px; /* Ajuste conforme necessário */
   left: 73%;
+  transform: translateX(-50%);
+}
+
+.tooltip19 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: -20px; /* Ajuste conforme necessário */
+  left: 98%;
+  transform: translateX(-50%);
+}
+
+.tooltip20 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: -20px; /* Ajuste conforme necessário */
+  left: 98%;
   transform: translateX(-50%);
 }
 
@@ -1170,6 +1200,16 @@ img {
 }
 
 .filter-btn:hover + .tooltip18 {
+  display: block;
+  
+}
+
+.filter-btn:hover + .tooltip19 {
+  display: block;
+  
+}
+
+.filter-btn:hover + .tooltip20 {
   display: block;
   
 }
