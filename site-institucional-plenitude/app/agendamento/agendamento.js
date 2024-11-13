@@ -233,7 +233,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function renderTable() {
-    console.log(agendamentosFiltrados);
     const tbody = document.getElementById("procedures-tbody");
     tbody.innerHTML = "";
 
@@ -254,9 +253,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     agendamentosPaginaAtual.forEach((agendamento) => {
       const tr = document.createElement("tr");
-      tr.classList.add("clickable-row");
 
-      // Ajustar para o horário local
+      // Data e Hora
       const dataHora = new Date(agendamento.dataHorario);
       const dia = String(dataHora.getDate()).padStart(2, "0");
       const mes = String(dataHora.getMonth() + 1).padStart(2, "0");
@@ -268,22 +266,34 @@ document.addEventListener("DOMContentLoaded", function () {
       dataHoraTd.textContent = dataHoraFormatada;
       tr.appendChild(dataHoraTd);
 
+      // Cliente
       const clienteTd = document.createElement("td");
       clienteTd.textContent = agendamento.usuario;
-      clienteTd.dataset.idUsuario = agendamento.usuarioId;
-      clienteTd.dataset.idAgendamento = agendamento.idAgendamento;
       tr.appendChild(clienteTd);
 
+      // Procedimento
       const procedimentoTd = document.createElement("td");
       procedimentoTd.textContent = agendamento.procedimento;
-      procedimentoTd.dataset.fkProcedimento = agendamento.fkProcedimento;
       tr.appendChild(procedimentoTd);
 
+      // Especificação
       const especificacaoTd = document.createElement("td");
       especificacaoTd.textContent = agendamento.especificacao;
-      especificacaoTd.dataset.fkEspecificacao = agendamento.fkEspecificacao;
       tr.appendChild(especificacaoTd);
 
+      // Valor
+      const valorTd = document.createElement("td");
+      valorTd.textContent = `R$ ${agendamento.valor.toFixed(2)}`;
+      tr.appendChild(valorTd);
+
+      // Homecare
+      const homecareTd = document.createElement("td");
+      homecareTd.innerHTML = agendamento.homecare
+        ? '<div style="color: green; border-radius: 50%; background-color: green; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; margin-left: 30px"><span style="color: white;">✔</span></div>'
+        : '<div style="color: red; border-radius: 50%; background-color: red; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; margin-left: 30px"><span style="color: white;">✘</span></div>';
+      tr.appendChild(homecareTd);
+
+      // Status
       const statusTd = document.createElement("td");
       const statusColorDiv = document.createElement("div");
       statusColorDiv.style.backgroundColor = agendamento.statusAgendamento.cor;
@@ -300,39 +310,19 @@ document.addEventListener("DOMContentLoaded", function () {
       statusTd.appendChild(statusNomeSpan);
       tr.appendChild(statusTd);
 
+      // Ações
       const acoesTd = document.createElement("td");
-
-      // Botão de Editar
       const editButton = document.createElement("button");
       editButton.classList.add("edit-btn", "filter-btn");
-      editButton.dataset.id = agendamento.idAgendamento;
       editButton.innerHTML = '<i class="fas fa-edit"></i>';
-      editButton.addEventListener("click", (event) => {
-        event.stopPropagation(); // Impede que o evento se propague para a linha
-        editarAgendamento(
-          clienteTd.dataset.idAgendamento,
-          clienteTd.dataset.idUsuario,
-          procedimentoTd.dataset.fkProcedimento,
-          especificacaoTd.dataset.fkEspecificacao
-        );
-      });
       acoesTd.appendChild(editButton);
 
-      // Botão de Excluir
       const deleteButton = document.createElement("button");
       deleteButton.classList.add("delete-btn", "filter-btn");
-      deleteButton.dataset.id = agendamento.idAgendamento;
       deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
-      deleteButton.addEventListener("click", (event) => {
-        event.stopPropagation(); // Impede que o evento se propague para a linha
-        excluirAgendamento(agendamento.idAgendamento);
-      });
       acoesTd.appendChild(deleteButton);
 
       tr.appendChild(acoesTd);
-      tr.addEventListener("click", () =>
-        showDetalhesModal(agendamento.idAgendamento)
-      );
 
       tbody.appendChild(tr);
     });

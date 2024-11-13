@@ -14,6 +14,8 @@ import java.time.LocalDate
 
 interface UsuarioRepository : JpaRepository<Usuario, Int> {
 
+    @Query("SELECT u FROM Usuario u")
+    fun findAllUsuarios(): List<Usuario>
 
     fun countByStatus(status: Boolean): Int
 

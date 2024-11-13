@@ -36,6 +36,9 @@ class Agendamento(
     @Column(name = "homecare")
     var homecare: Boolean? = null,
 
+    @Column(name = "valor")
+    var valor: Double? = null,
+
     @ManyToOne
     @JoinColumn(name = "fk_especificacao_procedimento")
     var especificacao: Especificacao? = null,

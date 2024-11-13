@@ -148,6 +148,7 @@ CREATE TABLE agendamento (
     tipo_agendamento VARCHAR(255) NOT NULL,
     tempo_para_agendar INT,
     homecare BOOLEAN,
+    valor DOUBLE,
     fk_usuario INT NOT NULL,
     fk_procedimento INT,
     fk_especificacao_procedimento INT,
@@ -517,7 +518,6 @@ INSERT INTO login_logoff (logi, data_horario, fk_usuario) VALUES
 ('LOGOF', '2023-03-05 08:00:00', 10);
 
 DELIMITER //
-DELIMITER //
 
 CREATE PROCEDURE gerar_agendamentos_aleatorios()
 BEGIN
@@ -529,6 +529,7 @@ BEGIN
   DECLARE mes_atual INT;
   DECLARE usuario_fidelizado INT;
   DECLARE tempo_aleatorio INT;
+  DECLARE preco_base DOUBLE;
 
   SET @usuarios_fidelizados = '1,4,6';  -- IDs dos usuários a serem fidelizados
 
@@ -557,7 +558,10 @@ BEGIN
         SET tempo_aleatorio = 15 + FLOOR(RAND() * 106);
         SET usuario_fidelizado = CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(@usuarios_fidelizados, ',', FLOOR(1 + (RAND() * 4))), ',', -1) AS UNSIGNED);
 
-        INSERT INTO agendamento (data_horario, tipo_agendamento, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status, tempo_para_agendar, homecare)
+        -- Determinar o preço base da especificação
+        SET preco_base = 100 + FLOOR(RAND() * 201); -- Preço aleatório entre R$100 e R$300
+
+        INSERT INTO agendamento (data_horario, tipo_agendamento, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status, tempo_para_agendar, homecare, valor)
         SELECT 
           CONCAT(dia_atual, ' ', hora_aleatoria) AS data_horario, 
           CASE FLOOR(RAND() * 2) 
@@ -572,7 +576,8 @@ BEGIN
           CASE FLOOR(RAND() * 2) 
             WHEN 0 THEN TRUE
             ELSE FALSE
-          END AS homecare -- Valor booleano aleatório
+          END AS homecare,  -- Valor booleano aleatório
+          preco_base -- Define o valor aleatório calculado
         FROM (SELECT 1) AS dummy;
 
         SET qtd_agendamentos = qtd_agendamentos - 1;
@@ -604,11 +609,6 @@ VALUES
 ('Profissional muito educado e atencioso.', 5, 7, 8, 3),
 ('Adorei o resultado final! Super recomendo.', 5, 10, 2, 5);
 
-INSERT INTO agendamento (data_horario, tipo_agendamento, tempo_para_agendar, homecare, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status)
-VALUES
-('2022-05-15 10:30:00', 'Manutenção', 80, true,  4, 2, 1, 7),
-( '2023-08-12 14:20:00', 'Colocação', 65, 4, false, 1, 1, 5),
-( '2023-09-20 09:45:00', 'Manutenção', 95, true, 4, 3, 1, 8),
-('2022-11-25 16:15:00', 'Colocação', 50, 4, false, 2, 1, 5);
+SELECT * FROM usuario;
 
-
+SELECT * FROM agendamento;	

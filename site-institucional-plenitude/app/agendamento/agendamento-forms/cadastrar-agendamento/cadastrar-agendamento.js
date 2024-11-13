@@ -169,7 +169,57 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   localidadeSelect.addEventListener("change", function () {
-    verificarFiltros();
+    const cepGroup = document.getElementById("cep-group");
+    if (localidadeSelect.value === "Homecare") {
+      cepGroup.classList.remove("hidden");
+    } else {
+      cepGroup.classList.add("hidden");
+      document.getElementById("cep").value = ""; // Limpa o campo CEP
+      taxaTotalDiv.classList.add("hidden"); // Esconde a taxa se não for Homecare
+    }
+  });
+
+  async function buscarEnderecoPorCep(cep) {
+    try {
+      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.erro) {
+          throw new Error("CEP não encontrado.");
+        }
+        return `${data.logradouro}, ${data.bairro}, ${data.localidade} - ${data.uf}`;
+      } else {
+        throw new Error("Erro ao buscar o CEP.");
+      }
+    } catch (error) {
+      console.error("Erro ao buscar o endereço:", error);
+      return null;
+    }
+  }
+
+  document.getElementById("cep").addEventListener("input", async function () {
+    const cep = this.value.replace(/\D/g, ""); // Remove qualquer caractere não numérico
+
+    // Formata o CEP automaticamente
+    if (cep.length > 5) {
+      this.value = cep.slice(0, 5) + "-" + cep.slice(5, 8);
+    }
+
+    // Quando o CEP estiver completo, calcula a taxa
+    if (cep.length === 8) {
+      try {
+        const endereco = await buscarEnderecoPorCep(cep);
+        if (endereco) {
+          enderecoInput.value = endereco;
+          calcularTaxa(); // Calcula a taxa automaticamente
+        } else {
+          showNotification("CEP inválido ou não encontrado.", true);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar endereço pelo CEP:", error);
+        showNotification("Erro ao buscar o endereço. Tente novamente.", true);
+      }
+    }
   });
 
   function verificarFiltros() {
@@ -335,9 +385,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   saveButton.addEventListener("click", async function () {
     const clienteId = clientesSelect.value;
-    console.log(clienteId);
     const procedimentoId = procedimentosSelect.value;
-    console.log(procedimentoId);
     const tipoAtendimento = tipoAgendamentoSelect.value;
     const especificacaoId = especificacoesSelect.value;
     const data = dataInput.value;
@@ -357,19 +405,37 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const dataHorario = new Date(`${data}T${horario}.000Z`).toISOString();
-    console.log(seconds + "antes do const");
-    const agendamento = {
-      fk_usuario: parseInt(clienteId, 10),
-      fk_procedimento: parseInt(procedimentoId, 10),
-      fk_especificacao: parseInt(especificacaoId, 10),
-      fk_status: 1,
-      tempoAgendar: seconds,
-      tipoAgendamento: tipoAtendimento,
-      dataHorario: dataHorario,
-    };
+
+    // Determina o valor de homecare com base no tipo de atendimento
+    const homecare = localidadeSelect.value === "Homecare";
 
     try {
-      console.log(seconds + " segundos aí rapaiz");
+      // Calcula o valor do procedimento com a taxa
+      let taxa = 0;
+      if (homecare) {
+        taxa = await calcularTaxa(); // Calcula taxa adicional se for homecare
+      }
+
+      const orcamentoBase = await buscarOrcamentoBase(
+        procedimentoId,
+        especificacaoId,
+        tipoAtendimento
+      );
+
+      const valorTotal = orcamentoBase + taxa; // Soma o valor base com a taxa
+
+      const agendamento = {
+        fk_usuario: parseInt(clienteId, 10),
+        fk_procedimento: parseInt(procedimentoId, 10),
+        fk_especificacao: parseInt(especificacaoId, 10),
+        fk_status: 1,
+        tempoAgendar: seconds,
+        tipoAgendamento: tipoAtendimento,
+        dataHorario: dataHorario,
+        homecare: homecare,
+        valor: valorTotal, // Envia o valor total calculado
+      };
+
       const response = await fetch(apiUrlCriarAgendamento, {
         method: "POST",
         headers: {
@@ -379,11 +445,9 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       if (response.ok) {
-        console.log(response);
-        console.log(agendamento);
         showNotification("Agendamento criado com sucesso!");
         setTimeout(() => {
-          window.location.href = "../../agendamento.html";
+          //window.location.href = "../../agendamento.html";
         }, 1000);
       } else {
         const errorMsg = await response.text();
@@ -398,6 +462,32 @@ document.addEventListener("DOMContentLoaded", function () {
       showNotification("Erro ao criar agendamento", true);
     }
   });
+
+  // Função para buscar o valor base do orçamento
+  async function buscarOrcamentoBase(
+    procedimentoId,
+    especificacaoId,
+    tipoAtendimento
+  ) {
+    try {
+      const url = `http://localhost:8080/api/agendamentos/calcular-orcamento?fkProcedimento=${procedimentoId}&fkEspecificacao=${especificacaoId}&tipoAgendamento=${tipoAtendimento}`;
+      const response = await fetch(url);
+      if (response.ok) {
+        return await response.json(); // Retorna o valor base
+      } else {
+        console.warn("Orçamento base não encontrado.");
+        showNotification(
+          "Orçamento base não disponível. Considerando apenas a taxa.",
+          true
+        );
+        return 0; // Valor base zero em caso de erro
+      }
+    } catch (error) {
+      console.error("Erro ao buscar orçamento base:", error);
+      showNotification("Erro ao buscar orçamento base.", true);
+      return 0;
+    }
+  }
 
   // Função para calcular a distância
   async function calcularDistancia(endereco) {
@@ -424,7 +514,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Função para calcular a taxa total
   async function calcularTaxa() {
     const endereco = enderecoInput.value;
 
@@ -480,8 +569,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     try {
       let taxa = 0;
-      // Calcula a taxa se o tipo de atendimento for Homecare ou Evento
-      if (tipoAgendamento === "Homecare" || tipoAgendamento === "Evento") {
+      // Calcula a taxa se o tipo de atendimento for Homecare
+      if (localidadeSelect.value === "Homecare") {
         taxa = await calcularTaxa();
       } else {
         valorTaxaSpan.textContent = "R$ 0.00"; // Define a taxa como zero para outros tipos
@@ -520,8 +609,8 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById(
         "orcamento-detalhe"
       ).textContent = `Valor do procedimento: R$ ${orcamentoBase.toFixed(2)}, 
-         taxa adicional: R$ ${taxa.toFixed(2)}, 
-         total: R$ ${orcamentoTotal.toFixed(2)}`;
+          taxa adicional: R$ ${taxa.toFixed(2)}, 
+          total: R$ ${orcamentoTotal.toFixed(2)}`;
 
       // Exibe o contêiner do orçamento
       document.getElementById("orcamento-container").classList.remove("hidden");
@@ -642,8 +731,10 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-  try {
-      const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario-cpf/${cpf}`, {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/usuarios/busca-imagem-usuario-cpf/${cpf}`,
+        {
           method: "GET",
         }
       );

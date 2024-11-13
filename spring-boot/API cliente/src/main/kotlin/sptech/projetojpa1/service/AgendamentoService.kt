@@ -34,6 +34,7 @@ class AgendamentoService(
                 usuarioTelefone = usuario.telefone?.toString(),
                 tempoAgendar = agendamento.tempoAgendar,
                 homecare = agendamento.homecare,
+                valor = agendamento.valor,
                 usuarioCpf = usuario.cpf ?: "CPF não disponível",
                 usuarioId = usuario.codigo,
                 procedimento = agendamento.procedimento?.tipo,
@@ -55,6 +56,9 @@ class AgendamentoService(
         // A fila é usada aqui para simular o conceito de processamento assíncrono, onde os agendamentos
         // são armazenados em uma lista (fila) e processados posteriormente, evitando o processamento imediato.
         println("Adicionando agendamento à fila: $agendamentoRequestDTO")
+        // Print para verificar o valor recebido de homecare no DTO
+        println("Recebido AgendamentoRequestDTO: $agendamentoRequestDTO")
+        println("Valor de homecare recebido: ${agendamentoRequestDTO.homecare}")
         filaAgendamentos.add(agendamentoRequestDTO)
 
         // Exibe a fila após adicionar o novo agendamento, mostrando que o item foi enfileirado.
@@ -65,6 +69,7 @@ class AgendamentoService(
         // este processamento poderia ser feito de forma assíncrona ou agendada (por exemplo, a cada minuto).
         processarFilaDeAgendamentos()
 
+
         // Retorna uma resposta ao cliente indicando que o agendamento está sendo processado.
         // Como o processamento é "simulado" de forma assíncrona, o ID do agendamento ainda não está disponível,
         // mas outras informações podem ser retornadas enquanto o agendamento é tratado em segundo plano.
@@ -73,7 +78,8 @@ class AgendamentoService(
             dataHorario = agendamentoRequestDTO.dataHorario,
             tipoAgendamento = agendamentoRequestDTO.tipoAgendamento,
             tempoAgendar = agendamentoRequestDTO.tempoAgendar,
-            homecare = agendamentoRequestDTO.homecare,
+            homecare = agendamentoRequestDTO.homecare ?: false,
+            valor = agendamentoRequestDTO.valor,
             usuario = "Processando...",  // Indicador de que o processo ainda está em andamento
             procedimento = "Processando...",
             especificacao = "Processando...",
@@ -133,10 +139,8 @@ class AgendamentoService(
 
 
     fun obterMediaTempoEntreAgendamentos(startDate: String?, endDate: String?): Double {
-            return agendamentoRepository.calcularMediaTempoEntreAgendamentos(startDate, endDate) ?: 0.0
+        return agendamentoRepository.calcularMediaTempoEntreAgendamentos(startDate, endDate) ?: 0.0
     }
-
-
 
 
     fun getTotalAgendamentosPorDia(specificDate: String?): Int {
@@ -264,6 +268,9 @@ class AgendamentoService(
             // Remove e obtém o primeiro agendamento da fila
             val agendamentoRequestDTO = filaAgendamentos.poll()
 
+            println("Processando AgendamentoRequestDTO: $agendamentoRequestDTO")
+            println("Homecare no DTO antes da criação do Agendamento: ${agendamentoRequestDTO.homecare}")
+
             // Exibe no log o agendamento que está sendo processado
             println("Processando agendamento: $agendamentoRequestDTO")
 
@@ -278,6 +285,8 @@ class AgendamentoService(
                 dataHorario = agendamentoRequestDTO.dataHorario,
                 tipoAgendamento = agendamentoRequestDTO.tipoAgendamento,
                 tempoAgendar = agendamentoRequestDTO.tempoAgendar,
+                homecare = agendamentoRequestDTO.homecare,
+                valor = agendamentoRequestDTO.valor,
                 usuario = usuarioRepository.findById(agendamentoRequestDTO.fk_usuario)
                     .orElseThrow { IllegalArgumentException("Usuário não encontrado") },
                 procedimento = procedimentoRepository.findById(agendamentoRequestDTO.fk_procedimento)
@@ -291,10 +300,15 @@ class AgendamentoService(
             // Exibe no log o agendamento que será salvo no banco de dados
             println("Salvando agendamento no banco de dados: $agendamento")
 
+            // Print para verificar o valor de homecare no objeto Agendamento antes de salvar
+            println("Objeto Agendamento criado: $agendamento")
+            println("Valor de homecare no Agendamento: ${agendamento.homecare}")
+
             // Salva o agendamento no banco de dados
             agendamentoRepository.save(agendamento)
 
             // Exibe no log que o agendamento foi salvo com sucesso
+            println("Agendamento salvo com sucesso no banco: $agendamento")
             println("Agendamento salvo com sucesso: $agendamento")
         }
     }
@@ -312,6 +326,8 @@ class AgendamentoService(
             tempoAgendar = agendamento.tempoAgendar,
             procedimento = agendamento.procedimento?.tipo,
             usuarioId = agendamento.usuario.codigo,
+            homecare = agendamento.homecare,
+            valor = agendamento.valor,
             especificacao = agendamento.especificacao?.especificacao,
             fkEspecificacao = agendamento.especificacao?.idEspecificacaoProcedimento,
             fkProcedimento = agendamento.procedimento?.idProcedimento,
@@ -345,6 +361,8 @@ class AgendamentoService(
             usuario = agendamento.usuario.nome,
             procedimento = agendamento.procedimento?.tipo,
             especificacao = agendamento.especificacao?.especificacao,
+            homecare = agendamento.homecare,
+            valor = agendamento.valor,
             statusAgendamento = agendamento.statusAgendamento,
             usuarioId = agendamento.usuario.codigo,
             fkEspecificacao = agendamento.especificacao?.idEspecificacaoProcedimento,
@@ -370,6 +388,8 @@ class AgendamentoService(
             usuario = agendamento.usuario.nome,
             procedimento = agendamento.procedimento?.tipo,
             especificacao = agendamento.especificacao?.especificacao,
+            homecare = agendamento.homecare,
+            valor = agendamento.valor,
             statusAgendamento = agendamento.statusAgendamento,
             usuarioId = agendamento.usuario.codigo,
             fkEspecificacao = agendamento.especificacao?.idEspecificacaoProcedimento,
@@ -415,6 +435,8 @@ class AgendamentoService(
                 statusAgendamento = agendamento.statusAgendamento,
                 usuarioId = agendamento.usuario.codigo,
                 fkEspecificacao = agendamento.especificacao?.idEspecificacaoProcedimento,
+                homecare = agendamento.homecare,
+                valor = agendamento.valor,
                 fkProcedimento = agendamento.procedimento?.idProcedimento
             )
         }

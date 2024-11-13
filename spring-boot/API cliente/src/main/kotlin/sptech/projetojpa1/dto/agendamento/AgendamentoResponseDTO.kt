@@ -11,6 +11,7 @@ data class AgendamentoResponseDTO(
     var email: String? = null,
     var tempoAgendar: Int? = null,
     var homecare: Boolean? = null,
+    var valor: Double? = null,
     var usuarioTelefone: String? = null,
     var usuarioCpf: String? = null,
     var usuarioId: Int? = null,

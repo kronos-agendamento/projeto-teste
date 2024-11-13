@@ -92,7 +92,6 @@ class UsuarioService(
         return usuarioRepository.save(usuario)
     }
 
-
     fun fazerLogin(request: UsuarioLoginRequest): UsuarioLoginResponse? {
         val usuario = usuarioRepository.findByEmailIgnoreCase(request.email)
         return if (usuario != null && usuario.senha.equals(request.senha, ignoreCase = true)) {
@@ -149,7 +148,7 @@ class UsuarioService(
             genero = dto.genero ?: genero
             indicacao = dto.indicacao ?: indicacao
             avaliacao = dto.avaliacao ?: avaliacao
-            senha = dto.senha?: senha
+            senha = dto.senha ?: senha
         }
 
         // Salvar o usuário atualizado
@@ -194,7 +193,7 @@ class UsuarioService(
     fun listarUsuariosAtivos(): List<Usuario> = usuarioRepository.findByStatusTrue()
 
     fun listarTodosUsuarios(): List<UsuarioResponseDTO> {
-        val usuarios = usuarioRepository.findAll()
+        val usuarios = usuarioRepository.findAllUsuarios()
         return usuarios.map { usuario ->
             UsuarioResponseDTO(
                 idUsuario = usuario.codigo,
