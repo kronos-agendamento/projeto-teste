@@ -577,10 +577,11 @@ document.addEventListener("DOMContentLoaded", async function () {
       showNotification("Erro ao enviar o e-mail.", true);
     }
   }
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
 });
 
 
-new window.VLibras.Widget('https://vlibras.gov.br/app');
+
 
 async function carregarImagem2() {
   const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução

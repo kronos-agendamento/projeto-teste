@@ -294,6 +294,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Carrega a imagem automaticamente quando a página termina de carregar
   window.onload = carregarImagem2;
+  
 });
 
 
@@ -305,4 +306,5 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("userName").textContent = nome;
     document.getElementById("userInsta").textContent = instagram;
   }
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
 });

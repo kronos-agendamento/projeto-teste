@@ -85,6 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Redireciona para a página de agendamentos com o idUsuario na URL
       window.location.href = `../agendamentos-cliente/agendamento-clientes.html?idUsuario=${idUsuario}`;
     });
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
 });
 
 async function carregarImagem2() {

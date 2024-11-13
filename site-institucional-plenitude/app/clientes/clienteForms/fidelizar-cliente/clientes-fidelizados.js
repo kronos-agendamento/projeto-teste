@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document
       .querySelector("#modal-archive .btn-no")
       .addEventListener("click", closeModalArchive);
-  
+      new window.VLibras.Widget('https://vlibras.gov.br/app');
     // Função para buscar usuários ativos
     async function fetchUsuariosFidelizados() {
       try {
@@ -471,6 +471,7 @@ document.querySelector(".planilha-btn").addEventListener("click", function () {
     .catch(error => {
       console.error("Erro ao buscar os dados completos:", error);
     });
+   
 });
 
 // Função para preencher a tabela com todos os dados recebidos
@@ -577,7 +578,7 @@ saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), filename);
   }
 
   
-new window.VLibras.Widget('https://vlibras.gov.br/app');
+
 
 async function carregarImagem2() {
   const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução
