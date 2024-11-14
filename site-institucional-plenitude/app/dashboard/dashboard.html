@@ -394,9 +394,7 @@
                                         <div class="card-graficos">
                                             <div class="card-content-2">
                                                 <h1>Canais de Divulgação</h1>
-                                                <div class="kpis_com_filtro">
-                                                <button id="buscarGerencialGrafico5Button">Buscar Dados</button>
-                                            </div>
+                                    
                                             </div>
                                             <p>Por qual meio de comunicação os clientes chegam no estúdio.</p>
                                             <canvas style="padding-bottom: 30px;" id="chart1"></canvas>
@@ -532,9 +530,20 @@
                                     <div class="card-graficos">
                                         <div class="card-content-2">
                                             <h1>Agendamentos</h1>
-                                            <p>Últimos 5 meses</p>
+                                            <div class="kpis_com_filtro">
+                                                <div>
+                                                    <!-- Campo para selecionar a data de início -->
+                                                    <label style="size: 5px;"
+                                                        for="startDateOperacionalGrafico1">Dia Escolhido:</label>
+                                                    <input style="size: 5px;" type="date"
+                                                        id="startDateOperacionalGrafico1">
+                                                </div>
+
+                                                <!-- Botão para buscar os dados -->
+                                                <button id="buscarOperacionalGrafico1Button">Buscar Dados</button>
+                                            </div>
                                         </div>
-                                        <p>Distribuição das categorias dos agendamentos do dia de hoje.</p>
+                                        <p>Distribuição das categorias dos agendamentos do dia estabelecido.</p>
                                         <div class="caixa-grafico">
                                             <canvas id="chartOperacional1"></canvas>
                                         </div>
@@ -545,9 +554,27 @@
                                     <div class="card-graficos">
                                         <div class="card-content-2">
                                             <h1>Procedimentos<br>Realizados</h1>
-                                            <p>Último Trimestre</p>
+                                            <div class="kpis_com_filtro">
+                                                <div>
+                                                    <!-- Campo para selecionar a data de início -->
+                                                    <label style="size: 5px;"
+                                                        for="startDateOperacionalGrafico2">Data de Início:</label>
+                                                    <input style="size: 5px;" type="date"
+                                                        id="startDateOperacionalGrafico2">
+                                                </div>
+                                                <div>
+                                                    <!-- Campo para selecionar a data de início -->
+                                                    <label style="size: 5px;"
+                                                        for="endDateOperacionalGrafico2">Data de Término:</label>
+                                                    <input style="size: 5px;" type="date"
+                                                        id="endDateOperacionalGrafico2">
+                                                </div>
+
+                                                <!-- Botão para buscar os dados -->
+                                                <button id="buscarOperacionalGrafico2Button">Buscar Dados</button>
+                                            </div>
                                         </div>
-                                        <p>Total de procedimentos realizados nos últimos 3 meses</p>
+                                        <p>Total de procedimentos realizados no período estabelecido</p>
                                         <div class="caixa-grafico">
                                             <canvas id="chartProcedimentosRealizadosTrimestreOperacional3"></canvas>
                                         </div>
@@ -557,7 +584,25 @@
                                     <div class="card-graficos">
                                         <div class="card-content-2">
                                             <h1>Tempo Médio de<br>Atendimento</h1>
-                                            <p>Últimos mês</p>
+                                            <div class="kpis_com_filtro">
+                                                <div>
+                                                    <!-- Campo para selecionar a data de início -->
+                                                    <label style="size: 5px;"
+                                                        for="startDateOperacionalGrafico3">Data de Início:</label>
+                                                    <input style="size: 5px;" type="date"
+                                                        id="startDateOperacionalGrafico3">
+                                                </div>
+                                                <div>
+                                                    <!-- Campo para selecionar a data de início -->
+                                                    <label style="size: 5px;"
+                                                        for="endDateOperacionalGrafico3">Data de Término:</label>
+                                                    <input style="size: 5px;" type="date"
+                                                        id="endDateOperacionalGrafico3">
+                                                </div>
+
+                                                <!-- Botão para buscar os dados -->
+                                                <button id="buscarOperacionalGrafico3Button">Buscar Dados</button>
+                                            </div>
                                         </div>
                                         <p>Tempo médio de atendimento investido em cada procedimento.
                                         </p>
@@ -570,9 +615,27 @@
                                     <div class="card-graficos">
                                         <div class="card-content-2">
                                             <h1>Receita Média Gerada</h1>
-                                            <p>Últimos 5 meses</p>
+                                            <div class="kpis_com_filtro">
+                                                <div>
+                                                    <!-- Campo para selecionar a data de início -->
+                                                    <label style="size: 5px;"
+                                                        for="startDateOperacionalGrafico4">Data de Início:</label>
+                                                    <input style="size: 5px;" type="date"
+                                                        id="startDateOperacionalGrafico4">
+                                                </div>
+                                                <div>
+                                                    <!-- Campo para selecionar a data de início -->
+                                                    <label style="size: 5px;"
+                                                        for="endDateOperacionalGrafico4">Data de Término:</label>
+                                                    <input style="size: 5px;" type="date"
+                                                        id="endDateOperacionalGrafico4">
+                                                </div>
+
+                                                <!-- Botão para buscar os dados -->
+                                                <button id="buscarOperacionalGrafico4Button">Buscar Dados</button>
+                                            </div>
                                         </div>
-                                        <p>Receita média gerada nos últimos 3 meses com os procedimentos
+                                        <p>Receita média gerada no período estabelecido com os procedimentos
                                             realizados.
                                         </p>
                                         <div class="caixa-grafico">
@@ -584,7 +647,25 @@
                                     <div class="card-graficos">
                                         <div class="card-content-2">
                                             <h1>Valor da hora<br>de Procedimento</h1>
-                                            <p>Últimos 5 meses</p>
+                                            <div class="kpis_com_filtro">
+                                                <div>
+                                                    <!-- Campo para selecionar a data de início -->
+                                                    <label style="size: 5px;"
+                                                        for="startDateOperacionalGrafico5">Data de Início:</label>
+                                                    <input style="size: 5px;" type="date"
+                                                        id="startDateOperacionalGrafico5">
+                                                </div>
+                                                <div>
+                                                    <!-- Campo para selecionar a data de início -->
+                                                    <label style="size: 5px;"
+                                                        for="endDateOperacionalGrafico5">Data de Término:</label>
+                                                    <input style="size: 5px;" type="date"
+                                                        id="endDateOperacionalGrafico5">
+                                                </div>
+
+                                                <!-- Botão para buscar os dados -->
+                                                <button id="buscarOperacionalGrafico5Button">Buscar Dados</button>
+                                            </div>
                                         </div>
                                         <p>Calculo da quantia de dinheiro gerado por hora de cada agendamento.
                                         </p>

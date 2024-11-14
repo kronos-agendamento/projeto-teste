@@ -126,13 +126,13 @@ function fetchData2(url, params = {}, callback) {
     function updateKPIs() {
         const endpoints = {
 
-            // KPI's - Gerencial - ok
+            // KPI's - Gerencial
             clientesAtivos: '/usuarios/clientes-ativos',
             clientesInativos: '/usuarios/clientes-inativos',
             clientesFidelizados: '/usuarios/clientes-fidelizados-ultimos-tres-meses',
             agendamentosRealizados: '/api/agendamentos/agendamentos-realizados',
 
-            // KPI's - Usabilidade - ok
+            // KPI's - Usabilidade
             tempoAgendamento: '/api/agendamentos/tempo-para-agendar',
             retornoLogin: '/login-logoff/retorno-usuarios-login',
 
@@ -160,9 +160,17 @@ function fetchData2(url, params = {}, callback) {
 
             // Gráfico 1 - Operacional
             agendamentosStatus: '/api/agendamentos/agendamento-status',
+
+            // Gráfico 4 - Operacional
             agendamentosReceitaUltimosTresMeses: '/api/agendamentos/receita-ultimos-tres-meses',
+
+            // Gráfico 3 - Operacional
             agendamentosTempoGastoUltimoMes: '/api/agendamentos/tempo-gasto-ultimo-mes',
+
+            // Gráfico 2 - Operacional
             agendamentosProcedimentosRealizadosTrimestre: '/api/agendamentos/procedimentos-realizados-trimestre',
+
+            // Gráfico 5 - Operacional
             agendamentosValorTotalUltimoMes: '/api/agendamentos/valor-total-ultimo-mes',
 
             // Gráfico 1 - Usabilidade - ok
@@ -219,11 +227,19 @@ function fetchData2(url, params = {}, callback) {
         fetchData2(endpoints.agendamentosProcedimentos, {},updateChart4);
 
         // Chamada para atualizar os dados do gráfico 1 - Operacional
-        fetchData(endpoints.agendamentosStatus, updateChartOperacional1);
-        fetchData(endpoints.agendamentosReceitaUltimosTresMeses, updateChartReceitaProcedimentosOperacional4);
-        fetchData(endpoints.agendamentosTempoGastoUltimoMes, updateChartTempoGastoOperacional2);
-        fetchData(endpoints.agendamentosProcedimentosRealizadosTrimestre, updateChartProcedimentoRealizadosTrimestreOperacional3);
-        fetchData(endpoints.agendamentosValorTotalUltimoMes, updateChartValorTotalUltimoMesOperacional5);
+        fetchData2(endpoints.agendamentosStatus, {},updateChartOperacional1);
+
+        // Chamada para atualizar os dados do gráfico 4 - Operacional
+        fetchData2(endpoints.agendamentosReceitaUltimosTresMeses, {},updateChartReceitaProcedimentosOperacional4);
+
+        // Chamada para atualizar os dados do gráfico 3 - Operacional
+        fetchData2(endpoints.agendamentosTempoGastoUltimoMes, {},updateChartTempoGastoOperacional2);
+
+        // Chamada para atualizar os dados do gráfico 2 - Operacional
+        fetchData2(endpoints.agendamentosProcedimentosRealizadosTrimestre, {}, updateChartProcedimentoRealizadosTrimestreOperacional3);
+
+        // Chamada para atualizar os dados do gráfico 5 - Operacional
+        fetchData2(endpoints.agendamentosValorTotalUltimoMes, {},updateChartValorTotalUltimoMesOperacional5);
 
         // Chamada para atualiazar o gráfico de usabilidade - Usabilidade
         fetchData2(
@@ -341,11 +357,6 @@ updateKPIs();
         "endDateGerencialGrafico4",                              // ID do campo de data de término
         updateChart3         // Callback específico para atualizar o gráfico 1
     );
-    addFilterListener3(
-        "buscarGerencialGrafico5Button",                                     // ID do botão
-        "/usuarios/buscar-numeros-indicacoes", // URL da API                              // ID do campo de data de término
-        updateChart1         // Callback específico para atualizar o gráfico 1
-    );
 
 
     // atualização dos botões de filtro da página Operacional
@@ -369,13 +380,46 @@ updateKPIs();
         "endDateOperacionalKPI3",
         updateTempoMedio
     );
-
     addFilterListener(
         "buscarOperacionalKPI4Button",
         "/api/agendamentos/media-tempo-entre-agendamentos",
         "startDateOperacionalKPI4",
         "endDateOperacionalKPI4",
         updateNotaSingle
+    );
+    addFilterListener2(
+        "buscarOperacionalGrafico1Button",                                     // ID do botão
+        "/api/agendamentos/agendamento-status", // URL da API
+        "startDateOperacionalGrafico1",                            // ID do campo de data de início                             // ID do campo de data de término
+        updateChartOperacional1        // Callback específico para atualizar o gráfico 1
+    );
+    addFilterListener(
+        "buscarOperacionalGrafico2Button",
+        "/api/agendamentos/procedimentos-realizados-trimestre",
+        "startDateOperacionalGrafico2",
+        "endDateOperacionalGrafico2",
+        updateChartProcedimentoRealizadosTrimestreOperacional3
+    );
+    addFilterListener(
+        "buscarOperacionalGrafico3Button",
+        "/api/agendamentos/tempo-gasto-ultimo-mes",
+        "startDateOperacionalGrafico3",
+        "endDateOperacionalGrafico3",
+        updateChartTempoGastoOperacional2
+    );
+    addFilterListener(
+        "buscarOperacionalGrafico4Button",
+        "/api/agendamentos/receita-ultimos-tres-meses",
+        "startDateOperacionalGrafico4",
+        "endDateOperacionalGrafico4",
+        updateChartReceitaProcedimentosOperacional4
+    );
+    addFilterListener(
+        "buscarOperacionalGrafico5Button",
+        "/api/agendamentos/valor-total-ultimo-mes",
+        "startDateOperacionalGrafico5",
+        "endDateOperacionalGrafico5",
+        updateChartValorTotalUltimoMesOperacional5
     );
     
 
@@ -532,15 +576,14 @@ updateKPIs();
 
     }
     function updateChartProcedimentoRealizadosTrimestreOperacional3(data) {
-        // Mapeia os dados recebidos (objeto) para labels e valores do gráfico
-        const labels = Object.keys(data);  // Procedimentos (ex: Maquiagem, Sobrancelha, etc.)
-        const dataChart = Object.values(data);  // Tempos totais (ex: 350, 120, etc.)
-
-        // Se o gráfico já foi criado, apenas atualiza os dados e rótulos
-
-        // Se o gráfico ainda não existe, cria-o pela primeira vez
+        // Mapeia os labels (chaves do objeto) e os dados (valores do objeto)
+        const labels = Object.keys(data);  // Procedimentos (ex: Maquiagem, Sobrancelha)
+        const dataChart = Object.values(data);  // Quantidade total de procedimentos realizados
+    
+        // Cria um novo gráfico com os dados atualizados
         createChartProcedimentosRealizadosTrimestreOperacional3(labels, dataChart);
     }
+    
     function updateChartValorTotalUltimoMesOperacional5(data) {
         // Mapeia os dados recebidos (objeto) para labels e valores do gráfico
         const labels = Object.keys(data);  // Procedimentos (ex: Maquiagem, Sobrancelha, etc.)
@@ -959,8 +1002,10 @@ updateKPIs();
     function createChartReceitaProcedimentosOperacional4(labels, dataChartReceita) {
         const ctx = document.getElementById('chartReceitaProcedimentosOperacional4').getContext('2d');
 
+        if (chartReceitaProcedimentosOperacional4) chartReceitaProcedimentosOperacional4.destroy();
+
         // Criação do novo gráfico
-        window.chartReceitaProcedimentosOperacional4 = new Chart(ctx, {
+        chartReceitaProcedimentosOperacional4 = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: labels, // Passando os nomes dos procedimentos como labels
@@ -985,6 +1030,9 @@ updateKPIs();
     // Função para criar o gráfico pela primeira vez
     function createChartTempoGastoProcedimentosOperacional2(labels, dataChart) {
         const ctxOperacional2 = document.getElementById('chartTempoGastoProcedimentosOperacional2').getContext('2d');
+
+
+        if (chartTempoGastoProcedimentos) chartTempoGastoProcedimentos.destroy();
 
         // Criação do gráfico com Chart.js
         chartTempoGastoProcedimentos = new Chart(ctxOperacional2, {
@@ -1011,9 +1059,11 @@ updateKPIs();
     }
     function createChartProcedimentosRealizadosTrimestreOperacional3(labels, dataChart) {
         const ctx = document.getElementById('chartProcedimentosRealizadosTrimestreOperacional3').getContext('2d');
+    
+        if (chartProcedimentosRealizadosTrimestreOperacional3) chartProcedimentosRealizadosTrimestreOperacional3.destroy();
 
         // Criação do gráfico com Chart.js
-        window.chartProcedimentosRealizadosTrimestreOperacional3 = new Chart(ctx, {
+        chartProcedimentosRealizadosTrimestreOperacional3 = new Chart(ctx, {
             type: 'bar',  // Tipo de gráfico: barra
             data: {
                 labels: labels,  // Procedimentos como rótulos (ex: Maquiagem, Sobrancelha)
@@ -1027,20 +1077,48 @@ updateKPIs();
             },
             options: {
                 responsive: true,  // Responsivo para diferentes tamanhos de tela
+                maintainAspectRatio: false,  // Mantém proporção ajustada
                 scales: {
                     y: {
-                        beginAtZero: true  // Eixo Y começa no zero
+                        beginAtZero: true,  // Eixo Y começa no zero
+                        title: {
+                            display: true,
+                            text: 'Quantidade'  // Título do eixo Y
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Procedimentos'  // Título do eixo X
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,  // Exibe a legenda
+                        position: 'top'  // Legenda no topo
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return ` ${tooltipItem.label}: ${tooltipItem.raw}`; // Exibe o label e o valor na tooltip
+                            }
+                        }
                     }
                 }
             }
         });
     }
+    
     // Função para criar o gráfico de valor total por procedimento no último mês
     function createChartValorTotalUltimoMesOperacional5(labels, dataChart) {
         const ctxOperacional5 = document.getElementById('chartValorTotalUltimoMesOperacional5').getContext('2d');
 
+        if (chartValorTotalUltimoMesOperacional5) chartValorTotalUltimoMesOperacional5.destroy();
+
+
         // Criação do gráfico com Chart.js
-        window.chartValorTotalUltimoMesOperacional5 = new Chart(ctxOperacional5, {
+        chartValorTotalUltimoMesOperacional5 = new Chart(ctxOperacional5, {
             type: 'bar',  // Tipo de gráfico: barra
             data: {
                 labels: labels,  // Procedimentos como rótulos (ex: Maquiagem, Sobrancelha)
@@ -1102,8 +1180,8 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById("userInsta").textContent = instagram;
     }
 
-    showContent(usabilidadeContent);
-    usabilidadeBtn.classList.add('active');
+    showContent(operacionalContent);
+    operacionalBtn.classList.add('active');
 });
 
 
