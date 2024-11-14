@@ -105,6 +105,7 @@ class UsuarioService(
                 cpf = usuario.cpf ?: "",
                 instagram = usuario.instagram ?: "",
                 empresa = usuario.empresa,
+                nivelAcesso = usuario.nivelAcesso,
                 idUsuario = usuario.codigo,
             )
         } else {
@@ -149,7 +150,7 @@ class UsuarioService(
             genero = dto.genero ?: genero
             indicacao = dto.indicacao ?: indicacao
             avaliacao = dto.avaliacao ?: avaliacao
-            senha = dto.senha?: senha
+            senha = dto.senha ?: senha
         }
 
         // Salvar o usuário atualizado
@@ -458,11 +459,9 @@ class UsuarioService(
     }
 
 
-
     fun getClientesFidelizadosUltimos5MesesComPeriodo(startDate: String?, endDate: String?): List<Map<String, Any>> {
         return usuarioRepository.findClientesFidelizadosComPeriodo(startDate, endDate)
     }
-
 
 
     fun getByNomeContains(nome: String): List<UsuarioDTO> {
