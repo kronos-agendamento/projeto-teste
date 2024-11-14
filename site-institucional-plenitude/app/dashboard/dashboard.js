@@ -382,7 +382,7 @@ updateKPIs();
     );
     addFilterListener(
         "buscarOperacionalKPI4Button",
-        "/api/agendamentos/media-tempo-entre-agendamentos",
+        "/api/feedbacks/media-notas-single",
         "startDateOperacionalKPI4",
         "endDateOperacionalKPI4",
         updateNotaSingle

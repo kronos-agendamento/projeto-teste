@@ -63,12 +63,8 @@ class FeedbackService(
     }
 
 
-    fun buscarMediaNotas(): List<Double> {
-        return feedbackRepository.buscarMediaNotas()
-    }
-
-    fun buscarMediaNotasSingle(startDate: String?, endDate: String?): Double {
-        return feedbackRepository.buscarMediaNotasSingle(startDate, endDate)
+    fun buscarMediaNotaGeral(startDate: String?, endDate: String?): Double {
+        return feedbackRepository.buscarMediaNotaGeral(startDate, endDate) ?: 0.0
     }
 
 
