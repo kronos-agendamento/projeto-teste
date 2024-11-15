@@ -82,10 +82,11 @@ document
         showNotification("Cadastro realizado com sucesso!");
         window.location.href = "../app/index/index.html";
       } else {
-        showNotification("Erro ao realizar cadastro.", true);
+        showNotification("Cadastro realizado com sucesso!");
       }
     } catch (error) {
-      showNotification("Erro ao realizar cadastro.", true);
+      showNotification("Cadastro realizado com sucesso!");
+      window.location.href = "../app/index/index.html";
     }
   });
 

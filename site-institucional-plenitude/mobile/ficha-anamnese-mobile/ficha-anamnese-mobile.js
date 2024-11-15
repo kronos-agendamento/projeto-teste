@@ -144,6 +144,35 @@ async function fetchPerguntas() {
   }
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+  const submitButton = document.getElementById("submit-button");
+  const modal = document.getElementById("modalConfirmacaoAnamnese");
+  const confirmarEnvio = document.getElementById("confirmarEnvioAnamnese");
+  const cancelarEnvio = document.getElementById("cancelarEnvioAnamnese");
+
+  if (!submitButton || !modal || !confirmarEnvio || !cancelarEnvio) {
+    console.error("Elementos necessários não foram encontrados.");
+    return;
+  }
+
+  // Abre o modal ao clicar no botão "Enviar Respostas"
+  submitButton.addEventListener("click", function () {
+    modal.style.display = "flex"; // Exibe o modal
+  });
+
+  // Confirma o envio e chama submitForm
+  confirmarEnvio.addEventListener("click", function () {
+    modal.style.display = "none"; // Fecha o modal
+    submitForm(); // Chama a função de envio
+  });
+
+  // Cancela o envio e fecha o modal
+  cancelarEnvio.addEventListener("click", function () {
+    modal.style.display = "none"; // Fecha o modal sem enviar
+  });
+});
+
+
 // Função para enviar o formulário com as respostas preenchidas
 async function submitForm() {
   const idUsuario = localStorage.getItem("idUsuario");
