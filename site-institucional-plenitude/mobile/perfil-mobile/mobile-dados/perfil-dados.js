@@ -18,12 +18,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         const userData = await fetchUserDataByCpf(cpf);
         if (userData) {
             fillUserProfile(userData);
-            
+
         } else {
             console.error("Usuário não encontrado ou erro ao buscar dados do usuário.");
         }
     }
 
+    
     function fillUserProfile(userData) {
         console.log("Dados recebidos:", userData);
         document.getElementById("nome").value = userData.nome || "";
@@ -67,7 +68,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("confirmUpdateButton").addEventListener("click", async function () {
         try {
             await atualizarUsuario();  // Atualiza primeiro os dados pessoais
-    
+
             const userData = await fetchUserDataByCpf(localStorage.getItem("cpf")); // Atualiza a interface com os dados mais recentes
             if (userData) {
                 fillUserProfile(userData);
@@ -78,11 +79,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             showNotification("Erro ao confirmar atualização.", true);
         }
     });
-    
+
     document.getElementById("confirmUpdateButtonEndereco").addEventListener("click", async function () {
         try {
             await atualizarEndereco();  // Atualiza primeiro os dados pessoais
-    
+
             const userData = await fetchUserDataByCpf(localStorage.getItem("cpf")); // Atualiza a interface com os dados mais recentes
             if (userData) {
                 fillUserProfile(userData);
@@ -121,7 +122,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 throw new Error(`Erro ao atualizar usuário: ${usuarioResponse.status}`);
             }
 
-            showNotification("Dados atualizados com sucesso!");
+            showNotification("Dados pessoais atualizados com sucesso!");
 
             // Recarregar os dados atualizados
             const userData = await fetchUserDataByCpf(cpf);
@@ -133,6 +134,48 @@ document.addEventListener("DOMContentLoaded", async () => {
             showNotification("Erro ao Atualizar!", true);
         }
     }
+
+    async function buscarEnderecoPorCep(cep) {
+        try {
+            const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+
+            if (!response.ok) {
+                throw new Error("Erro ao buscar o endereço pelo CEP");
+            }
+
+            const endereco = await response.json();
+
+            if (endereco.erro) {
+                showNotification(
+                    "CEP não encontrado. Verifique e tente novamente.",
+                    true
+                );
+                return null;
+            }
+
+            // Preenche os campos de endereço
+            document.getElementById("logradouro").value = endereco.logradouro;
+            document.getElementById("bairro").value = endereco.bairro;
+            document.getElementById("cidade").value = endereco.localidade;
+            document.getElementById("estado").value = endereco.uf;
+
+            return endereco;
+        } catch (error) {
+            console.error("Erro ao buscar o endereço:", error);
+            showNotification("Erro ao buscar o endereço. Tente novamente.", true);
+        }
+    }
+
+    // Adiciona o evento de blur ao campo de CEP para buscar o endereço
+    document.getElementById("cep").addEventListener("blur", async function () {
+        const cep = this.value.replace(/\D/g, ""); // Remove qualquer caracter não numérico
+
+        if (cep.length === 8) {
+            await buscarEnderecoPorCep(cep);
+        } else {
+            showNotification("CEP inválido. Verifique e tente novamente.", true);
+        }
+    });
 
     async function atualizarEndereco() {
         try {
@@ -147,7 +190,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 estado: document.getElementById("estado").value,
                 complemento: document.getElementById("complemento").value,
             };
-    
+
             const enderecoResponse = await fetch(`http://localhost:8080/api/enderecos/${idEndereco}`, {
                 method: "PUT",
                 headers: {
@@ -155,13 +198,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                 },
                 body: JSON.stringify(enderecoDTO),
             });
-    
+
             if (!enderecoResponse.ok) {
                 throw new Error(`Erro ao atualizar endereço: ${enderecoResponse.status}`);
             }
-    
+
             showNotification("Endereço atualizado com sucesso!");
-    
+
             // Opcional: Recarregar os dados atualizados
             const updatedUserData = await fetchUserDataByCpf(localStorage.getItem("cpf"));
             if (updatedUserData) {
@@ -172,7 +215,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             showNotification("Erro ao Atualizar Endereço!", true);
         }
     }
-    
+
 
 
 
@@ -198,6 +241,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             notification.classList.remove("show");
         }, 3000);
     }
+
+    document.getElementById("file").addEventListener("change", function () {
+        if (this.files && this.files.length > 0) {
+            showNotification("Foto anexada com sucesso!");
+        }
+    });
+    
 });
 
 function fecharModalDecisao() {
@@ -216,7 +266,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const fileInput = document.getElementById("file");
 
         if (!cpf || fileInput.files.length === 0) {
-            alert("Por favor, insira o CPF e selecione uma imagem.");
+            showNotification("Por favor, insira o CPF e selecione uma imagem.", true);
             return;
         }
 
@@ -230,21 +280,40 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             const result = await response.text();
-            const responseMessage = document.getElementById("responseMessage");
 
             if (response.ok) {
-                responseMessage.textContent = "Foto enviada com sucesso! Recarregue a página para ter acesso à foto atualizada.";
-                responseMessage.style.color = "green";
+                showNotification("Foto enviada com sucesso!");
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
             } else {
-                responseMessage.textContent = `Erro: ${result}`;
-                responseMessage.style.color = "red";
+                showNotification(`Erro: ${result}`, true);
             }
         } catch (error) {
             console.error("Erro ao enviar a foto:", error);
-            document.getElementById("responseMessage").textContent = "Erro ao enviar a foto.";
+            showNotification("Erro ao enviar a foto.", true);
         }
     });
+
+
+    function showNotification(message, isError = false) {
+        const notification = document.getElementById("notification");
+        const notificationMessage = document.getElementById("notification-message");
+        notificationMessage.textContent = message;
+        if (isError) {
+            notification.classList.add("error");
+        } else {
+            notification.classList.remove("error");
+        }
+        notification.classList.add("show");
+        setTimeout(() => {
+            notification.classList.remove("show");
+        }, 3000);
+    }
 });
+
+
+
 
 async function carregarImagem2() {
     const cpf = localStorage.getItem("cpf");
