@@ -44,7 +44,9 @@ document.addEventListener("DOMContentLoaded", async function () {
       if (clienteData) {
         console.log("Dados do cliente:", clienteData);
         console.log("Avaliação do cliente:", clienteData.avaliacao); // Verifique o valor de avaliação aqui
-  
+        const avaliacaoSelecionada = clienteData.avaliacao; // Mantém como referência
+        console.log("Avaliação carregada:", avaliacaoSelecionada);
+        mostrarAvaliacaoEstrelas(avaliacaoSelecionada); // Exibe a avaliação carregada
 
         setFieldValue("codigo", clienteData.idUsuario);
         setFieldValue("nome", clienteData.nome);
@@ -56,13 +58,13 @@ document.addEventListener("DOMContentLoaded", async function () {
         setFieldValue("email", clienteData.email);
         setFieldValue("indicacao", clienteData.indicacao);
 
-        if (clienteData.avaliacao != null) {
-          console.log(clienteData.avaliacao)
-          localStorage.setItem("avaliacao", clienteData.avaliacao); // Salva a avaliação no localStorage
-          mostrarAvaliacaoEstrelas(clienteData.avaliacao); // Exibe a avaliação como estrelas
-        } else {
-          mostrarAvaliacaoEstrelas(0); // Exibe 0 estrelas se não houver avaliação
-        }
+        // if (clienteData.avaliacao != null) {
+        //   console.log(clienteData.avaliacao)
+        //   localStorage.setItem("avaliacao", clienteData.avaliacao); // Salva a avaliação no localStorage
+        //   mostrarAvaliacaoEstrelas(clienteData.avaliacao); // Exibe a avaliação como estrelas
+        // } else {
+        //   mostrarAvaliacaoEstrelas(0); // Exibe 0 estrelas se não houver avaliação
+        // }
 
         if (clienteData.endereco) {
           setFieldValue("logradouro", clienteData.endereco.logradouro);
@@ -83,20 +85,21 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   function mostrarAvaliacaoEstrelas(pontuacao) {
     const avaliacaoElement = document.getElementById("avaliacao");
-    avaliacaoElement.innerHTML = ""; // Limpa o conteúdo atual
-  
+    avaliacaoElement.innerHTML = "";
+
     for (let i = 1; i <= 5; i++) {
-      const star = document.createElement("span");
-      star.classList.add("star");
-      if (i <= pontuacao) {
-        star.classList.add("filled"); // Adiciona a classe para estrelas preenchidas
-        star.innerHTML = "★"; // Caractere de estrela preenchida
-      } else {
-        star.innerHTML = "☆"; // Caractere de estrela vazia
-      }
-      avaliacaoElement.appendChild(star);
+        const star = document.createElement("span");
+        star.classList.add("star");
+        if (i <= pontuacao) {
+            star.classList.add("filled");
+            star.innerHTML = "★";
+        } else {
+            star.innerHTML = "☆";
+        }
+        avaliacaoElement.appendChild(star);
     }
-  }
+}
+
 
   async function fetchUsuarioPorId(idUsuario) {
     try {
@@ -144,20 +147,24 @@ document.addEventListener("DOMContentLoaded", async function () {
   // Função para alternar a edição de "Dados Pessoais"
   function togglePersonalEditing() {
     isEditingPersonal = !isEditingPersonal; // Alterna o estado de edição
+    
     if (isEditingPersonal) {
-      document.querySelectorAll("#personalForm input").forEach((field) => {
-        field.disabled = false; // Habilita os campos de Dados Pessoais
-      });
-      document.getElementById("saveButton").disabled = false; // Habilita o botão de salvar de Dados Pessoais
-      toggleLockIcons("personalForm", true); // Mostra ícones de cadeado para Dados Pessoais
+        // Seleciona todos os inputs e selects dentro do formulário
+        document.querySelectorAll("#personalForm input, #personalForm select").forEach((field) => {
+            field.disabled = false; // Habilita os campos de Dados Pessoais
+        });
+        document.getElementById("saveButton").disabled = false; // Habilita o botão de salvar de Dados Pessoais
+        toggleLockIcons("personalForm", true); // Mostra ícones de cadeado para Dados Pessoais
     } else {
-      document.querySelectorAll("#personalForm input").forEach((field) => {
-        field.disabled = true; // Desabilita os campos de Dados Pessoais
-      });
-      document.getElementById("saveButton").disabled = true; // Desabilita o botão de salvar de Dados Pessoais
-      toggleLockIcons("personalForm", false); // Esconde ícones de cadeado para Dados Pessoais
+        // Desabilita todos os inputs e selects do formulário
+        document.querySelectorAll("#personalForm input, #personalForm select").forEach((field) => {
+            field.disabled = true; // Desabilita os campos de Dados Pessoais
+        });
+        document.getElementById("saveButton").disabled = true; // Desabilita o botão de salvar de Dados Pessoais
+        toggleLockIcons("personalForm", false); // Esconde ícones de cadeado para Dados Pessoais
     }
-  }
+}
+
 
   // Função para alternar a edição de "Dados de Endereço"
   function toggleAddressEditing() {
@@ -243,7 +250,7 @@ async function updatePersonalData(event) {
     genero: document.getElementById("genero").value || clienteData.genero,
     indicacao: document.getElementById("indicacao").value || clienteData.indicacao,
     cpf: document.getElementById("cpf").value || clienteData.cpf,
-    avaliacao: avaliacaoSelecionada // Inclui a avaliação selecionada
+    avaliacao: clienteData.avaliacao// Inclui a avaliação selecionada
   };
 
   try {
@@ -260,7 +267,7 @@ async function updatePersonalData(event) {
 
     if (response.ok) {
       clienteData = { ...clienteData, ...updatedData };
-      localStorage.setItem("avaliacao", avaliacaoSelecionada); // Armazena no localStorage
+      // localStorage.setItem("avaliacao", avaliacaoSelecionada); // Armazena no localStorage
       showNotification("Dados atualizados com sucesso!");
       updateUndoRedoButtons();
       togglePersonalEditing();

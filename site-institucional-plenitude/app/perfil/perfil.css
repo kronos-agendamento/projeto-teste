@@ -435,6 +435,7 @@ Dados do usuário
   input {
     padding: 1vw;
     width: 100%;
+    font-family: poppins;
   }
 }
 
@@ -467,6 +468,7 @@ Dados do usuário
   margin: 0.2vw;
   width: 100%;
   justify-content: center;
+  font-family: poppins;
 }
 
 .form-group input[type="file"] {
@@ -836,6 +838,7 @@ td {
   border: 1px solid #ddd;
   border-radius: 5px;
   font-size: 14px;
+  font-family: poppins;
 }
 
 .form-group-row {
