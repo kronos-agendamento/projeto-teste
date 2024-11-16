@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.validation.Valid
+import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.query.Param
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -42,14 +44,21 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
     }
 
     @GetMapping("/agendamento-status")
-    fun getAgendamentosPorStatus(): ResponseEntity<Map<String, Int>> {
-        val agendamentosPorStatus = agendamentoService.obterAgendamentosPorStatus()
+    fun getAgendamentosPorStatus(
+        @RequestParam(required = false) startDate: String?
+    ): ResponseEntity<Map<String, Int>> {
+        val agendamentosPorStatus = agendamentoService.obterAgendamentosPorStatus(startDate)
         return if (agendamentosPorStatus.isNotEmpty()) {
             ResponseEntity.ok(agendamentosPorStatus)
         } else {
             ResponseEntity.status(HttpStatus.NO_CONTENT).build()
         }
     }
+
+
+
+
+
 
     @GetMapping("/tempo-medio")
     fun getTempoMedioEntreAgendamentos(): ResponseEntity<Double> {
@@ -172,21 +181,44 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
     }
 
     @GetMapping("/tempo-gasto-ultimo-mes")
-    fun getTempoGastoPorProcedimentoUltimoMes(): ResponseEntity<Map<String, Double>> {
-        val tempoGasto = agendamentoService.obterTempoGastoPorProcedimentoUltimoMes()
-        return ResponseEntity.ok(tempoGasto)
+    fun getTempoGastoPorProcedimento(
+        @RequestParam(required = false) startDate: String?,
+        @RequestParam(required = false) endDate: String?
+    ): ResponseEntity<Map<String, Double>> {
+        val tempoGasto = agendamentoService.obterTempoGastoPorProcedimento(startDate, endDate)
+        return if (tempoGasto.isNotEmpty()) {
+            ResponseEntity.ok(tempoGasto)
+        } else {
+            ResponseEntity.noContent().build()
+        }
     }
 
     @GetMapping("/procedimentos-realizados-trimestre")
-    fun getProcedimentosRealizadosUltimoTrimestre(): ResponseEntity<Map<String, Int>> {
-        val procedimentosRealizados = agendamentoService.obterProcedimentosRealizadosUltimoTrimestre()
-        return ResponseEntity.ok(procedimentosRealizados)
+    fun getProcedimentosRealizadosEntreDatas(
+        @RequestParam(required = false) startDate: String?,
+        @RequestParam(required = false) endDate: String?
+    ): ResponseEntity<Map<String, Int>> {
+        val procedimentosRealizados = agendamentoService.obterProcedimentosRealizadosEntreDatas(startDate, endDate)
+        return if (procedimentosRealizados.isNotEmpty()) {
+            ResponseEntity.ok(procedimentosRealizados)
+        } else {
+            ResponseEntity.noContent().build()
+        }
     }
 
+
+
     @GetMapping("/valor-total-ultimo-mes")
-    fun getValorTotalUltimoMesPorProcedimento(): ResponseEntity<Map<String, Double>> {
-        val valorTotalProcedimentos = agendamentoService.obterValorTotalUltimoMesPorProcedimento()
-        return ResponseEntity.ok(valorTotalProcedimentos)
+    fun getValorTotalPorPeriodo(
+        @RequestParam(required = false) startDate: String?,
+        @RequestParam(required = false) endDate: String?
+    ): ResponseEntity<Map<String, Double>> {
+        val valorTotalProcedimentos = agendamentoService.obterValorTotalEntreDatas(startDate, endDate)
+        return if (valorTotalProcedimentos.isNotEmpty()) {
+            ResponseEntity.ok(valorTotalProcedimentos)
+        } else {
+            ResponseEntity.noContent().build()
+        }
     }
 
     @Operation(
@@ -250,9 +282,16 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
 
 
     @GetMapping("/receita-ultimos-tres-meses")
-    fun getTotalReceitaUltimosTresMeses(): ResponseEntity<Map<String, Double>> {
-        val totalReceita = agendamentoService.obterTotalReceitaUltimosTresMeses()
-        return ResponseEntity.ok(totalReceita)
+    fun getTotalReceitaEntreDatas(
+        @RequestParam(required = false) startDate: String?,
+        @RequestParam(required = false) endDate: String?
+    ): ResponseEntity<Map<String, Double>> {
+        val totalReceita = agendamentoService.obterTotalReceitaEntreDatas(startDate, endDate)
+        return if (totalReceita.isNotEmpty()) {
+            ResponseEntity.ok(totalReceita)
+        } else {
+            ResponseEntity.noContent().build()
+        }
     }
 
 

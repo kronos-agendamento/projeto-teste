@@ -223,6 +223,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         showNotification("Erro ao salvar procedimento!", true);
       }
     });
+    
 });
 
 function formatTime(value) {
@@ -252,9 +253,10 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("userName").textContent = nome;
     document.getElementById("userInsta").textContent = instagram;
   }
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
 });
 
-new window.VLibras.Widget('https://vlibras.gov.br/app');
+
 
 async function carregarImagem2() {
   const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução

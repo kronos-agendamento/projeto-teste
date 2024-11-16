@@ -170,7 +170,7 @@
             <div class="form-group-row">
               &nbsp;&nbsp;&nbsp; Dados Pessoais
               <button
-                class="edit-icon-btn"
+                class="edit-icon-btn filter-btn"
                 id="editIconUsuario"
                 aria-label="Editar Dados Pessoais"
               >
@@ -180,6 +180,7 @@
                   style="width: 20px; height: 20px; border-radius: 0px"
                 />
               </button>
+              <div id="tooltip1" class="tooltip1">editar</div>
             </div>
           </h2>
           <div class="form-group" style="margin-bottom: 1rem">
@@ -327,7 +328,7 @@
               <div class="form-group-row">
                 &nbsp;&nbsp;&nbsp; Dados Empresariais
                 <button
-                  class="edit-icon-btn"
+                  class="edit-icon-btn filter-btn"
                   id="editIconEmpresa"
                   aria-label="Editar Dados Empresariais"
                 >
@@ -337,6 +338,7 @@
                     style="width: 20px; height: 20px; border-radius: 0px"
                   />
                 </button>
+                <div id="tooltip2" class="tooltip2">editar</div>
               </div>
             </h2>
             <div class="form-add">
@@ -547,7 +549,7 @@
                 <div class="funcionario-carrossel">
                   <button class="carrossel-btn prev">&#10094;</button>
                   <div class="clicavel">
-                    <div class="funcionario-info">
+                    <div class="funcionario-info filter-btn">
                       <!-- Imagem do funcionário -->
                       <img
                         class="foto-funcionario"
@@ -556,14 +558,16 @@
                       />
 
                       <!-- Informações do funcionário -->
-                      <div class="funcionario-info">
+                      <div class="funcionario-info ">
                         <h4 class="funcionario-nome">Nome do Funcionário</h4>
                         <p class="funcionario-cargo" style="color: rgb(0, 0, 0);">Cargo: Funcionário</p>
                       </div>
                     </div>
+                    <div id="tooltip3" class="tooltip3">Clique para entrar na página de funcionários</div>
                   </div>
                   <button class="carrossel-btn next">&#10095;</button>
                 </div>
+                
 
                 <hr class="divider" />
 

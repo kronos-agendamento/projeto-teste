@@ -147,8 +147,11 @@ class EspecificacaoController(
         ]
     )
     @GetMapping("/receita-acumulada")
-    fun getReceitaAcumulada(): ResponseEntity<List<Double>> {
-        val resultado = service.getReceitaAcumulada()
+    fun getReceitaAcumulada(
+        @RequestParam(required = false) startDate: String?,
+        @RequestParam(required = false) endDate: String?
+    ): ResponseEntity<List<Map<String, Any>>> {
+        val resultado = service.getReceitaAcumulada(startDate, endDate)
         return if (resultado.isNotEmpty()) {
             ResponseEntity.ok(resultado)
         } else {

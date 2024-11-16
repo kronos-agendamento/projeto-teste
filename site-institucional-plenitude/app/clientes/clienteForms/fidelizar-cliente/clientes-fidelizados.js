@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document
       .querySelector("#modal-archive .btn-no")
       .addEventListener("click", closeModalArchive);
-  
+      new window.VLibras.Widget('https://vlibras.gov.br/app');
     // Função para buscar usuários ativos
     async function fetchUsuariosFidelizados() {
       try {
@@ -471,6 +471,7 @@ document.querySelector(".planilha-btn").addEventListener("click", function () {
     .catch(error => {
       console.error("Erro ao buscar os dados completos:", error);
     });
+   
 });
 
 // Função para preencher a tabela com todos os dados recebidos
@@ -577,7 +578,7 @@ saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), filename);
   }
 
   
-new window.VLibras.Widget('https://vlibras.gov.br/app');
+
 
 async function carregarImagem2() {
   const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução
@@ -615,3 +616,43 @@ window.onload = function () {
   carregarImagem2();
   updateKpiData();
 };
+
+document.addEventListener("DOMContentLoaded", function () {
+  const tooltips = document.querySelectorAll(
+    ".tooltip21, .tooltip22, .tooltip23, .tooltip9"
+  );
+
+  tooltips.forEach((tooltip) => {
+    const targetButton = tooltip.previousElementSibling;
+
+    targetButton.addEventListener("mouseenter", () => {
+      tooltip.style.visibility = "hidden"; // Oculta temporariamente para cálculo
+      tooltip.style.display = "block"; // Exibe para cálculo
+      positionTooltip(tooltip, targetButton);
+      tooltip.style.visibility = "visible"; // Mostra após posicionamento
+    });
+
+    targetButton.addEventListener("mouseleave", () => {
+      tooltip.style.display = "none"; // Oculta quando sai do hover
+    });
+
+    window.addEventListener("resize", () => {
+      if (tooltip.style.display === "block") {
+        positionTooltip(tooltip, targetButton); // Recalcula posição em redimensionamento
+      }
+    });
+  });
+
+  function positionTooltip(tooltip, target) {
+    const targetRect = target.getBoundingClientRect();
+    const tooltipRect = tooltip.getBoundingClientRect();
+
+    // Centraliza horizontalmente e posiciona acima do botão
+    const topPosition = targetRect.top - tooltipRect.height - 5;
+    const leftPosition =
+      targetRect.left + targetRect.width / 0 - tooltipRect.width / 0;
+
+    tooltip.style.top = `${topPosition + window.scrollY}px`;
+    tooltip.style.left = `${leftPosition + window.scrollX}px`;
+  }
+});

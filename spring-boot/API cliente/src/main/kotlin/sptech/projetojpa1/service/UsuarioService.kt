@@ -105,6 +105,7 @@ class UsuarioService(
                 cpf = usuario.cpf ?: "",
                 instagram = usuario.instagram ?: "",
                 empresa = usuario.empresa,
+                nivelAcesso = usuario.nivelAcesso,
                 idUsuario = usuario.codigo,
             )
         } else {
@@ -149,7 +150,7 @@ class UsuarioService(
             genero = dto.genero ?: genero
             indicacao = dto.indicacao ?: indicacao
             avaliacao = dto.avaliacao ?: avaliacao
-            senha = dto.senha?: senha
+            senha = dto.senha ?: senha
         }
 
         // Salvar o usuário atualizado
@@ -300,7 +301,7 @@ class UsuarioService(
         return usuarioRepository.findTop3Indicacoes()
     }
 
-    fun buscarNumeroIndicacoes(): List<Int> {
+    fun buscarNumeroIndicacoes(): List<Map<String, Any>> {
         return usuarioRepository.buscarNumerosDivulgacao()
     }
 
@@ -454,13 +455,15 @@ class UsuarioService(
         }
     }
 
-    fun getClientesConcluidosUltimos5Meses(): List<Int> {
-        return usuarioRepository.findClientesConcluidos5Meses()
+    fun getClientesConcluidosUltimos5Meses(startDate: String?, endDate: String?): List<Map<String, Any>> {
+        return usuarioRepository.findClientesFidelizadosComPeriodo(startDate, endDate)
     }
 
-    fun getClientesFidelizadosUltimos5Meses(): List<Int> {
-        return usuarioRepository.findClientesFidelizados5Meses()
+
+    fun getClientesFidelizadosUltimos5MesesComPeriodo(startDate: String?, endDate: String?): List<Map<String, Any>> {
+        return usuarioRepository.findClientesFidelizadosComPeriodo(startDate, endDate)
     }
+
 
     fun getByNomeContains(nome: String): List<UsuarioDTO> {
         return usuarioRepository.findByNomeContainsIgnoreCase(nome)

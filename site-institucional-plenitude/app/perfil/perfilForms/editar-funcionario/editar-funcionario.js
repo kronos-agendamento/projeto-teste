@@ -337,6 +337,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   document.getElementById("btn-undo")?.addEventListener("click", undoAction);
   document.getElementById("btn-redo")?.addEventListener("click", redoAction);
   updateUndoRedoButtons(); // Inicializar Undo e Redo ao carregar a página
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
 });
 
 async function carregarImagem2() {

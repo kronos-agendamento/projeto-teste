@@ -75,18 +75,19 @@ interface UsuarioRepository : JpaRepository<Usuario, Int> {
 
     @Query(
         nativeQuery = true, value = """
-    SELECT  
-        COUNT(u.indicacao) AS frequencia
-    FROM 
-        usuario u
-    GROUP BY 
-        u.indicacao
-    ORDER BY 
-        frequencia DESC
-    LIMIT 3
+        SELECT  
+            u.indicacao AS meio_indicacao, -- Meio de indicação
+            COUNT(u.indicacao) AS frequencia -- Quantidade de vezes que cada meio foi utilizado
+        FROM 
+            usuario u
+        GROUP BY 
+            u.indicacao
+        ORDER BY 
+            frequencia DESC
     """
     )
-    fun buscarNumerosDivulgacao(): List<Int>
+    fun buscarNumerosDivulgacao(): List<Map<String, Any>> // Muda para retornar um Map contendo os dois valores
+
 
     @Query(
         nativeQuery = true,
@@ -144,49 +145,76 @@ WHERE a.data_horario BETWEEN COALESCE(:startDate, DATE_SUB(NOW(), INTERVAL 3 MON
 
 
     @Query(
-        nativeQuery = true, value = """
+        nativeQuery = true,
+        value = """
     SELECT 
-    COUNT(DISTINCT a.fk_usuario) AS QTD_CLIENTES
-FROM 
-    agendamento a
-JOIN 
-    status sa ON a.fk_status = sa.id_status_agendamento
-WHERE 
-    sa.nome = 'Concluído' 
-    AND a.data_horario BETWEEN DATE_SUB(CURDATE(), INTERVAL 5 MONTH) AND CURDATE()
-GROUP BY 
-    YEAR(a.data_horario), MONTH(a.data_horario), MONTHNAME(a.data_horario) -- Agrupar por ano, mês e nome do mês
-HAVING 
-    COUNT(a.id_agendamento) >= 2 -- Apenas meses com pelo menos 2 agendamentos concluídos
-ORDER BY 
-    YEAR(a.data_horario) DESC, MONTH(a.data_horario) DESC;
-
+        CONCAT(MONTHNAME(a.data_horario), ' ', YEAR(a.data_horario)) AS periodo,
+        COUNT(DISTINCT a.fk_usuario) AS QTD_CLIENTES
+    FROM 
+        agendamento a
+    JOIN 
+        status sa ON a.fk_status = sa.id_status_agendamento
+    WHERE 
+        sa.nome = 'Concluído' 
+        AND a.data_horario BETWEEN COALESCE(:startDate, DATE_SUB(CURDATE(), INTERVAL 5 MONTH)) 
+                              AND COALESCE(:endDate, CURDATE())
+    GROUP BY 
+        CONCAT(MONTHNAME(a.data_horario), ' ', YEAR(a.data_horario)),
+        YEAR(a.data_horario), 
+        MONTH(a.data_horario)
+    HAVING 
+        COUNT(a.id_agendamento) >= 2
+    ORDER BY 
+        periodo DESC;
     """
     )
-    fun findClientesFidelizados5Meses(): List<Int>
+    fun findClientesFidelizadosComPeriodo(
+        @Param("startDate") startDate: String?,
+        @Param("endDate") endDate: String?
+    ): List<Map<String, Any>>
+
+
+
 
     @Query(
         nativeQuery = true,
         value = """
-        WITH UserAgendamentos AS (
-            SELECT a.fk_usuario, 
-                   YEAR(a.data_horario) AS ano, 
-                   MONTH(a.data_horario) AS mes
-            FROM agendamento a
-            JOIN status sa ON a.fk_status = sa.id_status_agendamento
-            WHERE sa.nome = 'Concluído'
-              AND a.data_horario BETWEEN DATE_SUB(CURDATE(), INTERVAL 5 MONTH) AND CURDATE()
-            GROUP BY a.fk_usuario, YEAR(a.data_horario), MONTH(a.data_horario)
-            HAVING COUNT(a.id_agendamento) = 1
-        )
-        SELECT  
-            COUNT(DISTINCT fk_usuario) AS QTD_CLIENTES
-        FROM UserAgendamentos
-        GROUP BY ano, mes
-        ORDER BY ano DESC, mes DESC;
-        """
+            WITH UserAgendamentos AS (
+        SELECT 
+            a.fk_usuario, 
+            YEAR(a.data_horario) AS ano, 
+            MONTH(a.data_horario) AS mes,
+            COUNT(a.id_agendamento) AS total_agendamentos
+        FROM 
+            agendamento a
+        JOIN 
+            status sa ON a.fk_status = sa.id_status_agendamento
+        WHERE 
+            sa.nome = 'Concluído'
+            AND a.data_horario BETWEEN COALESCE(:startDate, DATE_SUB(CURDATE(), INTERVAL 5 MONTH))
+                                  AND COALESCE(:endDate, CURDATE())
+        GROUP BY 
+            a.fk_usuario, YEAR(a.data_horario), MONTH(a.data_horario)
     )
-    fun findClientesConcluidos5Meses(): List<Int>
+    SELECT 
+        CONCAT(MONTHNAME(DATE(CONCAT(ano, '-', mes, '-01'))), ' ', ano) AS periodo,
+        COUNT(DISTINCT fk_usuario) AS QTD_CLIENTES
+    FROM 
+        UserAgendamentos
+    WHERE 
+        total_agendamentos = 1
+    GROUP BY 
+        ano, mes
+    ORDER BY 
+        ano DESC, mes DESC;
+    """
+    )
+    fun findClientesConcluidos5Meses(
+        @Param("startDate") startDate: String?,
+        @Param("endDate") endDate: String?
+    ): List<Map<String, Any>>
+
+
 
     @Query(
         nativeQuery = true, value = """

@@ -865,7 +865,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-new window.VLibras.Widget("https://vlibras.gov.br/app");
 
 document.addEventListener("DOMContentLoaded", () => {
   let isEditingPersonal = false; // Controle da edição dos dados pessoais
@@ -954,6 +953,8 @@ document.addEventListener("DOMContentLoaded", () => {
           "Erro ao enviar a foto.";
       }
     });
+    
+new window.VLibras.Widget("https://vlibras.gov.br/app");
 });
 
 async function carregarImagem() {
@@ -1135,3 +1136,5 @@ function iniciarAutoSlide() {
 
 // Chama a função para carregar os funcionários ao carregar a página
 document.addEventListener("DOMContentLoaded", carregarFuncionarios);
+
+

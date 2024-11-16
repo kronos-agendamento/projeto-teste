@@ -126,13 +126,13 @@ function fetchData2(url, params = {}, callback) {
     function updateKPIs() {
         const endpoints = {
 
-            // KPI's - Gerencial - ok
+            // KPI's - Gerencial
             clientesAtivos: '/usuarios/clientes-ativos',
             clientesInativos: '/usuarios/clientes-inativos',
             clientesFidelizados: '/usuarios/clientes-fidelizados-ultimos-tres-meses',
             agendamentosRealizados: '/api/agendamentos/agendamentos-realizados',
 
-            // KPI's - Usabilidade - ok
+            // KPI's - Usabilidade
             tempoAgendamento: '/api/agendamentos/tempo-para-agendar',
             retornoLogin: '/login-logoff/retorno-usuarios-login',
 
@@ -143,7 +143,6 @@ function fetchData2(url, params = {}, callback) {
             tempoMedio: '/api/agendamentos/media-tempo-entre-agendamentos',
 
             // Gráfico 1 - Gerencial
-            listarTop3Indicacoes: '/usuarios/buscar-top3-indicacoes',
             listarNumeroIndicacoes: '/usuarios/buscar-numeros-indicacoes',
 
             // Gráfico 2 - Gerencial
@@ -152,21 +151,26 @@ function fetchData2(url, params = {}, callback) {
 
             // Gráfico 33 - Gerencial
             listarProcedimentosBemAvaliados: '/api/procedimentos/listar-bem-avaliados',
-            buscarMediaNotas: '/api/feedbacks/buscar-media-notas',
 
             // Gráfico 4 - Gerencial
             receitaAcumulada: '/api/especificacoes/receita-acumulada',
-            receitaAcumuladaLabels: '/api/especificacoes/receita-acumulada-labels',
 
             // Gráfico 2 - Gerencial
-            agendamentosProcedimentosLabels: '/api/especificacoes/nomes',
-            agendamentosProcedimentos: '/api/procedimentos/quantidade-agendamentos-procedimentos',
+            agendamentosProcedimentos: '/api/procedimentos/quantidade-agendamentos-especificacao',
 
             // Gráfico 1 - Operacional
             agendamentosStatus: '/api/agendamentos/agendamento-status',
+
+            // Gráfico 4 - Operacional
             agendamentosReceitaUltimosTresMeses: '/api/agendamentos/receita-ultimos-tres-meses',
+
+            // Gráfico 3 - Operacional
             agendamentosTempoGastoUltimoMes: '/api/agendamentos/tempo-gasto-ultimo-mes',
+
+            // Gráfico 2 - Operacional
             agendamentosProcedimentosRealizadosTrimestre: '/api/agendamentos/procedimentos-realizados-trimestre',
+
+            // Gráfico 5 - Operacional
             agendamentosValorTotalUltimoMes: '/api/agendamentos/valor-total-ultimo-mes',
 
             // Gráfico 1 - Usabilidade - ok
@@ -206,31 +210,36 @@ function fetchData2(url, params = {}, callback) {
         fetchData2(endpoints.tempoMedio, {},updateTempoMedio);
 
         // Chamadas para atualizar os dados do gráfico 1 - Gerencial
-        fetchData(endpoints.listarTop3Indicacoes, updateListarTop3Indicacoes);
         fetchData(endpoints.listarNumeroIndicacoes, updateChart1)
 
         // Chamadas para atualizar os dados do gráfico 2 - Gerencial
-        fetchData(endpoints.listarClientesConcluidosUltimosCincoMeses, updateChart2_1);
-        fetchData(endpoints.listarClientesFidelizadosUltimosCincoMeses, updateChart2_2);
+        fetchData2(endpoints.listarClientesConcluidosUltimosCincoMeses, {},updateChart2_1);
+        fetchData2(endpoints.listarClientesFidelizadosUltimosCincoMeses, {},updateChart2_2);
 
         // Chamadas para atualizar os dados do gráfico 3 - Gerencial
-        fetchData(endpoints.receitaAcumuladaLabels, updateReceitaAcumuladaLabels);
-        fetchData(endpoints.receitaAcumulada, updateChart3);
+        fetchData2(endpoints.receitaAcumulada, {},updateChart3);
 
         // Chamadas para atualizar os dados do gráfico 33 - Gerencial
-        fetchData(endpoints.listarProcedimentosBemAvaliados, updateChart33Labels)
-        fetchData(endpoints.buscarMediaNotas, updateChart33);
+        fetchData2(endpoints.listarProcedimentosBemAvaliados, {},updateChart33Labels);
+        
 
         // Chamadas para atualizar os dados do gráfico 4 - Gerencial
-        fetchData(endpoints.agendamentosProcedimentosLabels, updateChart4Labels);
-        fetchData(endpoints.agendamentosProcedimentos, updateChart4);
+        fetchData2(endpoints.agendamentosProcedimentos, {},updateChart4);
 
         // Chamada para atualizar os dados do gráfico 1 - Operacional
-        fetchData(endpoints.agendamentosStatus, updateChartOperacional1);
-        fetchData(endpoints.agendamentosReceitaUltimosTresMeses, updateChartReceitaProcedimentosOperacional4);
-        fetchData(endpoints.agendamentosTempoGastoUltimoMes, updateChartTempoGastoOperacional2);
-        fetchData(endpoints.agendamentosProcedimentosRealizadosTrimestre, updateChartProcedimentoRealizadosTrimestreOperacional3);
-        fetchData(endpoints.agendamentosValorTotalUltimoMes, updateChartValorTotalUltimoMesOperacional5);
+        fetchData2(endpoints.agendamentosStatus, {},updateChartOperacional1);
+
+        // Chamada para atualizar os dados do gráfico 4 - Operacional
+        fetchData2(endpoints.agendamentosReceitaUltimosTresMeses, {},updateChartReceitaProcedimentosOperacional4);
+
+        // Chamada para atualizar os dados do gráfico 3 - Operacional
+        fetchData2(endpoints.agendamentosTempoGastoUltimoMes, {},updateChartTempoGastoOperacional2);
+
+        // Chamada para atualizar os dados do gráfico 2 - Operacional
+        fetchData2(endpoints.agendamentosProcedimentosRealizadosTrimestre, {}, updateChartProcedimentoRealizadosTrimestreOperacional3);
+
+        // Chamada para atualizar os dados do gráfico 5 - Operacional
+        fetchData2(endpoints.agendamentosValorTotalUltimoMes, {},updateChartValorTotalUltimoMesOperacional5);
 
         // Chamada para atualiazar o gráfico de usabilidade - Usabilidade
         fetchData2(
@@ -239,6 +248,10 @@ function fetchData2(url, params = {}, callback) {
             updateChartUsabilidade1
         );
     }
+
+// Funções que atualizam as KPI's do gerencial
+updateKPIs();
+
     function addFilterListener(buttonId, url, startDateId, endDateId, callback) {
         document.getElementById(buttonId).addEventListener("click", function () {
             buscarDadosPorGrafico(url, startDateId, endDateId, callback);
@@ -249,6 +262,13 @@ function fetchData2(url, params = {}, callback) {
             buscarDadosPorGrafico2(url, startDateId, callback);
         });
     }
+    function addFilterListener3(buttonId, url) {
+        document.getElementById(buttonId).addEventListener("click", function () {
+            fetch(url, updateChart1);
+        });
+    }
+
+
     // Atualização dos botões de filtro da página de usabilidade
     addFilterListener(
         "buscarUsabilidadeGrafico1Button",                                     // ID do botão
@@ -271,6 +291,8 @@ function fetchData2(url, params = {}, callback) {
         "endDateUsabilidadeKPI2",
         updateTempoAgendamento
     );
+
+
     // atualização dos botões de filtro da página Gerencial
     addFilterListener(
         "buscarGerencialKPI1Button",
@@ -295,10 +317,45 @@ function fetchData2(url, params = {}, callback) {
     );
     addFilterListener(
         "buscarGerencialKPI4Button",
-        "/api/feedbacks/media-notas-single",
+        "/usuarios/clientes-fidelizados-ultimos-tres-meses",
         "startDateGerencialKPI4",
         "endDateGerencialKPI4",
         updateClientesFidelizados
+    );
+    addFilterListener(
+        "buscarGerencialGrafico1Button",                                     // ID do botão
+        "/usuarios/clientes-concluidos-ultimos-cinco-meses", // URL da API
+        "startDateGerencialGrafico1",                            // ID do campo de data de início
+        "endDateGerencialGrafico1",                              // ID do campo de data de término
+        updateChart2_1                  // Callback específico para atualizar o gráfico 1
+    );
+    addFilterListener(
+        "buscarGerencialGrafico1Button",                                     // ID do botão
+        "/usuarios/clientes-fidelizados-ultimos-cinco-meses", // URL da API
+        "startDateGerencialGrafico1",                            // ID do campo de data de início
+        "endDateGerencialGrafico1",                              // ID do campo de data de término
+        updateChart2_2                  // Callback específico para atualizar o gráfico 1
+    );
+    addFilterListener(
+        "buscarGerencialGrafico2Button",                                     // ID do botão
+        "/api/procedimentos/quantidade-agendamentos-especificacao", // URL da API
+        "startDateGerencialGrafico2",                            // ID do campo de data de início
+        "endDateGerencialGrafico2",                              // ID do campo de data de término
+        updateChart4                 // Callback específico para atualizar o gráfico 1
+    );
+    addFilterListener(
+        "buscarGerencialGrafico3Button",                                     // ID do botão
+        "/api/procedimentos/listar-bem-avaliados", // URL da API
+        "startDateGerencialGrafico3",                            // ID do campo de data de início
+        "endDateGerencialGrafico3",                              // ID do campo de data de término
+        updateChart33Labels           // Callback específico para atualizar o gráfico 1
+    );
+    addFilterListener(
+        "buscarGerencialGrafico4Button",                                     // ID do botão
+        "/api/especificacoes/receita-acumulada", // URL da API
+        "startDateGerencialGrafico4",                            // ID do campo de data de início
+        "endDateGerencialGrafico4",                              // ID do campo de data de término
+        updateChart3         // Callback específico para atualizar o gráfico 1
     );
 
 
@@ -323,19 +380,51 @@ function fetchData2(url, params = {}, callback) {
         "endDateOperacionalKPI3",
         updateTempoMedio
     );
-
     addFilterListener(
         "buscarOperacionalKPI4Button",
-        "/api/agendamentos/media-tempo-entre-agendamentos",
+        "/api/feedbacks/media-notas-single",
         "startDateOperacionalKPI4",
         "endDateOperacionalKPI4",
         updateNotaSingle
     );
+    addFilterListener2(
+        "buscarOperacionalGrafico1Button",                                     // ID do botão
+        "/api/agendamentos/agendamento-status", // URL da API
+        "startDateOperacionalGrafico1",                            // ID do campo de data de início                             // ID do campo de data de término
+        updateChartOperacional1        // Callback específico para atualizar o gráfico 1
+    );
+    addFilterListener(
+        "buscarOperacionalGrafico2Button",
+        "/api/agendamentos/procedimentos-realizados-trimestre",
+        "startDateOperacionalGrafico2",
+        "endDateOperacionalGrafico2",
+        updateChartProcedimentoRealizadosTrimestreOperacional3
+    );
+    addFilterListener(
+        "buscarOperacionalGrafico3Button",
+        "/api/agendamentos/tempo-gasto-ultimo-mes",
+        "startDateOperacionalGrafico3",
+        "endDateOperacionalGrafico3",
+        updateChartTempoGastoOperacional2
+    );
+    addFilterListener(
+        "buscarOperacionalGrafico4Button",
+        "/api/agendamentos/receita-ultimos-tres-meses",
+        "startDateOperacionalGrafico4",
+        "endDateOperacionalGrafico4",
+        updateChartReceitaProcedimentosOperacional4
+    );
+    addFilterListener(
+        "buscarOperacionalGrafico5Button",
+        "/api/agendamentos/valor-total-ultimo-mes",
+        "startDateOperacionalGrafico5",
+        "endDateOperacionalGrafico5",
+        updateChartValorTotalUltimoMesOperacional5
+    );
     
 
 
-    // Funções que atualizam as KPI's do gerencial
-    updateKPIs();
+    
 
     function updateClientesAtivos(data) {
         const clientesAtivosCount = document.getElementById('clientes-ativos-count');
@@ -487,15 +576,14 @@ function fetchData2(url, params = {}, callback) {
 
     }
     function updateChartProcedimentoRealizadosTrimestreOperacional3(data) {
-        // Mapeia os dados recebidos (objeto) para labels e valores do gráfico
-        const labels = Object.keys(data);  // Procedimentos (ex: Maquiagem, Sobrancelha, etc.)
-        const dataChart = Object.values(data);  // Tempos totais (ex: 350, 120, etc.)
-
-        // Se o gráfico já foi criado, apenas atualiza os dados e rótulos
-
-        // Se o gráfico ainda não existe, cria-o pela primeira vez
+        // Mapeia os labels (chaves do objeto) e os dados (valores do objeto)
+        const labels = Object.keys(data);  // Procedimentos (ex: Maquiagem, Sobrancelha)
+        const dataChart = Object.values(data);  // Quantidade total de procedimentos realizados
+    
+        // Cria um novo gráfico com os dados atualizados
         createChartProcedimentosRealizadosTrimestreOperacional3(labels, dataChart);
     }
+    
     function updateChartValorTotalUltimoMesOperacional5(data) {
         // Mapeia os dados recebidos (objeto) para labels e valores do gráfico
         const labels = Object.keys(data);  // Procedimentos (ex: Maquiagem, Sobrancelha, etc.)
@@ -508,60 +596,45 @@ function fetchData2(url, params = {}, callback) {
     }
 
     // Funções para atualização gerencial e usabilidade
-    function updateChart2_1(data) {
-        dataChart2_1 = data;
-
-        if (dataChart2_1) {
-            createChart2();
-        }
-    }
-    function updateChart2_2(data) {
-        dataChart2_2 = data;
-
-        if (dataChart2_2) {
-            createChart2();
-        }
-    }
+    
     function updateChart1(data) {
-        dataChart1 = data;
-        createChart1();
+        // Mapeando os meios de indicação como labels e suas frequências como dados
+        labelsChart1 = data.map(item => item.meio_indicacao); // Extrai os meios de indicação
+        dataChart1 = data.map(item => item.frequencia); // Extrai as frequências
+    
+        createChart1(); // Atualiza o gráfico com os novos dados
     }
-    function updateListarTop3Indicacoes(data) {
-        labelsChart1 = data
-        if (dataChart1) {
-            createChart1();
-        }
-    }
+    
+
     function updateChart3(data) {
-        dataChart3 = data;
+        // Mapeando os labels (mes_ano) e os dados (receita_total) do retorno da API
+        labelsChart3 = data.map(item => item.mes_ano); // Extrai os meses
+        dataChart3 = data.map(item => item.receita_total); // Extrai os valores de receita
+    
+        // Verifica se ambos os valores estão presentes e chama a função de criação do gráfico
         createChart3();
     }
-    function updateReceitaAcumuladaLabels(data) {
-        labelsChart3 = data;
-        if (dataChart3) {
-            createChart3();
-        }
-    }
-    function updateChart33(data) {
-        dataChart33 = data;
-        createChart33();
-    }
+    
     function updateChart33Labels(data) {
-        labelsChart33 = data;
-        if (dataChart33) {
-            createChart33();
+        // Mapeando os dados recebidos para extrair labels e valores
+        labelsChart33 = data.map(item => item.nome_procedimento || item.tipo_procedimento || 'Sem Nome'); 
+        dataChart33 = data.map(item => item.nota_media || 0); // Extrai a média das notas; usa 0 se a nota for null
+    
+        // Verifica se os dados estão prontos e chama a função de criação do gráfico
+        if (dataChart33 && labelsChart33) {
+            createChart33(); // Chama a função para recriar o gráfico com os novos dados e labels
         }
     }
+    
     function updateChart4(data) {
-        dataChart4 = data;
+        // Mapeando os labels e os dados do callback `data`
+        labelsChart4 = data.map(item => item.nome_especificacao); // Extrai os nomes das especificações como labels
+        dataChart4 = data.map(item => item.quantidade_agendamentos); // Extrai as quantidades como dados
+    
+        // Chama a função que cria o gráfico
         createChart4();
     }
-    function updateChart4Labels(data) {
-        labelsChart4 = data;
-        if (dataChart4) {
-            createChart4();
-        }
-    }
+
     function updateChartUsabilidade1(data) {
         labelsChartUsabilidade1 = data.map(item => {
             const [year, month] = item[0].split("-"); // Divide "YYYY-MM-DD" em [year, month, day]
@@ -580,47 +653,74 @@ function fetchData2(url, params = {}, callback) {
 
     // Criação de gráficos - Gerencial
     function createChart1() {
-        if (!dataChart1 || !labelsChart1) return;
-
-        if (chart1) chart1.destroy();
-
+        if (!dataChart1 || !labelsChart1) return; // Certifica-se de que os dados estão disponíveis
+    
+        if (chart1) chart1.destroy(); // Destroi o gráfico existente para recriar
+    
         chart1 = new Chart(ctx1, {
-            type: 'line',
+            type: 'line', // Gráfico de linha
             data: {
-                labels: labelsChart1,
+                labels: labelsChart1, // Labels baseados nos meios de indicação
                 datasets: [{
-                    label: 'Quantidade',
-                    data: dataChart1,
-                    backgroundColor: '#D2135D',
-                    borderColor: '#D2135D',
-                    fill: false
+                    label: 'Quantidade de Indicações',
+                    data: dataChart1, // Dados das frequências
+                    backgroundColor: 'rgba(210, 19, 93, 0.2)', // Fundo da linha
+                    borderColor: '#D2135D', // Cor da linha
+                    borderWidth: 2, // Espessura da linha
+                    tension: 0.3, // Suavidade na linha
+                    fill: true // Preenchimento abaixo da linha
                 }]
             },
             options: {
+                responsive: true,
                 plugins: {
                     subtitle: {
                         display: true,
-                        text: '',
+                        text: 'Frequência dos Meios de Indicação',
                         font: {
                             size: 14
+                        }
+                    },
+                    legend: {
+                        display: true,
+                        position: 'top' // Legenda no topo
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Meios de Indicação'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Quantidade de Indicações'
                         }
                     }
                 }
             }
         });
     }
+    
 
+    // Função para criar o gráfico
     function createChart2() {
+        // Garante que os dados necessários estão disponíveis antes de criar o gráfico
         if (!dataChart2_1 || !dataChart2_2 || !labelsChart2) return;
-
+    
+        // Destroi o gráfico anterior, se existir
         if (chart2) chart2.destroy();
-
-        chart2 = new Chart(ctx2,
-            {
-                type: 'line',
-                data: {
-                    labels: labelsChart2,
-                    datasets: [{
+    
+        // Cria o gráfico com os novos dados e labels
+        chart2 = new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: labelsChart2, // Labels dinâmicos de mês e ano
+                datasets: [
+                    {
                         label: 'Clientes',
                         data: dataChart2_1,
                         backgroundColor: '#D2135D',
@@ -634,77 +734,143 @@ function fetchData2(url, params = {}, callback) {
                         borderColor: '#F59DBF',
                         fill: false
                     }
-                    ]
-
-                },
-                options: {
-                    plugins: {
-                        subtitle: {
-                            display: true,
-                            text: '',
-                            font: {
-                                size: 14
-                            }
-                        }
-                    }
-                }
-            }
-        );
-    }
-
-    function createChart3() {
-        if (!dataChart3 || !labelsChart3) return;
-
-        if (chart3) chart3.destroy();
-
-        chart3 = new Chart(ctx3, {
-            type: 'line',
-            data: {
-                labels: labelsChart3,
-                datasets: [{
-                    label: 'Receita Acumulada',
-                    data: dataChart3,
-                    backgroundColor: '#D2135D',
-                    borderColor: '#D2135D',
-                    fill: false
-                }]
+                ]
             },
             options: {
                 plugins: {
                     subtitle: {
                         display: true,
-                        text: '',
+                        text: 'Evolução de Clientes e Fidelizações',
                         font: {
                             size: 14
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Período (Mês e Ano)' // Nome do eixo X
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Quantidade de Clientes' // Nome do eixo Y
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+    
+    // Função para atualizar os dados do primeiro conjunto (Clientes)
+    function updateChart2_1(data) {
+        const labels = data.map(item => item.periodo); // Mês e ano
+        const valores = data.map(item => item.QTD_CLIENTES); // Quantidade de clientes
+    
+        labelsChart2 = labels; // Atualiza as labels globais
+        dataChart2_1 = valores; // Atualiza os dados globais para o conjunto 1
+    
+        // Garante que todos os dados estão disponíveis antes de criar o gráfico
+        if (dataChart2_1 && dataChart2_2 && labelsChart2) {
+            createChart2();
+        }
+    }
+    
+    // Função para atualizar os dados do segundo conjunto (Clientes Fidelizados)
+    function updateChart2_2(data) {
+        const labels = data.map(item => item.periodo); // Mês e ano
+        const valores = data.map(item => item.QTD_CLIENTES); // Quantidade de clientes
+    
+        labelsChart2 = labels; // Atualiza as labels globais
+        dataChart2_2 = valores; // Atualiza os dados globais para o conjunto 2
+    
+        // Garante que todos os dados estão disponíveis antes de criar o gráfico
+        if (dataChart2_1 && dataChart2_2 && labelsChart2) {
+            createChart2();
+        }
+    }
+    
+
+
+    function createChart3() {
+        if (!dataChart3 || !labelsChart3) return; // Certifica-se de que os dados estão disponíveis
+    
+        if (chart3) chart3.destroy(); // Destroi o gráfico existente para recriar
+    
+        chart3 = new Chart(ctx3, {
+            type: 'line', // Gráfico de linha
+            data: {
+                labels: labelsChart3, // Labels dos meses
+                datasets: [{
+                    label: 'Receita Acumulada',
+                    data: dataChart3, // Dados das receitas acumuladas
+                    backgroundColor: 'rgba(210, 19, 93, 0.2)', // Fundo das linhas (transparente)
+                    borderColor: '#D2135D', // Cor da linha
+                    borderWidth: 2, // Espessura da linha
+                    tension: 0.3, // Curvatura da linha (deixa um pouco suave)
+                    fill: true // Preenche abaixo da linha para destacar a curva
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    subtitle: {
+                        display: true,
+                        text: 'Evolução da Receita nos Últimos Meses',
+                        font: {
+                            size: 14
+                        }
+                    },
+                    legend: {
+                        display: true,
+                        position: 'top' // Legenda no topo
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Período (Mês e Ano)'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Receita Acumulada (R$)'
                         }
                     }
                 }
             }
         });
     }
+    
 
     function createChart33() {
-        if (!dataChart33 || !labelsChart33) return;
-
-        if (chart33) chart33.destroy();
-
+        if (!dataChart33 || !labelsChart33) return; // Garante que labels e dados existam
+    
+        if (chart33) chart33.destroy(); // Destroi o gráfico existente para recriar
+    
         chart33 = new Chart(ctx33, {
             type: 'bar',
             data: {
-                labels: labelsChart33,
+                labels: labelsChart33, // Labels mapeados
                 datasets: [{
                     label: 'Média',
-                    data: dataChart33,
-                    backgroundColor: ['#D2135D', '#E84E8A', '#F59DBF'],
+                    data: dataChart33, // Dados mapeados (nota média)
+                    backgroundColor: ['#D2135D', '#E84E8A', '#F59DBF', '#FF85A1', '#FFD6E3', '#F0A6CA'], // Mais cores para diferentes barras
                     borderColor: '#D2135D',
                     fill: false
                 }]
             },
             options: {
-                indexAxis: 'y',
+                indexAxis: 'y', // Gráfico horizontal
                 responsive: true,
                 maintainAspectRatio: false, // Permite ajustar a proporção do gráfico
-                aspectRatio: 2,
+                aspectRatio: 2, // Define a proporção do gráfico
                 plugins: {
                     subtitle: {
                         display: true,
@@ -715,7 +881,7 @@ function fetchData2(url, params = {}, callback) {
                     },
                     legend: {
                         display: true, // Mostra a legenda
-                        position: 'top', // Posição da legenda (topo, neste caso)
+                        position: 'top', // Posição no topo
                         align: 'center', // Alinha a legenda ao centro
                         title: {
                             display: true
@@ -724,7 +890,7 @@ function fetchData2(url, params = {}, callback) {
                 },
                 scales: {
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true // Começa o eixo Y do zero
                     }
                 }
             }
@@ -733,52 +899,50 @@ function fetchData2(url, params = {}, callback) {
 
     function createChart4() {
         if (!dataChart4 || !labelsChart4) return;
-
-        if (chart4) chart4.destroy();
-
+    
+        if (chart4) chart4.destroy(); // Destroi o gráfico existente antes de recriar
+    
         chart4 = new Chart(ctx4, {
-            type: 'bar',
+            type: 'pie', // Gráfico de pizza
             data: {
-                labels: labelsChart4,
+                labels: labelsChart4, // Labels mapeados
                 datasets: [{
                     label: 'Vezes Agendadas',
-                    data: dataChart4,
-                    backgroundColor: ['#D2135D', '#E84E8A', '#F59DBF'],
-                    borderColor: '#D2135D',
-                    fill: false
+                    data: dataChart4, // Dados mapeados
+                    backgroundColor: [
+                        '#FF5733', '#33FF57', '#3357FF', '#FF33A8', '#FFC300', 
+                        '#C70039', '#900C3F', '#DAF7A6', '#581845', '#AF7AC5'
+                    ], // Paleta mais variada
+                    borderColor: '#FFFFFF', // Cor das bordas das fatias
+                    borderWidth: 1, // Largura da borda
                 }]
             },
             options: {
-                indexAxis: 'y',
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
-                    subtitle: {
-                        display: true,
-                        text: '',
-                        font: {
-                            size: 14
-                        }
-                    },
                     legend: {
-                        display: true, // Mostra a legenda
-                        position: 'top', // Posição da legenda (topo, neste caso)
-                        align: 'center', // Alinha a legenda ao centro
-                        title: {
-                            display: true
-                        }
+                        display: false, // Exibe a legenda
+                        position: 'top', // Posição no topo
+                        align: 'center', // Centraliza a legenda
                     },
                     title: {
-                        display: true
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true
+                        display: false // Remove o título do gráfico
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                let value = tooltipItem.raw || 0;
+                                return `${tooltipItem.label}: ${value} agendamentos`;
+                            }
+                        }
                     }
                 }
             }
         });
     }
+    
+    
     // Criação de gráficos - Usabilidade
     function createChartUsabilidade1() {
         if (!dataChartUsabilidade1 || !labelsChartUsabilidade1) return;
@@ -838,8 +1002,10 @@ function fetchData2(url, params = {}, callback) {
     function createChartReceitaProcedimentosOperacional4(labels, dataChartReceita) {
         const ctx = document.getElementById('chartReceitaProcedimentosOperacional4').getContext('2d');
 
+        if (chartReceitaProcedimentosOperacional4) chartReceitaProcedimentosOperacional4.destroy();
+
         // Criação do novo gráfico
-        window.chartReceitaProcedimentosOperacional4 = new Chart(ctx, {
+        chartReceitaProcedimentosOperacional4 = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: labels, // Passando os nomes dos procedimentos como labels
@@ -864,6 +1030,9 @@ function fetchData2(url, params = {}, callback) {
     // Função para criar o gráfico pela primeira vez
     function createChartTempoGastoProcedimentosOperacional2(labels, dataChart) {
         const ctxOperacional2 = document.getElementById('chartTempoGastoProcedimentosOperacional2').getContext('2d');
+
+
+        if (chartTempoGastoProcedimentos) chartTempoGastoProcedimentos.destroy();
 
         // Criação do gráfico com Chart.js
         chartTempoGastoProcedimentos = new Chart(ctxOperacional2, {
@@ -890,9 +1059,11 @@ function fetchData2(url, params = {}, callback) {
     }
     function createChartProcedimentosRealizadosTrimestreOperacional3(labels, dataChart) {
         const ctx = document.getElementById('chartProcedimentosRealizadosTrimestreOperacional3').getContext('2d');
+    
+        if (chartProcedimentosRealizadosTrimestreOperacional3) chartProcedimentosRealizadosTrimestreOperacional3.destroy();
 
         // Criação do gráfico com Chart.js
-        window.chartProcedimentosRealizadosTrimestreOperacional3 = new Chart(ctx, {
+        chartProcedimentosRealizadosTrimestreOperacional3 = new Chart(ctx, {
             type: 'bar',  // Tipo de gráfico: barra
             data: {
                 labels: labels,  // Procedimentos como rótulos (ex: Maquiagem, Sobrancelha)
@@ -906,20 +1077,48 @@ function fetchData2(url, params = {}, callback) {
             },
             options: {
                 responsive: true,  // Responsivo para diferentes tamanhos de tela
+                maintainAspectRatio: false,  // Mantém proporção ajustada
                 scales: {
                     y: {
-                        beginAtZero: true  // Eixo Y começa no zero
+                        beginAtZero: true,  // Eixo Y começa no zero
+                        title: {
+                            display: true,
+                            text: 'Quantidade'  // Título do eixo Y
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Procedimentos'  // Título do eixo X
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,  // Exibe a legenda
+                        position: 'top'  // Legenda no topo
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return ` ${tooltipItem.label}: ${tooltipItem.raw}`; // Exibe o label e o valor na tooltip
+                            }
+                        }
                     }
                 }
             }
         });
     }
+    
     // Função para criar o gráfico de valor total por procedimento no último mês
     function createChartValorTotalUltimoMesOperacional5(labels, dataChart) {
         const ctxOperacional5 = document.getElementById('chartValorTotalUltimoMesOperacional5').getContext('2d');
 
+        if (chartValorTotalUltimoMesOperacional5) chartValorTotalUltimoMesOperacional5.destroy();
+
+
         // Criação do gráfico com Chart.js
-        window.chartValorTotalUltimoMesOperacional5 = new Chart(ctxOperacional5, {
+        chartValorTotalUltimoMesOperacional5 = new Chart(ctxOperacional5, {
             type: 'bar',  // Tipo de gráfico: barra
             data: {
                 labels: labels,  // Procedimentos como rótulos (ex: Maquiagem, Sobrancelha)
@@ -964,7 +1163,9 @@ function fetchData2(url, params = {}, callback) {
 
 
     // Atualiza os KPIs e gráficos em intervalos regulares (opcional)
-    setInterval(updateKPIs, 60000); // Exemplo de atualização a cada 30 segundos
+window.recarregarKPIs = function() {
+    updateKPIs(); // Chama a função que atualiza os KPIs
+} // Exemplo de atualização a cada 30 segundos
 
     new window.VLibras.Widget('https://vlibras.gov.br/app');
 });
@@ -979,8 +1180,8 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById("userInsta").textContent = instagram;
     }
 
-    showContent(usabilidadeContent);
-    usabilidadeBtn.classList.add('active');
+    showContent(operacionalContent);
+    operacionalBtn.classList.add('active');
 });
 
 
