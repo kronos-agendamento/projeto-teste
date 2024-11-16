@@ -236,7 +236,9 @@ function criarAgendamento(agendamento, isAnterior = false) {
                 .then(response => {
                     if (response.ok) {
                         showNotification("Agendamento excluído com sucesso!");
-                        location.reload();
+                        setTimeout(() => {
+                          window.location.reload();
+                      }, 2000);
                     } else {
                         showNotification("Erro ao excluir o agendamento. Tente novamente.", true);
                     }

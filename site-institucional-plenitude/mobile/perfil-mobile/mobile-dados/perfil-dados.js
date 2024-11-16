@@ -12,6 +12,19 @@ async function fetchUserDataByCpf(cpf) {
     return null;
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+    const modalCloseButton = document.getElementById('modal-close');
+    
+    // Verifica se o elemento com ID 'modal-close' existe
+    if (modalCloseButton) {
+        modalCloseButton.addEventListener('click', fecharModal);
+        console.log("Evento de fechamento do modal adicionado.");
+    } else {
+        console.error("Elemento com ID 'modal-close' não encontrado.");
+    }
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  });
+
 document.addEventListener("DOMContentLoaded", async () => {
     const cpf = localStorage.getItem("cpf");
     if (cpf) {
