@@ -261,6 +261,23 @@
         background-color: #FFF0F5;
     }
 
+    #selectMes, #selectAno {
+        display: inline-block; /* Alinha os elementos horizontalmente */
+        margin-right: 10px; /* Espaço entre os selects */
+        width: 150px; /* Define a largura dos selects */
+        padding: 10px;
+        font-family: poppins;
+        background-color: #fff2f9;
+        margin-bottom: 5%;
+        margin-top: 3%;
+      }
+    
+      /* Opcional: para manter os selects centralizados em um container */
+      .select-container {
+        display: flex;
+        align-items: center; /* Alinha verticalmente se houver outros elementos */
+      }
+
     /* Gráficos */
     #titulo-dash {
         display: flex;

@@ -4,7 +4,6 @@ const agendamentoId = localStorage.getItem('idAgendamento')
 const apiUrl = `http://localhost:8080/api/agendamentos/agendamentos/usuario/${usuarioId}`;
 
 
-
 // Função para formatar a data
 function formatarData(dataHora) {
     const data = new Date(dataHora);
@@ -758,7 +757,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const endereco = await response.json();
   
         if (endereco.erro) {
-          showNotification("CEP não encontrado. Verifique e tente novamente.", true);
+          showNotification("CEP não encontrado.", true);
           limparCamposEndereco();
           return null;
         }
@@ -791,7 +790,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (cep.length === 8) {
         buscarEnderecoPorCep(cep);
       } else {
-        showNotification("CEP inválido. Verifique e tente novamente.", true);
+        showNotification("CEP inválido.", true);
         limparCamposEndereco();
       }
     });
@@ -863,6 +862,7 @@ document.getElementById("usuarioForm").addEventListener("submit", async (event) 
   
           // Atualizar os dados no localStorage
           localStorage.setItem("nome", updatedUser.nome);
+          localStorage.setItem("genero", updatedUser.genero);
           localStorage.setItem("email", updatedUser.email);
           localStorage.setItem("cpf", updatedUser.cpf);
           localStorage.setItem("instagram", updatedUser.instagram);

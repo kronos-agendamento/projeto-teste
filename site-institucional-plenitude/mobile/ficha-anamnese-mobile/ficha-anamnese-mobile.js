@@ -39,6 +39,7 @@ async function preencherFormularioComRespostas(idUsuario) {
       renderPerguntas(ficha.perguntasRespostas);
     } else {
       console.log("Nenhuma resposta encontrada, carregando perguntas em branco.");
+      localStorage.setItem("statusFormulario", "Não Respondido");
       await fetchPerguntas();
     }
   } catch (error) {
@@ -146,32 +147,48 @@ async function fetchPerguntas() {
 
 document.addEventListener("DOMContentLoaded", function () {
   const submitButton = document.getElementById("submit-button");
-  const modal = document.getElementById("modalConfirmacaoAnamnese");
+  const modalPrimeiraAnamnese = document.getElementById("modalPrimeiraAnamnese");
+  const modalConfirmacaoAnamnese = document.getElementById("modalConfirmacaoAnamnese");
+  const confirmarEnvioPrimeira = document.getElementById("confirmarEnvioPrimeiraAnamnese");
+  const cancelarEnvioPrimeira = document.getElementById("cancelarEnvioPrimeiraAnamnese");
   const confirmarEnvio = document.getElementById("confirmarEnvioAnamnese");
   const cancelarEnvio = document.getElementById("cancelarEnvioAnamnese");
 
-  if (!submitButton || !modal || !confirmarEnvio || !cancelarEnvio) {
-    console.error("Elementos necessários não foram encontrados.");
+  if (!submitButton) {
+    console.error("Botão de envio não encontrado.");
     return;
   }
 
-  // Abre o modal ao clicar no botão "Enviar Respostas"
   submitButton.addEventListener("click", function () {
-    modal.style.display = "flex"; // Exibe o modal
+    const statusFormulario = localStorage.getItem("statusFormulario");
+    
+    if (statusFormulario === "Respondido") {
+      modalConfirmacaoAnamnese.style.display = "flex";
+    } else {
+      modalPrimeiraAnamnese.style.display = "flex";
+    }
   });
 
-  // Confirma o envio e chama submitForm
+  // Modal da primeira anamnese
+  confirmarEnvioPrimeira.addEventListener("click", function () {
+    modalPrimeiraAnamnese.style.display = "none";
+    submitForm();
+  });
+
+  cancelarEnvioPrimeira.addEventListener("click", function () {
+    modalPrimeiraAnamnese.style.display = "none";
+  });
+
+  // Modal de confirmação de alteração
   confirmarEnvio.addEventListener("click", function () {
-    modal.style.display = "none"; // Fecha o modal
-    submitForm(); // Chama a função de envio
+    modalConfirmacaoAnamnese.style.display = "none";
+    submitForm();
   });
 
-  // Cancela o envio e fecha o modal
   cancelarEnvio.addEventListener("click", function () {
-    modal.style.display = "none"; // Fecha o modal sem enviar
+    modalConfirmacaoAnamnese.style.display = "none";
   });
 });
-
 
 // Função para enviar o formulário com as respostas preenchidas
 async function submitForm() {
@@ -241,6 +258,7 @@ async function submitForm() {
     console.error("Erro no envio das respostas:", error);
   }
 }
+
 
 // Carrega o formulário ao carregar a página
 document.addEventListener("DOMContentLoaded", function () {

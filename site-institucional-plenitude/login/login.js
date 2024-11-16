@@ -86,7 +86,7 @@ document
       }
     } catch (error) {
       showNotification("Cadastro realizado com sucesso!");
-      window.location.href = "../app/index/index.html";
+      window.location.href = "login.html";
     }
   });
 
