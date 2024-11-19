@@ -869,9 +869,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-new window.VLibras.Widget('https://vlibras.gov.br/app');
-
-
 document.addEventListener("DOMContentLoaded", () => {
   let isEditingPersonal = false; // Controle da edição dos dados pessoais
 
@@ -944,14 +941,16 @@ document.addEventListener("DOMContentLoaded", () => {
         responseMessage.style.color = "red";
       }
 
-      // Desabilita o upload após a submissão
-      toggleEditing();
-
-    } catch (error) {
-      console.error("Erro ao enviar a foto:", error);
-      document.getElementById("responseMessage").textContent = "Erro ao enviar a foto.";
-    }
-  });
+        // Desabilita o upload após a submissão
+        toggleEditing();
+      } catch (error) {
+        console.error("Erro ao enviar a foto:", error);
+        document.getElementById("responseMessage").textContent =
+          "Erro ao enviar a foto.";
+      }
+    });
+    
+new window.VLibras.Widget("https://vlibras.gov.br/app");
 });
 
 
@@ -1134,3 +1133,5 @@ function iniciarAutoSlide() {
 
 // Chama a função para carregar os funcionários ao carregar a página
 document.addEventListener("DOMContentLoaded", carregarFuncionarios);
+
+

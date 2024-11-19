@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
         notification.classList.remove("show");
       }, 3000);
     }
-  
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
     const baseUrl = "http://localhost:8080";
     const proceduresTbody = document.getElementById("procedures-tbody");
     const itemsPerPage = 5;
@@ -226,6 +226,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.error("ID do usuário é indefinido.");
             }
         });
+        
     });
   
     // Configura os eventos dos botões de ativação
@@ -258,6 +259,7 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         });
       });
+      
     }
   
     // Função para mostrar o modal de deletar
@@ -595,7 +597,7 @@ saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), filename);
   }
   
 
-new window.VLibras.Widget('https://vlibras.gov.br/app');
+
   
 async function carregarImagem2() {
   const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução
@@ -633,3 +635,42 @@ window.onload = function () {
   carregarImagem2();
   updateKpiData();
 };
+
+document.addEventListener("DOMContentLoaded", function () {
+  const tooltips = document.querySelectorAll(
+    ".tooltip6, .tooltip7, .tooltip8, .tooltip9"
+  );
+
+  tooltips.forEach((tooltip) => {
+    const targetButton = tooltip.previousElementSibling;
+
+    targetButton.addEventListener("mouseenter", () => {
+      tooltip.style.visibility = "hidden"; // Esconde temporariamente para cálculo
+      tooltip.style.display = "block"; // Torna visível para cálculo de posição
+      positionTooltip(tooltip, targetButton);
+      tooltip.style.visibility = "visible"; // Exibe após posicionamento
+    });
+
+    targetButton.addEventListener("mouseleave", () => {
+      tooltip.style.display = "none"; // Esconde ao sair do hover
+    });
+
+    window.addEventListener("resize", () => {
+      if (tooltip.style.display === "block") {
+        positionTooltip(tooltip, targetButton); // Recalcula posição no redimensionamento
+      }
+    });
+  });
+
+  function positionTooltip(tooltip, target) {
+    const targetRect = target.getBoundingClientRect();
+    const tooltipRect = tooltip.getBoundingClientRect();
+
+    // Calcula posição central acima do botão
+    const topPosition = targetRect.top - tooltipRect.height - 5;
+    const leftPosition = targetRect.left + (targetRect.width / 0) - (tooltipRect.width / 0);
+
+    tooltip.style.top = `${topPosition + window.scrollY}px`;
+    tooltip.style.left = `${leftPosition + window.scrollX}px`;
+  }
+});

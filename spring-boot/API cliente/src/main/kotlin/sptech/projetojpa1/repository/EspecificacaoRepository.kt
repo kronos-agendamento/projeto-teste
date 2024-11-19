@@ -2,6 +2,7 @@ package sptech.projetojpa1.repository
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.query.Param
 import sptech.projetojpa1.domain.Especificacao
 
 interface EspecificacaoRepository : JpaRepository<Especificacao, Int> {
@@ -17,24 +18,28 @@ interface EspecificacaoRepository : JpaRepository<Especificacao, Int> {
     @Query(
         value = """
         SELECT 
-    SUM(ep.preco_colocacao + ep.preco_manutencao + ep.preco_retirada) AS receitaTotal 
-FROM 
-    agendamento a 
-INNER JOIN 
-    especificacao ep 
-ON 
-    a.fk_procedimento = ep.id_especificacao_procedimento 
-WHERE 
-    a.data_horario >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
-GROUP BY 
-    DATE_FORMAT(a.data_horario, '%Y-%m')
-ORDER BY 
-    DATE_FORMAT(a.data_horario, '%Y-%m');
- 
-
-    """, nativeQuery = true
+            DATE_FORMAT(a.data_horario, '%Y-%m') AS mes_ano,
+            SUM(ep.preco_colocacao + ep.preco_manutencao + ep.preco_retirada) AS receita_total
+        FROM 
+            agendamento a
+        INNER JOIN 
+            especificacao ep 
+        ON 
+            a.fk_especificacao_procedimento = ep.id_especificacao_procedimento
+        WHERE 
+            a.data_horario BETWEEN COALESCE(:startDate, DATE_SUB(CURDATE(), INTERVAL 6 MONTH)) 
+                               AND COALESCE(:endDate, CURDATE())
+        GROUP BY 
+            DATE_FORMAT(a.data_horario, '%Y-%m')
+        ORDER BY 
+            DATE_FORMAT(a.data_horario, '%Y-%m');
+    """,
+        nativeQuery = true
     )
-    fun findReceitaSemestralAcumulada(): List<Double>
+    fun findReceitaSemestralAcumulada(
+        @Param("startDate") startDate: String?,
+        @Param("endDate") endDate: String?
+    ): List<Map<String, Any>>
 
     @Query(
         value = """

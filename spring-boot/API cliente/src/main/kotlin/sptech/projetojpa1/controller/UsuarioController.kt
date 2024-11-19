@@ -179,9 +179,13 @@ class UsuarioController(
     }
 
     @GetMapping("/buscar-numeros-indicacoes")
-    fun buscarNumerosIndicacoes(): ResponseEntity<List<Int>> {
+    fun buscarNumerosIndicacoes(): ResponseEntity<List<Map<String, Any>>> {
         val resultado = usuarioService.buscarNumeroIndicacoes()
-        return ResponseEntity.ok(resultado)
+        return if (resultado.isNotEmpty()) {
+            ResponseEntity.ok(resultado)
+        } else {
+            ResponseEntity.noContent().build()
+        }
     }
 
     @Operation(summary = "Atualizar status de usuário ativo por ID")
@@ -370,16 +374,26 @@ class UsuarioController(
 
 
     @GetMapping("/clientes-fidelizados-ultimos-cinco-meses")
-    fun listarClientesFidelizadosUltimos5Meses(): ResponseEntity<List<Int>> {
-        val lista = usuarioService.getClientesFidelizadosUltimos5Meses()
+    fun listarClientesFidelizadosComPeriodo(
+        @RequestParam(required = false) startDate: String?,
+        @RequestParam(required = false) endDate: String?
+    ): ResponseEntity<List<Map<String, Any>>> {
+        val lista = usuarioService.getClientesFidelizadosUltimos5MesesComPeriodo(startDate, endDate)
         return ResponseEntity.ok(lista)
     }
 
+
+
     @GetMapping("/clientes-concluidos-ultimos-cinco-meses")
-    fun listarClientesConcluidosUltimos5Meses(): ResponseEntity<List<Int>> {
-        val lista = usuarioService.getClientesConcluidosUltimos5Meses()
+    fun listarClientesConcluidosUltimos5Meses(
+        @RequestParam(required = false) startDate: String?,
+        @RequestParam(required = false) endDate: String?
+    ): ResponseEntity<List<Map<String, Any>>> {
+        val lista = usuarioService.getClientesConcluidosUltimos5Meses(startDate, endDate)
         return ResponseEntity.ok(lista)
     }
+
+
 
     @Operation(summary = "Listar usuário por CPF")
     @ApiResponses(

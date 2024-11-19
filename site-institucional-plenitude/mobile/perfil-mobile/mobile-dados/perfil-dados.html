@@ -4,11 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
 
-    <title>Dados | KronosBooking </title>
+    <title>Dados do Perfil | KronosBooking </title>
 
-    <link href="../../../assets/img/favicon.png" rel="icon" />
+    <link href="../../../app/assets/favicon.png" rel="icon" />
     <script src="perfil-dados.js"></script>
     <link rel="stylesheet" href="perfil-dados.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
@@ -103,43 +102,43 @@
                     <div class="box-dados">
 
                         <div class="label">
-                            <p style="font-size: 18px;">Nome Completo:</p>
+                            <p style="font-size: 18px;">Nome Completo:🔓</p>
                             <input style="font-size: 18px; font-family: Poppins, sans-serif;" type="text" id="nome"
                                 placeholder="Nome Completo" required>
                         </div>
 
                         <div class="label">
-                            <p style="font-size: 18px;">Data de Nascimento:</p>
-                            <input style="font-size: 18px; font-family: Poppins, sans-serif;" type="date"
-                                id="nascimento" required>
+                            <p style="font-size: 18px;">Data de Nascimento:🔒</p>
+                            <input style="font-size: 18px; font-family: Poppins, sans-serif; color: #8c8c8c;" type="date"
+                                id="nascimento" required readonly>
                         </div>
 
                         <div class="label">
-                            <p style="font-size: 18px;">Email:</p>
+                            <p style="font-size: 18px;">Email:🔓</p>
                             <input style="font-size: 18px; font-family: Poppins, sans-serif;" type="email" id="email"
                                 placeholder="xxxxxxxxxxx@xxxx.com" required>
                         </div>
 
                         <div class="label">
-                            <p style="font-size: 18px;">Telefone:</p>
+                            <p style="font-size: 18px;">Telefone:🔓</p>
                             <input style="font-size: 18px; font-family: Poppins, sans-serif;" type="text" id="telefone"
                                 placeholder="(00) 00000-0000" required>
                         </div>
 
                         <div class="label">
-                            <p style="font-size: 18px;">Instagram:</p>
+                            <p style="font-size: 18px;">Instagram:🔓</p>
                             <input style="font-size: 18px; font-family: Poppins, sans-serif;" type="text" id="instagram"
                                 placeholder="@instagram" required>
                         </div>
 
                         <div class="label">
-                            <p style="font-size: 18px;">CPF:</p>
-                            <input style="font-size: 18px; font-family: Poppins, sans-serif;" type="text" id="cpf"
-                                placeholder="000.000.000-00" required>
+                            <p style="font-size: 18px;">CPF:🔒</p>
+                            <input style="font-size: 18px; font-family: Poppins, sans-serif; color: #8c8c8c;" type="text" id="cpf"
+                                placeholder="000.000.000-00" required readonly>
                         </div>
 
                         <div class="label">
-                            <p style="font-size: 18px;">Gênero:</p>
+                            <p style="font-size: 18px;">Gênero:🔓</p>
                             <select style="font-size: 18px; font-family: Poppins, sans-serif;width: 98%;" id="genero" required>
                                 <option value="Masculino">Masculino</option>
                                 <option value="Feminino">Feminino</option>
@@ -150,7 +149,7 @@
                         </div>
 
                         <div class="label">
-                            <p style="font-size: 18px;">Indicação:</p>
+                            <p style="font-size: 18px;">Indicação:🔓</p>
                             <select style="font-size: 18px; font-family: Poppins, sans-serif; width: 98%;" id="indicacao" required>
                                 <option value="Internet">Internet</option>
                                 <option value="Anúncio">Anúncio</option>
@@ -163,7 +162,18 @@
 
                         <div class="button-container" id="button-alterar">
                             <button type="button" class="save-button" id="save-usuario-button">
-
+                                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  fill="white"
+                  class="bi bi-check-circle-fill"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z"
+                  />
+                </svg>
                                 Salvar Alterações
 
                             </button>
@@ -173,6 +183,15 @@
                 </div>
             </div>
         </section>
+
+        <div id="modalDecisao" class="modal-decisao">
+            <div class="modal-content">
+                <p>Deseja realmente alterar os dados pessoais?</p>
+                <button id="confirmUpdateButton">Sim</button>
+                <button id="cancelUpdateButton" onclick="fecharModalDecisao()">Cancelar</button>
+            </div>
+        </div>
+
     </main>
 </body>
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

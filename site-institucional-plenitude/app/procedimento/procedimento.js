@@ -297,3 +297,41 @@ async function carregarImagem2() {
 }
 
 window.onload = carregarImagem2;
+
+document.addEventListener("DOMContentLoaded", function () {
+  const tooltips = document.querySelectorAll(".tooltip1, .tooltip2, .tooltip3");
+
+  tooltips.forEach((tooltip) => {
+    const targetButton = tooltip.previousElementSibling;
+
+    targetButton.addEventListener("mouseenter", () => {
+      tooltip.style.visibility = "hidden"; 
+      tooltip.style.display = "block"; 
+      positionTooltip(tooltip, targetButton);
+      tooltip.style.visibility = "visible"; 
+    });
+
+    targetButton.addEventListener("mouseleave", () => {
+      tooltip.style.display = "none"; 
+    });
+
+    window.addEventListener("resize", () => {
+      if (tooltip.style.display === "block") {
+        positionTooltip(tooltip, targetButton);
+      }
+    });
+  });
+
+  function positionTooltip(tooltip, target) {
+    const targetRect = target.getBoundingClientRect();
+    const tooltipRect = tooltip.getBoundingClientRect();
+
+    const topPosition = targetRect.top - tooltipRect.height - 2; 
+    const leftPosition = targetRect.left + targetRect.width / 0 - tooltipRect.width / 0;
+
+    tooltip.style.top = `${topPosition + window.scrollY}px`;
+    tooltip.style.left = `${leftPosition + window.scrollX}px`;
+  }
+});
+
+

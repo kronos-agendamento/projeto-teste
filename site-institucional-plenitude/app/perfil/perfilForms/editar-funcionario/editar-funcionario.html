@@ -168,7 +168,7 @@
           <div class="form-group-row" style="height: 10px">
             &nbsp;&nbsp;&nbsp; Dados Pessoais
             <button
-              class="edit-icon-btn"
+              class="edit-icon-btn filter-btn"
               id="editIconPessoal"
               aria-label="Editar Dados Pessoais"
               onclick="togglePersonalEditing()"
@@ -179,6 +179,7 @@
                 style="width: 20px; height: 20px; border-radius: 0px"
               />
             </button>
+            <div id="tooltip20" class="tooltip20">Editar</div>
           </div>
         </h2>
         <form id="personalForm" class="form">
@@ -308,7 +309,7 @@
           <div class="form-group-row" style="height: 10px">
             &nbsp;&nbsp;&nbsp; Dados de Endereço
             <button
-              class="edit-icon-btn"
+              class="edit-icon-btn filter-btn"
               id="editIconAdress"
               aria-label="Editar Dados de Endereço"
               onclick="enableAddressEditing()"
@@ -319,6 +320,7 @@
                 style="width: 20px; height: 20px; border-radius: 0px"
               />
             </button>
+            <div id="tooltip21" class="tooltip21">Editar</div>
           </div>
         </h2>
         <form id="addressForm" class="form">
@@ -472,7 +474,11 @@
         </div>
       </div>
     </div>
-
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper></div>
+    </div>
     <script
       type="module"
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
@@ -481,11 +487,5 @@
       nomodule
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
     ></script>
-
-    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-    <div vw class="enabled">
-      <div vw-access-button class="active"></div>
-      <div vw-plugin-wrapper></div>
-    </div>
   </body>
 </html>

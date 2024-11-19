@@ -129,6 +129,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         showNotification("Erro ao salvar os dados!", true);
       }
     });
+    
 });
 
 function formatTime(value) {
@@ -165,6 +166,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("userName").textContent = nome;
     document.getElementById("userInsta").textContent = instagram;
   }
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
 });
 
 new window.VLibras.Widget("https://vlibras.gov.br/app");

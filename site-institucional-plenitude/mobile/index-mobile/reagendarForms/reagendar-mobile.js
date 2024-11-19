@@ -152,75 +152,113 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   
-    saveButton.addEventListener("click", async function () {
-      const procedimentoId = procedimentosSelect.value || parseInt(params.get("fkProcedimento"), 10);
-      const tipoAtendimento = tipoAgendamentoSelect.value;
-      const especificacaoId = especificacoesSelect.value|| parseInt(params.get("fkEspecificacao"), 10);
+    saveButton.addEventListener("click", function () {
+      const procedimentoId = procedimentosSelect.value;
+      const tipoAgendamento = tipoAgendamentoSelect.value;
+      const especificacaoId = especificacoesSelect.value;
       const data = dataInput.value;
       const horarioButton = document.querySelector(".horario-button.selected");
       const horario = horarioButton ? horarioButton.textContent : null;
-      const tempoAgendar = tempoAgendarSelect;
-
-
-      if (
-        !procedimentoId ||
-        !tipoAtendimento ||
-        !especificacaoId ||
-        !data ||
-        !horario
-      ) {
-        showNotification("Todos os campos são obrigatórios", true);
-        return;
+  
+      if (!procedimentoId || !tipoAgendamento || !especificacaoId || !data || !horario) {
+          showNotification("Todos os campos são obrigatórios", true);
+          return;
       }
-      console.log(`${data}T${horario}.000Z`);
-      const dataHorario = new Date(`${data}T${horario}.000Z`).toISOString();
-      const params = new URLSearchParams(window.location.search);
-
-      const agendamento = {
-        fk_usuario: parseInt(params.get("idUsuario"), 10),
-        fk_procedimento: parseInt(procedimentoId, 10) || parseInt(params.get("fkProcedimento"), 10) ,
-        fk_especificacao: parseInt(especificacaoId, 10)|| parseInt(params.get("fkEspecificacao"), 10) ,
-        fk_status: 1,
-        tipoAgendamento: tipoAtendimento,
-        dataHorario: dataHorario,
-        tempoAgendar: 50
+  
+      const dataHorario = new Date(`${data}T${horario}`).toISOString();
+  
+      if (isNaN(new Date(dataHorario).getTime())) {
+          showNotification("Erro: Data e horário inválidos.", true);
+          return;
+      }
+  
+      // Salvar os dados puros no agendamentoData
+      window.agendamentoData = {
+          procedimentoId,
+          especificacaoId,
+          tipoAgendamento,
+          dataHorario
       };
   
-      try {
-        // Realiza a requisição PUT para atualizar o agendamento
-        const params = new URLSearchParams(window.location.search);
-        const agendamentoId = params.get("id"); // Pega o ID do agendamento da URL
-        const apiUrlEditarAgendamento = `http://localhost:8080/api/agendamentos/atualizar/${agendamentoId}`;
-        const response = await fetch(apiUrlEditarAgendamento, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(agendamento),
-        });
+      // Preencher os detalhes do modal usando os nomes diretamente
+      const agendamentoDetalhes = `
+          <p><strong>Procedimento:</strong> ${procedimentosSelect.options[procedimentosSelect.selectedIndex].text}</p>
+          <p><strong>Especificação:</strong> ${especificacoesSelect.options[especificacoesSelect.selectedIndex].text}</p>
+          <p><strong>Tipo de Atendimento:</strong> ${tipoAgendamento}</p>
+          <p><strong>Data e Horário:</strong> ${new Date(dataHorario).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })}</p>
+      `;
+      document.getElementById("agendamentoDetalhes").innerHTML = agendamentoDetalhes;
   
+      // Exibir o modal de confirmação
+      document.getElementById("deleteModal").style.display = "block";
+  });
+  
+  
+
+
+  document.getElementById("confirmDeleteButton").addEventListener("click", async function () {
+    if (!window.agendamentoData || !window.agendamentoData.dataHorario) {
+        console.error("Dados de agendamento ou dataHorario ausentes.");
+        showNotification("Erro: Dados de agendamento ausentes.", true);
+        return;
+    }
+
+    console.log("Confirmando com dataHorario:", window.agendamentoData.dataHorario);
+
+    const params = new URLSearchParams(window.location.search);
+    const agendamentoId = params.get("id");
+    const apiUrlEditarAgendamento = `http://localhost:8080/api/agendamentos/atualizar/${agendamentoId}`;
+
+    try {
+        const agendamento = {
+            fk_usuario: parseInt(params.get("idUsuario"), 10),
+            fk_procedimento: parseInt(window.agendamentoData.procedimentoId, 10),
+            fk_especificacao: parseInt(window.agendamentoData.especificacaoId, 10),
+            fk_status: 1,
+            tipoAgendamento: window.agendamentoData.tipoAgendamento,
+            dataHorario: new Date(window.agendamentoData.dataHorario).toISOString(),
+            tempoAgendar: 50
+        };
+
+        console.log("Enviando agendamento:", agendamento);
+
+        const response = await fetch(apiUrlEditarAgendamento, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(agendamento),
+        });
+
         if (response.ok) {
-          // Mostra notificação de sucesso
-          showNotification("Alterações realizadas com sucesso!");
-    
-          // Redireciona para a página index-mobile
-          setTimeout(() => {
-            window.location.href = "../index-mobile.html"; // Redireciona após 1 segundo
-          }, 1000);
+            showNotification("Alterações realizadas com sucesso!");
+            setTimeout(() => {
+                window.location.href = "../index-mobile.html";
+            }, 1000);
         } else {
-          const errorMsg = await response.text();
-          console.error("Erro ao reagendar: " + errorMsg);
-          showNotification("Erro ao reagendar. Tente novamente.", true);
+            const errorMsg = await response.text();
+            console.error("Erro ao reagendar:", errorMsg);
+            showNotification("Erro ao reagendar. Tente novamente.", true);
         }
-      } catch (error) {
-        console.error("Erro ao reagendar: ", error);
+    } catch (error) {
+        console.error("Erro ao reagendar:", error);
         showNotification("Erro ao reagendar. Tente novamente.", true);
-  }
-    });
+    } finally {
+        fecharModalDecisao();
+    }
+});
+
+
+
   
     carregarProcedimentos();
     carregarEspecificacoes(); // Carrega todas as especificações no início
   });
+
+  function fecharModalDecisao() {
+    document.getElementById("deleteModal").style.display = "none";
+}
+
   
   function showNotification(message, isError = false) {
     const notification = document.getElementById("notification");

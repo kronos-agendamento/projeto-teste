@@ -95,9 +95,9 @@ class AgendamentoService(
 
     private val filaAgendamentos: Queue<AgendamentoRequestDTO> = LinkedList()
 
-    fun obterAgendamentosPorStatus(): Map<String, Int> {
-        // Consulta o repositório e obtém os dados
-        val resultados = agendamentoRepository.contarAgendamentosPorStatus()
+    fun obterAgendamentosPorStatus(startDate: String?): Map<String, Int> {
+        // Consulta o repositório e obtém os dados filtrados pela data
+        val resultados = agendamentoRepository.contarAgendamentosPorStatus(startDate)
 
         // Cria um mapa para armazenar os valores finais
         val agendamentosPorStatus = mutableMapOf(
@@ -108,7 +108,7 @@ class AgendamentoService(
             "reagendados" to 0
         )
 
-        // Percorre os resultados e preenche o mapa
+        // Preenche o mapa com os resultados
         for (resultado in resultados) {
             val statusNome = resultado["status_nome"] as String
             val quantidade = (resultado["quantidade"] as Number).toInt()
@@ -153,41 +153,49 @@ class AgendamentoService(
     }
 
 
-    fun obterTotalReceitaUltimosTresMeses(): Map<String, Double> {
-        return agendamentoRepository.findTotalReceitaUltimosTresMeses().associate {
-            val procedimento = it[0] as String
-            val totalReceita = (it[1] as Number).toDouble()  // Cuidado com o tipo aqui, converta para Double
-            procedimento to totalReceita
-        }
+    fun obterTotalReceitaEntreDatas(startDate: String?, endDate: String?): Map<String, Double> {
+        return agendamentoRepository.findTotalReceitaEntreDatas(startDate, endDate)
+            .associate {
+                val procedimento = it[0] as String // Nome do procedimento
+                val totalReceita = (it[1] as Number).toDouble() // Receita total convertida para Double
+                procedimento to totalReceita
+            }
     }
 
-    fun obterTempoGastoPorProcedimentoUltimoMes(): Map<String, Double> {
-        return agendamentoRepository.findTempoGastoPorProcedimentoUltimoMes()
+
+    fun obterTempoGastoPorProcedimento(startDate: String?, endDate: String?): Map<String, Double> {
+        return agendamentoRepository.findTempoGastoPorProcedimentoEntreDatas(startDate, endDate)
             .associate {
-                val procedimento = it[0] as String
-                val tempoTotal = (it[1] as Number).toDouble()
+                val procedimento = it[0] as String // Nome do procedimento
+                val tempoTotal = (it[1] as Number).toDouble() // Tempo total em minutos
                 procedimento to tempoTotal
             }
     }
 
-    fun obterProcedimentosRealizadosUltimoTrimestre(): Map<String, Int> {
-        return agendamentoRepository.findProcedimentosRealizadosUltimoTrimestre()
+
+
+
+    fun obterProcedimentosRealizadosEntreDatas(startDate: String?, endDate: String?): Map<String, Int> {
+        return agendamentoRepository.findProcedimentosRealizadosEntreDatas(startDate, endDate)
             .associate {
-                val procedimento = it[0] as String
-                val somaQtd = (it[1] as Number).toInt()
+                val procedimento = it[0] as String // Nome do procedimento
+                val somaQtd = (it[1] as Number).toInt() // Quantidade realizada
                 procedimento to somaQtd
             }
     }
 
 
-    fun obterValorTotalUltimoMesPorProcedimento(): Map<String, Double> {
-        return agendamentoRepository.findValorTotalUltimoMesPorProcedimento()
+
+
+    fun obterValorTotalEntreDatas(startDate: String?, endDate: String?): Map<String, Double> {
+        return agendamentoRepository.findValorTotalEntreDatas(startDate, endDate)
             .associate {
-                val procedimento = it[0] as String
-                val valorTotal = (it[1] as Number).toDouble()
-                procedimento to valorTotal  // Criamos um par (chave, valor) para o Map
+                val procedimento = it[0] as String // Nome do procedimento
+                val valorTotal = (it[1] as Number).toDouble() // Valor total calculado
+                procedimento to valorTotal
             }
     }
+
 
     fun getAgendamentosPorIntervalo(startDate: LocalDate, endDate: LocalDate): List<Array<Any>> {
         return agendamentoRepository.findAgendamentosPorIntervalo(startDate, endDate)

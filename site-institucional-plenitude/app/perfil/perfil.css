@@ -1026,3 +1026,73 @@ p {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   border: 1px solid #d2135d;
 }
+
+
+.filter-btn {
+  position: relative;
+}
+
+
+.tooltip1 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: -20px;
+  /* Ajuste conforme necessário */
+  left: 98%;
+  transform: translateX(-50%);
+}
+
+.tooltip2 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: -20px;
+  /* Ajuste conforme necessário */
+  left: 98%;
+  transform: translateX(-50%);
+}
+
+.tooltip3 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 30px;
+  /* Ajuste conforme necessário */
+  left: 55%;
+  transform: translateX(-50%);
+}
+
+
+.filter-btn:hover+.tooltip1 {
+  display: block;
+
+}
+
+.filter-btn:hover+.tooltip2 {
+  display: block;
+
+}
+
+.filter-btn:hover+.tooltip3 {
+  display: block;
+
+}

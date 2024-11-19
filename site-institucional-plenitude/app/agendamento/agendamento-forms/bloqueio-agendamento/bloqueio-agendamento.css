@@ -307,3 +307,52 @@
 .agendamento.bloqueio {
   cursor: pointer;
 }
+
+
+.filter-btn {
+  position: relative;
+}
+
+.tooltip1 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 93%; /* Ajuste conforme necessário */
+  left: 48%;
+  transform: translateX(-50%);
+}
+
+
+/* Estilos do tooltip */
+.tooltip3 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 93%; /* Ajuste conforme necessário */
+  left: 70%;
+  transform: translateX(-50%);
+}
+
+
+.filter-btn:hover + .tooltip1 {
+  display: block;
+  
+}
+
+
+.filter-btn:hover + .tooltip3 {
+  display: block;
+  
+}

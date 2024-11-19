@@ -126,41 +126,69 @@
 
       </header>
 
-      <section class="form-section" id="personalInfoForm">
-
-        <h2>
-          <div class="form-group-row">
-            &nbsp;&nbsp;&nbsp; Dados Pessoais
-            <button class="edit-icon-btn" id="editIconUsuario" aria-label="Editar Dados Pessoais">
-              <img src="../../assets/icons/editar.branco.png" alt="Editar"
-                style="width: 20px; height: 20px; border-radius: 0px;">
-            </button>
-          </div>
-        </h2>
-        <div class="form-group" style="margin-bottom: 1rem;">
-          <label for="file">Foto de Perfil:</label>
-          <form id="uploadForm" style="display: flex; align-items: center;">
-            <input type="file" id="file" name="file" accept="image/*" required style="flex: 1;" disabled>
-            <button class="save-button" type="submit" id="uploadButton" disabled>Enviar Foto</button>
-          </form>
-          <p id="responseMessage" style="font-size: 14px;"></p>
-        </div>
-        
-       
-        <form id="personalForm" class="form">
-          <div class="form-group-row">
-            <div class="form-group">
-              <label for="nome">Nome:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="text" id="nome" name="nome" required disabled>
-                <span class="lock-icon" id="nome-lock">🔓</span>
-              </div>
+        <section class="form-section" id="personalInfoForm">
+          <h2>
+            <div class="form-group-row">
+              &nbsp;&nbsp;&nbsp; Dados Pessoais
+              <button
+                class="edit-icon-btn filter-btn"
+                id="editIconUsuario"
+                aria-label="Editar Dados Pessoais"
+              >
+                <img
+                  src="../../assets/icons/editar.branco.png"
+                  alt="Editar"
+                  style="width: 20px; height: 20px; border-radius: 0px"
+                />
+              </button>
+              <div id="tooltip1" class="tooltip1">editar</div>
             </div>
-            <div class="form-group">
-              <label for="nascimento">Data de Nascimento:</label>
-              <div style="display: flex; align-items: center;">
-                <input type="date" id="nascimento" name="nascimento" required disabled>
-                <span class="lock-icon" id="nascimento-lock">🔒</span>
+          </h2>
+          <div class="form-group" style="margin-bottom: 1rem">
+            <label for="file">Foto de Perfil:</label>
+            <form id="uploadForm" style="display: flex; align-items: center">
+              <input
+                type="file"
+                id="file"
+                name="file"
+                accept="image/*"
+                required
+                style="flex: 1"
+                disabled
+              />
+              <button
+                class="save-button"
+                type="submit"
+                id="uploadButton"
+                disabled
+              >
+                Enviar Foto
+              </button>
+            </form>
+            <p id="responseMessage" style="font-size: 14px"></p>
+          </div>
+
+          <form id="personalForm" class="form">
+            <div class="form-group-row">
+              <div class="form-group">
+                <label for="nome">Nome:</label>
+                <div style="display: flex; align-items: center">
+                  <input type="text" id="nome" name="nome" required disabled />
+                  <span class="lock-icon" id="nome-lock">🔓</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="nascimento">Data de Nascimento:</label>
+                <div style="display: flex; align-items: center">
+                  <input
+                    type="date"
+                    id="nascimento"
+                    name="nascimento"
+                    required
+                    disabled
+                  />
+                  <span class="lock-icon" id="nascimento-lock">🔒</span>
+                </div>
               </div>
             </div>
           
@@ -233,7 +261,7 @@
               <div class="form-group-row">
                 &nbsp;&nbsp;&nbsp; Dados Empresariais
                 <button
-                  class="edit-icon-btn"
+                  class="edit-icon-btn filter-btn"
                   id="editIconEmpresa"
                   aria-label="Editar Dados Empresariais"
                 >
@@ -243,6 +271,7 @@
                     style="width: 20px; height: 20px; border-radius: 0px"
                   />
                 </button>
+                <div id="tooltip2" class="tooltip2">editar</div>
               </div>
             </h2>
             <div class="form-add">
@@ -453,7 +482,7 @@
                 <div class="funcionario-carrossel">
                   <button class="carrossel-btn prev">&#10094;</button>
                   <div class="clicavel">
-                    <div class="funcionario-info">
+                    <div class="funcionario-info filter-btn">
                       <!-- Imagem do funcionário -->
                       <img
                         class="foto-funcionario"
@@ -462,29 +491,32 @@
                       />
 
                       <!-- Informações do funcionário -->
-                      <div class="funcionario-info">
+                      <div class="funcionario-info ">
                         <h4 class="funcionario-nome">Nome do Funcionário</h4>
                         <p class="funcionario-cargo" style="color: rgb(0, 0, 0);">Cargo: Funcionário</p>
                       </div>
                     </div>
+                    <div id="tooltip3" class="tooltip3">Clique para entrar na página de funcionários</div>
                   </div>
                   <button class="carrossel-btn next">&#10095;</button>
                 </div>
+                
 
-                <div class="content-box">
-                  <p>Até:</p>
-                  <input type="time" id="horaFimBlock" name="horaFimBlock" required><br><br>
+                <hr class="divider" />
+
+                <!-- Seção de Adicionar Novo Funcionário -->
+                <div class="adicionar-novo-funcionario">
+                  <h3>Adicionar um funcionário na sua empresa:</h3>
+                  <button
+                    class="adicionar-button"
+                    onclick="window.location.href='perfilForms/cadastrar-funcionario/cadastrar-cliente.html'"
+                  >
+                    Adicionar
+                  </button>
                 </div>
               </div>
-
-
-              <div class="button-container2">
-                <button type="button" class="save-button" id="bloqueio-button">
-                  Adicionar
-                </button>
-              </div>
             </div>
-          </div>
+          </section>
         </div>
       </div> -->
   </div>
