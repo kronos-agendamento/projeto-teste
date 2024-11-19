@@ -70,12 +70,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         const startDate = startDateInput.value;
-            
+        const endDate = null
 
             
 
             // Prossiga com a lógica da requisição
-            fetchData2(url, {startDate}, callback);
+            fetchData2(url, {startDate, endDate}, callback);
         
     }
 
@@ -322,20 +322,23 @@ updateKPIs();
         "endDateGerencialKPI4",
         updateClientesFidelizados
     );
-    addFilterListener(
-        "buscarGerencialGrafico1Button",                                     // ID do botão
-        "/usuarios/clientes-concluidos-ultimos-cinco-meses", // URL da API
-        "startDateGerencialGrafico1",                            // ID do campo de data de início
-        "endDateGerencialGrafico1",                              // ID do campo de data de término
-        updateChart2_1                  // Callback específico para atualizar o gráfico 1
-    );
-    addFilterListener(
-        "buscarGerencialGrafico1Button",                                     // ID do botão
-        "/usuarios/clientes-fidelizados-ultimos-cinco-meses", // URL da API
-        "startDateGerencialGrafico1",                            // ID do campo de data de início
-        "endDateGerencialGrafico1",                              // ID do campo de data de término
-        updateChart2_2                  // Callback específico para atualizar o gráfico 1
-    );
+
+    document.getElementById("buscarGerencialGrafico1Button").addEventListener("click", function () {
+        buscarDadosPorGrafico(
+            "/usuarios/clientes-concluidos-ultimos-cinco-meses", 
+            "startDateGerencialGrafico1", 
+            "endDateGerencialGrafico1", 
+            updateChart2_1
+        );
+    
+        buscarDadosPorGrafico(
+            "/usuarios/clientes-fidelizados-ultimos-cinco-meses", 
+            "startDateGerencialGrafico1", 
+            "endDateGerencialGrafico1", 
+            updateChart2_2
+        );
+    });
+    
     addFilterListener(
         "buscarGerencialGrafico2Button",                                     // ID do botão
         "/api/procedimentos/quantidade-agendamentos-especificacao", // URL da API

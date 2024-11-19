@@ -137,8 +137,8 @@ class AgendamentoService(
 
 
 
-    fun getTotalAgendamentosPorDia(specificDate: String?): Int {
-        return agendamentoRepository.findTotalAgendamentosPorDia(specificDate)
+    fun getTotalAgendamentosPorDia(startDate: String?): Int {
+        return agendamentoRepository.findTotalAgendamentosPorDia(startDate)
     }
 
 
