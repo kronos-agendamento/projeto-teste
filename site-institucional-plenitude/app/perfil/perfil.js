@@ -235,6 +235,43 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   carregarDados(); // Carregar os dados do usuário e empresa ao iniciar a página
+
+  // Obtém o botão e o input de arquivo
+  const importButton = document.getElementById('import-button');
+  const fileInput = document.getElementById('file-input');
+
+  // Adiciona o evento de clique no botão para abrir o explorador de arquivos
+  importButton.addEventListener('click', () => {
+    fileInput.click(); // Simula o clique no input de arquivo
+  });
+
+  // Adiciona o evento de alteração no input para enviar o arquivo ao backend
+  fileInput.addEventListener('change', async (event) => {
+    const file = event.target.files[0]; // Obtém o arquivo selecionado
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      // Envia a requisição para o backend
+      const response = await fetch('http://localhost:8080/api/importacao/importar', {
+        method: 'POST',
+        body: formData
+      });
+
+      // Processa a resposta
+      const result = await response.text();
+      if (response.ok) {
+        alert(`Sucesso: ${result}`);
+      } else {
+        alert(`Erro: ${result}`);
+      }
+    } catch (error) {
+      alert(`Erro ao enviar o arquivo: ${error.message}`);
+    }
+  });
+  
 });
 
 // Função para buscar os dados do usuário por CPF

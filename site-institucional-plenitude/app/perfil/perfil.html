@@ -538,7 +538,7 @@
                     class="save-button"
                     id="save-empresa-button"
                     disabled
-                    style="margin-right: -10px;"
+                    style="margin-right: -10px"
                   >
                     Salvar Dados Empresariais
                   </button>
@@ -558,28 +558,44 @@
                       />
 
                       <!-- Informações do funcionário -->
-                      <div class="funcionario-info ">
+                      <div class="funcionario-info">
                         <h4 class="funcionario-nome">Nome do Funcionário</h4>
-                        <p class="funcionario-cargo" style="color: rgb(0, 0, 0);">Cargo: Funcionário</p>
+                        <p
+                          class="funcionario-cargo"
+                          style="color: rgb(0, 0, 0)"
+                        >
+                          Cargo: Funcionário
+                        </p>
                       </div>
                     </div>
-                    <div id="tooltip3" class="tooltip3">Clique para entrar na página de funcionários</div>
+                    <div id="tooltip3" class="tooltip3">
+                      Clique para entrar na página de funcionários
+                    </div>
                   </div>
                   <button class="carrossel-btn next">&#10095;</button>
                 </div>
-                
 
                 <hr class="divider" />
 
                 <!-- Seção de Adicionar Novo Funcionário -->
                 <div class="adicionar-novo-funcionario">
                   <h3>Adicionar um funcionário na sua empresa:</h3>
-                  <button
-                    class="adicionar-button"
-                    onclick="window.location.href='perfilForms/cadastrar-funcionario/cadastrar-cliente.html'"
-                  >
-                    Adicionar
-                  </button>
+                  <div class="div-fora-button">
+                    <button
+                      class="adicionar-button"
+                      onclick="window.location.href='perfilForms/cadastrar-funcionario/cadastrar-cliente.html'"
+                    >
+                      Adicionar
+                    </button>
+                    <button class="import-button" id="import-button">
+                      <img src="../../assets/icons/import.png" alt="Import Icon" />
+                    </button>
+                  
+                    <!-- Input de arquivo oculto -->
+                    <input type="file" id="file-input" style="display: none" />
+
+                    
+                  </div>
                 </div>
               </div>
             </div>
