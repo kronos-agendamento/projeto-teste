@@ -733,7 +733,7 @@ document.addEventListener("DOMContentLoaded", function () {
       tooltip.style.display = "block"; // Exibe para cálculo
       positionTooltip(tooltip, targetButton);
       tooltip.style.visibility = "visible"; // Mostra após posicionamento
-    });
+    });j
 
     targetButton.addEventListener("mouseleave", () => {
       tooltip.style.display = "none"; // Oculta quando sai do hover
@@ -759,3 +759,8 @@ document.addEventListener("DOMContentLoaded", function () {
     tooltip.style.left = `${leftPosition + window.scrollX}px`;
   }
 });
+
+
+function openFileSelector() {
+  document.getElementById('fileInput').click();
+}
