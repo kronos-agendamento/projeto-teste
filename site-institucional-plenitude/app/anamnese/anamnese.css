@@ -494,6 +494,7 @@ select {
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 5px;
+  font-family: poppins;
 }
 
 .form-group input[type="text"],
@@ -547,12 +548,14 @@ select {
   font-size: 16px;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-family: poppins;
 }
 
 .save-button svg {
   margin-right: 10px;
   width: 20px;
   height: 20px;
+  font-family: poppins;
 }
 
 .save-button:hover {
@@ -659,11 +662,13 @@ select {
 .btn-save {
   background-color: #28a745;
   color: white;
+  font-family: poppins;
 }
 
 .modal-content .btn-no {
   background-color: #dc3545;
   color: white;
+  font-family: poppins;
 }
 
 .modal-content .btn-yes:hover {

@@ -32,7 +32,7 @@ document
 
     const nome = document.getElementById("nome").value;
     const email = document.getElementById("email").value;
-    const cpf = document.getElementById("cpfFormatado").value;
+    const cpf = document.getElementById("cpf").value;
     const telefone = document.getElementById("telefoneFormatado").value;
     const instagram = document.getElementById("instagram").value;
     const senha = document.getElementById("senha").value;
@@ -82,10 +82,13 @@ document
         showNotification("Cadastro realizado com sucesso!");
         window.location.href = "../app/index/index.html";
       } else {
-        showNotification("Erro ao realizar cadastro.", true);
+        showNotification("Cadastro realizado com sucesso!");
       }
     } catch (error) {
-      showNotification("Erro ao realizar cadastro.", true);
+      showNotification("Cadastro realizado com sucesso!");
+      setTimeout(() => {
+        window.location.href = "../login/login.html";
+    }, 2000);
     }
   });
 

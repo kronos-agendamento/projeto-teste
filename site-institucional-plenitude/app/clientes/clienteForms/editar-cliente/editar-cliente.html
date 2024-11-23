@@ -93,11 +93,6 @@
                 clientes </a>
         </div>
         <div id="notification" class="notification">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill"
-                viewBox="0 0 16 16">
-                <path
-                    d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
-            </svg>
             <span id="notification-message"></span>
         </div>
         <div class="actions" style="margin-left: 3vh;">
@@ -143,7 +138,7 @@
                 <div class="form-group-row" style="height: 10px;">
                     &nbsp;&nbsp;&nbsp; Dados Pessoais
                     <button class="edit-icon-btn filter-btn" id="editIconPessoal" aria-label="Editar Dados Pessoais"
-                        onclick="enablePersonalEditing()">
+                        >
                         <img src="../../../../assets/icons/editar.branco.png" alt="Editar"
                             style="width: 20px; height: 20px; border-radius: 0px;">
                     </button>
@@ -207,7 +202,15 @@
                     <div class="form-group">
                         <label for="genero">Gênero:</label>
                         <div style="display: flex; align-items: center;">
-                            <input type="text" id="genero" name="genero" required disabled>
+                            <select id="genero" name="genero" required disabled>
+                                <option value="">Selecione</option>
+                                <option value="Masculino">Masculino</option>
+                                <option value="Feminino">Feminino</option>
+                                <option value="Transgênero">Transgênero</option>
+                                <option value="Gênero neutro">Gênero neutro</option>
+                                <option value="Não-binário">Não-binário</option>
+                                <option value="Não prefiro informar">Prefiro não informar</option>
+                            </select>
                             <span class="lock-icon" id="genero-lock">🔓</span>
                         </div>
                     </div>
@@ -224,7 +227,16 @@
                     <div class="form-group">
                         <label for="indicacao">Indicação:</label>
                         <div style="display: flex; align-items: center;">
-                            <input type="text" id="indicacao" name="indicacao" required disabled>
+                            <select style="width: 101%; border: 1px solid #ccc; border-radius: 5px;  padding: 10px; font-size: 14px;  font-family: Poppins, Arial, sans-serif; margin-bottom: 4%;"
+                                id="indicacao" required disabled>
+                                <option value="">Selecione</option>
+                                <option value="Internet">Internet</option>
+                                <option value="Anúncio">Anúncio</option>
+                                <option value="Amigo contou">Amigo contou</option>
+                                <option value="Cliente contou">Cliente contou</option>
+                                <option value="Instagram">Instagram</option>
+                                <option value="Passou na frente e viu">Passou na frente e viu</option>
+                            </select>
                             <span class="lock-icon" id="indicacao-lock">🔓</span>
                         </div>
                     </div>
@@ -260,6 +272,14 @@
             <form id="addressForm" class="form">
                 <div class="form-group-row">
                     <div class="form-group">
+                        <label for="cep">CEP:</label>
+                        <div style="display: flex; align-items: center;">
+                            <input type="text" id="cep" name="cep" required disabled>
+                            <span class="lock-icon" id="cep-lock">🔓</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <label for="logradouro">Logradouro:</label>
                         <div style="display: flex; align-items: center;">
                             <input type="text" id="logradouro" name="logradouro" required disabled>
@@ -273,13 +293,7 @@
                             <span class="lock-icon" id="numero-lock">🔓</span>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="cep">CEP:</label>
-                        <div style="display: flex; align-items: center;">
-                            <input type="text" id="cep" name="cep" required disabled>
-                            <span class="lock-icon" id="cep-lock">🔓</span>
-                        </div>
-                    </div>
+                    
                 </div>
                 <div class="form-group-row">
                     <div class="form-group">

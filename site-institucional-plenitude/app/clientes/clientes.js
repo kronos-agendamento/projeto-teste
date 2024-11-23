@@ -125,7 +125,13 @@ document.addEventListener("DOMContentLoaded", function () {
             const row = document.createElement("tr");
             const nome = user.nome;
             const instagram = user.instagram.replace("@", "");
-            const telefone = user.telefone;
+            console.log("Telefone recebido:", user.telefone);
+
+    // Converte user.telefone para string antes de usar replace
+    const telefoneString = String(user.telefone);
+    const telefoneFormatado = telefoneString.replace(/^(\d{2})(\d{4,5})(\d{4})$/, "($1) $2-$3");
+
+    console.log("Telefone formatado inline:", telefoneFormatado);
             const cpf = user.cpf;
             const idEndereco = user.endereco.idEndereco;
 
@@ -137,7 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
               ${user.instagram}
           </a>
       </td>
-      <td>${telefone}</td>
+      <td>${telefoneFormatado}</td>
       <td>${cpf}</td>
   <td>
     <!-- Botão de Editar com tooltip -->
@@ -411,11 +417,6 @@ function openModalPesquisa() {
   document.getElementById("modal-pesquisa").style.display = "block";
 }
 
-// Função para fechar o modal
-function closeModalPesquisa() {
-  document.getElementById("modal-pesquisa").style.display = "none";
-}
-
 // Fechar o modal ao clicar fora dele
 window.onclick = function (event) {
   const modal = document.getElementById("modal-pesquisa");
@@ -424,90 +425,113 @@ window.onclick = function (event) {
   }
 };
 
-function pesquisarCliente() {
-  const nome = document.getElementById('nome').value;
-  const cpf = document.getElementById('cpf').value;
-  const codigo = document.getElementById('codigo').value;
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById('botaoPesquisar').addEventListener('click', pesquisarCliente);
 
-  let url = '';
-  if (codigo) {
-      url = `http://localhost:8080/usuarios/${codigo}`;
-  } else if (cpf) {
-      url = `http://localhost:8080/usuarios/buscar-por-cpf/${cpf}`;
-  } else {
-      return;
-  }
+    function pesquisarCliente() {
+        let cpf = document.getElementById('cpf').value;
+        const codigo = document.getElementById('codigo').value;
 
-  console.log('URL gerada:', url);
+        let url = '';
+        if (codigo) {
+            url = `http://localhost:8080/usuarios/${codigo}`;
+        } else if (cpf) {
+            cpf = formatarCPF(cpf);
+            document.getElementById('cpf').value = cpf;
+            url = `http://localhost:8080/usuarios/buscar-por-cpf/${cpf}`;
+        } else {
+            alert("Por favor, preencha pelo menos o CPF ou o Código.");
+            return;
+        }
 
-  fetch(url)
-      .then(response => {
-          if (!response.ok) {
-              throw new Error(`Erro: ${response.status} - ${response.statusText}`);
-          }
-          return response.json();
-      })
-      .then(data => mostrarResultado(data))
-      .catch(error => {
-          console.error('Erro ao buscar cliente:', error);
-          mostrarErro("Erro ao buscar cliente. Por favor, tente novamente.");
-      });
-}
+        console.log('URL gerada:', url);
 
-function mostrarResultado(data) {
-  const resultadoDiv = document.getElementById('resultado');
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Erro: ${response.status} - ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Chamando mostrarResultado com:', data);
+                mostrarResultado(data);
+            })
+            .catch(error => {
+                console.error('Erro ao buscar cliente:', error);
+                mostrarErro("Erro ao buscar cliente. Por favor, tente novamente.");
+            });
+    }
 
-  if (!data || (Array.isArray(data) && data.length === 0)) {
-      resultadoDiv.innerHTML = "<p>Nenhum cliente encontrado.</p>";
-  } else {
-      const usuarios = Array.isArray(data) ? data : [data];
+    function mostrarResultado(data) {
+        const resultadoDiv = document.getElementById('resultado');
 
-      let tableHTML = `
-          <table id="procedures-table-pesquisa" class="procedures-table-pesquisa">
-              <thead>
-                  <tr>
-                      <th>Nome</th>
-                      <th>Instagram</th>
-                      <th>Telefone</th>
-                      <th>CPF</th>
-                      <th>Ações</th>
-                  </tr>
-              </thead>
-              <tbody>
-      `;
+        try {
+            console.log("entrei");
 
-      usuarios.forEach(usuario => {
-          tableHTML += `
-              <tr>
-                  <td>${usuario.nome}</td>
-                  <td>${usuario.instagram}</td>
-                  <td>${usuario.telefone}</td>
-                  <td>${usuario.cpf}</td>
-                  <td>
-                      <button class="ver-mais-btn" data-id="${usuario.idUsuario}" style="border: none; background: transparent; cursor: pointer;" title="Ver mais">
-                          <img src="../../assets/icons/mais-tres-pontos-indicador.png" alt="Ver mais" style="width: 20px; height: 20px; margin-top:18px; margin-left:15px;">
-                      </button>
-                  </td>
-              </tr>
-          `;
-      });
+            if (!data || (Array.isArray(data) && data.length === 0)) {
+                resultadoDiv.innerHTML = "<p>Nenhum cliente encontrado.</p>";
+            } else {
+                const usuarios = Array.isArray(data) ? data : [data];
 
-      tableHTML += `</tbody></table>`;
-      resultadoDiv.innerHTML = tableHTML;
+                let tableHTML = `
+                    <table id="procedures-table-pesquisa" class="procedures-table-pesquisa">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Instagram</th>
+                                <th>Telefone</th>
+                                <th>CPF</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
 
-      document.querySelectorAll('.ver-mais-btn').forEach(button => {
-          button.addEventListener('click', function() {
-              const idUsuario = this.getAttribute("data-id");
-              window.location.href = `../clientes/clienteForms/editar-cliente/editar-cliente.html?idUsuario=${idUsuario}`;
-          });
-      });
-  }
-}
+                usuarios.forEach(usuario => {
+                    tableHTML += `
+                        <tr>
+                            <td>${usuario.nome}</td>
+                            <td>${usuario.instagram}</td>
+                            <td>${usuario.telefone}</td>
+                            <td>${usuario.cpf}</td>
+                            <td>
+                                <button class="ver-mais-btn" data-id="${usuario.idUsuario}" style="border: none; background: transparent; cursor: pointer;" title="Ver mais">
+                                    <img src="../../assets/icons/mais-tres-pontos-indicador.png" alt="Ver mais" style="width: 20px; height: 20px; margin-top:18px; margin-left:15px;">
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
 
-function mostrarErro(mensagem) {
-  const resultadoDiv = document.getElementById("resultado");
-  resultadoDiv.innerHTML = `<p style="color: red;">${mensagem}</p>`;
-}
+                tableHTML += `</tbody></table>`;
+                resultadoDiv.innerHTML = tableHTML;
+
+                resultadoDiv.style.display = 'block';
+
+                document.querySelectorAll('.ver-mais-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const idUsuario = this.getAttribute("data-id");
+                        window.location.href = `../clientes/clienteForms/editar-cliente/editar-cliente.html?idUsuario=${idUsuario}`;
+                    });
+                });
+            }
+        } catch (error) {
+            console.error('Erro dentro de mostrarResultado:', error);
+        }
+    }
+
+    function mostrarErro(mensagem) {
+        const resultadoDiv = document.getElementById("resultado");
+        resultadoDiv.innerHTML = `<p style="color: red;">${mensagem}</p>`;
+    }
+
+    function formatarCPF(cpf) {
+        cpf = cpf.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+        return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4'); // Aplica a formatação
+    }
+});
+
 
 function closeModalPesquisa() {
   document.getElementById("modal-pesquisa").style.display = "none";
@@ -683,14 +707,23 @@ function closeModalAv() {
     document.getElementById('modal-avaliacao').style.display = 'none';
 }
 
+function formatarCPF(cpf) {
+    cpf = cpf.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+    return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4'); // Aplica a formatação
+}
+
+
 // Função para buscar o nome do cliente com base no CPF
 function buscarNome() {
-    const cpf = document.getElementById('cpf-avaliacao').value;
+    let cpf = document.getElementById('cpf-avaliacao').value;
 
     if (!cpf) {
         alert("Por favor, preencha o CPF.");
         return;
     }
+
+    cpf = formatarCPF(cpf); // Formata o CPF antes de usar
+    document.getElementById('cpf-avaliacao').value = cpf; // Atualiza o campo com o CPF formatado
 
     const url = `http://localhost:8080/usuarios/buscar-por-cpf/${cpf}`;
     console.log('URL gerada:', url);
@@ -708,6 +741,7 @@ function buscarNome() {
             mostrarErro("Erro ao buscar cliente. Por favor, tente novamente.");
         });
 }
+
 
 // Função para exibir o resultado no campo "Nome"
 function mostrarResultado(data) {

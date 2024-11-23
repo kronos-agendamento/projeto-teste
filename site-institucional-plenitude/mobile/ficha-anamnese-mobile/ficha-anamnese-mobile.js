@@ -39,6 +39,7 @@ async function preencherFormularioComRespostas(idUsuario) {
       renderPerguntas(ficha.perguntasRespostas);
     } else {
       console.log("Nenhuma resposta encontrada, carregando perguntas em branco.");
+      localStorage.setItem("statusFormulario", "Não Respondido");
       await fetchPerguntas();
     }
   } catch (error) {
@@ -144,6 +145,51 @@ async function fetchPerguntas() {
   }
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+  const submitButton = document.getElementById("submit-button");
+  const modalPrimeiraAnamnese = document.getElementById("modalPrimeiraAnamnese");
+  const modalConfirmacaoAnamnese = document.getElementById("modalConfirmacaoAnamnese");
+  const confirmarEnvioPrimeira = document.getElementById("confirmarEnvioPrimeiraAnamnese");
+  const cancelarEnvioPrimeira = document.getElementById("cancelarEnvioPrimeiraAnamnese");
+  const confirmarEnvio = document.getElementById("confirmarEnvioAnamnese");
+  const cancelarEnvio = document.getElementById("cancelarEnvioAnamnese");
+
+  if (!submitButton) {
+    console.error("Botão de envio não encontrado.");
+    return;
+  }
+
+  submitButton.addEventListener("click", function () {
+    const statusFormulario = localStorage.getItem("statusFormulario");
+    
+    if (statusFormulario === "Respondido") {
+      modalConfirmacaoAnamnese.style.display = "flex";
+    } else {
+      modalPrimeiraAnamnese.style.display = "flex";
+    }
+  });
+
+  // Modal da primeira anamnese
+  confirmarEnvioPrimeira.addEventListener("click", function () {
+    modalPrimeiraAnamnese.style.display = "none";
+    submitForm();
+  });
+
+  cancelarEnvioPrimeira.addEventListener("click", function () {
+    modalPrimeiraAnamnese.style.display = "none";
+  });
+
+  // Modal de confirmação de alteração
+  confirmarEnvio.addEventListener("click", function () {
+    modalConfirmacaoAnamnese.style.display = "none";
+    submitForm();
+  });
+
+  cancelarEnvio.addEventListener("click", function () {
+    modalConfirmacaoAnamnese.style.display = "none";
+  });
+});
+
 // Função para enviar o formulário com as respostas preenchidas
 async function submitForm() {
   const idUsuario = localStorage.getItem("idUsuario");
@@ -212,6 +258,7 @@ async function submitForm() {
     console.error("Erro no envio das respostas:", error);
   }
 }
+
 
 // Carrega o formulário ao carregar a página
 document.addEventListener("DOMContentLoaded", function () {

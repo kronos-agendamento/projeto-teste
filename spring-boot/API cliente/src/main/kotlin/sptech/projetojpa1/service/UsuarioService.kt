@@ -225,7 +225,8 @@ class UsuarioService(
             genero = usuario.genero,
             senha = usuario.senha,
             email = usuario.email,
-            avaliacao = usuario.avaliacao
+            avaliacao = usuario.avaliacao,
+            endereco = usuario.endereco
         )
     }
 
