@@ -82,6 +82,9 @@ document.addEventListener("DOMContentLoaded", function () {
     .addEventListener("click", function () {
       const especificacao = document.getElementById("especificacao").value;
       const homecare = document.getElementById("homecare").checked;
+      const colocacao = document.getElementById("colocacao").checked;
+      const manutencao = document.getElementById("manutencao").checked;
+      const retirada = document.getElementById("retirada").checked;
 
       let duracaoColocacaoHoras =
         document.getElementById("duracao-colocacao-horas").value || "00";
@@ -120,6 +123,9 @@ document.addEventListener("DOMContentLoaded", function () {
         tempoManutencao: `${duracaoManutencaoHoras}:${duracaoManutencaoMinutos}`,
         tempoRetirada: `${duracaoRetiradaHoras}:${duracaoRetiradaMinutos}`,
         homecare: homecare,
+        colocacao: colocacao,
+        manutencao: manutencao,
+        retirada: retirada,
         procedimento: parseInt(
           document.getElementById("procedimento-dropdown").value,
           10
@@ -205,9 +211,12 @@ async function carregarImagem2() {
   }
 
   try {
-      const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario-cpf/${cpf}`, {
-          method: "GET",
-      });
+    const response = await fetch(
+      `http://localhost:8080/usuarios/busca-imagem-usuario-cpf/${cpf}`,
+      {
+        method: "GET",
+      }
+    );
 
     if (response.ok) {
       const blob = await response.blob(); // Recebe a imagem como Blob
@@ -229,3 +238,84 @@ async function carregarImagem2() {
 
 // Carrega a imagem automaticamente quando a página termina de carregar
 window.onload = carregarImagem2;
+
+document.addEventListener("DOMContentLoaded", function () {
+  const colocacaoCheckbox = document.getElementById("colocacao");
+  const manutencaoCheckbox = document.getElementById("manutencao");
+  const retiradaCheckbox = document.getElementById("retirada");
+
+  const duracaoColocacaoHoras = document.getElementById(
+    "duracao-colocacao-horas"
+  );
+  const duracaoColocacaoMinutos = document.getElementById(
+    "duracao-colocacao-minutos"
+  );
+  const valorColocacao = document.getElementById("valor-colocacao");
+
+  const duracaoManutencaoHoras = document.getElementById(
+    "duracao-manutencao-horas"
+  );
+  const duracaoManutencaoMinutos = document.getElementById(
+    "duracao-manutencao-minutos"
+  );
+  const valorManutencao = document.getElementById("valor-manutencao");
+
+  const duracaoRetiradaHoras = document.getElementById(
+    "duracao-retirada-horas"
+  );
+  const duracaoRetiradaMinutos = document.getElementById(
+    "duracao-retirada-minutos"
+  );
+  const valorRetirada = document.getElementById("valor-retirada");
+
+  function toggleFields(checkbox, fields) {
+    fields.forEach((field) => {
+      field.disabled = !checkbox.checked;
+      if (!checkbox.checked) {
+        field.value = ""; // Limpa o valor se desativado
+      }
+    });
+  }
+
+  // Inicializar campos desativados
+  toggleFields(colocacaoCheckbox, [
+    duracaoColocacaoHoras,
+    duracaoColocacaoMinutos,
+    valorColocacao,
+  ]);
+  toggleFields(manutencaoCheckbox, [
+    duracaoManutencaoHoras,
+    duracaoManutencaoMinutos,
+    valorManutencao,
+  ]);
+  toggleFields(retiradaCheckbox, [
+    duracaoRetiradaHoras,
+    duracaoRetiradaMinutos,
+    valorRetirada,
+  ]);
+
+  // Adicionar eventos aos checkboxes
+  colocacaoCheckbox.addEventListener("change", function () {
+    toggleFields(colocacaoCheckbox, [
+      duracaoColocacaoHoras,
+      duracaoColocacaoMinutos,
+      valorColocacao,
+    ]);
+  });
+
+  manutencaoCheckbox.addEventListener("change", function () {
+    toggleFields(manutencaoCheckbox, [
+      duracaoManutencaoHoras,
+      duracaoManutencaoMinutos,
+      valorManutencao,
+    ]);
+  });
+
+  retiradaCheckbox.addEventListener("change", function () {
+    toggleFields(retiradaCheckbox, [
+      duracaoRetiradaHoras,
+      duracaoRetiradaMinutos,
+      valorRetirada,
+    ]);
+  });
+});

@@ -4,6 +4,88 @@ document.addEventListener("DOMContentLoaded", async function () {
   const idProcedimento = urlParams.get("idProcedimento");
   const idEspecificacao = urlParams.get("idEspecificacao");
 
+  // Função para habilitar ou desabilitar campos com base no checkbox
+  function toggleFields(checkbox, fields) {
+    fields.forEach((field) => {
+      field.disabled = !checkbox.checked;
+      if (!checkbox.checked) {
+        field.value = ""; // Limpa o valor do campo se desabilitado
+      }
+    });
+  }
+
+  // Identificadores de campos e checkboxes
+  const colocacaoCheckbox = document.getElementById("colocacao");
+  const manutencaoCheckbox = document.getElementById("manutencao");
+  const retiradaCheckbox = document.getElementById("retirada");
+
+  const valorColocacao = document.getElementById("valor-colocacao");
+  const duracaoColocacaoHoras = document.getElementById(
+    "duracao-colocacao-horas"
+  );
+  const duracaoColocacaoMinutos = document.getElementById(
+    "duracao-colocacao-minutos"
+  );
+
+  const valorManutencao = document.getElementById("valor-manutencao");
+  const duracaoManutencaoHoras = document.getElementById(
+    "duracao-manutencao-horas"
+  );
+  const duracaoManutencaoMinutos = document.getElementById(
+    "duracao-manutencao-minutos"
+  );
+
+  const valorRetirada = document.getElementById("valor-retirada");
+  const duracaoRetiradaHoras = document.getElementById(
+    "duracao-retirada-horas"
+  );
+  const duracaoRetiradaMinutos = document.getElementById(
+    "duracao-retirada-minutos"
+  );
+
+  // Inicializa os campos desabilitados
+  toggleFields(colocacaoCheckbox, [
+    valorColocacao,
+    duracaoColocacaoHoras,
+    duracaoColocacaoMinutos,
+  ]);
+  toggleFields(manutencaoCheckbox, [
+    valorManutencao,
+    duracaoManutencaoHoras,
+    duracaoManutencaoMinutos,
+  ]);
+  toggleFields(retiradaCheckbox, [
+    valorRetirada,
+    duracaoRetiradaHoras,
+    duracaoRetiradaMinutos,
+  ]);
+
+  // Adiciona eventos de mudança aos checkboxes
+  colocacaoCheckbox.addEventListener("change", () => {
+    toggleFields(colocacaoCheckbox, [
+      valorColocacao,
+      duracaoColocacaoHoras,
+      duracaoColocacaoMinutos,
+    ]);
+  });
+
+  manutencaoCheckbox.addEventListener("change", () => {
+    toggleFields(manutencaoCheckbox, [
+      valorManutencao,
+      duracaoManutencaoHoras,
+      duracaoManutencaoMinutos,
+    ]);
+  });
+
+  retiradaCheckbox.addEventListener("change", () => {
+    toggleFields(retiradaCheckbox, [
+      valorRetirada,
+      duracaoRetiradaHoras,
+      duracaoRetiradaMinutos,
+    ]);
+  });
+
+  // Carregar dados do procedimento
   if (!idProcedimento || !idEspecificacao) {
     console.error("ID do procedimento ou especificação não encontrado na URL.");
     return;
@@ -21,35 +103,48 @@ document.addEventListener("DOMContentLoaded", async function () {
     document.getElementById("descricao").value =
       procedimento.procedimento.descricao;
     document.getElementById("especificacao").value = procedimento.especificacao;
-    document.getElementById("valor-colocacao").value =
-      procedimento.precoColocacao.toFixed(2).replace(".", ",");
-    document.getElementById("valor-retirada").value = procedimento.precoRetirada
-      .toFixed(2)
-      .replace(".", ",");
-    document.getElementById("valor-manutencao").value =
-      procedimento.precoManutencao.toFixed(2).replace(".", ",");
+
+    // Define os valores iniciais dos checkboxes
+    colocacaoCheckbox.checked = procedimento.colocacao;
+    manutencaoCheckbox.checked = procedimento.manutencao;
+    retiradaCheckbox.checked = procedimento.retirada;
     document.getElementById("homecare").checked = procedimento.homecare;
 
-    function parseTempoMinutos(tempo) {
-      const [horas, minutos] = tempo.split(":").map(Number);
-      return { horas, minutos };
-    }
+    // Atualiza os campos de acordo com os checkboxes
+    toggleFields(colocacaoCheckbox, [
+      valorColocacao,
+      duracaoColocacaoHoras,
+      duracaoColocacaoMinutos,
+    ]);
+    toggleFields(manutencaoCheckbox, [
+      valorManutencao,
+      duracaoManutencaoHoras,
+      duracaoManutencaoMinutos,
+    ]);
+    toggleFields(retiradaCheckbox, [
+      valorRetirada,
+      duracaoRetiradaHoras,
+      duracaoRetiradaMinutos,
+    ]);
 
-    const colocacao = parseTempoMinutos(procedimento.tempoColocacao);
-    document.getElementById("duracao-colocacao-horas").value = colocacao.horas;
-    document.getElementById("duracao-colocacao-minutos").value =
-      colocacao.minutos;
+    // Preenche os valores dos campos habilitados
+    valorColocacao.value = procedimento.precoColocacao
+      .toFixed(2)
+      .replace(".", ",");
+    duracaoColocacaoHoras.value = procedimento.tempoColocacao.split(":")[0];
+    duracaoColocacaoMinutos.value = procedimento.tempoColocacao.split(":")[1];
 
-    const manutencao = parseTempoMinutos(procedimento.tempoManutencao);
-    document.getElementById("duracao-manutencao-horas").value =
-      manutencao.horas;
-    document.getElementById("duracao-manutencao-minutos").value =
-      manutencao.minutos;
+    valorManutencao.value = procedimento.precoManutencao
+      .toFixed(2)
+      .replace(".", ",");
+    duracaoManutencaoHoras.value = procedimento.tempoManutencao.split(":")[0];
+    duracaoManutencaoMinutos.value = procedimento.tempoManutencao.split(":")[1];
 
-    const retirada = parseTempoMinutos(procedimento.tempoRetirada);
-    document.getElementById("duracao-retirada-horas").value = retirada.horas;
-    document.getElementById("duracao-retirada-minutos").value =
-      retirada.minutos;
+    valorRetirada.value = procedimento.precoRetirada
+      .toFixed(2)
+      .replace(".", ",");
+    duracaoRetiradaHoras.value = procedimento.tempoRetirada.split(":")[0];
+    duracaoRetiradaMinutos.value = procedimento.tempoRetirada.split(":")[1];
   } catch (error) {
     console.error("Erro ao buscar dados do procedimento:", error);
     showNotification("Erro ao carregar procedimento!", true);
@@ -66,36 +161,29 @@ document.addEventListener("DOMContentLoaded", async function () {
         descricao: document.getElementById("descricao").value,
       };
 
-      const tempoColocacao = `${formatTime(
-        document.getElementById("duracao-colocacao-horas").value
-      )}:${formatTime(
-        document.getElementById("duracao-colocacao-minutos").value
-      )}`;
-      const tempoManutencao = `${formatTime(
-        document.getElementById("duracao-manutencao-horas").value
-      )}:${formatTime(
-        document.getElementById("duracao-manutencao-minutos").value
-      )}`;
-      const tempoRetirada = `${formatTime(
-        document.getElementById("duracao-retirada-horas").value
-      )}:${formatTime(
-        document.getElementById("duracao-retirada-minutos").value
-      )}`;
-
       const especificacao = {
         especificacao: document.getElementById("especificacao").value,
-        precoColocacao: parseValue(
-          document.getElementById("valor-colocacao").value
-        ),
-        precoManutencao: parseValue(
-          document.getElementById("valor-manutencao").value
-        ),
-        precoRetirada: parseValue(
-          document.getElementById("valor-retirada").value
-        ),
-        tempoColocacao: tempoColocacao,
-        tempoManutencao: tempoManutencao,
-        tempoRetirada: tempoRetirada,
+        precoColocacao: parseValue(valorColocacao.value),
+        precoManutencao: parseValue(valorManutencao.value),
+        precoRetirada: parseValue(valorRetirada.value),
+        tempoColocacao: colocacaoCheckbox.checked
+          ? `${formatTime(duracaoColocacaoHoras.value)}:${formatTime(
+              duracaoColocacaoMinutos.value
+            )}`
+          : "00:00",
+        tempoManutencao: manutencaoCheckbox.checked
+          ? `${formatTime(duracaoManutencaoHoras.value)}:${formatTime(
+              duracaoManutencaoMinutos.value
+            )}`
+          : "00:00",
+        tempoRetirada: retiradaCheckbox.checked
+          ? `${formatTime(duracaoRetiradaHoras.value)}:${formatTime(
+              duracaoRetiradaMinutos.value
+            )}`
+          : "00:00",
+        colocacao: colocacaoCheckbox.checked,
+        manutencao: manutencaoCheckbox.checked,
+        retirada: retiradaCheckbox.checked,
         homecare: document.getElementById("homecare").checked,
         procedimento: idProcedimento,
       };
@@ -129,18 +217,17 @@ document.addEventListener("DOMContentLoaded", async function () {
         showNotification("Erro ao salvar os dados!", true);
       }
     });
-    
 });
-
-function formatTime(value) {
-  return value.toString().padStart(2, "0");
-}
 
 function parseValue(value) {
   const parsedValue = parseFloat(
     value.replace("R$", "").replace(",", ".").trim()
   );
   return isNaN(parsedValue) ? 0 : parsedValue;
+}
+
+function formatTime(value) {
+  return value ? value.toString().padStart(2, "0") : "00";
 }
 
 function showNotification(message, isError = false) {
@@ -166,7 +253,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("userName").textContent = nome;
     document.getElementById("userInsta").textContent = instagram;
   }
-  new window.VLibras.Widget('https://vlibras.gov.br/app');
+  new window.VLibras.Widget("https://vlibras.gov.br/app");
 });
 
 new window.VLibras.Widget("https://vlibras.gov.br/app");
@@ -181,9 +268,12 @@ async function carregarImagem2() {
   }
 
   try {
-      const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario-cpf/${cpf}`, {
-          method: "GET",
-      });
+    const response = await fetch(
+      `http://localhost:8080/usuarios/busca-imagem-usuario-cpf/${cpf}`,
+      {
+        method: "GET",
+      }
+    );
 
     if (response.ok) {
       const blob = await response.blob(); // Recebe a imagem como Blob

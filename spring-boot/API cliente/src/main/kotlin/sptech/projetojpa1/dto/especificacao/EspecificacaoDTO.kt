@@ -42,6 +42,12 @@ data class EspecificacaoDTO(
 
     val homecare: Boolean? = null,
 
+    val colocacao: Boolean? = null,
+
+    val manutencao: Boolean? = null,
+
+    val retirada: Boolean? = null,
+
     @field:NotNull(message = "Procedimento é obrigatório")
     val procedimento: Int? = null
 )

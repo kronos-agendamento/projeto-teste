@@ -176,8 +176,8 @@
 }
 
 .disabled-select {
+  pointer-events: none;
   opacity: 0.5;
-  pointer-events: none; /* Não permite clicar no select */
 }
 
 .disabled-select:not([disabled]) {

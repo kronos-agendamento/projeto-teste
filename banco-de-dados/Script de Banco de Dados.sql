@@ -111,6 +111,9 @@ CREATE TABLE especificacao (
     tempo_colocacao VARCHAR(5) NOT NULL,
     tempo_manutencao VARCHAR(5) NOT NULL,
     tempo_retirada VARCHAR(5) NOT NULL,
+    colocacao BOOLEAN NOT NULL,
+    manutencao BOOLEAN NOT NULL,
+    retirada BOOLEAN NOT NULL,
     homecare BOOLEAN NOT NULL,
     foto LONGBLOB,
     fk_procedimento INT NOT NULL,
@@ -277,18 +280,18 @@ VALUES
 ('Sobrancelha', 'Modelagem e tratamento de sobrancelhas'),
 ('Cílios', 'Alongamento e volume de cílios');
 
-INSERT INTO especificacao (especificacao, preco_colocacao, preco_manutencao, preco_retirada, tempo_colocacao, tempo_manutencao, tempo_retirada, homecare, fk_procedimento)
+INSERT INTO especificacao (especificacao, preco_colocacao, preco_manutencao, preco_retirada, tempo_colocacao, tempo_manutencao, tempo_retirada, colocacao, manutencao, retirada, homecare, fk_procedimento)
 VALUES 
-('Extensão de Cílios Fio a Fio', 150.00, 100.00, 50.00, '02:00', '01:30', '01:00', false, 3),
-('Extensão de Cílios Volume Russo', 200.00, 120.00, 70.00, '02:30', '01:40', '01:10', false, 3),
-('Design de Sobrancelhas', 80.00, 50.00, 30.00, '00:40', '00:30', '00:20', false, 2),
-('Micropigmentação de Sobrancelhas', 250.00, 150.00, 80.00, '03:00', '02:00', '01:30', false, 2),
-('Henna para Sobrancelhas', 70.00, 40.00, 20.00, '01:00', '00:45', '00:30', false, 2),
-('Maquiagem Social', 100.00, 0.00, 0.00, '01:30', '00:00', '00:00', true, 1),
-('Maquiagem para Noivas', 300.00, 0.00, 0.00, '03:00', '00:00', '00:00', true, 1),
-('Lifting de Cílios', 120.00, 80.00, 40.00, '01:30', '01:00', '00:45', false, 3),
-('Maquiagem Artística', 200.00, 0.00, 0.00, '02:00', '00:00', '00:00', true, 1),
-('Maquiagem para Eventos', 150.00, 0.00, 0.00, '02:00', '00:00', '00:00', true, 1);
+('Extensão de Cílios Fio a Fio', 150.00, 100.00, 50.00, '02:00', '01:30', '01:00', true, true, true, false, 3),
+('Extensão de Cílios Volume Russo', 200.00, 120.00, 70.00, '02:30', '01:40', '01:10', true, true, true, false, 3),
+('Design de Sobrancelhas', 80.00, 50.00, 30.00, '00:40', '00:30', '00:20', true, true, true, false, 2),
+('Micropigmentação de Sobrancelhas', 250.00, 150.00, 80.00, '03:00', '02:00', '01:30', true, true, true, false, 2),
+('Henna para Sobrancelhas', 70.00, 40.00, 20.00, '01:00', '00:45', '00:30', true, true, true, false, 2),
+('Maquiagem Social', 100.00, 0.00, 0.00, '01:30', '00:00', '00:00', true, false, false, true, 1),
+('Maquiagem para Noivas', 300.00, 0.00, 0.00, '03:00', '00:00', '00:00', true, false, false, true, 1),
+('Lifting de Cílios', 120.00, 80.00, 40.00, '01:30', '01:00', '00:45', true, true, true, false, 3),
+('Maquiagem Artística', 200.00, 0.00, 0.00, '02:00', '00:00', '00:00', true, false, false, true, 1),
+('Maquiagem para Eventos', 150.00, 0.00, 0.00, '02:00', '00:00', '00:00', true, false, false, true, 1);
 
 INSERT INTO pergunta (pergunta, pergunta_ativa, pergunta_tipo)
 VALUES 

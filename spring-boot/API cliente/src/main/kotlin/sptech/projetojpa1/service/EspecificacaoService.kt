@@ -24,6 +24,9 @@ class EspecificacaoService(
             tempoColocacao = dto.tempoColocacao!!,
             tempoManutencao = dto.tempoManutencao!!,
             tempoRetirada = dto.tempoRetirada!!,
+            colocacao = dto.colocacao!!,
+            manutencao = dto.manutencao!!,
+            retirada = dto.retirada!!,
             homecare = dto.homecare!!,
             foto = null,
             procedimento = procedimento
@@ -56,6 +59,15 @@ class EspecificacaoService(
         dto.homecare?.let {
             especificacaoExistente.homecare = it
         }
+        dto.colocacao?.let {
+            especificacaoExistente.colocacao = it
+        }
+        dto.manutencao?.let {
+            especificacaoExistente.manutencao = it
+        }
+        dto.retirada?.let {
+            especificacaoExistente.retirada = it
+        }
 
         return repository.save(especificacaoExistente)
     }
@@ -67,6 +79,7 @@ class EspecificacaoService(
     fun getReceitaAcumulada(startDate: String?, endDate: String?): List<Map<String, Any>> {
         return repository.findReceitaSemestralAcumulada(startDate, endDate)
     }
+
     fun getReceitaAcumuladaLabels(): List<String> {
         return repository.findMesesUltimosSeisMeses()
     }
