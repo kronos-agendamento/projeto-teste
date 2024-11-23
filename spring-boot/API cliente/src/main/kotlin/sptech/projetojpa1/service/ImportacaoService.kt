@@ -1,9 +1,12 @@
 package sptech.projetojpa1.service
 
 import org.springframework.stereotype.Service
+import sptech.projetojpa1.domain.Empresa
 import sptech.projetojpa1.domain.Endereco
 import sptech.projetojpa1.domain.usuario.Profissional
+import sptech.projetojpa1.repository.EmpresaRepository
 import sptech.projetojpa1.repository.EnderecoRepository
+import sptech.projetojpa1.repository.NivelAcessoRepository
 import sptech.projetojpa1.repository.UsuarioRepository
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -11,7 +14,9 @@ import java.time.format.DateTimeFormatter
 @Service
 class ImportacaoService(
     private val usuarioRepository: UsuarioRepository,
-    private val enderecoRepository: EnderecoRepository
+    private val enderecoRepository: EnderecoRepository,
+    private val empresaRepository: EmpresaRepository,
+    private val nivelAcessoRepository: NivelAcessoRepository
 ) {
     fun importarArquivo(txtFile: String): String {
         val linhas = txtFile.lines()
@@ -51,12 +56,16 @@ class ImportacaoService(
     }
 
     private fun processarRegistro(registro: String) {
-        println("Iniciando o processamento do registro: '$registro'") // Print do registro completo
+        println("Iniciando o processamento do registro: '$registro'")
 
         try {
+            if (registro.length < 405) {
+                throw IllegalArgumentException("Registro com comprimento inválido: ${registro.length}")
+            }
+
             // Extração do código do usuário
             val rawCodigoUsuario = registro.substring(2, 12).trim()
-            println("Código bruto extraído: '$rawCodigoUsuario'") // Print do valor bruto extraído
+            println("Código bruto extraído: '$rawCodigoUsuario'")
             val codigoUsuario = rawCodigoUsuario.toIntOrNull() ?: throw IllegalArgumentException("Código inválido")
             println("Código do usuário convertido: $codigoUsuario")
 
@@ -95,27 +104,39 @@ class ImportacaoService(
             val status = registro.substring(229, 230).trim().equals("A", ignoreCase = true)
             println("Status extraído: $status")
 
-            val logradouro = registro.substring(230, 280).trim()
+            // Extração do nível de acesso
+            val nivelAcessoRaw = registro.substring(230, 233).trim()
+            println("Nível de acesso bruto extraído: '$nivelAcessoRaw'")
+            val nivelAcesso = nivelAcessoRaw.toIntOrNull() ?: throw IllegalArgumentException("Nível de acesso inválido")
+            println("Nível de acesso convertido: $nivelAcesso")
+
+            // Extração da empresa
+            val empresaRaw = registro.substring(233, 236).trim()
+            println("Empresa bruta extraída: '$empresaRaw'")
+            val empresaId = empresaRaw.toIntOrNull() ?: throw IllegalArgumentException("Empresa inválida")
+            println("Empresa convertida: $empresaId")
+
+            val logradouro = registro.substring(236, 286).trim()
             println("Logradouro extraído: '$logradouro'")
 
-            val cep = registro.substring(280, 288).trim()
+            val cep = registro.substring(286, 294).trim()
             println("CEP extraído: '$cep'")
 
-            val bairro = registro.substring(288, 318).trim()
+            val bairro = registro.substring(294, 324).trim()
             println("Bairro extraído: '$bairro'")
 
-            val cidade = registro.substring(318, 348).trim()
+            val cidade = registro.substring(324, 354).trim()
             println("Cidade extraída: '$cidade'")
 
-            val estado = registro.substring(348, 350).trim()
+            val estado = registro.substring(354, 356).trim()
             println("Estado extraído: '$estado'")
 
-            val numeroRaw = registro.substring(350, 355).trim()
+            val numeroRaw = registro.substring(356, 361).trim()
             println("Número bruto extraído: '$numeroRaw'")
             val numero = numeroRaw.toIntOrNull()
             println("Número convertido: $numero")
 
-            val complemento = registro.substring(355, 405).trim()
+            val complemento = registro.substring(361, 411).trim()
             println("Complemento extraído: '$complemento'")
 
             // Cria e salva o endereço
@@ -145,8 +166,8 @@ class ImportacaoService(
                 indicacao = indicacao,
                 status = status,
                 endereco = enderecoSalvo,
-                nivelAcesso = null,
-                empresa = null,
+                nivelAcesso = nivelAcessoRepository.findById(nivelAcesso).orElse(null),
+                empresa = empresaRepository.findById(empresaId).orElse(null),
                 especialidade = "Especialidade padrão"
             )
             usuarioRepository.save(profissional)
@@ -157,4 +178,5 @@ class ImportacaoService(
             throw IllegalArgumentException("Erro ao processar o registro: ${e.message}", e)
         }
     }
+
 }
