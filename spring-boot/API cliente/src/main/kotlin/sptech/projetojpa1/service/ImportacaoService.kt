@@ -94,9 +94,17 @@ class ImportacaoService(
             println("Data de nascimento bruta extraída: '$dataNascimentoRaw'")
             val dataNascimento = LocalDate.parse(dataNascimentoRaw, DateTimeFormatter.ofPattern("dd-MM-yyyy"))
             println("Data de nascimento convertida: $dataNascimento")
+            val generoRaw = registro.substring(198, 199).trim()
+            println("Gênero bruto extraído: '$generoRaw'")
 
-            val genero = registro.substring(198, 199).trim()
-            println("Gênero extraído: '$genero'")
+            // Mapear gênero para valores específicos
+            val genero = when (generoRaw.uppercase()) {
+                "M" -> "Masculino"
+                "F" -> "Feminino"
+                else -> throw IllegalArgumentException("Gênero inválido: '$generoRaw'")
+            }
+            println("Gênero mapeado: '$genero'")
+
 
             val indicacao = registro.substring(199, 229).trim()
             println("Indicação extraída: '$indicacao'")

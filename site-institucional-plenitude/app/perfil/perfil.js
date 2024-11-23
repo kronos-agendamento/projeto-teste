@@ -263,12 +263,16 @@ document.addEventListener("DOMContentLoaded", () => {
       // Processa a resposta
       const result = await response.text();
       if (response.ok) {
-        alert(`Sucesso: ${result}`);
+        showNotification("Importação Realizada com Sucesso!", false);
+                setTimeout(() => {
+          window.location.reload(); // Recarrega a página após 2 segundos
+        }, 2000);
+
       } else {
         alert(`Erro: ${result}`);
       }
     } catch (error) {
-      alert(`Erro ao enviar o arquivo: ${error.message}`);
+      showNotification("Importação Falhou!", true);
     }
   });
   
