@@ -102,7 +102,7 @@
             <div class="indicacao">
                <div id="titulo-aviso">
                   <h2>Indicações:</h2>
-                  <span>De acordo com o seu histórico, aqui estão algumas indicações de horários e procedimentos que podem te agradar</span>
+                  <span>De acordo com o seu histórico, aqui estão algumas indicações de horários e procedimentos que podem te agradar!</span>
                </div>
                <div class="box-agendamento-container">
                   <!-- Contêiner vazio para os procedimentos -->
@@ -115,7 +115,7 @@
                 <div id="titulo-atividades">
                     <h2>Suas atividades:</h2>
                     <span>
-                        Historico de Procedimentos Realizados
+                        Historico de procedimentos realizados.
                     </span>
                 </div>
                 <div class="dashboard">
@@ -130,6 +130,7 @@
                                 <p>Quantidade</p>
                                 <p>Procedimento </p>
                             </div> -->
+                            <div class="select-container">
                             <select id="selectMes">
                                 <option value="2024-01">Janeiro</option>
                                 <option value="2024-02">Fevereiro</option>
@@ -138,9 +139,11 @@
                                 <option value="2024-05">Maio</option>
                                 <!-- Adicione mais meses conforme necessário -->
                             </select>
-                            
+                            <select  id="selectAno"></select>
+                            </div>
                             <div class="caixa-grafico">
                                 <canvas id="chartProcedimentosUsuarioMes" style="height: 300rem;"></canvas>
+                                <p id="mensagemSemProcedimentos" style="display: none; text-align: center; font-size: 18px; color: #ff0000;">Não há procedimentos realizados nesse período.</p>
                             </div>
                         </div>
                 

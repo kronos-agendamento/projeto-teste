@@ -263,10 +263,10 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
 
     @GetMapping("/total-agendamentos-hoje")
     fun getTotalAgendamentosPorDia(
-        @RequestParam(required = false) specificDate: String?
+        @RequestParam(required = false) startDate: String?
     ): ResponseEntity<Int> {
-        print(specificDate)
-        val totalAgendamentos = agendamentoService.getTotalAgendamentosPorDia(specificDate)
+        println(startDate)
+        val totalAgendamentos = agendamentoService.getTotalAgendamentosPorDia(startDate)
         return ResponseEntity.ok(totalAgendamentos)
     }
 

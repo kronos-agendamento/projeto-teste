@@ -119,10 +119,21 @@
                 <div class="chartContainer">
                     <div class="conteudo">
                         <button onclick="recarregarKPIs()">Atualizar KPIs</button>
+                        <div>
+                            <label for="pageSelect">Selecionar Página para Exportar:</label>
+                            <select id="pageSelect">
+                                <option value="operacional">Operacional</option>
+                                <option value="gerencial">Gerencial</option>
+                                <option value="usabilidade">Usabilidade</option>
+                                <option value="todas">Todas</option>
+                            </select>
+                            <button id="exportCsvButton">Exportar CSV</button>
+                        </div>
                         <div class="tabs">
                             <button class="tab-button" id="usabilidadeBtn">Usabilidade</button>
                             <button class="tab-button" id="operacionalBtn">Operacional</button>
                             <button class="tab-button" id="gerencialBtn">Gerencial</button>
+                            
                         </div>
                         <div id="gerencial-content" class="tab-content">
                             <div class="charts">

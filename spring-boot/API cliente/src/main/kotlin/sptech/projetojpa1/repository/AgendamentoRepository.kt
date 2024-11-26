@@ -114,11 +114,11 @@ WHERE
         nativeQuery = true, value = """ 
     SELECT COUNT(*) AS agendamentos_no_dia
     FROM agendamento
-    WHERE DATE(data_horario) = COALESCE(:specificDate, CURDATE());
+    WHERE DATE(data_horario) = COALESCE(:startDate, CURDATE());
     """
     )
     fun findTotalAgendamentosPorDia(
-        @Param("specificDate") specificDate: String?
+        @Param("startDate") startDate: String?
     ): Int
 
 

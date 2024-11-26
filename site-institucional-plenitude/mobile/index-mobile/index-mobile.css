@@ -457,7 +457,7 @@
         visibility: hidden;
         transition: opacity 0.5s ease-in-out, visibility 0s ease-in-out 1.5s;
     }
-
+      
     .notification.show {
         opacity: 1;
         visibility: visible;
@@ -486,14 +486,15 @@
         height: 7px;
     }
 
-    .modal-content select {
+    /* .modal-content select {
         width: 99.5%;
         padding: 11px;
         font-size: 14px;
         border: 1px solid #ccc;
         border-radius: 5px;
         height: 10px;
-    }
+        color: #000;
+    } */
 
 
     .save-button {

@@ -147,8 +147,20 @@ function fetchProcedimentosPorUsuarioEMes(usuarioId, mesAno) {
 function updateChartProcedimentosUsuarioMes(data) {
   const labels = Object.keys(data);
   const dataChart = Object.values(data);
-  createChartProcedimentosUsuarioMes(labels, dataChart);
+  const mensagemSemProcedimentos = document.getElementById("mensagemSemProcedimentos");
+  
+  if (labels.length === 0 || dataChart.every(value => value === 0)) {
+    // Exibe a mensagem se não houver dados
+    mensagemSemProcedimentos.style.display = "block";
+    document.getElementById("chartProcedimentosUsuarioMes").style.display = "none";
+  } else {
+    // Oculta a mensagem e exibe o gráfico se houver dados
+    mensagemSemProcedimentos.style.display = "none";
+    document.getElementById("chartProcedimentosUsuarioMes").style.display = "block";
+    createChartProcedimentosUsuarioMes(labels, dataChart);
+  }
 }
+
 
 // Função para exibir o gráfico de perfil
 function createChartProcedimentosUsuarioMes(labels, dataChart) {

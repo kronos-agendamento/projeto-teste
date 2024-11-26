@@ -22,6 +22,254 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     const lastFiveMonths = getLastFiveMonths();
 
+    function capturarMetricasOperacional() {
+        return [
+            {
+                titulo: "Agendamentos Marcados",
+                dado: document.getElementById("total-agendamentos-hoje").innerText || "N/A",
+                dataInicio: document.getElementById("startDateOperacionalKPI1").value || "N/A"
+            },
+            {
+                titulo: "Agendamentos Futuros",
+                dado: document.getElementById("total-agendamentos-futuros").innerText || "N/A",
+                dataInicio: document.getElementById("startDateOperacionalKPI2").value || "N/A",
+                dataFim: document.getElementById("endDateOperacionalKPI2").value || "N/A"
+            },
+            {
+                titulo: "Tempo Médio Entre Atendimentos",
+                dado: document.getElementById("tempo-medio-hoje").innerText || "N/A",
+                dataInicio: document.getElementById("startDateOperacionalKPI3").value || "N/A",
+                dataFim: document.getElementById("endDateOperacionalKPI3").value || "N/A"
+            },
+            {
+                titulo: "Média de Avaliação dos Atendimentos",
+                dado: document.getElementById("total-nota-single").innerText || "N/A",
+                dataInicio: document.getElementById("startDateOperacionalKPI4").value || "N/A",
+                dataFim: document.getElementById("endDateOperacionalKPI4").value || "N/A"
+            }
+        ];
+    }
+    
+    
+    function capturarGraficosOperacional() {
+        return [
+            {
+                titulo: "Agendamentos",
+                dataInicio: document.getElementById("startDateOperacionalGrafico1").value || "N/A",
+                dataFim: "N/A", // Esse gráfico não tem data de término
+                valores: obterDadosDoGrafico("chartOperacional1")
+            },
+            {
+                titulo: "Procedimentos Realizados",
+                dataInicio: document.getElementById("startDateOperacionalGrafico2").value || "N/A",
+                dataFim: document.getElementById("endDateOperacionalGrafico2").value || "N/A",
+                valores: obterDadosDoGrafico("chartProcedimentosRealizadosTrimestreOperacional3")
+            },
+            {
+                titulo: "Tempo Médio de Atendimento",
+                dataInicio: document.getElementById("startDateOperacionalGrafico3").value || "N/A",
+                dataFim: document.getElementById("endDateOperacionalGrafico3").value || "N/A",
+                valores: obterDadosDoGrafico("chartTempoGastoProcedimentosOperacional2")
+            },
+            {
+                titulo: "Receita Média Gerada",
+                dataInicio: document.getElementById("startDateOperacionalGrafico4").value || "N/A",
+                dataFim: document.getElementById("endDateOperacionalGrafico4").value || "N/A",
+                valores: obterDadosDoGrafico("chartReceitaProcedimentosOperacional4")
+            },
+            {
+                titulo: "Valor da Hora de Procedimento",
+                dataInicio: document.getElementById("startDateOperacionalGrafico5").value || "N/A",
+                dataFim: document.getElementById("endDateOperacionalGrafico5").value || "N/A",
+                valores: obterDadosDoGrafico("chartValorTotalUltimoMesOperacional5")
+            }
+        ];
+    }
+    
+    
+    function capturarMetricasGerencial() {
+        return [
+            {
+                titulo: "Clientes Ativos",
+                dado: document.getElementById("clientes-ativos-count").innerText || "N/A",
+                dataInicio: document.getElementById("startDateGerencialKPI1").value || "N/A",
+                dataFim: document.getElementById("endDateGerencialKPI1").value || "N/A"
+            },
+            {
+                titulo: "Clientes Inativos",
+                dado: document.getElementById("clientes-inativos-count").innerText || "N/A",
+                dataInicio: document.getElementById("startDateGerencialKPI2").value || "N/A",
+                dataFim: document.getElementById("endDateGerencialKPI2").value || "N/A"
+            },
+            {
+                titulo: "Agendamentos Realizados",
+                dado: document.getElementById("agendamentos-realizados-count").innerText || "N/A",
+                dataInicio: document.getElementById("startDateGerencialKPI3").value || "N/A",
+                dataFim: document.getElementById("endDateGerencialKPI3").value || "N/A"
+            },
+            {
+                titulo: "Clientes Fidelizados",
+                dado: document.getElementById("clientes-fidelizados-count").innerText || "N/A",
+                dataInicio: document.getElementById("startDateGerencialKPI4").value || "N/A",
+                dataFim: document.getElementById("endDateGerencialKPI4").value || "N/A"
+            }
+        ];
+    }
+    
+    function capturarGraficosGerencial() {
+        return [
+            {
+                titulo: "Conversão de Clientes",
+                dataInicio: document.getElementById("startDateGerencialGrafico1").value || "N/A",
+                dataFim: document.getElementById("endDateGerencialGrafico1").value || "N/A",
+                valores: obterDadosDoGrafico("chart2")
+            },
+            {
+                titulo: "Procedimentos Mais Realizados",
+                dataInicio: document.getElementById("startDateGerencialGrafico2").value || "N/A",
+                dataFim: document.getElementById("endDateGerencialGrafico2").value || "N/A",
+                valores: obterDadosDoGrafico("chart4")
+            },
+            {
+                titulo: "Procedimentos com Melhor Avaliação",
+                dataInicio: document.getElementById("startDateGerencialGrafico3").value || "N/A",
+                dataFim: document.getElementById("endDateGerencialGrafico3").value || "N/A",
+                valores: obterDadosDoGrafico("chart33")
+            },
+            {
+                titulo: "Receita Acumulada",
+                dataInicio: document.getElementById("startDateGerencialGrafico4").value || "N/A",
+                dataFim: document.getElementById("endDateGerencialGrafico4").value || "N/A",
+                valores: obterDadosDoGrafico("chart3")
+            },
+            {
+                titulo: "Canais de Divulgação",
+                dataInicio: "N/A", // Sem campo de data
+                dataFim: "N/A", // Sem campo de data
+                valores: obterDadosDoGrafico("chart1")
+            }
+        ];
+    }
+    
+
+    function capturarMetricasUsabilidade() {
+        return [
+            {
+                titulo: "Tempo Médio de Conclusão de Agendamento",
+                dado: document.getElementById("tempo-medio-conclusao").innerText || "N/A",
+                dataInicio: document.getElementById("startDateUsabilidadeKPI2").value || "N/A",
+                dataFim: document.getElementById("endDateUsabilidadeKPI2").value || "N/A"
+            },
+            {
+                titulo: "Quantidade de Usuários Retornando ao Sistema",
+                dado: document.getElementById("retorno-login-count").innerText || "N/A",
+                dataInicio: document.getElementById("startDateUsabilidadeKPI1").value || "N/A",
+                dataFim: document.getElementById("endDateUsabilidadeKPI1").value || "N/A"
+            }
+        ];
+    }
+    
+    function capturarGraficosUsabilidade() {
+        return [
+            {
+                titulo: "Taxa do uso do Sistema de Agendamento",
+                dataInicio: document.getElementById("startDateUsabilidade1").value || "N/A",
+                dataFim: document.getElementById("endDateUsabilidade1").value || "N/A",
+                valores: obterDadosDoGrafico("chartUsabilidade1")
+            }
+        ];
+    }
+    
+    
+    // Função auxiliar
+    function obterValorPorId(id) {
+        const element = document.getElementById(id);
+        return element ? parseInt(element.innerText) || 0 : 0;
+    }
+
+    // Função auxiliar
+    function obterDadosDoGrafico(chartId) {
+        const chart = Chart.getChart(chartId); // Reutilizando o gráfico Chart.js
+        if (!chart) return [];
+    
+        return chart.data.labels.map((label, index) => ({
+            categoria: label,
+            quantidade: chart.data.datasets[0].data[index] || 0
+        }));
+    }
+    
+    
+
+    document.getElementById("exportCsvButton").addEventListener("click", function () {
+        const page = document.getElementById("pageSelect").value;
+    
+        let metricas = [];
+        let graficos = [];
+    
+        switch (page) {
+            case "operacional":
+                metricas = capturarMetricasOperacional();
+                graficos = capturarGraficosOperacional();
+                break;
+    
+            case "gerencial":
+                metricas = capturarMetricasGerencial();
+                graficos = capturarGraficosGerencial();
+                break;
+    
+            case "usabilidade":
+                metricas = capturarMetricasUsabilidade();
+                graficos = capturarGraficosUsabilidade();
+                break;
+    
+            case "todas":
+                // Captura dados de todas as páginas
+                metricas = [
+                    ...capturarMetricasOperacional(),
+                    ...capturarMetricasGerencial(),
+                    ...capturarMetricasUsabilidade()
+                ];
+                graficos = [
+                    ...capturarGraficosOperacional(),
+                    ...capturarGraficosGerencial(),
+                    ...capturarGraficosUsabilidade()
+                ];
+                break;
+    
+            default:
+                console.error("Página selecionada não é válida!");
+                return;
+        }
+    
+        const dadosParaExportacao = { metricas, graficos };
+    
+        fetch("http://localhost:8080/export/csv", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(dadosParaExportacao)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Erro ao exportar CSV");
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `${page}-export.csv`;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+            })
+            .catch(error => {
+                console.error("Erro ao exportar CSV:", error);
+            });
+    });    
+
     // Função para realizar a requisição e obter os dados
     function fetchData(endpoint, callback) {
         fetch(baseUrl + endpoint)
@@ -70,12 +318,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         const startDate = startDateInput.value;
-            
+        const endDate = null
 
             
 
             // Prossiga com a lógica da requisição
-            fetchData2(url, {startDate}, callback);
+            fetchData2(url, {startDate, endDate}, callback);
         
     }
 
@@ -322,20 +570,23 @@ updateKPIs();
         "endDateGerencialKPI4",
         updateClientesFidelizados
     );
-    addFilterListener(
-        "buscarGerencialGrafico1Button",                                     // ID do botão
-        "/usuarios/clientes-concluidos-ultimos-cinco-meses", // URL da API
-        "startDateGerencialGrafico1",                            // ID do campo de data de início
-        "endDateGerencialGrafico1",                              // ID do campo de data de término
-        updateChart2_1                  // Callback específico para atualizar o gráfico 1
-    );
-    addFilterListener(
-        "buscarGerencialGrafico1Button",                                     // ID do botão
-        "/usuarios/clientes-fidelizados-ultimos-cinco-meses", // URL da API
-        "startDateGerencialGrafico1",                            // ID do campo de data de início
-        "endDateGerencialGrafico1",                              // ID do campo de data de término
-        updateChart2_2                  // Callback específico para atualizar o gráfico 1
-    );
+
+    document.getElementById("buscarGerencialGrafico1Button").addEventListener("click", function () {
+        buscarDadosPorGrafico(
+            "/usuarios/clientes-concluidos-ultimos-cinco-meses", 
+            "startDateGerencialGrafico1", 
+            "endDateGerencialGrafico1", 
+            updateChart2_1
+        );
+    
+        buscarDadosPorGrafico(
+            "/usuarios/clientes-fidelizados-ultimos-cinco-meses", 
+            "startDateGerencialGrafico1", 
+            "endDateGerencialGrafico1", 
+            updateChart2_2
+        );
+    });
+    
     addFilterListener(
         "buscarGerencialGrafico2Button",                                     // ID do botão
         "/api/procedimentos/quantidade-agendamentos-especificacao", // URL da API

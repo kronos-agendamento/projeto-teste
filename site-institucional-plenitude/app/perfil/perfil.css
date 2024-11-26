@@ -437,6 +437,7 @@ Dados do usuário
   input {
     padding: 1vw;
     width: 100%;
+    font-family: poppins;
   }
 }
 
@@ -469,6 +470,7 @@ Dados do usuário
   margin: 0.2vw;
   width: 100%;
   justify-content: center;
+  font-family: poppins;
 }
 
 .form-group input[type="file"] {
@@ -519,6 +521,7 @@ Dados do usuário
   font-size: 16px;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-family: poppins;
 
   svg {
     margin-right: 10px;
@@ -827,6 +830,7 @@ td {
   border: 1px solid #ddd;
   border-radius: 5px;
   font-size: 14px;
+  font-family: poppins;
 }
 
 .form-group-row {
@@ -980,6 +984,7 @@ p {
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s;
+  font-family: poppins;
 }
 
 .adicionar-button:hover {
@@ -1096,3 +1101,23 @@ p {
   display: block;
 
 }
+
+.import-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.import-button img{
+  width: 35px;
+ 
+}
+
+
+.div-fora-button{
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 10px;
+}
+
