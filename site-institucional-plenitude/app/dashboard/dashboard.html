@@ -118,7 +118,10 @@
             <div class="main-content">
                 <div class="chartContainer">
                     <div class="conteudo">
-                        <button onclick="recarregarKPIs()">Atualizar KPIs</button>
+                        <button id="atualizarTodosOsFiltrosButton">Atualizar Todos os Filtros</button>
+                        <input type="date" id="startDateGlobal" />
+                        <input type="date" id="endDateGlobal" />
+                        <button onclick="recarregarKPIs()">Reiniciar KPIs</button>
                         <div>
                             <label for="pageSelect">Selecionar Página para Exportar:</label>
                             <select id="pageSelect">
@@ -133,7 +136,7 @@
                             <button class="tab-button" id="usabilidadeBtn">Usabilidade</button>
                             <button class="tab-button" id="operacionalBtn">Operacional</button>
                             <button class="tab-button" id="gerencialBtn">Gerencial</button>
-                            
+
                         </div>
                         <div id="gerencial-content" class="tab-content">
                             <div class="charts">
@@ -278,15 +281,15 @@
                                                 <div class="kpis_com_filtro">
                                                     <div>
                                                         <!-- Campo para selecionar a data de início -->
-                                                        <label style="size: 5px;"
-                                                            for="startDateGerencialGrafico1">Data de Início:</label>
+                                                        <label style="size: 5px;" for="startDateGerencialGrafico1">Data
+                                                            de Início:</label>
                                                         <input style="size: 5px;" type="date"
                                                             id="startDateGerencialGrafico1">
                                                     </div>
                                                     <div>
                                                         <!-- Campo para selecionar a data de término -->
-                                                        <label style="size: 5px;"
-                                                            for="endDateGerencialGrafico1">Data de Término:</label>
+                                                        <label style="size: 5px;" for="endDateGerencialGrafico1">Data de
+                                                            Término:</label>
                                                         <input style="size: 5px;" type="date"
                                                             id="endDateGerencialGrafico1">
                                                     </div>
@@ -309,15 +312,15 @@
                                                 <div class="kpis_com_filtro">
                                                     <div>
                                                         <!-- Campo para selecionar a data de início -->
-                                                        <label style="size: 5px;"
-                                                            for="startDateGerencialGrafico2">Data de Início:</label>
+                                                        <label style="size: 5px;" for="startDateGerencialGrafico2">Data
+                                                            de Início:</label>
                                                         <input style="size: 5px;" type="date"
                                                             id="startDateGerencialGrafico2">
                                                     </div>
                                                     <div>
                                                         <!-- Campo para selecionar a data de término -->
-                                                        <label style="size: 5px;"
-                                                            for="endDateGerencialGrafico2">Data de Término:</label>
+                                                        <label style="size: 5px;" for="endDateGerencialGrafico2">Data de
+                                                            Término:</label>
                                                         <input style="size: 5px;" type="date"
                                                             id="endDateGerencialGrafico2">
                                                     </div>
@@ -331,7 +334,8 @@
                                                 último
                                                 trimestre.</p>
                                             <div class="caixa-grafico" style="margin-top: -8%">
-                                                <canvas style="max-width: 300px; max-height: 300px; margin-top: 30px;" id="chart4"></canvas>
+                                                <canvas style="max-width: 300px; max-height: 300px; margin-top: 30px;"
+                                                    id="chart4"></canvas>
                                             </div>
                                         </div>
                                     </div>
@@ -342,15 +346,15 @@
                                                 <div class="kpis_com_filtro">
                                                     <div>
                                                         <!-- Campo para selecionar a data de início -->
-                                                        <label style="size: 5px;"
-                                                            for="startDateGerencialGrafico3">Data de Início:</label>
+                                                        <label style="size: 5px;" for="startDateGerencialGrafico3">Data
+                                                            de Início:</label>
                                                         <input style="size: 5px;" type="date"
                                                             id="startDateGerencialGrafico3">
                                                     </div>
                                                     <div>
                                                         <!-- Campo para selecionar a data de término -->
-                                                        <label style="size: 5px;"
-                                                            for="endDateGerencialGrafico3">Data de Término:</label>
+                                                        <label style="size: 5px;" for="endDateGerencialGrafico3">Data de
+                                                            Término:</label>
                                                         <input style="size: 5px;" type="date"
                                                             id="endDateGerencialGrafico3">
                                                     </div>
@@ -375,15 +379,15 @@
                                                 <div class="kpis_com_filtro">
                                                     <div>
                                                         <!-- Campo para selecionar a data de início -->
-                                                        <label style="size: 5px;"
-                                                            for="startDateGerencialGrafico4">Data de Início:</label>
+                                                        <label style="size: 5px;" for="startDateGerencialGrafico4">Data
+                                                            de Início:</label>
                                                         <input style="size: 5px;" type="date"
                                                             id="startDateGerencialGrafico4">
                                                     </div>
                                                     <div>
                                                         <!-- Campo para selecionar a data de término -->
-                                                        <label style="size: 5px;"
-                                                            for="endDateGerencialGrafico4">Data de Término:</label>
+                                                        <label style="size: 5px;" for="endDateGerencialGrafico4">Data de
+                                                            Término:</label>
                                                         <input style="size: 5px;" type="date"
                                                             id="endDateGerencialGrafico4">
                                                     </div>
@@ -405,7 +409,7 @@
                                         <div class="card-graficos">
                                             <div class="card-content-2">
                                                 <h1>Canais de Divulgação</h1>
-                                    
+
                                             </div>
                                             <p>Por qual meio de comunicação os clientes chegam no estúdio.</p>
                                             <canvas style="padding-bottom: 30px;" id="chart1"></canvas>
@@ -460,8 +464,8 @@
                                                         </div>
                                                         <div>
                                                             <!-- Campo para selecionar a data de início -->
-                                                            <label style="size: 5px;"
-                                                                for="endDateOperacionalKPI2">Data de Término:</label>
+                                                            <label style="size: 5px;" for="endDateOperacionalKPI2">Data
+                                                                de Término:</label>
                                                             <input style="size: 5px;" type="date"
                                                                 id="endDateOperacionalKPI2">
                                                         </div>
@@ -491,8 +495,8 @@
                                                         </div>
                                                         <div>
                                                             <!-- Campo para selecionar a data de início -->
-                                                            <label style="size: 5px;"
-                                                                for="endDateOperacionalKPI3">Data de Término:</label>
+                                                            <label style="size: 5px;" for="endDateOperacionalKPI3">Data
+                                                                de Término:</label>
                                                             <input style="size: 5px;" type="date"
                                                                 id="endDateOperacionalKPI3">
                                                         </div>
@@ -522,8 +526,8 @@
                                                         </div>
                                                         <div>
                                                             <!-- Campo para selecionar a data de início -->
-                                                            <label style="size: 5px;"
-                                                                for="endDateOperacionalKPI4">Data de Término:</label>
+                                                            <label style="size: 5px;" for="endDateOperacionalKPI4">Data
+                                                                de Término:</label>
                                                             <input style="size: 5px;" type="date"
                                                                 id="endDateOperacionalKPI4">
                                                         </div>
@@ -544,8 +548,8 @@
                                             <div class="kpis_com_filtro">
                                                 <div>
                                                     <!-- Campo para selecionar a data de início -->
-                                                    <label style="size: 5px;"
-                                                        for="startDateOperacionalGrafico1">Dia Escolhido:</label>
+                                                    <label style="size: 5px;" for="startDateOperacionalGrafico1">Dia
+                                                        Escolhido:</label>
                                                     <input style="size: 5px;" type="date"
                                                         id="startDateOperacionalGrafico1">
                                                 </div>
@@ -568,15 +572,15 @@
                                             <div class="kpis_com_filtro">
                                                 <div>
                                                     <!-- Campo para selecionar a data de início -->
-                                                    <label style="size: 5px;"
-                                                        for="startDateOperacionalGrafico2">Data de Início:</label>
+                                                    <label style="size: 5px;" for="startDateOperacionalGrafico2">Data de
+                                                        Início:</label>
                                                     <input style="size: 5px;" type="date"
                                                         id="startDateOperacionalGrafico2">
                                                 </div>
                                                 <div>
                                                     <!-- Campo para selecionar a data de início -->
-                                                    <label style="size: 5px;"
-                                                        for="endDateOperacionalGrafico2">Data de Término:</label>
+                                                    <label style="size: 5px;" for="endDateOperacionalGrafico2">Data de
+                                                        Término:</label>
                                                     <input style="size: 5px;" type="date"
                                                         id="endDateOperacionalGrafico2">
                                                 </div>
@@ -598,15 +602,15 @@
                                             <div class="kpis_com_filtro">
                                                 <div>
                                                     <!-- Campo para selecionar a data de início -->
-                                                    <label style="size: 5px;"
-                                                        for="startDateOperacionalGrafico3">Data de Início:</label>
+                                                    <label style="size: 5px;" for="startDateOperacionalGrafico3">Data de
+                                                        Início:</label>
                                                     <input style="size: 5px;" type="date"
                                                         id="startDateOperacionalGrafico3">
                                                 </div>
                                                 <div>
                                                     <!-- Campo para selecionar a data de início -->
-                                                    <label style="size: 5px;"
-                                                        for="endDateOperacionalGrafico3">Data de Término:</label>
+                                                    <label style="size: 5px;" for="endDateOperacionalGrafico3">Data de
+                                                        Término:</label>
                                                     <input style="size: 5px;" type="date"
                                                         id="endDateOperacionalGrafico3">
                                                 </div>
@@ -629,15 +633,15 @@
                                             <div class="kpis_com_filtro">
                                                 <div>
                                                     <!-- Campo para selecionar a data de início -->
-                                                    <label style="size: 5px;"
-                                                        for="startDateOperacionalGrafico4">Data de Início:</label>
+                                                    <label style="size: 5px;" for="startDateOperacionalGrafico4">Data de
+                                                        Início:</label>
                                                     <input style="size: 5px;" type="date"
                                                         id="startDateOperacionalGrafico4">
                                                 </div>
                                                 <div>
                                                     <!-- Campo para selecionar a data de início -->
-                                                    <label style="size: 5px;"
-                                                        for="endDateOperacionalGrafico4">Data de Término:</label>
+                                                    <label style="size: 5px;" for="endDateOperacionalGrafico4">Data de
+                                                        Término:</label>
                                                     <input style="size: 5px;" type="date"
                                                         id="endDateOperacionalGrafico4">
                                                 </div>
@@ -661,15 +665,15 @@
                                             <div class="kpis_com_filtro">
                                                 <div>
                                                     <!-- Campo para selecionar a data de início -->
-                                                    <label style="size: 5px;"
-                                                        for="startDateOperacionalGrafico5">Data de Início:</label>
+                                                    <label style="size: 5px;" for="startDateOperacionalGrafico5">Data de
+                                                        Início:</label>
                                                     <input style="size: 5px;" type="date"
                                                         id="startDateOperacionalGrafico5">
                                                 </div>
                                                 <div>
                                                     <!-- Campo para selecionar a data de início -->
-                                                    <label style="size: 5px;"
-                                                        for="endDateOperacionalGrafico5">Data de Término:</label>
+                                                    <label style="size: 5px;" for="endDateOperacionalGrafico5">Data de
+                                                        Término:</label>
                                                     <input style="size: 5px;" type="date"
                                                         id="endDateOperacionalGrafico5">
                                                 </div>

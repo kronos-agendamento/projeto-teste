@@ -21,6 +21,82 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
+    // Função de atualização geral dos filtros
+    document.getElementById("atualizarTodosOsFiltrosButton").addEventListener("click", function () {
+        const startDateId = "startDateGlobal"; // ID do campo de data de início global
+        const endDateId = "endDateGlobal"; // ID do campo de data de término global
+        atualizarTodosOsFiltros(startDateId, endDateId);
+    });
+
+    function atualizarTodosOsFiltros(startDateId, endDateId) {
+        const startDateInput = document.getElementById(startDateId);
+        const endDateInput = document.getElementById(endDateId);
+    
+        // Pega as datas selecionadas
+        const startDate = startDateInput.value;
+        const endDate = endDateInput.value;
+
+        // Atualizar todos os campos de data nos filtros individuais
+        atualizarCamposData(startDate, endDate);
+    
+        // Funções para buscar os dados de todos os gráficos e KPIs
+        // Página de Usabilidade
+        buscarDadosPorGrafico("/api/agendamentos/agendamentos-realizados-ultimos-cinco-meses", startDateId, endDateId, updateChartUsabilidade1);
+        buscarDadosPorGrafico("/login-logoff/retorno-usuarios-login", startDateId, endDateId, updateRetornoLogin);
+        buscarDadosPorGrafico("/api/agendamentos/tempo-para-agendar", startDateId, endDateId, updateTempoAgendamento);
+    
+        // Página Gerencial
+        buscarDadosPorGrafico("/usuarios/clientes-ativos", startDateId, endDateId, updateClientesAtivos);
+        buscarDadosPorGrafico("/usuarios/clientes-inativos", startDateId, endDateId, updateClientesInativos);
+        buscarDadosPorGrafico("/api/agendamentos/agendamentos-realizados", startDateId, endDateId, updateAgendamentosRealizados);
+        buscarDadosPorGrafico("/usuarios/clientes-fidelizados-ultimos-tres-meses", startDateId, endDateId, updateClientesFidelizados);
+    
+        // Página Operacional
+        buscarDadosPorGrafico("/api/agendamentos/total-agendamentos-hoje", startDateId, endDateId, updateTotalAgendamentosHoje);
+        buscarDadosPorGrafico("/api/agendamentos/futuros", startDateId, endDateId, updateTotalAgendamentosFuturos);
+        buscarDadosPorGrafico("/api/agendamentos/media-tempo-entre-agendamentos", startDateId, endDateId, updateTempoMedio);
+        buscarDadosPorGrafico("/api/feedbacks/media-notas-single", startDateId, endDateId, updateNotaSingle);
+        buscarDadosPorGrafico("/api/agendamentos/agendamento-status", startDateId, endDateId, updateChartOperacional1);
+        buscarDadosPorGrafico("/api/agendamentos/procedimentos-realizados-trimestre", startDateId, endDateId, updateChartProcedimentoRealizadosTrimestreOperacional3);
+        buscarDadosPorGrafico("/api/agendamentos/tempo-gasto-ultimo-mes", startDateId, endDateId, updateChartTempoGastoOperacional2);
+        buscarDadosPorGrafico("/api/agendamentos/receita-ultimos-tres-meses", startDateId, endDateId, updateChartReceitaProcedimentosOperacional4);
+        buscarDadosPorGrafico("/api/agendamentos/valor-total-ultimo-mes", startDateId, endDateId, updateChartValorTotalUltimoMesOperacional5);
+    }
+    
+    function atualizarCamposData(startDate, endDate) {
+        // Atualiza os campos de data de todos os filtros
+        const filtrosData = [
+            "startDateUsabilidade1", "endDateUsabilidade1",
+            "startDateUsabilidadeKPI1", "endDateUsabilidadeKPI1",
+            "startDateUsabilidadeKPI2", "endDateUsabilidadeKPI2",
+            "startDateGerencialKPI1", "endDateGerencialKPI1",
+            "startDateGerencialKPI2", "endDateGerencialKPI2",
+            "startDateGerencialKPI3", "endDateGerencialKPI3",
+            "startDateGerencialKPI4", "endDateGerencialKPI4",
+            "startDateGerencialGrafico1", "endDateGerencialGrafico1",
+            "startDateGerencialGrafico2", "endDateGerencialGrafico2",
+            "startDateGerencialGrafico3", "endDateGerencialGrafico3",
+            "startDateGerencialGrafico4", "endDateGerencialGrafico4",
+            "startDateOperacionalKPI1", "endDateOperacionalKPI1",
+            "startDateOperacionalKPI2", "endDateOperacionalKPI2",
+            "startDateOperacionalKPI3", "endDateOperacionalKPI3",
+            "startDateOperacionalKPI4", "endDateOperacionalKPI4",
+            "startDateOperacionalGrafico1", "endDateOperacionalGrafico1",
+            "startDateOperacionalGrafico2", "endDateOperacionalGrafico2",
+            "startDateOperacionalGrafico3", "endDateOperacionalGrafico3",
+            "startDateOperacionalGrafico4", "endDateOperacionalGrafico4",
+            "startDateOperacionalGrafico5", "endDateOperacionalGrafico5"
+        ];
+    
+        // Atualiza o valor dos campos de data
+        filtrosData.forEach(function(id) {
+            const input = document.getElementById(id);
+            if (input) {
+                input.value = id.includes("startDate") ? startDate : endDate;
+            }
+        });
+    }
+
     const baseUrl = 'http://localhost:8080';
 
     function getLastFiveMonths() {
