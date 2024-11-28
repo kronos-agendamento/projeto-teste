@@ -658,7 +658,6 @@ button {
 
 .kpis_com_filtro input[type="date"] {
     height: 15px;
-    width: 17px; /* Reduz a largura */
     font-size: 6px; /* Ajusta o tamanho da fonte */
     padding: 2px; /* Ajusta o preenchimento interno */
     margin: 2px 0; /* Margem reduzida */

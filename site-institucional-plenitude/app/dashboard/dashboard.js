@@ -1,5 +1,26 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+    const today = new Date();
+    const endDate = today.toISOString().split("T")[0];
+
+    // Calcula a data de 3 meses atrás
+    const startDate = new Date();
+    startDate.setMonth(startDate.getMonth() - 3);
+    const startDateString = startDate.toISOString().split("T")[0];
+
+    // Preenche todos os campos de data automaticamente
+    const startDateFields = document.querySelectorAll('input[type="date"][id^="startDate"]');
+    const endDateFields = document.querySelectorAll('input[type="date"][id^="endDate"]');
+
+    startDateFields.forEach(field => {
+        field.value = startDateString;
+    });
+
+    endDateFields.forEach(field => {
+        field.value = endDate;
+    });
+
+
     const baseUrl = 'http://localhost:8080';
 
     function getLastFiveMonths() {
@@ -372,6 +393,15 @@ function fetchData2(url, params = {}, callback) {
 
     // Atualiza os KPIs e os gráficos
     function updateKPIs() {
+
+        const today = new Date();
+    const endDate = today.toISOString().split("T")[0];
+
+    // Calcula a data de 3 meses atrás
+    const startDate = new Date();
+    startDate.setMonth(startDate.getMonth() - 3);
+    const startDateString = startDate.toISOString().split("T")[0];
+
         const endpoints = {
 
             // KPI's - Gerencial
@@ -442,52 +472,53 @@ function fetchData2(url, params = {}, callback) {
         const startDateString12MesesAtras = startDate12.toISOString().split("T")[0];
 
         // Chamadas para atualizar os KPIs de clientes - Gerencial
-        fetchData2(endpoints.clientesAtivos, {},updateClientesAtivos); // ok
-        fetchData2(endpoints.clientesInativos, {},updateClientesInativos); // ok
-        fetchData2(endpoints.clientesFidelizados, {},updateClientesFidelizados); // ok
-        fetchData2(endpoints.agendamentosRealizados, {},updateAgendamentosRealizados); // ok
+        fetchData2(endpoints.clientesAtivos, {startDate, endDate},updateClientesAtivos); // ok
+        fetchData2(endpoints.clientesInativos, {startDate, endDate},updateClientesInativos); // ok
+        fetchData2(endpoints.clientesFidelizados, {startDate, endDate},updateClientesFidelizados); // ok
+        fetchData2(endpoints.agendamentosRealizados, {startDate, endDate},updateAgendamentosRealizados); // ok
 
         // Chamadas para atualizar os KPI's de - Usabilidade - ok
-        fetchData2(endpoints.tempoAgendamento, {}, updateTempoAgendamento); // ok
-        fetchData2(endpoints.retornoLogin, { startDate: startDateString12MesesAtras, endDate: endDateDiaAtual }, updateRetornoLogin); // ok
+        fetchData2(endpoints.tempoAgendamento, {startDate, endDate}, updateTempoAgendamento); // ok
+      //  fetchData2(endpoints.retornoLogin, { startDate: startDateString12MesesAtras, endDate: endDateDiaAtual }, updateRetornoLogin); // ok
+        fetchData2(endpoints.retornoLogin, {startDate, endDate}, updateRetornoLogin); // ok
 
         // Chamadas para atualizar os KPI's de - Operacional
-        fetchData2(endpoints.totalAgendamentosHoje, {},updateTotalAgendamentosHoje);
-        fetchData2(endpoints.totalAgendamentosFuturos, {},updateTotalAgendamentosFuturos);
-        fetchData2(endpoints.notasFeedbacks, {},updateNotaSingle);
-        fetchData2(endpoints.tempoMedio, {},updateTempoMedio);
+        fetchData2(endpoints.totalAgendamentosHoje, {startDate, endDate},updateTotalAgendamentosHoje);
+        fetchData2(endpoints.totalAgendamentosFuturos, {startDate, endDate},updateTotalAgendamentosFuturos);
+        fetchData2(endpoints.notasFeedbacks, {startDate, endDate},updateNotaSingle);
+        fetchData2(endpoints.tempoMedio, {startDate, endDate},updateTempoMedio);
 
         // Chamadas para atualizar os dados do gráfico 1 - Gerencial
         fetchData(endpoints.listarNumeroIndicacoes, updateChart1)
 
         // Chamadas para atualizar os dados do gráfico 2 - Gerencial
-        fetchData2(endpoints.listarClientesConcluidosUltimosCincoMeses, {},updateChart2_1);
-        fetchData2(endpoints.listarClientesFidelizadosUltimosCincoMeses, {},updateChart2_2);
+        fetchData2(endpoints.listarClientesConcluidosUltimosCincoMeses, {startDate, endDate},updateChart2_1);
+        fetchData2(endpoints.listarClientesFidelizadosUltimosCincoMeses, {startDate, endDate},updateChart2_2);
 
         // Chamadas para atualizar os dados do gráfico 3 - Gerencial
-        fetchData2(endpoints.receitaAcumulada, {},updateChart3);
+        fetchData2(endpoints.receitaAcumulada, {startDate, endDate},updateChart3);
 
         // Chamadas para atualizar os dados do gráfico 33 - Gerencial
-        fetchData2(endpoints.listarProcedimentosBemAvaliados, {},updateChart33Labels);
+        fetchData2(endpoints.listarProcedimentosBemAvaliados, {startDate, endDate},updateChart33Labels);
         
 
         // Chamadas para atualizar os dados do gráfico 4 - Gerencial
-        fetchData2(endpoints.agendamentosProcedimentos, {},updateChart4);
+        fetchData2(endpoints.agendamentosProcedimentos, {startDate, endDate},updateChart4);
 
         // Chamada para atualizar os dados do gráfico 1 - Operacional
-        fetchData2(endpoints.agendamentosStatus, {},updateChartOperacional1);
+        fetchData2(endpoints.agendamentosStatus, {startDate, endDate},updateChartOperacional1);
 
         // Chamada para atualizar os dados do gráfico 4 - Operacional
-        fetchData2(endpoints.agendamentosReceitaUltimosTresMeses, {},updateChartReceitaProcedimentosOperacional4);
+        fetchData2(endpoints.agendamentosReceitaUltimosTresMeses, {startDate, endDate},updateChartReceitaProcedimentosOperacional4);
 
         // Chamada para atualizar os dados do gráfico 3 - Operacional
-        fetchData2(endpoints.agendamentosTempoGastoUltimoMes, {},updateChartTempoGastoOperacional2);
+        fetchData2(endpoints.agendamentosTempoGastoUltimoMes, {startDate, endDate},updateChartTempoGastoOperacional2);
 
         // Chamada para atualizar os dados do gráfico 2 - Operacional
-        fetchData2(endpoints.agendamentosProcedimentosRealizadosTrimestre, {}, updateChartProcedimentoRealizadosTrimestreOperacional3);
+        fetchData2(endpoints.agendamentosProcedimentosRealizadosTrimestre, {startDate, endDate}, updateChartProcedimentoRealizadosTrimestreOperacional3);
 
         // Chamada para atualizar os dados do gráfico 5 - Operacional
-        fetchData2(endpoints.agendamentosValorTotalUltimoMes, {},updateChartValorTotalUltimoMesOperacional5);
+        fetchData2(endpoints.agendamentosValorTotalUltimoMes, {startDate, endDate},updateChartValorTotalUltimoMesOperacional5);
 
         // Chamada para atualiazar o gráfico de usabilidade - Usabilidade
         fetchData2(
