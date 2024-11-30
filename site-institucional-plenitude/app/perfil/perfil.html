@@ -204,7 +204,7 @@
                 Enviar Foto
               </button>
             </form>
-            <p id="responseMessage" style="font-size: 14px"></p>
+            <!-- <p id="responseMessage" style="font-size: 14px"></p> -->
           </div>
 
           <form id="personalForm" class="form">
@@ -311,7 +311,7 @@
 
             <div class="button-container">
               <button
-                type="submit"
+                type="button"
                 class="save-button"
                 id="save-usuario-button"
                 disabled
@@ -535,9 +535,9 @@
                 </div>
                 <div class="button-container">
                   <button
-                    type="submit"
+                    type="button"
                     class="save-button"
-                    id="save-empresa-button"
+                    id="save-empresa"
                     disabled
                     style="margin-right: -10px"
                   >
@@ -601,6 +601,38 @@
               </div>
             </div>
           </section>
+          <div id="modalEditarEmpresa" class="modal">
+            <div class="modal-content">
+              <div class="divTopoModal">
+                <p>Deseja realmente atualizar os <b>dados empresariais?</b></p>
+                <p id="perguntaTexto"></p>
+                <p id="perguntaTipo"></p>
+              </div>
+              <div>
+                <button id="atualizar-empresa" class="btn btn-save"
+                  >
+                  Sim
+                </button>
+                <button id="fechar_modal" class="btn btn-no">Não</button>
+              </div>
+            </div>
+          </div>
+          <div id="modalEditarUsuario" class="modal">
+            <div class="modal-content">
+              <div class="divTopoModal">
+                <p>Deseja realmente atualizar os <b>dados pessoais</b>?</p>
+                <p id="perguntaTexto"></p>
+                <p id="perguntaTipo"></p>
+              </div>
+              <div>
+                <button id="atualizar-usuario" class="btn btn-save"
+                  >
+                  Sim
+                </button>
+                <button id="fechar_modal_usuario" class="btn btn-no">Não</button>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
     </div>
@@ -620,5 +652,9 @@
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
     ></script>
     <script src="perfil.js"></script>
+    
+   
   </body>
+  
 </html>
+
