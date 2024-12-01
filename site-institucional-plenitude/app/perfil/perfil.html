@@ -424,7 +424,7 @@
                       type="time"
                       id="horaInicio"
                       name="horaInicio"
-                      style="font-family: poppins;"
+                      style="font-family: poppins"
                       required
                     />
                     <span class="lock-icon" id="horaInicio-lock">🔓</span>
@@ -432,7 +432,13 @@
                   <div class="form-group">
                     <label for="diaFim" style="height: 20px"></label>
                     <p>Horário Fim:</p>
-                    <input type="time" id="horaFim" name="horaFim" style="font-family: poppins;" required />
+                    <input
+                      type="time"
+                      id="horaFim"
+                      name="horaFim"
+                      style="font-family: poppins"
+                      required
+                    />
                     <span class="lock-icon" id="horaFim-lock">🔓</span>
                   </div>
                 </div>
@@ -588,14 +594,33 @@
                     >
                       Adicionar
                     </button>
+                    <!-- Botão de Importar -->
                     <button class="import-button" id="import-button">
-                      <img src="../../assets/icons/import.png" alt="Import Icon" />
+                      <img
+                        src="../../assets/icons/import.png"
+                        alt="Import Icon"
+                      />
                     </button>
-                  
-                    <!-- Input de arquivo oculto -->
+                    <!-- Modal -->
+                    <div id="importExportModal" class="modal">
+                      <div class="modal-content">
+                        <!-- Botão X para fechar o modal -->
+                        <span id="close-modal-btn" class="close-modal"
+                          >&times;</span
+                        >
+                        <h2>Importar ou Exportar</h2>
+                        <button id="import-modal-btn" class="botao-importar-txt">Importar Arquivo</button>
+                        <button id="export-modal-btn" class="botao-importar-txt">
+                          Exportar Documento
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Input de Arquivo (escondido) -->
                     <input type="file" id="file-input" style="display: none" />
 
-                    
+                    <!-- Input de arquivo oculto -->
+                    <input type="file" id="file-input" style="display: none" />
                   </div>
                 </div>
               </div>

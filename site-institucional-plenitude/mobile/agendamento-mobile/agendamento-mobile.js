@@ -518,70 +518,68 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Salvar Agendamento
-  botaoAgendar.addEventListener("click", async function () {
-    const procedimentoId = procedimentoSelect.value;
-    const especificacaoId = especificacaoSelect.value;
-    const tipoAtendimento = tipoAtendimentoSelect.value;
-    const data = dataInput.value;
-    const horarioButton = document.querySelector(".horario-button.selected");
-    const horario = horarioButton ? horarioButton.textContent : null;
+// Função para validar CEP usando a API ViaCEP
+async function validarCepReal(cep) {
+  const cepLimpo = cep.replace("-", "").trim(); // Remove traços e espaços
+  const url = `https://viacep.com.br/ws/${cepLimpo}/json/`;
 
-    if (
-      !procedimentoId ||
-      !especificacaoId ||
-      !tipoAtendimento ||
-      !data ||
-      !horario
-    ) {
-      showNotification("Todos os campos são obrigatórios", true);
-      return;
+  try {
+    const response = await fetch(url);
+    if (response.ok) {
+      const data = await response.json();
+      return !data.erro; // Retorna verdadeiro se o CEP for válido
+    } else {
+      return false;
     }
+  } catch (error) {
+    console.error("Erro ao validar CEP: ", error);
+    return false;
+  }
+}
 
-    const dataHorario = new Date(`${data}T${horario}`).toISOString();
-    const idUsuario = localStorage.getItem("idUsuario");
+// Função para calcular a taxa total com validação de CEP
+async function calcularTaxa() {
+  const endereco = enderecoInput.value;
 
-    if (!idUsuario) {
-      showNotification(
-        "Usuário não encontrado. Por favor, faça login novamente.",
-        true
-      );
-      return;
+  if (!endereco) {
+    showNotification("Por favor, insira um endereço válido.", true);
+    return;
+  }
+
+  // Validar se o CEP existe
+  const cepValido = await validarCepReal(endereco);
+  if (!cepValido) {
+    showNotification("CEP inválido. Por favor, insira um CEP real.", true);
+    return;
+  }
+
+  try {
+    const kmLoc = await calcularDistancia(endereco); // Chamada à função que pode falhar
+
+    // Se a distância for calculada corretamente, calcula a taxa
+    if (kmLoc !== null) {
+      const taxaLoc = gasolina * kmLoc; // Cálculo da taxa de locomoção
+      const taxaTotal = taxaLoc + maoObra; // Cálculo da taxa total
+      valorTaxaSpan.textContent = `R$ ${taxaTotal.toFixed(2)}, `; // Exibir a taxa total
+      totalKmSpan.textContent = `${kmLoc} de distância`;
+      taxaTotalDiv.classList.remove("hidden"); // Mostrar a taxa total
+    } else {
+      valorTaxaSpan.textContent =
+        "Distância não encontrada para o endereço."; // Mensagem se a distância não for encontrada
+      taxaTotalDiv.classList.remove("hidden");
     }
+  } catch (error) {
+    console.error("Erro ao calcular a distância:", error);
+    valorTaxaSpan.textContent =
+      "Erro ao calcular a distância. Tente novamente."; // Mensagem de erro
+    taxaTotalDiv.classList.remove("hidden"); // Mostrar a mensagem de erro
+  }
+}
 
-    const agendamento = {
-      fk_procedimento: parseInt(procedimentoId, 10),
-      fk_especificacao: parseInt(especificacaoId, 10),
-      fk_status: 1,
-      tipoAgendamento: tipoAtendimento,
-      dataHorario: dataHorario,
-      fk_usuario: parseInt(idUsuario, 10),
-    };
+// Event listener para o botão de calcular taxa
+calcularTaxaButton.addEventListener("click", calcularTaxa);
 
-    try {
-      const response = await fetch(apiUrlCriarAgendamento, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(agendamento),
-      });
 
-      if (response.ok) {
-        showNotification("Agendamento criado com sucesso!");
-        
-        setTimeout(() => {
-          window.location.href = "../index-mobile/index-mobile.html";
-      }, 5000); // 5000 milissegundos = 5 segundos
-      } else {
-        console.error("Erro ao criar agendamento: " + response.statusText);
-        showNotification("Erro ao criar agendamento", true);
-      }
-    } catch (error) {
-      console.error("Erro ao criar agendamento: ", error);
-      showNotification("Erro ao criar agendamento", true);
-    }
-  });
 
   const increaseFontBtn = document.getElementById("increase-font");
   const decreaseFontBtn = document.getElementById("decrease-font");
