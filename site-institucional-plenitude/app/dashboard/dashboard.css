@@ -104,7 +104,7 @@ nav ul li {
       --------------------------------------------------------------*/
 
 .navigation {
-    height: 78rem;
+    height: 113.5rem;
     background: #d2135d;
     width: 263px;
     top: 22px;
@@ -477,7 +477,25 @@ header p {
 
 .caixa-grafico {
     width: 90%;
+    height: 250px;
+}
 
+.caixa-grafico-teste {
+    width: 90%;
+    height: 250px;
+}
+
+#chartOperacional1 {
+    height: 90% !important; /* Faz o canvas se ajustar à altura do seu contêiner */
+}
+
+#chartTempoGastoProcedimentosOperacional2 {
+    height: 90% !important; /* Faz o canvas se ajustar à altura do seu contêiner */
+}
+
+#chartValorTotalUltimoMesOperacional5{
+    height: 90% !important; /* Faz o canvas se ajustar à altura do seu contêiner */
+    width: 70%;
 }
 
 .card-graficos p {
@@ -518,7 +536,7 @@ header p {
 
 .card-content-2 h1 {
     font-size: 18px;
-    width: 152px;
+    width: 952px;
     font-weight: 1400;
 }
 
@@ -576,7 +594,7 @@ header p {
     margin-top: -15px;
 }
 .indicator {
-    height: 110px;
+    height: 210px;
     width: 4px;
     background-color: #e62762;
     /* rosa */
@@ -664,15 +682,59 @@ button {
     border-radius: 4px; /* Mantém bordas arredondadas */
 }
 
-.kpis_com_filtro button {
-    height: 20px;
-    width: 85px; /* Reduz a largura do botão */
-    font-size: 10px; /* Ajusta o tamanho da fonte do botão */
-    padding: 5px; /* Reduz o espaçamento interno */
-    border-radius: 4px; /* Borda arredondada para manter consistência */
-    margin-top: 4px; /* Adiciona um pequeno espaçamento acima do botão */
+
+
+.filtro {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Ou 'center' para centralizar */
+    gap: 10px; /* Espaçamento entre os elementos */
+    margin-top: 10px; /* Ajuste de margem no topo */
+    font-family: Poppins, sans-serif;
+    margin-right: 240px;
+    margin-top: -10px;
 }
 
+.filtro p {
+    padding-right: 10px; /* Espaçamento ao lado do texto */
+}
+
+input[type="date"] {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+
+.save-button {
+    display: block; /* Botão visível */
+    align-items: center;
+    background-color: #e70069;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+    font-family: Poppins;
+  }
+
+  .save-button-graficos {
+    align-items: center;
+    background-color: #e70069;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+    font-family: Poppins;
+  }
 
 .kpis_com_filtro {
     display: flex;
@@ -689,7 +751,7 @@ button {
     justify-content: center; /* Espaça os elementos internamente */
     align-items: center; /* Centraliza os elementos */
     width: 100%; /* Garante que todos os cards ocupem o mesmo espaço no grid */
-    height: 163px; /* Define uma altura uniforme */
+    height: 280px; /* Define uma altura uniforme */
     background-color: #ffffff;
     border-radius: 10px;
     padding: 10px; /* Ajusta o preenchimento interno */
@@ -734,13 +796,24 @@ button {
 
 .square {
     width: 400px;
-    height: 335px;
+    height: 415px;
     border-radius: 10px;
     /* Bordas arredondadas */
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+}
+.square-indv {
+    width: 400px;
+    height: 445px;
+    border-radius: 10px;
+    /* Bordas arredondadas */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
 }
 
 .triple-square {
