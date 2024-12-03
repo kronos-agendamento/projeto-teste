@@ -704,22 +704,24 @@
                                 <div class="mini-grid-usabilidade">
                                     <div class="mini-square-usabilidade">
                                         <div class="card">
-                                            <div class="indicator"></div>
+                                            <div class="indicator" style="height: 140px; width: 4px;"></div>
                                             <div class="card-content">
-                                                <p style="font-size: 15px; width: 310px;">Tempo Médio de Conclusão
+                                                <p style="font-size: 14px; width: 330px; font-weight: bold; margin-top: 20px;">Tempo Médio de Conclusão
                                                     de
                                                     Agendamento</p>
                                                 <h2 id="tempo-medio-conclusao">Carregando...</h2>
                                                 <div> <!-- Campo para selecionar a data de início -->
-                                                    <label for="startDateUsabilidadeKPI2">Data de Início:</label>
-                                                    <input type="date" id="startDateUsabilidadeKPI2">
-
+                                                    <div>
+                                                    <label style="size: 3px; font-size: 12px; margin-right: 47px ;" for="startDateUsabilidadeKPI2">Data de Início:</label>
+                                                    <input style="padding: 3px; border: 1px solid #ccc; border-radius: 5px; font-size: 10px; font-family: Poppins; margin-left: -40px;" type="date" id="startDateUsabilidadeKPI2">
+</div>
                                                     <!-- Campo para selecionar a data de término -->
-                                                    <label for="endDateUsabilidadeKPI2">Data de Término:</label>
-                                                    <input type="date" id="endDateUsabilidadeKPI2">
-
+                                                     <div style="margin-top: 5px;">
+                                                    <label style="size: 3px; font-size: 12px; margin-right: 47px ;" for="endDateUsabilidadeKPI2">Data de Término:</label>
+                                                    <input style="padding: 3px; border: 1px solid #ccc; border-radius: 5px; font-size: 10px; font-family: Poppins; margin-left: -40px;" type="date" id="endDateUsabilidadeKPI2">
+</div>
                                                     <!-- Botão para buscar os dados -->
-                                                    <button id="buscarUsabilidadeKPI2Button">Buscar Dados</button>
+                                                    <button id="buscarUsabilidadeKPI2Button" class="save-button-graficos" style="margin-left: 130px; font-size: 10px; padding: 8px; border-radius: 8px; margin-top: 10px; margin-bottom: 10px;">Buscar Dados</button>
                                                 </div>
 
                                             </div>
@@ -742,22 +744,24 @@
                                             </div> -->
                                     <div class="mini-square-usabilidade">
                                         <div class="card">
-                                            <div class="indicator"></div>
+                                            <div class="indicator" style="height: 140px; width: 4px;"></div>
                                             <div class="card-content">
-                                                <p style="font-size: 15px;">Quantidade de Usuários Retornando ao
+                                                <p style="font-size: 14px; width: 340px; font-weight: bold; margin-top: 30px;">Quantidade de Usuários Retornando ao
                                                     Sistema
                                                 </p>
                                                 <h2 id="retorno-login-count">Carregando...</h2>
                                                 <div> <!-- Campo para selecionar a data de início -->
-                                                    <label for="startDateUsabilidadeKPI1">Data de Início:</label>
-                                                    <input type="date" id="startDateUsabilidadeKPI1">
-
+                                                    <div>
+                                                    <label style="size: 3px; font-size: 12px; margin-right: 47px ;" for="startDateUsabilidadeKPI1">Data de Início:</label>
+                                                    <input style="padding: 3px; border: 1px solid #ccc; border-radius: 5px; font-size: 10px; font-family: Poppins; margin-left: -40px;" type="date" id="startDateUsabilidadeKPI1">
+</div>
                                                     <!-- Campo para selecionar a data de término -->
-                                                    <label for="endDateUsabilidadeKPI1">Data de Término:</label>
-                                                    <input type="date" id="endDateUsabilidadeKPI1">
-
+                                                     <div>
+                                                    <label style="size: 3px; font-size: 12px; margin-right: 47px ;" for="endDateUsabilidadeKPI1">Data de Término:</label>
+                                                    <input style="padding: 3px; border: 1px solid #ccc; border-radius: 5px; font-size: 10px; font-family: Poppins; margin-left: -40px;" type="date" id="endDateUsabilidadeKPI1">
+</div>
                                                     <!-- Botão para buscar os dados -->
-                                                    <button id="buscarUsabilidadeKPI1Button">Buscar Dados</button>
+                                                    <button id="buscarUsabilidadeKPI1Button" class="save-button-graficos" style="margin-left: 130px; font-size: 10px; padding: 8px; border-radius: 8px; margin-top: 10px; margin-bottom: 10px;">Buscar Dados</button>
                                                 </div>
 
                                             </div>
@@ -770,21 +774,24 @@
                                 <div class="card-graficos">
                                     <div class="card-content-2">
                                         <h1 style="width: 600px;">Taxa do uso do Sistema de Agendamento</h1>
-                                        <div>
-                                            <!-- Campo para selecionar a data de início -->
-                                            <label for="startDateUsabilidade1">Data de Início:</label>
-                                            <input type="date" id="startDateUsabilidade1">
-
-                                            <!-- Campo para selecionar a data de término -->
-                                            <label for="endDateUsabilidade1">Data de Término:</label>
-                                            <input type="date" id="endDateUsabilidade1">
-
-                                            <!-- Botão para buscar os dados -->
-                                            <button id="buscarUsabilidadeGrafico1Button">Buscar Dados</button>
-                                        </div>
                                     </div>
                                     <p style="margin-right: 415px;">Quantidade de agendamentos gerados.</p>
-                                    <div class="caixa-graficoUsabilidade">
+                                    <div style="margin-right: 500px;">
+                                        <div style="margin-left: 0px; margin-top: 5px;">
+                                        <!-- Campo para selecionar a data de início -->
+                                        <label style="size: 3px; font-size: 12px;" for="startDateUsabilidade1">Data de Início:</label>
+                                        <input style="padding: 3px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date" id="startDateUsabilidade1">
+</div>
+                                        <!-- Campo para selecionar a data de término -->
+                                        <div style="margin-left: 0px; margin-top: 5px;">
+                                        <label style="size: 3px; font-size: 12px;" for="endDateUsabilidade1">Data de Término:</label>
+                                        <input style="padding: 3px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins; " type="date" id="endDateUsabilidade1">
+                                        </div>
+
+                                        <!-- Botão para buscar os dados -->
+                                        <button id="buscarUsabilidadeGrafico1Button" class="save-button-graficos" style="margin-left: 0px; font-size: 12px; padding: 8px; border-radius: 8px; margin-top: 10px; margin-bottom: 10px;">Buscar Dados</button>
+                                    </div>
+                                    <div class="caixa-graficoUsabilidade" >
                                         <canvas id="chartUsabilidade1" style="margin-left: 100px;"></canvas>
                                     </div>
                                 </div>

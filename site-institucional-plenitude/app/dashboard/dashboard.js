@@ -1331,7 +1331,6 @@ document.addEventListener('DOMContentLoaded', function () {
             data: {
                 labels: labelsChartUsabilidade1,
                 datasets: [{
-                    label: 'Qtd Agendamentos',
                     data: dataChartUsabilidade1,
                     backgroundColor: ['#D2135D', '#E84E8A', '#F59DBF'],
                     borderColor: '#D2135D',
@@ -1339,8 +1338,29 @@ document.addEventListener('DOMContentLoaded', function () {
                 }]
             },
             options: {
-                indexAxis: 'y',
-                responsive: true,
+                responsive: true, // Habilita o redimensionamento
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false,  // Desativa a legenda
+                    }
+                },
+
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Meses'  // Título do eixo X
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Agendamentos'  // Título do eixo Y
+                        }
+                    }
+                }
             }
         });
     }

@@ -781,7 +781,7 @@ input[type="date"] {
 .mini-square-usabilidade {
     display: flex;
     width: 380px;
-    height: 167px;
+    height: 200px;
     background-color: rgb(255, 255, 255);
     border-radius: 10px;
 }
