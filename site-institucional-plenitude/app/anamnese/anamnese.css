@@ -817,6 +817,10 @@ th {
   position: relative;
 }
 
+button{
+  font-family: Poppins;
+}
+
 .tooltip4 {
   display: none;
   position: absolute;
@@ -827,8 +831,8 @@ th {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 120px; /* Ajuste conforme necessário */
-  left: 30%;
+  margin-top: 0.5%; /* Ajuste conforme necessário */
+  left: 43%;
   transform: translateX(-50%);
 }
 
