@@ -32,6 +32,36 @@ document.addEventListener("DOMContentLoaded", async function () {
       console.error("Erro ao buscar os dados do cliente:", error);
     }
   }
+  function formatCpf(cpf) {
+    if (!cpf) return "";
+    const cleaned = ("" + cpf).replace(/\D/g, ""); // Remove qualquer caractere que não seja número
+    const match = cleaned.match(/^(\d{3})(\d{3})(\d{3})(\d{2})$/); // Verifica o formato
+    if (match) {
+      return `${match[1]}.${match[2]}.${match[3]}-${match[4]}`; // Retorna no formato 000.000.000-00
+    }
+    return cpf; // Retorna o valor original caso não corresponda ao padrão
+  }
+
+  function formatTelefone(telefone) {
+    if (!telefone) return "";
+    const cleaned = ("" + telefone).replace(/\D/g, ""); // Remove qualquer caractere não numérico
+    const match = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/); // Verifica se o telefone tem o formato (XX) XXXXX-XXXX
+    if (match) {
+      return `(${match[1]}) ${match[2]}-${match[3]}`; // Retorna o formato correto
+    }
+    return telefone; // Retorna o valor original se não bater com o padrão
+  }
+  function formatCep(cep) {
+    if (!cep) return "";
+    const cleaned = ("" + cep).replace(/\D/g, ""); // Remove qualquer caractere que não seja número
+    const match = cleaned.match(/^(\d{5})(\d{3})$/); // Verifica se o CEP tem 5 dígitos seguidos de 3 dígitos
+    if (match) {
+      return `${match[1]}-${match[2]}`; // Retorna no formato 00000-000
+    }
+    return cep; // Retorna o valor original caso não corresponda ao padrão
+  }
+  
+    
 
   // Função para preencher campos
   function preencherCampos(data) {
@@ -39,16 +69,16 @@ document.addEventListener("DOMContentLoaded", async function () {
     setFieldValue("nome", data.nome);
     setFieldValue("nascimento", formatDate(data.dataNasc));
     setFieldValue("instagram", data.instagram);
-    setFieldValue("cpf", data.cpf);
-    setFieldValue("telefone", data.telefone);
+    setFieldValue("cpf", formatCpf(data.cpf)); // Aplica a formatação do CPF
+    setFieldValue("telefone", formatTelefone(data.telefone)); // Aplica a formatação do telefone
     setFieldValue("genero", data.genero);
     setFieldValue("email", data.email);
     setFieldValue("nivelAcesso", data.nivelAcesso);
-
+  
     if (data.endereco) {
       setFieldValue("logradouro", data.endereco.logradouro);
       setFieldValue("numero", data.endereco.numero);
-      setFieldValue("cep", data.endereco.cep);
+      setFieldValue("cep", formatCep(data.endereco.cep)); // Aplica a formatação do CEP
       setFieldValue("bairro", data.endereco.bairro);
       setFieldValue("cidade", data.endereco.cidade);
       setFieldValue("estado", data.endereco.estado);
@@ -57,6 +87,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       console.error("Endereço não encontrado para o ID fornecido.");
     }
   }
+  
 
   async function fetchUsuarioPorId(idUsuario) {
     try {
@@ -221,6 +252,47 @@ document.addEventListener("DOMContentLoaded", async function () {
       showNotification("Erro ao atualizar os dados.", true);
     }
   }
+
+  async function buscarEnderecoPorCep(cep) {
+    try {
+      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+
+      if (!response.ok) {
+        throw new Error("Erro ao buscar o endereço pelo CEP");
+      }
+
+      const endereco = await response.json();
+
+      if (endereco.erro) {
+        showNotification(
+          "CEP não encontrado. Verifique e tente novamente.",
+          true
+        );
+        return null;
+      }
+
+      // Preenche os campos de endereço
+      document.getElementById("logradouro").value = endereco.logradouro;
+      document.getElementById("bairro").value = endereco.bairro;
+      document.getElementById("cidade").value = endereco.localidade;
+      document.getElementById("estado").value = endereco.uf;
+
+      return endereco;
+    } catch (error) {
+      console.error("Erro ao buscar o endereço:", error);
+      showNotification("Erro ao buscar o endereço. Tente novamente.", true);
+    }
+  }
+
+  document.getElementById("cep").addEventListener("blur", async function () {
+    const cep = this.value.replace(/\D/g, ""); // Remove qualquer caracter não numérico
+
+    if (cep.length === 8) {
+      await buscarEnderecoPorCep(cep);
+    } else {
+      showNotification("CEP inválido. Verifique e tente novamente.", true);
+    }
+  });
 
   // Função para atualizar dados de endereço
   async function updateAddressData(event) {

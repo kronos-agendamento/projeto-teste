@@ -126,7 +126,7 @@ navbar  lateral
 --------------------------------------------------------------*/
 
 .navigation {
-  height: 83rem;
+  height: 86rem;
   background: #d2135d;
   width: 263px;
   margin-left: 32px;
@@ -713,7 +713,7 @@ td {
   right: 10px;
   font-size: 24px;
   font-weight: bold;
-  color: black;
+  color: rgb(255, 255, 255);
   cursor: pointer;
 }
 
@@ -725,7 +725,7 @@ td {
   background-color: #f71a7a;
   color: white;
   border-radius: 4px;
-  
+  font-family: Poppins;
 }
 
 .botao-importar-txt:hover {

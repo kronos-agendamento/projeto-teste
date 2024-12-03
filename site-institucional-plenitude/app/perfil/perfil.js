@@ -143,13 +143,19 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.style.display = "none"; // Fecha o modal
   });
 
+  function formatCepS(cep) {
+    if (!cep) return ""; // Retorna vazio se o CEP for undefined ou nulo
+    const cleaned = ("" + cep).replace(/\D/g, ""); // Remove qualquer caractere que não seja número
+    return cleaned; // Retorna apenas os números do CEP
+}
+
 
   document.getElementById("atualizar-empresa").addEventListener("click", function () {
     // Capturar os valores dos inputs
     const nomeEmpresa = document.getElementById("empresa").value;
     const cnpj = formatCnpj(document.getElementById("cnpj").value); // Remove a máscara do CNPJ
     const telefone = formatPhoneNumberToLong(document.getElementById("telefone-empresa").value);
-    const cep = formatCep(document.getElementById("cep").value);
+    const cep = formatCepS(document.getElementById("cep").value);
     const logradouro = document.getElementById("logradouro").value;
     const numero = document.getElementById("numero").value;
     const complemento = document.getElementById("complemento").value;
@@ -313,6 +319,26 @@ document.addEventListener("DOMContentLoaded", () => {
   //   });
   // }
 
+  function formatCep(cep) {
+    if (!cep) return ""; // Retorna vazio se o CEP for undefined ou nulo
+    const cleaned = ("" + cep).replace(/\D/g, ""); // Remove qualquer caractere que não seja número
+    const match = cleaned.match(/^(\d{5})(\d{3})$/); // Verifica se o CEP segue o padrão de 5 dígitos + 3 dígitos
+    if (match) {
+      return `${match[1]}-${match[2]}`; // Retorna no formato 00000-000
+    }
+    return cep; // Retorna o valor original caso não bata com o padrão
+  }
+
+  function formatCnpj(cnpj) {
+    if (!cnpj) return ""; // Retorna vazio se o CNPJ for indefinido ou nulo
+    const cleaned = ("" + cnpj).replace(/\D/g, ""); // Remove todos os caracteres que não são números
+    const match = cleaned.match(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/); // Verifica se o valor corresponde ao padrão do CNPJ
+    if (match) {
+      return `${match[1]}.${match[2]}.${match[3]}/${match[4]}-${match[5]}`; // Retorna no formato 00.000.000/0000-00
+    }
+    return cnpj; // Retorna o valor original se não corresponder ao padrão
+  }
+
   // Função para carregar os dados do usuário e empresa
   async function carregarDados() {
     const cpf = localStorage.getItem("cpf");
@@ -424,7 +450,7 @@ fileInput.addEventListener('change', async (event) => {
     // Processa a resposta
     const result = await response.text();
     if (response.ok) {
-      showNotification("Importação Realizada com Sucesso!", false);
+      showNotification("Importação realizada com sucesso!", false);
       setTimeout(() => {
         window.location.reload(); // Recarrega a página após 2 segundos
       }, 2000);
@@ -432,7 +458,7 @@ fileInput.addEventListener('change', async (event) => {
       alert(`Erro: ${result}`);
     }
   } catch (error) {
-    showNotification("Importação Falhou!", true);
+    showNotification("Importação falhou.", true);
   }
 });
 
@@ -518,6 +544,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+  function formatCep(cep) {
+    if (!cep) return ""; // Retorna vazio se o CEP for undefined ou nulo
+    const cleaned = ("" + cep).replace(/\D/g, ""); // Remove qualquer caractere que não seja número
+    const match = cleaned.match(/^(\d{5})(\d{3})$/); // Verifica se o CEP segue o padrão de 5 dígitos + 3 dígitos
+    if (match) {
+      return `${match[1]}-${match[2]}`; // Retorna no formato 00000-000
+    }
+    return cep; // Retorna o valor original caso não bata com o padrão
+  }
+
+  function formatCnpj(cnpj) {
+    if (!cnpj) return ""; // Retorna vazio se o CNPJ for indefinido ou nulo
+    const cleaned = ("" + cnpj).replace(/\D/g, ""); // Remove todos os caracteres que não são números
+    const match = cleaned.match(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/); // Verifica se o valor corresponde ao padrão do CNPJ
+    if (match) {
+      return `${match[1]}.${match[2]}.${match[3]}/${match[4]}-${match[5]}`; // Retorna no formato 00.000.000/0000-00
+    }
+    return cnpj; // Retorna o valor original se não corresponder ao padrão
+  }
+
   function fillUserProfile(userData) {
     // Dados do usuário
     document.getElementById("nome").value = userData.nome || "";
@@ -582,25 +628,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     return phoneNumber;
   }
 
-  function formatCep(cep) {
-    if (!cep) return ""; // Retorna vazio se o CEP for undefined ou nulo
-    const cleaned = ("" + cep).replace(/\D/g, ""); // Remove qualquer caractere que não seja número
-    const match = cleaned.match(/^(\d{5})(\d{3})$/); // Verifica se o CEP segue o padrão de 5 dígitos + 3 dígitos
-    if (match) {
-      return `${match[1]}-${match[2]}`; // Retorna no formato 00000-000
-    }
-    return cep; // Retorna o valor original caso não bata com o padrão
-  }
+ 
 
-  function formatCnpj(cnpj) {
-    if (!cnpj) return ""; // Retorna vazio se o CNPJ for indefinido ou nulo
-    const cleaned = ("" + cnpj).replace(/\D/g, ""); // Remove todos os caracteres que não são números
-    const match = cleaned.match(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/); // Verifica se o valor corresponde ao padrão do CNPJ
-    if (match) {
-      return `${match[1]}.${match[2]}.${match[3]}/${match[4]}-${match[5]}`; // Retorna no formato 00.000.000/0000-00
-    }
-    return cnpj; // Retorna o valor original se não corresponder ao padrão
-  }
+ 
   
   
   // document

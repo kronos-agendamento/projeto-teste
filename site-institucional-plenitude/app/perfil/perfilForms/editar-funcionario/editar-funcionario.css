@@ -7,6 +7,13 @@
   font-family: "Poppins", Arial, sans-serif;
 }
 
+input[disabled], input[readonly] {
+  background-color: #f5f5f5;
+  color: #a0a0a0;
+  cursor: not-allowed;
+  border: 1px solid #ccc;
+}
+
 body {
   display: flex;
   background-color: #ffffff;
@@ -1207,7 +1214,7 @@ img {
 .delete-button {
   display: block; /* Botão visível */
   align-items: center;
-  background-color: #b9315c;
+  background-color: #db3131;
   color: white;
   border: none;
   border-radius: 10px;
