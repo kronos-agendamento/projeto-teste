@@ -485,6 +485,16 @@ header p {
     height: 250px;
 }
 
+#chart4{
+    height: 90% !important; 
+    width: 100% !important;
+}
+
+#chart3{
+    display: flex;
+    height: 100% !important; 
+}
+
 #chartOperacional1 {
     height: 90% !important; /* Faz o canvas se ajustar à altura do seu contêiner */
 }
