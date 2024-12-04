@@ -184,3 +184,14 @@
   opacity: 1;
   pointer-events: auto;
 }
+
+#valor-total-container {
+  margin-top: 1rem;
+  text-align: right;
+  font-weight: bold;
+  color: #333;
+}
+
+#valor-total-text {
+  font-size: 1.2rem;
+}

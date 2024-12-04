@@ -251,111 +251,126 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("next-page-btn").disabled =
       currentPage === totalPages;
 
-      agendamentosPaginaAtual.forEach((agendamento) => {
-        const tr = document.createElement("tr");
-        tr.classList.add("clickable-row");
-      
-        // Ajustar para o horário local
-        const dataHora = new Date(agendamento.dataHorario);
-        const dia = String(dataHora.getDate()).padStart(2, "0");
-        const mes = String(dataHora.getMonth() + 1).padStart(2, "0");
-        const horas = String(dataHora.getHours()).padStart(2, "0");
-        const minutos = String(dataHora.getMinutes()).padStart(2, "0");
-        const dataHoraFormatada = `${dia}/${mes} - ${horas}:${minutos}`;
-      
-        const dataHoraTd = document.createElement("td");
-        dataHoraTd.textContent = dataHoraFormatada;
-        tr.appendChild(dataHoraTd);
-      
-        const clienteTd = document.createElement("td");
-        clienteTd.textContent = agendamento.usuario;
-        clienteTd.dataset.idUsuario = agendamento.usuarioId;
-        clienteTd.dataset.idAgendamento = agendamento.idAgendamento;
-        tr.appendChild(clienteTd);
-      
-        const procedimentoTd = document.createElement("td");
-        procedimentoTd.textContent = agendamento.procedimento;
-        procedimentoTd.dataset.fkProcedimento = agendamento.fkProcedimento;
-        tr.appendChild(procedimentoTd);
-      
-        const especificacaoTd = document.createElement("td");
-        especificacaoTd.textContent = agendamento.especificacao;
-        especificacaoTd.dataset.fkEspecificacao = agendamento.fkEspecificacao;
-        tr.appendChild(especificacaoTd);
-      
-        const statusTd = document.createElement("td");
-        const statusColorDiv = document.createElement("div");
-        statusColorDiv.style.backgroundColor = agendamento.statusAgendamento.cor;
-        statusColorDiv.style.width = "10px";
-        statusColorDiv.style.height = "10px";
-        statusColorDiv.style.borderRadius = "100px";
-        statusColorDiv.style.display = "inline-block";
-        statusColorDiv.style.marginRight = "5px";
-      
-        const statusNomeSpan = document.createElement("span");
-        statusNomeSpan.textContent = agendamento.statusAgendamento.nome;
-      
-        statusTd.appendChild(statusColorDiv);
-        statusTd.appendChild(statusNomeSpan);
-        tr.appendChild(statusTd);
-      
-        const acoesTd = document.createElement("td");
-      
-        // Função para criar tooltips
-        function addTooltip(element, text) {
-          const tooltip = document.createElement("span");
-          tooltip.classList.add("tooltip-40");
-          tooltip.innerText = text;
-          element.appendChild(tooltip);
-      
-          element.addEventListener("mouseover", () => {
-            tooltip.style.visibility = "visible";
-            tooltip.style.opacity = "1";
-          });
-      
-          element.addEventListener("mouseout", () => {
-            tooltip.style.visibility = "hidden";
-            tooltip.style.opacity = "0";
-          });
-        }
-      
-        // Botão de Editar
-        const editButton = document.createElement("button");
-        editButton.classList.add("edit-btn", "filter-btn");
-        editButton.dataset.id = agendamento.idAgendamento;
-        editButton.innerHTML = '<i class="fas fa-edit"></i>';
-        addTooltip(editButton, "Editar");
-        editButton.addEventListener("click", (event) => {
-          event.stopPropagation(); // Impede que o evento se propague para a linha
-          editarAgendamento(
-            clienteTd.dataset.idAgendamento,
-            clienteTd.dataset.idUsuario,
-            procedimentoTd.dataset.fkProcedimento,
-            especificacaoTd.dataset.fkEspecificacao
-          );
+    agendamentosPaginaAtual.forEach((agendamento) => {
+      const tr = document.createElement("tr");
+      tr.classList.add("clickable-row");
+
+      // Ajustar para o horário local
+      const dataHora = new Date(agendamento.dataHorario);
+      const dia = String(dataHora.getDate()).padStart(2, "0");
+      const mes = String(dataHora.getMonth() + 1).padStart(2, "0");
+      const horas = String(dataHora.getHours()).padStart(2, "0");
+      const minutos = String(dataHora.getMinutes()).padStart(2, "0");
+      const dataHoraFormatada = `${dia}/${mes} - ${horas}:${minutos}`;
+
+      const dataHoraTd = document.createElement("td");
+      dataHoraTd.textContent = dataHoraFormatada;
+      tr.appendChild(dataHoraTd);
+
+      const clienteTd = document.createElement("td");
+      clienteTd.textContent = agendamento.usuario;
+      clienteTd.dataset.idUsuario = agendamento.usuarioId;
+      clienteTd.dataset.idAgendamento = agendamento.idAgendamento;
+      tr.appendChild(clienteTd);
+
+      const procedimentoTd = document.createElement("td");
+      procedimentoTd.textContent = agendamento.procedimento;
+      procedimentoTd.dataset.fkProcedimento = agendamento.fkProcedimento;
+      tr.appendChild(procedimentoTd);
+
+      const especificacaoTd = document.createElement("td");
+      especificacaoTd.textContent = agendamento.especificacao;
+      especificacaoTd.dataset.fkEspecificacao = agendamento.fkEspecificacao;
+      tr.appendChild(especificacaoTd);
+
+      // Adiciona o valor formatado
+      const valorTd = document.createElement("td");
+      valorTd.textContent = `R$ ${agendamento.valor
+        .toFixed(2)
+        .replace(".", ",")}`;
+      tr.appendChild(valorTd);
+
+      // Adiciona o ícone de Homecare
+      const homecareIcon = agendamento.homecare
+        ? '<div style="color: green; border-radius: 50%; background-color: green; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; margin-left:30px;"><span style="color: white;">✔</span></div>'
+        : '<div style="color: red; border-radius: 50%; background-color: red; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; margin-left:30px;"><span style="color: white;">✘</span></div>';
+      const homecareTd = document.createElement("td");
+      homecareTd.innerHTML = homecareIcon;
+      tr.appendChild(homecareTd);
+
+      const statusTd = document.createElement("td");
+      const statusColorDiv = document.createElement("div");
+      statusColorDiv.style.backgroundColor = agendamento.statusAgendamento.cor;
+      statusColorDiv.style.width = "10px";
+      statusColorDiv.style.height = "10px";
+      statusColorDiv.style.borderRadius = "100px";
+      statusColorDiv.style.display = "inline-block";
+      statusColorDiv.style.marginRight = "5px";
+
+      const statusNomeSpan = document.createElement("span");
+      statusNomeSpan.textContent = agendamento.statusAgendamento.nome;
+
+      statusTd.appendChild(statusColorDiv);
+      statusTd.appendChild(statusNomeSpan);
+      tr.appendChild(statusTd);
+
+      const acoesTd = document.createElement("td");
+
+      // Função para criar tooltips
+      function addTooltip(element, text) {
+        const tooltip = document.createElement("span");
+        tooltip.classList.add("tooltip-40");
+        tooltip.innerText = text;
+        element.appendChild(tooltip);
+
+        element.addEventListener("mouseover", () => {
+          tooltip.style.visibility = "visible";
+          tooltip.style.opacity = "1";
         });
-        acoesTd.appendChild(editButton);
-      
-        // Botão de Excluir
-        const deleteButton = document.createElement("button");
-        deleteButton.classList.add("delete-btn", "filter-btn");
-        deleteButton.dataset.id = agendamento.idAgendamento;
-        deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
-        addTooltip(deleteButton, "Excluir");
-        deleteButton.addEventListener("click", (event) => {
-          event.stopPropagation(); // Impede que o evento se propague para a linha
-          excluirAgendamento(agendamento.idAgendamento);
+
+        element.addEventListener("mouseout", () => {
+          tooltip.style.visibility = "hidden";
+          tooltip.style.opacity = "0";
         });
-        acoesTd.appendChild(deleteButton);
-      
-        tr.appendChild(acoesTd);
-        tr.addEventListener("click", () =>
-          showDetalhesModal(agendamento.idAgendamento)
+      }
+
+      // Botão de Editar
+      const editButton = document.createElement("button");
+      editButton.classList.add("edit-btn", "filter-btn");
+      editButton.dataset.id = agendamento.idAgendamento;
+      editButton.innerHTML = '<i class="fas fa-edit"></i>';
+      addTooltip(editButton, "Editar");
+      editButton.addEventListener("click", (event) => {
+        event.stopPropagation(); // Impede que o evento se propague para a linha
+        editarAgendamento(
+          clienteTd.dataset.idAgendamento,
+          clienteTd.dataset.idUsuario,
+          procedimentoTd.dataset.fkProcedimento,
+          especificacaoTd.dataset.fkEspecificacao,
+          agendamento.statusAgendamento.id // Inclui o ID do status
         );
-      
-        tbody.appendChild(tr);
       });
-      
+      acoesTd.appendChild(editButton);
+
+      // Botão de Excluir
+      const deleteButton = document.createElement("button");
+      deleteButton.classList.add("delete-btn", "filter-btn");
+      deleteButton.dataset.id = agendamento.idAgendamento;
+      deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
+      addTooltip(deleteButton, "Excluir");
+      deleteButton.addEventListener("click", (event) => {
+        event.stopPropagation(); // Impede que o evento se propague para a linha
+        excluirAgendamento(agendamento.idAgendamento);
+      });
+      acoesTd.appendChild(deleteButton);
+
+      tr.appendChild(acoesTd);
+      tr.addEventListener("click", () =>
+        showDetalhesModal(agendamento.idAgendamento)
+      );
+
+      tbody.appendChild(tr);
+    });
   }
 
   window.excluirAgendamento = function (id) {
@@ -684,16 +699,18 @@ document.addEventListener("DOMContentLoaded", function () {
     idAgendamento,
     usuarioId,
     fkProcedimento,
-    fkEspecificacao
+    fkEspecificacao,
+    idStatus // Inclui o ID do status como parâmetro
   ) {
-    // Salvando o id_usuario e o id_agendamento no sessionStorage
+    // Salvando os dados no sessionStorage
     sessionStorage.setItem("id_usuario", usuarioId);
     sessionStorage.setItem("id_agendamento", idAgendamento);
     sessionStorage.setItem("procedimento", fkProcedimento);
     sessionStorage.setItem("especificacao", fkEspecificacao);
+    sessionStorage.setItem("id_status", idStatus); // Armazena o ID do status
 
     // Redirecionando para a página com os parâmetros na URL
-    window.location.href = `agendamento-forms/editar-agendamento/editar-agendamento.html?idAgendamento=${idAgendamento}&usuarioId=${usuarioId}&procedimento=${fkProcedimento}&especificacao=${fkEspecificacao}`;
+    window.location.href = `agendamento-forms/editar-agendamento/editar-agendamento.html?idAgendamento=${idAgendamento}&usuarioId=${usuarioId}&procedimento=${fkProcedimento}&especificacao=${fkEspecificacao}&idStatus=${idStatus}`;
   };
 
   window.excluirAgendamento = function (id) {
@@ -1159,7 +1176,6 @@ window.onload = function () {
   carregarImagem2();
 };
 
-
 document.addEventListener("DOMContentLoaded", function () {
   const tooltips = document.querySelectorAll(
     ".tooltip, .tooltip2, .tooltip3, .tooltip4, .tooltip5, .tooltip6, .tooltip7, .tooltip8, .tooltip9, .tooltip12, .tooltip29, .tooltip30"
@@ -1199,4 +1215,3 @@ document.addEventListener("DOMContentLoaded", function () {
     tooltip.style.left = `${leftPosition + window.scrollX}px`;
   }
 });
-
