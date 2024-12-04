@@ -113,20 +113,20 @@
       <header style="height: 14vh; width: 152vh; margin-left: 4.3%; margin-top: 22px;">
         <div id="greeting1">
           <h1>
-            <span id="greeting">Bom dia</span>
+            <span id="greeting">Boa tarde</span>
             <span id="userNameSpan">Usuário</span>!
           </h1>
-          <p>Tenha uma ótima <span id="currentDay">Segunda-feira</span>!</p>
+          <p>Tenha uma ótima <span id="currentDay">terça-feira</span>!</p>
         </div>
 
         <div id="greeting2"></div>
       </header>
       <div id="notification" class="notification">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill"
+        <!-- <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill"
           viewBox="0 0 16 16">
           <path
             d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
-        </svg>
+        </svg> -->
         <span id="notification-message"></span>
       </div>
 
@@ -137,17 +137,17 @@
               class="filter-btn"><button>
                 <i class="fas fa-calendar-plus"></i> Novo Agendamento
               </button></a>
-            <div id="tooltip4" class="tooltip4">Clique cadastrar novo agendamento</div>
+            <div id="tooltip4" class="tooltip4">Clique para cadastrar um novo agendamento</div>
             <a href="../clientes/clienteForms/cadastrar-cliente/cadastrar-cliente.html" class="filter-btn"><button>
                 <i class="fas fa-user-plus"></i> Novo Cliente
               </button></a>
-            <div id="tooltip1" class="tooltip1">Clique para cadastrar novo cliente</div>
+            <div id="tooltip1" class="tooltip1">Clique para cadastrar um novo cliente</div>
 
             <a href="../procedimento/procedimento-forms/cadastrar-procedimento/cadastrar-procedimento.html"
               class="filter-btn"><button>
                 <i class="fas fa-tasks"></i> Novo Procedimento
               </button></a>
-            <div id="tooltip2" class="tooltip2">Clique para cadastrar novo procedimento</div>
+            <div id="tooltip2" class="tooltip2">Clique para cadastrar um novo procedimento</div>
 
             <a href="../perfil/perfil.html" class="filter-btn"><button>
                 <i class="fas fa-face-smile"> </i> Editar Perfil
@@ -160,7 +160,7 @@
                 <i class="fas fa-calendar"> </i>Agenda Semanal de Atendimentos
 
               </button></a>
-            <div id="tooltip5" class="tooltip5">Clique para ver o calendário</div>
+            <div id="tooltip5" class="tooltip5">Clique para ver o calendário semanal</div>
           </section>
 
           <div class="conteiner">
@@ -214,7 +214,7 @@
             </table>
             <div class="footer">
               <a href="leads/leads.html" class="filter-btn">Ver todos >></a>
-              <div id="tooltip12" class="tooltip12">Clique para ver todos os leads.</div>
+              <div id="tooltip12" class="tooltip12">Clique para ver todos os leads</div>
             </div>
           </div>
         </div>
@@ -233,7 +233,7 @@
                 <hr />
                 <div class="footer">
                   <a href="../agendamento/agendamento.html" class="filter-btn">Ver todos >></a>
-                  <div id="tooltip10" class="tooltip10">Clique para todos os clientes do dia</div>
+                  <div id="tooltip10" class="tooltip10">Clique para ver todos os clientes do dia</div>
                 </div>
               </div>
             </section>
@@ -266,7 +266,7 @@
                 <div class="birthday-list "></div>
                 <div class="footer-aniversario">
                   <a href="#" class="toggle-view filter-btn">Ver todos >></a>
-                  <div id="tooltip9" class="tooltip9">Clique para criar um procedimento novo.</div>
+                  <div id="tooltip9" class="tooltip9">Clique para ver todos os aniversariantes</div>
                 </div>
               </div>
             </div>
@@ -276,10 +276,10 @@
     </div>
       <div id="modal" class="modal">
         <div class="modal-content">
-          <p>Tem certeza que deseja excluir o status?</p>
+          <p>Tem certeza que deseja <b>excluir</b> o status?</p>
           <p id="procedimento"></p>
-          <button class="btn btn-yes">SIM</button>
-          <button class="btn btn-no" onclick="closeModal()">NÃO</button>
+          <button class="btn btn-yes">Sim</button>
+          <button class="btn btn-no" onclick="closeModal()">Não</button>
         </div>
       </div>
 

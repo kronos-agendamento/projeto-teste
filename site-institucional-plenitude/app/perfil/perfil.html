@@ -147,7 +147,7 @@
           </div>
 
           <div id="notification" class="notification">
-            <svg
+            <!-- <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
               height="20"
@@ -158,7 +158,7 @@
               <path
                 d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z"
               />
-            </svg>
+            </svg> -->
             <span id="notification-message"></span>
           </div>
         </header>
@@ -178,7 +178,7 @@
                   style="width: 20px; height: 20px; border-radius: 0px"
                 />
               </button>
-              <div id="tooltip1" class="tooltip1">editar</div>
+              <div id="tooltip1" class="tooltip1">Editar</div>
             </div>
           </h2>
           <div class="form-group" style="margin-bottom: 1rem">
@@ -202,7 +202,7 @@
                 Enviar Foto
               </button>
             </form>
-            <p id="responseMessage" style="font-size: 14px"></p>
+            <!-- <p id="responseMessage" style="font-size: 14px"></p> -->
           </div>
 
           <form id="personalForm" class="form">
@@ -246,7 +246,7 @@
               <div class="form-group">
                 <label for="cpf">CPF:</label>
                 <div style="display: flex; align-items: center">
-                  <input type="text" id="cpf" name="cpf" required disabled />
+                  <input style="cursor:context-menu;" type="text" id="cpf" name="cpf" required readonly disabled />
                   <span class="lock-icon" id="cpf-lock">🔒</span>
                 </div>
               </div>
@@ -309,7 +309,7 @@
 
             <div class="button-container">
               <button
-                type="submit"
+                type="button"
                 class="save-button"
                 id="save-usuario-button"
                 disabled
@@ -336,7 +336,7 @@
                     style="width: 20px; height: 20px; border-radius: 0px"
                   />
                 </button>
-                <div id="tooltip2" class="tooltip2">editar</div>
+                <div id="tooltip2" class="tooltip2">Editar</div>
               </div>
             </h2>
             <div class="form-add">
@@ -546,9 +546,9 @@
 
                 <div class="button-container">
                   <button
-                    type="submit"
+                    type="button"
                     class="save-button"
-                    id="save-empresa-button"
+                    id="save-empresa"
                     disabled
                     style="margin-right: -10px"
                   >
@@ -582,7 +582,7 @@
                       </div>
                     </div>
                     <div id="tooltip3" class="tooltip3">
-                      Clique para entrar na página de funcionários
+                      Clique para visualizar detalhes sobre o funcionário
                     </div>
                   </div>
                   <button class="carrossel-btn next">&#10095;</button>
@@ -607,14 +607,16 @@
                         alt="Import Icon"
                       />
                     </button>
+                 
                     <!-- Modal -->
                     <div id="importExportModal" class="modal">
-                      <div class="modal-content">
+                      <div class="modal-content" style="height:200px;">
                         <!-- Botão X para fechar o modal -->
                         <span id="close-modal-btn" class="close-modal"
                           >&times;</span
                         >
                         <h2>Importar ou Exportar</h2>
+                        <p style="color: black;"> Você deseja exportar o layout de cadastro ou importar um txt?</p>
                         <button id="import-modal-btn" class="botao-importar-txt">Importar Arquivo</button>
                         <button id="export-modal-btn" class="botao-importar-txt">
                           Exportar Documento
@@ -632,6 +634,38 @@
               </div>
             </div>
           </section>
+          <div id="modalEditarEmpresa" class="modal">
+            <div class="modal-content" style="height: 180px;">
+              <div class="divTopoModal">
+                <p>Deseja realmente atualizar os <b>dados empresariais?</b></p>
+                <p id="perguntaTexto"></p>
+                <p id="perguntaTipo"></p>
+              </div>
+              <div>
+                <button id="atualizar-empresa" class="btn btn-save"
+                  >
+                  Sim
+                </button>
+                <button id="fechar_modal" class="btn btn-no">Não</button>
+              </div>
+            </div>
+          </div>
+          <div id="modalEditarUsuario" class="modal">
+            <div class="modal-content" style="height: 180px;">
+              <div class="divTopoModal">
+                <p>Deseja realmente atualizar os <b>dados pessoais</b>?</p>
+                <p id="perguntaTexto"></p>
+                <p id="perguntaTipo"></p>
+              </div>
+              <div>
+                <button id="atualizar-usuario" class="btn btn-save"
+                  >
+                  Sim
+                </button>
+                <button id="fechar_modal_usuario" class="btn btn-no">Não</button>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
     </div>
@@ -651,5 +685,9 @@
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
     ></script>
     <script src="perfil.js"></script>
+    
+   
   </body>
+  
 </html>
+

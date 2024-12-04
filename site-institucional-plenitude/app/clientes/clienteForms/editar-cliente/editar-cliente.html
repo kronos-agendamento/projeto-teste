@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    <div class="navigation">
+    <div class="navigation" style="height: 77rem;">
 
         <li class="list"
             style="width: 30px; height: 30px; list-style: none;; display: flex; justify-content: center; margin-top: 5vh;">
@@ -252,7 +252,7 @@
                       </div>
                 </div>
                 <div class="button-container">
-                    <button type="submit" class="save-button" id="saveButton" disabled>Salvar Dados Pessoais</button>
+                    <button type="onclick" class="save-button" id="saveButton" disabled>Salvar Dados Pessoais</button>
                 </div>
             </form>
         </section>
@@ -262,7 +262,7 @@
                 <div class="form-group-row" style="height: 10px;">
                     &nbsp;&nbsp;&nbsp; Dados de Endereço
                     <button class="edit-icon-btn filter-btn" id="editIconAdress" aria-label="Editar Dados Pessoais"
-                        onclick="enableAddressEditing()">
+                        onclick="toggleAddressEditing()">
                         <img src="../../../../assets/icons/editar.branco.png" alt="Editar"
                             style="width: 20px; height: 20px; border-radius: 0px;">
                     </button>
@@ -328,7 +328,7 @@
                     </div>
                 </div>
                 <div class="button-container">
-                    <button type="submit" class="save-button" id="saveButtonAddress" disabled>Salvar Endereço</button>
+                    <button type="onclick" class="save-button" id="saveButtonAddress" disabled>Salvar Endereço</button>
                 </div>
             </form>
         </section>
@@ -367,6 +367,40 @@
                 <div id="resultado" style="margin-top: 20px;"></div>
             </div>
         </div>
+
+          <!-- Modal de Confirmação para Salvar Dados Pessoais -->
+      <div id="confirmSavePersonalModal" class="modal">
+        <div class="modal-content">
+          <p>
+            Tem certeza de que deseja salvar as <b>alterações nos dados pessoais</b>?
+          </p>
+          <button id="confirmSavePersonalButton" class="btn btn-yes">
+            Confirmar
+          </button>
+          <button
+            onclick="closeModal('confirmSavePersonalModal')"
+            class="btn btn-no"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal de Confirmação para Salvar Dados de Endereço -->
+      <div id="confirmSaveAddressModal" class="modal">
+        <div class="modal-content">
+          <p>Tem certeza de que deseja salvar as <b>alterações no endereço</b>?</p>
+          <button id="confirmSaveAddressButton" class="btn btn-yes">
+            Confirmar
+          </button>
+          <button
+            onclick="closeModal('confirmSaveAddressModal')"
+            class="btn btn-no"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
 
 
 

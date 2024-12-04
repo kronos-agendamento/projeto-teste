@@ -297,8 +297,8 @@ function listarTodasPerguntasAtivas() {
           `showForm3(${pergunta.idPergunta}, "${pergunta.pergunta}", "${pergunta.tipo}")`
         );
         deleteButton.innerHTML =
-          '<img src="../../assets/icons/excluir.png" alt="Excluir">';
-        addTooltip(deleteButton, "Excluir");
+          '<img src="../../assets/icons/excluir.png" alt="Desativar pergunta">';
+        addTooltip(deleteButton, "Desativar pergunta");
 
         inputContent.appendChild(inputElement);
         inputContent.appendChild(editButton);
@@ -728,15 +728,15 @@ document.addEventListener("DOMContentLoaded", function () {
   tooltips.forEach((tooltip) => {
     const targetButton = tooltip.previousElementSibling;
 
+    // Exibir o tooltip quando o mouse passar sobre o botão
     targetButton.addEventListener("mouseenter", () => {
-      tooltip.style.visibility = "hidden"; // Oculta temporariamente para cálculo
-      tooltip.style.display = "block"; // Exibe para cálculo
-      positionTooltip(tooltip, targetButton);
-      tooltip.style.visibility = "visible"; // Mostra após posicionamento
-    });j
+      tooltip.style.display = "block"; // Exibe o tooltip
+      positionTooltip(tooltip, targetButton); // Posiciona o tooltip
+    });
 
+    // Esconder o tooltip quando o mouse sair do botão
     targetButton.addEventListener("mouseleave", () => {
-      tooltip.style.display = "none"; // Oculta quando sai do hover
+      tooltip.style.display = "none"; // Esconde o tooltip
     });
 
     window.addEventListener("resize", () => {

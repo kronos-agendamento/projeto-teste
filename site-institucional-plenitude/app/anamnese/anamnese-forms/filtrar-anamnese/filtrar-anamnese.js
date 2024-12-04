@@ -21,7 +21,7 @@ async function carregarUsuarios() {
       // Adiciona uma opção vazia
       const optionVazia = document.createElement("option");
       optionVazia.value = "";
-      optionVazia.textContent = "Selecione um Nome";
+      optionVazia.textContent = "Selecione um nome";
       selectNome.appendChild(optionVazia);
 
       // Adiciona os nomes dos usuários ao select

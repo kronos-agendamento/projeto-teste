@@ -100,6 +100,8 @@ document.addEventListener("DOMContentLoaded", function () {
     e.target.value = e.target.value.toLowerCase();
   });
 
+  
+
   // Função para buscar endereço pelo CEP usando a API do ViaCEP
   async function buscarEnderecoPorCep(cep) {
     try {

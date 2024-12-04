@@ -460,7 +460,7 @@ async function deleteStatus() {
       showNotification("Status deletado com sucesso!");
     } else {
       console.error("Erro ao excluir status:", response.status);
-      showNotification("Erro ao excluir status!", true);
+      showNotification("Erro ao excluir status, ele está vinculado à algum agendamento.", true);
     }
   } catch (error) {
     console.error("Erro na requisição:", error);
@@ -604,6 +604,8 @@ function saudacao() {
 
 }
 
+
+
 // Função para buscar os leads
 async function fetchLeads() {
   try {
@@ -653,7 +655,7 @@ fetchLeads();
 
 
 
-window.onload = saudacao;
+
 
 
 

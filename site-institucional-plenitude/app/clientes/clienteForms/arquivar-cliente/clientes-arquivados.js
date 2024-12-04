@@ -228,38 +228,137 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         
     });
-  
-    // Configura os eventos dos botões de ativação
-    document.querySelectorAll(".activate-btn").forEach((button) => {
-        const cpf = button.getAttribute("data-id");
-        button.addEventListener("click", async (e) => {
-          console.log(`Iniciando ativação do usuário com CPF: ${cpf}`);
-          try {
-            const response = await fetch(`${baseUrl}/usuarios/ativar/${cpf}`, {
-              method: "PATCH",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            });
-  
-            if (response.ok) {
-              console.log("Usuário ativado com sucesso.");
-              showNotification("Usuário ativado com sucesso!");
-              // Recarrega a lista de usuários
-              usuarios = await fetchClientesInativos();
-              renderTable(usuarios, currentPage);
-            } else {
-              const errorText = await response.text();
-              console.error("Erro ao ativar o usuário:", errorText);
-              throw new Error("Erro ao ativar o usuário: " + errorText);
-            }
-          } catch (error) {
-            console.error("Erro geral:", error);
-            showNotification(error.message, true);
-          }
-        });
+
+    const activateButtons = document.querySelectorAll('.activate-btn');
+    
+    // Para cada botão de ativação, adicione o evento de click
+    activateButtons.forEach(button => {
+      button.addEventListener('click', function () {
+        const userCpf = this.getAttribute('data-id');  // Pega o CPF do usuário do atributo "data-id"
+        openModalActivate(userCpf);
       });
+    });
+  
+    // Função para abrir o modal e preencher com as informações do usuário
+    function openModalActivate(cpf) {
+      const modal = document.getElementById('modal-archive');
+      const userInfo = document.getElementById('usu-archive');
       
+      // Preenche o modal com o CPF ou outras informações
+      // userInfo.textContent = `Usuário: ${cpf}`;
+      
+      // Exibe o modal
+      modal.style.display = 'block';
+  
+      // Ação ao clicar em "SIM" no modal
+      document.getElementById('btnYesArchive').addEventListener('click', async function () {
+        console.log(`Iniciando ativação do usuário com CPF: ${cpf}`);
+        
+        try {
+          // Envio da requisição para ativar o usuário
+          const response = await fetch(`${baseUrl}/usuarios/ativar/${cpf}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+    
+          if (response.ok) {
+            console.log("Usuário ativado com sucesso.");
+            showNotification("Usuário ativado com sucesso!");
+            // Recarrega a lista de usuários
+            usuarios = await fetchClientesInativos();
+            renderTable(usuarios, currentPage);
+          } else {
+            const errorText = await response.text();
+            console.error("Erro ao ativar o usuário:", errorText);
+            throw new Error("Erro ao ativar o usuário: " + errorText);
+          }
+        } catch (error) {
+          console.error("Erro geral:", error);
+          showNotification(error.message, true);
+        }
+  
+        // Fecha o modal após a ativação
+        closeModalActivate();
+      });
+    }
+  
+    // Função para fechar o modal
+    window.closeModalActivate = function() {
+      const modal = document.getElementById('modal-archive');
+      modal.style.display = 'none'; // Fecha o modal
+    }
+  
+    // Fechar o modal se o usuário clicar fora da área do conteúdo
+    window.addEventListener('click', function(event) {
+      const modal = document.getElementById('modal-archive');
+      if (event.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+
+  //   const activateButtons = document.querySelectorAll('.activate-btn');
+  //   activateButtons.forEach(button => {
+  //     button.addEventListener('click', function () {
+  //       const userCpf = this.getAttribute('data-id');  // Pega o CPF do usuário do atributo "data-id"
+  //       openModalActivate(userCpf);
+  //     });
+  //   });
+
+  //   function openModalActivate(cpf) {
+  //     const modal = document.getElementById('modal-archive');
+  //     const userInfo = document.getElementById('usu-archive');
+      
+  //     // Exibe o modal
+  //     modal.style.display = 'block';
+  //   }
+
+  //   // Função para fechar o modal
+  // window.closeModalActivate = function() {
+  //   const modal = document.getElementById('modal-archive');
+  //   modal.style.display = 'none'; // Fecha o modal
+  // }
+
+  // // Fechar o modal se o usuário clicar fora da área do conteúdo
+  // window.addEventListener('click', function(event) {
+  //   const modal = document.getElementById('modal-archive');
+  //   if (event.target === modal) {
+  //     modal.style.display = 'none';
+  //   }
+  // });
+
+  //   // Configura os eventos dos botões de ativação
+  //   document.getElementById('btnYesActivate')?.addEventListener('click', function () {
+  //       const cpf = button.getAttribute("data-id");
+  //       button.addEventListener("click", async (e) => {
+  //         console.log(`Iniciando ativação do usuário com CPF: ${cpf}`);
+  //         try {
+  //           const response = await fetch(`${baseUrl}/usuarios/ativar/${cpf}`, {
+  //             method: "PATCH",
+  //             headers: {
+  //               "Content-Type": "application/json",
+  //             },
+  //           });
+  
+  //           if (response.ok) {
+  //             console.log("Usuário ativado com sucesso.");
+  //             showNotification("Usuário ativado com sucesso!");
+  //             // Recarrega a lista de usuários
+  //             usuarios = await fetchClientesInativos();
+  //             renderTable(usuarios, currentPage);
+  //           } else {
+  //             const errorText = await response.text();
+  //             console.error("Erro ao ativar o usuário:", errorText);
+  //             throw new Error("Erro ao ativar o usuário: " + errorText);
+  //           }
+  //         } catch (error) {
+  //           console.error("Erro geral:", error);
+  //           showNotification(error.message, true);
+  //         }
+  //       });
+  //     });
+  //   closeModalActivate();
     }
   
     // Função para mostrar o modal de deletar
@@ -332,6 +431,10 @@ document.addEventListener("DOMContentLoaded", function () {
     init();
   });
   
+
+  
+  
+
   document.addEventListener("DOMContentLoaded", function () {
     const nome = localStorage.getItem("nome");
     const instagram = localStorage.getItem("instagram");
