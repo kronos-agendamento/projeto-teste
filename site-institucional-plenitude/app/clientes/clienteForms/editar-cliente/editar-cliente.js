@@ -15,6 +15,26 @@ document.addEventListener("DOMContentLoaded", async function () {
   const agendamentoBtn = document.getElementById("agendamentoBtn");
     const anamneseBtn = document.getElementById("anamneseBtn");
 
+    function formatTelefone(telefone) {
+      if (!telefone) return "";
+      const cleaned = ("" + telefone).replace(/\D/g, ""); // Remove qualquer caractere não numérico
+      const match = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/); // Verifica se o telefone tem o formato (XX) XXXXX-XXXX
+      if (match) {
+        return `(${match[1]}) ${match[2]}-${match[3]}`; // Retorna o formato correto
+      }
+      return telefone; // Retorna o valor original se não bater com o padrão
+    }
+
+    function formatCep(cep) {
+      if (!cep) return "";
+      const cleaned = ("" + cep).replace(/\D/g, ""); // Remove qualquer caractere que não seja número
+      const match = cleaned.match(/^(\d{5})(\d{3})$/); // Verifica se o CEP tem 5 dígitos seguidos de 3 dígitos
+      if (match) {
+        return `${match[1]}-${match[2]}`; // Retorna no formato 00000-000
+      }
+      return cep; // Retorna o valor original caso não corresponda ao padrão
+    }
+
   if (agendamentoBtn) {
     agendamentoBtn.addEventListener("click", function () {
       window.location.href = `../agendamentos-cliente/agendamento-clientes.html?idUsuario=${idUsuario}`;
@@ -33,11 +53,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     ).textContent = `Mais informações de: ${clienteNome}`;
   }
 
- 
-  
-  
-  
-
   if (idUsuario) {
     try {
       clienteData = await fetchUsuarioPorId(idUsuario);
@@ -53,7 +68,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         setFieldValue("nascimento", formatDate(clienteData.dataNasc));
         setFieldValue("instagram", clienteData.instagram);
         setFieldValue("cpf", clienteData.cpf);
-        setFieldValue("telefone", clienteData.telefone);
+        setFieldValue("telefone", formatTelefone(clienteData.telefone));
         setFieldValue("genero", clienteData.genero);
         setFieldValue("email", clienteData.email);
         setFieldValue("indicacao", clienteData.indicacao);
@@ -69,7 +84,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (clienteData.endereco) {
           setFieldValue("logradouro", clienteData.endereco.logradouro);
           setFieldValue("numero", clienteData.endereco.numero);
-          setFieldValue("cep", clienteData.endereco.cep);
+          setFieldValue("cep", formatCep(clienteData.endereco.cep));
           setFieldValue("bairro", clienteData.endereco.bairro);
           setFieldValue("cidade", clienteData.endereco.cidade);
           setFieldValue("estado", clienteData.endereco.estado);
@@ -82,6 +97,49 @@ document.addEventListener("DOMContentLoaded", async function () {
       console.error("Erro ao buscar os dados do cliente:", error);
     }
   }
+
+   // Função para controlar os modais de confirmação
+   function openModal(modalId) {
+    document.getElementById(modalId).style.display = "block";
+  }
+
+  function closeModal(modalId) {
+    document.getElementById(modalId).style.display = "none";
+  }
+  
+  document
+    .getElementById("confirmSavePersonalButton")
+    ?.addEventListener("click", async () => {
+      await updatePersonalData(new Event("submit"));
+      closeModal("confirmSavePersonalModal");
+    });
+
+  document
+    .getElementById("confirmSaveAddressButton")
+    ?.addEventListener("click", async () => {
+      await updateAddressData(new Event("submit"));
+      closeModal("confirmSaveAddressModal");
+    });
+
+  // Botões de cancelamento para fechar modais
+  document.querySelectorAll(".btn-no").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      const modalId = event.target.closest(".modal").id;
+      closeModal(modalId);
+    });
+  });
+
+    // Eventos de clique para abrir modais de confirmação
+    document.getElementById("saveButton")?.addEventListener("click", (event) => {
+      event.preventDefault();
+      openModal("confirmSavePersonalModal");
+    });
+    document
+      .getElementById("saveButtonAddress")
+      ?.addEventListener("click", (event) => {
+        event.preventDefault();
+        openModal("confirmSaveAddressModal");
+      });
 
   function mostrarAvaliacaoEstrelas(pontuacao) {
     const avaliacaoElement = document.getElementById("avaliacao");
@@ -231,6 +289,22 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   });
   
+  function formatTelefoneS(telefone) {
+    if (!telefone) return "";
+    
+    // Remove todos os caracteres não numéricos (parênteses, traços, espaços, etc.)
+    const cleaned = telefone.replace(/\D/g, ""); 
+    
+    // Verifica se o número tem o formato correto: 11 98765 4321
+    const match = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/); 
+    if (match) {
+      return `${match[1]}${match[2]}${match[3]}`; // Retorna o telefone no formato: "XX XXXXX XXXX"
+    }
+    
+    return telefone; // Retorna o valor original caso não corresponda ao formato esperado
+  }
+  
+  
 
 
 // Função para obter a avaliação e incluir no envio de dados ao backend
@@ -246,7 +320,7 @@ async function updatePersonalData(event) {
     nome: document.getElementById("nome").value || clienteData.nome,
     email: document.getElementById("email").value || clienteData.email,
     instagram: document.getElementById("instagram").value || clienteData.instagram,
-    telefone: parseInt(document.getElementById("telefone").value) || clienteData.telefone,
+    telefone: parseInt(formatTelefoneS(document.getElementById("telefone").value)) || clienteData.telefone,
     genero: document.getElementById("genero").value || clienteData.genero,
     indicacao: document.getElementById("indicacao").value || clienteData.indicacao,
     cpf: document.getElementById("cpf").value || clienteData.cpf,
@@ -280,7 +354,15 @@ async function updatePersonalData(event) {
   }
 }
 
+document.getElementById("cep").addEventListener("blur", async function () {
+  const cep = this.value.replace(/\D/g, ""); // Remove qualquer caracter não numérico
 
+  if (cep.length === 8) {
+    await buscarEnderecoPorCep(cep);
+  } else {
+    showNotification("CEP inválido. Verifique e tente novamente.", true);
+  }
+});
 
 
   async function updateAddressData(event) {

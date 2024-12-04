@@ -277,7 +277,7 @@ header p {
 
 /* navbar */
 .navigation {
-  height: auto;
+  height: 43rem;
   background: #d2135d;
   width: 275px;
   margin-top: 20px;
@@ -1164,7 +1164,7 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: -20px; /* Ajuste conforme necessário */
+  margin-top: -220px; /* Ajuste conforme necessário */
   left: 98%;
   transform: translateX(-50%);
 }
@@ -1179,7 +1179,7 @@ img {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: -20px; /* Ajuste conforme necessário */
+  margin-top: -812px; /* Ajuste conforme necessário */
   left: 98%;
   transform: translateX(-50%);
 }

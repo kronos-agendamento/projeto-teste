@@ -788,7 +788,7 @@ img {
   white-space: nowrap;
   z-index: 1000;
   top: 550px; /* Ajuste conforme necessário */
-  left: 60%;
+  left: 70%;
   transform: translateX(-50%);
 }
 
