@@ -3,9 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>Perfil | KronosBooking</title>
-
     <link href="../assets/favicon.png" rel="icon" />
     <link rel="stylesheet" href="perfil.css" />
     <link
@@ -76,7 +74,7 @@
               <span class="icon"
                 ><ion-icon name="home-outline"></ion-icon
               ></span>
-              <span class="title">Início </span>
+              <span class="title">Início</span>
             </a>
           </li>
           <li class="list active">
@@ -386,11 +384,12 @@
                     </div>
                   </div>
                 </div>
+
                 <div class="form-group-row">
                   <div class="form-group">
                     <label for="dias">Dias de funcionamento:</label>
                     <p>De:</p>
-                    <select name="" id="diaInicio" required>
+                    <select name="" id="diaInicio" required disabled>
                       <option value="Domingo">Domingo</option>
                       <option value="Segunda">Segunda</option>
                       <option value="Terça">Terça</option>
@@ -404,7 +403,7 @@
                   <div class="form-group">
                     <label for="diaFim" style="height: 20px"></label>
                     <p>Até:</p>
-                    <select name="" id="diaFim" required>
+                    <select name="" id="diaFim" required disabled>
                       <option value="Domingo">Domingo</option>
                       <option value="Segunda">Segunda</option>
                       <option value="Terça">Terça</option>
@@ -416,6 +415,7 @@
                     <span class="lock-icon" id="diaFim-lock">🔓</span>
                   </div>
                 </div>
+
                 <div class="form-group-row">
                   <div class="form-group">
                     <label for="dias">Horários de funcionamento:</label>
@@ -426,6 +426,7 @@
                       name="horaInicio"
                       style="font-family: poppins"
                       required
+                      disabled
                     />
                     <span class="lock-icon" id="horaInicio-lock">🔓</span>
                   </div>
@@ -442,6 +443,7 @@
                     <span class="lock-icon" id="horaFim-lock">🔓</span>
                   </div>
                 </div>
+
                 <div class="form-group-row">
                   <div class="form-group">
                     <label for="cep">CEP:</label>
@@ -470,6 +472,7 @@
                     </div>
                   </div>
                 </div>
+
                 <div class="form-group-row">
                   <div class="form-group">
                     <label for="numero">Número:</label>
@@ -524,6 +527,7 @@
                     </div>
                   </div>
                 </div>
+
                 <div class="form-group-row">
                   <div class="form-group">
                     <label for="complemento">Complemento:</label>
@@ -539,6 +543,7 @@
                     </div>
                   </div>
                 </div>
+
                 <div class="button-container">
                   <button
                     type="submit"
@@ -551,6 +556,7 @@
                   </button>
                 </div>
               </form>
+
               <div class="adicionar-funcionario">
                 <!-- Carrossel de Funcionários -->
                 <div class="funcionario-carrossel">

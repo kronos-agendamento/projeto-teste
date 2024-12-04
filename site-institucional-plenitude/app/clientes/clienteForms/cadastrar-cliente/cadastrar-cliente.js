@@ -254,7 +254,7 @@ document.addEventListener("DOMContentLoaded", function () {
               genero,
               indicacao,
               status: true,
-              nivelAcessoId: 3,
+              nivelAcessoId: 2,
               enderecoId, // Utiliza o ID do último endereço cadastrado
             }),
           }

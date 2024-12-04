@@ -8,9 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const opcaoEspecificacaoDiv = document.getElementById("opcao-especificacao");
   const especificacaoSelect = document.getElementById("especificacao");
   const tipoAtendimentoDiv = document.getElementById("tipo-atendimento");
-  const tipoAtendimentoSelect = document.getElementById(
-    "tipo-atendimento-select"
-  );
+  const tipoAtendimentoSelect = document.getElementById("tipo-atendimento-select");
   const dataInputDiv = document.getElementById("data-div");
   const procedimentoId = procedimentoSelect.value;
   const dataInput = document.getElementById("data");
@@ -30,11 +28,11 @@ document.addEventListener("DOMContentLoaded", function () {
   function atualizarOpcoesTipoAtendimento(procedimentoId) {
     const options = tipoAtendimentoSelect.options; // Obtenha as opções do select
 
-    console.log("Atualizando opções para procedimento:", procedimentoId);
+    // console.log("Atualizando opções para procedimento:", procedimentoId);
 
     // Habilitar ou desabilitar opções com base no procedimento
     for (let i = 0; i < options.length; i++) {
-      console.log(`Verificando opção: ${options[i].value}`); // Log para verificação
+      // console.log(`Verificando opção: ${options[i].value}`); // Log para verificação
       if (procedimentoId == 1) {
         // Supondo que "1" seja o ID de Maquiagem
         options[i].disabled = !["Homecare", "Estudio", "Evento"].includes(
@@ -45,11 +43,6 @@ document.addEventListener("DOMContentLoaded", function () {
           options[i].value
         );
       }
-      console.log(
-        `Opção ${options[i].value} está ${
-          options[i].disabled ? "desabilitada" : "habilitada"
-        }`
-      ); // Log do estado da opção
     }
 
     tipoAtendimentoDiv.classList.remove("hidden"); // Mostrar a div do tipo de atendimento
@@ -79,9 +72,9 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         console.error(
           "Erro ao buscar procedimentos: " +
-            response.status +
-            " " +
-            response.statusText
+          response.status +
+          " " +
+          response.statusText
         );
       }
     } catch (error) {
@@ -98,9 +91,9 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         console.error(
           "Erro ao buscar especificações: " +
-            response.status +
-            " " +
-            response.statusText
+          response.status +
+          " " +
+          response.statusText
         );
       }
     } catch (error) {
@@ -156,6 +149,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+
+
   // Evento ao selecionar Especificação
   especificacaoSelect.addEventListener("change", function () {
     const especificacaoId = especificacaoSelect.value;
@@ -194,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Chama a função de inicialização
   inicializar();
 
-  const mediaValor = 50; // Valor por hora
+  const mediaValor = 30; // Valor por hora
   const hora = 0.5; // Horas
   const maoObra = mediaValor * hora; // Cálculo da mão de obra
   const origem =
@@ -231,35 +226,36 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Função para calcular a taxa total
+  // Função para calcular a taxa total e retornar o valor da taxa
   async function calcularTaxa() {
     const endereco = enderecoInput.value;
 
     if (endereco) {
       try {
-        const kmLoc = await calcularDistancia(endereco); // Chamada à função que pode falhar
-
-        // Se a distância for calculada corretamente, calcula a taxa
+        const kmLoc = await calcularDistancia(endereco);
         if (kmLoc !== null) {
-          const taxaLoc = gasolina * kmLoc; // Cálculo da taxa de locomoção
-          const taxaTotal = taxaLoc + maoObra; // Cálculo da taxa total
-          valorTaxaSpan.textContent = `R$ ${taxaTotal.toFixed(2)}, `; // Exibir a taxa total
-          totalKmSpan.textContent = `${kmLoc} de distância`;
-          taxaTotalDiv.classList.remove("hidden"); // Mostrar a taxa total
+          const taxaLoc = gasolina * kmLoc; // Calcula a taxa de locomoção
+          const taxaTotal = taxaLoc + maoObra; // Taxa total com mão de obra
+
+          valorTaxaSpan.textContent = `R$ ${taxaTotal.toFixed(2)}`;
+          totalKmSpan.textContent = `${kmLoc.toFixed(2)} km de distância`;
+          taxaTotalDiv.classList.remove("hidden");
+
+          return taxaTotal; // Retorna o valor da taxa para ser usada no orçamento
         } else {
-          valorTaxaSpan.textContent =
-            "Distância não encontrada para o endereço."; // Mensagem se a distância não for encontrada
+          valorTaxaSpan.textContent = "Distância não encontrada para o endereço.";
           taxaTotalDiv.classList.remove("hidden");
         }
       } catch (error) {
         console.error("Erro ao calcular a distância:", error);
-        valorTaxaSpan.textContent =
-          "Erro ao calcular a distância. Tente novamente."; // Mensagem de erro
-        taxaTotalDiv.classList.remove("hidden"); // Mostrar a mensagem de erro
+        valorTaxaSpan.textContent = "Erro ao calcular a distância. Tente novamente.";
+        taxaTotalDiv.classList.remove("hidden");
       }
     } else {
-      taxaTotalDiv.classList.add("hidden"); // Ocultar a taxa total se o endereço estiver vazio
+      taxaTotalDiv.classList.add("hidden");
     }
+
+    return 0; // Retorna zero se não houver taxa
   }
 
   // Event listener para o botão de calcular taxa
@@ -296,15 +292,16 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         console.error(
           "Erro ao buscar procedimentos: " +
-            response.status +
-            " " +
-            response.statusText
+          response.status +
+          " " +
+          response.statusText
         );
       }
     } catch (error) {
       console.error("Erro ao buscar procedimentos: ", error);
     }
   }
+
 
   // Carregar Especificações
   async function carregarEspecificacoes() {
@@ -315,9 +312,9 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         console.error(
           "Erro ao buscar especificações: " +
-            response.status +
-            " " +
-            response.statusText
+          response.status +
+          " " +
+          response.statusText
         );
       }
     } catch (error) {
@@ -497,6 +494,7 @@ document.addEventListener("DOMContentLoaded", function () {
               .querySelectorAll(".horario-button")
               .forEach((btn) => btn.classList.remove("selected"));
             button.classList.add("selected");
+            buscarOrcamento();
           });
         });
 
@@ -620,5 +618,5 @@ calcularTaxaButton.addEventListener("click", calcularTaxa);
       }
     }
   });
-new window.VLibras.Widget('https://vlibras.gov.br/app');
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
 });

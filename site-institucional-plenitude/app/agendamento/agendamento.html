@@ -1,464 +1,653 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agendamentos | KronosBooking</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Agendamentos | KronosBooking</title>
+    <!-- Favicons -->
+    <link href="../assets/favicon.png" rel="icon" />
 
-  <!-- Favicons -->
-  <link href="../assets/favicon.png" rel="icon" />
+    <link rel="stylesheet" href="agendamento.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.2/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  </head>
 
-  <link rel="stylesheet" href="agendamento.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.2/xlsx.full.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-</head>
-
-<body>
-  <div class="corpo">
-    <div class="navigation">
-      <li class="list" style="
-          width: 30px;
-          height: 30px;
-          list-style: none;
-          display: flex;
-          justify-content: center;
-          margin-top: 5vh;
-        ">
-        <div class="imagem-perfil" style="
-            width: 20vh;
-            height: 20vh;
-            border-radius: 300px;
+  <body>
+    <div class="corpo">
+      <div class="navigation">
+        <li
+          class="list"
+          style="
+            width: 30px;
+            height: 30px;
+            list-style: none;
             display: flex;
             justify-content: center;
-          ">
-         <img id="perfilImage"  alt="Foto do usuário" style="
-              width: 53vh;
-              height: 23vh;
+            margin-top: 5vh;
+          "
+        >
+          <div
+            class="imagem-perfil"
+            style="
+              width: 20vh;
+              height: 20vh;
+              border-radius: 300px;
               display: flex;
               justify-content: center;
-              align-items: center;
-            " />
-        </div>
-      </li>
-      <li id="userName" style="
-          margin-top: 20vh;
-          list-style: none;
-          color: white;
-          font-weight: 600;
-        "></li>
-      <li id="userInsta" style="
-          list-style: none;
-          color: white;
-          font-weight: 200;
-          font-size: 12px;
-        "></li>
+            "
+          >
+            <img
+              id="perfilImage"
+              alt="Foto do usuário"
+              style="
+                width: 53vh;
+                height: 23vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            />
+          </div>
+        </li>
+        <li
+          id="userName"
+          style="
+            margin-top: 20vh;
+            list-style: none;
+            color: white;
+            font-weight: 600;
+          "
+        ></li>
+        <li
+          id="userInsta"
+          style="
+            list-style: none;
+            color: white;
+            font-weight: 200;
+            font-size: 12px;
+          "
+        ></li>
 
-      <ul style="margin-top: 4%; position: absolute">
-        <li class="list">
-          <a href="../../app/index/index.html">
-            <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
-            <span class="title">Início </span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../perfil/perfil.html">
-            <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
-            <span class="title">Perfil</span>
-          </a>
-        </li>
-        <li class="list active">
-          <a href="agendamento.html">
-            <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
-            <span class="title">Agendamentos</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../anamnese/anamnese.html">
-            <span class="icon"><ion-icon name="document-text-outline"></ion-icon></span>
-            <span class="title">Anamneses</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../clientes/clientes.html">
-            <span class="icon"><ion-icon name="person-add-outline"></ion-icon></span>
-            <span class="title">Clientes</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../procedimento/procedimento.html">
-            <span class="icon"><ion-icon name="brush-outline"></ion-icon></span>
-            <span class="title">Procedimentos</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../dashboard/dashboard.html">
-            <span class="icon"><ion-icon name="stats-chart-outline"></ion-icon></span>
-            <span class="title">Dashboard</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../../index.html">
-            <span class="icon"><ion-icon name="exit-outline"></ion-icon></span>
-            <span class="title">Sair</span>
-          </a>
-        </li>
-      </ul>
-    </div>
-    <main>
-      <header style="height: 14vh; width: 152vh; margin-left: 4.3%; margin-top: 23px;">
-        <div style="margin-top: -1%;">
-          <h1>Agendamentos</h1>
-          <p style="margin-top: -0.5%;">
-            Esta página permite a visualização, cadastro, edição e exclusão de
-            agendamentos.
-          </p>
-        </div>
-        <div id="notification" class="notification">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill"
-            viewBox="0 0 16 16">
-            <path
-              d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
-          </svg>
-          <span id="notification-message"></span>
-        </div>
-      </header>
-
-      <div class="main-content">
-        <div class="center-content">
-          <section class="actions">
-            <button id="open-filter-modal-btn" class="filter-btn"
-              style="height: 7vh; margin-left: 3%; width: 18vh; margin-right: 10px;">
-              <i class="fas fa-filter" style="margin-right: 10px; font-size: 24px;"></i>
-              Filtro
-            </button>
-            <div id="tooltip" class="tooltip">
-              Clique para abrir os filtros
-            </div>
-            <button id="exportar-planilha" class="planilha-btn filter-btn"
-              style="height: 7vh; margin-left: 0%; width: 18vh; margin-right: 10px;">
-              <i class="fas fa-file" style="margin-right: 10px; font-size: 24px;"></i>Planilha
-            </button>
-            <div id="tooltip2" class="tooltip2">
-              Clique para gerar planilha
-            </div>
-
-            <a href="agendamento-forms/bloqueio-agendamento/bloqueio-agendamento.html">
-              <button class="btn btn-create filter-btn" id="open-bloqueio"
-                style="height: 7vh; margin-left: 0%; width: 19vh; margin-right: 10px;">
-                <i class="fas fa-lock" style="margin-right: 10px; font-size: 24px;"></i>
-                Bloquear
-              </button>
-              <div id="tooltip30" class="tooltip30">Clique para bloquear agendamento</div>
+        <ul style="margin-top: 4%; position: absolute">
+          <li class="list">
+            <a href="../../app/index/index.html">
+              <span class="icon"
+                ><ion-icon name="home-outline"></ion-icon
+              ></span>
+              <span class="title">Início </span>
             </a>
-
-            <button class="btn btn-create filter-btn" id="open-save-modal-btn" style="height: 7vh; margin-left: 0%; width: 25vh; margin-right: 10px;">              
-              <i class="fas fa-plus" style="margin-right: 10px; font-size: 24px;"></i>
-              <span>Criar Status</span>
-            </button>
-            <div id="tooltip3" class="tooltip3">
-              Clique para criar um novo status.
-            </div>
-
-            <button class="planilha-btn filter-btn" id="open-status-modal-btn" style="height: 7vh; margin-left: 0%; width: 34vh; margin-right: 10px;">              
-              <i class="fas fa-check-circle" style="margin-right: 10px; font-size: 24px;"></i>Status Cadastrados
-            </button>
-            <div id="tooltip4 " class="tooltip4">
-              Clique para ver os status cadastrados.
-            </div>
-
-            <a href="agendamento-forms/cadastrar-agendamento/cadastrar-agendamento.html">
-              <button class="criar-btn filter-btn" onclick="showForm()" style="height: 7vh; margin-left: 0%; width: 16vh; margin-right: 10px;">
-                <i class="fas fa-plus-circle" style="margin-right: 10px; font-size: 24px;"></i>
-                <span>Novo </span>
-              </button>
-              <div id="tooltip29" class="tooltip29">Clique para cadastrar agendamento</div>
+          </li>
+          <li class="list">
+            <a href="../perfil/perfil.html">
+              <span class="icon"
+                ><ion-icon name="people-outline"></ion-icon
+              ></span>
+              <span class="title">Perfil</span>
             </a>
-            <div id="tooltip5 " class="tooltip5">
-              Clique para cadastrar novo agendamento.
-            </div>
-            
-
-          </section>
-        </div>
+          </li>
+          <li class="list active">
+            <a href="agendamento.html">
+              <span class="icon"
+                ><ion-icon name="calendar-outline"></ion-icon
+              ></span>
+              <span class="title">Agendamentos</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../anamnese/anamnese.html">
+              <span class="icon"
+                ><ion-icon name="document-text-outline"></ion-icon
+              ></span>
+              <span class="title">Anamneses</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../clientes/clientes.html">
+              <span class="icon"
+                ><ion-icon name="person-add-outline"></ion-icon
+              ></span>
+              <span class="title">Clientes</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../procedimento/procedimento.html">
+              <span class="icon"
+                ><ion-icon name="brush-outline"></ion-icon
+              ></span>
+              <span class="title">Procedimentos</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../dashboard/dashboard.html">
+              <span class="icon"
+                ><ion-icon name="stats-chart-outline"></ion-icon
+              ></span>
+              <span class="title">Dashboard</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../../index.html">
+              <span class="icon"
+                ><ion-icon name="exit-outline"></ion-icon
+              ></span>
+              <span class="title">Sair</span>
+            </a>
+          </li>
+        </ul>
       </div>
+      <main>
+        <header
+          style="
+            height: 14vh;
+            width: 152vh;
+            margin-left: 4.3%;
+            margin-top: 23px;
+          "
+        >
+          <div style="margin-top: -1%">
+            <h1>Agendamentos</h1>
+            <p style="margin-top: -0.5%">
+              Esta página permite a visualização, cadastro, edição e exclusão de
+              agendamentos.
+            </p>
+          </div>
+          <div id="notification" class="notification">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              fill="white"
+              class="bi bi-check-circle-fill"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z"
+              />
+            </svg>
+            <span id="notification-message"></span>
+          </div>
+        </header>
 
-      <div class="progress-container">
-        <span id="progress-label">Atendimentos Realizados</span>
-        <div class="progress-bar">
-          <div id="progress" class="progress"></div>
-        </div>
-        <span id="total-label">Atendimentos Totais</span>
-      </div>
-      <div class="conteiner">
-        <div class="tabs">
-          <button class="tab-button" id="todos-agendamentos">Todos</button>
-          <button class="tab-button" id="hoje-agendamentos">Hoje</button>
-        </div>
-        <table id="procedures-table" class="procedures-table">
-          <thead>
-            <tr>
-              <th>Data/Hora</th>
-              <th>Cliente</th>
-              <th>Procedimento</th>
-              <th>Especificação</th>
-              <th>Status</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody id="procedures-tbody"></tbody>
-        </table>
+        <div class="main-content">
+          <div class="center-content">
+            <section class="actions">
+              <button
+                id="open-filter-modal-btn"
+                class="filter-btn"
+                style="
+                  height: 7vh;
+                  margin-left: 3%;
+                  width: 18vh;
+                  margin-right: 10px;
+                "
+              >
+                <i
+                  class="fas fa-filter"
+                  style="margin-right: 10px; font-size: 24px"
+                ></i>
+                Filtro
+              </button>
+              <div id="tooltip" class="tooltip">
+                Clique para abrir os filtros
+              </div>
+              <button
+                id="exportar-planilha"
+                class="planilha-btn filter-btn"
+                style="
+                  height: 7vh;
+                  margin-left: 0%;
+                  width: 18vh;
+                  margin-right: 10px;
+                "
+              >
+                <i
+                  class="fas fa-file"
+                  style="margin-right: 10px; font-size: 24px"
+                ></i
+                >Planilha
+              </button>
+              <div id="tooltip2" class="tooltip2">
+                Clique para gerar planilha
+              </div>
 
-        <div class="pagination">
-          <button class="button-page" id="prev-page-btn" disabled>
-            Página Anterior
-          </button>
-          <span>
-            <span class="current-page" id="current-page">1</span> /
-            <span id="total-pages">1</span></span>
-          <button class="button-page" id="next-page-btn">
-            Próxima Página
-          </button>
-          <button id="clear-all-filters" class="button-page" style="display: flex">
-            Limpar Filtros</button>.
-        </div>
-      </div>
-    </main>
-  </div>
+              <a
+                href="agendamento-forms/bloqueio-agendamento/bloqueio-agendamento.html"
+              >
+                <button
+                  class="btn btn-create filter-btn"
+                  id="open-bloqueio"
+                  style="
+                    height: 7vh;
+                    margin-left: 0%;
+                    width: 19vh;
+                    margin-right: 10px;
+                  "
+                >
+                  <i
+                    class="fas fa-lock"
+                    style="margin-right: 10px; font-size: 24px"
+                  ></i>
+                  Bloquear
+                </button>
+                <div id="tooltip30" class="tooltip30">
+                  Clique para bloquear agendamento
+                </div>
+              </a>
 
-  <div id="modal" class="modal" style="display: none">
-    <div class="modal-content">
-      <p>Tem certeza que deseja excluir o agendamento?</p>
-      <p id="procedimento"></p>
-      <button class="btn btn-yes" onclick="confirmDeletion()">SIM</button>
-      <button class="btn btn-no" onclick="closeModal()">NÃO</button>
-    </div>
-  </div>
+              <button
+                class="btn btn-create filter-btn"
+                id="open-save-modal-btn"
+                style="
+                  height: 7vh;
+                  margin-left: 0%;
+                  width: 25vh;
+                  margin-right: 10px;
+                "
+              >
+                <i
+                  class="fas fa-plus"
+                  style="margin-right: 10px; font-size: 24px"
+                ></i>
+                <span>Criar Status</span>
+              </button>
+              <div id="tooltip3" class="tooltip3">
+                Clique para criar um novo status.
+              </div>
 
-  <div id="save-modal" class="modal">
-    <div class="modal-content2">
-      <h3>Criar Status</h3>
-      <div>
-        <label for="filter-from">Descrição:</label>
-        <input type="text" id="edit-nome" placeholder="Nome do Status" /><br />
-        <label for="filter-from">Cor:</label>
-        <input type="color" id="edit-cor" placeholder="Cor do Status" />
-      </div>
-      <div>
-        <button id="save-button" class="btn btn-save">Salvar</button>
-        <button id="close-save-modal" class="btn btn-no">Cancelar</button>
-      </div>
-    </div>
-  </div>
+              <button
+                class="planilha-btn filter-btn"
+                id="open-status-modal-btn"
+                style="
+                  height: 7vh;
+                  margin-left: 0%;
+                  width: 34vh;
+                  margin-right: 10px;
+                "
+              >
+                <i
+                  class="fas fa-check-circle"
+                  style="margin-right: 10px; font-size: 24px"
+                ></i
+                >Status Cadastrados
+              </button>
+              <div id="tooltip4 " class="tooltip4">
+                Clique para ver os status cadastrados.
+              </div>
 
-  <div id="filter-modal" class="modal">
-    <div class="modal-content">
-      <h3>Filtro de Agendamentos</h3>
-      <div>
-        <label for="filter-from">De:</label>
-        <input type="date" id="filter-from" />
-        <button class="clear-btn" id="clear-from">X</button>
-        <!-- Botão de limpar -->
-        <label for="filter-to">Até:</label>
-        <input type="date" id="filter-to" />
-        <button class="clear-btn" id="clear-to">X</button>
-        <!-- Botão de limpar -->
-        <br />
-        <label for="filter-client">Cliente:</label>
-        <select id="cliente-filtro">
-          <option value="">Selecione um cliente</option>
-        </select>
-        <button class="clear-btn" id="clear-client">X</button>
-        <!-- Botão de limpar -->
-        <br />
-        <label for="procedimento">Procedimento:</label>
-        <select id="procedimento-filtro">
-          <option value="">Selecione um procedimento</option>
-        </select>
-        <button class="clear-btn" id="clear-procedure">X</button>
-        <!-- Botão de limpar -->
-        <br />
-        <label for="filter-specification">Especificação:</label>
-        <select id="especificacao-filtro" disabled>
-          <option value="">Selecione uma especificação</option>
-        </select>
-        <button class="clear-btn" id="clear-specification">X</button>
-        <!-- Botão de limpar -->
-        <br /><br />
-      </div>
-      <div>
-        <button class="btn btn-save" id="apply-filter-button">
-          Aplicar Filtros
-        </button>
-        <button id="close-filter-modal" class="btn btn-no">Fechar</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="status-modal" class="modal">
-    <div class="modal-content2">
-      <div class="table-container">
-        <div class="table-header">
-          <h1>Status Cadastrados</h1>
-          <div>
-            <button id="close-status-modal" class="close-button">
-              &times;
-            </button>
+              <a
+                href="agendamento-forms/cadastrar-agendamento/cadastrar-agendamento.html"
+              >
+                <button
+                  class="criar-btn filter-btn"
+                  onclick="showForm()"
+                  style="
+                    height: 7vh;
+                    margin-left: 0%;
+                    width: 16vh;
+                    margin-right: 10px;
+                  "
+                >
+                  <i
+                    class="fas fa-plus-circle"
+                    style="margin-right: 10px; font-size: 24px"
+                  ></i>
+                  <span>Novo </span>
+                </button>
+              </a>
+              <div id="tooltip5 " class="tooltip5">
+                Clique para cadastrar novo agendamento.
+              </div>
+            </section>
           </div>
         </div>
-        <table>
+
+        <div class="progress-container">
+          <span id="progress-label">Atendimentos Realizados</span>
+          <div class="progress-bar">
+            <div id="progress" class="progress"></div>
+          </div>
+          <span id="total-label">Atendimentos Totais</span>
+        </div>
+        <div class="conteiner">
+          <div class="tabs">
+            <button class="tab-button" id="todos-agendamentos">Todos</button>
+            <button class="tab-button" id="hoje-agendamentos">Hoje</button>
+          </div>
+          <table id="procedures-table" class="procedures-table">
+            <thead>
+              <tr>
+                <th>Data/Hora</th>
+                <th>Cliente</th>
+                <th>Procedimento</th>
+                <th>Especificação</th>
+                <th>Valor</th>
+                <th>Homecare</th>
+                <th>Status</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="procedures-tbody"></tbody>
+          </table>
+
+          <div class="pagination">
+            <button class="button-page" id="prev-page-btn" disabled>
+              Página Anterior
+            </button>
+            <span>
+              <span class="current-page" id="current-page">1</span> /
+              <span id="total-pages">1</span></span
+            >
+            <button class="button-page" id="next-page-btn">
+              Próxima Página
+            </button>
+            <button
+              id="clear-all-filters"
+              class="button-page"
+              style="display: flex"
+            >
+              Limpar Filtros</button
+            >.
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div id="modal" class="modal" style="display: none">
+      <div class="modal-content">
+        <p>Tem certeza que deseja excluir o agendamento?</p>
+        <p id="procedimento"></p>
+        <button class="btn btn-yes" onclick="confirmDeletion()">SIM</button>
+        <button class="btn btn-no" onclick="closeModal()">NÃO</button>
+      </div>
+    </div>
+
+    <div id="save-modal" class="modal">
+      <div class="modal-content2">
+        <h3>Criar Status</h3>
+        <div>
+          <label for="filter-from">Descrição:</label>
+          <input
+            type="text"
+            id="edit-nome"
+            placeholder="Nome do Status"
+          /><br />
+          <label for="filter-from">Cor:</label>
+          <input type="color" id="edit-cor" placeholder="Cor do Status" />
+        </div>
+        <div>
+          <button id="save-button" class="btn btn-save">Salvar</button>
+          <button id="close-save-modal" class="btn btn-no">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="filter-modal" class="modal">
+      <div class="modal-content">
+        <h3>Filtro de Agendamentos</h3>
+        <div>
+          <label for="filter-from">De:</label>
+          <input type="date" id="filter-from" />
+          <button class="clear-btn" id="clear-from">X</button>
+          <!-- Botão de limpar -->
+          <label for="filter-to">Até:</label>
+          <input type="date" id="filter-to" />
+          <button class="clear-btn" id="clear-to">X</button>
+          <!-- Botão de limpar -->
+          <br />
+          <label for="filter-client">Cliente:</label>
+          <select id="cliente-filtro">
+            <option value="">Selecione um cliente</option>
+          </select>
+          <button class="clear-btn" id="clear-client">X</button>
+          <!-- Botão de limpar -->
+          <br />
+          <label for="procedimento">Procedimento:</label>
+          <select id="procedimento-filtro">
+            <option value="">Selecione um procedimento</option>
+          </select>
+          <button class="clear-btn" id="clear-procedure">X</button>
+          <!-- Botão de limpar -->
+          <br />
+          <label for="filter-specification">Especificação:</label>
+          <select id="especificacao-filtro" disabled>
+            <option value="">Selecione uma especificação</option>
+          </select>
+          <button class="clear-btn" id="clear-specification">X</button>
+          <!-- Botão de limpar -->
+          <br /><br />
+        </div>
+        <div>
+          <button class="btn btn-save" id="apply-filter-button">
+            Aplicar Filtros
+          </button>
+          <button id="close-filter-modal" class="btn btn-no">Fechar</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="status-modal" class="modal">
+      <div class="modal-content2">
+        <div class="table-container">
+          <div class="table-header">
+            <h1>Status Cadastrados</h1>
+            <div>
+              <button id="close-status-modal" class="close-button">
+                &times;
+              </button>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Cor</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="status-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="delete-modal" class="modal">
+      <div class="modal-content">
+        <p>Tem certeza que deseja excluir o status?</p>
+        <p id="status-name"></p>
+        <button class="btn btn-yes" onclick="confirmDeletion2()">SIM</button>
+        <button class="btn btn-no" onclick="closeDeleteModal()">NÃO</button>
+      </div>
+    </div>
+
+    <div id="edit-modal" class="modal">
+      <div class="modal-content2">
+        <h3>Editar Status</h3>
+        <div>
+          <input type="text" id="edit-nome2" placeholder="Nome" />
+          <input type="color" id="edit-cor2" placeholder="Cor do Status" />
+        </div>
+        <div>
+          <button class="btn btn-save" onclick="salvarStatusEditado()">
+            Salvar
+          </button>
+          <button class="btn btn-no" onclick="closeEditModal()">
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="detalhes-modal" class="modal">
+      <div class="modal-content2">
+        <h3>Detalhes do Agendamento</h3>
+        <div style="margin-left: 25vw">
+          <button
+            onclick="closeDetalhesModal()"
+            id="close-status-modal"
+            class="detalhes-button"
+          >
+            &times;
+          </button>
+        </div>
+        <div>
+          <div class="label">
+            <label for="detalhe-cliente">Cliente:</label>
+            <input
+              class="disabled-input"
+              type="text"
+              id="detalhe-cliente"
+              placeholder="Cliente"
+            />
+          </div>
+          <div class="label">
+            <label for="detalhe-celular">Celular:</label>
+            <input
+              class="disabled-input"
+              type="text"
+              id="detalhe-celular"
+              placeholder="Celular"
+            />
+          </div>
+          <div class="label">
+            <label for="detalhe-data">Data:</label>
+            <input
+              class="disabled-input"
+              type="text"
+              id="detalhe-data"
+              placeholder="Data"
+            />
+          </div>
+          <div class="label">
+            <label for="detalhe-inicio">Inicio:</label>
+            <input
+              class="disabled-input"
+              type="text"
+              id="detalhe-inicio"
+              placeholder="Inicio"
+            />
+          </div>
+          <div class="label">
+            <label for="detalhe-fim">Fim:</label>
+            <input
+              class="disabled-input"
+              type="text"
+              id="detalhe-fim"
+              placeholder="Fim"
+            />
+          </div>
+          <div class="label">
+            <label for="detalhe-procedimento">Procedimento:</label>
+            <input
+              class="disabled-input"
+              type="text"
+              id="detalhe-procedimento"
+              placeholder="Procedimento"
+            />
+          </div>
+          <div class="label">
+            <label for="detalhe-status">Status:</label>
+            <input
+              class="disabled-input"
+              type="text"
+              id="detalhe-status"
+              placeholder="Status"
+            />
+          </div>
+        </div>
+        <div>
+          <button
+            class="btn btn-no"
+            id="clienteFaltou"
+            onclick="clienteFaltou()"
+          >
+            Cliente Faltou
+          </button>
+          <button
+            class="btn btn-save"
+            id="atendimentoConcluido"
+            onclick="atendimentoConcluido()"
+          >
+            Atendimento Concluído
+          </button>
+          <button id="select-status-btn" class="btn btn-select">
+            Selecionar Status
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Novo Modal para Seleção de Status -->
+    <div id="custom-status-modal" class="modal">
+      <div class="modal-content3">
+        <h3>Selecione um Status</h3>
+        <div style="margin-left: 25vw">
+          <button
+            onclick="closeCustomStatusModal()"
+            id="close-custom-status-modal"
+            class="detalhes-button"
+          >
+            &times;
+          </button>
+        </div>
+        <table id="custom-status-table" class="status-table">
           <thead>
             <tr>
               <th>Nome</th>
               <th>Cor</th>
-              <th>Ações</th>
+              <th>Ação</th>
             </tr>
           </thead>
-          <tbody id="status-tbody"></tbody>
+          <tbody id="custom-status-tbody">
+            <!-- Status será carregado aqui -->
+          </tbody>
         </table>
       </div>
     </div>
-  </div>
+    <script>
+      // Função para fechar o modal de seleção de status
+      function closeCustomStatusModal() {
+        const modal = document.getElementById("custom-status-modal");
+        modal.style.display = "none";
+      }
+    </script>
 
-  <div id="delete-modal" class="modal">
-    <div class="modal-content">
-      <p>Tem certeza que deseja excluir o status?</p>
-      <p id="status-name"></p>
-      <button class="btn btn-yes" onclick="confirmDeletion2()">SIM</button>
-      <button class="btn btn-no" onclick="closeDeleteModal()">NÃO</button>
-    </div>
-  </div>
-
-  <div id="edit-modal" class="modal">
-    <div class="modal-content2">
-      <h3>Editar Status</h3>
-      <div>
-        <input type="text" id="edit-nome2" placeholder="Nome" />
-        <input type="color" id="edit-cor2" placeholder="Cor do Status" />
-      </div>
-      <div>
-        <button class="btn btn-save" onclick="salvarStatusEditado()">
-          Salvar
-        </button>
-        <button class="btn btn-no" onclick="closeEditModal()">
-          Cancelar
-        </button>
+    <div id="export-modal" class="modal">
+      <div class="modal-content" style="width: 40%; height: 40%">
+        <h3>Exportar Agendamentos</h3>
+        <p>Escolha quais agendamentos deseja exportar:</p>
+        <div class="export-buttons">
+          <button id="export-all" class="btn btn-yes">Exportar Todos</button>
+          <button id="export-today" class="btn btn-yes">
+            Exportar os de Hoje
+          </button>
+        </div>
+        <div class="cancel-button">
+          <button id="cancel-export" class="btn btn-no">Cancelar</button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div id="detalhes-modal" class="modal">
-    <div class="modal-content2">
-      <h3>Detalhes do Agendamento</h3>
-      <div style="margin-left: 25vw">
-        <button onclick="closeDetalhesModal()" id="close-status-modal" class="detalhes-button">
-          &times;
-        </button>
-      </div>
-      <div>
-        <div class="label">
-          <label for="detalhe-cliente">Cliente:</label>
-          <input class="disabled-input" type="text" id="detalhe-cliente" placeholder="Cliente" />
-        </div>
-        <div class="label">
-          <label for="detalhe-celular">Celular:</label>
-          <input class="disabled-input" type="text" id="detalhe-celular" placeholder="Celular" />
-        </div>
-        <div class="label">
-          <label for="detalhe-data">Data:</label>
-          <input class="disabled-input" type="text" id="detalhe-data" placeholder="Data" />
-        </div>
-        <div class="label">
-          <label for="detalhe-inicio">Inicio:</label>
-          <input class="disabled-input" type="text" id="detalhe-inicio" placeholder="Inicio" />
-        </div>
-        <div class="label">
-          <label for="detalhe-fim">Fim:</label>
-          <input class="disabled-input" type="text" id="detalhe-fim" placeholder="Fim" />
-        </div>
-        <div class="label">
-          <label for="detalhe-procedimento">Procedimento:</label>
-          <input class="disabled-input" type="text" id="detalhe-procedimento" placeholder="Procedimento" />
-        </div>
-        <div class="label">
-          <label for="detalhe-status">Status:</label>
-          <input class="disabled-input" type="text" id="detalhe-status" placeholder="Status" />
-        </div>
-      </div>
-      <div>
-        <button class="btn btn-no" id="clienteFaltou" onclick="clienteFaltou()">
-          Cliente Faltou
-        </button>
-        <button class="btn btn-save" id="atendimentoConcluido" onclick="atendimentoConcluido()">
-          Atendimento Concluído
-        </button>
-        <button id="select-status-btn" class="btn btn-select">
-          Selecionar Status
-        </button>
-      </div>
-    </div>
-  </div>
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.2/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="agendamento.js" defer></script>
 
-  <!-- Novo Modal para Seleção de Status -->
-  <div id="custom-status-modal" class="modal">
-    <div class="modal-content3">
-      <h3>Selecione um Status</h3>
-      <div style="margin-left: 25vw">
-        <button onclick="closeCustomStatusModal()" id="close-custom-status-modal" class="detalhes-button">
-          &times;
-        </button>
-      </div>
-      <table id="custom-status-table" class="status-table">
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Cor</th>
-            <th>Ação</th>
-          </tr>
-        </thead>
-        <tbody id="custom-status-tbody">
-          <!-- Status será carregado aqui -->
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <script>
-    // Função para fechar o modal de seleção de status
-    function closeCustomStatusModal() {
-      const modal = document.getElementById("custom-status-modal");
-      modal.style.display = "none";
-    }
-  </script>
-
-  <div id="export-modal" class="modal">
-    <div class="modal-content" style="width: 40%; height: 40%;">
-      <h3>Exportar Agendamentos</h3>
-      <p>Escolha quais agendamentos deseja exportar:</p>
-      <div class="export-buttons">
-        <button id="export-all" class="btn btn-yes">Exportar Todos</button>
-        <button id="export-today" class="btn btn-yes">
-          Exportar os de Hoje
-        </button>
-      </div>
-      <div class="cancel-button">
-        <button id="cancel-export" class="btn btn-no">Cancelar</button>
-      </div>
-    </div>
-  </div>
-
-  
-  <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
-  <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.2/xlsx.full.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-  <script src="agendamento.js" defer></script>
-
-  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
     <div vw class="enabled">
-        <div vw-access-button class="active"></div>
-        <div vw-plugin-wrapper></div> 
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper></div>
     </div>
-</body>
-
+  </body>
 </html>

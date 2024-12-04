@@ -18,17 +18,17 @@ data class Especificacao(
     @field:NotNull(message = "Preço de colocação é obrigatório")
     @field:PositiveOrZero(message = "Preço de colocação deve ser zero ou positivo")
     @Column(name = "preco_colocacao")
-    var precoColocacao: Double?,
+    var precoColocacao: Double? = null,
 
     @field:NotNull(message = "Preço de manutenção é obrigatório")
     @field:PositiveOrZero(message = "Preço de manutenção deve ser zero ou positivo")
     @Column(name = "preco_manutencao")
-    var precoManutencao: Double?,
+    var precoManutencao: Double? = null,
 
     @field:NotNull(message = "Preço de retirada é obrigatório")
     @field:PositiveOrZero(message = "Preço de retirada deve ser zero ou positivo")
     @Column(name = "preco_retirada")
-    var precoRetirada: Double?,
+    var precoRetirada: Double? = null,
 
     @field:Pattern(
         regexp = "^([0-1]\\d|2[0-3]):([0-5]\\d)$",
@@ -36,7 +36,7 @@ data class Especificacao(
     )
     @field:NotBlank(message = "O tempo de colocação é obrigatório")
     @Column(name = "tempo_colocacao")
-    var tempoColocacao: String,
+    var tempoColocacao: String? = null,
 
     @field:Pattern(
         regexp = "^([0-1]\\d|2[0-3]):([0-5]\\d)$",
@@ -44,7 +44,7 @@ data class Especificacao(
     )
     @field:NotBlank(message = "O tempo de colocação é obrigatório")
     @Column(name = "tempo_manutencao")
-    var tempoManutencao: String,
+    var tempoManutencao: String? = null,
 
     @field:Pattern(
         regexp = "^([0-1]\\d|2[0-3]):([0-5]\\d)$",
@@ -52,7 +52,15 @@ data class Especificacao(
     )
     @field:NotBlank(message = "O tempo de colocação é obrigatório")
     @Column(name = "tempo_retirada")
-    var tempoRetirada: String,
+    var tempoRetirada: String? = null,
+
+    var homecare: Boolean,
+
+    var colocacao: Boolean,
+
+    var manutencao: Boolean,
+
+    var retirada: Boolean,
 
     @field:Column(length = 100 * 1024 * 1024)
     @JsonIgnore

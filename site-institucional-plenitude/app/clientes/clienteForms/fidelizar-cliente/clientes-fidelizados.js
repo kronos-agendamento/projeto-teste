@@ -353,6 +353,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // } else if (nome) {
     //     url = `http://localhost:8080/usuarios/buscar-por-nome/${nome}`;
     else {
+        alert("Por favor, preencha ao menos um dos campos.");
         return;
     }
   

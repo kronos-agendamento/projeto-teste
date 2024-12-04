@@ -1,6 +1,21 @@
 let seconds = 0;
 let timer = null;
 
+function showNotification(message, isError = false) {
+  const notification = document.getElementById("notification");
+  const notificationMessage = document.getElementById("notification-message");
+  notificationMessage.textContent = message;
+  if (isError) {
+    notification.classList.add("error");
+  } else {
+    notification.classList.remove("error");
+  }
+  notification.classList.add("show");
+  setTimeout(() => {
+    notification.classList.remove("show");
+  }, 3000);
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   const apiUrlClientes = "http://localhost:8080/usuarios";
   const apiUrlProcedimentos = "http://localhost:8080/api/procedimentos";
@@ -11,33 +26,29 @@ document.addEventListener("DOMContentLoaded", function () {
   const clientesSelect = document.getElementById("clientes");
   const procedimentosSelect = document.getElementById("procedimentos");
   const especificacoesSelect = document.getElementById("especificacoes");
-
-  const tipoAtendimentoSelect = document.getElementById("tipo-atendimento");
+  const localidadeSelect = document.getElementById("localidade");
   const tipoAgendamentoSelect = document.getElementById("tipo-atendimento");
   const dataInput = document.getElementById("data");
   const dataSelecionadaP = document.getElementById("data-selecionada");
   const horariosContainer = document.getElementById("horarios-disponiveis");
   const saveButton = document.getElementById("save-agendamento-button");
-  const enderecoGroup = document.getElementById("endereco-group"); // Div de endereço
-  const taxaTotalDiv = document.getElementById("taxa-total"); // Div de taxa total
-  const calcularTaxaButton = document.getElementById("calcular-taxa-button"); // Botão de calcular taxa
+  const enderecoGroup = document.getElementById("endereco-group");
+  const taxaTotalDiv = document.getElementById("taxa-total");
+  const calcularTaxaButton = document.getElementById("calcular-taxa-button");
   const valorTaxaSpan = document.getElementById("valor-taxa");
   const totalKmSpan = document.getElementById("total-km");
-  const gasolina = 4; // Valor fixo médio da gasolina (exemplo)
   const enderecoInput = document.getElementById("endereco");
-  const mediaValor = 50; // Valor por hora
-  const hora = 0.5; // Horas
-  const maoObra = mediaValor * hora; // Cálculo da mão de obra
-  const origem = "Rua das Gilias, 361 - Vila Bela, São Paulo - State of São Paulo, Brazil";
+  const origem = "Rua das Gilias, 361 - Vila Bela, São Paulo, SP";
 
-  let especificacoes = []; // Array para armazenar todas as especificações
+  const gasolina = 4;
+  const maoObra = 30 * 0.5;
+
+  let especificacoes = [];
 
   async function carregarClientes() {
     try {
       const response = await fetch(apiUrlClientes);
       const clientes = await response.json();
-
-      const clientesSelect = document.getElementById("clientes");
       clientes.forEach((cliente) => {
         const option = document.createElement("option");
         option.value = cliente.idUsuario;
@@ -45,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
         clientesSelect.appendChild(option);
       });
     } catch (error) {
-      console.error("Erro ao obter clientes: ", error);
+      console.error("Erro ao carregar clientes:", error);
     }
   }
 
@@ -61,10 +72,10 @@ document.addEventListener("DOMContentLoaded", function () {
           procedimentosSelect.appendChild(option);
         });
       } else {
-        console.error("Erro ao buscar procedimentos: " + response.statusText);
+        console.error("Erro ao carregar procedimentos:", response.statusText);
       }
     } catch (error) {
-      console.error("Erro ao buscar procedimentos: ", error);
+      console.error("Erro ao carregar procedimentos:", error);
     }
   }
 
@@ -72,29 +83,93 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       const response = await fetch(apiUrlEspecificacoes);
       if (response.ok) {
-        especificacoes = await response.json(); // Armazena todas as especificações
+        especificacoes = await response.json();
       } else {
-        console.error("Erro ao buscar especificações: " + response.statusText);
+        console.error("Erro ao carregar especificações:", response.statusText);
       }
     } catch (error) {
-      console.error("Erro ao buscar especificações: ", error);
+      console.error("Erro ao carregar especificações:", error);
     }
   }
 
-  // Função para filtrar as especificações com base no procedimento selecionado
-  function filtrarEspecificacoesPorProcedimento(procedimentoId) {
-    especificacoesSelect.innerHTML =
-      '<option value="">Selecione uma especificação</option>'; // Reseta as opções
+  localidadeSelect.addEventListener("change", function () {
+    const cepGroup = document.getElementById("cep-group");
+    if (localidadeSelect.value === "Homecare") {
+      // Exibe o campo de CEP quando Homecare é selecionado
+      cepGroup.classList.remove("hidden");
+    } else {
+      // Esconde o campo de CEP e limpa o valor
+      cepGroup.classList.add("hidden");
+      document.getElementById("cep").value = "";
+      document.getElementById("endereco-group").classList.add("hidden");
+    }
+  });
 
-    const especificacoesFiltradas = especificacoes.filter(
-      (especificacao) =>
-        especificacao.procedimento.idProcedimento == procedimentoId
-    );
+  // Função que atualiza o select de localidade com base na especificação
+  function atualizarLocalidadeComBaseNaEspecificacao(especificacao) {
+    if (especificacao && especificacao.homecare) {
+      // Se homecare é true, permite as opções Presencial e Homecare
+      localidadeSelect.removeAttribute("disabled");
+      localidadeSelect.innerHTML = `
+      <option value="">Selecione a localidade</option>
+      <option value="Presencial">Presencial</option>
+      <option value="Homecare">Homecare</option>
+    `;
+    } else {
+      // Se homecare é false, apenas Presencial
+      localidadeSelect.removeAttribute("disabled");
+      localidadeSelect.innerHTML = `
+      <option value="">Selecione a localidade</option>
+      <option value="Presencial">Presencial</option>
+    `;
+    }
+  }
+
+  // Função de filtro de especificações
+  function filtrarEspecificacoes(procedimentoId, tipoAgendamento) {
+    especificacoesSelect.innerHTML =
+      '<option value="">Selecione uma especificação</option>';
+
+    const especificacoesFiltradas = especificacoes.filter((especificacao) => {
+      const procedimentoMatch =
+        especificacao.procedimento.idProcedimento == procedimentoId;
+
+      let tipoAgendamentoMatch = false;
+      switch (tipoAgendamento) {
+        case "Colocação":
+          tipoAgendamentoMatch = especificacao.colocacao === true;
+          break;
+        case "Manutenção":
+          tipoAgendamentoMatch = especificacao.manutencao === true;
+          break;
+        case "Retirada":
+          tipoAgendamentoMatch = especificacao.retirada === true;
+          break;
+      }
+
+      return procedimentoMatch && tipoAgendamentoMatch;
+    });
 
     especificacoesFiltradas.forEach((especificacao) => {
+      let preco = 0;
+      switch (tipoAgendamento) {
+        case "Colocação":
+          preco = especificacao.precoColocacao;
+          break;
+        case "Manutenção":
+          preco = especificacao.precoManutencao;
+          break;
+        case "Retirada":
+          preco = especificacao.precoRetirada;
+          break;
+      }
+
       const option = document.createElement("option");
       option.value = especificacao.idEspecificacaoProcedimento;
-      option.text = especificacao.especificacao;
+      option.textContent = `${especificacao.especificacao} - R$ ${preco.toFixed(
+        2
+      )}`;
+      option.dataset.homecare = especificacao.homecare; // Armazena o valor do homecare no dataset
       especificacoesSelect.appendChild(option);
     });
 
@@ -105,30 +180,60 @@ document.addEventListener("DOMContentLoaded", function () {
       especificacoesSelect.setAttribute("disabled", "disabled");
       especificacoesSelect.classList.add("disabled-select");
     }
+
+    // Desabilitar localidade por padrão ao alterar especificações
+    localidadeSelect.setAttribute("disabled", "disabled");
+    localidadeSelect.innerHTML =
+      '<option value="">Selecione a localidade</option>';
   }
 
-  // Event listener para habilitar e filtrar especificações com base no procedimento selecionado
-  procedimentosSelect.addEventListener("change", function () {
-    const procedimentoId = procedimentosSelect.value;
-    if (procedimentoId) {
-      filtrarEspecificacoesPorProcedimento(procedimentoId);
+  // Listener para habilitar o select de localidade com base na especificação selecionada
+  especificacoesSelect.addEventListener("change", function () {
+    const selectedOption =
+      especificacoesSelect.options[especificacoesSelect.selectedIndex];
+    const homecare = selectedOption
+      ? selectedOption.dataset.homecare === "true"
+      : false;
+
+    if (selectedOption && especificacoesSelect.value) {
+      localidadeSelect.removeAttribute("disabled");
+      if (homecare) {
+        // Homecare permitido: mostrar as duas opções
+        localidadeSelect.innerHTML = `
+        <option value="">Selecione a localidade</option>
+        <option value="Presencial">Presencial</option>
+        <option value="Homecare">Homecare</option>
+      `;
+      } else {
+        // Apenas presencial permitido
+        localidadeSelect.innerHTML = `
+        <option value="">Selecione a localidade</option>
+        <option value="Presencial">Presencial</option>
+      `;
+      }
     } else {
-      especificacoesSelect.setAttribute("disabled", "disabled");
-      especificacoesSelect.classList.add("disabled-select");
+      // Desabilita localidade caso nenhuma especificação válida seja selecionada
+      localidadeSelect.setAttribute("disabled", "disabled");
+      localidadeSelect.innerHTML =
+        '<option value="">Selecione a localidade</option>';
     }
   });
 
-// Mostrar div de endereço somente se o tipo de atendimento for "Homecare" ou "Evento"
-tipoAtendimentoSelect.addEventListener("change", function () {
-  const tipoAtendimento = tipoAtendimentoSelect.value;
+  procedimentosSelect.addEventListener("change", function () {
+    const procedimentoId = procedimentosSelect.value;
+    const tipoAgendamento = tipoAgendamentoSelect.value;
+    if (procedimentoId && tipoAgendamento) {
+      filtrarEspecificacoes(procedimentoId, tipoAgendamento);
+    }
+  });
 
-  if (tipoAtendimento === "Homecare" || tipoAtendimento === "Evento") {
-    enderecoGroup.classList.remove("hidden"); // Mostra o endereço
-  } else {
-    enderecoGroup.classList.add("hidden"); // Esconde o endereço
-  }
-});
-
+  tipoAgendamentoSelect.addEventListener("change", function () {
+    const procedimentoId = procedimentosSelect.value;
+    const tipoAgendamento = tipoAgendamentoSelect.value;
+    if (procedimentoId && tipoAgendamento) {
+      filtrarEspecificacoes(procedimentoId, tipoAgendamento);
+    }
+  });
 
   dataInput.addEventListener("change", function () {
     const dataSelecionada = new Date(dataInput.value + "T00:00:00");
@@ -142,13 +247,13 @@ tipoAtendimentoSelect.addEventListener("change", function () {
 
       const procedimentoId = procedimentosSelect.value;
       const especificacaoId = especificacoesSelect.value;
-      const tipoAtendimento = tipoAgendamentoSelect.value;
+      const tipoAgendamento = tipoAgendamentoSelect.value;
 
       carregarHorariosDisponiveis(
         dataInput.value,
         procedimentoId,
         especificacaoId,
-        tipoAtendimento
+        tipoAgendamento
       );
     } else {
       dataSelecionadaP.textContent = "";
@@ -197,248 +302,236 @@ tipoAtendimentoSelect.addEventListener("change", function () {
     }
   }
 
-  saveButton.addEventListener("click", async function () {
-    const clienteId = clientesSelect.value;
-    console.log(clienteId);
-    const procedimentoId = procedimentosSelect.value;
-    console.log(procedimentoId);
-    const tipoAtendimento = tipoAgendamentoSelect.value;
-    const especificacaoId = especificacoesSelect.value;
-    const data = dataInput.value;
-    const horarioButton = document.querySelector(".horario-button.selected");
-    const horario = horarioButton ? horarioButton.textContent : null;
-
-    if (
-      !clienteId ||
-      !procedimentoId ||
-      !tipoAtendimento ||
-      !especificacaoId ||
-      !data ||
-      !horario
-    ) {
-      showNotification("Todos os campos são obrigatórios", true);
-      return;
-    }
-
-    const dataHorario = new Date(`${data}T${horario}.000Z`).toISOString();
-    console.log(seconds + "antes do const");
-    const agendamento = {
-      fk_usuario: parseInt(clienteId, 10),
-      fk_procedimento: parseInt(procedimentoId, 10),
-      fk_especificacao: parseInt(especificacaoId, 10),
-      fk_status: 1,
-      tempoAgendar: seconds,
-      tipoAgendamento: tipoAtendimento,
-      dataHorario: dataHorario,
-    };
-
+  async function buscarEnderecoPorCep(cep) {
     try {
-      console.log(seconds + " segundos aí rapaiz");
-      const response = await fetch(apiUrlCriarAgendamento, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(agendamento),
-      });
-
+      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
       if (response.ok) {
-        console.log(response);
-        console.log(agendamento);
-        showNotification("Agendamento criado com sucesso!");
-        setTimeout(() => {
-          window.location.href = "../../agendamento.html";
-        }, 1000);
+        const data = await response.json();
+        if (data.erro) throw new Error("CEP não encontrado.");
+        return `${data.logradouro}, ${data.bairro}, ${data.localidade} - ${data.uf}`;
       } else {
-        const errorMsg = await response.text();
-        console.error("Erro ao criar agendamento: " + errorMsg);
-        showNotification(
-          "Já existe um agendamento para essa data e horário",
-          true
-        );
+        throw new Error("Erro ao buscar o CEP.");
       }
     } catch (error) {
-      console.error("Erro ao criar agendamento: ", error);
-      showNotification("Erro ao criar agendamento", true);
+      console.error("Erro ao buscar o endereço:", error);
+      return null;
+    }
+  }
+
+  document.getElementById("cep").addEventListener("input", async function () {
+    const cepInput = this;
+    const cep = cepInput.value.replace(/\D/g, ""); // Remove caracteres não numéricos
+    if (cep.length === 8) {
+      const endereco = await buscarEnderecoPorCep(cep);
+      if (endereco) {
+        document.getElementById("endereco").value = endereco;
+        document.getElementById("endereco-group").classList.remove("hidden");
+        document.getElementById("numero-group").classList.remove("hidden"); // Exibe o campo de número
+        await calcularTaxa(); // Calcula a taxa automaticamente
+        atualizarValorTotal(); // Atualiza o valor total incluindo a taxa
+      } else {
+        showNotification("CEP inválido ou não encontrado.", true);
+        document.getElementById("endereco-group").classList.add("hidden");
+        document.getElementById("numero-group").classList.add("hidden");
+      }
+    } else {
+      // Formata o CEP enquanto o usuário digita (ex: 12345-678)
+      cepInput.value = cep.replace(/(\d{5})(\d{1,3})/, "$1-$2");
+      document.getElementById("endereco-group").classList.add("hidden");
+      document.getElementById("numero-group").classList.add("hidden");
     }
   });
 
-  
-  // Função para calcular a distância
   async function calcularDistancia(endereco) {
     return new Promise((resolve, reject) => {
+      const origem =
+        "Rua das Gílias, 361, Vila Prudente, São Paulo - SP, 03201-070";
       const service = new google.maps.DistanceMatrixService();
-
       service.getDistanceMatrix(
         {
           origins: [origem],
           destinations: [endereco],
-          travelMode: 'DRIVING', // Aqui define o modo de transporte
+          travelMode: "DRIVING",
           unitSystem: google.maps.UnitSystem.METRIC,
         },
         (response, status) => {
-          if (status === 'OK') {
-            const resultado = response.rows[0].elements[0];
-            const distanciaKm = resultado.distance.value / 1000; // Distância em quilômetros
-            resolve(distanciaKm);
+          if (status === "OK") {
+            resolve(response.rows[0].elements[0].distance.value / 1000); // Retorna a distância em km
           } else {
-            reject('Erro ao calcular a distância: ' + status);
+            reject("Erro ao calcular a distância.");
           }
         }
       );
     });
   }
 
- // Função para calcular a taxa total
-async function calcularTaxa() {
-  const endereco = enderecoInput.value; // Captura o valor do endereço
+  async function calcularTaxa() {
+    const endereco = document.getElementById("endereco").value;
+    const gasolina = 6; // Preço médio atualizado da gasolina
+    const maoObra = 30 * 0.5; // Mão de obra fixa
 
-  if (endereco) {
-    try {
-      const kmLoc = await calcularDistancia(endereco); // Calcula a distância
-
-      // Se a distância for calculada corretamente
-      if (kmLoc !== null) {
-        const taxaLoc = gasolina * kmLoc; // Cálculo da taxa de locomoção
-        const taxaTotal = taxaLoc + maoObra; // Soma da taxa de locomoção e mão de obra
-
-        valorTaxaSpan.textContent = `R$ ${taxaTotal.toFixed(2)}`; // Exibe o valor da taxa
-        totalKmSpan.textContent = `${kmLoc.toFixed(2)} km de distância`; // Exibe a distância total
-
-        // Mostra a div da taxa total
-        taxaTotalDiv.classList.remove("hidden"); 
-      } else {
-        valorTaxaSpan.textContent = "Distância não encontrada para o endereço.";
+    if (endereco) {
+      try {
+        const km = await calcularDistancia(endereco);
+        const taxa = km * gasolina + maoObra;
+        valorTaxaSpan.textContent = `R$ ${taxa.toFixed(2)}`;
+        totalKmSpan.textContent = `${km.toFixed(2)} km`;
         taxaTotalDiv.classList.remove("hidden");
+        return taxa;
+      } catch (error) {
+        console.error("Erro ao calcular taxa:", error);
+        showNotification("Erro ao calcular taxa. Verifique o endereço.", true);
+      }
+    }
+    return 0;
+  }
+
+  function calcularValorTotal() {
+    const especificacaoId = especificacoesSelect.value;
+    const tipoAgendamento = tipoAgendamentoSelect.value;
+    const homecare = localidadeSelect.value === "Homecare";
+
+    if (!especificacaoId || !tipoAgendamento) {
+      return 0; // Retorna 0 se os campos obrigatórios não estiverem preenchidos
+    }
+
+    // Busca a especificação selecionada no array `especificacoes`
+    const especificacao = especificacoes.find(
+      (item) => item.idEspecificacaoProcedimento == especificacaoId
+    );
+
+    if (!especificacao) {
+      return 0;
+    }
+
+    let valorEspecificacao = 0;
+    switch (tipoAgendamento) {
+      case "Colocação":
+        valorEspecificacao = especificacao.precoColocacao;
+        break;
+      case "Manutenção":
+        valorEspecificacao = especificacao.precoManutencao;
+        break;
+      case "Retirada":
+        valorEspecificacao = especificacao.precoRetirada;
+        break;
+    }
+
+    let valorTaxa = 0;
+    if (homecare) {
+      // Garante que a taxa seja capturada corretamente
+      valorTaxa =
+        parseFloat(valorTaxaSpan.textContent.replace("R$", "").trim()) || 0;
+    }
+
+    const valorTotal = valorEspecificacao + valorTaxa;
+    return { valorTotal, valorEspecificacao, valorTaxa };
+  }
+
+  function atualizarValorTotal() {
+    const { valorTotal, valorEspecificacao, valorTaxa } = calcularValorTotal();
+    const valorTotalText = document.getElementById("valor-total-text");
+    const homecare = localidadeSelect.value === "Homecare";
+
+    if (homecare) {
+      valorTotalText.textContent = `Valor Total + Taxa: R$ ${valorTotal.toFixed(
+        2
+      )} (R$ ${valorEspecificacao.toFixed(2)} + R$ ${valorTaxa.toFixed(2)})`;
+    } else {
+      valorTotalText.textContent = `Valor Total: R$ ${valorTotal.toFixed(2)}`;
+    }
+  }
+
+  // Atualiza o valor total ao alterar os campos
+  especificacoesSelect.addEventListener("change", atualizarValorTotal);
+  tipoAgendamentoSelect.addEventListener("change", atualizarValorTotal);
+  localidadeSelect.addEventListener("change", atualizarValorTotal);
+  document.getElementById("cep").addEventListener("input", atualizarValorTotal);
+
+  saveButton.addEventListener("click", async function () {
+    console.log("Início do processamento do agendamento");
+
+    const clienteId = clientesSelect.value;
+    const procedimentoId = procedimentosSelect.value;
+    const tipoAgendamento = tipoAgendamentoSelect.value;
+    const especificacaoId = especificacoesSelect.value;
+    const data = dataInput.value; // Data selecionada
+    const horarioButton = document.querySelector(".horario-button.selected");
+    const horario = horarioButton ? horarioButton.textContent : null;
+
+    // Captura os novos campos
+    const cep = document.getElementById("cep").value.trim();
+    const numero = document.getElementById("numero").value.trim();
+    const logradouro = document.getElementById("endereco").value.trim();
+
+    // Cálculo do valor total
+    const { valorTotal } = calcularValorTotal();
+
+    // Combine a data e o horário no formato ISO
+    const dataHorarioStr = `${data}T${horario}`;
+    let dataHorario;
+    try {
+      dataHorario = new Date(dataHorarioStr);
+      if (isNaN(dataHorario)) {
+        throw new Error("Data ou horário inválido.");
       }
     } catch (error) {
-      console.error("Erro ao calcular a distância:", error);
-      valorTaxaSpan.textContent = "Erro ao calcular a distância. Tente novamente.";
-      taxaTotalDiv.classList.remove("hidden"); // Mostra a mensagem de erro
-    }
-  } else {
-    // Se o campo de endereço estiver vazio, oculta a div de taxa total
-    taxaTotalDiv.classList.add("hidden");
-  }
-}
-
-// Event listener para o botão de calcular taxa
-calcularTaxaButton.addEventListener("click", calcularTaxa);
-
-  carregarClientes();
-  carregarProcedimentos();
-  carregarEspecificacoes(); // Carrega todas as especificações no início
-});
-
-function showNotification(message, isError = false) {
-  const notification = document.getElementById("notification");
-  const notificationMessage = document.getElementById("notification-message");
-  notificationMessage.textContent = message;
-  if (isError) {
-    notification.classList.add("error");
-  } else {
-    notification.classList.remove("error");
-  }
-  notification.classList.add("show");
-  setTimeout(() => {
-    notification.classList.remove("show");
-  }, 3000);
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-  const nome = localStorage.getItem("nome");
-  const instagram = localStorage.getItem("instagram");
-
-  if (nome && instagram) {
-    document.getElementById("userName").textContent = nome;
-    document.getElementById("userInsta").textContent = instagram;
-  }
-});
-
-// timer para o marcar tempo que leva para realizar um agendamento!
-
-// Função que será executada quando o valor do select mudar
-document.addEventListener("DOMContentLoaded", function () {
-  // Variável que irá armazenar o intervalo
-
-  // Função que será executada quando o valor do select mudar
-  document
-    .getElementById("procedimentos")
-    .addEventListener("change", function () {
-      const selectedValue = this.value;
-
-      if (selectedValue !== "") {
-        // Se o valor selecionado não for vazio
-        if (!timer) {
-          // Verifica se o timer já está rodando
-          timer = setInterval(() => {
-            seconds++; // Incrementa a variável a cada segundo
-            console.log(`Segundos: ${seconds}`);
-          }, 1000); // 1000 ms = 1 segundo
-        }
-      }
-    });
-
-  document
-    .getElementById("save-agendamento-button")
-    .addEventListener("click", function () {
-      if (timer) {
-        clearInterval(timer); // Para o timer
-        timer = null; // Reseta o timer
-        console.log(`Contagem parada em: ${seconds} segundos`);
-      }
-    });
-
-
-  new window.VLibras.Widget('https://vlibras.gov.br/app');
-    
-});
-
-//     function sendSecondsToServer() {
-//         fetch('http://localhost:8080/api/agendamentos/', { // Substitua pela URL do seu servidor
-//             method: 'PUT',
-//             headers: {
-//                 'Content-Type': 'application/json' // Define que o conteúdo é JSON
-//             },
-//             body: JSON.stringify({ time: seconds }) // Envia o valor dos segundos
-//         })
-//         .then(response => response.json())
-//         .then(data => console.log('Sucesso:', data))
-//         .catch(error => console.error('Erro:', error));
-//     }
-
-async function carregarImagem2() {
-  const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução
-  const perfilImage = document.getElementById("perfilImage");
-
-  if (!cpf) {
-      console.log("CPF não encontrado.");
+      console.error("Erro ao processar data e horário:", error);
+      showNotification(
+        "Erro ao processar data e horário. Por favor, revise os valores.",
+        true
+      );
       return;
-  }
+    }
 
-  try {
-      const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario-cpf/${cpf}`, {
-          method: "GET",
+    // Validação dos campos obrigatórios
+    if (
+      localidadeSelect.value === "Homecare" &&
+      (!cep || !logradouro || !numero)
+    ) {
+      showNotification(
+        "Para Homecare, CEP, endereço e número devem ser preenchidos.",
+        true
+      );
+      return;
+    }
+
+    try {
+      const response = await fetch(apiUrlCriarAgendamento, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fk_usuario: parseInt(clienteId),
+          fk_procedimento: parseInt(procedimentoId),
+          fk_especificacao: parseInt(especificacaoId),
+          tipoAgendamento,
+          dataHorario: dataHorario.toISOString(),
+          homecare: localidadeSelect.value === "Homecare",
+          valor: valorTotal, // Inclui o valor total calculado
+          fk_status: 1,
+          cep,
+          logradouro,
+          numero,
+        }),
       });
 
       if (response.ok) {
-          const blob = await response.blob(); // Recebe a imagem como Blob
-          const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
-
-          // Define a URL da imagem carregada como src do img
-          perfilImage.src = imageUrl;
-          perfilImage.alt = "Foto do usuário";
-          perfilImage.style.width = "20vh";
-          perfilImage.style.height = "20vh";
-          perfilImage.style.borderRadius = "300px";
+        showNotification("Agendamento criado com sucesso!");
+        setTimeout(() => {
+          window.location.href = "../../agendamento.html";
+        }, 2000); // Redireciona após 2 segundos
       } else {
-          console.log("Imagem não encontrada para o CPF informado.");
+        showNotification("Erro ao criar agendamento.", true);
       }
-  } catch (error) {
-      console.error("Erro ao buscar a imagem:", error);
-  }
-}
+    } catch (error) {
+      console.error("Erro ao criar agendamento:", error);
+      showNotification("Erro ao criar agendamento.", true);
+    }
+  });
 
-window.onload = function () {
-  carregarImagem2();
-};
+  carregarClientes();
+  carregarProcedimentos();
+  carregarEspecificacoes();
+
+  new window.VLibras.Widget("https://vlibras.gov.br/app");
+});

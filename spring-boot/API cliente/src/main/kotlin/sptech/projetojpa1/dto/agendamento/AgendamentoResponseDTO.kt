@@ -10,6 +10,8 @@ data class AgendamentoResponseDTO(
     var usuario: String? = null,
     var email: String? = null,
     var tempoAgendar: Int? = null,
+    var homecare: Boolean? = null,
+    var valor: Double? = null,
     var usuarioTelefone: String? = null,
     var usuarioCpf: String? = null,
     var usuarioId: Int? = null,
@@ -17,5 +19,11 @@ data class AgendamentoResponseDTO(
     var especificacao: String? = null,
     var fkEspecificacao: Int? = null,
     var fkProcedimento: Int? = null,
-    var statusAgendamento: Status? = null
+    var statusAgendamento: Status? = null,
+
+    // Novos campos
+    var cep: String? = null,
+    var logradouro: String? = null,
+    var numero: String? = null
 )
+

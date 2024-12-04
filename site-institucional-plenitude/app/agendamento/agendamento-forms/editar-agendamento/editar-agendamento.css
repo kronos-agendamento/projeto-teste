@@ -1,14 +1,14 @@
 .back-link {
-  margin-left: 30px;
+  margin-left: 50px;
   color: #000000;
   text-decoration: none;
 }
 
 .form-section {
-  width: 65vw;
+  width: 153vh;
   background-color: #fff0f5;
   margin-bottom: 20px;
-  margin-left: 20px;
+  margin-left: 50px;
   margin-top: 20px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -26,6 +26,7 @@
   display: flex;
   align-items: center;
   padding: 2vh;
+  border-radius: 5px 5px 0px 0px;
 }
 
 .form-section h2 {
@@ -81,6 +82,27 @@
   margin-top: 20px;
 }
 
+.hidden {
+  display: none;
+}
+
+.navigation {
+  height: 1500px;
+  background: #d2135d;
+  width: 266px;
+  margin-top: 20px;
+  margin-left: 32px;
+  border-radius: 3vh;
+  margin-bottom: 2vh;
+  box-shadow: 10px 0 0 #ffffff;
+  border-left: 10px solid #d2135d;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
 .save-button {
   display: flex;
   align-items: center;
@@ -92,6 +114,7 @@
   font-size: 16px;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-family: Poppins, sans-serif;
 }
 
 .save-button svg {
@@ -132,7 +155,7 @@
 .horario-button {
   padding: 10px;
   border: none;
-  border-radius: 10%;
+  border-radius: 50%;
   background-color: #f0f0f0;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -153,11 +176,22 @@
 }
 
 .disabled-select {
+  pointer-events: none;
   opacity: 0.5;
-  pointer-events: none; /* Não permite clicar no select */
 }
 
 .disabled-select:not([disabled]) {
   opacity: 1;
   pointer-events: auto;
+}
+
+#valor-total-container {
+  margin-top: 1rem;
+  text-align: right;
+  font-weight: bold;
+  color: #333;
+}
+
+#valor-total-text {
+  font-size: 1.2rem;
 }
