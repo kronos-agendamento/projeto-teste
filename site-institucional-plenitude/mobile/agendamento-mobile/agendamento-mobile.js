@@ -8,14 +8,20 @@ document.addEventListener("DOMContentLoaded", function () {
   const opcaoEspecificacaoDiv = document.getElementById("opcao-especificacao");
   const especificacaoSelect = document.getElementById("especificacao");
   const tipoAtendimentoDiv = document.getElementById("tipo-atendimento");
-  const tipoAtendimentoSelect = document.getElementById("tipo-atendimento-select");
+  const tipoAtendimentoSelect = document.getElementById(
+    "tipo-atendimento-select"
+  );
   const dataInputDiv = document.getElementById("data-div");
-  const procedimentoId = procedimentoSelect.value;
   const dataInput = document.getElementById("data");
   const horariosDiv = document.getElementById("horarios-div");
   const horariosContainer = document.getElementById("horarios-disponiveis");
   const botaoAgendarDiv = document.getElementById("botaoAgendarDiv");
   const botaoAgendar = document.getElementById("save-agendamento-button");
+  const enderecoInput = document.getElementById("endereco");
+  const taxaTotalDiv = document.getElementById("taxa-total");
+  const valorTaxaSpan = document.getElementById("valor-taxa");
+  const totalKmSpan = document.getElementById("total-km");
+  const calcularTaxaButton = document.getElementById("calcular-taxa-button");
   let especificacoes = [];
 
   // Inicialmente, ocultar todos os campos exceto o procedimento
@@ -26,15 +32,10 @@ document.addEventListener("DOMContentLoaded", function () {
   botaoAgendarDiv.classList.add("hidden");
 
   function atualizarOpcoesTipoAtendimento(procedimentoId) {
-    const options = tipoAtendimentoSelect.options; // Obtenha as opções do select
+    const options = tipoAtendimentoSelect.options;
 
-    // console.log("Atualizando opções para procedimento:", procedimentoId);
-
-    // Habilitar ou desabilitar opções com base no procedimento
     for (let i = 0; i < options.length; i++) {
-      // console.log(`Verificando opção: ${options[i].value}`); // Log para verificação
       if (procedimentoId == 1) {
-        // Supondo que "1" seja o ID de Maquiagem
         options[i].disabled = !["Homecare", "Estudio", "Evento"].includes(
           options[i].value
         );
@@ -45,10 +46,9 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    tipoAtendimentoDiv.classList.remove("hidden"); // Mostrar a div do tipo de atendimento
+    tipoAtendimentoDiv.classList.remove("hidden");
   }
 
-  // Carregar Procedimentos
   async function carregarProcedimentos() {
     try {
       const response = await fetch(apiUrlProcedimentos);
@@ -61,7 +61,6 @@ document.addEventListener("DOMContentLoaded", function () {
           procedimentoSelect.appendChild(option);
         });
 
-        // Verificar se há valores no localStorage e preencher automaticamente
         const idProcedimento = localStorage.getItem("idProcedimento");
         const idEspecificacao = localStorage.getItem("idEspecificacao");
 
@@ -72,9 +71,9 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         console.error(
           "Erro ao buscar procedimentos: " +
-          response.status +
-          " " +
-          response.statusText
+            response.status +
+            " " +
+            response.statusText
         );
       }
     } catch (error) {
@@ -82,7 +81,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Carregar Especificações
   async function carregarEspecificacoes() {
     try {
       const response = await fetch(apiUrlEspecificacoes);
@@ -91,9 +89,9 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         console.error(
           "Erro ao buscar especificações: " +
-          response.status +
-          " " +
-          response.statusText
+            response.status +
+            " " +
+            response.statusText
         );
       }
     } catch (error) {
@@ -101,7 +99,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Filtrar Especificações pelo Procedimento selecionado
   function filtrarEspecificacoesPorProcedimento(
     procedimentoId,
     idEspecificacao = null
@@ -127,19 +124,17 @@ document.addEventListener("DOMContentLoaded", function () {
       opcaoEspecificacaoDiv.classList.add("hidden");
     }
 
-    // Preencher automaticamente a especificação se o idEspecificacao estiver presente
     if (idEspecificacao) {
       especificacaoSelect.value = idEspecificacao;
     }
   }
 
-  // Evento ao selecionar Procedimento
   procedimentoSelect.addEventListener("change", function () {
     const procedimentoId = procedimentoSelect.value;
 
     if (procedimentoId) {
       filtrarEspecificacoesPorProcedimento(procedimentoId);
-      atualizarOpcoesTipoAtendimento(procedimentoId); // Atualiza as opções com base no procedimento
+      atualizarOpcoesTipoAtendimento(procedimentoId);
     } else {
       opcaoEspecificacaoDiv.classList.add("hidden");
       tipoAtendimentoDiv.classList.add("hidden");
@@ -149,294 +144,39 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-
-
-  // Evento ao selecionar Especificação
   especificacaoSelect.addEventListener("change", function () {
     const especificacaoId = especificacaoSelect.value;
     if (especificacaoId) {
       tipoAtendimentoDiv.classList.remove("hidden");
       tipoAtendimentoSelect.disabled = false;
+      document.getElementById("localidade").disabled = false;
     } else {
       tipoAtendimentoDiv.classList.add("hidden");
       dataInputDiv.classList.add("hidden");
       horariosDiv.classList.add("hidden");
       botaoAgendarDiv.classList.add("hidden");
+      document.getElementById("localidade").disabled = true;
     }
   });
 
-  // Inicializar
-  async function inicializar() {
-    await carregarProcedimentos();
-    await carregarEspecificacoes();
-
-    const idProcedimento = localStorage.getItem("idProcedimento");
-    const idEspecificacao = localStorage.getItem("idEspecificacao");
-
-    if (idProcedimento && idEspecificacao) {
-      procedimentoSelect.value = idProcedimento;
-      filtrarEspecificacoesPorProcedimento(idProcedimento, idEspecificacao);
-
-      tipoAtendimentoDiv.classList.remove("hidden");
-      tipoAtendimentoSelect.disabled = false;
-
-      localStorage.removeItem("idProcedimento");
-      localStorage.removeItem("idEspecificacao");
-      console.log("IDs removidos do localStorage");
-    }
-  }
-
-  // Chama a função de inicialização
-  inicializar();
-
-  const mediaValor = 30; // Valor por hora
-  const hora = 0.5; // Horas
-  const maoObra = mediaValor * hora; // Cálculo da mão de obra
-  const origem =
-    "Rua das Gilias, 361 - Vila Bela, São Paulo - State of São Paulo, Brazil";
-  const gasolina = 4; // Valor fixo médio da gasolina (exemplo)
-  const enderecoInput = document.getElementById("endereco");
-  const taxaTotalDiv = document.getElementById("taxa-total");
-  const valorTaxaSpan = document.getElementById("valor-taxa");
-  const totalKmSpan = document.getElementById("total-km");
-  const calcularTaxaButton = document.getElementById("calcular-taxa-button");
-
-  // Função para calcular a distância
-  async function calcularDistancia(endereco) {
-    return new Promise((resolve, reject) => {
-      const service = new google.maps.DistanceMatrixService();
-
-      service.getDistanceMatrix(
-        {
-          origins: [origem],
-          destinations: [endereco],
-          travelMode: "DRIVING", // Aqui define o modo de transporte
-          unitSystem: google.maps.UnitSystem.METRIC,
-        },
-        (response, status) => {
-          if (status === "OK") {
-            const resultado = response.rows[0].elements[0];
-            const distanciaKm = resultado.distance.value / 1000; // Distância em quilômetros
-            resolve(distanciaKm);
-          } else {
-            reject("Erro ao calcular a distância: " + status);
-          }
-        }
-      );
-    });
-  }
-
-  // Função para calcular a taxa total e retornar o valor da taxa
-  async function calcularTaxa() {
-    const endereco = enderecoInput.value;
-
-    if (endereco) {
-      try {
-        const kmLoc = await calcularDistancia(endereco);
-        if (kmLoc !== null) {
-          const taxaLoc = gasolina * kmLoc; // Calcula a taxa de locomoção
-          const taxaTotal = taxaLoc + maoObra; // Taxa total com mão de obra
-
-          valorTaxaSpan.textContent = `R$ ${taxaTotal.toFixed(2)}`;
-          totalKmSpan.textContent = `${kmLoc.toFixed(2)} km de distância`;
-          taxaTotalDiv.classList.remove("hidden");
-
-          return taxaTotal; // Retorna o valor da taxa para ser usada no orçamento
-        } else {
-          valorTaxaSpan.textContent = "Distância não encontrada para o endereço.";
-          taxaTotalDiv.classList.remove("hidden");
-        }
-      } catch (error) {
-        console.error("Erro ao calcular a distância:", error);
-        valorTaxaSpan.textContent = "Erro ao calcular a distância. Tente novamente.";
-        taxaTotalDiv.classList.remove("hidden");
-      }
-    } else {
-      taxaTotalDiv.classList.add("hidden");
-    }
-
-    return 0; // Retorna zero se não houver taxa
-  }
-
-  // Event listener para o botão de calcular taxa
-  calcularTaxaButton.addEventListener("click", calcularTaxa);
-
-  // Inicialmente, ocultar todos os campos exceto o procedimento
-  opcaoEspecificacaoDiv.classList.add("hidden");
-  tipoAtendimentoDiv.classList.add("hidden");
-  dataInputDiv.classList.add("hidden");
-  horariosDiv.classList.add("hidden");
-  botaoAgendarDiv.classList.add("hidden");
-
-  // Carregar Procedimentos
-  async function carregarProcedimentos() {
-    try {
-      const response = await fetch(apiUrlProcedimentos);
-      if (response.ok) {
-        const procedimentos = await response.json();
-        procedimentos.forEach((procedimento) => {
-          const option = document.createElement("option");
-          option.value = procedimento.idProcedimento;
-          option.textContent = procedimento.tipo;
-          procedimentoSelect.appendChild(option);
-        });
-
-        // Verificar se há valores no localStorage e preencher automaticamente
-        const idProcedimento = localStorage.getItem("idProcedimento");
-        const idEspecificacao = localStorage.getItem("idEspecificacao");
-
-        if (idProcedimento) {
-          procedimentoSelect.value = idProcedimento;
-          filtrarEspecificacoesPorProcedimento(idProcedimento, idEspecificacao);
-        }
-      } else {
-        console.error(
-          "Erro ao buscar procedimentos: " +
-          response.status +
-          " " +
-          response.statusText
-        );
-      }
-    } catch (error) {
-      console.error("Erro ao buscar procedimentos: ", error);
-    }
-  }
-
-
-  // Carregar Especificações
-  async function carregarEspecificacoes() {
-    try {
-      const response = await fetch(apiUrlEspecificacoes);
-      if (response.ok) {
-        especificacoes = await response.json();
-      } else {
-        console.error(
-          "Erro ao buscar especificações: " +
-          response.status +
-          " " +
-          response.statusText
-        );
-      }
-    } catch (error) {
-      console.error("Erro ao buscar especificações: ", error);
-    }
-  }
-
-  // Filtrar Especificações pelo Procedimento selecionado
-  function filtrarEspecificacoesPorProcedimento(
-    procedimentoId,
-    idEspecificacao = null
-  ) {
-    especificacaoSelect.innerHTML =
-      '<option value="">Selecione a especificação</option>';
-
-    const especificacoesFiltradas = especificacoes.filter(
-      (especificacao) =>
-        especificacao.procedimento.idProcedimento == procedimentoId
-    );
-
-    especificacoesFiltradas.forEach((especificacao) => {
-      const option = document.createElement("option");
-      option.value = especificacao.idEspecificacaoProcedimento;
-      option.textContent = especificacao.especificacao;
-      especificacaoSelect.appendChild(option);
-    });
-
-    if (especificacoesFiltradas.length > 0) {
-      opcaoEspecificacaoDiv.classList.remove("hidden");
-    } else {
-      opcaoEspecificacaoDiv.classList.add("hidden");
-    }
-
-    // Preencher automaticamente a especificação se o idEspecificacao estiver presente
-    if (idEspecificacao) {
-      especificacaoSelect.value = idEspecificacao;
-    }
-  }
-
-  // Evento ao selecionar Procedimento
-  procedimentoSelect.addEventListener("change", function () {
-    const procedimentoId = procedimentoSelect.value;
-    if (procedimentoId) {
-      filtrarEspecificacoesPorProcedimento(procedimentoId);
-    } else {
-      opcaoEspecificacaoDiv.classList.add("hidden");
-      tipoAtendimentoDiv.classList.add("hidden");
-      dataInputDiv.classList.add("hidden");
-      horariosDiv.classList.add("hidden");
-      botaoAgendarDiv.classList.add("hidden");
-    }
-  });
-
-  // Evento ao selecionar Especificação
-  especificacaoSelect.addEventListener("change", function () {
-    const especificacaoId = especificacaoSelect.value;
-    if (especificacaoId) {
-      tipoAtendimentoDiv.classList.remove("hidden");
-      tipoAtendimentoSelect.disabled = false;
-    } else {
-      tipoAtendimentoDiv.classList.add("hidden");
-      dataInputDiv.classList.add("hidden");
-      horariosDiv.classList.add("hidden");
-      botaoAgendarDiv.classList.add("hidden");
-    }
-  });
-
-  // Evento ao selecionar Procedimento
-  procedimentoSelect.addEventListener("change", function () {
-    const procedimentoId = procedimentoSelect.value;
-    if (procedimentoId) {
-      filtrarEspecificacoesPorProcedimento(procedimentoId);
-    } else {
-      // Ocultar campos subsequentes
-      opcaoEspecificacaoDiv.classList.add("hidden");
-      tipoAtendimentoDiv.classList.add("hidden");
-      dataInputDiv.classList.add("hidden");
-      horariosDiv.classList.add("hidden");
-      botaoAgendarDiv.classList.add("hidden");
-    }
-  });
-
-  // Evento ao selecionar Especificação
-  especificacaoSelect.addEventListener("change", function () {
-    const especificacaoId = especificacaoSelect.value;
-    if (especificacaoId) {
-      tipoAtendimentoDiv.classList.remove("hidden");
-      tipoAtendimentoSelect.disabled = false; // Ativar o dropdown de tipo de atendimento
-    } else {
-      // Ocultar campos subsequentes
-      tipoAtendimentoDiv.classList.add("hidden");
-      dataInputDiv.classList.add("hidden");
-      horariosDiv.classList.add("hidden");
-      botaoAgendarDiv.classList.add("hidden");
-    }
-  });
-
-  // Evento ao selecionar Tipo de Atendimento
   tipoAtendimentoSelect.addEventListener("change", function () {
     const tipoAtendimento = tipoAtendimentoSelect.value;
 
-    console.log(tipoAtendimento);
-
     if (tipoAtendimento) {
-      dataInputDiv.classList.remove("hidden"); // Mostrar dataInputDiv
+      dataInputDiv.classList.remove("hidden");
     } else {
       dataInputDiv.classList.add("hidden");
       horariosDiv.classList.add("hidden");
       botaoAgendarDiv.classList.add("hidden");
     }
 
-    // Verifica se o tipo de atendimento é Homecare ou Evento
     if (tipoAtendimento === "Homecare" || tipoAtendimento === "Evento") {
-      // Mostrar o campo de endereço
       document.getElementById("endereco-group").classList.remove("hidden");
     } else {
-      // Ocultar o campo de endereço se não for Homecare ou Evento
       document.getElementById("endereco-group").classList.add("hidden");
     }
   });
 
-  // Evento ao selecionar Data
   dataInput.addEventListener("change", function () {
     const data = dataInput.value;
     if (data) {
@@ -447,22 +187,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  function showNotification(message, isError = false) {
-    const notification = document.getElementById("notification");
-    const notificationMessage = document.getElementById("notification-message");
-    notificationMessage.textContent = message;
-    if (isError) {
-      notification.classList.add("error");
-    } else {
-      notification.classList.remove("error");
-    }
-    notification.classList.add("show");
-    setTimeout(() => {
-      notification.classList.remove("show");
-    }, 3000);
-  }
-
-  // Carregar Horários Disponíveis
   async function carregarHorariosDisponiveis(data) {
     try {
       const empresaId = 1;
@@ -477,7 +201,6 @@ document.addEventListener("DOMContentLoaded", function () {
         horariosContainer.innerHTML = "";
 
         horariosDisponiveis.forEach((horario) => {
-          // Supondo que horario é uma string no formato "HH:MM:SS"
           const [hour, minute] = horario.split(":");
           const formattedTime = `${hour.padStart(2, "0")}:${minute.padStart(
             2,
@@ -494,7 +217,6 @@ document.addEventListener("DOMContentLoaded", function () {
               .querySelectorAll(".horario-button")
               .forEach((btn) => btn.classList.remove("selected"));
             button.classList.add("selected");
-            buscarOrcamento();
           });
         });
 
@@ -516,68 +238,128 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-// Função para validar CEP usando a API ViaCEP
-async function validarCepReal(cep) {
-  const cepLimpo = cep.replace("-", "").trim(); // Remove traços e espaços
-  const url = `https://viacep.com.br/ws/${cepLimpo}/json/`;
-
-  try {
-    const response = await fetch(url);
-    if (response.ok) {
-      const data = await response.json();
-      return !data.erro; // Retorna verdadeiro se o CEP for válido
+  function showNotification(message, isError = false) {
+    const notification = document.getElementById("notification");
+    const notificationMessage = document.getElementById("notification-message");
+    notificationMessage.textContent = message;
+    if (isError) {
+      notification.classList.add("error");
     } else {
-      return false;
+      notification.classList.remove("error");
     }
-  } catch (error) {
-    console.error("Erro ao validar CEP: ", error);
-    return false;
-  }
-}
-
-// Função para calcular a taxa total com validação de CEP
-async function calcularTaxa() {
-  const endereco = enderecoInput.value;
-
-  if (!endereco) {
-    showNotification("Por favor, insira um endereço válido.", true);
-    return;
+    notification.classList.add("show");
+    setTimeout(() => {
+      notification.classList.remove("show");
+    }, 3000);
   }
 
-  // Validar se o CEP existe
-  const cepValido = await validarCepReal(endereco);
-  if (!cepValido) {
-    showNotification("CEP inválido. Por favor, insira um CEP real.", true);
-    return;
-  }
-
-  try {
-    const kmLoc = await calcularDistancia(endereco); // Chamada à função que pode falhar
-
-    // Se a distância for calculada corretamente, calcula a taxa
-    if (kmLoc !== null) {
-      const taxaLoc = gasolina * kmLoc; // Cálculo da taxa de locomoção
-      const taxaTotal = taxaLoc + maoObra; // Cálculo da taxa total
-      valorTaxaSpan.textContent = `R$ ${taxaTotal.toFixed(2)}, `; // Exibir a taxa total
-      totalKmSpan.textContent = `${kmLoc} de distância`;
-      taxaTotalDiv.classList.remove("hidden"); // Mostrar a taxa total
+  document.getElementById("cep").addEventListener("blur", async function () {
+    const cep = this.value.replace("-", "").trim();
+    if (cep.length === 8) {
+      const url = `https://viacep.com.br/ws/${cep}/json/`;
+      try {
+        const response = await fetch(url);
+        if (response.ok) {
+          const data = await response.json();
+          if (!data.erro) {
+            document.getElementById("endereco").value = data.logradouro;
+            document.getElementById("cidade").value = data.localidade;
+            document.getElementById("estado").value = data.uf;
+            await calcularTaxa(); // Calcula a taxa automaticamente após preencher o endereço
+          } else {
+            showNotification("CEP não encontrado.", true);
+          }
+        } else {
+          showNotification("Erro ao buscar CEP.", true);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar CEP: ", error);
+        showNotification("Erro ao buscar CEP.", true);
+      }
     } else {
-      valorTaxaSpan.textContent =
-        "Distância não encontrada para o endereço."; // Mensagem se a distância não for encontrada
-      taxaTotalDiv.classList.remove("hidden");
+      showNotification("CEP inválido.", true);
     }
-  } catch (error) {
-    console.error("Erro ao calcular a distância:", error);
-    valorTaxaSpan.textContent =
-      "Erro ao calcular a distância. Tente novamente."; // Mensagem de erro
-    taxaTotalDiv.classList.remove("hidden"); // Mostrar a mensagem de erro
+  });
+
+  async function calcularDistancia(endereco) {
+    return new Promise((resolve, reject) => {
+      const origem =
+        "Rua das Gilias, 361 - Vila Bela, São Paulo - State of São Paulo, Brazil";
+      console.log("Origem:", origem);
+      console.log("Destino:", endereco);
+
+      const service = new google.maps.DistanceMatrixService();
+      service.getDistanceMatrix(
+        {
+          origins: [origem],
+          destinations: [endereco],
+          travelMode: "DRIVING",
+          unitSystem: google.maps.UnitSystem.METRIC,
+        },
+        (response, status) => {
+          console.log("Response Status:", status);
+          console.log("Response:", response);
+
+          if (status === "OK") {
+            const element = response.rows[0].elements[0];
+            console.log("Element Status:", element.status);
+            console.log("Element:", element);
+
+            if (element.status === "OK") {
+              resolve(element.distance.value / 1000); // Retorna a distância em km
+            } else if (element.status === "NOT_FOUND") {
+              reject(
+                "Endereço não encontrado. Verifique o endereço e tente novamente."
+              );
+            } else {
+              reject("Erro ao calcular a distância: " + element.status);
+            }
+          } else {
+            reject("Erro ao calcular a distância: " + status);
+          }
+        }
+      );
+    });
   }
-}
 
-// Event listener para o botão de calcular taxa
-calcularTaxaButton.addEventListener("click", calcularTaxa);
+  async function calcularTaxa() {
+    const endereco = document.getElementById("endereco").value;
+    const cep = document.getElementById("cep").value;
+    const cidade = document.getElementById("cidade").value;
+    const estado = document.getElementById("estado").value;
 
+    const enderecoCompleto = `${endereco}, ${cidade} - ${estado}, ${cep}`;
+    console.log("Endereço completo para cálculo da taxa:", enderecoCompleto);
 
+    const gasolina = 6; // Preço médio atualizado da gasolina
+    const maoObra = 30 * 0.5; // Mão de obra fixa
+
+    if (endereco) {
+      try {
+        const km = await calcularDistancia(enderecoCompleto);
+        console.log("Distância calculada (km):", km);
+
+        const taxa = km * gasolina + maoObra;
+        console.log("Taxa calculada:", taxa);
+
+        valorTaxaSpan.textContent = `R$ ${taxa.toFixed(2)}`;
+        totalKmSpan.textContent = `${km.toFixed(2)} km`;
+        taxaTotalDiv.classList.remove("hidden");
+      } catch (error) {
+        console.error("Erro ao calcular taxa:", error);
+        showNotification(error, true);
+      }
+    }
+  }
+
+  document.getElementById("localidade").addEventListener("change", function () {
+    const localidade = this.value;
+    if (localidade === "Homecare") {
+      document.getElementById("endereco-group").classList.remove("hidden");
+    } else {
+      document.getElementById("endereco-group").classList.add("hidden");
+    }
+  });
 
   const increaseFontBtn = document.getElementById("increase-font");
   const decreaseFontBtn = document.getElementById("decrease-font");
@@ -618,5 +400,159 @@ calcularTaxaButton.addEventListener("click", calcularTaxa);
       }
     }
   });
-  new window.VLibras.Widget('https://vlibras.gov.br/app');
+
+  new window.VLibras.Widget("https://vlibras.gov.br/app");
+
+  async function inicializar() {
+    await carregarProcedimentos();
+    await carregarEspecificacoes();
+
+    const idProcedimento = localStorage.getItem("idProcedimento");
+    const idEspecificacao = localStorage.getItem("idEspecificacao");
+
+    if (idProcedimento && idEspecificacao) {
+      procedimentoSelect.value = idProcedimento;
+      filtrarEspecificacoesPorProcedimento(idProcedimento, idEspecificacao);
+
+      tipoAtendimentoDiv.classList.remove("hidden");
+      tipoAtendimentoSelect.disabled = false;
+
+      localStorage.removeItem("idProcedimento");
+      localStorage.removeItem("idEspecificacao");
+      console.log("IDs removidos do localStorage");
+    }
+  }
+
+  inicializar();
+
+  function calcularValorTotal() {
+    const especificacaoId = document.getElementById("especificacao").value;
+    const tipoAgendamento = document.getElementById(
+      "tipo-atendimento-select"
+    ).value;
+    const homecare = document.getElementById("localidade").value === "Homecare";
+
+    if (!especificacaoId || !tipoAgendamento) {
+      return { valorTotal: 0, valorEspecificacao: 0, valorTaxa: 0 }; // Retorna 0 se os campos obrigatórios não estiverem preenchidos
+    }
+
+    // Busca a especificação selecionada no array `especificacoes`
+    const especificacao = especificacoes.find(
+      (item) => item.idEspecificacaoProcedimento == especificacaoId
+    );
+
+    if (!especificacao) {
+      return { valorTotal: 0, valorEspecificacao: 0, valorTaxa: 0 };
+    }
+
+    let valorEspecificacao = 0;
+    switch (tipoAgendamento) {
+      case "Colocação":
+        valorEspecificacao = especificacao.precoColocacao;
+        break;
+      case "Manutenção":
+        valorEspecificacao = especificacao.precoManutencao;
+        break;
+      case "Retirada":
+        valorEspecificacao = especificacao.precoRetirada;
+        break;
+    }
+
+    let valorTaxa = 0;
+    if (homecare) {
+      // Garante que a taxa seja capturada corretamente
+      valorTaxa =
+        parseFloat(valorTaxaSpan.textContent.replace("R$", "").trim()) || 0;
+    }
+
+    const valorTotal = valorEspecificacao + valorTaxa;
+    return { valorTotal, valorEspecificacao, valorTaxa };
+  }
+
+  document
+    .getElementById("save-agendamento-button")
+    .addEventListener("click", async function () {
+      console.log("Início do processamento do agendamento");
+
+      const idUsuario = localStorage.getItem("idUsuario");
+      const procedimentoId = document.getElementById("procedimento").value;
+      const tipoAgendamento = document.getElementById(
+        "tipo-atendimento-select"
+      ).value;
+      const especificacaoId = document.getElementById("especificacao").value;
+      const data = document.getElementById("data").value; // Data selecionada
+      const horarioButton = document.querySelector(".horario-button.selected");
+      const horario = horarioButton ? horarioButton.textContent : null;
+
+      // Captura os novos campos
+      const cep = document.getElementById("cep").value.trim();
+      const numero = document.getElementById("numero").value.trim();
+      const logradouro = document.getElementById("endereco").value.trim();
+
+      // Cálculo do valor total
+      const { valorTotal } = calcularValorTotal();
+
+      // Combine a data e o horário no formato ISO
+      const dataHorarioStr = `${data}T${horario}`;
+      let dataHorario;
+      try {
+        dataHorario = new Date(dataHorarioStr);
+        if (isNaN(dataHorario)) {
+          throw new Error("Data ou horário inválido.");
+        }
+      } catch (error) {
+        console.error("Erro ao processar data e horário:", error);
+        showNotification(
+          "Erro ao processar data e horário. Por favor, revise os valores.",
+          true
+        );
+        return;
+      }
+
+      // Validação dos campos obrigatórios
+      if (
+        document.getElementById("localidade").value === "Homecare" &&
+        (!cep || !logradouro || !numero)
+      ) {
+        showNotification(
+          "Para Homecare, CEP, endereço e número devem ser preenchidos.",
+          true
+        );
+        return;
+      }
+
+      try {
+        const response = await fetch("http://localhost:8080/api/agendamentos", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            fk_usuario: parseInt(idUsuario),
+            fk_procedimento: parseInt(procedimentoId),
+            fk_especificacao: parseInt(especificacaoId),
+            tipoAgendamento,
+            dataHorario: dataHorario.toISOString(),
+            homecare:
+              document.getElementById("localidade").value === "Homecare",
+            valor: valorTotal, // Inclui o valor total calculado
+            fk_status: 1,
+            cep,
+            logradouro,
+            numero,
+            tempoAgendar: 0, // Adicionei o campo tempoAgendar conforme o corpo do POST
+          }),
+        });
+
+        if (response.ok) {
+          showNotification("Agendamento criado com sucesso!");
+          setTimeout(() => {
+            window.location.href = "../index-mobile/index-mobile.html";
+          }, 2000); // Redireciona após 2 segundos
+        } else {
+          showNotification("Erro ao criar agendamento.", true);
+        }
+      } catch (error) {
+        console.error("Erro ao criar agendamento:", error);
+        showNotification("Erro ao criar agendamento.", true);
+      }
+    });
 });

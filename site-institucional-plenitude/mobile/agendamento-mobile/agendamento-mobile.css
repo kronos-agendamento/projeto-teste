@@ -84,7 +84,7 @@
   .nav-bar .icon {
     font-size: 30px;
     color: #ffffff;
-}
+  }
 
   .pesquisa img {
     width: 1.5rem;
@@ -173,18 +173,18 @@
   }
 
   .save-button {
-  display: flex;
-  align-items: center;
-  background-color: #e70069;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 5px 10px;
-  font-size: 16px;
-  cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  font-family: Poppins, sans-serif;
-  margin-top: 5%;
+    display: flex;
+    align-items: center;
+    background-color: #e70069;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-family: Poppins, sans-serif;
+    margin-top: 5%;
   }
 
   #icon-save {
