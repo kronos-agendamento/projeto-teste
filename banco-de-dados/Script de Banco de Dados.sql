@@ -1,25 +1,6 @@
-drop database kronosbooking;
+drop database if exists kronosbooking;
 create database if not exists kronosbooking;
 USE kronosbooking;
-
-DROP TABLE IF EXISTS login_logoff;
-DROP TABLE IF EXISTS feedback;
-DROP TABLE IF EXISTS cliente;
-DROP TABLE IF EXISTS profissional;
-DROP TABLE IF EXISTS agendamento;
-DROP TABLE IF EXISTS resposta;
-DROP TABLE IF EXISTS pergunta;
-DROP TABLE IF EXISTS especificacao;
-DROP TABLE IF EXISTS procedimento;
-DROP TABLE IF EXISTS usuario;
-DROP TABLE IF EXISTS ficha_anamnese;
-DROP TABLE IF EXISTS empresa;
-DROP TABLE IF EXISTS horario_funcionamento;
-DROP TABLE IF EXISTS nivel_acesso;
-DROP TABLE IF EXISTS endereco;
-DROP TABLE IF EXISTS status;
-DROP PROCEDURE IF EXISTS gerar_agendamentos_aleatorios;
-DROP TABLE IF EXISTS Leads;
 
 CREATE TABLE endereco (
     id_endereco INT AUTO_INCREMENT PRIMARY KEY,
@@ -75,9 +56,15 @@ CREATE TABLE usuario (
     genero VARCHAR(50),
     indicacao VARCHAR(255),
     foto LONGBLOB,
-    avaliacao int,
+    avaliacao INT,
     status BOOLEAN DEFAULT TRUE,
-	dtype VARCHAR(31),  -- Adiciona o campo dtype para o discriminador
+    dtype VARCHAR(31),
+    experiencia_avaliada VARCHAR(255),
+    frequencia INT,
+    especialidade VARCHAR(255),
+    media_nota FLOAT(53),
+    numero_avaliacoes INT,
+    qualificacoes VARCHAR(255),
     fk_nivel_acesso INT,
     fk_endereco INT,
     fk_empresa INT,
@@ -88,12 +75,12 @@ CREATE TABLE usuario (
     FOREIGN KEY (fk_ficha_anamnese) REFERENCES ficha_anamnese(id_ficha)
 );
 
-create table login_logoff (
-id_log INT auto_increment PRIMARY KEY,
-logi VARCHAR(5) NOT NULL,
-data_horario DATETIME NOT NULL,
-fk_usuario INT NOT NULL,
-FOREIGN KEY (fk_usuario) references usuario(id_usuario)
+CREATE TABLE login_logoff (
+    id_log INT AUTO_INCREMENT PRIMARY KEY,
+    logi VARCHAR(5) NOT NULL,
+    data_horario DATETIME NOT NULL,
+    fk_usuario INT NOT NULL,
+    FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario)
 );
 
 CREATE TABLE procedimento (
@@ -112,6 +99,10 @@ CREATE TABLE especificacao (
     tempo_manutencao VARCHAR(5) NOT NULL,
     tempo_retirada VARCHAR(5) NOT NULL,
     foto LONGBLOB,
+    colocacao BOOLEAN NOT NULL,
+    homecare BOOLEAN NOT NULL,
+    manutencao BOOLEAN NOT NULL,
+    retirada BOOLEAN NOT NULL,
     fk_procedimento INT NOT NULL,
     FOREIGN KEY (fk_procedimento) REFERENCES procedimento(id_procedimento)
 );
@@ -129,7 +120,7 @@ CREATE TABLE resposta (
     fk_pergunta INT NOT NULL,
     fk_ficha_anamnese INT NOT NULL,
     fk_usuario INT NOT NULL,
-    FOREIGN KEY (fk_pergunta) REFERENCES pergunta(id_pergunta),
+    FOREIGN KEY (fk_pergunta) REFERENCES pergunta(id_pergunta) ON DELETE CASCADE,
     FOREIGN KEY (fk_ficha_anamnese) REFERENCES ficha_anamnese(id_ficha),
     FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
 );
@@ -146,6 +137,8 @@ CREATE TABLE agendamento (
     data_horario DATETIME NOT NULL,
     tipo_agendamento VARCHAR(255) NOT NULL,
     tempo_para_agendar INT,
+    homecare BOOLEAN,
+    valor FLOAT(53),
     fk_usuario INT NOT NULL,
     fk_procedimento INT,
     fk_especificacao_procedimento INT,
@@ -183,7 +176,12 @@ CREATE TABLE profissional (
 		especialidade VARCHAR(255),
 		FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
 	);
-    
+
+CREATE TABLE mensagem (
+    id_mensagem INT AUTO_INCREMENT PRIMARY KEY,
+    descricao VARCHAR(100)
+);
+
 CREATE TABLE Leads (
     id_lead INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
@@ -194,6 +192,7 @@ CREATE TABLE Leads (
     data_criacao DATETIME
 );
 
+-- Inserções nas tabelas
 INSERT INTO endereco (logradouro, cep, bairro, cidade, estado, numero, complemento)
 VALUES 
 ('Rua das Flores', '12345678', 'Vila Prudente', 'São Paulo', 'SP', '100', 'Apto 101'),
@@ -274,19 +273,18 @@ VALUES
 ('Sobrancelha', 'Modelagem e tratamento de sobrancelhas'),
 ('Cílios', 'Alongamento e volume de cílios');
 
-INSERT INTO especificacao (especificacao, preco_colocacao, preco_manutencao, preco_retirada, tempo_colocacao, tempo_manutencao, tempo_retirada, fk_procedimento)
+INSERT INTO especificacao (especificacao, preco_colocacao, preco_manutencao, preco_retirada, tempo_colocacao, tempo_manutencao, tempo_retirada, colocacao, homecare, manutencao, retirada, fk_procedimento)
 VALUES 
-('Extensão de Cílios Fio a Fio', 150.00, 100.00, 50.00, '02:00', '01:30', '01:00', 3),
-('Extensão de Cílios Volume Russo', 200.00, 120.00, 70.00, '02:30', '01:40', '01:10', 3),
-('Design de Sobrancelhas', 80.00, 50.00, 30.00, '00:40', '00:30', '00:20', 2),
-('Micropigmentação de Sobrancelhas', 250.00, 150.00, 80.00, '03:00', '02:00', '01:30', 2),
-('Henna para Sobrancelhas', 70.00, 40.00, 20.00, '01:00', '00:45', '00:30', 2),
-('Maquiagem Social', 100.00, 0.00, 0.00, '01:30', '00:00', '00:00', 1),
-('Maquiagem para Noivas', 300.00, 0.00, 0.00, '03:00', '00:00', '00:00', 1),
-('Lifting de Cílios', 120.00, 80.00, 40.00, '01:30', '01:00', '00:45', 3),
-('Maquiagem Artística', 200.00, 0.00, 0.00, '02:00', '00:00', '00:00', 1),
-('Maquiagem para Eventos', 150.00, 0.00, 0.00, '02:00', '00:00', '00:00', 1);
-
+('Extensão de Cílios Fio a Fio', 150.00, 100.00, 50.00, '02:00', '01:30', '01:00', TRUE, FALSE, TRUE, TRUE, 3),
+('Extensão de Cílios Volume Russo', 200.00, 120.00, 70.00, '02:30', '01:40', '01:10', TRUE, FALSE, TRUE, TRUE, 3),
+('Design de Sobrancelhas', 80.00, 50.00, 30.00, '00:40', '00:30', '00:20', TRUE, FALSE, TRUE, TRUE, 2),
+('Micropigmentação de Sobrancelhas', 250.00, 150.00, 80.00, '03:00', '02:00', '01:30', TRUE, FALSE, TRUE, TRUE, 2),
+('Henna para Sobrancelhas', 70.00, 40.00, 20.00, '01:00', '00:45', '00:30', TRUE, FALSE, TRUE, TRUE, 2),
+('Maquiagem Social', 100.00, 0.00, 0.00, '01:30', '00:00', '00:00', TRUE, FALSE, FALSE, FALSE, 1),
+('Maquiagem para Noivas', 300.00, 0.00, 0.00, '03:00', '00:00', '00:00', TRUE, FALSE, FALSE, FALSE, 1),
+('Lifting de Cílios', 120.00, 80.00, 40.00, '01:30', '01:00', '00:45', TRUE, TRUE, TRUE, TRUE, 3),
+('Maquiagem Artística', 200.00, 0.00, 0.00, '02:00', '00:00', '00:00', TRUE, FALSE, FALSE, FALSE, 1),
+('Maquiagem para Eventos', 150.00, 0.00, 0.00, '02:00', '00:00', '00:00', TRUE, FALSE, FALSE, FALSE, 1);
 
 INSERT INTO pergunta (pergunta, pergunta_ativa, pergunta_tipo)
 VALUES 
@@ -391,8 +389,6 @@ VALUES
 (9, 'Positiva', 4),
 (10, 'Positiva', 5);
 
-
-
 INSERT INTO profissional (id_usuario, numero_avaliacoes, media_nota, qualificacoes, especialidade)
 VALUES 
 (2, 10, 4.9, 'Especialista em Extensão de Cílios', 'Cílios'),
@@ -464,21 +460,18 @@ INSERT INTO login_logoff (logi, data_horario, fk_usuario) VALUES
 ('LOGOF', '2023-02-15 10:00:00', 1),
 ('LOGIN', '2023-04-01 09:00:00', 1),
 ('LOGOF', '2023-04-01 10:00:00', 1),
-
 ('LOGIN', '2023-01-05 11:00:00', 2),
 ('LOGOF', '2023-01-05 12:00:00', 2),
 ('LOGIN', '2023-01-25 09:00:00', 2),
 ('LOGOF', '2023-01-25 10:00:00', 2),
 ('LOGIN', '2023-02-05 09:00:00', 2),
 ('LOGOF', '2023-02-05 10:00:00', 2),
-
 ('LOGIN', '2023-02-10 08:00:00', 3),
 ('LOGOF', '2023-02-10 09:00:00', 3),
 ('LOGIN', '2023-03-15 08:00:00', 3),
 ('LOGOF', '2023-03-15 09:00:00', 3),
 ('LOGIN', '2023-05-20 08:00:00', 3),
 ('LOGOF', '2023-05-20 09:00:00', 3),
-
 ('LOGIN', '2023-02-15 13:00:00', 4),
 ('LOGOF', '2023-02-15 14:00:00', 4),
 
@@ -487,6 +480,7 @@ INSERT INTO login_logoff (logi, data_horario, fk_usuario) VALUES
 ('LOGIN', '2023-03-05 08:00:00', 5),
 ('LOGOF', '2023-03-05 09:00:00', 5),
 ('LOGIN', '2023-06-15 08:00:00', 5),
+
 ('LOGOF', '2023-06-15 09:00:00', 5),
 
 ('LOGIN', '2023-03-10 09:30:00', 6),

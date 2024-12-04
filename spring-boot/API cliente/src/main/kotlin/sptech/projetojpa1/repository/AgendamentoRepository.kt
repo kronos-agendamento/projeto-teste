@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository
 import sptech.projetojpa1.domain.Agendamento
 import sptech.projetojpa1.domain.Usuario
 import sptech.projetojpa1.dto.agendamento.AgendamentoDTO
-import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalDate
 
 @Repository
 interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
@@ -289,25 +289,20 @@ WHERE
 
 
     @Query(
-        """
+        nativeQuery = true, value = """ 
         SELECT 
-            DATE_FORMAT(MIN(data_horario), '%Y-%m-01') AS data_horario,
-            COUNT(*) AS quantidade_agendamentos
-        FROM 
-            agendamento
-        WHERE 
-            data_horario BETWEEN :startDate AND :endDate
-        GROUP BY 
-            YEAR(data_horario), MONTH(data_horario)
-        ORDER BY 
-            YEAR(data_horario) DESC, MONTH(data_horario) DESC
-        """,
-        nativeQuery = true
+                COUNT(*) AS quantidade_agendamentos
+            FROM 
+                agendamento
+            WHERE 
+                data_horario >= DATE_SUB(CURDATE(), INTERVAL 5 MONTH)
+            GROUP BY 
+                YEAR(data_horario), MONTH(data_horario)
+            ORDER BY 
+                YEAR(data_horario) DESC, MONTH(data_horario) DESC;
+        """
     )
-    fun findAgendamentosPorIntervalo(
-        @Param("startDate") startDate: LocalDate,
-        @Param("endDate") endDate: LocalDate
-    ): List<Array<Any>>
+    fun findAgendamentosConcluidosUltimos5Meses(): List<Int>
 
     @Query("SELECT a FROM Agendamento a WHERE a.dataHorario BETWEEN :dataInicio AND :dataFim")
     fun findByDataHorarioBetween(
@@ -340,6 +335,26 @@ WHERE
     )
     fun buscarDiaMaisAgendadoPorUsuario(idUsuario: Int): String
 
+    @Query(
+        """
+        SELECT 
+            DATE_FORMAT(MIN(data_horario), '%Y-%m-01') AS data_horario,
+            COUNT(*) AS quantidade_agendamentos
+        FROM 
+            agendamento
+        WHERE 
+            data_horario BETWEEN :startDate AND :endDate
+        GROUP BY 
+            YEAR(data_horario), MONTH(data_horario)
+        ORDER BY 
+            YEAR(data_horario) DESC, MONTH(data_horario) DESC
+        """,
+        nativeQuery = true
+    )
+    fun findAgendamentosPorIntervalo(
+        @Param("startDate") startDate: LocalDate,
+        @Param("endDate") endDate: LocalDate
+    ): List<Array<Any>>
 
     @Query(
         """
@@ -375,6 +390,7 @@ WHERE
         WHERE 
             u.id_usuario = :usuarioId  -- ID do usuário específico
             AND DATE_FORMAT(a.data_horario, '%Y-%m') = :mesAno  -- Mês e ano específicos no formato YYYY-MM
+            AND a.data_horario >= CURDATE() - INTERVAL 1 YEAR  -- Apenas procedimentos do último ano
         GROUP BY 
             e.especificacao
         ORDER BY 
@@ -406,4 +422,23 @@ SELECT new sptech.projetojpa1.dto.agendamento.AgendamentoDTO(
     fun findAllByUsuario(usuario: Usuario): List<Agendamento>
 
     fun findByTipoAgendamento(tipoAgendamento: String): List<Agendamento>
+
+    @Query(
+        """
+    SELECT 
+        CASE 
+            WHEN LOWER(:tipoAgendamento) = 'colocacao' THEN e.preco_colocacao 
+            WHEN LOWER(:tipoAgendamento) = 'manutencao' THEN e.preco_manutencao 
+            WHEN LOWER(:tipoAgendamento) = 'retirada' THEN e.preco_retirada 
+            ELSE NULL 
+        END 
+    FROM especificacao e 
+    WHERE e.id_especificacao_procedimento = :idEspecificacao
+    """, nativeQuery = true
+    )
+    fun findPrecoByTipoAgendamento(
+        @Param("idEspecificacao") idEspecificacao: Int,
+        @Param("tipoAgendamento") tipoAgendamento: String
+    ): Double?
+
 }

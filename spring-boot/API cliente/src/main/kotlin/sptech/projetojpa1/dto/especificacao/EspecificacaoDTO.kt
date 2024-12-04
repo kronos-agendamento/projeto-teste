@@ -40,6 +40,14 @@ data class EspecificacaoDTO(
     @field:NotBlank(message = "O tempo de retirada é obrigatório")
     val tempoRetirada: String? = null,
 
+    val homecare: Boolean? = null,
+
+    val colocacao: Boolean? = null,
+
+    val manutencao: Boolean? = null,
+
+    val retirada: Boolean? = null,
+
     @field:NotNull(message = "Procedimento é obrigatório")
     val procedimento: Int? = null
 )

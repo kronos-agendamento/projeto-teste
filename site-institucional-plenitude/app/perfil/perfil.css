@@ -13,6 +13,8 @@ body {
   padding: 0;
 }
 
+
+
 .corpo {
   display: flex;
   background-color: #ffffff;
@@ -479,7 +481,7 @@ Dados do usuário
   display: inline-block;
 }
 
-.form-group input[type="number"] + input[type="number"] {
+.form-group input[type="number"]+input[type="number"] {
   margin-left: 20px;
 }
 
@@ -749,6 +751,7 @@ td {
   cursor: pointer;
 }
 
+
 #horaInicio,
 #horaFim,
 #horaInicioBlock,
@@ -766,9 +769,10 @@ td {
   margin-top: -30px;
 }
 
-#horarioBlock {
+#horarioBlock{
   margin-top: -20px;
 }
+
 
 #notification {
   position: fixed;
@@ -804,19 +808,6 @@ td {
   padding: 20px;
   margin-bottom: 20px;
   margin-left: 4.3%;
-  margin-top: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  position: relative;
-}
-
-.form-section2 {
-  width: 25vw;
-  height: 690px;
-  background-color: #fff;
-  padding: 20px;
-  margin-bottom: 20px;
-  margin-left: 1%;
   margin-top: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);

@@ -252,7 +252,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Inicializar semana atual ao carregar a página
   renderWeek();
-  new window.VLibras.Widget('https://vlibras.gov.br/app');
+  new window.VLibras.Widget("https://vlibras.gov.br/app");
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -270,8 +270,8 @@ async function carregarImagem2() {
   const perfilImage = document.getElementById("perfilImage");
 
   if (!cpf) {
-      console.log("CPF não encontrado.");
-      return;
+    console.log("CPF não encontrado.");
+    return;
   }
 
   try {
@@ -279,21 +279,21 @@ async function carregarImagem2() {
           method: "GET",
       });
 
-      if (response.ok) {
-          const blob = await response.blob(); // Recebe a imagem como Blob
-          const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
+    if (response.ok) {
+      const blob = await response.blob(); // Recebe a imagem como Blob
+      const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
 
-          // Define a URL da imagem carregada como src do img
-          perfilImage.src = imageUrl;
-          perfilImage.alt = "Foto do usuário";
-          perfilImage.style.width = "20vh";
-          perfilImage.style.height = "20vh";
-          perfilImage.style.borderRadius = "300px";
-      } else {
-          console.log("Imagem não encontrada para o CPF informado.");
-      }
+      // Define a URL da imagem carregada como src do img
+      perfilImage.src = imageUrl;
+      perfilImage.alt = "Foto do usuário";
+      perfilImage.style.width = "20vh";
+      perfilImage.style.height = "20vh";
+      perfilImage.style.borderRadius = "300px";
+    } else {
+      console.log("Imagem não encontrada para o CPF informado.");
+    }
   } catch (error) {
-      console.error("Erro ao buscar a imagem:", error);
+    console.error("Erro ao buscar a imagem:", error);
   }
 }
 

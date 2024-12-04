@@ -863,7 +863,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // constantes dos gráficos de usabilidade
     let dataChartUsabilidade1 = null;
-    let labelsChartUsabilidade1 = null;
+    let labelsChartUsabilidade1 = lastFiveMonths;
     const ctxUsabilidade1 = document.getElementById('chartUsabilidade1').getContext('2d');
     let chartUsabilidade1;
 
@@ -888,50 +888,50 @@ document.addEventListener('DOMContentLoaded', function () {
     const ctxOperacional5 = document.getElementById('chartValorTotalUltimoMesOperacional5').getContext('2d');
     let chartValorTotalUltimoMesOperacional5;
 
-
+    
 
 
     // Funções para atualização operacional
     function updateChartOperacional1(data) {
-        // Mapeia os dados de status a partir do objeto
-        const statusAgendamentos = {
-            agendados: data.agendados || 0,  // Valor padrão caso a propriedade não esteja presente
-            confirmados: data.confirmados || 0,
-            realizados: data.realizados || 0,
-            cancelados: data.cancelados || 0,
-            reagendados: data.reagendados || 0
-        };
+    // Mapeia os dados de status a partir do objeto
+    const statusAgendamentos = {
+        agendados: data.agendados || 0,  // Valor padrão caso a propriedade não esteja presente
+        confirmados: data.confirmados || 0,
+        realizados: data.realizados || 0,
+        cancelados: data.cancelados || 0,
+        reagendados: data.reagendados || 0
+    };
 
-        // Atualiza os dados do gráfico na ordem desejada, independentemente da ordem de chegada
-        dataChartOperacional1 = [
-            statusAgendamentos.agendados,
-            statusAgendamentos.confirmados,
-            statusAgendamentos.realizados,
-            statusAgendamentos.cancelados,
-            statusAgendamentos.reagendados
-        ];
+    // Atualiza os dados do gráfico na ordem desejada, independentemente da ordem de chegada
+    dataChartOperacional1 = [
+        statusAgendamentos.agendados,
+        statusAgendamentos.confirmados,
+        statusAgendamentos.realizados,
+        statusAgendamentos.cancelados,
+        statusAgendamentos.reagendados
+    ];
 
-        // Chama a função para criar/atualizar o gráfico
-        createChartOperacional1();
+    // Chama a função para criar/atualizar o gráfico
+    createChartOperacional1();
     }
     function updateChartReceitaProcedimentosOperacional4(data) {
         // Usando Object.entries() para obter as chaves (procedimentos) e valores (receita)
         const labels = Object.keys(data);  // Isso pega as chaves: ["Maquiagem", "Sobrancelha", "Cilios"]
         const dataChartReceita = Object.values(data);  // Isso pega os valores: [4550, 2540, 1720]
-
+    
         // Agora você pode passar os 'labels' e 'dataChartReceita' para a função de criação do gráfico
         createChartReceitaProcedimentosOperacional4(labels, dataChartReceita);
     }
     function updateChartTempoGastoOperacional2(data) {
-        // Mapeia os dados recebidos (objeto) para labels e valores do gráfico
-        const labels = Object.keys(data);  // Procedimentos (ex: Maquiagem, Sobrancelha, etc.)
-        const dataChart = Object.values(data);  // Tempos totais (ex: 350, 120, etc.)
+         // Mapeia os dados recebidos (objeto) para labels e valores do gráfico
+    const labels = Object.keys(data);  // Procedimentos (ex: Maquiagem, Sobrancelha, etc.)
+    const dataChart = Object.values(data);  // Tempos totais (ex: 350, 120, etc.)
 
-        // Se o gráfico já foi criado, apenas atualiza os dados e rótulos
-
+    // Se o gráfico já foi criado, apenas atualiza os dados e rótulos
+    
         // Se o gráfico ainda não existe, cria-o pela primeira vez
         createChartTempoGastoProcedimentosOperacional2(labels, dataChart);
-
+    
     }
     function updateChartProcedimentoRealizadosTrimestreOperacional3(data) {
         // Mapeia os labels (chaves do objeto) e os dados (valores do objeto)
@@ -947,8 +947,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const labels = Object.keys(data);  // Procedimentos (ex: Maquiagem, Sobrancelha, etc.)
         const dataChart = Object.values(data);  // Tempos totais (ex: 350, 120, etc.)
 
-        // Se o gráfico já foi criado, apenas atualiza os dados e rótulos
-
+    // Se o gráfico já foi criado, apenas atualiza os dados e rótulos
+    
         // Se o gráfico ainda não existe, cria-o pela primeira vez
         createChartValorTotalUltimoMesOperacional5(labels, dataChart);
     }
@@ -1322,7 +1322,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Criação de gráficos - Usabilidade
     function createChartUsabilidade1() {
-        if (!dataChartUsabilidade1 || !labelsChartUsabilidade1) return;
+        if (!dataChartUsabilidade1  || !labelsChartUsabilidade1) return;
 
         if (chartUsabilidade1) chartUsabilidade1.destroy();
 
@@ -1368,16 +1368,16 @@ document.addEventListener('DOMContentLoaded', function () {
     // Criação de gráficos - Operacional
     function createChartOperacional1() {
         if (!dataChartOperacional1) return;
-
+    
         if (chartOperacional1) chartOperacional1.destroy();
-
+    
         chartOperacional1 = new Chart(ctxOperacional1, {
             type: 'bar',
             data: {
                 labels: ['Agendados', 'Confirmados', 'Realizados', 'Cancelados', 'Reagendados'],
                 datasets: [{
                     data: dataChartOperacional1,
-                    backgroundColor: ['#FF6384', '#D2135D', '#E84E8A', '#D94F4F', '#C13584']
+                    backgroundColor: ['#FF6384',  '#D2135D', '#E84E8A', '#D94F4F','#C13584']
 
                     ,
                     borderColor: '#D2135D',
@@ -1456,7 +1456,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     // Função para criar o gráfico pela primeira vez
     function createChartTempoGastoProcedimentosOperacional2(labels, dataChart) {
-        const ctxOperacional2 = document.getElementById('chartTempoGastoProcedimentosOperacional2').getContext('2d');
+    const ctxOperacional2 = document.getElementById('chartTempoGastoProcedimentosOperacional2').getContext('2d');
 
 
         if (chartTempoGastoProcedimentos) chartTempoGastoProcedimentos.destroy();
@@ -1608,14 +1608,14 @@ document.addEventListener('DOMContentLoaded', function () {
         return valor.toFixed(0); // Formata o número para exibir como inteiro
     }
 
-
+    
 
     // Atualiza os KPIs e gráficos em intervalos regulares (opcional)
     window.recarregarKPIs = function () {
         updateKPIs(); // Chama a função que atualiza os KPIs
     } // Exemplo de atualização a cada 30 segundos
 
-    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
 });
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -1633,23 +1633,21 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-
-
 // // timer para o marcar tempo que leva para realizar um agendamento!
 
 //     let seconds = 0; // Variável para armazenar o tempo em segundos
-
+    
 //     const timer = setInterval(() => {
 //       seconds++; // Incrementa a variável a cada segundo
 //       console.log(`Segundos: ${seconds}`);
 //     }, 1000); // 1000 ms = 1 segundo
-
+    
 //     // Para parar o timer depois de um tempo, por exemplo, após 10 segundos:
 //     setTimeout(() => {
 //       clearInterval(timer); // Para o timer
 //       console.log("Timer parado");
 //     }, 10000); // 10000 ms = 10 segundos
-
+    
 
 
 //     function sendSecondsToServer() {
@@ -1669,21 +1667,21 @@ document.addEventListener('DOMContentLoaded', function () {
 async function carregarImagem2() {
     const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução
     const perfilImage = document.getElementById("perfilImage");
-
+  
     if (!cpf) {
         console.log("CPF não encontrado.");
         return;
     }
-
+  
     try {
         const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario-cpf/${cpf}`, {
             method: "GET",
         });
-
+  
         if (response.ok) {
             const blob = await response.blob(); // Recebe a imagem como Blob
             const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
-
+  
             // Define a URL da imagem carregada como src do img
             perfilImage.src = imageUrl;
             perfilImage.alt = "Foto do usuário";
@@ -1696,7 +1694,7 @@ async function carregarImagem2() {
     } catch (error) {
         console.error("Erro ao buscar a imagem:", error);
     }
-}
-
-// Carrega a imagem automaticamente quando a página termina de carregar
-window.onload = carregarImagem2;
+  }
+  
+  // Carrega a imagem automaticamente quando a página termina de carregar
+  window.onload = carregarImagem2;

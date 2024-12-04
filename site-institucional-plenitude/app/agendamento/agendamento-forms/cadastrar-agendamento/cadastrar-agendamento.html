@@ -1,228 +1,375 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7RnMgdvoROHW_o-4pQeM3LJyNMwxem6o&libraries=places"></script>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7RnMgdvoROHW_o-4pQeM3LJyNMwxem6o&libraries=places">
-  </script>
+    <title>Cadastrar Agendamento | KronosBooking</title>
 
-  <title>Cadastrar Agendamento | KronosBooking</title>
+    <!-- Favicons -->
+    <link href="../../../assets/favicon.png" rel="icon" />
 
-  <!-- Favicons -->
-  <link href="../../../assets/favicon.png" rel="icon" />
+    <link rel="stylesheet" href="cadastrar-agendamento.css" />
+    <link rel="stylesheet" href="../../agendamento.css" />
+    <script src="cadastrar-agendamento.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
 
-  <link rel="stylesheet" href="cadastrar-agendamento.css" />
-  <link rel="stylesheet" href="../../agendamento.css" />
-  <script src="cadastrar-agendamento.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-</head>
-
-<body>
-  <div class="corpo">
-    <div class="navigation">
-      <li class="list" style="
-          width: 30px;
-          height: 30px;
-          list-style: none;
-          display: flex;
-          justify-content: center;
-          margin-top: 5vh;
-        ">
-        <div class="imagem-perfil" style="
-            width: 20vh;
-            height: 20vh;
-            border-radius: 300px;
+  <body>
+    <div class="corpo">
+      <div class="navigation">
+        <li
+          class="list"
+          style="
+            width: 30px;
+            height: 30px;
+            list-style: none;
             display: flex;
             justify-content: center;
-          ">
-         <img id="perfilImage"  alt="Foto do usuário" style="
-              width: 53vh;
-              height: 23vh;
+            margin-top: 5vh;
+          "
+        >
+          <div
+            class="imagem-perfil"
+            style="
+              width: 20vh;
+              height: 20vh;
+              border-radius: 300px;
               display: flex;
               justify-content: center;
-              align-items: center;
-            " />
-        </div>
-      </li>
-      <li id="userName" style="
-          margin-top: 20vh;
-          list-style: none;
-          color: white;
-          font-weight: 600;
-        "></li>
-      <li id="userInsta" style="
-          list-style: none;
-          color: white;
-          font-weight: 200;
-          font-size: 12px;
-        "></li>
+            "
+          >
+            <img
+              id="perfilImage"
+              alt="Foto do usuário"
+              style="
+                width: 53vh;
+                height: 23vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            />
+          </div>
+        </li>
+        <li
+          id="userName"
+          style="
+            margin-top: 20vh;
+            list-style: none;
+            color: white;
+            font-weight: 600;
+          "
+        ></li>
+        <li
+          id="userInsta"
+          style="
+            list-style: none;
+            color: white;
+            font-weight: 200;
+            font-size: 12px;
+          "
+        ></li>
 
-      <ul style="margin-top: 4%; position: absolute">
-        <li class="list">
-          <a href="../../../index/index.html">
-            <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
-            <span class="title">Início </span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../../../perfil/perfil.html">
-            <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
-            <span class="title">Perfil</span>
-          </a>
-        </li>
-        <li class="list active">
-          <a href="../../agendamento.html">
-            <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
-            <span class="title">Agendamentos</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../../../anamnese/anamnese.html">
-            <span class="icon"><ion-icon name="document-text-outline"></ion-icon></span>
-            <span class="title">Anamneses</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../../../clientes/clientes.html">
-            <span class="icon"><ion-icon name="person-add-outline"></ion-icon></span>
-            <span class="title">Clientes</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../../../procedimento/procedimento.html">
-            <span class="icon"><ion-icon name="brush-outline"></ion-icon></span>
-            <span class="title">Procedimentos</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../../../dashboard/dashboard.html">
-            <span class="icon"><ion-icon name="stats-chart-outline"></ion-icon></span>
-            <span class="title">Dashboard</span>
-          </a>
-        </li>
-        <li class="list">
-          <a href="../../../../index.html">
-            <span class="icon"><ion-icon name="exit-outline"></ion-icon></span>
-            <span class="title">Sair</span>
-          </a>
-        </li>
-      </ul>
-    </div>
+        <ul style="margin-top: 4%; position: absolute">
+          <li class="list">
+            <a href="../../../index/index.html">
+              <span class="icon"
+                ><ion-icon name="home-outline"></ion-icon
+              ></span>
+              <span class="title">Início </span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../../../perfil/perfil.html">
+              <span class="icon"
+                ><ion-icon name="people-outline"></ion-icon
+              ></span>
+              <span class="title">Perfil</span>
+            </a>
+          </li>
+          <li class="list active">
+            <a href="../../agendamento.html">
+              <span class="icon"
+                ><ion-icon name="calendar-outline"></ion-icon
+              ></span>
+              <span class="title">Agendamentos</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../../../anamnese/anamnese.html">
+              <span class="icon"
+                ><ion-icon name="document-text-outline"></ion-icon
+              ></span>
+              <span class="title">Anamneses</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../../../clientes/clientes.html">
+              <span class="icon"
+                ><ion-icon name="person-add-outline"></ion-icon
+              ></span>
+              <span class="title">Clientes</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../../../procedimento/procedimento.html">
+              <span class="icon"
+                ><ion-icon name="brush-outline"></ion-icon
+              ></span>
+              <span class="title">Procedimentos</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../../../dashboard/dashboard.html">
+              <span class="icon"
+                ><ion-icon name="stats-chart-outline"></ion-icon
+              ></span>
+              <span class="title">Dashboard</span>
+            </a>
+          </li>
+          <li class="list">
+            <a href="../../../../index.html">
+              <span class="icon"
+                ><ion-icon name="exit-outline"></ion-icon
+              ></span>
+              <span class="title">Sair</span>
+            </a>
+          </li>
+        </ul>
+      </div>
 
-    <main>
-      <header style="height: 14vh; width: 152vh; margin-left: 4.3%; margin-top: 23px;">
-        <div style="margin-top: -1%;">
-          <h1>Agendamentos</h1>
-          <p style="margin-top: -0.5%;">
-            Essa página é destinada para o cadastro de um novo agendamento.
-          </p>
-        </div>
-        <div id="notification" class="notification">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill"
-            viewBox="0 0 16 16">
-            <path
-              d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
-          </svg>
-          <span id="notification-message"></span>
-        </div>
-      </header>
-      <div class="back-content">
-        <div class="left-content">
-          <a href="../../agendamento.html" class="back-link">← Voltar para página de visualização dos agendamentos</a>
-          <section class="form-section" style="width: 151vh; margin-left: 4.5%;">
-            <div class="form-title">
-              <h2>Dados dos Agendamentos</h2>
-            </div>
-            <div class="content-form">
-              <div class="form-group form-mr form-input">
-                <label for="clientes">Pesquisar nome do cliente:</label>
-                <select id="clientes" name="clientes">
-                  <option value="">Selecione um cliente</option>
-                </select>
+      <main>
+        <header
+          style="
+            height: 14vh;
+            width: 152vh;
+            margin-left: 4.3%;
+            margin-top: 23px;
+          "
+        >
+          <div style="margin-top: -1%">
+            <h1>Agendamentos</h1>
+            <p style="margin-top: -0.5%">
+              Essa página é destinada para o cadastro de um novo agendamento.
+            </p>
+          </div>
+          <div id="notification" class="notification">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              fill="white"
+              class="bi bi-check-circle-fill"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z"
+              />
+            </svg>
+            <span id="notification-message"></span>
+          </div>
+        </header>
+        <div class="back-content">
+          <div class="left-content">
+            <a href="../../agendamento.html" class="back-link"
+              >← Voltar para página de visualização dos agendamentos</a
+            >
+            <section
+              class="form-section"
+              style="width: 151vh; margin-left: 4.5%"
+            >
+              <div class="form-title">
+                <h2>Dados dos Agendamentos</h2>
               </div>
-              <form class="form-flex">
+              <div class="content-form">
                 <div class="form-group form-mr form-input">
-                  <label for="procedimentos">Procedimento:</label>
-                  <select id="procedimentos" name="procedimentos">
-                    <option value="">Selecione um procedimento</option>
+                  <label for="clientes">Pesquisar nome do cliente:</label>
+                  <select id="clientes" name="clientes">
+                    <option value="">Selecione um cliente</option>
                   </select>
+                </div>
+                <form class="form-flex">
+                  <div class="form-group form-mr form-input">
+                    <label for="procedimentos">Procedimento:</label>
+                    <select id="procedimentos" name="procedimentos">
+                      <option value="">Selecione um procedimento</option>
+                    </select>
+                  </div>
+                  <div class="form-group form-input">
+                    <label for="tipo-atendimento">Tipo de Atendimento:</label>
+                    <select id="tipo-atendimento" name="tipo-atendimento">
+                      <option value="">Selecione o tipo de atendimento</option>
+                      <option value="Colocação" id="opcao-colocacao">
+                        Colocação
+                      </option>
+                      <option value="Manutenção" id="opcao-manutencao">
+                        Manutenção
+                      </option>
+                      <option value="Retirada" id="opcao-retirada">
+                        Remoção
+                      </option>
+                    </select>
+                  </div>
+                </form>
+
+                <form class="form-flex">
+                  <div
+                    class="form-group form-mr form-input"
+                    style="width: 100%"
+                  >
+                    <label for="especificacoes">Especificação:</label>
+                    <select
+                      id="especificacoes"
+                      name="especificacoes"
+                      disabled
+                      class="disabled-select"
+                      style="width: 100%"
+                    >
+                      <option value="">Selecione uma especificação</option>
+                    </select>
+                  </div>
+                  <div style="width: 100%">
+                    <div class="form-group form-input" style="width: 100%">
+                      <label for="localidade">Localidade:</label>
+                      <select id="localidade" name="localidade" disabled>
+                        <option value="">Selecione a localidade</option>
+                        <option value="Presencial">Presencial</option>
+                        <option value="Homecare">Homecare</option>
+                      </select>
+                    </div>
+                    <div
+                      style="
+                        display: flex;
+                        width: 100%;
+                        align-items: flex-start;
+                      "
+                    >
+                      <!-- Campo de CEP -->
+                      <div
+                        class="form-group hidden form-input"
+                        id="cep-group"
+                        style="width: 50%"
+                      >
+                        <label for="cep">CEP:</label>
+                        <input
+                          type="text"
+                          id="cep"
+                          placeholder="Insira o CEP"
+                          maxlength="9"
+                        />
+                      </div>
+
+                      <!-- Campo de Número -->
+                      <div
+                        class="form-group hidden form-input"
+                        id="numero-group"
+                        style="width: 50%; margin-left: 10px"
+                      >
+                        <label for="numero">Número:</label>
+                        <input
+                          type="text"
+                          id="numero"
+                          placeholder="Insira o número"
+                          maxlength="10"
+                        />
+                      </div>
+                    </div>
+
+                    <!-- Campo de endereço -->
+                    <div
+                      class="form-group hidden form-input"
+                      id="endereco-group"
+                      style="width: 100%"
+                    >
+                      <label for="endereco">Endereço:</label>
+                      <input
+                        type="text"
+                        id="endereco"
+                        placeholder="Insira o endereço da cliente ou do evento"
+                        readonly
+                        style="width: 100%"
+                      />
+                      <div id="taxa-total" class="hidden">
+                        <p>
+                          <strong>Taxa Total Cobrada:</strong>
+                          <span id="valor-taxa"></span>
+                        </p>
+                        <p>
+                          <strong>Total de Km's até o local:</strong>
+                          <span id="total-km"></span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+
+                <div class="form-group form-mr form-input">
+                  <label for="data">Escolha o melhor dia:</label>
+                  <input type="date" id="data" name="data" />
+                  <p id="data-selecionada"></p>
                 </div>
                 <div class="form-group form-input">
-                  <label for="tipo-atendimento">Tipo de Atendimento:</label>
-                  <select id="tipo-atendimento" name="tipo-atendimento">
-                    <option value="">Selecione o tipo de atendimento</option>
-                    <option value="Colocação" id="opcao-colocacao">Primeira Vez</option>
-                    <option value="Manutenção" id="opcao-manutencao">Manutenção</option>
-                    <option value="Retirada" id="opcao-retirada">Remoção</option>
-                    <option value="Homecare" id="opcao-homecare">Homecare</option>
-                    <option value="Estudio" id="opcao-estudio">Estudio</option>
-                    <option value="Evento" id="opcao-evento">Evento</option>
-                  </select>
-                </div>
-              </form>
-
-              <form class="form-flex">
-
-                <div class="form-group form-mr  form-input">
-                  <label for="especificacoes">Especificação:</label>
-                  <select id="especificacoes" name="especificacoes" disabled class="disabled-select">
-                    <option value="">Selecione uma especificação</option>
-                  </select>
+                  <label for="descricao"
+                    >Escolha o melhor horário dentro do dia:</label
+                  >
+                  <div id="horarios-disponiveis"></div>
                 </div>
 
+                <div id="orcamento-container" class="hidden">
+                  <p>Orçamento: <span id="orcamento"></span></p>
+                  <p id="orcamento-detalhe"></p>
+                </div>
 
-                <div class="form-group hidden form-input" id="endereco-group">
-                  <label for="endereco">Endereço:</label>
-                  <input type="text" id="endereco" placeholder="Insira o endereço da cliente ou do evento">
-
-
-                  <div id="taxa-total" class="hidden">
-                    <p>Taxa Total Cobrada: <span id="valor-taxa"></span></p>
-                    <p>Total de Km's até o local: <span id="total-km"></span></p>
+                <div class="button-container" style="gap: 24px">
+                  <div id="valor-total-container">
+                    <p id="valor-total-text"></p>
                   </div>
 
-                  <div class="button-container">
-                    <button type="button" class="save-button" id="calcular-taxa-button"
-                      onclick="calcularTaxa()">Calcular Taxa</button>
-                  </div>
+                  <button
+                    type="button"
+                    class="save-button"
+                    id="save-agendamento-button"
+                    style="padding: 10px 14px; font-size: 16px"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      fill="white"
+                      class="bi bi-check-circle-fill"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z"
+                      />
+                    </svg>
+                    Agendar
+                  </button>
                 </div>
-              </form>
-
-              <div class="form-group form-mr form-input">
-                <label for="data">Escolha o melhor dia:</label>
-                <input type="date" id="data" name="data" />
-                <p id="data-selecionada"></p>
               </div>
-              <div class="form-group form-input">
-                <label for="descricao">Escolha o melhor horário dentro do dia:</label>
-                <div id="horarios-disponiveis"></div>
-              </div>
-              <div class="button-container">
-                <button type="button" class="save-button" id="save-agendamento-button"
-                  style="padding: 10px 14px; font-size: 16px;">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
-                    class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                    <path
-                      d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
-                  </svg>
-                  Agendar
-                </button>
-              </div>
-            </div>
-          </section>
+            </section>
+          </div>
         </div>
-      </div>
-      <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-      <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    </main>
-  </div>
-
-  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-    <div vw class="enabled">
-        <div vw-access-button class="active"></div>
-        <div vw-plugin-wrapper></div> 
+        <script
+          type="module"
+          src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+        ></script>
+        <script
+          nomodule
+          src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+        ></script>
+      </main>
     </div>
-</body>
 
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper></div>
+    </div>
+  </body>
 </html>

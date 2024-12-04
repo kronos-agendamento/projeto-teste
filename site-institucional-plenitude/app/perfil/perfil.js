@@ -348,9 +348,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Preencher dados pessoais
         document.getElementById("nome").value = userData.nome || "";
         document.getElementById("nascimento").value = userData.dataNasc || "";
-        document.getElementById("telefone").value = formatPhoneNumber(
-          userData.telefone || ""
-        );
+        document.getElementById("telefone").value = formatPhoneNumber(userData.telefone || "");
         document.getElementById("cpf").value = userData.cpf || "";
         document.getElementById("genero").value = userData.genero || "";
         document.getElementById("instagram").value = userData.instagram || "";
@@ -465,12 +463,11 @@ fileInput.addEventListener('change', async (event) => {
   
 });
 
+
 // Função para buscar os dados do usuário por CPF
 async function fetchUserDataByCpf(cpf) {
   try {
-    const response = await fetch(
-      `http://localhost:8080/usuarios/buscar-por-cpf/${cpf}`
-    );
+    const response = await fetch(`http://localhost:8080/usuarios/buscar-por-cpf/${cpf}`);
     if (!response.ok) {
       throw new Error(`Erro ao buscar dados do usuário: ${response.status}`);
     }
@@ -490,9 +487,7 @@ async function carregarDadosUsuario() {
     if (userData) {
       document.getElementById("nome").value = userData.nome || "";
       document.getElementById("nascimento").value = userData.dataNasc || "";
-      document.getElementById("telefone").value = formatPhoneNumber(
-        userData.telefone || ""
-      ); // Garantindo que seja string
+      document.getElementById("telefone").value = formatPhoneNumber(userData.telefone || ""); // Garantindo que seja string
       document.getElementById("cpf").value = userData.cpf || "";
       document.getElementById("genero").value = userData.genero || "";
       document.getElementById("instagram").value = userData.instagram || "";
@@ -514,6 +509,9 @@ function formatPhoneNumber(phoneNumber) {
   }
   return phoneNumber;
 }
+
+
+
 
 async function fetchUserDataByCpf(cpf) {
   try {
@@ -568,8 +566,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Dados do usuário
     document.getElementById("nome").value = userData.nome || "";
     document.getElementById("nascimento").value = userData.dataNasc || "";
-    document.getElementById("telefone").value =
-      formatPhoneNumber(userData.telefone) || "";
+    document.getElementById("telefone").value = formatPhoneNumber(userData.telefone) || "";
     document.getElementById("cpf").value = userData.cpf || "";
     document.getElementById("genero").value = userData.genero || "";
     document.getElementById("instagram").value = userData.instagram || "";
@@ -604,19 +601,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       // Horário de funcionamento
       if (userData.empresa.horarioFuncionamento) {
-        document.getElementById("diaInicio").value =
-          userData.empresa.horarioFuncionamento.diaInicio || "";
-        document.getElementById("diaFim").value =
-          userData.empresa.horarioFuncionamento.diaFim || "";
-        document.getElementById("horaInicio").value =
-          userData.empresa.horarioFuncionamento.horarioAbertura || "";
-        document.getElementById("horaFim").value =
-          userData.empresa.horarioFuncionamento.horarioFechamento || "";
+        document.getElementById("diaInicio").value = userData.empresa.horarioFuncionamento.diaInicio || "";
+        document.getElementById("diaFim").value = userData.empresa.horarioFuncionamento.diaFim || "";
+        document.getElementById("horaInicio").value = userData.empresa.horarioFuncionamento.horarioAbertura || "";
+        document.getElementById("horaFim").value = userData.empresa.horarioFuncionamento.horarioFechamento || "";
       }
     } else {
       console.warn("Dados da empresa não encontrados.");
     }
   }
+
+
 
   function formatPhoneNumber(phoneNumber) {
     if (!phoneNumber) return "";
@@ -643,9 +638,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function formatPhoneNumberToLong(phoneNumber) {
     if (!phoneNumber) return null;
-    const cleaned = phoneNumber.replace(/\D/g, ""); // Remove todos os caracteres não numéricos
+    const cleaned = phoneNumber.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
     return parseInt(cleaned, 10); // Converte para número
   }
+
 
   function salvarNomeLocalStorage() {
     const nome = document.getElementById("nome").value;
@@ -660,6 +656,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       document.getElementById("userName").textContent = nome;
     }
   }
+
 
   document.addEventListener("DOMContentLoaded", function () {
     exibirNomeUsuario();
@@ -721,6 +718,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const nome = localStorage.getItem("nome");
   const instagram = localStorage.getItem("instagram");
 
+
   if (nome && instagram) {
     document.getElementById("userName").textContent = nome;
     document.getElementById("userInsta").textContent = instagram;
@@ -740,6 +738,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const data = await response.json();
 
       if (data.erro) {
+        alert("CEP não encontrado.");
         return;
       }
 
@@ -760,6 +759,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Verifica se o CEP tem 8 dígitos
       buscaEndereco(cep);
     } else {
+      alert("Por favor, insira um CEP válido.");
     }
   });
 });
@@ -921,15 +921,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Mockar dias da semana no select
-    const dias = [
-      "Domingo",
-      "Segunda",
-      "Terça",
-      "Quarta",
-      "Quinta",
-      "Sexta",
-      "Sábado",
-    ];
+    const dias = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
 
     dias.forEach((dia) => {
       populateSelect("diasInicio", dia);
@@ -943,6 +935,8 @@ document.addEventListener("DOMContentLoaded", function () {
       populateSelect("horarioFim", hora);
     }
   });
+
+
 
   document.addEventListener("DOMContentLoaded", function () {
     const nomeInput = document.getElementById("nome");
@@ -1052,9 +1046,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Seleciona os campos de input e o botão de envio de foto
     const lockIcons = document.querySelectorAll("#personalForm .lock-icon");
-    const fields = document.querySelectorAll(
-      "#personalForm input, #personalForm select"
-    );
+    const fields = document.querySelectorAll("#personalForm input, #personalForm select");
     const saveButton = document.getElementById("save-usuario-button");
 
     const fileInput = document.getElementById("file"); // Campo de upload de foto
@@ -1165,6 +1157,8 @@ document.addEventListener("DOMContentLoaded", () => {
 new window.VLibras.Widget("https://vlibras.gov.br/app");
 });
 
+
+
 async function carregarImagem() {
   const cpf = document.getElementById("cpf").value.trim(); // Captura o valor do CPF a cada execução
   const imageContainer = document.getElementById("imageContainer");
@@ -1173,8 +1167,8 @@ async function carregarImagem() {
   imageContainer.innerHTML = "";
 
   if (!cpf) {
-    imageContainer.innerHTML = "<p style='color: red;'>CPF não encontrado.</p>";
-    return;
+      imageContainer.innerHTML = "<p style='color: red;'>CPF não encontrado.</p>";
+      return;
   }
 
   try {
@@ -1185,23 +1179,21 @@ async function carregarImagem() {
       }
     );
 
-    if (response.ok) {
-      const blob = await response.blob(); // Recebe a imagem como Blob
-      const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
+      if (response.ok) {
+          const blob = await response.blob(); // Recebe a imagem como Blob
+          const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
 
-      // Cria um elemento de imagem e exibe na div
-      const img = document.createElement("img");
-      img.src = imageUrl;
-      img.alt = "Foto do usuário";
-      imageContainer.appendChild(img);
-    } else {
-      imageContainer.innerHTML =
-        "<p style='color: red;'>Imagem não encontrada para o CPF informado.</p>";
-    }
+          // Cria um elemento de imagem e exibe na div
+          const img = document.createElement("img");
+          img.src = imageUrl;
+          img.alt = "Foto do usuário";
+          imageContainer.appendChild(img);
+      } else {
+          imageContainer.innerHTML = "<p style='color: red;'>Imagem não encontrada para o CPF informado.</p>";
+      }
   } catch (error) {
-    console.error("Erro ao buscar a imagem:", error);
-    imageContainer.innerHTML =
-      "<p style='color: red;'>Erro ao buscar a imagem. Tente novamente.</p>";
+      console.error("Erro ao buscar a imagem:", error);
+      imageContainer.innerHTML = "<p style='color: red;'>Erro ao buscar a imagem. Tente novamente.</p>";
   }
 }
 
@@ -1210,13 +1202,14 @@ window.onload = function () {
   carregarImagem();
 } ;
 
+
 async function carregarImagem2() {
   const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução
   const perfilImage = document.getElementById("perfilImage");
 
   if (!cpf) {
-    console.log("CPF não encontrado.");
-    return;
+      console.log("CPF não encontrado.");
+      return;
   }
 
   try {
@@ -1227,21 +1220,21 @@ async function carregarImagem2() {
       }
     );
 
-    if (response.ok) {
-      const blob = await response.blob(); // Recebe a imagem como Blob
-      const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
+      if (response.ok) {
+          const blob = await response.blob(); // Recebe a imagem como Blob
+          const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
 
-      // Define a URL da imagem carregada como src do img
-      perfilImage.src = imageUrl;
-      perfilImage.alt = "Foto do usuário";
-      perfilImage.style.width = "20vh";
-      perfilImage.style.height = "20vh";
-      perfilImage.style.borderRadius = "300px";
-    } else {
-      console.log("Imagem não encontrada para o CPF informado.");
-    }
+          // Define a URL da imagem carregada como src do img
+          perfilImage.src = imageUrl;
+          perfilImage.alt = "Foto do usuário";
+          perfilImage.style.width = "20vh";
+          perfilImage.style.height = "20vh";
+          perfilImage.style.borderRadius = "300px";
+      } else {
+          console.log("Imagem não encontrada para o CPF informado.");
+      }
   } catch (error) {
-    console.error("Erro ao buscar a imagem:", error);
+      console.error("Erro ao buscar a imagem:", error);
   }
 }
 

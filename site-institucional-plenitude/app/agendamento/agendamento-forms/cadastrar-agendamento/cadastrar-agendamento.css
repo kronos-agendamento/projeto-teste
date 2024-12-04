@@ -82,7 +82,6 @@
   margin-top: 20px;
 }
 
-
 .hidden {
   display: none;
 }
@@ -177,11 +176,22 @@
 }
 
 .disabled-select {
+  pointer-events: none;
   opacity: 0.5;
-  pointer-events: none; /* Não permite clicar no select */
 }
 
 .disabled-select:not([disabled]) {
   opacity: 1;
   pointer-events: auto;
+}
+
+#valor-total-container {
+  margin-top: 1rem;
+  text-align: right;
+  font-weight: bold;
+  color: #333;
+}
+
+#valor-total-text {
+  font-size: 1.2rem;
 }

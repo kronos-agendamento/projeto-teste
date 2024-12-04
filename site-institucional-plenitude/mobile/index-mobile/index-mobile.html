@@ -358,6 +358,7 @@
             },
             (response, status) => {
                 if (status !== 'OK') {
+                    alert('Erro ao calcular a distância: ' + status);
                     return;
                 }
 
