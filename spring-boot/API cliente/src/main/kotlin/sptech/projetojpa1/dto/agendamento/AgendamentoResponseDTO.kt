@@ -19,5 +19,11 @@ data class AgendamentoResponseDTO(
     var especificacao: String? = null,
     var fkEspecificacao: Int? = null,
     var fkProcedimento: Int? = null,
-    var statusAgendamento: Status? = null
+    var statusAgendamento: Status? = null,
+
+    // Novos campos
+    var cep: String? = null,
+    var logradouro: String? = null,
+    var numero: String? = null
 )
+

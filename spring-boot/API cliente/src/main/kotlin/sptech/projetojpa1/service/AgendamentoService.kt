@@ -41,57 +41,46 @@ class AgendamentoService(
                 especificacao = agendamento.especificacao?.especificacao,
                 fkEspecificacao = agendamento.especificacao?.idEspecificacaoProcedimento,
                 fkProcedimento = agendamento.procedimento?.idProcedimento,
-                statusAgendamento = agendamento.statusAgendamento
+                statusAgendamento = agendamento.statusAgendamento,
+                cep = agendamento.cep,
+                logradouro = agendamento.logradouro,
+                numero = agendamento.numero
             )
         }
     }
 
     fun criarAgendamento(agendamentoRequestDTO: AgendamentoRequestDTO): AgendamentoResponseDTO {
-        // Validação preliminar de entrada para garantir que os campos essenciais estão preenchidos
+        // Validação preliminar
         if (agendamentoRequestDTO.dataHorario == null || agendamentoRequestDTO.tipoAgendamento == null) {
             throw IllegalArgumentException("Data e tipo de agendamento não podem ser nulos")
         }
 
-        // Adiciona o agendamento à fila de processamento
-        // A fila é usada aqui para simular o conceito de processamento assíncrono, onde os agendamentos
-        // são armazenados em uma lista (fila) e processados posteriormente, evitando o processamento imediato.
+        // Adiciona o agendamento à fila
         println("Adicionando agendamento à fila: $agendamentoRequestDTO")
-        // Print para verificar o valor recebido de homecare no DTO
-        println("Recebido AgendamentoRequestDTO: $agendamentoRequestDTO")
-        println("Valor de homecare recebido: ${agendamentoRequestDTO.homecare}")
         filaAgendamentos.add(agendamentoRequestDTO)
 
-        // Exibe a fila após adicionar o novo agendamento, mostrando que o item foi enfileirado.
-        println("Fila de agendamentos após adicionar: $filaAgendamentos")
-
-        // Chama o método de processamento da fila para processar os agendamentos enfileirados
-        // Neste caso, o processamento está ocorrendo imediatamente após o enfileiramento, mas em um sistema real,
-        // este processamento poderia ser feito de forma assíncrona ou agendada (por exemplo, a cada minuto).
+        // Processa a fila
         processarFilaDeAgendamentos()
 
-
-        // Retorna uma resposta ao cliente indicando que o agendamento está sendo processado.
-        // Como o processamento é "simulado" de forma assíncrona, o ID do agendamento ainda não está disponível,
-        // mas outras informações podem ser retornadas enquanto o agendamento é tratado em segundo plano.
+        // Retorna uma resposta de processamento
         return AgendamentoResponseDTO(
-            idAgendamento = null,  // Um valor temporário, pois o agendamento ainda está sendo processado
+            idAgendamento = null, // ID será gerado durante o processamento da fila
             dataHorario = agendamentoRequestDTO.dataHorario,
             tipoAgendamento = agendamentoRequestDTO.tipoAgendamento,
             tempoAgendar = agendamentoRequestDTO.tempoAgendar,
-            homecare = agendamentoRequestDTO.homecare ?: false,
+            homecare = agendamentoRequestDTO.homecare,
             valor = agendamentoRequestDTO.valor,
-            usuario = "Processando...",  // Indicador de que o processo ainda está em andamento
+            usuario = "Processando...",
             procedimento = "Processando...",
             especificacao = "Processando...",
-            statusAgendamento = statusRepository.findById(1)  // Um status fixo para indicar que o agendamento está pendente
+            statusAgendamento = statusRepository.findById(1)
                 .orElseThrow { IllegalArgumentException("Status não encontrado") },
-            usuarioTelefone = null,
-            usuarioCpf = null,
-            usuarioId = null,
-            fkEspecificacao = null,
-            fkProcedimento = null
+            cep = agendamentoRequestDTO.cep,
+            logradouro = agendamentoRequestDTO.logradouro,
+            numero = agendamentoRequestDTO.numero
         )
     }
+
 
     private val filaAgendamentos: Queue<AgendamentoRequestDTO> = LinkedList()
 
@@ -143,8 +132,6 @@ class AgendamentoService(
     }
 
 
-
-
     fun getTotalAgendamentosPorDia(startDate: String?): Int {
         return agendamentoRepository.findTotalAgendamentosPorDia(startDate)
     }
@@ -175,8 +162,6 @@ class AgendamentoService(
     }
 
 
-
-
     fun obterProcedimentosRealizadosEntreDatas(startDate: String?, endDate: String?): Map<String, Int> {
         return agendamentoRepository.findProcedimentosRealizadosEntreDatas(startDate, endDate)
             .associate {
@@ -185,8 +170,6 @@ class AgendamentoService(
                 procedimento to somaQtd
             }
     }
-
-
 
 
     fun obterValorTotalEntreDatas(startDate: String?, endDate: String?): Map<String, Double> {
@@ -253,9 +236,6 @@ class AgendamentoService(
             "Colocação" -> LocalTime.parse(especificacao.tempoColocacao)
             "Manutenção" -> LocalTime.parse(especificacao.tempoManutencao)
             "Retirada" -> LocalTime.parse(especificacao.tempoRetirada)
-            "Homecare" -> LocalTime.parse(especificacao.tempoColocacao)
-            "Estudio" -> LocalTime.parse(especificacao.tempoColocacao)
-            "Evento" -> LocalTime.parse(especificacao.tempoColocacao)
             else -> throw IllegalArgumentException("Tipo de agendamento inválido")
         }
 
@@ -271,26 +251,17 @@ class AgendamentoService(
     }
 
     fun processarFilaDeAgendamentos() {
-        // Processa todos os agendamentos presentes na fila.
-        // A fila segue o conceito FIFO (First In, First Out), onde o primeiro agendamento a ser adicionado
-        // será o primeiro a ser processado.
         while (filaAgendamentos.isNotEmpty()) {
-            // Remove e obtém o primeiro agendamento da fila
             val agendamentoRequestDTO = filaAgendamentos.poll()
 
             println("Processando AgendamentoRequestDTO: $agendamentoRequestDTO")
-            println("Homecare no DTO antes da criação do Agendamento: ${agendamentoRequestDTO.homecare}")
 
-            // Exibe no log o agendamento que está sendo processado
-            println("Processando agendamento: $agendamentoRequestDTO")
-
-            // Validação de negócios para garantir que o agendamento é válido (exemplo: não existem conflitos de horário)
+            // Validação para evitar conflitos
             if (!validarAgendamento(agendamentoRequestDTO)) {
                 throw IllegalArgumentException("Já existe um agendamento para esse horário")
             }
 
-            // Cria o objeto Agendamento baseado nos dados enfileirados
-            // Neste ponto, o agendamento está pronto para ser salvo no banco de dados.
+            // Criação do objeto `Agendamento`
             val agendamento = Agendamento(
                 dataHorario = agendamentoRequestDTO.dataHorario,
                 tipoAgendamento = agendamentoRequestDTO.tipoAgendamento,
@@ -304,21 +275,17 @@ class AgendamentoService(
                 especificacao = especificacaoRepository.findById(agendamentoRequestDTO.fk_especificacao)
                     .orElseThrow { IllegalArgumentException("Especificação não encontrada") },
                 statusAgendamento = statusRepository.findById(agendamentoRequestDTO.fk_status)
-                    .orElseThrow { IllegalArgumentException("Status não encontrado") }
+                    .orElseThrow { IllegalArgumentException("Status não encontrado") },
+                cep = agendamentoRequestDTO.cep,
+                logradouro = agendamentoRequestDTO.logradouro,
+                numero = agendamentoRequestDTO.numero
             )
 
-            // Exibe no log o agendamento que será salvo no banco de dados
             println("Salvando agendamento no banco de dados: $agendamento")
 
-            // Print para verificar o valor de homecare no objeto Agendamento antes de salvar
-            println("Objeto Agendamento criado: $agendamento")
-            println("Valor de homecare no Agendamento: ${agendamento.homecare}")
-
-            // Salva o agendamento no banco de dados
+            // Salvar no banco
             agendamentoRepository.save(agendamento)
 
-            // Exibe no log que o agendamento foi salvo com sucesso
-            println("Agendamento salvo com sucesso no banco: $agendamento")
             println("Agendamento salvo com sucesso: $agendamento")
         }
     }
@@ -341,7 +308,10 @@ class AgendamentoService(
             especificacao = agendamento.especificacao?.especificacao,
             fkEspecificacao = agendamento.especificacao?.idEspecificacaoProcedimento,
             fkProcedimento = agendamento.procedimento?.idProcedimento,
-            statusAgendamento = agendamento.statusAgendamento
+            statusAgendamento = agendamento.statusAgendamento,
+            cep = agendamento.cep,
+            logradouro = agendamento.logradouro,
+            numero = agendamento.numero
         )
     }
 
@@ -361,13 +331,18 @@ class AgendamentoService(
             .orElseThrow { IllegalArgumentException("Especificação não encontrada") }
         agendamento.statusAgendamento = statusRepository.findById(agendamentoRequestDTO.fk_status)
             .orElseThrow { IllegalArgumentException("Status não encontrado") }
+        agendamento.homecare = agendamentoRequestDTO.homecare
+        agendamento.valor = agendamentoRequestDTO.valor
+        agendamento.cep = agendamentoRequestDTO.cep
+        agendamento.logradouro = agendamentoRequestDTO.logradouro
+        agendamento.numero = agendamentoRequestDTO.numero
 
-        val updatedAgendamento = agendamentoRepository.save(agendamento)
+        agendamentoRepository.save(agendamento)
 
         return AgendamentoResponseDTO(
-            idAgendamento = updatedAgendamento.idAgendamento,
-            dataHorario = updatedAgendamento.dataHorario,
-            tipoAgendamento = updatedAgendamento.tipoAgendamento,
+            idAgendamento = agendamento.idAgendamento,
+            dataHorario = agendamento.dataHorario,
+            tipoAgendamento = agendamento.tipoAgendamento,
             usuario = agendamento.usuario.nome,
             procedimento = agendamento.procedimento?.tipo,
             especificacao = agendamento.especificacao?.especificacao,
@@ -376,9 +351,13 @@ class AgendamentoService(
             statusAgendamento = agendamento.statusAgendamento,
             usuarioId = agendamento.usuario.codigo,
             fkEspecificacao = agendamento.especificacao?.idEspecificacaoProcedimento,
-            fkProcedimento = agendamento.procedimento?.idProcedimento
+            fkProcedimento = agendamento.procedimento?.idProcedimento,
+            cep = agendamento.cep,
+            logradouro = agendamento.logradouro,
+            numero = agendamento.numero
         )
     }
+
 
     fun atualizarStatusAgendamento(id: Int, novoStatusId: Int): AgendamentoResponseDTO {
         val agendamento = agendamentoRepository.findById(id)

@@ -10,7 +10,7 @@ data class AgendamentoRequestDTO(
     var dataHorario: LocalDateTime?,
 
     @field:NotNull(message = "Tipo de agendamento não pode ser nulo")
-    var tipoAgendamento: String?,  // Mudança para String
+    var tipoAgendamento: String?,
 
     @field:NotNull(message = "Id do usuário não pode ser nulo")
     @field:Min(value = 1, message = "Id do usuário deve ser maior que 0")
@@ -24,7 +24,6 @@ data class AgendamentoRequestDTO(
     @field:Min(value = 1, message = "Id da especificação deve ser maior que 0")
     var fk_especificacao: Int,
 
-    @field:Min(value = 1, message = "Id do tempo deve ser maior que 0")
     var tempoAgendar: Int? = null,
 
     @field:NotNull(message = "Homecare não pode ser nulo")
@@ -35,5 +34,10 @@ data class AgendamentoRequestDTO(
 
     @field:NotNull(message = "Id do status não pode ser nulo")
     @field:Min(value = 1, message = "Id do status deve ser maior que 0")
-    var fk_status: Int
+    var fk_status: Int,
+
+    // Novos campos
+    var cep: String? = null,
+    var logradouro: String? = null,
+    var numero: String? = null
 )

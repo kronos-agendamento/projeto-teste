@@ -46,5 +46,15 @@ class Agendamento(
     @field:NotNull(message = "Status do agendamento não pode ser nulo")
     @ManyToOne
     @JoinColumn(name = "fk_status")
-    var statusAgendamento: Status
+    var statusAgendamento: Status,
+
+    // Novos campos
+    @Column(name = "cep")
+    var cep: String? = null,
+
+    @Column(name = "logradouro")
+    var logradouro: String? = null,
+
+    @Column(name = "numero")
+    var numero: String? = null
 )
