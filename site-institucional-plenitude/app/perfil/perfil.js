@@ -215,45 +215,75 @@ document.addEventListener("DOMContentLoaded", () => {
 
   carregarDados(); // Carregar os dados do usuário e empresa ao iniciar a página
 
-  // Obtém o botão e o input de arquivo
-  const importButton = document.getElementById('import-button');
-  const fileInput = document.getElementById('file-input');
+  // Obtém os elementos do DOM
+const importButton = document.getElementById('import-button');
+const fileInput = document.getElementById('file-input');
+const importExportModal = document.getElementById('importExportModal');
+const closeModalButton = document.getElementById('close-modal-btn');
+const importModalButton = document.getElementById('import-modal-btn');
+const exportModalButton = document.getElementById('export-modal-btn');
 
-  // Adiciona o evento de clique no botão para abrir o explorador de arquivos
-  importButton.addEventListener('click', () => {
-    fileInput.click(); // Simula o clique no input de arquivo
-  });
+// Função para abrir o modal
+importButton.addEventListener('click', () => {
+  importExportModal.style.display = 'flex'; // Exibe o modal
+});
 
-  // Adiciona o evento de alteração no input para enviar o arquivo ao backend
-  fileInput.addEventListener('change', async (event) => {
-    const file = event.target.files[0]; // Obtém o arquivo selecionado
-    if (!file) return;
+// Fechar o modal ao clicar no X
+closeModalButton.addEventListener('click', () => {
+  importExportModal.style.display = 'none'; // Fecha o modal
+});
+// Função de Importação
+importModalButton.addEventListener('click', () => {
+  fileInput.click(); // Simula o clique no input de arquivo
+});
 
-    const formData = new FormData();
-    formData.append('file', file);
+// Função de Exportação
+exportModalButton.addEventListener('click', () => {
+  try {
+    // Localiza o arquivo no diretório do projeto
+    const filePath = '../../Documento de Layout.docx'; // Caminho relativo ao documento
 
-    try {
-      // Envia a requisição para o backend
-      const response = await fetch('http://localhost:8080/api/importacao/importar', {
-        method: 'POST',
-        body: formData
-      });
+    // Cria um link para download
+    const link = document.createElement('a');
+    link.href = filePath; // Define o caminho do arquivo
+    link.download = 'Documento de Layout.docx'; // Define o nome do arquivo ao ser baixado
+    link.click(); // Simula o clique para iniciar o download
+  } catch (error) {
+    alert('Erro ao exportar documento');
+  }
+});
 
-      // Processa a resposta
-      const result = await response.text();
-      if (response.ok) {
-        showNotification("Importação Realizada com Sucesso!", false);
-                setTimeout(() => {
-          window.location.reload(); // Recarrega a página após 2 segundos
-        }, 2000);
 
-      } else {
-        alert(`Erro: ${result}`);
-      }
-    } catch (error) {
-      showNotification("Importação Falhou!", true);
+// Adiciona o evento de alteração no input de arquivo para enviar o arquivo ao backend
+fileInput.addEventListener('change', async (event) => {
+  const file = event.target.files[0]; // Obtém o arquivo selecionado
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    // Envia a requisição para o backend
+    const response = await fetch('http://localhost:8080/api/importacao/importar', {
+      method: 'POST',
+      body: formData
+    });
+
+    // Processa a resposta
+    const result = await response.text();
+    if (response.ok) {
+      showNotification("Importação Realizada com Sucesso!", false);
+      setTimeout(() => {
+        window.location.reload(); // Recarrega a página após 2 segundos
+      }, 2000);
+    } else {
+      alert(`Erro: ${result}`);
     }
-  });
+  } catch (error) {
+    showNotification("Importação Falhou!", true);
+  }
+});
+
   
 });
 

@@ -516,146 +516,68 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Salvar Agendamento
-  botaoAgendar.addEventListener("click", async function () {
-    const procedimentoId = procedimentoSelect.value;
-    const especificacaoId = especificacaoSelect.value;
-    const tipoAtendimento = tipoAtendimentoSelect.value;
-    const data = dataInput.value;
-    const horarioButton = document.querySelector(".horario-button.selected");
-    const horario = horarioButton ? horarioButton.textContent : null;
-
-    if (
-      !procedimentoId ||
-      !especificacaoId ||
-      !tipoAtendimento ||
-      !data ||
-      !horario
-    ) {
-      showNotification("Todos os campos são obrigatórios", true);
-      return;
-    }
-
-    const dataHorario = new Date(`${data}T${horario}`).toISOString();
-    const idUsuario = localStorage.getItem("idUsuario");
-
-    if (!idUsuario) {
-      showNotification(
-        "Usuário não encontrado. Por favor, faça login novamente.",
-        true
-      );
-      return;
-    }
-
-    const agendamento = {
-      fk_procedimento: parseInt(procedimentoId, 10),
-      fk_especificacao: parseInt(especificacaoId, 10),
-      fk_status: 1,
-      tipoAgendamento: tipoAtendimento,
-      dataHorario: dataHorario,
-      fk_usuario: parseInt(idUsuario, 10),
-    };
-
-    try {
-      const response = await fetch(apiUrlCriarAgendamento, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(agendamento),
-      });
-
-      if (response.ok) {
-        showNotification("Agendamento criado com sucesso!");
-        
-        setTimeout(() => {
-          window.location.href = "../index-mobile/index-mobile.html";
-      }, 5000); // 5000 milissegundos = 5 segundos
-      } else {
-        console.error("Erro ao criar agendamento: " + response.statusText);
-        showNotification("Erro ao criar agendamento", true);
-      }
-    } catch (error) {
-      console.error("Erro ao criar agendamento: ", error);
-      showNotification("Erro ao criar agendamento", true);
-    }
-  });
-  
-
-// Função para calcular e exibir o orçamento
-async function buscarOrcamento() {
-  const fkProcedimento = procedimentoSelect.value;
-  const fkEspecificacao = especificacaoSelect.value;
-  let tipoAgendamento = tipoAtendimentoSelect.value;
-  const horarioButton = document.querySelector(".horario-button.selected");
-
-  if (!fkProcedimento || !fkEspecificacao || !tipoAgendamento || !horarioButton) {
-    document.getElementById("orcamento-container").classList.add("hidden");
-    return;
-  }
-
-  // Força o tipoAgendamento para "Colocação" se o procedimento for "Maquiagem" (ID = 1)
-  if (fkProcedimento === "1") { // Verifique o ID correto para "Maquiagem" no seu sistema
-    tipoAgendamento = "Colocacao";
-  }
+// Função para validar CEP usando a API ViaCEP
+async function validarCepReal(cep) {
+  const cepLimpo = cep.replace("-", "").trim(); // Remove traços e espaços
+  const url = `https://viacep.com.br/ws/${cepLimpo}/json/`;
 
   try {
-    // Obtém a taxa do elemento HTML "valor-taxa"
-    let taxa = parseFloat(document.getElementById("valor-taxa").textContent.replace("R$ ", "").replace(",", "."));
-    if (isNaN(taxa)) taxa = 0;
-
-    // Faz a chamada ao back-end para obter o valor base do orçamento
-    const url = `http://localhost:8080/api/agendamentos/calcular-orcamento?fkProcedimento=${fkProcedimento}&fkEspecificacao=${fkEspecificacao}&tipoAgendamento=${tipoAgendamento}`;
     const response = await fetch(url);
-
-    let orcamentoBase = 0; // Inicializa o orçamento base como 0
-
     if (response.ok) {
-      orcamentoBase = await response.json(); // Obtém o valor base do orçamento
-    } else if (response.status === 404) {
-      console.warn("Valor base do orçamento não encontrado para o tipo de atendimento:", tipoAgendamento);
-      showNotification(`Orçamento base não disponível para ${tipoAgendamento}. Considerando apenas a taxa.`, true);
+      const data = await response.json();
+      return !data.erro; // Retorna verdadeiro se o CEP for válido
     } else {
-      console.error("Erro ao obter o valor base do orçamento:", response.status);
-      showNotification("Não foi possível calcular o orçamento. Tente novamente.", true);
-      return; // Sai da função em caso de erro não esperado
+      return false;
     }
-
-    // Calcula o orçamento total
-    const orcamentoTotal = orcamentoBase + taxa;
-
-    // Atualiza o conteúdo dos elementos no HTML
-    document.getElementById("orcamento").textContent = `R$ ${orcamentoTotal.toFixed(2)}`;
-    document.getElementById("orcamento-detalhe").textContent = 
-      `Valor do procedimento: R$ ${orcamentoBase.toFixed(2)}, 
-       taxa adicional: R$ ${taxa.toFixed(2)}, 
-       total: R$ ${orcamentoTotal.toFixed(2)}`;
-
-    // Exibe o contêiner do orçamento na interface
-    document.getElementById("orcamento-container").classList.remove("hidden");
   } catch (error) {
-    console.error("Erro ao buscar orçamento:", error);
-    showNotification("Erro ao buscar orçamento. Tente novamente.", true);
+    console.error("Erro ao validar CEP: ", error);
+    return false;
   }
 }
 
-  // Funções para controlar visibilidade e chamadas de orçamento
-  procedimentoSelect.addEventListener("change", buscarOrcamento);
-  especificacaoSelect.addEventListener("change", buscarOrcamento);
-  tipoAtendimentoSelect.addEventListener("change", buscarOrcamento);
-  dataInput.addEventListener("change", function () {
-    if (dataInput.value) {
-      carregarHorariosDisponiveis(dataInput.value);
-    }
-  });
+// Função para calcular a taxa total com validação de CEP
+async function calcularTaxa() {
+  const endereco = enderecoInput.value;
 
-  horariosContainer.addEventListener("click", (event) => {
-    if (event.target.classList.contains("horario-button")) {
-      document.querySelectorAll(".horario-button").forEach(btn => btn.classList.remove("selected"));
-      event.target.classList.add("selected");
-      buscarOrcamento();
+  if (!endereco) {
+    showNotification("Por favor, insira um endereço válido.", true);
+    return;
+  }
+
+  // Validar se o CEP existe
+  const cepValido = await validarCepReal(endereco);
+  if (!cepValido) {
+    showNotification("CEP inválido. Por favor, insira um CEP real.", true);
+    return;
+  }
+
+  try {
+    const kmLoc = await calcularDistancia(endereco); // Chamada à função que pode falhar
+
+    // Se a distância for calculada corretamente, calcula a taxa
+    if (kmLoc !== null) {
+      const taxaLoc = gasolina * kmLoc; // Cálculo da taxa de locomoção
+      const taxaTotal = taxaLoc + maoObra; // Cálculo da taxa total
+      valorTaxaSpan.textContent = `R$ ${taxaTotal.toFixed(2)}, `; // Exibir a taxa total
+      totalKmSpan.textContent = `${kmLoc} de distância`;
+      taxaTotalDiv.classList.remove("hidden"); // Mostrar a taxa total
+    } else {
+      valorTaxaSpan.textContent =
+        "Distância não encontrada para o endereço."; // Mensagem se a distância não for encontrada
+      taxaTotalDiv.classList.remove("hidden");
     }
-  });
+  } catch (error) {
+    console.error("Erro ao calcular a distância:", error);
+    valorTaxaSpan.textContent =
+      "Erro ao calcular a distância. Tente novamente."; // Mensagem de erro
+    taxaTotalDiv.classList.remove("hidden"); // Mostrar a mensagem de erro
+  }
+}
+
+// Event listener para o botão de calcular taxa
+calcularTaxaButton.addEventListener("click", calcularTaxa);
+
+
 
   const increaseFontBtn = document.getElementById("increase-font");
   const decreaseFontBtn = document.getElementById("decrease-font");

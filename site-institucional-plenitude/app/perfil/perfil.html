@@ -439,7 +439,6 @@
                       name="horaFim"
                       style="font-family: poppins"
                       required
-                      disabled
                     />
                     <span class="lock-icon" id="horaFim-lock">🔓</span>
                   </div>
@@ -601,12 +600,30 @@
                     >
                       Adicionar
                     </button>
+                    <!-- Botão de Importar -->
                     <button class="import-button" id="import-button">
                       <img
                         src="../../assets/icons/import.png"
                         alt="Import Icon"
                       />
                     </button>
+                    <!-- Modal -->
+                    <div id="importExportModal" class="modal">
+                      <div class="modal-content">
+                        <!-- Botão X para fechar o modal -->
+                        <span id="close-modal-btn" class="close-modal"
+                          >&times;</span
+                        >
+                        <h2>Importar ou Exportar</h2>
+                        <button id="import-modal-btn" class="botao-importar-txt">Importar Arquivo</button>
+                        <button id="export-modal-btn" class="botao-importar-txt">
+                          Exportar Documento
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Input de Arquivo (escondido) -->
+                    <input type="file" id="file-input" style="display: none" />
 
                     <!-- Input de arquivo oculto -->
                     <input type="file" id="file-input" style="display: none" />
