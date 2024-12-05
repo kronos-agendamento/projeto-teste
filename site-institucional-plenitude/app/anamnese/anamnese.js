@@ -254,12 +254,6 @@ function listarTodasPerguntasAtivas() {
             inputElement.appendChild(optionYes);
             inputElement.appendChild(optionNo);
             break;
-          // case "Check Box":
-          //   inputElement = document.createElement("input");
-          //   inputElement.type = "checkbox";
-          //   inputElement.id = `idResposta${index + 1}`;
-          //   inputElement.name = `resposta${index + 1}`;
-          //   break;
           default:
             inputElement = document.createElement("input");
             inputElement.type = "text";
@@ -268,13 +262,31 @@ function listarTodasPerguntasAtivas() {
             inputElement.placeholder = "Digite sua resposta aqui...";
         }
 
+        function addTooltip(element, text) {
+          const tooltip = document.createElement("span");
+          tooltip.classList.add("tooltip-40");
+          tooltip.innerText = text;
+          element.appendChild(tooltip);
+
+          element.addEventListener("mouseover", () => {
+            tooltip.style.visibility = "visible";
+            tooltip.style.opacity = "1";
+          });
+
+          element.addEventListener("mouseout", () => {
+            tooltip.style.visibility = "hidden";
+            tooltip.style.opacity = "0";
+          });
+        }
+
         const editButton = document.createElement("button");
         editButton.classList.add("edit");
         editButton.id = `openStatusModalBtn${index + 2}`;
         editButton.innerHTML =
-          '<img src="../../assets/icons/pen.png" alt="createNew" />';
+          '<img src="../../assets/icons/pen.png" alt="Editar" />';
+        addTooltip(editButton, "Editar");
         editButton.onclick = function () {
-          showEditForm(pergunta.idPergunta); // Abre o modal de edição
+          showEditForm(pergunta.idPergunta);
         };
 
         const deleteButton = document.createElement("button");
@@ -282,10 +294,11 @@ function listarTodasPerguntasAtivas() {
         deleteButton.id = `openStatusModalBtn${index + 3}`;
         deleteButton.setAttribute(
           "onclick",
-          `showForm3(${pergunta.idPergunta}, "${pergunta.pergunta}", "${pergunta.tipo}")` // Passe o texto da pergunta e o tipo
+          `showForm3(${pergunta.idPergunta}, "${pergunta.pergunta}", "${pergunta.tipo}")`
         );
         deleteButton.innerHTML =
-          '<img src="../../assets/icons/excluir.png" alt="trashCan">';
+          '<img src="../../assets/icons/excluir.png" alt="Desativar pergunta">';
+        addTooltip(deleteButton, "Desativar pergunta");
 
         inputContent.appendChild(inputElement);
         inputContent.appendChild(editButton);
@@ -301,6 +314,7 @@ function listarTodasPerguntasAtivas() {
       console.error("Erro ao listar perguntas ativas:", error);
     });
 }
+
 
 document.addEventListener("DOMContentLoaded", () => {
   listarTodasPerguntasAtivas();
@@ -704,3 +718,49 @@ async function carregarImagem2() {
 window.onload = function () {
   carregarImagem2();
 };
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  const tooltips = document.querySelectorAll(
+    ".tooltip2, .tooltip3, .tooltip4, .tooltip11"
+  );
+
+  tooltips.forEach((tooltip) => {
+    const targetButton = tooltip.previousElementSibling;
+
+    // Exibir o tooltip quando o mouse passar sobre o botão
+    targetButton.addEventListener("mouseenter", () => {
+      tooltip.style.display = "block"; // Exibe o tooltip
+      positionTooltip(tooltip, targetButton); // Posiciona o tooltip
+    });
+
+    // Esconder o tooltip quando o mouse sair do botão
+    targetButton.addEventListener("mouseleave", () => {
+      tooltip.style.display = "none"; // Esconde o tooltip
+    });
+
+    window.addEventListener("resize", () => {
+      if (tooltip.style.display === "block") {
+        positionTooltip(tooltip, targetButton); // Recalcula posição em redimensionamento
+      }
+    });
+  });
+
+  function positionTooltip(tooltip, target) {
+    const targetRect = target.getBoundingClientRect();
+    const tooltipRect = tooltip.getBoundingClientRect();
+
+    // Centraliza horizontalmente e posiciona acima do botão
+    const topPosition = targetRect.top - tooltipRect.height - 4;
+    const leftPosition =
+      targetRect.left + targetRect.width / 0 - tooltipRect.width / 0;
+
+    tooltip.style.top = `${topPosition + window.scrollY}px`;
+    tooltip.style.left = `${leftPosition + window.scrollX}px`;
+  }
+});
+
+
+function openFileSelector() {
+  document.getElementById('fileInput').click();
+}

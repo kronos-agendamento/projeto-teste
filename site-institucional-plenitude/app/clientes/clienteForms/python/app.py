@@ -16,8 +16,10 @@ def enviar_email():
         return jsonify({'error': 'Email é necessário'}), 400
 
     # Configurações do servidor SMTP para Gmail
-    remetente = 'gyugyulia64@gmail.com'  # Coloque aqui o seu email do Gmail
-    senha = 'pbkl ptza asbo uywo'  # Coloque aqui sua senha de aplicativo do Gmail
+    #remetente = 'gyugyulia64@gmail.com'  # Coloque aqui o seu email do Gmail
+    #senha = 'qgwr hxkn injp qdsc'  # Coloque aqui sua senha de aplicativo do Gmail
+    remetente = 'plenitudenoolhar@gmail.com'  # Coloque aqui o seu email do Gmail
+    senha = 'x e h x y e l w i k i y x u d s'
 
     try:
         # Configurando a mensagem do email

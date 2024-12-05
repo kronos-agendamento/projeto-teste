@@ -37,7 +37,10 @@
             justify-content: center;
           "
         >
-        <img id="perfilImage"  alt="Foto do usuário" style="
+          <img
+            id="perfilImage"
+            alt="Foto do usuário"
+            style="
               width: 53vh;
               height: 23vh;
               display: flex;
@@ -191,6 +194,41 @@
                 placeholder="Ex: Técnica Fio a Fio"
               />
             </div>
+            <div
+              style="display: flex; flex-direction: column"
+            >
+              <strong>Aceita Homecare?</strong>
+              <label class="switch">
+                <input type="checkbox" id="homecare" name="homecare" />
+                <span class="slider round"></span>
+              </label>
+            </div>
+            <div style="display: flex; justify-content: space-between">
+              <div class="form-group">
+                <label>Atende Colocação?</label>
+                <label class="switch">
+                  <input type="checkbox" id="colocacao" name="colocacao" />
+                  <span class="slider round"></span>
+                </label>
+              </div>
+
+              <div class="form-group">
+                <label>Atende Manutenção?</label>
+                <label class="switch">
+                  <input type="checkbox" id="manutencao" name="manutencao" />
+                  <span class="slider round"></span>
+                </label>
+              </div>
+
+              <div class="form-group">
+                <label>Atende Retirada?</label>
+                <label class="switch">
+                  <input type="checkbox" id="retirada" name="retirada" />
+                  <span class="slider round"></span>
+                </label>
+              </div>
+            </div>
+
             <div class="forms-valores">
               <div class="form-group">
                 <label for="valor-colocacao" id="texto-valor-colocacao"
@@ -207,20 +245,6 @@
                 </div>
               </div>
               <div class="form-group">
-                <label for="valor-retirada" id="texto-valor-retirada"
-                  >Valor retirada:</label
-                >
-                <div class="input-wrapper">
-                  <span class="currency-symbol">R$</span>
-                  <input
-                    id="valor-retirada"
-                    class="value-input"
-                    type="text"
-                    placeholder="Ex: R$ 50,00"
-                  />
-                </div>
-              </div>
-              <div class="form-group">
                 <label for="valor-manutencao" id="texto-valor-manutencao"
                   >Valor manutenção:</label
                 >
@@ -231,6 +255,20 @@
                     class="value-input"
                     type="text"
                     placeholder="Ex: R$ 100,00"
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="valor-retirada" id="texto-valor-retirada"
+                  >Valor retirada:</label
+                >
+                <div class="input-wrapper">
+                  <span class="currency-symbol">R$</span>
+                  <input
+                    id="valor-retirada"
+                    class="value-input"
+                    type="text"
+                    placeholder="Ex: R$ 50,00"
                   />
                 </div>
               </div>
@@ -322,8 +360,8 @@
     ></script>
     <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
     <div vw class="enabled">
-        <div vw-access-button class="active"></div>
-        <div vw-plugin-wrapper></div> 
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper></div>
     </div>
   </body>
 </html>

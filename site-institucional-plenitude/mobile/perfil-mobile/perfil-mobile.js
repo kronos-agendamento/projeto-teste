@@ -85,69 +85,33 @@ document.addEventListener("DOMContentLoaded", function () {
   // Chamar a função para carregar as especificações ao iniciar a página
   carregarEspecificacoes();
 
- // --------------------------------------------------------------------------------------
+  // Função para popular o select com os meses do ano até o mês atual
+  function populateMonthSelect() {
+    const selectMes = document.getElementById("selectMes");
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth() + 1; // getMonth() retorna de 0 a 11, então adicionamos +1
 
- function populateYearSelect() {
-  const selectAno = document.getElementById("selectAno");
-  const currentDate = new Date();
-  const currentYear = currentDate.getFullYear();
-  const startYear = 2000; // Ajuste o ano de início conforme necessário
+    selectMes.innerHTML = ""; // Limpa as opções existentes no <select>
 
-  selectAno.innerHTML = ""; // Limpa as opções existentes no <select>
+    for (let month = 1; month <= currentMonth; month++) {
+      const monthString = month.toString().padStart(2, "0");
+      const option = document.createElement("option");
+      option.value = `${currentYear}-${monthString}`;
+      let monthName = new Intl.DateTimeFormat("pt-BR", {
+        month: "long",
+      }).format(new Date(currentYear, month - 1));
+      monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
+      option.text = monthName;
+      selectMes.appendChild(option);
+    }
 
-  for (let year = currentYear; year >= startYear; year--) {
-    const option = document.createElement("option");
-    option.value = year;
-    option.text = year;
-    selectAno.appendChild(option);
+    selectMes.value = `${currentYear}-${currentMonth
+      .toString()
+      .padStart(2, "0")}`;
   }
+  populateMonthSelect();
 
-  selectAno.value = currentYear; // Define o ano atual como padrão
-}
-
-function populateMonthSelect() {
-  const selectMes = document.getElementById("selectMes");
-  const selectAno = document.getElementById("selectAno");
-  const currentDate = new Date();
-  const currentYear = currentDate.getFullYear();
-  const selectedYear = parseInt(selectAno.value);
-
-  // Define o último mês a ser exibido
-  const lastMonth = selectedYear === currentYear ? currentDate.getMonth() + 1 : 12;
-
-  selectMes.innerHTML = ""; // Limpa as opções existentes no <select>
-
-  for (let month = 1; month <= lastMonth; month++) {
-    const monthString = month.toString().padStart(2, "0");
-    const option = document.createElement("option");
-    option.value = `${selectedYear}-${monthString}`; // Mantém o formato "YYYY-MM"
-    
-    // Formata o nome do mês em português com a primeira letra maiúscula
-    let monthName = new Intl.DateTimeFormat("pt-BR", {
-      month: "long",
-    }).format(new Date(selectedYear, month - 1));
-    monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
-    option.text = monthName;
-
-    selectMes.appendChild(option);
-  }
-
-  // Define o mês atual como padrão se o ano for o atual
-  if (selectedYear === currentYear) {
-    selectMes.value = `${currentYear}-${(currentDate.getMonth() + 1).toString().padStart(2, "0")}`;
-  } else {
-    selectMes.value = `${selectedYear}-01`; // Define o primeiro mês para anos anteriores ao atual
-  }
-}
-
-// Atualiza os meses quando o ano é alterado
-document.getElementById("selectAno").addEventListener("change", populateMonthSelect);
-
-// Inicializa ambos os selects
-populateYearSelect();
-populateMonthSelect();
-
-  // -------------------------------------------------------------------------------------------------------------------------------
   // Pega o ID do usuário do localStorage
   const idUsuario = localStorage.getItem("idUsuario");
   if (!idUsuario) {
@@ -183,8 +147,20 @@ function fetchProcedimentosPorUsuarioEMes(usuarioId, mesAno) {
 function updateChartProcedimentosUsuarioMes(data) {
   const labels = Object.keys(data);
   const dataChart = Object.values(data);
-  createChartProcedimentosUsuarioMes(labels, dataChart);
+  const mensagemSemProcedimentos = document.getElementById("mensagemSemProcedimentos");
+  
+  if (labels.length === 0 || dataChart.every(value => value === 0)) {
+    // Exibe a mensagem se não houver dados
+    mensagemSemProcedimentos.style.display = "block";
+    document.getElementById("chartProcedimentosUsuarioMes").style.display = "none";
+  } else {
+    // Oculta a mensagem e exibe o gráfico se houver dados
+    mensagemSemProcedimentos.style.display = "none";
+    document.getElementById("chartProcedimentosUsuarioMes").style.display = "block";
+    createChartProcedimentosUsuarioMes(labels, dataChart);
+  }
 }
+
 
 // Função para exibir o gráfico de perfil
 function createChartProcedimentosUsuarioMes(labels, dataChart) {

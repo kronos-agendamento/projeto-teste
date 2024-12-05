@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.validation.Valid
+import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.query.Param
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -12,7 +14,6 @@ import sptech.projetojpa1.dto.agendamento.AgendamentoDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoRequestDTO
 import sptech.projetojpa1.dto.agendamento.AgendamentoResponseDTO
 import sptech.projetojpa1.dto.agendamento.BloqueioRequestDTO
-import sptech.projetojpa1.dto.usuario.UsuarioEmpresaDTO
 import sptech.projetojpa1.service.AgendamentoService
 import java.time.LocalDate
 import java.time.LocalTime
@@ -42,14 +43,21 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
     }
 
     @GetMapping("/agendamento-status")
-    fun getAgendamentosPorStatus(): ResponseEntity<Map<String, Int>> {
-        val agendamentosPorStatus = agendamentoService.obterAgendamentosPorStatus()
+    fun getAgendamentosPorStatus(
+        @RequestParam(required = false) startDate: String?
+    ): ResponseEntity<Map<String, Int>> {
+        val agendamentosPorStatus = agendamentoService.obterAgendamentosPorStatus(startDate)
         return if (agendamentosPorStatus.isNotEmpty()) {
             ResponseEntity.ok(agendamentosPorStatus)
         } else {
             ResponseEntity.status(HttpStatus.NO_CONTENT).build()
         }
     }
+
+
+
+
+
 
     @GetMapping("/tempo-medio")
     fun getTempoMedioEntreAgendamentos(): ResponseEntity<Double> {
@@ -172,21 +180,44 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
     }
 
     @GetMapping("/tempo-gasto-ultimo-mes")
-    fun getTempoGastoPorProcedimentoUltimoMes(): ResponseEntity<Map<String, Double>> {
-        val tempoGasto = agendamentoService.obterTempoGastoPorProcedimentoUltimoMes()
-        return ResponseEntity.ok(tempoGasto)
+    fun getTempoGastoPorProcedimento(
+        @RequestParam(required = false) startDate: String?,
+        @RequestParam(required = false) endDate: String?
+    ): ResponseEntity<Map<String, Double>> {
+        val tempoGasto = agendamentoService.obterTempoGastoPorProcedimento(startDate, endDate)
+        return if (tempoGasto.isNotEmpty()) {
+            ResponseEntity.ok(tempoGasto)
+        } else {
+            ResponseEntity.noContent().build()
+        }
     }
 
     @GetMapping("/procedimentos-realizados-trimestre")
-    fun getProcedimentosRealizadosUltimoTrimestre(): ResponseEntity<Map<String, Int>> {
-        val procedimentosRealizados = agendamentoService.obterProcedimentosRealizadosUltimoTrimestre()
-        return ResponseEntity.ok(procedimentosRealizados)
+    fun getProcedimentosRealizadosEntreDatas(
+        @RequestParam(required = false) startDate: String?,
+        @RequestParam(required = false) endDate: String?
+    ): ResponseEntity<Map<String, Int>> {
+        val procedimentosRealizados = agendamentoService.obterProcedimentosRealizadosEntreDatas(startDate, endDate)
+        return if (procedimentosRealizados.isNotEmpty()) {
+            ResponseEntity.ok(procedimentosRealizados)
+        } else {
+            ResponseEntity.noContent().build()
+        }
     }
 
+
+
     @GetMapping("/valor-total-ultimo-mes")
-    fun getValorTotalUltimoMesPorProcedimento(): ResponseEntity<Map<String, Double>> {
-        val valorTotalProcedimentos = agendamentoService.obterValorTotalUltimoMesPorProcedimento()
-        return ResponseEntity.ok(valorTotalProcedimentos)
+    fun getValorTotalPorPeriodo(
+        @RequestParam(required = false) startDate: String?,
+        @RequestParam(required = false) endDate: String?
+    ): ResponseEntity<Map<String, Double>> {
+        val valorTotalProcedimentos = agendamentoService.obterValorTotalEntreDatas(startDate, endDate)
+        return if (valorTotalProcedimentos.isNotEmpty()) {
+            ResponseEntity.ok(valorTotalProcedimentos)
+        } else {
+            ResponseEntity.noContent().build()
+        }
     }
 
     @Operation(
@@ -232,10 +263,10 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
 
     @GetMapping("/total-agendamentos-hoje")
     fun getTotalAgendamentosPorDia(
-        @RequestParam(required = false) specificDate: String?
+        @RequestParam(required = false) startDate: String?
     ): ResponseEntity<Int> {
-        print(specificDate)
-        val totalAgendamentos = agendamentoService.getTotalAgendamentosPorDia(specificDate)
+        println(startDate)
+        val totalAgendamentos = agendamentoService.getTotalAgendamentosPorDia(startDate)
         return ResponseEntity.ok(totalAgendamentos)
     }
 
@@ -250,21 +281,23 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
 
 
     @GetMapping("/receita-ultimos-tres-meses")
-    fun getTotalReceitaUltimosTresMeses(): ResponseEntity<Map<String, Double>> {
-        val totalReceita = agendamentoService.obterTotalReceitaUltimosTresMeses()
-        return ResponseEntity.ok(totalReceita)
+    fun getTotalReceitaEntreDatas(
+        @RequestParam(required = false) startDate: String?,
+        @RequestParam(required = false) endDate: String?
+    ): ResponseEntity<Map<String, Double>> {
+        val totalReceita = agendamentoService.obterTotalReceitaEntreDatas(startDate, endDate)
+        return if (totalReceita.isNotEmpty()) {
+            ResponseEntity.ok(totalReceita)
+        } else {
+            ResponseEntity.noContent().build()
+        }
     }
 
 
     @GetMapping("/agendamentos-realizados-ultimos-cinco-meses")
-    fun getAgendamentosMensal(
-        @RequestParam("startDate") startDate: String,
-        @RequestParam("endDate") endDate: String
-    ): List<Array<Any>> {
-        val start = LocalDate.parse(startDate)
-        val end = LocalDate.parse(endDate)
-
-        return agendamentoService.getAgendamentosPorIntervalo(start, end)
+    fun agendamentosRealizadosUltimos5Meses(): ResponseEntity<List<Int>> {
+        val quantidadeConcluidos = agendamentoService.agendamentosRealizadosUltimos5Meses()
+        return ResponseEntity.ok(quantidadeConcluidos)
     }
 
     @Operation(
@@ -415,38 +448,61 @@ class AgendamentoController(private val agendamentoService: AgendamentoService) 
 
     }
 
-    @Operation(
-        summary = "Desbloquear horários de agendamento",
-        description = "Remove todos os agendamentos do tipo 'Bloqueio' para um determinado dia e intervalo de tempo."
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Horários desbloqueados com sucesso"),
-            ApiResponse(
-                responseCode = "404",
-                description = "Nenhum horário bloqueado encontrado no intervalo especificado"
-            ),
-            ApiResponse(responseCode = "400", description = "Erro nos parâmetros de entrada")
-        ]
-    )
-    @DeleteMapping("/desbloquear")
-    fun desbloquearHorarios(
-        @RequestParam dia: LocalDate,
-        @RequestParam horaInicio: LocalTime
-    ): ResponseEntity<String> {
-        return try {
-            // Chama o serviço para desbloquear o horário
-            agendamentoService.desbloquearHorarios(dia, horaInicio)
+    @RestController
+    @RequestMapping("/api/agendamentos")
+    class AgendamentoController(
+        private val agendamentoService: AgendamentoService
+    ) {
 
-            // Retorna uma resposta de sucesso
-            ResponseEntity.ok("Horário de bloqueio desbloqueado com sucesso!")
-        } catch (e: IllegalArgumentException) {
-            // Retorna uma resposta de erro se nenhum bloqueio for encontrado
-            ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.message)
-        } catch (e: Exception) {
-            // Retorna uma resposta genérica de erro para outras exceções
-            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao desbloquear horário.")
+        @Operation(
+            summary = "Desbloquear horários de agendamento",
+            description = "Remove todos os agendamentos do tipo 'Bloqueio' para um determinado dia e intervalo de tempo."
+        )
+        @ApiResponses(
+            value = [
+                ApiResponse(responseCode = "200", description = "Horários desbloqueados com sucesso"),
+                ApiResponse(
+                    responseCode = "404",
+                    description = "Nenhum horário bloqueado encontrado no intervalo especificado"
+                ),
+                ApiResponse(responseCode = "400", description = "Erro nos parâmetros de entrada")
+            ]
+        )
+        @DeleteMapping("/desbloquear")
+        fun desbloquearHorarios(
+            @RequestParam dia: LocalDate,
+            @RequestParam horaInicio: LocalTime
+        ): ResponseEntity<String> {
+            return try {
+                // Chama o serviço para desbloquear o horário
+                agendamentoService.desbloquearHorarios(dia, horaInicio)
+
+                // Retorna uma resposta de sucesso
+                ResponseEntity.ok("Horário de bloqueio desbloqueado com sucesso!")
+            } catch (e: IllegalArgumentException) {
+                // Retorna uma resposta de erro se nenhum bloqueio for encontrado
+                ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.message)
+            } catch (e: Exception) {
+                // Retorna uma resposta genérica de erro para outras exceções
+                ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao desbloquear horário.")
+            }
         }
+    }
+
+    @GetMapping("/calcular-orcamento")
+        fun calcularOrcamento(
+            @RequestParam fkProcedimento: Int,
+            @RequestParam fkEspecificacao: Int,
+            @RequestParam tipoAgendamento: String
+        ): ResponseEntity<Double> {
+            val orcamento = agendamentoService.obterPrecoOrcamento(fkEspecificacao, tipoAgendamento)
+
+            return if (orcamento != null) {
+                ResponseEntity.ok(orcamento)
+            } else {
+                ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+            }
+
     }
 }
 

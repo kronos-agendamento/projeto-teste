@@ -122,9 +122,9 @@
         </section>
 
         <div id="notification" class="notification">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+            <!-- <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
               <path d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
-            </svg>
+            </svg> -->
             <span id="notification-message"></span>
           </div>
           
@@ -226,7 +226,7 @@
             <div class="form-group-row">
                 <div class="form-group">
                     <label for="genero">Gênero:</label>
-                    <select id="genero" style="width: 101%; border: 1px solid #ccc; border-radius: 5px;  padding: 13px; font-size: 14px;  font-family: Poppins, Arial, sans-serif; margin-bottom: 4%; color: black;" name="genero" required>
+                    <select id="genero" style="width: 101%; border: 1px solid #ccc; border-radius: 5px;  padding: 9px; font-size: 14px;  font-family: Poppins, Arial, sans-serif; margin-bottom: 4%; color: black;" name="genero" required>
                         <option value="">Selecione</option>
                         <option value="Masculino">Masculino</option>
                         <option value="Feminino">Feminino</option>
@@ -236,9 +236,19 @@
                         <option value="Não prefiro informar">Prefiro não informar</option>
                     </select>
                 </div>
+               
                 <div class="form-group">
                     <label for="indicacao">Indicação:</label>
-                    <input type="text"  style="width: 96%; border: 1px solid #ccc; border-radius: 5px;  padding: 10px; font-size: 14px;  font-family: Poppins, Arial, sans-serif;" id="indicacao" name="indicacao">
+                    <select style="width: 101%; border: 1px solid #ccc; border-radius: 5px;  padding: 9px; font-size: 14px;  font-family: Poppins, Arial, sans-serif; margin-bottom: 4%; color: black;"
+                                id="indicacao" required>
+                                <option value="">Selecione</option>
+                                <option value="Internet">Internet</option>
+                                <option value="Anúncio">Anúncio</option>
+                                <option value="Amigo contou">Amigo contou</option>
+                                <option value="Cliente contou">Cliente contou</option>
+                                <option value="Instagram">Instagram</option>
+                                <option value="Passou na frente e viu">Passou na frente e viu</option>
+                            </select>
                 </div>
             </div>
 
@@ -348,6 +358,7 @@
             },
             (response, status) => {
                 if (status !== 'OK') {
+                    alert('Erro ao calcular a distância: ' + status);
                     return;
                 }
 

@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
         notification.classList.remove("show");
       }, 3000);
     }
-  
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
     const baseUrl = "http://localhost:8080";
     const proceduresTbody = document.getElementById("procedures-tbody");
     const itemsPerPage = 5;
@@ -226,38 +226,139 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.error("ID do usuário é indefinido.");
             }
         });
+        
+    });
+
+    const activateButtons = document.querySelectorAll('.activate-btn');
+    
+    // Para cada botão de ativação, adicione o evento de click
+    activateButtons.forEach(button => {
+      button.addEventListener('click', function () {
+        const userCpf = this.getAttribute('data-id');  // Pega o CPF do usuário do atributo "data-id"
+        openModalActivate(userCpf);
+      });
     });
   
-    // Configura os eventos dos botões de ativação
-    document.querySelectorAll(".activate-btn").forEach((button) => {
-        const cpf = button.getAttribute("data-id");
-        button.addEventListener("click", async (e) => {
-          console.log(`Iniciando ativação do usuário com CPF: ${cpf}`);
-          try {
-            const response = await fetch(`${baseUrl}/usuarios/ativar/${cpf}`, {
-              method: "PATCH",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            });
+    // Função para abrir o modal e preencher com as informações do usuário
+    function openModalActivate(cpf) {
+      const modal = document.getElementById('modal-archive');
+      const userInfo = document.getElementById('usu-archive');
+      
+      // Preenche o modal com o CPF ou outras informações
+      // userInfo.textContent = `Usuário: ${cpf}`;
+      
+      // Exibe o modal
+      modal.style.display = 'block';
   
-            if (response.ok) {
-              console.log("Usuário ativado com sucesso.");
-              showNotification("Usuário ativado com sucesso!");
-              // Recarrega a lista de usuários
-              usuarios = await fetchClientesInativos();
-              renderTable(usuarios, currentPage);
-            } else {
-              const errorText = await response.text();
-              console.error("Erro ao ativar o usuário:", errorText);
-              throw new Error("Erro ao ativar o usuário: " + errorText);
-            }
-          } catch (error) {
-            console.error("Erro geral:", error);
-            showNotification(error.message, true);
+      // Ação ao clicar em "SIM" no modal
+      document.getElementById('btnYesArchive').addEventListener('click', async function () {
+        console.log(`Iniciando ativação do usuário com CPF: ${cpf}`);
+        
+        try {
+          // Envio da requisição para ativar o usuário
+          const response = await fetch(`${baseUrl}/usuarios/ativar/${cpf}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+    
+          if (response.ok) {
+            console.log("Usuário ativado com sucesso.");
+            showNotification("Usuário ativado com sucesso!");
+            // Recarrega a lista de usuários
+            usuarios = await fetchClientesInativos();
+            renderTable(usuarios, currentPage);
+          } else {
+            const errorText = await response.text();
+            console.error("Erro ao ativar o usuário:", errorText);
+            throw new Error("Erro ao ativar o usuário: " + errorText);
           }
-        });
+        } catch (error) {
+          console.error("Erro geral:", error);
+          showNotification(error.message, true);
+        }
+  
+        // Fecha o modal após a ativação
+        closeModalActivate();
       });
+    }
+  
+    // Função para fechar o modal
+    window.closeModalActivate = function() {
+      const modal = document.getElementById('modal-archive');
+      modal.style.display = 'none'; // Fecha o modal
+    }
+  
+    // Fechar o modal se o usuário clicar fora da área do conteúdo
+    window.addEventListener('click', function(event) {
+      const modal = document.getElementById('modal-archive');
+      if (event.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+
+  //   const activateButtons = document.querySelectorAll('.activate-btn');
+  //   activateButtons.forEach(button => {
+  //     button.addEventListener('click', function () {
+  //       const userCpf = this.getAttribute('data-id');  // Pega o CPF do usuário do atributo "data-id"
+  //       openModalActivate(userCpf);
+  //     });
+  //   });
+
+  //   function openModalActivate(cpf) {
+  //     const modal = document.getElementById('modal-archive');
+  //     const userInfo = document.getElementById('usu-archive');
+      
+  //     // Exibe o modal
+  //     modal.style.display = 'block';
+  //   }
+
+  //   // Função para fechar o modal
+  // window.closeModalActivate = function() {
+  //   const modal = document.getElementById('modal-archive');
+  //   modal.style.display = 'none'; // Fecha o modal
+  // }
+
+  // // Fechar o modal se o usuário clicar fora da área do conteúdo
+  // window.addEventListener('click', function(event) {
+  //   const modal = document.getElementById('modal-archive');
+  //   if (event.target === modal) {
+  //     modal.style.display = 'none';
+  //   }
+  // });
+
+  //   // Configura os eventos dos botões de ativação
+  //   document.getElementById('btnYesActivate')?.addEventListener('click', function () {
+  //       const cpf = button.getAttribute("data-id");
+  //       button.addEventListener("click", async (e) => {
+  //         console.log(`Iniciando ativação do usuário com CPF: ${cpf}`);
+  //         try {
+  //           const response = await fetch(`${baseUrl}/usuarios/ativar/${cpf}`, {
+  //             method: "PATCH",
+  //             headers: {
+  //               "Content-Type": "application/json",
+  //             },
+  //           });
+  
+  //           if (response.ok) {
+  //             console.log("Usuário ativado com sucesso.");
+  //             showNotification("Usuário ativado com sucesso!");
+  //             // Recarrega a lista de usuários
+  //             usuarios = await fetchClientesInativos();
+  //             renderTable(usuarios, currentPage);
+  //           } else {
+  //             const errorText = await response.text();
+  //             console.error("Erro ao ativar o usuário:", errorText);
+  //             throw new Error("Erro ao ativar o usuário: " + errorText);
+  //           }
+  //         } catch (error) {
+  //           console.error("Erro geral:", error);
+  //           showNotification(error.message, true);
+  //         }
+  //       });
+  //     });
+  //   closeModalActivate();
     }
   
     // Função para mostrar o modal de deletar
@@ -330,6 +431,10 @@ document.addEventListener("DOMContentLoaded", function () {
     init();
   });
   
+
+  
+  
+
   document.addEventListener("DOMContentLoaded", function () {
     const nome = localStorage.getItem("nome");
     const instagram = localStorage.getItem("instagram");
@@ -372,6 +477,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // } else if (nome) {
     //     url = `http://localhost:8080/usuarios/buscar-por-nome/${nome}`;
     else {
+        alert("Por favor, preencha ao menos um dos campos.");
         return;
     }
   
@@ -594,7 +700,7 @@ saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), filename);
   }
   
 
-new window.VLibras.Widget('https://vlibras.gov.br/app');
+
   
 async function carregarImagem2() {
   const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução
@@ -632,3 +738,42 @@ window.onload = function () {
   carregarImagem2();
   updateKpiData();
 };
+
+document.addEventListener("DOMContentLoaded", function () {
+  const tooltips = document.querySelectorAll(
+    ".tooltip6, .tooltip7, .tooltip8, .tooltip9"
+  );
+
+  tooltips.forEach((tooltip) => {
+    const targetButton = tooltip.previousElementSibling;
+
+    targetButton.addEventListener("mouseenter", () => {
+      tooltip.style.visibility = "hidden"; // Esconde temporariamente para cálculo
+      tooltip.style.display = "block"; // Torna visível para cálculo de posição
+      positionTooltip(tooltip, targetButton);
+      tooltip.style.visibility = "visible"; // Exibe após posicionamento
+    });
+
+    targetButton.addEventListener("mouseleave", () => {
+      tooltip.style.display = "none"; // Esconde ao sair do hover
+    });
+
+    window.addEventListener("resize", () => {
+      if (tooltip.style.display === "block") {
+        positionTooltip(tooltip, targetButton); // Recalcula posição no redimensionamento
+      }
+    });
+  });
+
+  function positionTooltip(tooltip, target) {
+    const targetRect = target.getBoundingClientRect();
+    const tooltipRect = tooltip.getBoundingClientRect();
+
+    // Calcula posição central acima do botão
+    const topPosition = targetRect.top - tooltipRect.height - 5;
+    const leftPosition = targetRect.left + (targetRect.width / 0) - (tooltipRect.width / 0);
+
+    tooltip.style.top = `${topPosition + window.scrollY}px`;
+    tooltip.style.left = `${leftPosition + window.scrollX}px`;
+  }
+});

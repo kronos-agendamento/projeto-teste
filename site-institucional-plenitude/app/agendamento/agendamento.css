@@ -189,7 +189,6 @@ header p {
   font-size: 2vh;
 }
 
-
 #greeting1 {
   font-size: 3.5vh;
   font-weight: bold;
@@ -386,7 +385,7 @@ Inicio Filtros
   gap: 2px;
   margin-left: -1%;
   display: flex;
-  justify-content:flex-start;
+  justify-content: flex-start;
 }
 
 .actions button {
@@ -956,11 +955,10 @@ table tr.clickable-row:hover {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 105px; /* Ajuste conforme necessário */
-  left: 35%;
+  top: 120px; /* Ajuste conforme necessário */
+  left: 32%;
   transform: translateX(-50%);
 }
-
 
 /* Estilos do tooltip */
 .tooltip2 {
@@ -973,12 +971,12 @@ table tr.clickable-row:hover {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 105px; /* Ajuste conforme necessário */
-  left: 47%;
+  top: 120px; /* Ajuste conforme necessário */
+  left: 40%;
   transform: translateX(-50%);
 }
 
-.tooltip3{
+.tooltip3 {
   display: none;
   position: absolute;
   background-color: #333;
@@ -988,12 +986,12 @@ table tr.clickable-row:hover {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 105px; /* Ajuste conforme necessário */
+  top: 120px; /* Ajuste conforme necessário */
   left: 65%;
   transform: translateX(-50%);
 }
 
-.tooltip4{
+.tooltip4 {
   display: none;
   position: absolute;
   background-color: #333;
@@ -1003,14 +1001,12 @@ table tr.clickable-row:hover {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 105px; /* Ajuste conforme necessário */
+  top: 120px; /* Ajuste conforme necessário */
   left: 79%;
   transform: translateX(-50%);
 }
 
-
-
-.tooltip5{
+.tooltip5 {
   display: none;
   position: absolute;
   background-color: #333;
@@ -1025,9 +1021,8 @@ table tr.clickable-row:hover {
   transform: translateX(-50%);
 }
 
-
- /* Estilos do tooltip */
- .tooltip6 {
+/* Estilos do tooltip */
+.tooltip6 {
   display: none; /* Oculta por padrão */
   position: absolute; /* Para que o tooltip flutue em relação ao botão */
   background-color: #333; /* Cor de fundo do tooltip */
@@ -1042,7 +1037,7 @@ table tr.clickable-row:hover {
   transform: translateX(-50%); /* Ajusta a posição para centralizar */
 }
 
-.tooltip7{
+.tooltip7 {
   display: none;
   position: absolute;
   background-color: #333;
@@ -1057,7 +1052,7 @@ table tr.clickable-row:hover {
   transform: translateX(-50%);
 }
 
-.tooltip8{
+.tooltip8 {
   display: none;
   position: absolute;
   background-color: #333;
@@ -1082,45 +1077,79 @@ table tr.clickable-row:hover {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
+  top: 120px; /* Ajuste conforme necessário */
+  left: 75%;
+  transform: translateX(-50%);
+}
+
+.tooltip12{
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
   top: 105px; /* Ajuste conforme necessário */
   left: 79%;
   transform: translateX(-50%);
 }
 
+.tooltip29{
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 120px; /* Ajuste conforme necessário */
+  left: 90%;
+  transform: translateX(-50%);
+}
 
+.tooltip30{
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 120px; /* Ajuste conforme necessário */
+  left: 53%;
+  transform: translateX(-50%);
+}
 
 .filter-btn:hover + .tooltip {
   display: block;
-  
 }
-
 
 .filter-btn:hover + .tooltip2 {
   display: block;
-  
 }
-
 
 .filter-btn:hover + .tooltip3 {
   display: block;
-  
 }
 
 .filter-btn:hover + .tooltip4 {
   display: block;
-  
 }
 
 .filter-btn:hover + .tooltip5 {
   display: block;
-  
 }
 
 .filter-btn:hover + .tooltip9 {
   display: block;
-  
 }
-
 
 /* Exibe o tooltip quando o botão de exclusão é hover */
 .filter-btn:hover .tooltip6 {
@@ -1129,15 +1158,26 @@ table tr.clickable-row:hover {
 
 .filter-btn:hover + .tooltip7 {
   display: block;
-  
 }
 
 .filter-btn:hover + .tooltip8 {
   display: block;
+}
+
+.filter-btn:hover + .tooltip11 {
+  display: block;
   
 }
 
+.filter-btn:hover + .tooltip29 {
+  display: block;
+  
+}
 
+.filter-btn:hover + .tooltip30 {
+  display: block;
+  
+}
 
 
 .tooltip-wrapper {
@@ -1178,4 +1218,30 @@ table tr.clickable-row:hover {
   opacity: 1;
 }
 
+
+.tooltip-40 {
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s, visibility 0.2s;
+  z-index: 10;
+}
+
+button {
+  position: relative; /* Necessário para posicionar corretamente o tooltip */
+}
+
+button .tooltip-40 {
+  bottom: 100%; /* Posição acima do botão */
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 5px; /* Espaço entre botão e tooltip */
+}
 

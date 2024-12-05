@@ -113,31 +113,37 @@
         </div>
 
         <div id="notification" class="notification">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill"
+          <!-- <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill"
             viewBox="0 0 16 16">
             <path
               d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
-          </svg>
+          </svg> -->
           <span id="notification-message"></span>
         </div>
       </header>
       <div class="main-content">
         <div class="center-content">
           <section class="actions">
-            <a href="../anamnese/anamnese-forms/filtrar-anamnese/filtrar-anamnese.html"><button id="openFilterModalBtn"
-                class="filter-btn" style="height: 7vh; margin-left: 1%; width: 50vh; border-radius: 10px;">
+            <a href="../anamnese/anamnese-forms/filtrar-anamnese/filtrar-anamnese.html">
+              <button class="filter-btn" id="openFilterModalBtn" style="height: 7vh; margin-left: 1%; width: 50vh; border-radius: 10px;">
                 <i class="fas fa-search" style="margin-right: 10px; font-size: 24px;"></i>
                 <span style="font-weight: bold; font-size: 14px;">Pesquisar anamnese por cliente</span>
               </button></a>
+              <div id="tooltip4" class="tooltip4">Clique para pesquisar por cliente</div>
             
-              <button class="planilha-btn" onclick="showForm2(), getDesativadas()" style="height: 7vh; width: 34vh; margin-right: 10px; border-radius: 10px;">
+              <button class="planilha-btn filter-btn" onclick="showForm2(), getDesativadas()" style="height: 7vh; width: 34vh; margin-right: 10px; border-radius: 10px;">
                 <i class="fas fa-folder" style="margin-right: 10px; font-size: 24px;"></i>
                 <span style="font-weight: bold; font-size: 14px;">Perguntas Inativas</span>
               </button>
-              <button class="criar-btn" onclick="showForm()" style="height: 7vh; width: 30vh; margin-left: 0vh; border-radius: 10px;">
+              <div id="tooltip2" class="tooltip2">Clique para ver as perguntas inativas</div>
+              <button class="criar-btn filter-btn" onclick="showForm()" style="height: 7vh; width: 30vh; margin-left: 0vh; border-radius: 10px;">
                 <i class="fas fa-plus-circle" style="margin-right: 10px; font-size: 24px;"></i>
                 <span style="font-weight: bold; font-size: 14px;">Criar Pergunta</span>
               </button>
+              <div id="tooltip3" class="tooltip3">Clique para inserir uma nova pergunta</div>
+
+            <!-- Input oculto para o seletor de arquivos -->
+            <input type="file" id="fileInput" style="display: none;" />
       
           </section>
         </div>
@@ -166,14 +172,14 @@
           <div>
             <label for="descricao">Pergunta: </label>
             <input type="text" id="descricaoPergunta" name="descricaoPergunta"
-              placeholder="Digite a pergunta" /><br /><br />
+              placeholder="Digite a pergunta" style="font-family: poppins;" /><br /><br />
             <label for="tipo">Tipo: </label>
-            <select id="tipoPergunta" name="tipoPergunta" onchange="mostrarExemplo()">
+            <select id="tipoPergunta" name="tipoPergunta" style="font-family: poppins;" onchange="mostrarExemplo()">
               <option value="Input">Texto</option>
               <option value="Select">Seleção - (Sim/Não)</option>
               <!-- <option value="Check Box">Caixa de Seleção</option> -->
             </select><br /><br />
-            <div id="exemploTipoPergunta" class="exemplo"></div>
+            <div id="exemploTipoPergunta"  class="exemplo"></div>
             <br />
           </div>
           <div>
@@ -186,6 +192,9 @@
           </div>
         </div>
       </div>
+
+
+      
 
       <div id="modalDesativadas" class="modal">
         <div class="modal-content" id="context-desativado" style="width: 50%">
@@ -215,7 +224,7 @@
       <div id="modalDeletar" class="modal">
         <div class="modal-content">
           <div class="divTopoModal">
-            <h3>Deseja desativar a pergunta?</h3>
+            <h3 style="font-weight: 400;">Deseja <b>desativar</b> a pergunta?</h3>
             <br />
             <p id="perguntaTexto"></p>
             <p id="perguntaTipo"></p>
@@ -263,7 +272,7 @@
       <div id="modalExcluir" class="modal">
         <div class="modal-content">
           <div class="divTopoModal">
-            <h3>Deseja excluir a pergunta?</h3>
+            <h3 style="font-weight: 400;">Deseja <b>excluir</b> a pergunta?</h3>
             <br />
             <p id="perguntaExcluirTexto"></p>
             <p id="perguntaExcluirTipo"></p>

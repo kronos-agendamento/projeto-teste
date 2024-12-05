@@ -13,6 +13,8 @@ body {
   padding: 0;
 }
 
+
+
 .corpo {
   display: flex;
   background-color: #ffffff;
@@ -126,7 +128,7 @@ navbar  lateral
 --------------------------------------------------------------*/
 
 .navigation {
-  height: 83rem;
+  height: 86rem;
   background: #d2135d;
   width: 263px;
   margin-left: 32px;
@@ -435,6 +437,7 @@ Dados do usuário
   input {
     padding: 1vw;
     width: 100%;
+    font-family: poppins;
   }
 }
 
@@ -467,6 +470,7 @@ Dados do usuário
   margin: 0.2vw;
   width: 100%;
   justify-content: center;
+  font-family: poppins;
 }
 
 .form-group input[type="file"] {
@@ -477,7 +481,7 @@ Dados do usuário
   display: inline-block;
 }
 
-.form-group input[type="number"] + input[type="number"] {
+.form-group input[type="number"]+input[type="number"] {
   margin-left: 20px;
 }
 
@@ -517,6 +521,7 @@ Dados do usuário
   font-size: 16px;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-family: poppins;
 
   svg {
     margin-right: 10px;
@@ -679,28 +684,59 @@ td {
   margin-top: 200px;
 }
 
+/* Estilo para o Modal */
 .modal {
-  display: none;
+  display: none; /* Inicialmente invisível */
   position: fixed;
-  z-index: 1;
-  padding-top: 100px;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
-  background-color: rgb(0, 0, 0);
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
 }
 
 .modal-content {
-  background-color: #fefefe;
-  margin: auto;
+  position: relative;
+  background-color: white;
   padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
+  border-radius: 8px;
+  width: 36vw;
+  height: 22vh;
+  text-align: center;
+  justify-content: center;
 }
 
+/* Estilo do X para fechar o modal */
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+}
+
+.botao-importar-txt {
+  padding: 10px;
+  margin: 10px;
+  cursor: pointer;
+  border: none;
+  background-color: #f71a7a;
+  color: white;
+  border-radius: 4px;
+  font-family: Poppins;
+}
+
+.botao-importar-txt:hover {
+  background-color: #d6005c;
+}
+
+.close-modal:hover {
+  color: red;
+}
 .close {
   color: #aaa;
   float: right;
@@ -714,6 +750,7 @@ td {
   text-decoration: none;
   cursor: pointer;
 }
+
 
 #horaInicio,
 #horaFim,
@@ -732,9 +769,10 @@ td {
   margin-top: -30px;
 }
 
-#horarioBlock {
+#horarioBlock{
   margin-top: -20px;
 }
+
 
 #notification {
   position: fixed;
@@ -770,19 +808,6 @@ td {
   padding: 20px;
   margin-bottom: 20px;
   margin-left: 4.3%;
-  margin-top: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  position: relative;
-}
-
-.form-section2 {
-  width: 25vw;
-  height: 690px;
-  background-color: #fff;
-  padding: 20px;
-  margin-bottom: 20px;
-  margin-left: 1%;
   margin-top: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -836,6 +861,7 @@ td {
   border: 1px solid #ddd;
   border-radius: 5px;
   font-size: 14px;
+  font-family: poppins;
 }
 
 .form-group-row {
@@ -989,6 +1015,7 @@ p {
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s;
+  font-family: poppins;
 }
 
 .adicionar-button:hover {
@@ -1035,3 +1062,148 @@ p {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   border: 1px solid #d2135d;
 }
+
+
+.filter-btn {
+  position: relative;
+}
+
+
+.tooltip1 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: -20px;
+  /* Ajuste conforme necessário */
+  left: 98%;
+  transform: translateX(-50%);
+}
+
+.tooltip2 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: -20px;
+  /* Ajuste conforme necessário */
+  left: 98%;
+  transform: translateX(-50%);
+}
+
+.tooltip3 {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  top: 30px;
+  /* Ajuste conforme necessário */
+  left: 55%;
+  transform: translateX(-50%);
+}
+
+
+.filter-btn:hover+.tooltip1 {
+  display: block;
+
+}
+
+.filter-btn:hover+.tooltip2 {
+  display: block;
+
+}
+
+.filter-btn:hover+.tooltip3 {
+  display: block;
+
+}
+
+.import-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.import-button img{
+  width: 35px;
+ 
+}
+
+
+.div-fora-button{
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.divTopoModal p{
+  color: #000;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 30%;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+
+.modal-content p {
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.modal-content .btn {
+  margin: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.modal-content .btn-yes,
+.btn-save {
+  background-color: #28a745;
+  color: white;
+  font-family: poppins;
+}
+
+.modal-content .btn-no {
+  background-color: #dc3545;
+  color: white;
+  font-family: poppins;
+}
+

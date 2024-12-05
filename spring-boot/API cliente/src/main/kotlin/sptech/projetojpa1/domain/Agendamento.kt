@@ -33,6 +33,12 @@ class Agendamento(
     @Column(name = "tempo_para_agendar")
     var tempoAgendar: Int? = null,
 
+    @Column(name = "homecare")
+    var homecare: Boolean? = null,
+
+    @Column(name = "valor")
+    var valor: Double? = null,
+
     @ManyToOne
     @JoinColumn(name = "fk_especificacao_procedimento")
     var especificacao: Especificacao? = null,
@@ -40,5 +46,15 @@ class Agendamento(
     @field:NotNull(message = "Status do agendamento não pode ser nulo")
     @ManyToOne
     @JoinColumn(name = "fk_status")
-    var statusAgendamento: Status
+    var statusAgendamento: Status,
+
+    // Novos campos
+    @Column(name = "cep")
+    var cep: String? = null,
+
+    @Column(name = "logradouro")
+    var logradouro: String? = null,
+
+    @Column(name = "numero")
+    var numero: String? = null
 )

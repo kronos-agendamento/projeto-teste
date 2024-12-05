@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7RnMgdvoROHW_o-4pQeM3LJyNMwxem6o&libraries=places"></script>
 
     <title>Editar Agendamento | KronosBooking</title>
 
@@ -21,47 +22,65 @@
   <body>
     <div class="corpo">
       <div class="navigation">
-        <li class="list" style="
+        <li
+          class="list"
+          style="
             width: 30px;
             height: 30px;
             list-style: none;
             display: flex;
             justify-content: center;
             margin-top: 5vh;
-          ">
-          <div class="imagem-perfil" style="
+          "
+        >
+          <div
+            class="imagem-perfil"
+            style="
               width: 20vh;
               height: 20vh;
               border-radius: 300px;
               display: flex;
               justify-content: center;
-            ">
-           <img id="perfilImage"  alt="Foto do usuário" style="
+            "
+          >
+            <img
+              id="perfilImage"
+              alt="Foto do usuário"
+              style="
                 width: 53vh;
                 height: 23vh;
                 display: flex;
                 justify-content: center;
                 align-items: center;
-              " />
+              "
+            />
           </div>
         </li>
-        <li id="userName" style="
+        <li
+          id="userName"
+          style="
             margin-top: 20vh;
             list-style: none;
             color: white;
             font-weight: 600;
-          "></li>
-        <li id="userInsta" style="
+          "
+        ></li>
+        <li
+          id="userInsta"
+          style="
             list-style: none;
             color: white;
             font-weight: 200;
             font-size: 12px;
-          "></li>
-  
+          "
+        ></li>
+
         <ul style="margin-top: 4%; position: absolute">
           <li class="list">
-            <a href="../../app/index/index.html">
-              <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+            <a href="../../../index/index.html">
+              <span class="icon"
+                ><ion-icon name="home-outline"></ion-icon
+              ></span>
               <span class="title">Início </span>
             </a>
           </li>
@@ -125,10 +144,19 @@
       </div>
 
       <main>
-        <header>
-          <div>
+        <header
+          style="
+            height: 14vh;
+            width: 152vh;
+            margin-left: 4.3%;
+            margin-top: 23px;
+          "
+        >
+          <div style="margin-top: -1%">
             <h1>Agendamentos</h1>
-            <p>Essa página é destinada para edição de um novo agendamento.</p>
+            <p style="margin-top: -0.5%">
+              Essa página é destinada para a edição de um agendamento.
+            </p>
           </div>
           <div id="notification" class="notification">
             <svg
@@ -151,7 +179,10 @@
             <a href="../../agendamento.html" class="back-link"
               >← Voltar para página de visualização dos agendamentos</a
             >
-            <section class="form-section">
+            <section
+              class="form-section"
+              style="width: 151vh; margin-left: 4.5%"
+            >
               <div class="form-title">
                 <h2>Dados dos Agendamentos</h2>
               </div>
@@ -173,23 +204,110 @@
                     <label for="tipo-atendimento">Tipo de Atendimento:</label>
                     <select id="tipo-atendimento" name="tipo-atendimento">
                       <option value="">Selecione o tipo de atendimento</option>
-                      <option value="Colocação">Primeira Vez</option>
-                      <option value="Manutenção">Manutenção</option>
-                      <option value="Retirada">Retirada</option>
+                      <option value="Colocação" id="opcao-colocacao">
+                        Colocação
+                      </option>
+                      <option value="Manutenção" id="opcao-manutencao">
+                        Manutenção
+                      </option>
+                      <option value="Retirada" id="opcao-retirada">
+                        Remoção
+                      </option>
                     </select>
                   </div>
                 </form>
-                <div class="form-group form-mr form-input">
-                  <label for="especificacoes">Especificação:</label>
-                  <select
-                    id="especificacoes"
-                    name="especificacoes"
-                    disabled
-                    class="disabled-select"
+
+                <form class="form-flex">
+                  <div
+                    class="form-group form-mr form-input"
+                    style="width: 100%"
                   >
-                    <option value="">Selecione uma especificação</option>
-                  </select>
-                </div>
+                    <label for="especificacoes">Especificação:</label>
+                    <select
+                      id="especificacoes"
+                      name="especificacoes"
+                      disabled
+                      class="disabled-select"
+                      style="width: 100%"
+                    >
+                      <option value="">Selecione uma especificação</option>
+                    </select>
+                  </div>
+                  <div style="width: 100%">
+                    <div class="form-group form-input" style="width: 100%">
+                      <label for="localidade">Localidade:</label>
+                      <select id="localidade" name="localidade" disabled>
+                        <option value="">Selecione a localidade</option>
+                        <option value="Presencial">Presencial</option>
+                        <option value="Homecare">Homecare</option>
+                      </select>
+                    </div>
+                    <div
+                      style="
+                        display: flex;
+                        width: 100%;
+                        align-items: flex-start;
+                      "
+                    >
+                      <!-- Campo de CEP -->
+                      <div
+                        class="form-group hidden form-input"
+                        id="cep-group"
+                        style="width: 50%"
+                      >
+                        <label for="cep">CEP:</label>
+                        <input
+                          type="text"
+                          id="cep"
+                          placeholder="Insira o CEP"
+                          maxlength="9"
+                        />
+                      </div>
+
+                      <!-- Campo de Número -->
+                      <div
+                        class="form-group hidden form-input"
+                        id="numero-group"
+                        style="width: 50%; margin-left: 10px"
+                      >
+                        <label for="numero">Número:</label>
+                        <input
+                          type="text"
+                          id="numero"
+                          placeholder="Insira o número"
+                          maxlength="10"
+                        />
+                      </div>
+                    </div>
+
+                    <!-- Campo de endereço -->
+                    <div
+                      class="form-group hidden form-input"
+                      id="endereco-group"
+                      style="width: 100%"
+                    >
+                      <label for="endereco">Endereço:</label>
+                      <input
+                        type="text"
+                        id="endereco"
+                        placeholder="Insira o endereço da cliente ou do evento"
+                        readonly
+                        style="width: 100%"
+                      />
+                      <div id="taxa-total" class="hidden">
+                        <p>
+                          <strong>Taxa Total Cobrada:</strong>
+                          <span id="valor-taxa"></span>
+                        </p>
+                        <p>
+                          <strong>Total de Km's até o local:</strong>
+                          <span id="total-km"></span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+
                 <div class="form-group form-mr form-input">
                   <label for="data">Escolha o melhor dia:</label>
                   <input type="date" id="data" name="data" />
@@ -201,11 +319,22 @@
                   >
                   <div id="horarios-disponiveis"></div>
                 </div>
-                <div class="button-container">
+
+                <div id="orcamento-container" class="hidden">
+                  <p>Orçamento: <span id="orcamento"></span></p>
+                  <p id="orcamento-detalhe"></p>
+                </div>
+
+                <div class="button-container" style="gap: 24px">
+                  <div id="valor-total-container">
+                    <p id="valor-total-text"></p>
+                  </div>
+
                   <button
                     type="button"
                     class="save-button"
                     id="save-agendamento-button"
+                    style="padding: 10px 14px; font-size: 16px"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -236,11 +365,11 @@
         ></script>
       </main>
     </div>
-    
+
     <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
     <div vw class="enabled">
-        <div vw-access-button class="active"></div>
-        <div vw-plugin-wrapper></div> 
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper></div>
     </div>
   </body>
 </html>

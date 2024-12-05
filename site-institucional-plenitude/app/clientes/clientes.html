@@ -114,11 +114,11 @@
       </p>
     </header>
     <div id="notification" class="notification">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill"
+      <!-- <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check-circle-fill"
         viewBox="0 0 16 16">
         <path
           d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z" />
-      </svg>
+      </svg> -->
       <span id="notification-message"></span>
     </div>
     <div class="actions">
@@ -126,13 +126,13 @@
         onclick="openModalPesquisa()">
         <i class="fas fa-search" style="margin-right: 10px; font-size: 24px;"></i>Pesquisar
       </button>
-      <div id="tooltip1" class="tooltip1">Clique para pesquisar clientes.</div>
+      <div id="tooltip1" class="tooltip1">Clique para pesquisar clientes</div>
 
         <button class="arquivados-btn filter-btn " style="height: 7vh;" onclick="redirectToArchived()" id="btn-arquivar">
           <i class="fas fa-folder" style="margin-right: 10px; font-size: 24px;"></i>
           Inativos
         </button>
-        <div id="tooltip2" class="tooltip2">Clique para ver clientes inativos.</div>
+        <div id="tooltip2" class="tooltip2">Clique para ver clientes inativos</div>
 
         <!-- <button class="avaliar-btn filter-btn" style="height: 7vh; " onclick="openModalAvaliar()">
           <img style="height: 4.5vh; width: 4.5vh; margin-top: 19%" src="../../assets/icons/estrela.png"
@@ -143,22 +143,23 @@
         <button class="planilha-btn filter-btn" style="height: 7vh; margin-left: 0%">
           <i class="fas fa-file" style="margin-right: 10px; font-size: 24px;"></i>Planilha
         </button>
-        <div id="tooltip4" class="tooltip4">Clique para exportar lista com clientes.</div>
+        <div id="tooltip4" class="tooltip4">Clique para exportar lista com clientes</div>
 
         <button class="criar-btn filter-btn" onclick="showForm()" style="height: 7vh; width: 16vh">
           <a style="width: max-content" href="clienteForms/cadastrar-cliente/cadastrar-cliente.html">
             <i class="fas fa-plus-circle" style="margin-right: 10px; font-size: 24px;"></i> <span>Novo</span>
           </a>
         </button>
-        <div id="tooltip5" class="tooltip5">Clique para cadastrar clientes.</div>
+        <div id="tooltip5" class="tooltip5">Clique para cadastrar clientes</div>
 
         <button onclick="abrirModalAv()" style="margin-left: 1%; margin-right: 3%;">
           <i class="fas fa-star" style="margin-right: 10px; font-size: 24px;" ></i>
           Avaliar</button>
-          
+          <div id="tooltip6" class="tooltip6">Clique para avaliar um cliente</div>
         <button class="btn-action undo-btn" id="btn-undo" onclick="undoAction()" style="display: none;">
           <i class="fas fa-undo"></i> Desfazer
         </button>
+        
         <button class="btn-action redo-btn" id="btn-redo" onclick="redoAction()"
           style="margin-left: 1%; display: none;">
           <i class="fas fa-redo"></i> Refazer
@@ -166,11 +167,12 @@
 
         
     </div>
-    <div class="actions" style="display: flex; align-items: center; justify-content: center;">
+    <div class="actions filter-btn" style="display: flex; align-items: center; justify-content: center;">
       <a href="../clientes/clienteForms/mapa-cliente/mapa-cliente.html" class="filter-btn-origem">
         <i class="fas fa-map" style="margin-right: 10px;"></i> Visualizar Dados Sobre Origem de Clientes
       </a>
     </div>
+    <div id="tooltip18" class="tooltip18">Localização dos clientes</div>
     
     <table id="procedures-table" class="procedures-table">
       <thead>
@@ -224,8 +226,8 @@
     <div class="modal-content">
       <p>Tem certeza que deseja <b>excluir</b> o cliente?</p>
       <p id="usu"></p>
-      <button id="btnYes" class="btn btn-yes">SIM</button>
-      <button class="btn btn-no" onclick="closeModal()">NÃO</button>
+      <button id="btnYes" class="btn btn-yes">Sim</button>
+      <button class="btn btn-no" onclick="closeModal()">Não</button>
     </div>
   </div>  
 
@@ -233,8 +235,8 @@
     <div class="modal-content">
       <p>Você tem certeza que deseja <b>inativar</b> o usuário?</p>
       <p id="usu-archive"></p>
-      <button id="btnYesArchive" class="btn btn-yes">SIM</button>
-      <button class="btn btn-no" onclick="closeModalArchive()">NÃO</button>
+      <button id="btnYesArchive" class="btn btn-yes">Sim</button>
+      <button class="btn btn-no" onclick="closeModalArchive()">Não</button>
     </div>
   </div>
 
@@ -256,12 +258,12 @@
           <input type="text" id="codigo" name="codigo" />
         </div>
       </div>
-      <button class="btn-pesquisar" onclick="pesquisarCliente()">
+      <button class="btn-pesquisar" id="botaoPesquisar">
         Pesquisar
       </button>
 
       <!-- Área para exibir o resultado -->
-      <div id="resultado" style="margin-top: 20px"></div>
+      <div id="resultado" ></div>
     </div>
   </div>
 

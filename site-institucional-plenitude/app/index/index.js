@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   buttons.forEach((button) => {
     button.addEventListener("click", () => { });
   });
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
 });
 
 const list = document.querySelectorAll(".list");
@@ -459,7 +460,7 @@ async function deleteStatus() {
       showNotification("Status deletado com sucesso!");
     } else {
       console.error("Erro ao excluir status:", response.status);
-      showNotification("Erro ao excluir status!", true);
+      showNotification("Erro ao excluir status, ele está vinculado à algum agendamento.", true);
     }
   } catch (error) {
     console.error("Erro na requisição:", error);
@@ -603,6 +604,8 @@ function saudacao() {
 
 }
 
+
+
 // Função para buscar os leads
 async function fetchLeads() {
   try {
@@ -652,10 +655,10 @@ fetchLeads();
 
 
 
-window.onload = saudacao;
 
 
-new window.VLibras.Widget('https://vlibras.gov.br/app');
+
+
 
 async function carregarImagem2() {
   const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução
@@ -691,3 +694,41 @@ async function carregarImagem2() {
 
 // Carrega a imagem automaticamente quando a página termina de carregar
 window.onload = carregarImagem2;
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  const tooltips = document.querySelectorAll(".tooltip1, .tooltip2, .tooltip3, .tooltip4, .tooltip5, .tooltip6, .tooltip7, .tooltip8, .tooltip9, .tooltip10, .tooltip12");
+
+  tooltips.forEach((tooltip) => {
+    const targetButton = tooltip.previousElementSibling; // O botão anterior ao tooltip
+
+    targetButton.addEventListener("mouseenter", () => {
+      tooltip.style.visibility = "hidden"; // Esconde temporariamente para calcular a posição
+      tooltip.style.display = "block"; // Garante que a posição seja calculada com tooltip visível
+      positionTooltip(tooltip, targetButton);
+      tooltip.style.visibility = "visible"; // Exibe o tooltip após o posicionamento
+    });
+
+    targetButton.addEventListener("mouseleave", () => {
+      tooltip.style.display = "none"; // Esconde o tooltip ao sair do hover
+    });
+
+    window.addEventListener("resize", () => {
+      if (tooltip.style.display === "block") {
+        positionTooltip(tooltip, targetButton); // Atualiza a posição no redimensionamento
+      }
+    });
+  });
+
+  function positionTooltip(tooltip, target) {
+    const targetRect = target.getBoundingClientRect();
+    const tooltipRect = tooltip.getBoundingClientRect();
+
+    // Ajusta o tooltip para ficar acima do botão e centralizado
+    const topPosition = targetRect.top - tooltipRect.height - 1; // 10px acima
+    const leftPosition = targetRect.left + targetRect.width / -0 - tooltipRect.width / 0; // Centraliza horizontalmente
+
+    tooltip.style.top = `${topPosition + window.scrollY}px`;
+    tooltip.style.left = `${leftPosition + window.scrollX}px`;
+  }
+});

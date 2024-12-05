@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository
 import sptech.projetojpa1.domain.Agendamento
 import sptech.projetojpa1.domain.Usuario
 import sptech.projetojpa1.dto.agendamento.AgendamentoDTO
-import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalDate
 
 @Repository
 interface AgendamentoRepository : JpaRepository<Agendamento, Int> {
@@ -90,7 +90,7 @@ WHERE
     fun calcularTempoMedioEntreAgendamentosDoDia(): Double?
 
     @Query(
-        """
+        value = """
         SELECT 
             sa.nome AS status_nome,
             COUNT(a.id_agendamento) AS quantidade
@@ -99,23 +99,26 @@ WHERE
         JOIN 
             status sa ON a.fk_status = sa.id_status_agendamento
         WHERE 
-            sa.nome IN ('Agendado', 'Confirmado', 'Concluído', 'Cancelado', 'Remarcado')  -- Apenas os status relevantes
+            sa.nome IN ('Agendado', 'Confirmado', 'Concluído', 'Cancelado', 'Remarcado') 
+            AND DATE(a.data_horario) = COALESCE(:startDate, CURDATE()) 
         GROUP BY 
             sa.nome
-    """, nativeQuery = true
+    """,
+        nativeQuery = true
     )
-    fun contarAgendamentosPorStatus(): List<Map<String, Any>>
+    fun contarAgendamentosPorStatus(@Param("startDate") startDate: String?): List<Map<String, Any>>
+
 
 
     @Query(
         nativeQuery = true, value = """ 
     SELECT COUNT(*) AS agendamentos_no_dia
     FROM agendamento
-    WHERE DATE(data_horario) = COALESCE(:specificDate, CURDATE());
+    WHERE DATE(data_horario) = COALESCE(:startDate, CURDATE());
     """
     )
     fun findTotalAgendamentosPorDia(
-        @Param("specificDate") specificDate: String?
+        @Param("startDate") startDate: String?
     ): Int
 
 
@@ -137,25 +140,40 @@ WHERE
 
     @Query(
         nativeQuery = true, value = """
-        SELECT p.tipo AS procedimento, 
-               SUM(CASE 
-                   WHEN a.tipo_agendamento = 'colocacao' THEN e.preco_colocacao
-                   WHEN a.tipo_agendamento = 'manutencao' THEN e.preco_manutencao
-                   WHEN a.tipo_agendamento = 'retirada' THEN e.preco_retirada
-               END) AS totalReceita
-        FROM agendamento a
-        JOIN especificacao e ON a.fk_especificacao_procedimento = e.id_especificacao_procedimento
-        JOIN procedimento p ON e.fk_procedimento = p.id_procedimento
-        WHERE a.data_horario >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
-        GROUP BY p.tipo;
-        """
+        SELECT 
+            p.tipo AS procedimento, 
+            SUM(
+                CASE 
+                    WHEN a.tipo_agendamento = 'colocacao' THEN e.preco_colocacao
+                    WHEN a.tipo_agendamento = 'manutencao' THEN e.preco_manutencao
+                    WHEN a.tipo_agendamento = 'retirada' THEN e.preco_retirada
+                    ELSE 0
+                END
+            ) AS totalReceita
+        FROM 
+            agendamento a
+        JOIN 
+            especificacao e ON a.fk_especificacao_procedimento = e.id_especificacao_procedimento
+        JOIN 
+            procedimento p ON e.fk_procedimento = p.id_procedimento
+        WHERE 
+            a.data_horario BETWEEN 
+            COALESCE(:startDate, DATE_SUB(CURDATE(), INTERVAL 3 MONTH)) AND 
+            COALESCE(:endDate, CURDATE())
+        GROUP BY 
+            p.tipo
+    """
     )
-    fun findTotalReceitaUltimosTresMeses(): List<Array<Any>>
+    fun findTotalReceitaEntreDatas(
+        @Param("startDate") startDate: String?,
+        @Param("endDate") endDate: String?
+    ): List<Array<Any>>
+
 
     @Query(
         nativeQuery = true, value = """
         SELECT 
-            p.tipo AS Procedimento, 
+            p.tipo AS procedimento, 
             COUNT(*) AS soma_qtd
         FROM 
             agendamento a
@@ -164,14 +182,20 @@ WHERE
         JOIN 
             procedimento p ON e.fk_procedimento = p.id_procedimento
         WHERE 
-            a.data_horario >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+            a.data_horario BETWEEN COALESCE(:startDate, DATE_SUB(CURDATE(), INTERVAL 3 MONTH)) 
+                              AND COALESCE(:endDate, CURDATE())
         GROUP BY 
             p.tipo
         ORDER BY 
-            soma_qtd DESC;
-        """
+            soma_qtd DESC
+    """
     )
-    fun findProcedimentosRealizadosUltimoTrimestre(): List<Array<Any>>
+    fun findProcedimentosRealizadosEntreDatas(
+        @Param("startDate") startDate: String?,
+        @Param("endDate") endDate: String?
+    ): List<Array<Any>>
+
+
 
     @Query(
         nativeQuery = true, value = """
@@ -192,45 +216,55 @@ WHERE
         JOIN 
             procedimento p ON e.fk_procedimento = p.id_procedimento
         WHERE 
-            a.data_horario >= DATE_FORMAT(CURDATE() - INTERVAL 1 MONTH, '%Y-%m-01')
-            AND a.data_horario < DATE_FORMAT(CURDATE(), '%Y-%m-01')
+            a.data_horario BETWEEN COALESCE(:startDate, DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) 
+                              AND COALESCE(:endDate, CURDATE())
         GROUP BY 
             p.tipo
         ORDER BY 
-            p.tipo;
-        """
+            Valor_Total_Procedimento DESC;
+    """
     )
-    fun findValorTotalUltimoMesPorProcedimento(): List<Array<Any>>
+    fun findValorTotalEntreDatas(
+        @Param("startDate") startDate: String?,
+        @Param("endDate") endDate: String?
+    ): List<Array<Any>>
+
 
     @Query(
         nativeQuery = true, value = """
         SELECT 
-    p.tipo AS Procedimento, 
-    SUM(
-        CASE 
-            WHEN a.tipo_agendamento = 'colocacao' THEN TIME_TO_SEC(e.tempo_colocacao)
-            WHEN a.tipo_agendamento = 'manutencao' THEN TIME_TO_SEC(e.tempo_manutencao)
-            WHEN a.tipo_agendamento = 'retirada' THEN TIME_TO_SEC(e.tempo_retirada)
-            ELSE 0
-        END
-    ) / 60 AS Tempo_Total_Minutos
-FROM 
-    agendamento a
-JOIN 
-    especificacao e ON a.fk_especificacao_procedimento = e.id_especificacao_procedimento
-JOIN 
-    procedimento p ON e.fk_procedimento = p.id_procedimento
-WHERE 
-    a.data_horario >= DATE_FORMAT(CURDATE() - INTERVAL 1 MONTH, '%Y-%m-01')
-    AND a.data_horario < DATE_FORMAT(CURDATE(), '%Y-%m-01')
-GROUP BY 
-    p.tipo
-ORDER BY 
-    p.tipo;
-
-        """
+            p.tipo AS Procedimento, 
+            SUM(
+                CASE 
+                    WHEN a.tipo_agendamento = 'colocacao' THEN TIME_TO_SEC(e.tempo_colocacao)
+                    WHEN a.tipo_agendamento = 'manutencao' THEN TIME_TO_SEC(e.tempo_manutencao)
+                    WHEN a.tipo_agendamento = 'retirada' THEN TIME_TO_SEC(e.tempo_retirada)
+                    ELSE 0
+                END
+            ) / 60 AS Tempo_Total_Minutos
+        FROM 
+            agendamento a
+        JOIN 
+            especificacao e ON a.fk_especificacao_procedimento = e.id_especificacao_procedimento
+        JOIN 
+            procedimento p ON e.fk_procedimento = p.id_procedimento
+        WHERE 
+            a.data_horario BETWEEN 
+            COALESCE(:startDate, DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) AND 
+            COALESCE(:endDate, CURDATE())
+        GROUP BY 
+            p.tipo
+        ORDER BY 
+            Tempo_Total_Minutos DESC
+    """
     )
-    fun findTempoGastoPorProcedimentoUltimoMes(): List<Array<Any>>  // Retorna uma lista de objetos com Procedimento e Tempo_Total
+    fun findTempoGastoPorProcedimentoEntreDatas(
+        @Param("startDate") startDate: String?,
+        @Param("endDate") endDate: String?
+    ): List<Array<Any>>
+
+
+
 
 
     @Query(
@@ -255,25 +289,20 @@ ORDER BY
 
 
     @Query(
-        """
+        nativeQuery = true, value = """ 
         SELECT 
-            DATE_FORMAT(MIN(data_horario), '%Y-%m-01') AS data_horario,
-            COUNT(*) AS quantidade_agendamentos
-        FROM 
-            agendamento
-        WHERE 
-            data_horario BETWEEN :startDate AND :endDate
-        GROUP BY 
-            YEAR(data_horario), MONTH(data_horario)
-        ORDER BY 
-            YEAR(data_horario) DESC, MONTH(data_horario) DESC
-        """,
-        nativeQuery = true
+                COUNT(*) AS quantidade_agendamentos
+            FROM 
+                agendamento
+            WHERE 
+                data_horario >= DATE_SUB(CURDATE(), INTERVAL 5 MONTH)
+            GROUP BY 
+                YEAR(data_horario), MONTH(data_horario)
+            ORDER BY 
+                YEAR(data_horario) DESC, MONTH(data_horario) DESC;
+        """
     )
-    fun findAgendamentosPorIntervalo(
-        @Param("startDate") startDate: LocalDate,
-        @Param("endDate") endDate: LocalDate
-    ): List<Array<Any>>
+    fun findAgendamentosConcluidosUltimos5Meses(): List<Int>
 
     @Query("SELECT a FROM Agendamento a WHERE a.dataHorario BETWEEN :dataInicio AND :dataFim")
     fun findByDataHorarioBetween(
@@ -306,6 +335,26 @@ ORDER BY
     )
     fun buscarDiaMaisAgendadoPorUsuario(idUsuario: Int): String
 
+    @Query(
+        """
+        SELECT 
+            DATE_FORMAT(MIN(data_horario), '%Y-%m-01') AS data_horario,
+            COUNT(*) AS quantidade_agendamentos
+        FROM 
+            agendamento
+        WHERE 
+            data_horario BETWEEN :startDate AND :endDate
+        GROUP BY 
+            YEAR(data_horario), MONTH(data_horario)
+        ORDER BY 
+            YEAR(data_horario) DESC, MONTH(data_horario) DESC
+        """,
+        nativeQuery = true
+    )
+    fun findAgendamentosPorIntervalo(
+        @Param("startDate") startDate: LocalDate,
+        @Param("endDate") endDate: LocalDate
+    ): List<Array<Any>>
 
     @Query(
         """
@@ -341,6 +390,7 @@ ORDER BY
         WHERE 
             u.id_usuario = :usuarioId  -- ID do usuário específico
             AND DATE_FORMAT(a.data_horario, '%Y-%m') = :mesAno  -- Mês e ano específicos no formato YYYY-MM
+            AND a.data_horario >= CURDATE() - INTERVAL 1 YEAR  -- Apenas procedimentos do último ano
         GROUP BY 
             e.especificacao
         ORDER BY 
@@ -372,4 +422,23 @@ SELECT new sptech.projetojpa1.dto.agendamento.AgendamentoDTO(
     fun findAllByUsuario(usuario: Usuario): List<Agendamento>
 
     fun findByTipoAgendamento(tipoAgendamento: String): List<Agendamento>
+
+    @Query(
+        """
+    SELECT 
+        CASE 
+            WHEN LOWER(:tipoAgendamento) = 'colocacao' THEN e.preco_colocacao 
+            WHEN LOWER(:tipoAgendamento) = 'manutencao' THEN e.preco_manutencao 
+            WHEN LOWER(:tipoAgendamento) = 'retirada' THEN e.preco_retirada 
+            ELSE NULL 
+        END 
+    FROM especificacao e 
+    WHERE e.id_especificacao_procedimento = :idEspecificacao
+    """, nativeQuery = true
+    )
+    fun findPrecoByTipoAgendamento(
+        @Param("idEspecificacao") idEspecificacao: Int,
+        @Param("tipoAgendamento") tipoAgendamento: String
+    ): Double?
+
 }

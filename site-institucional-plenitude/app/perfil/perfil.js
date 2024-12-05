@@ -21,44 +21,59 @@ function showNotification(message, isError = false) {
   }, 3000);
 }
 
+
 document.addEventListener("DOMContentLoaded", () => {
   let isEditingPersonal = false;
   let isEditingEmpresa = false;
 
   // Função para alternar a edição dos campos do formulário de usuário
-  function toggleEditing() {
-    if (isEditingEmpresa) {
-      toggleEditingEmpresa(); // Se os campos empresariais estão sendo editados, desativa
-    }
-    isEditingPersonal = !isEditingPersonal;
-    const lockIcons = document.querySelectorAll("#personalForm .lock-icon");
-    const fields = document.querySelectorAll(
-      "#personalForm input, #personalForm select"
-    );
-    const saveButton = document.getElementById("save-usuario-button");
-
-    if (isEditingPersonal) {
-      lockIcons.forEach((lockIcon) => {
-        lockIcon.style.display = "inline"; // Exibe ícones de cadeado
-      });
-
-      fields.forEach((field) => {
-        field.disabled = false; // Habilita todos os campos
-      });
-
-      saveButton.disabled = false; // Habilita o botão de salvar
-    } else {
-      lockIcons.forEach((lockIcon) => {
-        lockIcon.style.display = "none"; // Oculta ícones de cadeado
-      });
-
-      fields.forEach((field) => {
-        field.disabled = true; // Desabilita todos os campos
-      });
-
-      saveButton.disabled = true; // Desabilita o botão de salvar
-    }
-  }
+  // function toggleEditing() {
+  //   if (isEditingEmpresa) {
+  //     toggleEditingEmpresa(); // Se os campos empresariais estão sendo editados, desativa
+  //   }
+  //   isEditingPersonal = !isEditingPersonal;
+  
+  //   const lockIcons = document.querySelectorAll("#personalForm .lock-icon");
+  //   const fields = document.querySelectorAll("#personalForm input, #personalForm select");
+  //   const saveButton = document.getElementById("save-usuario-button");
+  //   const globalSaveButton = document.querySelector(".save-button"); // Botão geral de salvar
+  
+  //   if (isEditingPersonal) {
+  //     lockIcons.forEach((lockIcon) => {
+  //       lockIcon.style.display = "inline"; // Exibe ícones de cadeado
+  //     });
+  
+  //     fields.forEach((field) => {
+  //       if (field.id !== "cpf" && field.id !== "nascimento") {
+  //         // Apenas habilita campos que não sejam CPF e Data de Nascimento
+  //         field.disabled = false;
+  //       }
+  //     });
+  
+  //     saveButton.disabled = false; // Habilita o botão de salvar dados pessoais
+  //     if (globalSaveButton) globalSaveButton.disabled = false; // Habilita o botão geral de salvar
+  //   } else {
+  //     lockIcons.forEach((lockIcon) => {
+  //       lockIcon.style.display = "none"; // Oculta ícones de cadeado
+  //     });
+  
+  //     fields.forEach((field) => {
+  //       field.disabled = true; // Desabilita todos os campos
+  //     });
+  
+  //     saveButton.disabled = true; // Desabilita o botão de salvar dados pessoais
+  //     if (globalSaveButton) globalSaveButton.disabled = true; // Desabilita o botão geral de salvar
+  //   }
+  
+  //   // Garante que CPF e Data de Nascimento permaneçam desabilitados
+  //   const cpfField = document.getElementById("cpf");
+  //   const nascimentoField = document.getElementById("nascimento");
+  
+  //   if (cpfField) cpfField.disabled = true;
+  //   if (nascimentoField) nascimentoField.disabled = true;
+  // }
+  
+  
 
   // Função para alternar a edição dos campos do formulário de empresa
   function toggleEditingEmpresa() {
@@ -66,40 +81,212 @@ document.addEventListener("DOMContentLoaded", () => {
       toggleEditing(); // Se os campos pessoais estão sendo editados, desativa
     }
     isEditingEmpresa = !isEditingEmpresa;
+  
     const lockIcons = document.querySelectorAll("#empresaForm .lock-icon");
-    const fields = document.querySelectorAll(
-      "#empresaForm input, #empresaForm select"
-    );
-    const saveButton = document.getElementById("save-empresa-button");
-
+    const fields = document.querySelectorAll("#empresaForm input, #empresaForm select");
+    const saveButton = document.getElementById("save-empresa");
+    const cnpjField = document.getElementById("cnpj"); // Seleciona o campo de CNPJ
+  
     if (isEditingEmpresa) {
       lockIcons.forEach((lockIcon) => {
         lockIcon.style.display = "inline"; // Exibe ícones de cadeado
       });
-
+  
       fields.forEach((field) => {
-        field.disabled = false; // Habilita todos os campos
+        if (field.id !== "cnpj") {
+          // Apenas habilita campos que não sejam o CNPJ
+          field.disabled = false;
+        }
       });
-
+  
       saveButton.disabled = false; // Habilita o botão de salvar
     } else {
       lockIcons.forEach((lockIcon) => {
         lockIcon.style.display = "none"; // Oculta ícones de cadeado
       });
-
+  
       fields.forEach((field) => {
         field.disabled = true; // Desabilita todos os campos
       });
-
+  
       saveButton.disabled = true; // Desabilita o botão de salvar
     }
+  
+    // Garante que o CNPJ permanece desabilitado
+    if (cnpjField) {
+      cnpjField.disabled = true;
+    }
   }
+  
 
-  // Adicionar o event listener ao botão de editar dados pessoais
-  const editIconUsuario = document.getElementById("editIconUsuario");
-  if (editIconUsuario) {
-    editIconUsuario.addEventListener("click", toggleEditing);
-  }
+  document.getElementById("save-empresa").addEventListener("click", function (event) {
+    event.preventDefault(); // Evita o comportamento padrão do botão
+    const modal = document.getElementById("modalEditarEmpresa");
+    modal.style.display = "block"; // Exibe o modal
+  });
+  
+  // Função para fechar o modal
+  document.getElementById("fechar_modal").addEventListener("click", function () {
+    const modal = document.getElementById("modalEditarEmpresa");
+    modal.style.display = "none"; // Fecha o modal
+  });
+
+  document.getElementById("save-usuario-button").addEventListener("click", function (event) {
+    event.preventDefault(); // Evita o comportamento padrão do botão
+    const modal = document.getElementById("modalEditarUsuario");
+    modal.style.display = "block"; // Exibe o modal
+  });
+  
+  // Função para fechar o modal
+  document.getElementById("fechar_modal_usuario").addEventListener("click", function () {
+    const modal = document.getElementById("modalEditarUsuario");
+    modal.style.display = "none"; // Fecha o modal
+  });
+
+  function formatCepS(cep) {
+    if (!cep) return ""; // Retorna vazio se o CEP for undefined ou nulo
+    const cleaned = ("" + cep).replace(/\D/g, ""); // Remove qualquer caractere que não seja número
+    return cleaned; // Retorna apenas os números do CEP
+}
+
+
+  document.getElementById("atualizar-empresa").addEventListener("click", function () {
+    // Capturar os valores dos inputs
+    const nomeEmpresa = document.getElementById("empresa").value;
+    const cnpj = formatCnpj(document.getElementById("cnpj").value); // Remove a máscara do CNPJ
+    const telefone = formatPhoneNumberToLong(document.getElementById("telefone-empresa").value);
+    const cep = formatCepS(document.getElementById("cep").value);
+    const logradouro = document.getElementById("logradouro").value;
+    const numero = document.getElementById("numero").value;
+    const complemento = document.getElementById("complemento").value;
+    const bairro = document.getElementById("bairro").value;
+    const cidade = document.getElementById("cidade-empresa").value;
+    const estado = document.getElementById("estado-empresa").value;
+    const diaInicio = document.getElementById("diaInicio").value;
+    const diaFim = document.getElementById("diaFim").value;
+    const horaInicio = document.getElementById("horaInicio").value;
+    const horaFim = document.getElementById("horaFim").value;
+  
+    // Montar o objeto para enviar para a API
+    const empresaData = {
+      nome: nomeEmpresa,
+      telefone: telefone,
+      cnpj: cnpj,
+      endereco: {
+        logradouro: logradouro,
+        cep: cep,
+        bairro: bairro,
+        cidade: cidade,
+        estado: estado,
+        numero: numero,
+        complemento: complemento,
+      },
+      horarioFuncionamento: {
+        diaInicio: diaInicio,
+        diaFim: diaFim,
+        horarioAbertura: horaInicio,
+        horarioFechamento: horaFim,
+      },
+    };
+  
+    // Recuperar o CPF do localStorage
+    const cpf = localStorage.getItem("cpf");
+  
+    if (!cpf) {
+      showNotification("CPF não encontrado. Faça login novamente.", true);
+      return;
+    }
+  
+    // Fazer requisição PUT para o endpoint de atualização de empresa
+    fetch(`http://localhost:8080/api/empresas/${cpf}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(empresaData),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          // Se a resposta não for OK, lançar um erro para o catch
+          throw new Error(`Erro ao atualizar empresa: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Exibir notificação de sucesso
+        showNotification("Empresa atualizada com sucesso!", false);
+  
+        // Fecha o modal
+        document.getElementById("modalEditarEmpresa").style.display = "none";
+  
+        // Recarregar a página após 1 segundo
+        setTimeout(function () {
+          location.reload();
+        }, 1000);
+      })
+      .catch((error) => {
+        // Exibir notificação de erro
+        showNotification(error.message, true);
+      });
+  });
+  
+  document.getElementById("atualizar-usuario").addEventListener("click", async function () {
+    try {
+      // Recuperar o CPF do localStorage
+      const cpf = localStorage.getItem("cpf");
+      if (!cpf) {
+        showNotification("CPF não encontrado. Faça login novamente.", true);
+        return;
+      }
+  
+      // Capturar os valores dos inputs
+      const usuarioDTO = {
+        nome: document.getElementById("nome").value,
+        dataNasc: document.getElementById("nascimento").value,
+        telefone: formatPhoneNumberToLong(document.getElementById("telefone").value), // Converte o telefone para o formato longo
+        genero: document.getElementById("genero").value,
+        instagram: document.getElementById("instagram").value,
+        email: document.getElementById("email").value,
+        senha: document.getElementById("senha").value,
+      };
+  
+      // Fazer requisição PATCH para o endpoint de atualização de usuário
+      const usuarioResponse = await fetch(
+        `http://localhost:8080/usuarios/atualizacao-usuario-por-cpf/${cpf}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(usuarioDTO),
+        }
+      );
+  
+      // Verificar se a resposta foi bem-sucedida
+      if (!usuarioResponse.ok) {
+        throw new Error(`Erro ao atualizar usuário: ${usuarioResponse.status}`);
+      }
+  
+      // Exibir notificação de sucesso
+      showNotification("Dados do usuário atualizados com sucesso!", false);
+  
+      // Atualizar localStorage com os novos dados
+      localStorage.setItem("nome", usuarioDTO.nome);
+      localStorage.setItem("instagram", usuarioDTO.instagram);
+  
+      // Recarregar a página após 1 segundo
+      setTimeout(function () {
+        location.reload();
+      }, 1000);
+    } catch (error) {
+      console.error("Erro ao atualizar o usuário:", error);
+  
+      // Exibir notificação de erro
+      showNotification("Erro ao atualizar dados do usuário!", true);
+    }
+  });
+  
+  
 
   // Adicionar o event listener ao botão de editar dados empresariais
   const editIconEmpresa = document.getElementById("editIconEmpresa");
@@ -107,57 +294,7 @@ document.addEventListener("DOMContentLoaded", () => {
     editIconEmpresa.addEventListener("click", toggleEditingEmpresa);
   }
 
-  // Função para salvar os dados da empresa
-  async function atualizarEmpresa() {
-    try {
-      const cpf = localStorage.getItem("cpf");
-      const empresaDTO = {
-        nome: document.getElementById("empresa").value,
-        cnpj: document.getElementById("cnpj").value.replace(/\D/g, ""), // Remove a máscara do CNPJ
-        telefone: formatPhoneNumberToLong(
-          document.getElementById("telefone-empresa").value
-        ),
-        endereco: {
-          cep: document.getElementById("cep").value.replace(/\D/g, ""), // Remove a máscara do CEP
-          logradouro: document.getElementById("logradouro").value,
-          numero: document.getElementById("numero").value,
-          bairro: document.getElementById("bairro").value,
-          cidade: document.getElementById("cidade-empresa").value,
-          estado: document.getElementById("estado-empresa").value,
-          complemento: document.getElementById("complemento").value,
-        },
-        horarioFuncionamento: {
-          diaInicio: document.getElementById("diaInicio").value,
-          diaFim: document.getElementById("diaFim").value,
-          horarioAbertura: document.getElementById("horaInicio").value,
-          horarioFechamento: document.getElementById("horaFim").value,
-        },
-      };
-
-      const response = await fetch(
-        `http://localhost:8080/api/empresas/${cpf}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(empresaDTO),
-        }
-      );
-      console.log("Função showNotification foi chamada.");
-
-      if (response.ok) {
-        showNotification("Dados da empresa atualizados com sucesso!");
-      } else {
-        throw new Error(`Erro ao atualizar empresa: ${response.status}`);
-      }
-    } catch (error) {
-      console.error("Erro ao atualizar a empresa:", error);
-      showNotification("Erro ao atualizar dados da empresa!", true);
-    }
-
-    toggleEditingEmpresa(); // Desativa os campos após salvar
-  }
+  
 
   // Função auxiliar para formatar o número de telefone para o formato correto
   function formatPhoneNumberToLong(phoneNumber) {
@@ -167,19 +304,39 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Adicionar o event listener ao botão de salvar dados pessoais
-  const saveUsuarioButton = document.getElementById("save-usuario-button");
-  if (saveUsuarioButton) {
-    saveUsuarioButton.addEventListener("click", async function () {
-      await atualizarUsuario();
-    });
-  }
+  // const saveUsuarioButton = document.getElementById("save-usuario-button");
+  // if (saveUsuarioButton) {
+  //   saveUsuarioButton.addEventListener("click", async function () {
+  //     await atualizarUsuario();
+  //   });
+  // }
 
   // Adicionar o event listener ao botão de salvar dados empresariais
-  const saveEmpresaButton = document.getElementById("save-empresa-button");
-  if (saveEmpresaButton) {
-    saveEmpresaButton.addEventListener("click", async function () {
-      await atualizarEmpresa();
-    });
+  // const saveEmpresaButton = document.getElementById("save-empresa-button");
+  // if (saveEmpresaButton) {
+  //   saveEmpresaButton.addEventListener("click", async function () {
+  //     await atualizarEmpresa();
+  //   });
+  // }
+
+  function formatCep(cep) {
+    if (!cep) return ""; // Retorna vazio se o CEP for undefined ou nulo
+    const cleaned = ("" + cep).replace(/\D/g, ""); // Remove qualquer caractere que não seja número
+    const match = cleaned.match(/^(\d{5})(\d{3})$/); // Verifica se o CEP segue o padrão de 5 dígitos + 3 dígitos
+    if (match) {
+      return `${match[1]}-${match[2]}`; // Retorna no formato 00000-000
+    }
+    return cep; // Retorna o valor original caso não bata com o padrão
+  }
+
+  function formatCnpj(cnpj) {
+    if (!cnpj) return ""; // Retorna vazio se o CNPJ for indefinido ou nulo
+    const cleaned = ("" + cnpj).replace(/\D/g, ""); // Remove todos os caracteres que não são números
+    const match = cleaned.match(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/); // Verifica se o valor corresponde ao padrão do CNPJ
+    if (match) {
+      return `${match[1]}.${match[2]}.${match[3]}/${match[4]}-${match[5]}`; // Retorna no formato 00.000.000/0000-00
+    }
+    return cnpj; // Retorna o valor original se não corresponder ao padrão
   }
 
   // Função para carregar os dados do usuário e empresa
@@ -191,9 +348,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Preencher dados pessoais
         document.getElementById("nome").value = userData.nome || "";
         document.getElementById("nascimento").value = userData.dataNasc || "";
-        document.getElementById("telefone").value = formatPhoneNumber(
-          userData.telefone || ""
-        );
+        document.getElementById("telefone").value = formatPhoneNumber(userData.telefone || "");
         document.getElementById("cpf").value = userData.cpf || "";
         document.getElementById("genero").value = userData.genero || "";
         document.getElementById("instagram").value = userData.instagram || "";
@@ -204,11 +359,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (userData.empresa) {
           document.getElementById("empresa").value =
             userData.empresa.nome || "";
-          document.getElementById("cnpj").value = userData.empresa.cnpj || "";
+          document.getElementById("cnpj").value = formatCnpj(userData.empresa.cnpj || "");
           document.getElementById("telefone-empresa").value =
-            userData.empresa.telefone || "";
+          formatPhoneNumber(userData.empresa.telefone || "");
           document.getElementById("cep").value =
-            userData.empresa.endereco.cep || "";
+          formatCep(userData.empresa.endereco.cep || "");
           document.getElementById("logradouro").value =
             userData.empresa.endereco.logradouro || "";
           document.getElementById("numero").value =
@@ -235,14 +390,84 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   carregarDados(); // Carregar os dados do usuário e empresa ao iniciar a página
+
+  // Obtém os elementos do DOM
+const importButton = document.getElementById('import-button');
+const fileInput = document.getElementById('file-input');
+const importExportModal = document.getElementById('importExportModal');
+const closeModalButton = document.getElementById('close-modal-btn');
+const importModalButton = document.getElementById('import-modal-btn');
+const exportModalButton = document.getElementById('export-modal-btn');
+
+// Função para abrir o modal
+importButton.addEventListener('click', () => {
+  importExportModal.style.display = 'flex'; // Exibe o modal
 });
+
+// Fechar o modal ao clicar no X
+closeModalButton.addEventListener('click', () => {
+  importExportModal.style.display = 'none'; // Fecha o modal
+});
+// Função de Importação
+importModalButton.addEventListener('click', () => {
+  fileInput.click(); // Simula o clique no input de arquivo
+});
+
+// Função de Exportação
+exportModalButton.addEventListener('click', () => {
+  try {
+    // Localiza o arquivo no diretório do projeto
+    const filePath = '../../Documento de Layout.docx'; // Caminho relativo ao documento
+
+    // Cria um link para download
+    const link = document.createElement('a');
+    link.href = filePath; // Define o caminho do arquivo
+    link.download = 'Documento de Layout.docx'; // Define o nome do arquivo ao ser baixado
+    link.click(); // Simula o clique para iniciar o download
+  } catch (error) {
+    alert('Erro ao exportar documento');
+  }
+});
+
+
+// Adiciona o evento de alteração no input de arquivo para enviar o arquivo ao backend
+fileInput.addEventListener('change', async (event) => {
+  const file = event.target.files[0]; // Obtém o arquivo selecionado
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    // Envia a requisição para o backend
+    const response = await fetch('http://localhost:8080/api/importacao/importar', {
+      method: 'POST',
+      body: formData
+    });
+
+    // Processa a resposta
+    const result = await response.text();
+    if (response.ok) {
+      showNotification("Importação realizada com sucesso!", false);
+      setTimeout(() => {
+        window.location.reload(); // Recarrega a página após 2 segundos
+      }, 2000);
+    } else {
+      alert(`Erro: ${result}`);
+    }
+  } catch (error) {
+    showNotification("Importação falhou.", true);
+  }
+});
+
+  
+});
+
 
 // Função para buscar os dados do usuário por CPF
 async function fetchUserDataByCpf(cpf) {
   try {
-    const response = await fetch(
-      `http://localhost:8080/usuarios/buscar-por-cpf/${cpf}`
-    );
+    const response = await fetch(`http://localhost:8080/usuarios/buscar-por-cpf/${cpf}`);
     if (!response.ok) {
       throw new Error(`Erro ao buscar dados do usuário: ${response.status}`);
     }
@@ -262,9 +487,7 @@ async function carregarDadosUsuario() {
     if (userData) {
       document.getElementById("nome").value = userData.nome || "";
       document.getElementById("nascimento").value = userData.dataNasc || "";
-      document.getElementById("telefone").value = formatPhoneNumber(
-        userData.telefone || ""
-      ); // Garantindo que seja string
+      document.getElementById("telefone").value = formatPhoneNumber(userData.telefone || ""); // Garantindo que seja string
       document.getElementById("cpf").value = userData.cpf || "";
       document.getElementById("genero").value = userData.genero || "";
       document.getElementById("instagram").value = userData.instagram || "";
@@ -286,6 +509,9 @@ function formatPhoneNumber(phoneNumber) {
   }
   return phoneNumber;
 }
+
+
+
 
 async function fetchUserDataByCpf(cpf) {
   try {
@@ -316,12 +542,31 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+  function formatCep(cep) {
+    if (!cep) return ""; // Retorna vazio se o CEP for undefined ou nulo
+    const cleaned = ("" + cep).replace(/\D/g, ""); // Remove qualquer caractere que não seja número
+    const match = cleaned.match(/^(\d{5})(\d{3})$/); // Verifica se o CEP segue o padrão de 5 dígitos + 3 dígitos
+    if (match) {
+      return `${match[1]}-${match[2]}`; // Retorna no formato 00000-000
+    }
+    return cep; // Retorna o valor original caso não bata com o padrão
+  }
+
+  function formatCnpj(cnpj) {
+    if (!cnpj) return ""; // Retorna vazio se o CNPJ for indefinido ou nulo
+    const cleaned = ("" + cnpj).replace(/\D/g, ""); // Remove todos os caracteres que não são números
+    const match = cleaned.match(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/); // Verifica se o valor corresponde ao padrão do CNPJ
+    if (match) {
+      return `${match[1]}.${match[2]}.${match[3]}/${match[4]}-${match[5]}`; // Retorna no formato 00.000.000/0000-00
+    }
+    return cnpj; // Retorna o valor original se não corresponder ao padrão
+  }
+
   function fillUserProfile(userData) {
     // Dados do usuário
     document.getElementById("nome").value = userData.nome || "";
     document.getElementById("nascimento").value = userData.dataNasc || "";
-    document.getElementById("telefone").value =
-      formatPhoneNumber(userData.telefone) || "";
+    document.getElementById("telefone").value = formatPhoneNumber(userData.telefone) || "";
     document.getElementById("cpf").value = userData.cpf || "";
     document.getElementById("genero").value = userData.genero || "";
     document.getElementById("instagram").value = userData.instagram || "";
@@ -332,14 +577,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (userData.empresa) {
       // Dados da empresa
       document.getElementById("empresa").value = userData.empresa.nome || "";
-      document.getElementById("cnpj").value = userData.empresa.cnpj || "";
+      document.getElementById("cnpj").value = formatCnpj(userData.empresa.cnpj) || "";
       document.getElementById("telefone-empresa").value =
-        userData.empresa.telefone || "";
+      formatPhoneNumber(userData.empresa.telefone) || "";
 
       // Endereço da empresa
       if (userData.empresa.endereco) {
         document.getElementById("cep").value =
-          userData.empresa.endereco.cep || "";
+        formatCep (userData.empresa.endereco.cep) || "";
         document.getElementById("logradouro").value =
           userData.empresa.endereco.logradouro || "";
         document.getElementById("numero").value =
@@ -356,19 +601,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       // Horário de funcionamento
       if (userData.empresa.horarioFuncionamento) {
-        document.getElementById("diaInicio").value =
-          userData.empresa.horarioFuncionamento.diaInicio || "";
-        document.getElementById("diaFim").value =
-          userData.empresa.horarioFuncionamento.diaFim || "";
-        document.getElementById("horaInicio").value =
-          userData.empresa.horarioFuncionamento.horarioAbertura || "";
-        document.getElementById("horaFim").value =
-          userData.empresa.horarioFuncionamento.horarioFechamento || "";
+        document.getElementById("diaInicio").value = userData.empresa.horarioFuncionamento.diaInicio || "";
+        document.getElementById("diaFim").value = userData.empresa.horarioFuncionamento.diaFim || "";
+        document.getElementById("horaInicio").value = userData.empresa.horarioFuncionamento.horarioAbertura || "";
+        document.getElementById("horaFim").value = userData.empresa.horarioFuncionamento.horarioFechamento || "";
       }
     } else {
       console.warn("Dados da empresa não encontrados.");
     }
   }
+
+
 
   function formatPhoneNumber(phoneNumber) {
     if (!phoneNumber) return "";
@@ -380,98 +623,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     return phoneNumber;
   }
 
-  document
-    .getElementById("save-usuario-button")
-    .addEventListener("click", async function () {
-      const cpf = localStorage.getItem("cpf");
-      await atualizarUsuario();
-    });
+ 
 
-  document
-    .getElementById("save-empresa-button")
-    .addEventListener("click", function () {
-      // Capturar os valores dos inputs
-      const nomeEmpresa = document.getElementById("empresa").value;
-      const cnpj = document.getElementById("cnpj").value.replace(/[^\d]/g, ""); // Remove a máscara do CNPJ
-      const telefone = document
-        .getElementById("telefone-empresa")
-        .value.replace(/[^\d]/g, ""); // Remove a máscara do telefone
-      const cep = document.getElementById("cep").value.replace(/[^\d]/g, ""); // Remove a máscara do CEP
-      const logradouro = document.getElementById("logradouro").value;
-      const numero = document.getElementById("numero").value;
-      const complemento = document.getElementById("complemento").value;
-      const bairro = document.getElementById("bairro").value;
-      const cidade = document.getElementById("cidade-empresa").value;
-      const estado = document.getElementById("estado-empresa").value;
-      const diaInicio = document.getElementById("diaInicio").value;
-      const diaFim = document.getElementById("diaFim").value;
-      const horaInicio = document.getElementById("horaInicio").value;
-      const horaFim = document.getElementById("horaFim").value;
+ 
+  
+  
+  // document
+  //   .getElementById("save-usuario-button")
+  //   .addEventListener("click", async function () {
+  //     const cpf = localStorage.getItem("cpf");
+  //     await atualizarUsuario();
+  //   });
 
-      // Montar o objeto para enviar para a API
-      const empresaData = {
-        nome: nomeEmpresa,
-        telefone: telefone,
-        cnpj: cnpj,
-        endereco: {
-          logradouro: logradouro,
-          cep: cep,
-          bairro: bairro,
-          cidade: cidade,
-          estado: estado,
-          numero: numero,
-          complemento: complemento,
-        },
-        horarioFuncionamento: {
-          diaInicio: diaInicio,
-          diaFim: diaFim,
-          horarioAbertura: horaInicio,
-          horarioFechamento: horaFim,
-        },
-      };
-
-      // Recuperar o CPF do localStorage
-      const cpf = localStorage.getItem("cpf");
-
-      if (!cpf) {
-        return;
-      }
-
-      // Fazer requisição PATCH para o endpoint de atualização de empresa
-      fetch(`http://localhost:8080/api/empresas/${cpf}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(empresaData),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            // Se a resposta não for OK, lançar um erro para o catch
-            throw new Error(`Erro ao atualizar empresa: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then((data) => {
-          // Exibir notificação de sucesso
-          showNotification("Empresa atualizada com sucesso!", false);
-
-          // Recarregar a página após 1 segundo
-          setTimeout(function () {
-            location.reload();
-          }, 1000);
-        })
-        .catch((error) => {
-          // Exibir notificação de erro
-          showNotification(error.message, true);
-        });
-    });
 
   function formatPhoneNumberToLong(phoneNumber) {
     if (!phoneNumber) return null;
-    const cleaned = phoneNumber.replace(/\D/g, ""); // Remove todos os caracteres não numéricos
+    const cleaned = phoneNumber.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
     return parseInt(cleaned, 10); // Converte para número
   }
+
 
   function salvarNomeLocalStorage() {
     const nome = document.getElementById("nome").value;
@@ -487,65 +657,67 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+
   document.addEventListener("DOMContentLoaded", function () {
     exibirNomeUsuario();
   });
 
-  async function atualizarUsuario(cpf) {
-    try {
-      const cpf = localStorage.getItem("cpf");
-      const usuarioDTO = {
-        nome: document.getElementById("nome").value,
-        dataNasc: document.getElementById("nascimento").value,
-        telefone: formatPhoneNumberToLong(
-          document.getElementById("telefone").value
-        ),
-        genero: document.getElementById("genero").value,
-        instagram: document.getElementById("instagram").value,
-        email: document.getElementById("email").value,
-        senha: document.getElementById("senha").value,
-      };
+  // async function atualizarUsuario(cpf) {
+  //   try {
+  //     const cpf = localStorage.getItem("cpf");
+  //     const usuarioDTO = {
+  //       nome: document.getElementById("nome").value,
+  //       dataNasc: document.getElementById("nascimento").value,
+  //       telefone: formatPhoneNumberToLong(
+  //         document.getElementById("telefone").value
+  //       ),
+  //       genero: document.getElementById("genero").value,
+  //       instagram: document.getElementById("instagram").value,
+  //       email: document.getElementById("email").value,
+  //       senha: document.getElementById("senha").value,
+  //     };
 
-      const usuarioResponse = await fetch(
-        `http://localhost:8080/usuarios/atualizacao-usuario-por-cpf/${cpf}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(usuarioDTO),
-        }
-      );
-      // Exibe mensagem de sucesso
-      showNotification("Dados da usuário atualizados com sucesso!");
-      setTimeout(function () {
-        location.reload();
-      }, 1000);
+  //     const usuarioResponse = await fetch(
+  //       `http://localhost:8080/usuarios/atualizacao-usuario-por-cpf/${cpf}`,
+  //       {
+  //         method: "PATCH",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify(usuarioDTO),
+  //       }
+  //     );
+  //     // Exibe mensagem de sucesso
+  //     showNotification("Dados da usuário atualizados com sucesso!");
+  //     setTimeout(function () {
+  //       location.reload();
+  //     }, 1000);
 
-      if (!usuarioResponse.ok) {
-        throw new Error(`Erro ao atualizar usuário: ${usuarioResponse.status}`);
-      }
+  //     if (!usuarioResponse.ok) {
+  //       throw new Error(`Erro ao atualizar usuário: ${usuarioResponse.status}`);
+  //     }
 
-      // Atualizar localStorage
-      localStorage.setItem("nome", usuarioDTO.nome);
-      localStorage.setItem("instagram", usuarioDTO.instagram);
+  //     // Atualizar localStorage
+  //     localStorage.setItem("nome", usuarioDTO.nome);
+  //     localStorage.setItem("instagram", usuarioDTO.instagram);
 
-      console.log("Usuário atualizado com sucesso!");
-    } catch (error) {
-      console.error("Erro ao atualizar o usuário:", error);
+  //     console.log("Usuário atualizado com sucesso!");
+  //   } catch (error) {
+  //     console.error("Erro ao atualizar o usuário:", error);
 
-      // Exibe mensagem de erro
-      showNotification("Erro ao atualizar dados do usuário!", true);
-    }
+  //     // Exibe mensagem de erro
+  //     showNotification("Erro ao atualizar dados do usuário!", true);
+  //   }
 
-    // Oculta a notificação após alguns segundos
-    setTimeout(() => {
-      document.getElementById("notification").style.display = "none";
-    }, 5000); // Oculta a notificação após 5 segundos
-  }
+  //   // Oculta a notificação após alguns segundos
+  //   setTimeout(() => {
+  //     document.getElementById("notification").style.display = "none";
+  //   }, 5000); // Oculta a notificação após 5 segundos
+  // }
 
   const nome = localStorage.getItem("nome");
   const instagram = localStorage.getItem("instagram");
+
 
   if (nome && instagram) {
     document.getElementById("userName").textContent = nome;
@@ -566,6 +738,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const data = await response.json();
 
       if (data.erro) {
+        alert("CEP não encontrado.");
         return;
       }
 
@@ -586,6 +759,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Verifica se o CEP tem 8 dígitos
       buscaEndereco(cep);
     } else {
+      alert("Por favor, insira um CEP válido.");
     }
   });
 });
@@ -747,15 +921,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Mockar dias da semana no select
-    const dias = [
-      "Domingo",
-      "Segunda",
-      "Terça",
-      "Quarta",
-      "Quinta",
-      "Sexta",
-      "Sábado",
-    ];
+    const dias = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
 
     dias.forEach((dia) => {
       populateSelect("diasInicio", dia);
@@ -769,6 +935,8 @@ document.addEventListener("DOMContentLoaded", function () {
       populateSelect("horarioFim", hora);
     }
   });
+
+
 
   document.addEventListener("DOMContentLoaded", function () {
     const nomeInput = document.getElementById("nome");
@@ -785,30 +953,33 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const telefoneInput = document.getElementById("telefone");
+  // document.addEventListener("DOMContentLoaded", () => {
+  //   const telefoneInput = document.getElementById("telefone");
+  //   const telefoneEmpresaInput = document.getElementById("telefone-empresa")
 
-    const formatPhoneNumber = (value) => {
-      if (!value) return value;
-      const phoneNumber = value.replace(/[^\d]/g, "");
-      const phoneNumberLength = phoneNumber.length;
+  //   const formatPhoneNumber = (value) => {
+  //     if (!value) return value;
+  //     const phoneNumber = value.replace(/[^\d]/g, "");
+  //     const phoneNumberLength = phoneNumber.length;
 
-      if (phoneNumberLength < 3) return phoneNumber;
-      if (phoneNumberLength < 7) {
-        return `(${phoneNumber.slice(0, 2)}) ${phoneNumber.slice(2)}`;
-      }
-      return `(${phoneNumber.slice(0, 2)}) ${phoneNumber.slice(
-        2,
-        7
-      )}-${phoneNumber.slice(7, 11)}`;
-    };
+  //     if (phoneNumberLength < 3) return phoneNumber;
+  //     if (phoneNumberLength < 7) {
+  //       return `(${phoneNumber.slice(0, 2)}) ${phoneNumber.slice(2)}`;
+  //     }
+  //     return `(${phoneNumber.slice(0, 2)}) ${phoneNumber.slice(
+  //       2,
+  //       7
+  //     )}-${phoneNumber.slice(7, 11)}`;
+  //   };
 
-    const handlePhoneNumberInput = (e) => {
-      e.target.value = formatPhoneNumber(e.target.value);
-    };
+  //   const handlePhoneNumberInput = (e) => {
+  //     e.target.value = formatPhoneNumber(e.target.value);
+  //   };
 
-    telefoneInput.addEventListener("input", handlePhoneNumberInput);
-  });
+  //   telefoneInput.addEventListener("input", handlePhoneNumberInput);
+  //   telefoneEmpresaInput.addEventListener("input", handlePhoneNumberInput);
+
+  // });
 
   document.addEventListener("DOMContentLoaded", () => {
     const instagramInput = document.getElementById("instagram");
@@ -865,7 +1036,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-new window.VLibras.Widget("https://vlibras.gov.br/app");
 
 document.addEventListener("DOMContentLoaded", () => {
   let isEditingPersonal = false; // Controle da edição dos dados pessoais
@@ -876,9 +1046,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Seleciona os campos de input e o botão de envio de foto
     const lockIcons = document.querySelectorAll("#personalForm .lock-icon");
-    const fields = document.querySelectorAll(
-      "#personalForm input, #personalForm select"
-    );
+    const fields = document.querySelectorAll("#personalForm input, #personalForm select");
     const saveButton = document.getElementById("save-usuario-button");
 
     const fileInput = document.getElementById("file"); // Campo de upload de foto
@@ -903,28 +1071,59 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+   // Adicionar o event listener ao botão de editar dados pessoais
+   const editIconUsuario = document.getElementById("editIconUsuario");
+   if (editIconUsuario) {
+     editIconUsuario.addEventListener("click", toggleEditing);
+   }
+
   // Adiciona o event listener ao botão de edição de dados pessoais
-  const editIconUsuario = document.getElementById("editIconUsuario");
-  if (editIconUsuario) {
-    editIconUsuario.addEventListener("click", toggleEditing);
-  }
+  // const editIconUsuario = document.getElementById("editIconUsuario");
+  // if (editIconUsuario) {
+  //   editIconUsuario.addEventListener("click", toggleEditing);
+  // }
 
   // Event listener para o formulário de upload de foto
+  // document.getElementById("file").addEventListener("change", function () {
+  //   const fileInput = document.getElementById("file");
+  //   const responseMessage = document.getElementById("responseMessage");
+  
+  //   if (fileInput.files.length > 0) {
+  //     responseMessage.textContent = `Ficheiro "${fileInput.files[0].name}" anexado com sucesso!`;
+  //     responseMessage.style.color = "blue"; // Cor azul para notificação de anexo
+  //   } else {
+  //     responseMessage.textContent = "Nenhum ficheiro anexado.";
+  //     responseMessage.style.color = "red";
+  //   }
+  // });
+  
+  document.getElementById("file").addEventListener("change", function () {
+    const fileInput = document.getElementById("file");
+  
+    if (fileInput.files.length > 0) {
+      const fileName = fileInput.files[0].name;
+      showNotification(`Ficheiro "${fileName}" anexado com sucesso!`, false); // Notificação de sucesso
+    } else {
+      showNotification("Nenhum ficheiro anexado.", true); // Notificação de erro
+    }
+  });
+  
   document
     .getElementById("uploadForm")
     .addEventListener("submit", async (event) => {
       event.preventDefault();
-
+  
       const cpf = document.getElementById("cpf").value;
       const fileInput = document.getElementById("file");
-
+  
       if (!cpf || fileInput.files.length === 0) {
+        showNotification("Por favor, insira um CPF válido e selecione um ficheiro.", true);
         return;
       }
-
+  
       const formData = new FormData();
       formData.append("file", fileInput.files[0]);
-
+  
       try {
         const response = await fetch(
           `http://localhost:8080/usuarios/upload-foto/${cpf}`,
@@ -933,28 +1132,32 @@ document.addEventListener("DOMContentLoaded", () => {
             body: formData,
           }
         );
-
+  
         const result = await response.text();
-        const responseMessage = document.getElementById("responseMessage");
-
+  
         if (response.ok) {
-          responseMessage.textContent =
-            "Foto enviada com sucesso! Recarregue a página para ter acesso a foto atuliazada.";
-          responseMessage.style.color = "green";
+          showNotification(
+            "Foto enviada com sucesso! Recarregue a página para ter acesso à foto atualizada.",
+            false
+          ); // Notificação de sucesso
         } else {
-          responseMessage.textContent = `Erro: ${result}`;
-          responseMessage.style.color = "red";
+          showNotification(`Erro ao enviar a foto: ${result}`, true); // Notificação de erro
         }
-
+  
         // Desabilita o upload após a submissão
         toggleEditing();
       } catch (error) {
         console.error("Erro ao enviar a foto:", error);
-        document.getElementById("responseMessage").textContent =
-          "Erro ao enviar a foto.";
+        showNotification("Erro ao enviar a foto.", true); // Notificação de erro
       }
     });
+  
+  
+    
+new window.VLibras.Widget("https://vlibras.gov.br/app");
 });
+
+
 
 async function carregarImagem() {
   const cpf = document.getElementById("cpf").value.trim(); // Captura o valor do CPF a cada execução
@@ -964,8 +1167,8 @@ async function carregarImagem() {
   imageContainer.innerHTML = "";
 
   if (!cpf) {
-    imageContainer.innerHTML = "<p style='color: red;'>CPF não encontrado.</p>";
-    return;
+      imageContainer.innerHTML = "<p style='color: red;'>CPF não encontrado.</p>";
+      return;
   }
 
   try {
@@ -976,36 +1179,37 @@ async function carregarImagem() {
       }
     );
 
-    if (response.ok) {
-      const blob = await response.blob(); // Recebe a imagem como Blob
-      const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
+      if (response.ok) {
+          const blob = await response.blob(); // Recebe a imagem como Blob
+          const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
 
-      // Cria um elemento de imagem e exibe na div
-      const img = document.createElement("img");
-      img.src = imageUrl;
-      img.alt = "Foto do usuário";
-      imageContainer.appendChild(img);
-    } else {
-      imageContainer.innerHTML =
-        "<p style='color: red;'>Imagem não encontrada para o CPF informado.</p>";
-    }
+          // Cria um elemento de imagem e exibe na div
+          const img = document.createElement("img");
+          img.src = imageUrl;
+          img.alt = "Foto do usuário";
+          imageContainer.appendChild(img);
+      } else {
+          imageContainer.innerHTML = "<p style='color: red;'>Imagem não encontrada para o CPF informado.</p>";
+      }
   } catch (error) {
-    console.error("Erro ao buscar a imagem:", error);
-    imageContainer.innerHTML =
-      "<p style='color: red;'>Erro ao buscar a imagem. Tente novamente.</p>";
+      console.error("Erro ao buscar a imagem:", error);
+      imageContainer.innerHTML = "<p style='color: red;'>Erro ao buscar a imagem. Tente novamente.</p>";
   }
 }
 
 // Carrega a imagem automaticamente quando a página termina de carregar
-window.onload = carregarImagem;
+window.onload = function () {
+  carregarImagem();
+} ;
+
 
 async function carregarImagem2() {
   const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução
   const perfilImage = document.getElementById("perfilImage");
 
   if (!cpf) {
-    console.log("CPF não encontrado.");
-    return;
+      console.log("CPF não encontrado.");
+      return;
   }
 
   try {
@@ -1016,21 +1220,21 @@ async function carregarImagem2() {
       }
     );
 
-    if (response.ok) {
-      const blob = await response.blob(); // Recebe a imagem como Blob
-      const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
+      if (response.ok) {
+          const blob = await response.blob(); // Recebe a imagem como Blob
+          const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
 
-      // Define a URL da imagem carregada como src do img
-      perfilImage.src = imageUrl;
-      perfilImage.alt = "Foto do usuário";
-      perfilImage.style.width = "20vh";
-      perfilImage.style.height = "20vh";
-      perfilImage.style.borderRadius = "300px";
-    } else {
-      console.log("Imagem não encontrada para o CPF informado.");
-    }
+          // Define a URL da imagem carregada como src do img
+          perfilImage.src = imageUrl;
+          perfilImage.alt = "Foto do usuário";
+          perfilImage.style.width = "20vh";
+          perfilImage.style.height = "20vh";
+          perfilImage.style.borderRadius = "300px";
+      } else {
+          console.log("Imagem não encontrada para o CPF informado.");
+      }
   } catch (error) {
-    console.error("Erro ao buscar a imagem:", error);
+      console.error("Erro ao buscar a imagem:", error);
   }
 }
 
@@ -1135,3 +1339,5 @@ function iniciarAutoSlide() {
 
 // Chama a função para carregar os funcionários ao carregar a página
 document.addEventListener("DOMContentLoaded", carregarFuncionarios);
+
+

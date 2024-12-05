@@ -13,39 +13,27 @@ interface FeedbackRepository : JpaRepository<Feedback, Int> {
 
     @Query(
         nativeQuery = true, value = """
-        SELECT
-            AVG(f.nota) AS media_nota
-        FROM
-            procedimento p
-        INNER JOIN
-            especificacao ep ON p.id_procedimento = ep.fk_procedimento
-        INNER JOIN
-            agendamento a ON p.id_procedimento = a.fk_procedimento
-        INNER JOIN
-            feedback f ON a.id_agendamento = f.fk_agendamento
-        GROUP BY
-            p.id_procedimento
-        ORDER BY
-            AVG(f.nota) DESC
-        LIMIT 3
+        SELECT 
+            AVG(f.nota) AS media_nota_geral
+        FROM 
+            feedback f
+        INNER JOIN 
+            agendamento a ON f.fk_agendamento = a.id_agendamento
+        WHERE 
+            a.data_horario BETWEEN COALESCE(:startDate, DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) 
+                              AND COALESCE(:endDate, CURDATE())
     """
     )
-    fun buscarMediaNotas(): List<Double>
+    fun buscarMediaNotaGeral(
+        @Param("startDate") startDate: String?,
+        @Param("endDate") endDate: String?
+    ): Double?
 
 
 
-        @Query(
-            nativeQuery = true, value = """
-        SELECT SUM(nota) / COUNT(*) AS media_notas
-        FROM feedback
-        WHERE data_horario BETWEEN COALESCE(:startDate, DATE_SUB(CURDATE(), INTERVAL 1 MONTH))
-                              AND COALESCE(:endDate, CURDATE())
-        """
-        )
-        fun buscarMediaNotasSingle(
-            @Param("startDate") startDate: String?,
-            @Param("endDate") endDate: String?
-        ): Double
+
+
+
 
 
 

@@ -15,6 +15,26 @@ document.addEventListener("DOMContentLoaded", async function () {
   const agendamentoBtn = document.getElementById("agendamentoBtn");
     const anamneseBtn = document.getElementById("anamneseBtn");
 
+    function formatTelefone(telefone) {
+      if (!telefone) return "";
+      const cleaned = ("" + telefone).replace(/\D/g, ""); // Remove qualquer caractere não numérico
+      const match = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/); // Verifica se o telefone tem o formato (XX) XXXXX-XXXX
+      if (match) {
+        return `(${match[1]}) ${match[2]}-${match[3]}`; // Retorna o formato correto
+      }
+      return telefone; // Retorna o valor original se não bater com o padrão
+    }
+
+    function formatCep(cep) {
+      if (!cep) return "";
+      const cleaned = ("" + cep).replace(/\D/g, ""); // Remove qualquer caractere que não seja número
+      const match = cleaned.match(/^(\d{5})(\d{3})$/); // Verifica se o CEP tem 5 dígitos seguidos de 3 dígitos
+      if (match) {
+        return `${match[1]}-${match[2]}`; // Retorna no formato 00000-000
+      }
+      return cep; // Retorna o valor original caso não corresponda ao padrão
+    }
+
   if (agendamentoBtn) {
     agendamentoBtn.addEventListener("click", function () {
       window.location.href = `../agendamentos-cliente/agendamento-clientes.html?idUsuario=${idUsuario}`;
@@ -33,41 +53,38 @@ document.addEventListener("DOMContentLoaded", async function () {
     ).textContent = `Mais informações de: ${clienteNome}`;
   }
 
- 
-  
-  
-  
-
   if (idUsuario) {
     try {
       clienteData = await fetchUsuarioPorId(idUsuario);
       if (clienteData) {
         console.log("Dados do cliente:", clienteData);
         console.log("Avaliação do cliente:", clienteData.avaliacao); // Verifique o valor de avaliação aqui
-  
+        const avaliacaoSelecionada = clienteData.avaliacao; // Mantém como referência
+        console.log("Avaliação carregada:", avaliacaoSelecionada);
+        mostrarAvaliacaoEstrelas(avaliacaoSelecionada); // Exibe a avaliação carregada
 
         setFieldValue("codigo", clienteData.idUsuario);
         setFieldValue("nome", clienteData.nome);
         setFieldValue("nascimento", formatDate(clienteData.dataNasc));
         setFieldValue("instagram", clienteData.instagram);
         setFieldValue("cpf", clienteData.cpf);
-        setFieldValue("telefone", clienteData.telefone);
+        setFieldValue("telefone", formatTelefone(clienteData.telefone));
         setFieldValue("genero", clienteData.genero);
         setFieldValue("email", clienteData.email);
         setFieldValue("indicacao", clienteData.indicacao);
 
-        if (clienteData.avaliacao != null) {
-          console.log(clienteData.avaliacao)
-          localStorage.setItem("avaliacao", clienteData.avaliacao); // Salva a avaliação no localStorage
-          mostrarAvaliacaoEstrelas(clienteData.avaliacao); // Exibe a avaliação como estrelas
-        } else {
-          mostrarAvaliacaoEstrelas(0); // Exibe 0 estrelas se não houver avaliação
-        }
+        // if (clienteData.avaliacao != null) {
+        //   console.log(clienteData.avaliacao)
+        //   localStorage.setItem("avaliacao", clienteData.avaliacao); // Salva a avaliação no localStorage
+        //   mostrarAvaliacaoEstrelas(clienteData.avaliacao); // Exibe a avaliação como estrelas
+        // } else {
+        //   mostrarAvaliacaoEstrelas(0); // Exibe 0 estrelas se não houver avaliação
+        // }
 
         if (clienteData.endereco) {
           setFieldValue("logradouro", clienteData.endereco.logradouro);
           setFieldValue("numero", clienteData.endereco.numero);
-          setFieldValue("cep", clienteData.endereco.cep);
+          setFieldValue("cep", formatCep(clienteData.endereco.cep));
           setFieldValue("bairro", clienteData.endereco.bairro);
           setFieldValue("cidade", clienteData.endereco.cidade);
           setFieldValue("estado", clienteData.endereco.estado);
@@ -81,22 +98,66 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   }
 
+   // Função para controlar os modais de confirmação
+   function openModal(modalId) {
+    document.getElementById(modalId).style.display = "block";
+  }
+
+  function closeModal(modalId) {
+    document.getElementById(modalId).style.display = "none";
+  }
+  
+  document
+    .getElementById("confirmSavePersonalButton")
+    ?.addEventListener("click", async () => {
+      await updatePersonalData(new Event("submit"));
+      closeModal("confirmSavePersonalModal");
+    });
+
+  document
+    .getElementById("confirmSaveAddressButton")
+    ?.addEventListener("click", async () => {
+      await updateAddressData(new Event("submit"));
+      closeModal("confirmSaveAddressModal");
+    });
+
+  // Botões de cancelamento para fechar modais
+  document.querySelectorAll(".btn-no").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      const modalId = event.target.closest(".modal").id;
+      closeModal(modalId);
+    });
+  });
+
+    // Eventos de clique para abrir modais de confirmação
+    document.getElementById("saveButton")?.addEventListener("click", (event) => {
+      event.preventDefault();
+      openModal("confirmSavePersonalModal");
+    });
+    document
+      .getElementById("saveButtonAddress")
+      ?.addEventListener("click", (event) => {
+        event.preventDefault();
+        openModal("confirmSaveAddressModal");
+      });
+
   function mostrarAvaliacaoEstrelas(pontuacao) {
     const avaliacaoElement = document.getElementById("avaliacao");
-    avaliacaoElement.innerHTML = ""; // Limpa o conteúdo atual
-  
+    avaliacaoElement.innerHTML = "";
+
     for (let i = 1; i <= 5; i++) {
-      const star = document.createElement("span");
-      star.classList.add("star");
-      if (i <= pontuacao) {
-        star.classList.add("filled"); // Adiciona a classe para estrelas preenchidas
-        star.innerHTML = "★"; // Caractere de estrela preenchida
-      } else {
-        star.innerHTML = "☆"; // Caractere de estrela vazia
-      }
-      avaliacaoElement.appendChild(star);
+        const star = document.createElement("span");
+        star.classList.add("star");
+        if (i <= pontuacao) {
+            star.classList.add("filled");
+            star.innerHTML = "★";
+        } else {
+            star.innerHTML = "☆";
+        }
+        avaliacaoElement.appendChild(star);
     }
-  }
+}
+
 
   async function fetchUsuarioPorId(idUsuario) {
     try {
@@ -144,20 +205,24 @@ document.addEventListener("DOMContentLoaded", async function () {
   // Função para alternar a edição de "Dados Pessoais"
   function togglePersonalEditing() {
     isEditingPersonal = !isEditingPersonal; // Alterna o estado de edição
+    
     if (isEditingPersonal) {
-      document.querySelectorAll("#personalForm input").forEach((field) => {
-        field.disabled = false; // Habilita os campos de Dados Pessoais
-      });
-      document.getElementById("saveButton").disabled = false; // Habilita o botão de salvar de Dados Pessoais
-      toggleLockIcons("personalForm", true); // Mostra ícones de cadeado para Dados Pessoais
+        // Seleciona todos os inputs e selects dentro do formulário
+        document.querySelectorAll("#personalForm input, #personalForm select").forEach((field) => {
+            field.disabled = false; // Habilita os campos de Dados Pessoais
+        });
+        document.getElementById("saveButton").disabled = false; // Habilita o botão de salvar de Dados Pessoais
+        toggleLockIcons("personalForm", true); // Mostra ícones de cadeado para Dados Pessoais
     } else {
-      document.querySelectorAll("#personalForm input").forEach((field) => {
-        field.disabled = true; // Desabilita os campos de Dados Pessoais
-      });
-      document.getElementById("saveButton").disabled = true; // Desabilita o botão de salvar de Dados Pessoais
-      toggleLockIcons("personalForm", false); // Esconde ícones de cadeado para Dados Pessoais
+        // Desabilita todos os inputs e selects do formulário
+        document.querySelectorAll("#personalForm input, #personalForm select").forEach((field) => {
+            field.disabled = true; // Desabilita os campos de Dados Pessoais
+        });
+        document.getElementById("saveButton").disabled = true; // Desabilita o botão de salvar de Dados Pessoais
+        toggleLockIcons("personalForm", false); // Esconde ícones de cadeado para Dados Pessoais
     }
-  }
+}
+
 
   // Função para alternar a edição de "Dados de Endereço"
   function toggleAddressEditing() {
@@ -224,6 +289,22 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   });
   
+  function formatTelefoneS(telefone) {
+    if (!telefone) return "";
+    
+    // Remove todos os caracteres não numéricos (parênteses, traços, espaços, etc.)
+    const cleaned = telefone.replace(/\D/g, ""); 
+    
+    // Verifica se o número tem o formato correto: 11 98765 4321
+    const match = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/); 
+    if (match) {
+      return `${match[1]}${match[2]}${match[3]}`; // Retorna o telefone no formato: "XX XXXXX XXXX"
+    }
+    
+    return telefone; // Retorna o valor original caso não corresponda ao formato esperado
+  }
+  
+  
 
 
 // Função para obter a avaliação e incluir no envio de dados ao backend
@@ -239,11 +320,11 @@ async function updatePersonalData(event) {
     nome: document.getElementById("nome").value || clienteData.nome,
     email: document.getElementById("email").value || clienteData.email,
     instagram: document.getElementById("instagram").value || clienteData.instagram,
-    telefone: parseInt(document.getElementById("telefone").value) || clienteData.telefone,
+    telefone: parseInt(formatTelefoneS(document.getElementById("telefone").value)) || clienteData.telefone,
     genero: document.getElementById("genero").value || clienteData.genero,
     indicacao: document.getElementById("indicacao").value || clienteData.indicacao,
     cpf: document.getElementById("cpf").value || clienteData.cpf,
-    avaliacao: avaliacaoSelecionada // Inclui a avaliação selecionada
+    avaliacao: clienteData.avaliacao// Inclui a avaliação selecionada
   };
 
   try {
@@ -260,7 +341,7 @@ async function updatePersonalData(event) {
 
     if (response.ok) {
       clienteData = { ...clienteData, ...updatedData };
-      localStorage.setItem("avaliacao", avaliacaoSelecionada); // Armazena no localStorage
+      // localStorage.setItem("avaliacao", avaliacaoSelecionada); // Armazena no localStorage
       showNotification("Dados atualizados com sucesso!");
       updateUndoRedoButtons();
       togglePersonalEditing();
@@ -273,7 +354,15 @@ async function updatePersonalData(event) {
   }
 }
 
+document.getElementById("cep").addEventListener("blur", async function () {
+  const cep = this.value.replace(/\D/g, ""); // Remove qualquer caracter não numérico
 
+  if (cep.length === 8) {
+    await buscarEnderecoPorCep(cep);
+  } else {
+    showNotification("CEP inválido. Verifique e tente novamente.", true);
+  }
+});
 
 
   async function updateAddressData(event) {
@@ -453,6 +542,7 @@ const buscaEndereco = async (cep) => {
     const data = await response.json();
 
     if (data.erro) {
+      alert("CEP não encontrado.");
       return;
     }
 
@@ -473,6 +563,7 @@ cepInput.addEventListener("blur", () => {
     // Verifica se o CEP tem 8 dígitos
     buscaEndereco(cep);
   } else {
+    alert("Por favor, insira um CEP válido.");
   }
 });
 
@@ -577,10 +668,11 @@ document.addEventListener("DOMContentLoaded", async function () {
       showNotification("Erro ao enviar o e-mail.", true);
     }
   }
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
 });
 
 
-new window.VLibras.Widget('https://vlibras.gov.br/app');
+
 
 async function carregarImagem2() {
   const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução
@@ -656,3 +748,44 @@ window.onload = function () {
 
 
 
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  const tooltips = document.querySelectorAll(
+    ".tooltip15, .tooltip16, .tooltip17, .tooltip18, .tooltip19, .tooltip20"
+  );
+
+  tooltips.forEach((tooltip) => {
+    const targetButton = tooltip.previousElementSibling;
+
+    targetButton.addEventListener("mouseenter", () => {
+      tooltip.style.visibility = "hidden"; // Oculta temporariamente para cálculo
+      tooltip.style.display = "block"; // Exibe para cálculo
+      positionTooltip(tooltip, targetButton);
+      tooltip.style.visibility = "visible"; // Mostra após posicionamento
+    });
+
+    targetButton.addEventListener("mouseleave", () => {
+      tooltip.style.display = "none"; // Oculta quando sai do hover
+    });
+
+    window.addEventListener("resize", () => {
+      if (tooltip.style.display === "block") {
+        positionTooltip(tooltip, targetButton); // Recalcula posição em redimensionamento
+      }
+    });
+  });
+
+  function positionTooltip(tooltip, target) {
+    const targetRect = target.getBoundingClientRect();
+    const tooltipRect = tooltip.getBoundingClientRect();
+
+    // Centraliza horizontalmente e posiciona acima do botão
+    const topPosition = targetRect.top - tooltipRect.height - 3;
+    const leftPosition =
+      targetRect.left + targetRect.width / 0 - tooltipRect.width / 0;
+
+    tooltip.style.top = `${topPosition + window.scrollY}px`;
+    tooltip.style.left = `${leftPosition + window.scrollX}px`;
+  }
+});

@@ -46,7 +46,6 @@ header {
   margin-right: 0.8rem;
 }
 
-
 #greeting1 {
   font-size: 3vh;
   font-weight: bold;
@@ -86,7 +85,6 @@ header {
   gap: 2px;
   font-weight: bold;
 }
-
 
 .right-actions {
   display: flex;
@@ -166,9 +164,8 @@ header {
   width: 100%;
 }
 
-
 .procedures-table {
-  width: 152vh; 
+  width: 152vh;
   border-collapse: collapse;
   margin-top: 30px;
   background-color: #fff;
@@ -178,7 +175,6 @@ header {
   margin-right: auto;
   margin-left: 2%;
 }
-
 
 .procedures-table thead {
   background-color: #d2135d;
@@ -367,7 +363,6 @@ header {
   align-items: center;
   position: relative;
 }
-
 
 .navigation .perfil .imagem-perfil {
   width: 20vh;
@@ -574,14 +569,9 @@ select {
   width: 50%;
 }
 
-
-
-
 .filter-btn {
   position: relative;
 }
-
-
 
 .tooltip1 {
   display: none;
@@ -593,9 +583,9 @@ select {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 100px;
+  top: 16%;
   /* Ajuste conforme necessário */
-  left: 33%;
+  left: 35%;
   transform: translateX(-50%);
 }
 
@@ -609,9 +599,9 @@ select {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 100px;
+  top: 35%px;
   /* Ajuste conforme necessário */
-  left: 40%;
+  left: 45%;
   transform: translateX(-50%);
 }
 
@@ -625,27 +615,23 @@ select {
   font-size: 12px;
   white-space: nowrap;
   z-index: 1000;
-  top: 100px;
+  top: 30%px;
   /* Ajuste conforme necessário */
-  left: 50%;
+  left: 55%;
   transform: translateX(-50%);
 }
 
-.filter-btn:hover+.tooltip1 {
+.filter-btn:hover + .tooltip1 {
   display: block;
-
 }
 
-.filter-btn:hover+.tooltip2 {
+.filter-btn:hover + .tooltip2 {
   display: block;
-
 }
 
-.filter-btn:hover+.tooltip3 {
+.filter-btn:hover + .tooltip3 {
   display: block;
-
 }
-
 
 .tooltip-wrapper {
   position: relative;
@@ -683,7 +669,6 @@ select {
   visibility: visible;
   opacity: 1;
 }
-
 
 /* Pagination */
 .pagination {

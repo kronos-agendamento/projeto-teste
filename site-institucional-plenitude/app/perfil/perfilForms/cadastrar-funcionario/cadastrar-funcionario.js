@@ -100,6 +100,8 @@ document.addEventListener("DOMContentLoaded", function () {
     e.target.value = e.target.value.toLowerCase();
   });
 
+  
+
   // Função para buscar endereço pelo CEP usando a API do ViaCEP
   async function buscarEnderecoPorCep(cep) {
     try {
@@ -294,6 +296,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Carrega a imagem automaticamente quando a página termina de carregar
   window.onload = carregarImagem2;
+  
 });
 
 
@@ -305,4 +308,5 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("userName").textContent = nome;
     document.getElementById("userInsta").textContent = instagram;
   }
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
 });

@@ -2,8 +2,9 @@
 const apiUrlUsuarios = "http://localhost:8080/usuarios";
 
 // URL da API que retorna as fichas de anamnese com base no nome do usuário
-const apiUrlFichas = "http://localhost:8080/api/ficha-anamnese/filtro¢¢¬²";
+const apiUrlFichas = "http://localhost:8080/api/ficha-anamnese/filtro";
 
+document.addEventListener("DOMContentLoaded", function () {
 // Função para preencher o select com os nomes dos usuários
 async function carregarUsuarios() {
   try {
@@ -20,7 +21,7 @@ async function carregarUsuarios() {
       // Adiciona uma opção vazia
       const optionVazia = document.createElement("option");
       optionVazia.value = "";
-      optionVazia.textContent = "Selecione um Nome";
+      optionVazia.textContent = "Selecione um nome";
       selectNome.appendChild(optionVazia);
 
       // Adiciona os nomes dos usuários ao select
@@ -48,6 +49,44 @@ async function carregarUsuarios() {
     console.error("Erro ao carregar usuários:", error);
   }
 }
+
+
+
+async function carregarImagem2() {
+  const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução
+  const perfilImage = document.getElementById("perfilImage");
+
+  if (!cpf) {
+      console.log("CPF não encontrado.");
+      return;
+  }
+
+  try {
+      const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario-cpf/${cpf}`, {
+          method: "GET",
+      });
+
+      if (response.ok) {
+          const blob = await response.blob(); // Recebe a imagem como Blob
+          const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
+
+          // Define a URL da imagem carregada como src do img
+          perfilImage.src = imageUrl;
+          perfilImage.alt = "Foto do usuário";
+          perfilImage.style.width = "20vh";
+          perfilImage.style.height = "20vh";
+          perfilImage.style.borderRadius = "300px";
+      } else {
+          console.log("Imagem não encontrada para o CPF informado.");
+      }
+  } catch (error) {
+      console.error("Erro ao buscar a imagem:", error);
+  }
+}
+
+
+
+
 
 // Função para buscar as fichas de anamnese com base no nome do usuário
 async function buscarFichaAnamnesePorNome(nomeUsuario) {
@@ -185,8 +224,13 @@ async function buscarFichaAnamnesePorNome(nomeUsuario) {
   }
 }
 
-// Chama a função para carregar os usuários quando a página é carregada
-window.onload = carregarUsuarios;
+
+window.onload = function () {
+  carregarImagem2();
+  carregarUsuarios();
+};
+});
+
 
 document.addEventListener("DOMContentLoaded", function () {
   const nome = localStorage.getItem("nome");
@@ -196,40 +240,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("userName").textContent = nome;
     document.getElementById("userInsta").textContent = instagram;
   }
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
 });
 
-async function carregarImagem2() {
-  const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução
-  const perfilImage = document.getElementById("perfilImage");
-
-  if (!cpf) {
-      console.log("CPF não encontrado.");
-      return;
-  }
-
-  try {
-      const response = await fetch(`http://localhost:8080/usuarios/busca-imagem-usuario-cpf/${cpf}`, {
-          method: "GET",
-      });
-
-      if (response.ok) {
-          const blob = await response.blob(); // Recebe a imagem como Blob
-          const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
-
-          // Define a URL da imagem carregada como src do img
-          perfilImage.src = imageUrl;
-          perfilImage.alt = "Foto do usuário";
-          perfilImage.style.width = "20vh";
-          perfilImage.style.height = "20vh";
-          perfilImage.style.borderRadius = "300px";
-      } else {
-          console.log("Imagem não encontrada para o CPF informado.");
-      }
-  } catch (error) {
-      console.error("Erro ao buscar a imagem:", error);
-  }
-}
-
-window.onload = function () {
-  carregarImagem2();
-};

@@ -21,29 +21,29 @@
           justify-content: center;
           margin-top: 5vh;
         ">
-                <div class="imagem-perfil" style="
+      <div class="imagem-perfil" style="
             width: 20vh;
             height: 20vh;
             border-radius: 300px;
             display: flex;
             justify-content: center;
           ">
-                    <img id="perfilImage" alt="Foto do usuário" style="
+       <img id="perfilImage"  alt="Foto do usuário" style="
               width: 53vh;
               height: 23vh;
               display: flex;
               justify-content: center;
               align-items: center;
             " />
-                </div>
-            </li>
-            <li id="userName" style="
+      </div>
+    </li>
+    <li id="userName" style="
           margin-top: 20vh;
           list-style: none;
           color: white;
           font-weight: 600;
         "></li>
-            <li id="userInsta" style="
+    <li id="userInsta" style="
           list-style: none;
           color: white;
           font-weight: 200;
@@ -118,10 +118,34 @@
             <div class="main-content">
                 <div class="chartContainer">
                     <div class="conteudo">
-                        <div class="tabs">
-                            <button class="tab-button" id="usabilidadeBtn">Usabilidade</button>
-                            <button class="tab-button" id="operacionalBtn">Operacional</button>
-                            <button class="tab-button" id="gerencialBtn">Gerencial</button>
+                        <div class="filtro" style="margin-top: -10px; margin-right: 295px;">
+                            <label for="pageSelect">Selecione a página para <b>exportar</b> dados:</label>
+                            <select id="pageSelect" style="font-family: Poppins; background-color: white; border: solid #ababab 1px; border-radius: 4px; padding: 7px;">
+                                <option value="operacional">Operacional</option>
+                                <option value="gerencial">Gerencial</option>
+                                <option value="usabilidade">Usabilidade</option>
+                                <option value="todas">Todas</option>
+                            </select>
+                            <button id="exportCsvButton" class="save-button" style="padding: 10px; font-size: 12px;">Exportar CSV</button>
+                        </div>
+                        <div class="filtro" style="margin-top: 20px;">
+                            <p style="font-weight: bold; margin-left: -620px;">Filtro Geral:</p>
+                            <label for="startDateGlobal" style="margin-left: -15px;">Data de Início:</label>
+                            <input type="date" id="startDateGlobal" style="font-family: Poppins;" />
+                            
+                            <label for="endDateGlobal">Data Fim:</label>
+                            <input type="date" id="endDateGlobal" style="font-family: Poppins;" />
+                        </div>
+                        <div class="filtro" style="margin-top: 20px; margin-bottom: 20px;">
+                        <button id="atualizarTodosOsFiltrosButton" class="save-button"> Atualizar Todos os Filtros</button>
+                        <button onclick="recarregarKPIs()" class="save-button">Reiniciar KPIs</button>
+                        </div>
+                        
+                        <div class="tabs" style="margin-right: 35px;">
+                            <button class="tab-button" id="usabilidadeBtn" style="font-family: Poppins;">Usabilidade</button>
+                            <button class="tab-button" id="operacionalBtn" style="font-family: Poppins;">Operacional</button>
+                            <button class="tab-button" id="gerencialBtn" style="font-family: Poppins;">Gerencial</button>
+
                         </div>
                         <div id="gerencial-content" class="tab-content">
                             <div class="charts">
@@ -130,27 +154,27 @@
                                         <div class="mini-grid">
                                             <div class="mini-square">
                                                 <div class="card">
-                                                    <div class="indicator"></div>
+                                                    <div class="indicator" style="width: 8px;"></div>
                                                     <div class="card-content">
-                                                        <p>Clientes Ativos</p>
+                                                        <p style="font-size: 14px; margin-top: 10px; font-weight: bold;">Clientes Ativos</p>
                                                         <h2 id="clientes-ativos-count">Carregando...</h2>
                                                         <div class="kpis_com_filtro">
                                                             <!-- Campo para selecionar a data de início -->
                                                             <div>
-                                                                <label for="startDateGerencialKPI1">Data de
-                                                                    Início:</label>
-                                                                <input type="date" id="startDateGerencialKPI1">
+                                                                <label style="size: 3px; font-size: 12px; margin-right: 52px ;" for="startDateGerencialKPI1">Data de
+                                                                 Início:</label>
+                                                                <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date" id="startDateGerencialKPI1">
                                                             </div>
 
                                                             <!-- Campo para selecionar a data de término -->
                                                             <div>
-                                                                <label for="endDateGerencialKPI1">Data de
+                                                                <label style="size: 3px; font-size: 12px; margin-right:35px ;" for="endDateGerencialKPI1">Data de
                                                                     Término:</label>
-                                                                <input type="date" id="endDateGerencialKPI1">
+                                                                <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date" id="endDateGerencialKPI1">
                                                             </div>
 
                                                             <!-- Botão para buscar os dados -->
-                                                            <button id="buscarGerencialKPI1Button">Buscar Dados</button>
+                                                            <button id="buscarGerencialKPI1Button" class="save-button-graficos" style="margin-left: 8px; font-size: 10px; padding: 8px; border-radius: 8px; margin-top: 10px; margin-bottom: 10px;">Buscar Dados</button>
                                                         </div>
 
                                                     </div>
@@ -159,29 +183,29 @@
                                             </div>
                                             <div class="mini-square">
                                                 <div class="card">
-                                                    <div class="indicator"></div>
+                                                    <div class="indicator" style="width: 7px;"></div>
                                                     <div class="card-content">
-                                                        <p>Clientes Inativos</p>
+                                                        <p style="font-size: 14px; margin-top: 10px; font-weight: bold;">Clientes Inativos</p>
                                                         <h2 id="clientes-inativos-count">Carregando...</h2>
                                                         <div class="kpis_com_filtro">
                                                             <div>
                                                                 <!-- Campo para selecionar a data de início -->
-                                                                <label style="size: 10px;"
+                                                                <label style="size: 3px; font-size: 12px; margin-right: 52px ;" style="size: 10px;"
                                                                     for="startDateGerencialKPI2">Data
                                                                     de Início:</label>
-                                                                <input type="date" id="startDateGerencialKPI2">
+                                                                <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date" id="startDateGerencialKPI2">
                                                             </div>
 
                                                             <div>
                                                                 <!-- Campo para selecionar a data de término -->
-                                                                <label style="size: 10px;"
+                                                                <label style="size: 3px; font-size: 12px; margin-right: 32px ;"
                                                                     for="endDateGerencialKPI2">Data
                                                                     de Término:</label>
-                                                                <input style="size: 10px;" type="date"
+                                                                <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date"
                                                                     id="endDateGerencialKPI2">
                                                             </div>
                                                             <!-- Botão para buscar os dados -->
-                                                            <button id="buscarGerencialKPI2Button">Buscar Dados</button>
+                                                            <button id="buscarGerencialKPI2Button" class="save-button-graficos" style="margin-left: 8px; font-size: 10px; padding: 8px; border-radius: 8px; margin-top: 10px; margin-bottom: 10px;">Buscar Dados</button>
                                                         </div>
 
                                                     </div>
@@ -190,29 +214,29 @@
                                             </div>
                                             <div class="mini-square">
                                                 <div class="card">
-                                                    <div class="indicator" style="width: 6px;"></div>
+                                                    <div class="indicator" style="width: 8px;"></div>
                                                     <div class="card-content">
-                                                        <p style="font-size: 10px;">Agendamentos Realizados</p>
+                                                        <p style="font-size: 14px; margin-top: 10px; font-weight: bold;">Agendamentos Realizados</p>
                                                         <h2 id="agendamentos-realizados-count">Carregando...</h2>
                                                         <div class="kpis_com_filtro">
                                                             <!-- Campo para selecionar a data de início -->
                                                             <div>
-                                                                <label style="size: 10px;"
+                                                                <label style="size: 3px; font-size: 12px; margin-right: 52px ;"
                                                                     for="startDateGerencialKPI3">Data
                                                                     de Início:</label>
-                                                                <input type="date" id="startDateGerencialKPI3">
+                                                                <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date" id="startDateGerencialKPI3">
                                                             </div>
 
                                                             <div>
                                                                 <!-- Campo para selecionar a data de término -->
-                                                                <label style="size: 10px;"
+                                                                <label style="size: 3px; font-size: 12px; margin-right: 32px ;"
                                                                     for="endDateGerencialKPI3">Data
                                                                     de Término:</label>
-                                                                <input style="size: 10px;" type="date"
+                                                                <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date"
                                                                     id="endDateGerencialKPI3">
                                                             </div>
                                                             <!-- Botão para buscar os dados -->
-                                                            <button id="buscarGerencialKPI3Button">Buscar Dados</button>
+                                                            <button id="buscarGerencialKPI3Button" class="save-button-graficos" style="margin-left: 8px; font-size: 10px; padding: 8px; border-radius: 8px; margin-top: 10px; margin-bottom: 10px;">Buscar Dados</button>
                                                         </div>
 
                                                     </div>
@@ -222,33 +246,33 @@
                                             </div>
                                             <div class="mini-square">
                                                 <div class="card">
-                                                    <div class="indicator" style="width: 5px;"></div>
+                                                    <div class="indicator" style="width: 8px;"></div>
                                                     <div class="card-content">
-                                                        <p>Clientes Fidelizados</p>
+                                                        <p style="font-size: 14px; margin-top: 10px; font-weight: bold;">Clientes Fidelizados</p>
                                                         <h2 id="clientes-fidelizados-count">Carregando...</h2>
                                                         <div class="kpis_com_filtro">
 
                                                             <div>
                                                                 <!-- Campo para selecionar a data de início -->
-                                                                <label style="size: 5px;"
+                                                                <label style="size: 3px; font-size: 12px; margin-right: 52px ;"
                                                                     for="startDateGerencialKPI4">Data
                                                                     de
                                                                     Início:</label>
-                                                                <input style="size: 5px;" type="date"
+                                                                <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date"
                                                                     id="startDateGerencialKPI4">
                                                             </div>
 
                                                             <div>
                                                                 <!-- Campo para selecionar a data de término -->
-                                                                <label style="size: 10px;"
+                                                                <label style="size: 3px; font-size: 12px; margin-right:35px ;"
                                                                     for="endDateGerencialKPI4">Data
                                                                     de
                                                                     Término:</label>
-                                                                <input style="size: 10px;" type="date"
+                                                                <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date"
                                                                     id="endDateGerencialKPI4">
                                                             </div>
                                                             <!-- Botão para buscar os dados -->
-                                                            <button id="buscarGerencialKPI4Button">Buscar Dados</button>
+                                                            <button id="buscarGerencialKPI4Button" class="save-button-graficos" style="margin-left: 8px; font-size: 10px; padding: 8px; border-radius: 8px; margin-top: 10px; margin-bottom: 10px;">Buscar Dados</button>
                                                         </div>
 
                                                     </div>
@@ -259,92 +283,144 @@
 
                                     </div>
 
-                                    <div class="square" style="background-color: white;">
+                                    <div class="square" style="background-color: white; height: 550px;">
                                         <div class="card-graficos">
-                                            <div class="card-content-3">
-                                                <h1>Conversão de Clientes</h1>
-                                                <p>
-                                                    <select id="selectMesGerencial1">
-                                                        <option value="2024-01">Janeiro</option>
-                                                        <option value="2024-02">Fevereiro</option>
-                                                        <option value="2024-03">Março</option>
-                                                        <option value="2024-04">Abril</option>
-                                                        <option value="2024-05">Maio</option>
-                                                        <!-- Adicione mais meses conforme necessário -->
-                                                    </select>
-                                                    <select id="selectAnoGerencial1"></select>
-                                                </p>
+                                            <div class="card-content-3" style="width: 100%;">
+                                                <h1 style="width: 100%;">Conversão de Clientes</h1>
                                             </div>
                                             <p>Comparação de Clientes e Clientes Fidelizados.</p>
-                                            <div class="caixa-grafico">
-                                                <canvas id="chart2"></canvas>
+                                            <div class="kpis_com_filtro">
+                                                <div style="margin-left: 20px;">
+                                                    <label style="font-size: 12px;" for="startDateGerencialGrafico1">Data de Início:</label>
+                                                    <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date" id="startDateGerencialGrafico1">
+                                                </div>
+                                                <div style="margin-left: 20px;">
+                                                    <label style="font-size: 12px;" for="endDateGerencialGrafico1">Data de Término:</label>
+                                                    <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date" id="endDateGerencialGrafico1">
+                                                </div>
+                                                <button id="buscarGerencialGrafico1Button" class="save-button-graficos" style="margin-left: 8px; font-size: 12px; padding: 8px; border-radius: 8px; margin-top: 10px; margin-bottom: 10px;">Buscar Dados</button>
+                                            </div>
+                                            
+                                            <!-- Ajustando a altura do gráfico -->
+                                            <div class="caixa-grafico-teste" style="height: 150vh; width: 60vh; margin: 0 auto; overflow: hidden; margin-bottom: 20px;">
+                                                <canvas id="chart2" style="height: 100%; width: 100%;"></canvas>
                                             </div>
                                         </div>
                                     </div>
+                                    
+                                    
 
-                                    <div class="square" style="background-color: white;">
+                                    <div class="square" style="background-color: white; margin-top: 20px;">
                                         <div class="card-graficos">
                                             <div class="card-content-2">
                                                 <h1>Procedimentos Mais Realizados</h1>
-                                                <p>
-                                                    <select id="selectMes">
-                                                        <option value="2024-01">Janeiro</option>
-                                                        <option value="2024-02">Fevereiro</option>
-                                                        <option value="2024-03">Março</option>
-                                                        <option value="2024-04">Abril</option>
-                                                        <option value="2024-05">Maio</option>
-                                                        <!-- Adicione mais meses conforme necessário -->
-                                                    </select>
-                                                    <select id="selectAno"></select>
-                                                </p>
                                             </div>
                                             <p>Procedimentos mais famosos no estúdio e quantas vezes eles foram
                                                 agendados no
                                                 último
                                                 trimestre.</p>
-                                            <div class="caixa-grafico" style="margin-top: -8%">
-                                                <canvas id="chart4"></canvas>
+                                                <div class="kpis_com_filtro">
+                                                    <div style="margin-left: 20px;">
+                                                        <!-- Campo para selecionar a data de início -->
+                                                        <label style="size: 3px; font-size: 12px;" for="startDateGerencialGrafico2">Data
+                                                            de Início:</label>
+                                                        <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date"
+                                                            id="startDateGerencialGrafico2">
+                                                    </div>
+                                                    <div>
+                                                        <!-- Campo para selecionar a data de término -->
+                                                        <label style="size: 3px; font-size: 12px; margin-left: 20px;" for="endDateGerencialGrafico2">Data de
+                                                            Término:</label>
+                                                        <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date"
+                                                            id="endDateGerencialGrafico2">
+                                                    </div>
+
+                                                    <!-- Botão para buscar os dados -->
+                                                    <button id="buscarGerencialGrafico2Button" class="save-button-graficos" style="margin-left: 8px; font-size: 12px; padding: 8px; border-radius: 8px; margin-top: 10px; margin-bottom: 10px;">Buscar Dados</button>
+                                                </div>
+                                            <div class="caixa-grafico-teste" style="margin-top: -25px;margin-bottom: 20px;">
+                                                <canvas style="max-width: 300px; max-height: 300px; margin-top: 30px;"
+                                                    id="chart4"></canvas>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="square" style="background-color: white;">
+                                    <div class="square" style="background-color: white; height: 450px;">
                                         <div class="card-graficos">
                                             <div class="card-content-2">
                                                 <h1>Procedimentos com Melhor Avaliação</h1>
-                                                <p>Últimos 5 meses</p>
                                             </div>
                                             <p>Procedimentos mais bem avaliados no estúdio e uma média de nota no
                                                 último
                                                 trimestre.
                                             </p>
-                                            <div class="caixa-grafico">
+                                            <div class="kpis_com_filtro">
+                                                <div style="margin-left: 20px;">
+                                                    <!-- Campo para selecionar a data de início -->
+                                                    <label style="size: 3px; font-size: 12px;"  for="startDateGerencialGrafico3">Data
+                                                        de Início:</label>
+                                                    <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date"
+                                                        id="startDateGerencialGrafico3">
+                                                </div>
+                                                <div style="margin-left: 20px;">
+                                                    <!-- Campo para selecionar a data de término -->
+                                                    <label style="size: 3px; font-size: 12px;"  for="endDateGerencialGrafico3">Data de
+                                                        Término:</label>
+                                                    <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date"
+                                                        id="endDateGerencialGrafico3">
+                                                </div>
+
+                                                <!-- Botão para buscar os dados -->
+                                                <button id="buscarGerencialGrafico3Button" class="save-button-graficos" style="margin-left: 8px; font-size: 12px; padding: 8px; border-radius: 8px; margin-top: 10px; margin-bottom: -10px;">Buscar Dados</button>
+                                            </div>
+                                            <div class="caixa-grafico" style="margin-bottom: 20px;">
                                                 <canvas id="chart33"></canvas>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="square" style="background-color: white;">
+                                    <div class="square" style="background-color: white; height: 520px; margin-top: -20px;">
                                         <div class="card-graficos">
                                             <div class="card-content-2">
                                                 <h1>Receita Acumulada</h1>
-                                                <p>Últimos 5 meses</p>
                                             </div>
                                             <p>Cálculo realizado em cima dos atendimentos concluídos e dos valores
                                                 dos
                                                 procedimentos.
                                             </p>
-                                            <div class="caixa-grafico">
+                                            <div class="kpis_com_filtro">
+                                                <div style="margin-left: 20px;">
+                                                    <!-- Campo para selecionar a data de início -->
+                                                    <label style="size: 3px; font-size: 12px;" for="startDateGerencialGrafico4">Data
+                                                        de Início:</label>
+                                                    <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date"
+                                                        id="startDateGerencialGrafico4">
+                                                </div>
+                                                <div style="margin-left: 20px;">
+                                                    <!-- Campo para selecionar a data de término -->
+                                                    <label style="size: 3px; font-size: 12px;" for="endDateGerencialGrafico4">Data de
+                                                        Término:</label>
+                                                    <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date"
+                                                        id="endDateGerencialGrafico4">
+                                                </div>
+
+                                                <!-- Botão para buscar os dados -->
+                                                <button id="buscarGerencialGrafico4Button" class="save-button-graficos" style="margin-left: 8px; font-size: 12px; padding: 8px; border-radius: 8px; margin-top: 10px; margin-bottom: 10px;">Buscar Dados</button>
+                                            </div>
+                                            <div class="caixa-grafico-teste" style="height: 700vh;  margin-bottom: 20px;">
                                                 <canvas id="chart3"></canvas>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="square" style="background-color: white;">
+                                    <div class="square" style="background-color: white; height: 500px;">
                                         <div class="card-graficos">
                                             <div class="card-content-2">
                                                 <h1>Canais de Divulgação</h1>
-                                                <p>Últimos 5 meses</p>
+
                                             </div>
                                             <p>Por qual meio de comunicação os clientes chegam no estúdio.</p>
-                                            <canvas style="padding-bottom: 30px;" id="chart1"></canvas>
+    
+                                            <div class="caixa-grafico-teste" style="height: 150vh; width: 60vh; margin: 0 auto; overflow: hidden; margin-bottom: 20px;">
+                                                <canvas id="chart1" style="height: 100%; width: 100%;"></canvas>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -358,21 +434,21 @@
                                     <div class="mini-grid">
                                         <div class="mini-square">
                                             <div class="card">
-                                                <div class="indicator"></div>
+                                                <div class="indicator" style="width: 8px;"></div>
                                                 <div class="card-content">
-                                                    <p style="font-size: 16px;">Agendamentos<br>Marcados</p>
+                                                    <p style="font-size: 14px; margin-top: -35px; font-weight: bold;">Agendamentos<br>Marcados</p>
                                                     <h2 id="total-agendamentos-hoje">Carregando...</h2>
                                                     <div class="kpis_com_filtro">
                                                         <div>
                                                             <!-- Campo para selecionar a data de início -->
-                                                            <label style="size: 5px;"
+                                                            <label style="size: 3px; font-size: 12px; margin-right: 58px ;" 
                                                                 for="startDateOperacionalKPI1">Data Exibida:</label>
-                                                            <input style="size: 5px;" type="date"
+                                                            <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date"
                                                                 id="startDateOperacionalKPI1">
                                                         </div>
 
                                                         <!-- Botão para buscar os dados -->
-                                                        <button id="buscarOperacionalKPI1Button">Buscar Dados</button>
+                                                        <button id="buscarOperacionalKPI1Button" class="save-button-graficos" style="margin-left: 8px; font-size: 10px; padding: 8px; border-radius: 8px; margin-top: 10px; margin-bottom: 10px;">Buscar Dados</button>
                                                     </div>
 
 
@@ -382,59 +458,28 @@
                                         </div>
                                         <div class="mini-square">
                                             <div class="card">
-                                                <div class="indicator"></div>
+                                                <div class="indicator" style="width: 7px;"></div>
                                                 <div class="card-content">
-                                                    <p style="font-size: 16px;">Agendamentos <br>Futuros</p>
+                                                    <p style="font-size: 14px; margin-top: 12px; font-weight: bold;">Agendamentos <br>Futuros</p>
                                                     <h2 id="total-agendamentos-futuros">Carregando...</h2>
                                                     <div class="kpis_com_filtro">
                                                         <div>
                                                             <!-- Campo para selecionar a data de início -->
-                                                            <label style="size: 5px;"
+                                                            <label style="size: 3px; font-size: 12px; margin-right: 47px ;" 
                                                                 for="startDateOperacionalKPI2">Data de Início:</label>
-                                                            <input style="size: 5px;" type="date"
+                                                                <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date"
                                                                 id="startDateOperacionalKPI2">
                                                         </div>
                                                         <div>
                                                             <!-- Campo para selecionar a data de início -->
-                                                            <label style="size: 5px;"
-                                                                for="endDateOperacionalKPI2">Data de Término:</label>
-                                                            <input style="size: 5px;" type="date"
+                                                            <label style="size: 3px; font-size: 12px; margin-right: 25px ;"  for="endDateOperacionalKPI2">Data
+                                                                de Término:</label>
+                                                            <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date"
                                                                 id="endDateOperacionalKPI2">
                                                         </div>
 
                                                         <!-- Botão para buscar os dados -->
-                                                        <button id="buscarOperacionalKPI2Button">Buscar Dados</button>
-                                                    </div>
-
-                                                </div>
-                                                <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
-                                            </div>
-                                        </div>
-                                        <div class="mini-square">
-                                            <div class="card">
-                                                <div class="indicator"></div>
-                                                <div class="card-content">
-                                                    <p style="font-size: 16px;">Tempo Médio
-                                                        Entre<br>Atendimentos</p>
-                                                    <h2 id="tempo-medio-hoje">Carregando...</h2>
-                                                    <div class="kpis_com_filtro">
-                                                        <div>
-                                                            <!-- Campo para selecionar a data de início -->
-                                                            <label style="size: 5px;"
-                                                                for="startDateOperacionalKPI3">Data de Início:</label>
-                                                            <input style="size: 5px;" type="date"
-                                                                id="startDateOperacionalKPI3">
-                                                        </div>
-                                                        <div>
-                                                            <!-- Campo para selecionar a data de início -->
-                                                            <label style="size: 5px;"
-                                                                for="endDateOperacionalKPI3">Data de Término:</label>
-                                                            <input style="size: 5px;" type="date"
-                                                                id="endDateOperacionalKPI3">
-                                                        </div>
-
-                                                        <!-- Botão para buscar os dados -->
-                                                        <button id="buscarOperacionalKPI3Button">Buscar Dados</button>
+                                                        <button id="buscarOperacionalKPI2Button" class="save-button-graficos" style="margin-left: 8px; font-size: 10px; padding: 8px; border-radius: 8px; margin-top: 10px; margin-bottom: 10px;">Buscar Dados</button>
                                                     </div>
 
                                                 </div>
@@ -445,27 +490,55 @@
                                             <div class="card">
                                                 <div class="indicator" style="width: 8px;"></div>
                                                 <div class="card-content">
-                                                    <p style="font-size: 16px;">Média de Avaliação dos
+                                                    <p style="font-size: 14px; margin-top: 10px; font-weight: bold;">Tempo Médio
+                                                        <br>Entre Atendimentos</p>
+                                                    <h2 id="tempo-medio-hoje">Carregando...</h2>
+                                                    <div class="kpis_com_filtro">
+                                                        <div>
+                                                            <!-- Campo para selecionar a data de início -->
+                                                            <label style="size: 3px; font-size: 12px; margin-right: 52px ;" 
+                                                                for="startDateOperacionalKPI3">Data de Início:</label>
+                                                            <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date"
+                                                                id="startDateOperacionalKPI3">
+                                                        </div>
+                                                        <div>
+                                                            <!-- Campo para selecionar a data de início -->
+                                                            <label style="size: 3px; font-size: 12px; margin-right: 32px ;"  for="endDateOperacionalKPI3">Data
+                                                                de Término:</label>
+                                                            <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date"
+                                                                id="endDateOperacionalKPI3">
+                                                        </div>
+
+                                                        <!-- Botão para buscar os dados -->
+                                                        <button id="buscarOperacionalKPI3Button"class="save-button-graficos" style="margin-left: 8px; font-size: 10px; padding: 8px; border-radius: 8px; margin-top: 10px; margin-bottom: 10px;">Buscar Dados</button>
+                                                    </div>
+
+                                                </div>
+                                                <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
+                                            </div>
+                                        </div>
+                                        <div class="mini-square">
+                                            <div class="card">
+                                                <div class="indicator" style="width: 7px;"></div>
+                                                <div class="card-content">
+                                                    <p style="font-size: 14px; margin-top: 10px; font-weight: bold;">Média de Avaliação dos
                                                         Atendimentos</p>
                                                     <h2 id="total-nota-single">Carregando...</h2>
                                                     <div class="kpis_com_filtro">
                                                         <div>
-                                                            <!-- Campo para selecionar a data de início -->
-                                                            <label style="size: 5px;"
+                                                            <label style="size: 3px; font-size: 12px; margin-right: 52px ;" 
                                                                 for="startDateOperacionalKPI4">Data de Início:</label>
-                                                            <input style="size: 5px;" type="date"
+                                                            <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date"
                                                                 id="startDateOperacionalKPI4">
                                                         </div>
                                                         <div>
-                                                            <!-- Campo para selecionar a data de início -->
-                                                            <label style="size: 5px;"
-                                                                for="endDateOperacionalKPI4">Data de Término:</label>
-                                                            <input style="size: 5px;" type="date"
+                                                            <label style="size: 3px; font-size: 12px; margin-right:35px ;" for="endDateOperacionalKPI4">Data
+                                                                de Término:</label>
+                                                            <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date"
                                                                 id="endDateOperacionalKPI4">
                                                         </div>
 
-                                                        <!-- Botão para buscar os dados -->
-                                                        <button id="buscarOperacionalKPI4Button">Buscar Dados</button>
+                                                        <button id="buscarOperacionalKPI4Button"class="save-button-graficos" style="margin-left: 8px; font-size: 10px; padding: 8px; border-radius: 8px; margin-top: 10px; margin-bottom: 10px;">Buscar Dados</button>
                                                     </div>
                                                 </div>
                                                 <!-- <div class="growth">+ 2% <i class="arrow-up"></i></div> -->
@@ -473,40 +546,86 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="square" style="background-color: white;">
+                                <div class="square-indv" style="background-color: white; margin-top: 1px;" >
                                     <div class="card-graficos">
                                         <div class="card-content-2">
                                             <h1>Agendamentos</h1>
-                                            <p>Últimos 5 meses</p>
                                         </div>
-                                        <p>Distribuição das categorias dos agendamentos do dia de hoje.</p>
-                                        <div class="caixa-grafico">
-                                            <canvas id="chartOperacional1"></canvas>
+                                        <p>Distribuição das categorias dos agendamentos do dia estabelecido.</p>
+                                        <div class="kpis_com_filtro" style="margin-top: 10px;">
+                                            <div style="margin-left: 20px; ">
+                                                <!-- Campo para selecionar a data de início -->
+                                                <label style="size: 3px; font-size: 12px;" for="startDateOperacionalGrafico1">Dia
+                                                    Escolhido:</label>
+                                                <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date" id="startDateOperacionalGrafico1">
+                                                <!-- Botão para buscar os dados -->
+                                            <button id="buscarOperacionalGrafico1Button" class="save-button-graficos" style="margin-left: 8px; margin-bottom: 20px; font-size: 12px; padding: 8px; border-radius: 8px;">Buscar Dados</button>    
+                                            </div>
+
+                                            
+                                        </div>
+                                        <div class="caixa-grafico-teste">
+                                            <canvas id="chartOperacional1" ></canvas>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="square" style="background-color: white;">
+                                <div class="square" style="background-color: white; margin-top: 130px;">
                                     <div class="card-graficos">
                                         <div class="card-content-2">
-                                            <h1>Procedimentos<br>Realizados</h1>
-                                            <p>Último Trimestre</p>
+                                            <h1>Procedimentos Realizados</h1>
                                         </div>
-                                        <p>Total de procedimentos realizados nos últimos 3 meses</p>
+                                        <p>Total de procedimentos realizados no período estabelecido</p>
+                                        <div class="kpis_com_filtro">
+                                            <div style="margin-left: 20px;"> 
+                                                <!-- Campo para selecionar a data de início -->
+                                                <label style="size: 3px; font-size: 12px;" for="startDateOperacionalGrafico2">Data de
+                                                    Início:</label>
+                                                <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date"
+                                                    id="startDateOperacionalGrafico2">
+                                            </div>
+                                            <div style="margin-left: 20px;"> 
+                                                <!-- Campo para selecionar a data de início -->
+                                                <label style="size: 3px; font-size: 12px;" for="endDateOperacionalGrafico2">Data de
+                                                    Término:</label>
+                                                <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date"
+                                                    id="endDateOperacionalGrafico2">
+                                            </div>
+
+                                            <!-- Botão para buscar os dados -->
+                                            <button id="buscarOperacionalGrafico2Button" class="save-button-graficos" style="margin-left: 8px; font-size: 12px; padding: 8px; border-radius: 8px; margin-top: 10px; margin-bottom: 10px;">Buscar Dados</button>
+                                        </div>
                                         <div class="caixa-grafico">
                                             <canvas id="chartProcedimentosRealizadosTrimestreOperacional3"></canvas>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="square" style="background-color: white;">
+                                <div class="square-indv" style="background-color: white;margin-top: 8px; height: 475px;">
                                     <div class="card-graficos">
                                         <div class="card-content-2">
-                                            <h1>Tempo Médio de<br>Atendimento</h1>
-                                            <p>Últimos mês</p>
+                                            <h1>Tempo Médio de Atendimento</h1>
                                         </div>
-                                        <p>Tempo médio de atendimento investido em cada procedimento.
-                                        </p>
-                                        <div class="caixa-grafico">
+                                        <p>Tempo médio de atendimento investido em cada procedimento.</p>
+                                        <div class="kpis_com_filtro">
+                                            <div style="margin-left: 20px;">
+                                                <!-- Campo para selecionar a data de início -->
+                                                <label style="size: 3px; font-size: 12px;" for="startDateOperacionalGrafico3">Data de
+                                                    Início:</label>
+                                                <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date"
+                                                    id="startDateOperacionalGrafico3">
+                                            </div>
+                                            <div style="margin-left: 20px;">
+                                                <!-- Campo para selecionar a data de início -->
+                                                <label style="size: 3px; font-size: 12px;" for="endDateOperacionalGrafico3">Data de
+                                                    Término:</label>
+                                                <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date"
+                                                    id="endDateOperacionalGrafico3">
+                                            </div>
+
+                                            <!-- Botão para buscar os dados -->
+                                            <button id="buscarOperacionalGrafico3Button" class="save-button-graficos" style="margin-left: 8px; font-size: 12px; padding: 8px; border-radius: 8px; margin-top: 10px; margin-bottom: 10px;">Buscar Dados</button>
+                                        </div>
+                                        <div class="caixa-grafico-teste">
                                             <canvas id="chartTempoGastoProcedimentosOperacional2"></canvas>
                                         </div>
                                     </div>
@@ -515,26 +634,64 @@
                                     <div class="card-graficos">
                                         <div class="card-content-2">
                                             <h1>Receita Média Gerada</h1>
-                                            <p>Últimos 5 meses</p>
                                         </div>
-                                        <p>Receita média gerada nos últimos 3 meses com os procedimentos
+                                        <p>Receita média gerada no período estabelecido com os procedimentos
                                             realizados.
                                         </p>
+                                        <div class="kpis_com_filtro">
+                                            <div style="margin-left: 20px;"> 
+                                                <!-- Campo para selecionar a data de início -->
+                                                <label style="size: 3px; font-size: 12px;"  for="startDateOperacionalGrafico4">Data de
+                                                    Início:</label>
+                                                <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date"
+                                                    id="startDateOperacionalGrafico4">
+                                            </div>
+                                            <div style="margin-left: 20px;"> 
+                                                <!-- Campo para selecionar a data de início -->
+                                                <label style="size: 3px; font-size: 12px;"  for="endDateOperacionalGrafico4">Data de
+                                                    Término:</label>
+                                                <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date"
+                                                    id="endDateOperacionalGrafico4">
+                                            </div>
+
+                                            <!-- Botão para buscar os dados -->
+                                            <button id="buscarOperacionalGrafico4Button" class="save-button-graficos" style="margin-left: 8px; font-size: 12px; padding: 8px; border-radius: 8px; margin-top: 10px; margin-bottom: 10px;">Buscar Dados</button>
+                                        </div>
                                         <div class="caixa-grafico">
                                             <canvas id="chartReceitaProcedimentosOperacional4"></canvas>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="square" style="background-color: white;">
+                                <div class="square-indv" style="background-color: white; margin-top: -60px; height: 475px;">
                                     <div class="card-graficos">
-                                        <div class="card-content-2">
-                                            <h1>Valor da hora<br>de Procedimento</h1>
-                                            <p>Últimos 5 meses</p>
+                                        <div class="card-content-2" >
+                                            <h1>Valor da Hora de Procedimento</h1>
                                         </div>
                                         <p>Calculo da quantia de dinheiro gerado por hora de cada agendamento.
                                         </p>
-                                        <canvas style="padding-bottom: 20px;"
+                                        <div class="kpis_com_filtro">
+                                            <div style="margin-left: 20px;"> 
+                                                <!-- Campo para selecionar a data de início -->
+                                                <label style="size: 3px; font-size: 12px;" for="startDateOperacionalGrafico5">Data de
+                                                    Início:</label>
+                                                <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date"
+                                                    id="startDateOperacionalGrafico5">
+                                            </div>
+                                            <div style="margin-left: 20px;"> 
+                                                <!-- Campo para selecionar a data de início -->
+                                                <label style="size: 3px; font-size: 12px;" for="endDateOperacionalGrafico5">Data de
+                                                    Término:</label>
+                                                <input style="padding: 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date"
+                                                    id="endDateOperacionalGrafico5">
+                                            </div>
+
+                                            <!-- Botão para buscar os dados -->
+                                            <button id="buscarOperacionalGrafico5Button" class="save-button-graficos" style="margin-left: 8px; font-size: 12px; padding: 8px; border-radius: 8px; margin-top: 10px; margin-bottom: 10px;" >Buscar Dados</button>
+                                        </div>
+                                        <div class="caixa-grafico-teste">
+                                        <canvas 
                                             id="chartValorTotalUltimoMesOperacional5"></canvas>
+                                            </div>
                                     </div>
                                 </div>
                             </div>
@@ -547,22 +704,24 @@
                                 <div class="mini-grid-usabilidade">
                                     <div class="mini-square-usabilidade">
                                         <div class="card">
-                                            <div class="indicator"></div>
+                                            <div class="indicator" style="height: 140px; width: 4px;"></div>
                                             <div class="card-content">
-                                                <p style="font-size: 15px; width: 310px;">Tempo Médio de Conclusão
+                                                <p style="font-size: 14px; width: 330px; font-weight: bold; margin-top: 20px;">Tempo Médio de Conclusão
                                                     de
                                                     Agendamento</p>
                                                 <h2 id="tempo-medio-conclusao">Carregando...</h2>
                                                 <div> <!-- Campo para selecionar a data de início -->
-                                                    <label for="startDateUsabilidadeKPI2">Data de Início:</label>
-                                                    <input type="date" id="startDateUsabilidadeKPI2">
-
+                                                    <div>
+                                                    <label style="size: 3px; font-size: 12px; margin-right: 47px ;" for="startDateUsabilidadeKPI2">Data de Início:</label>
+                                                    <input style="padding: 3px; border: 1px solid #ccc; border-radius: 5px; font-size: 10px; font-family: Poppins; margin-left: -40px;" type="date" id="startDateUsabilidadeKPI2">
+</div>
                                                     <!-- Campo para selecionar a data de término -->
-                                                    <label for="endDateUsabilidadeKPI2">Data de Término:</label>
-                                                    <input type="date" id="endDateUsabilidadeKPI2">
-
+                                                     <div style="margin-top: 5px;">
+                                                    <label style="size: 3px; font-size: 12px; margin-right: 47px ;" for="endDateUsabilidadeKPI2">Data de Término:</label>
+                                                    <input style="padding: 3px; border: 1px solid #ccc; border-radius: 5px; font-size: 10px; font-family: Poppins; margin-left: -40px;" type="date" id="endDateUsabilidadeKPI2">
+</div>
                                                     <!-- Botão para buscar os dados -->
-                                                    <button id="buscarUsabilidadeKPI2Button">Buscar Dados</button>
+                                                    <button id="buscarUsabilidadeKPI2Button" class="save-button-graficos" style="margin-left: 130px; font-size: 10px; padding: 8px; border-radius: 8px; margin-top: 10px; margin-bottom: 10px;">Buscar Dados</button>
                                                 </div>
 
                                             </div>
@@ -585,22 +744,24 @@
                                             </div> -->
                                     <div class="mini-square-usabilidade">
                                         <div class="card">
-                                            <div class="indicator"></div>
+                                            <div class="indicator" style="height: 140px; width: 4px;"></div>
                                             <div class="card-content">
-                                                <p style="font-size: 15px;">Quantidade de Usuários Retornando ao
+                                                <p style="font-size: 14px; width: 340px; font-weight: bold; margin-top: 30px;">Quantidade de Usuários Retornando ao
                                                     Sistema
                                                 </p>
                                                 <h2 id="retorno-login-count">Carregando...</h2>
                                                 <div> <!-- Campo para selecionar a data de início -->
-                                                    <label for="startDateUsabilidadeKPI1">Data de Início:</label>
-                                                    <input type="date" id="startDateUsabilidadeKPI1">
-
+                                                    <div>
+                                                    <label style="size: 3px; font-size: 12px; margin-right: 47px ;" for="startDateUsabilidadeKPI1">Data de Início:</label>
+                                                    <input style="padding: 3px; border: 1px solid #ccc; border-radius: 5px; font-size: 10px; font-family: Poppins; margin-left: -40px;" type="date" id="startDateUsabilidadeKPI1">
+</div>
                                                     <!-- Campo para selecionar a data de término -->
-                                                    <label for="endDateUsabilidadeKPI1">Data de Término:</label>
-                                                    <input type="date" id="endDateUsabilidadeKPI1">
-
+                                                     <div>
+                                                    <label style="size: 3px; font-size: 12px; margin-right: 47px ;" for="endDateUsabilidadeKPI1">Data de Término:</label>
+                                                    <input style="padding: 3px; border: 1px solid #ccc; border-radius: 5px; font-size: 10px; font-family: Poppins; margin-left: -40px;" type="date" id="endDateUsabilidadeKPI1">
+</div>
                                                     <!-- Botão para buscar os dados -->
-                                                    <button id="buscarUsabilidadeKPI1Button">Buscar Dados</button>
+                                                    <button id="buscarUsabilidadeKPI1Button" class="save-button-graficos" style="margin-left: 130px; font-size: 10px; padding: 8px; border-radius: 8px; margin-top: 10px; margin-bottom: 10px;">Buscar Dados</button>
                                                 </div>
 
                                             </div>
@@ -613,21 +774,24 @@
                                 <div class="card-graficos">
                                     <div class="card-content-2">
                                         <h1 style="width: 600px;">Taxa do uso do Sistema de Agendamento</h1>
-                                        <div>
-                                            <!-- Campo para selecionar a data de início -->
-                                            <label for="startDateUsabilidade1">Data de Início:</label>
-                                            <input type="date" id="startDateUsabilidade1">
-
-                                            <!-- Campo para selecionar a data de término -->
-                                            <label for="endDateUsabilidade1">Data de Término:</label>
-                                            <input type="date" id="endDateUsabilidade1">
-
-                                            <!-- Botão para buscar os dados -->
-                                            <button id="buscarUsabilidadeGrafico1Button">Buscar Dados</button>
-                                        </div>
                                     </div>
                                     <p style="margin-right: 415px;">Quantidade de agendamentos gerados.</p>
-                                    <div class="caixa-graficoUsabilidade">
+                                    <div style="margin-right: 500px;">
+                                        <div style="margin-left: 0px; margin-top: 5px;">
+                                        <!-- Campo para selecionar a data de início -->
+                                        <label style="size: 3px; font-size: 12px;" for="startDateUsabilidade1">Data de Início:</label>
+                                        <input style="padding: 3px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins;" type="date" id="startDateUsabilidade1">
+</div>
+                                        <!-- Campo para selecionar a data de término -->
+                                        <div style="margin-left: 0px; margin-top: 5px;">
+                                        <label style="size: 3px; font-size: 12px;" for="endDateUsabilidade1">Data de Término:</label>
+                                        <input style="padding: 3px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Poppins; " type="date" id="endDateUsabilidade1">
+                                        </div>
+
+                                        <!-- Botão para buscar os dados -->
+                                        <button id="buscarUsabilidadeGrafico1Button" class="save-button-graficos" style="margin-left: 0px; font-size: 12px; padding: 8px; border-radius: 8px; margin-top: 10px; margin-bottom: 10px;">Buscar Dados</button>
+                                    </div>
+                                    <div class="caixa-graficoUsabilidade" >
                                         <canvas id="chartUsabilidade1" style="margin-left: 100px;"></canvas>
                                     </div>
                                 </div>
