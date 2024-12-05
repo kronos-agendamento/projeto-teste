@@ -476,7 +476,7 @@ INSERT INTO Leads (nome, email, telefone, instagram, mensagem, data_criacao)
 VALUES 
 ('Maria Silva', 'maria.silva@example.com', 11987654321, '@mariasilva', 'Gostaria de saber mais sobre seus serviços.', NOW()),
 ('João Pereira', 'joao.pereira@example.com', 11912345678, '@joaopereira', 'Tenho interesse em fazer uma extensão de cílios.', NOW()),
-('Ana Souza', 'ana.souza@example.com', 11987611234, NULL, 'Quais são os valores para design de sobrancelha?', NOW()),
+('Ana Souza', 'ana.souza@example.com', 11987611234, '@anasouza', 'Quais são os valores para design de sobrancelha?', NOW()),
 ('Carla Oliveira', 'carla.oliveira@example.com', 11933332222, '@carlaoliveira', 'Vi uma promoção no Instagram e quero mais detalhes.', NOW()),
 ('Pedro Santos', 'pedro.santos@example.com', 11998765432, '@pedrosantos', 'Como funciona o procedimento de volume russo?', NOW());
 
@@ -707,4 +707,6 @@ VALUES
 ('Profissional muito educado e atencioso.', 5, 7, 8, 3),
 ('Adorei o resultado final! Super recomendo.', 5, 10, 2, 5);
 
-select * from agendamento
+select * from agendamento;
+
+select * from leads;
