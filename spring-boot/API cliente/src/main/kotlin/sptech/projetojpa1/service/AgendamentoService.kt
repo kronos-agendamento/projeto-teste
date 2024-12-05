@@ -449,7 +449,11 @@ class AgendamentoService(
                 procedimento = null,  // Permitir valor nulo para procedimento
                 especificacao = null,  // Permitir valor nulo para especificação
                 statusAgendamento = statusRepository.findById(2)  // Um ID fixo para "status bloqueado"
-                    .orElseThrow { IllegalArgumentException("Status não encontrado") }
+                    .orElseThrow { IllegalArgumentException("Status não encontrado") },
+                cep = null,  // Atualize conforme necessário
+                logradouro = null,  // Atualize conforme necessário
+                numero = null,  // Atualize conforme necessário
+                homecare = null
             )
 
             agendamentoRepository.save(agendamentoFake)

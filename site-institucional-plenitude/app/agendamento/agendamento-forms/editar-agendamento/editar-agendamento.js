@@ -60,32 +60,124 @@ document.addEventListener("DOMContentLoaded", function () {
   async function carregarProcedimentos() {
     const procedimentos = await fetchData(apiUrlProcedimentos);
     if (procedimentos) {
+      elements.procedimentosSelect.innerHTML = ""; // Limpa o select antes de adicionar novos procedimentos
       procedimentos.forEach((procedimento) => {
         const option = document.createElement("option");
         option.value = procedimento.idProcedimento;
         option.text = procedimento.tipo;
         elements.procedimentosSelect.appendChild(option);
       });
+      console.log("Procedimentos carregados:", procedimentos);
     }
   }
 
+  elements.especificacoesSelect.addEventListener("change", function () {
+    const especificacaoId = elements.especificacoesSelect.value;
+    const especificacao = especificacoes.find(
+      (item) => item.idEspecificacaoProcedimento == especificacaoId
+    );
+
+    if (especificacao) {
+      if (especificacao.homecare) {
+        // Se homecare é true, permite as opções Presencial e Homecare
+        elements.localidadeSelect.removeAttribute("disabled");
+        elements.localidadeSelect.innerHTML = `
+        <option value="">Selecione a localidade</option>
+        <option value="Presencial">Presencial</option>
+        <option value="Homecare">Homecare</option>
+      `;
+      } else {
+        // Se homecare é false, apenas Presencial
+        elements.localidadeSelect.removeAttribute("disabled");
+        elements.localidadeSelect.innerHTML = `
+        <option value="">Selecione a localidade</option>
+        <option value="Presencial">Presencial</option>
+      `;
+      }
+    } else {
+      // Desabilita localidade caso nenhuma especificação válida seja selecionada
+      elements.localidadeSelect.setAttribute("disabled", "disabled");
+      elements.localidadeSelect.innerHTML =
+        '<option value="">Selecione a localidade</option>';
+    }
+  });
+
+  elements.localidadeSelect.addEventListener("change", function () {
+    const cepGroup = document.getElementById("cep-group");
+    const numeroGroup = document.getElementById("numero-group");
+    const enderecoGroup = document.getElementById("endereco-group");
+
+    console.log("Localidade selecionada:", elements.localidadeSelect.value);
+
+    if (elements.localidadeSelect.value === "Homecare") {
+      // Exibe os campos de CEP, número e endereço quando Homecare é selecionado
+      console.log("Exibindo campos de CEP, número e endereço");
+      cepGroup.classList.remove("hidden");
+      numeroGroup.classList.remove("hidden");
+      enderecoGroup.classList.remove("hidden");
+    } else {
+      // Esconde os campos de CEP, número e endereço quando Presencial é selecionado
+      console.log("Escondendo campos de CEP, número e endereço");
+      console.log("Escondendo cepGroup");
+      cepGroup.classList.add("hidden");
+      console.log("Escondendo numeroGroup");
+      numeroGroup.classList.add("hidden");
+      console.log("Escondendo enderecoGroup");
+      enderecoGroup.classList.add("hidden");
+      enderecoGroup.style.display = ""; // Remove o estilo display
+      elements.cepInput.value = "";
+      elements.numeroInput.value = "";
+      elements.enderecoInput.value = "";
+      elements.taxaTotalDiv.classList.add("hidden"); // Esconde a taxa total
+    }
+    atualizarValorTotal(); // Atualiza o valor total quando a localidade é alterada
+  });
+
   async function carregarEspecificacoes() {
     especificacoes = await fetchData(apiUrlEspecificacoes);
+    console.log("Especificações carregadas:", especificacoes);
   }
 
   function filtrarEspecificacoesPorProcedimento(procedimentoId) {
     elements.especificacoesSelect.innerHTML =
       '<option value="">Selecione uma especificação</option>';
-    const especificacoesFiltradas = especificacoes.filter(
-      (especificacao) =>
-        especificacao.procedimento.idProcedimento == procedimentoId
-    );
+    const especificacoesFiltradas = especificacoes.filter((especificacao) => {
+      const procedimentoMatch =
+        especificacao.procedimento.idProcedimento == procedimentoId;
+      let tipoAgendamentoMatch = false;
+      switch (elements.tipoAgendamentoSelect.value) {
+        case "Colocação":
+          tipoAgendamentoMatch = especificacao.colocacao === true;
+          break;
+        case "Manutenção":
+          tipoAgendamentoMatch = especificacao.manutencao === true;
+          break;
+        case "Retirada":
+          tipoAgendamentoMatch = especificacao.retirada === true;
+          break;
+      }
+      return procedimentoMatch && tipoAgendamentoMatch;
+    });
+
     especificacoesFiltradas.forEach((especificacao) => {
+      let preco = 0;
+      switch (elements.tipoAgendamentoSelect.value) {
+        case "Colocação":
+          preco = especificacao.precoColocacao;
+          break;
+        case "Manutenção":
+          preco = especificacao.precoManutencao;
+          break;
+        case "Retirada":
+          preco = especificacao.precoRetirada;
+          break;
+      }
       const option = document.createElement("option");
       option.value = especificacao.idEspecificacaoProcedimento;
-      option.text = especificacao.especificacao;
+      option.text = `${especificacao.especificacao} - R$ ${preco.toFixed(2)}`;
       elements.especificacoesSelect.appendChild(option);
     });
+
     if (especificacoesFiltradas.length > 0) {
       elements.especificacoesSelect.removeAttribute("disabled");
       elements.especificacoesSelect.classList.remove("disabled-select");
@@ -93,11 +185,21 @@ document.addEventListener("DOMContentLoaded", function () {
       elements.especificacoesSelect.setAttribute("disabled", "disabled");
       elements.especificacoesSelect.classList.add("disabled-select");
     }
+
+    console.log("Especificações filtradas:", especificacoesFiltradas);
   }
+
+  elements.tipoAgendamentoSelect.addEventListener("change", function () {
+    const procedimentoId = elements.procedimentosSelect.value;
+    if (procedimentoId) {
+      filtrarEspecificacoesPorProcedimento(procedimentoId);
+    }
+  });
 
   elements.procedimentosSelect.addEventListener("change", function () {
     const procedimentoId = elements.procedimentosSelect.value;
-    if (procedimentoId) {
+    const tipoAgendamento = elements.tipoAgendamentoSelect.value;
+    if (procedimentoId && tipoAgendamento) {
       filtrarEspecificacoesPorProcedimento(procedimentoId);
     } else {
       elements.especificacoesSelect.setAttribute("disabled", "disabled");
@@ -311,7 +413,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const homecare = elements.localidadeSelect.value === "Homecare";
 
     if (!especificacaoId || !tipoAgendamento) {
-      return 0; // Retorna 0 se os campos obrigatórios não estiverem preenchidos
+      return { valorTotal: 0, valorEspecificacao: 0, valorTaxa: 0 }; // Retorna 0 se os campos obrigatórios não estiverem preenchidos
     }
 
     // Busca a especificação selecionada no array `especificacoes`
@@ -320,7 +422,7 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
     if (!especificacao) {
-      return 0;
+      return { valorTotal: 0, valorEspecificacao: 0, valorTaxa: 0 };
     }
 
     let valorEspecificacao = 0;
@@ -343,7 +445,6 @@ document.addEventListener("DOMContentLoaded", function () {
         parseFloat(
           elements.valorTaxaSpan.textContent.replace("R$", "").trim()
         ) || 0;
-      console.log(valorTaxa);
     }
 
     const valorTotal = valorEspecificacao + valorTaxa;
@@ -467,16 +568,32 @@ document.addEventListener("DOMContentLoaded", function () {
     const homecare = elements.localidadeSelect.value === "Homecare";
     const { valorTotal } = calcularValorTotal();
 
-    const dataHorario = new Date(`${data}T${horario}`)
-      .toISOString()
-      .slice(0, -1);
+    // Combine a data e o horário no formato ISO
+    const dataHorarioStr = `${data}T${horario}`;
+    let dataHorario;
+    try {
+      dataHorario = new Date(dataHorarioStr);
+      if (isNaN(dataHorario)) {
+        throw new Error("Data ou horário inválido.");
+      }
+
+      // Subtrair 3 horas do horário selecionado
+      dataHorario.setHours(dataHorario.getHours() - 3);
+    } catch (error) {
+      console.error("Erro ao processar data e horário:", error);
+      showNotification(
+        "Erro ao processar data e horário. Por favor, revise os valores.",
+        true
+      );
+      return;
+    }
 
     const agendamento = {
       fk_usuario: parseInt(usuarioId),
       fk_procedimento: parseInt(procedimentoId),
       fk_especificacao: parseInt(especificacaoId),
       tipoAgendamento: tipoAtendimento,
-      dataHorario,
+      dataHorario: dataHorario.toISOString(),
       homecare,
       valor: valorTotal,
       fk_status: 1,
@@ -512,7 +629,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  function preencherFormulario(data) {
+  async function preencherFormulario(data) {
+    console.log("Dados do agendamento:", data);
+
     // Preencher o select de clientes
     const optionCliente = document.createElement("option");
     optionCliente.value = data.usuarioId;
@@ -521,44 +640,56 @@ document.addEventListener("DOMContentLoaded", function () {
     elements.clientesSelect.appendChild(optionCliente);
 
     // Preencher o select de procedimentos
-    const procedimentoOptions = Array.from(
-      elements.procedimentosSelect.options
-    );
-    const procedimentoExists = procedimentoOptions.some(
-      (option) => option.value == data.fkProcedimento
-    );
-
-    if (!procedimentoExists) {
-      const optionProcedimento = document.createElement("option");
-      optionProcedimento.value = data.fkProcedimento;
-      optionProcedimento.text = data.procedimento;
-      optionProcedimento.selected = true;
-      elements.procedimentosSelect.appendChild(optionProcedimento);
-    } else {
-      elements.procedimentosSelect.value = data.fkProcedimento;
-    }
+    elements.procedimentosSelect.value = data.fkProcedimento;
 
     // Preencher o select de tipo de agendamento
     elements.tipoAgendamentoSelect.value = data.tipoAgendamento;
 
     // Preencher o select de especificações
-    const especificacaoOptions = Array.from(
-      elements.especificacoesSelect.options
-    );
-    const especificacaoExists = especificacaoOptions.some(
-      (option) => option.value == data.fkEspecificacao
-    );
-
-    if (!especificacaoExists) {
-      const optionEspecificacao = document.createElement("option");
-      optionEspecificacao.value = data.fkEspecificacao;
-      optionEspecificacao.text = data.especificacao;
-      optionEspecificacao.selected = true;
-      elements.especificacoesSelect.appendChild(optionEspecificacao);
-    } else {
-      elements.especificacoesSelect.value = data.fkEspecificacao;
-    }
+    filtrarEspecificacoesPorProcedimento(data.fkProcedimento);
+    elements.especificacoesSelect.value = data.fkEspecificacao;
     elements.especificacoesSelect.disabled = false;
+
+    // Adicionar a formatação do preço na especificação selecionada
+    const especificacao = especificacoes.find(
+      (item) => item.idEspecificacaoProcedimento == data.fkEspecificacao
+    );
+    if (especificacao) {
+      let preco = 0;
+      switch (data.tipoAgendamento) {
+        case "Colocação":
+          preco = especificacao.precoColocacao;
+          break;
+        case "Manutenção":
+          preco = especificacao.precoManutencao;
+          break;
+        case "Retirada":
+          preco = especificacao.precoRetirada;
+          break;
+      }
+      const option = elements.especificacoesSelect.querySelector(
+        `option[value="${data.fkEspecificacao}"]`
+      );
+      if (option) {
+        option.text = `${especificacao.especificacao} - R$ ${preco.toFixed(2)}`;
+      }
+
+      // Verificar se a especificação possui homecare
+      if (especificacao.homecare) {
+        elements.localidadeSelect.removeAttribute("disabled");
+        elements.localidadeSelect.innerHTML = `
+          <option value="">Selecione a localidade</option>
+          <option value="Presencial">Presencial</option>
+          <option value="Homecare">Homecare</option>
+        `;
+      } else {
+        elements.localidadeSelect.removeAttribute("disabled");
+        elements.localidadeSelect.innerHTML = `
+          <option value="">Selecione a localidade</option>
+          <option value="Presencial">Presencial</option>
+        `;
+      }
+    }
 
     // Preencher a data
     elements.dataInput.value = data.dataHorario.slice(0, 10);
@@ -655,11 +786,18 @@ document.addEventListener("DOMContentLoaded", function () {
         return response.json();
       })
       .then((data) => {
-        preencherFormulario(data);
+        carregarProcedimentos().then(() => {
+          carregarEspecificacoes().then(() => {
+            preencherFormulario(data);
+          });
+        });
       })
       .catch((error) => {
         console.error("Erro ao buscar agendamento:", error);
       });
+  } else {
+    carregarProcedimentos();
+    carregarEspecificacoes();
   }
 
   carregarClientes();

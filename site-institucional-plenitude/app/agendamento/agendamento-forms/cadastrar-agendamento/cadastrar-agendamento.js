@@ -475,6 +475,9 @@ document.addEventListener("DOMContentLoaded", function () {
       if (isNaN(dataHorario)) {
         throw new Error("Data ou horário inválido.");
       }
+
+      // Subtrair 3 horas do horário selecionado
+      dataHorario.setHours(dataHorario.getHours() - 3);
     } catch (error) {
       console.error("Erro ao processar data e horário:", error);
       showNotification(

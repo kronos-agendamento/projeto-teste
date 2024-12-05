@@ -542,7 +542,7 @@ BEGIN
   DECLARE fim DATE;
   DECLARE qtd_agendamentos INT;
 
-  DECLARE hora_aleatoria TIME;
+  DECLARE hora_aleatoria INT;
   DECLARE mes_atual INT;
   DECLARE usuario_fidelizado INT;
   DECLARE tempo_aleatorio INT;
@@ -570,13 +570,22 @@ BEGIN
       SET qtd_agendamentos = @min_agendamentos + FLOOR(RAND() * (@max_agendamentos - @min_agendamentos + 1));
 
       WHILE qtd_agendamentos > 0 DO
-        SET hora_aleatoria = SEC_TO_TIME(FLOOR(RAND() * (9 * 3600)) + 9 * 3600);  -- Garante horário entre 09:00 e 17:00
+        -- Geração de hora aleatória com minutos 00 ou 30
+        SET hora_aleatoria = 9 + FLOOR(RAND() * 9);  -- Gera a hora entre 09 e 17
+        SET hora_aleatoria = hora_aleatoria * 100;  -- Multiplica para ajustar a hora, sem minutos
+        -- Ajusta os minutos para 00 ou 30
+        IF FLOOR(RAND() * 2) = 0 THEN
+          SET hora_aleatoria = hora_aleatoria + 0;  -- Adiciona 00 minutos
+        ELSE
+          SET hora_aleatoria = hora_aleatoria + 30;  -- Adiciona 30 minutos
+        END IF;
+
         SET tempo_aleatorio = 15 + FLOOR(RAND() * 106);
         SET usuario_fidelizado = CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(@usuarios_fidelizados, ',', FLOOR(1 + (RAND() * 4))), ',', -1) AS UNSIGNED);
 
         INSERT INTO agendamento (data_horario, tipo_agendamento, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status, tempo_para_agendar, homecare, valor, cep, logradouro, numero)
         SELECT 
-          CONCAT(dia_atual, ' ', hora_aleatoria) AS data_horario, 
+          CONCAT(dia_atual, ' ', LPAD(hora_aleatoria DIV 100, 2, '0'), ':', LPAD(hora_aleatoria MOD 100, 2, '0')) AS data_horario, 
           CASE FLOOR(RAND() * 2) 
             WHEN 0 THEN 'Colocação'
             ELSE 'Manutenção'
