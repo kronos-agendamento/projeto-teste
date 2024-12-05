@@ -24,7 +24,8 @@
   @media (max-width: 768px) {
     body {
       font-size: 14px;
-      height: 1000px;
+      height: fit-content;
+      padding-bottom: 100px;
     }
   }
 
@@ -429,8 +430,13 @@
     cursor: pointer; /* Cursor de clique */
   }
 
+  .hidden {
+    display: none;
+  }
+
   /* Estilizando o select para ter a cor de fundo rosa */
-  .form-group select {
+  .form-group select,
+  input {
     padding: 3vw;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -442,7 +448,8 @@
   }
 
   /* Estilo opcional para remover a seta padrão do select */
-  .form-group select {
+  .form-group select,
+  input {
     background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
     background-repeat: no-repeat;
     background-position: right 10px center;

@@ -83,6 +83,159 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  // Captura o ID do agendamento da URL
+  const params = new URLSearchParams(window.location.search);
+  const agendamentoId = params.get("id"); // Pega o ID da URL
+
+  if (!agendamentoId) {
+    console.error("ID do agendamento não encontrado na URL");
+    return;
+  }
+
+  // URL da API com o ID do agendamento capturado
+  const url = `http://localhost:8080/api/agendamentos/buscar/${agendamentoId}`;
+
+  // Realiza a requisição GET para obter os dados do agendamento
+  fetch(url)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Agendamento não encontrado");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      preencherFormulario(data);
+      console.log("Agendamento encontrado:", data);
+    })
+    .catch((error) => {
+      console.error("Erro ao buscar agendamento:", error);
+    });
+
+  function preencherFormulario(data) {
+    // Preencher o select de procedimentos
+    const procedimentosSelect = document.getElementById("procedimentos");
+    const optionProcedimento = document.createElement("option");
+    optionProcedimento.value = data.fkProcedimento; // Usar o ID do procedimento
+    optionProcedimento.text = data.procedimento; // Mostrar o nome
+    optionProcedimento.selected = true;
+    procedimentosSelect.appendChild(optionProcedimento);
+
+    // Preencher o select de tipo de atendimento
+    const tipoAtendimentoSelect = document.getElementById("tipo-atendimento");
+    tipoAtendimentoSelect.value = data.tipoAgendamento;
+
+    // Preencher o select de especificações
+    const especificacoesSelect = document.getElementById("especificacoes");
+    const optionEspecificacao = document.createElement("option");
+    optionEspecificacao.value = data.fkEspecificacao; // Usar o ID da especificação
+    optionEspecificacao.text = data.especificacao; // Mostrar o nome
+    optionEspecificacao.selected = true;
+    especificacoesSelect.appendChild(optionEspecificacao);
+    especificacoesSelect.disabled = false;
+
+    // Preencher o campo de data
+    const dataInput = document.getElementById("data");
+    dataInput.value = data.dataHorario.split("T")[0];
+
+    // Preencher campos de endereço se homecare for true
+    const localidadeSelect = document.getElementById("localidade");
+    if (data.homecare) {
+      localidadeSelect.value = "Homecare";
+      document.getElementById("endereco-group").classList.remove("hidden");
+      document.getElementById("cep").value = data.cep || "";
+      document.getElementById("endereco").value = data.logradouro || "";
+      document.getElementById("numero").value = data.numero || "";
+    } else {
+      localidadeSelect.value = "Presencial";
+      document.getElementById("endereco-group").classList.add("hidden");
+    }
+
+    // Carregar horários disponíveis ao preencher o formulário
+    carregarHorariosDisponiveis(
+      data.dataHorario.split("T")[0],
+      data.fkProcedimento,
+      data.fkEspecificacao,
+      data.tipoAgendamento
+    );
+  }
+
+  async function carregarHorariosDisponiveis(
+    data,
+    procedimentoId,
+    especificacaoId,
+    tipoAgendamento
+  ) {
+    try {
+      const empresaId = localStorage.getItem("empresa");
+
+      const apiUrlAgendamentos = "http://localhost:8080/api/agendamentos";
+      const horariosContainer = document.getElementById("horarios-disponiveis");
+
+      const url = new URL(apiUrlAgendamentos + "/horarios-disponiveis");
+      url.searchParams.append("empresaId", empresaId);
+      url.searchParams.append("data", data);
+
+      const response = await fetch(url);
+      if (response.ok) {
+        const horariosDisponiveis = await response.json();
+        horariosContainer.innerHTML = "";
+
+        // Adiciona o horário atual do agendamento como selecionado
+        const params = new URLSearchParams(window.location.search);
+        const agendamentoId = params.get("id");
+        const urlBuscarAgendamento = `http://localhost:8080/api/agendamentos/buscar/${agendamentoId}`;
+        const responseBuscar = await fetch(urlBuscarAgendamento);
+        let horarioAgendamento = null;
+        if (responseBuscar.ok) {
+          const agendamentoData = await responseBuscar.json();
+          horarioAgendamento = agendamentoData.dataHorario
+            .split("T")[1]
+            .substring(0, 8); // Formato HH:mm:ss
+        }
+
+        horariosDisponiveis.forEach((horario) => {
+          const button = document.createElement("button");
+          button.textContent = horario;
+          button.classList.add("horario-button");
+          if (horario === horarioAgendamento) {
+            button.classList.add("selected");
+          }
+          horariosContainer.appendChild(button);
+
+          button.addEventListener("click", function () {
+            document
+              .querySelectorAll(".horario-button")
+              .forEach((btn) => btn.classList.remove("selected"));
+            button.classList.add("selected");
+          });
+        });
+
+        if (
+          horarioAgendamento &&
+          !horariosDisponiveis.includes(horarioAgendamento)
+        ) {
+          const button = document.createElement("button");
+          button.textContent = horarioAgendamento;
+          button.classList.add("horario-button", "selected");
+          horariosContainer.appendChild(button);
+
+          button.addEventListener("click", function () {
+            document
+              .querySelectorAll(".horario-button")
+              .forEach((btn) => btn.classList.remove("selected"));
+            button.classList.add("selected");
+          });
+        }
+      } else {
+        console.error(
+          "Erro ao buscar horários disponíveis: " + response.statusText
+        );
+      }
+    } catch (error) {
+      console.error("Erro ao buscar horários disponíveis: ", error);
+    }
+  }
+
   dataInput.addEventListener("change", function () {
     const dataSelecionada = new Date(dataInput.value + "T00:00:00");
     if (!isNaN(dataSelecionada)) {
@@ -110,47 +263,6 @@ document.addEventListener("DOMContentLoaded", function () {
       horariosContainer.innerHTML = "";
     }
   });
-
-  async function carregarHorariosDisponiveis(
-    data,
-    procedimentoId,
-    especificacaoId,
-    tipoAgendamento
-  ) {
-    try {
-      const empresaId = localStorage.getItem("empresa");
-
-      const url = new URL(apiUrlAgendamentos + "/horarios-disponiveis");
-      url.searchParams.append("empresaId", empresaId);
-      url.searchParams.append("data", data);
-
-      const response = await fetch(url);
-      if (response.ok) {
-        const horariosDisponiveis = await response.json();
-        horariosContainer.innerHTML = "";
-
-        horariosDisponiveis.forEach((horario) => {
-          const button = document.createElement("button");
-          button.textContent = horario;
-          button.classList.add("horario-button");
-          horariosContainer.appendChild(button);
-
-          button.addEventListener("click", function () {
-            document
-              .querySelectorAll(".horario-button")
-              .forEach((btn) => btn.classList.remove("selected"));
-            button.classList.add("selected");
-          });
-        });
-      } else {
-        console.error(
-          "Erro ao buscar horários disponíveis: " + response.statusText
-        );
-      }
-    } catch (error) {
-      console.error("Erro ao buscar horários disponíveis: ", error);
-    }
-  }
 
   document.getElementById("cep").addEventListener("blur", async function () {
     const cep = this.value.replace("-", "").trim();
@@ -294,15 +406,19 @@ document.addEventListener("DOMContentLoaded", function () {
     let valorTaxa = 0;
     if (homecare) {
       // Garante que a taxa seja capturada corretamente
-      valorTaxa =
-        parseFloat(valorTaxaSpan.textContent.replace("R$", "").trim()) || 0;
+      const valorTaxaElement = document.getElementById("valor-taxa");
+      if (valorTaxaElement) {
+        valorTaxa =
+          parseFloat(valorTaxaElement.textContent.replace("R$", "").trim()) ||
+          0;
+      }
     }
 
     const valorTotal = valorEspecificacao + valorTaxa;
     return { valorTotal, valorEspecificacao, valorTaxa };
   }
 
-  saveButton.addEventListener("click", function () {
+  saveButton.addEventListener("click", async function () {
     const procedimentoId = procedimentosSelect.value;
     const tipoAgendamento = tipoAgendamentoSelect.value;
     const especificacaoId = especificacoesSelect.value;
@@ -321,9 +437,20 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    const dataHorario = new Date(`${data}T${horario}`).toISOString();
+    // Log do horário selecionado
+    console.log("Horário selecionado:", horario);
 
-    if (isNaN(new Date(dataHorario).getTime())) {
+    // Ajuste para garantir que o horário seja salvo corretamente
+    const [hours, minutes, seconds] = horario.split(":");
+    const dataHorario = new Date(`${data}T${horario}`);
+
+    // Subtrair 3 horas do horário selecionado
+    dataHorario.setHours(dataHorario.getHours() - 3);
+
+    // Log do horário combinado
+    console.log("Data e horário combinados:", dataHorario);
+
+    if (isNaN(dataHorario.getTime())) {
       showNotification("Erro: Data e horário inválidos.", true);
       return;
     }
@@ -341,12 +468,15 @@ document.addEventListener("DOMContentLoaded", function () {
       procedimentoId,
       especificacaoId,
       tipoAgendamento,
-      dataHorario,
+      dataHorario: dataHorario.toISOString(),
       cep,
       logradouro,
       numero,
       valorTotal,
     };
+
+    // Log do horário enviado
+    console.log("Horário enviado (ISO):", window.agendamentoData.dataHorario);
 
     // Preencher os detalhes do modal usando os nomes diretamente
     const agendamentoDetalhes = `
@@ -359,7 +489,7 @@ document.addEventListener("DOMContentLoaded", function () {
           }</p>
           <p><strong>Tipo de Atendimento:</strong> ${tipoAgendamento}</p>
           <p><strong>Data e Horário:</strong> ${new Date(
-            dataHorario
+            window.agendamentoData.dataHorario
           ).toLocaleString("pt-BR", {
             dateStyle: "short",
             timeStyle: "short",
@@ -371,6 +501,73 @@ document.addEventListener("DOMContentLoaded", function () {
     // Exibir o modal de confirmação
     document.getElementById("deleteModal").style.display = "block";
   });
+
+  document
+    .getElementById("confirmDeleteButton")
+    .addEventListener("click", async function () {
+      if (!window.agendamentoData || !window.agendamentoData.dataHorario) {
+        console.error("Dados de agendamento ou dataHorario ausentes.");
+        showNotification("Erro: Dados de agendamento ausentes.", true);
+        return;
+      }
+
+      console.log(
+        "Confirmando com dataHorario:",
+        window.agendamentoData.dataHorario
+      );
+
+      const params = new URLSearchParams(window.location.search);
+      const agendamentoId = params.get("id");
+      const apiUrlEditarAgendamento = `http://localhost:8080/api/agendamentos/atualizar/${agendamentoId}`;
+
+      try {
+        const agendamento = {
+          fk_usuario: parseInt(params.get("idUsuario"), 10),
+          fk_procedimento: parseInt(window.agendamentoData.procedimentoId, 10),
+          fk_especificacao: parseInt(
+            window.agendamentoData.especificacaoId,
+            10
+          ),
+          fk_status: 1,
+          tipoAgendamento: window.agendamentoData.tipoAgendamento,
+          dataHorario: new Date(
+            window.agendamentoData.dataHorario
+          ).toISOString(),
+          tempoAgendar: 0,
+          homecare: document.getElementById("localidade").value === "Homecare",
+          valor: window.agendamentoData.valorTotal,
+          cep: window.agendamentoData.cep,
+          logradouro: window.agendamentoData.logradouro,
+          numero: window.agendamentoData.numero,
+        };
+
+        console.log("Enviando agendamento:", agendamento);
+
+        const response = await fetch(apiUrlEditarAgendamento, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(agendamento),
+        });
+
+        if (response.ok) {
+          showNotification("Alterações realizadas com sucesso!");
+          setTimeout(() => {
+            window.location.href = "../index-mobile.html";
+          }, 1000);
+        } else {
+          const errorMsg = await response.text();
+          console.error("Erro ao reagendar:", errorMsg);
+          showNotification("Erro ao reagendar. Tente novamente.", true);
+        }
+      } catch (error) {
+        console.error("Erro ao reagendar:", error);
+        showNotification("Erro ao reagendar. Tente novamente.", true);
+      } finally {
+        fecharModalDecisao();
+      }
+    });
 
   document
     .getElementById("confirmDeleteButton")
@@ -463,72 +660,12 @@ function showNotification(message, isError = false) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  // Captura o ID do agendamento da URL
-  const params = new URLSearchParams(window.location.search);
-  const agendamentoId = params.get("id"); // Pega o ID da URL
-
-  if (!agendamentoId) {
-    console.error("ID do agendamento não encontrado na URL");
-    return;
-  }
-
-  // URL da API com o ID do agendamento capturado
-  const url = `http://localhost:8080/api/agendamentos/buscar/${agendamentoId}`;
-
-  // Realiza a requisição GET para obter os dados do agendamento
-  fetch(url)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Agendamento não encontrado");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      preencherFormulario(data);
-    })
-    .catch((error) => {
-      console.error("Erro ao buscar agendamento:", error);
-    });
-
-  // Função para preencher os campos do formulário com os dados recebidos
-  function preencherFormulario(data) {
-    // Preencher o select de procedimentos
-    const procedimentosSelect = document.getElementById("procedimentos");
-    const optionProcedimento = document.createElement("option");
-    optionProcedimento.value = data.fkProcedimento; // Usar o ID do procedimento
-    optionProcedimento.text = data.procedimento; // Mostrar o nome
-    optionProcedimento.selected = true;
-    procedimentosSelect.appendChild(optionProcedimento);
-
-    // Preencher o select de tipo de atendimento
-    const tipoAtendimentoSelect = document.getElementById("tipo-atendimento");
-    tipoAtendimentoSelect.value = data.tipoAgendamento;
-    especificacoesSelect.appendChild(optionEspecificacao);
-    especificacoesSelect.disabled = false;
-
-    // Preencher o campo de data
-    const dataInput = document.getElementById("data");
-    dataInput.value = data.dataHorario.split("T")[0];
-
-    // Exibir horários disponíveis (simulando com o horário do agendamento)
-    const horariosDisponiveis = document.getElementById("horarios-disponiveis");
-    horariosDisponiveis.innerHTML = ""; // Limpar container
-
-    // Formatar o horário do agendamento
-    const horarioAgendamento = data.dataHorario.split("T")[1].substring(0, 5); // Mostra no formato HH:MM
-
-    // Criar um botão para o horário do agendamento e marcá-lo como selecionado
-    const button = document.createElement("button");
-    button.textContent = horarioAgendamento;
-    button.classList.add("horario-button", "selected"); // Marca como selecionado
-    horariosDisponiveis.appendChild(button);
-
-    // Adicionar comportamento de seleção de horário ao botão
-    button.addEventListener("click", function () {
-      document
-        .querySelectorAll(".horario-button")
-        .forEach((btn) => btn.classList.remove("selected"));
-      button.classList.add("selected");
-    });
-  }
+  document.getElementById("localidade").addEventListener("change", function () {
+    const localidade = this.value;
+    if (localidade === "Homecare") {
+      document.getElementById("endereco-group").classList.remove("hidden");
+    } else {
+      document.getElementById("endereco-group").classList.add("hidden");
+    }
+  });
 });
