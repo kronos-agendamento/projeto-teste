@@ -1,6 +1,25 @@
-drop database if exists kronosbooking;
 create database if not exists kronosbooking;
 USE kronosbooking;
+
+-- Dropar as tabelas existentes
+DROP TABLE IF EXISTS feedback;
+DROP TABLE IF EXISTS agendamento;
+DROP TABLE IF EXISTS profissional;
+DROP TABLE IF EXISTS cliente;
+DROP TABLE IF EXISTS mensagem;
+DROP TABLE IF EXISTS Leads;
+DROP TABLE IF EXISTS resposta;
+DROP TABLE IF EXISTS pergunta;
+DROP TABLE IF EXISTS especificacao;
+DROP TABLE IF EXISTS procedimento;
+DROP TABLE IF EXISTS login_logoff;
+DROP TABLE IF EXISTS usuario;
+DROP TABLE IF EXISTS ficha_anamnese;
+DROP TABLE IF EXISTS empresa;
+DROP TABLE IF EXISTS horario_funcionamento;
+DROP TABLE IF EXISTS nivel_acesso;
+DROP TABLE IF EXISTS endereco;
+DROP TABLE IF EXISTS status;
 
 CREATE TABLE endereco (
     id_endereco INT AUTO_INCREMENT PRIMARY KEY,
@@ -143,6 +162,9 @@ CREATE TABLE agendamento (
     fk_procedimento INT,
     fk_especificacao_procedimento INT,
     fk_status INT NOT NULL,
+    cep VARCHAR(8),  -- Novo campo para o CEP
+    logradouro VARCHAR(255),  -- Novo campo para o logradouro
+    numero VARCHAR(255),  -- Novo campo para o número
     FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
     FOREIGN KEY (fk_procedimento) REFERENCES procedimento(id_procedimento),
     FOREIGN KEY (fk_especificacao_procedimento) REFERENCES especificacao(id_especificacao_procedimento),
@@ -353,29 +375,27 @@ VALUES
 ('Em Andamento', '#009900', 'Procedimento está sendo realizado'),
 ('Atrasado', '#CC3300', 'Cliente está atrasado para o procedimento'),
 ('Finalizado', '#3366CC', 'Atendimento finalizado com sucesso');
-
 -- Inserindo agendamentos para garantir que os usuários fidelizados apareçam
-INSERT INTO agendamento (id_agendamento, data_horario, tipo_agendamento, tempo_para_agendar, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status) VALUES
+INSERT INTO agendamento (id_agendamento, data_horario, tipo_agendamento, tempo_para_agendar, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status, homecare, valor, cep, logradouro, numero) VALUES
 -- Agendamentos para Maria Silva (id_usuario = 7)
-(1, '2024-07-15 09:00:00', 'Manutencao', 30, 7, 1, 2, 1),
-(2, '2024-08-12 11:00:00', 'Colocacao', 40, 7, 1, 3, 1),
-(3, '2024-09-10 14:00:00', 'Retirada', 35, 7, 1, 1, 1),
+(1, '2024-07-15 09:00:00', 'Manutencao', 30, 7, 1, 2, 1, 0, 120.50, '12345678', 'Rua Maria', '100'),
+(2, '2024-08-12 11:00:00', 'Colocacao', 40, 7, 1, 3, 1, 1, 150.00, '23456789', 'Av. Silva', '200'),
+(3, '2024-09-10 14:00:00', 'Retirada', 35, 7, 1, 1, 1, 0, 80.75, '34567890', 'Rua Pedro', '300'),
 
 -- Agendamentos para Carla Borges (id_usuario = 8)
-(4, '2024-07-10 10:00:00', 'Manutencao', 20, 8, 2, 3, 1),
-(5, '2024-08-08 12:00:00', 'Colocacao', 30, 8, 2, 2, 1),
-(6, '2024-09-05 13:00:00', 'Retirada', 25, 8, 2, 1, 1),
+(4, '2024-07-10 10:00:00', 'Manutencao', 20, 8, 2, 3, 1, 0, 100.00, '45678901', 'Rua Carla', '400'),
+(5, '2024-08-08 12:00:00', 'Colocacao', 30, 8, 2, 2, 1, 1, 200.00, '56789012', 'Av. Borges', '500'),
+(6, '2024-09-05 13:00:00', 'Retirada', 25, 8, 2, 1, 1, 0, 90.25, '67890123', 'Rua São Paulo', '600'),
 
 -- Agendamentos para Pedro Marques (id_usuario = 9)
-(7, '2024-07-20 09:30:00', 'Colocacao', 45, 9, 3, 1, 1),
-(8, '2024-08-18 10:00:00', 'Manutencao', 50, 9, 3, 2, 1),
-(9, '2024-09-15 11:00:00', 'Retirada', 30, 9, 3, 1, 1),
+(7, '2024-07-20 09:30:00', 'Colocacao', 45, 9, 3, 1, 1, 1, 180.60, '78901234', 'Rua Pedro', '700'),
+(8, '2024-08-18 10:30:00', 'Manutencao', 50, 9, 3, 2, 1, 0, 110.00, '89012345', 'Av. Marques', '800'),
+(9, '2024-09-15 11:30:00', 'Retirada', 30, 9, 3, 1, 1, 1, 130.45, '90123456', 'Rua Centro', '900'),
 
 -- Agendamentos para Ana Martins (id_usuario = 10)
-(10, '2024-07-05 09:00:00', 'Colocacao', 25, 10, 1, 3, 1),
-(11, '2024-08-02 10:30:00', 'Manutencao', 40, 10, 1, 2, 1),
-(12, '2024-09-12 12:00:00', 'Retirada', 35, 10, 1, 1, 1);
-
+(10, '2024-07-05 09:30:00', 'Colocacao', 25, 10, 1, 3, 1, 1, 160.20, '01234567', 'Rua Ana', '1000'),
+(11, '2024-08-02 10:30:00', 'Manutencao', 40, 10, 1, 2, 1, 0, 140.00, '12345678', 'Av. Martins', '1100'),
+(12, '2024-09-12 12:30:00', 'Retirada', 35, 10, 1, 1, 1, 1, 110.50, '23456789', 'Rua Bela', '1200');
 
 INSERT INTO cliente (id_usuario, experiencia_avaliada, frequencia)
 VALUES 
@@ -512,6 +532,7 @@ INSERT INTO login_logoff (logi, data_horario, fk_usuario) VALUES
 ('LOGIN', '2023-03-05 07:00:00', 10),
 ('LOGOF', '2023-03-05 08:00:00', 10);
 
+DROP PROCEDURE IF EXISTS gerar_agendamentos_aleatorios;
 
 DELIMITER //
 
@@ -549,11 +570,11 @@ BEGIN
       SET qtd_agendamentos = @min_agendamentos + FLOOR(RAND() * (@max_agendamentos - @min_agendamentos + 1));
 
       WHILE qtd_agendamentos > 0 DO
-        SET hora_aleatoria = SEC_TO_TIME(FLOOR(RAND() * (10 * 3600)) + 8 * 3600);
+        SET hora_aleatoria = SEC_TO_TIME(FLOOR(RAND() * (9 * 3600)) + 9 * 3600);  -- Garante horário entre 09:00 e 17:00
         SET tempo_aleatorio = 15 + FLOOR(RAND() * 106);
         SET usuario_fidelizado = CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(@usuarios_fidelizados, ',', FLOOR(1 + (RAND() * 4))), ',', -1) AS UNSIGNED);
 
-        INSERT INTO agendamento (data_horario, tipo_agendamento, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status, tempo_para_agendar)
+        INSERT INTO agendamento (data_horario, tipo_agendamento, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status, tempo_para_agendar, homecare, valor, cep, logradouro, numero)
         SELECT 
           CONCAT(dia_atual, ' ', hora_aleatoria) AS data_horario, 
           CASE FLOOR(RAND() * 2) 
@@ -564,7 +585,12 @@ BEGIN
           FLOOR(1 + (RAND() * 3)) AS fk_procedimento, 
           FLOOR(1 + (RAND() * 10)) AS fk_especificacao_procedimento, 
           FLOOR(1 + (RAND() * 10)) AS fk_status,  -- Gera um status aleatório entre 1 e 10
-          tempo_aleatorio AS tempo_para_agendar 
+          tempo_aleatorio AS tempo_para_agendar,
+          FLOOR(RAND() * 2) AS homecare,  -- Gera um valor aleatório entre 0 e 1 (não ou sim)
+          ROUND(RAND() * 200, 2) AS valor,  -- Gera um valor aleatório entre 0 e 200, com duas casas decimais
+          LPAD(FLOOR(RAND() * 100000000), 8, '0') AS cep,  -- Gera um CEP aleatório de 8 dígitos
+          CONCAT('Rua ', FLOOR(1 + (RAND() * 100))) AS logradouro,  -- Gera um logradouro aleatório
+          FLOOR(1 + (RAND() * 200)) AS numero  -- Gera um número aleatório
         FROM (SELECT 1) AS dummy;
 
         SET qtd_agendamentos = qtd_agendamentos - 1;
@@ -579,10 +605,9 @@ BEGIN
 
 END //
 
-
-
 DELIMITER ;
 
+-- Chamada da procedure para gerar agendamentos
 CALL gerar_agendamentos_aleatorios();
 CALL gerar_agendamentos_aleatorios();
 CALL gerar_agendamentos_aleatorios();
@@ -599,12 +624,3 @@ VALUES
 ('Ótimo trabalho, mas o tempo de espera foi um pouco longo.', 4, 3, 4, 6),
 ('Profissional muito educado e atencioso.', 5, 7, 8, 3),
 ('Adorei o resultado final! Super recomendo.', 5, 10, 2, 5);
-
-INSERT INTO agendamento (data_horario, tipo_agendamento, tempo_para_agendar, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status)
-VALUES
-('2022-05-15 10:30:00', 'Manutenção', 80, 4, 2, 1, 7),
-( '2023-08-12 14:20:00', 'Colocação', 65, 4, 1, 1, 5),
-( '2023-09-20 09:45:00', 'Manutenção', 95, 4, 3, 1, 8),
-('2022-11-25 16:15:00', 'Colocação', 50, 4, 2, 1, 5);
-
-
