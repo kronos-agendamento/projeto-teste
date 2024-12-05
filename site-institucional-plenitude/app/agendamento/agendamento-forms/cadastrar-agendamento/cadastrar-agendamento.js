@@ -29,6 +29,34 @@ document.addEventListener("DOMContentLoaded", function () {
   const localidadeSelect = document.getElementById("localidade");
   const tipoAgendamentoSelect = document.getElementById("tipo-atendimento");
   const dataInput = document.getElementById("data");
+  const today = new Date().toISOString().split("T")[0];
+  dataInput.setAttribute("min", today);
+
+  dataInput.addEventListener("change", function () {
+    const dataSelecionada = new Date(dataInput.value + "T00:00:00");
+    if (!isNaN(dataSelecionada)) {
+      const dia = dataSelecionada.getDate();
+      const mes = dataSelecionada.toLocaleString("default", { month: "long" });
+      const diaSemana = dataSelecionada.toLocaleString("default", {
+        weekday: "long",
+      });
+      dataSelecionadaP.textContent = `Dia ${dia} de ${mes} - ${diaSemana}`;
+
+      const procedimentoId = procedimentosSelect.value;
+      const especificacaoId = especificacoesSelect.value;
+      const tipoAgendamento = tipoAgendamentoSelect.value;
+
+      carregarHorariosDisponiveis(
+        dataInput.value,
+        procedimentoId,
+        especificacaoId,
+        tipoAgendamento
+      );
+    } else {
+      dataSelecionadaP.textContent = "";
+      horariosContainer.innerHTML = "";
+    }
+  });
   const dataSelecionadaP = document.getElementById("data-selecionada");
   const horariosContainer = document.getElementById("horarios-disponiveis");
   const saveButton = document.getElementById("save-agendamento-button");
