@@ -283,13 +283,6 @@ document.addEventListener("DOMContentLoaded", function () {
       especificacaoTd.dataset.fkEspecificacao = agendamento.fkEspecificacao;
       tr.appendChild(especificacaoTd);
 
-      // Adiciona o valor formatado
-      const valorTd = document.createElement("td");
-      valorTd.textContent = `R$ ${agendamento.valor
-        .toFixed(2)
-        .replace(".", ",")}`;
-      tr.appendChild(valorTd);
-
       // Adiciona o ícone de Homecare
       const homecareIcon = agendamento.homecare
         ? '<div style="color: green; border-radius: 50%; background-color: green; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; margin-left:30px;"><span style="color: white;">✔</span></div>'
@@ -297,6 +290,13 @@ document.addEventListener("DOMContentLoaded", function () {
       const homecareTd = document.createElement("td");
       homecareTd.innerHTML = homecareIcon;
       tr.appendChild(homecareTd);
+
+      // Adiciona o valor formatado
+      const valorTd = document.createElement("td");
+      valorTd.textContent = `R$ ${agendamento.valor
+        .toFixed(2)
+        .replace(".", ",")}`;
+      tr.appendChild(valorTd);
 
       const statusTd = document.createElement("td");
       const statusColorDiv = document.createElement("div");
