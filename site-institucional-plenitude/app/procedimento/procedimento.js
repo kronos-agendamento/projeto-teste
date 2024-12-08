@@ -335,3 +335,80 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+document.getElementById("export-btn").addEventListener("click", async () => {
+  
+  try {
+      // Buscar todos os dados da API
+      const procedures = await fetchProcedures2();
+      
+      if (!procedures || procedures.length === 0) {
+          console.error("Nenhum dado encontrado para exportar.");
+          alert("Nenhum dado disponível para exportação.");
+          return;
+      }
+
+      // Array para armazenar todas as linhas
+      const allRows = [];
+      
+      // Adicionar o cabeçalho
+      allRows.push(["Procedimento", "Valor de Colocação", "Duração de Colocação", "Especificação", "Homecare"]);
+
+      // Processar cada item retornado da API
+      procedures.forEach(procedure => {
+          const nome = procedure.procedimento.tipo;
+          const preco = `R$${procedure.precoColocacao.toFixed(2).replace(".", ",")}`;
+          const duracao = formatDuration(procedure.tempoColocacao); // Função já existente
+          const especificacao = procedure.especificacao;
+          const homecare = procedure.homecare ? "✔" : "✘";
+
+          // Adicionar a linha ao array
+          allRows.push([nome, preco, duracao, especificacao, homecare]);
+      });
+
+      // Gerar o conteúdo CSV
+      const csvContent = generateCSV(allRows);
+
+      // Baixar o arquivo CSV
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "procedimentos.csv";
+      link.style.display = "none";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+  } catch (error) {
+      console.error("Erro ao buscar ou exportar os dados:", error);
+      alert("Erro ao buscar ou exportar os dados. Tente novamente.");
+  }
+});
+
+// Função para buscar os dados da API
+async function fetchProcedures2() {
+  try {
+      const response = await fetch(`http://localhost:8080/api/especificacoes`);
+      return await response.json();
+  } catch (error) {
+      console.error("Erro ao buscar os dados da API:", error);
+      return [];
+  }
+}
+
+// Função para gerar o CSV
+function generateCSV(rows) {
+  let csv = "\uFEFF"; // Adicionar BOM para UTF-8
+  rows.forEach(row => {
+      csv += row.map(cell => `"${cell}"`).join(",") + "\n";
+  });
+  return csv;
+}
+
+// Função para formatar a duração (sua implementação existente)
+function formatDuration(durationInMinutes) {
+  const hours = Math.floor(durationInMinutes / 60);
+  const minutes = durationInMinutes % 60;
+  return `${hours}h ${minutes}min`;
+}
+
+
+
