@@ -1,16 +1,11 @@
--- drop database kronosbooking;
+drop database kronosbooking;
 create database if not exists kronosbooking;
 USE kronosbooking;
 
 -- Dropar as tabelas existentes
--- Dropar as tabelas existentes
 DROP TABLE IF EXISTS feedback;
 DROP TABLE IF EXISTS agendamento;
-DROP TABLE IF EXISTS agendamento;
 DROP TABLE IF EXISTS profissional;
-DROP TABLE IF EXISTS cliente;
-DROP TABLE IF EXISTS mensagem;
-DROP TABLE IF EXISTS Leads;
 DROP TABLE IF EXISTS cliente;
 DROP TABLE IF EXISTS mensagem;
 DROP TABLE IF EXISTS Leads;
@@ -18,7 +13,6 @@ DROP TABLE IF EXISTS resposta;
 DROP TABLE IF EXISTS pergunta;
 DROP TABLE IF EXISTS especificacao;
 DROP TABLE IF EXISTS procedimento;
-DROP TABLE IF EXISTS login_logoff;
 DROP TABLE IF EXISTS login_logoff;
 DROP TABLE IF EXISTS usuario;
 DROP TABLE IF EXISTS ficha_anamnese;
@@ -83,15 +77,7 @@ CREATE TABLE usuario (
     indicacao VARCHAR(255),
     foto LONGBLOB,
     avaliacao INT,
-    avaliacao INT,
     status BOOLEAN DEFAULT TRUE,
-    dtype VARCHAR(31),
-    experiencia_avaliada VARCHAR(255),
-    frequencia INT,
-    especialidade VARCHAR(255),
-    media_nota FLOAT(53),
-    numero_avaliacoes INT,
-    qualificacoes VARCHAR(255),
     dtype VARCHAR(31),
     experiencia_avaliada VARCHAR(255),
     frequencia INT,
@@ -109,12 +95,6 @@ CREATE TABLE usuario (
     FOREIGN KEY (fk_ficha_anamnese) REFERENCES ficha_anamnese(id_ficha)
 );
 
-CREATE TABLE login_logoff (
-    id_log INT AUTO_INCREMENT PRIMARY KEY,
-    logi VARCHAR(5) NOT NULL,
-    data_horario DATETIME NOT NULL,
-    fk_usuario INT NOT NULL,
-    FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario)
 CREATE TABLE login_logoff (
     id_log INT AUTO_INCREMENT PRIMARY KEY,
     logi VARCHAR(5) NOT NULL,
@@ -143,10 +123,6 @@ CREATE TABLE especificacao (
     homecare BOOLEAN NOT NULL,
     manutencao BOOLEAN NOT NULL,
     retirada BOOLEAN NOT NULL,
-    colocacao BOOLEAN NOT NULL,
-    homecare BOOLEAN NOT NULL,
-    manutencao BOOLEAN NOT NULL,
-    retirada BOOLEAN NOT NULL,
     fk_procedimento INT NOT NULL,
     FOREIGN KEY (fk_procedimento) REFERENCES procedimento(id_procedimento)
 );
@@ -164,7 +140,6 @@ CREATE TABLE resposta (
     fk_pergunta INT NOT NULL,
     fk_ficha_anamnese INT NOT NULL,
     fk_usuario INT NOT NULL,
-    FOREIGN KEY (fk_pergunta) REFERENCES pergunta(id_pergunta) ON DELETE CASCADE,
     FOREIGN KEY (fk_pergunta) REFERENCES pergunta(id_pergunta) ON DELETE CASCADE,
     FOREIGN KEY (fk_ficha_anamnese) REFERENCES ficha_anamnese(id_ficha),
     FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
@@ -217,13 +192,14 @@ CREATE TABLE cliente (
 );
 
 CREATE TABLE profissional (
-     id_usuario INT PRIMARY KEY,
-     numero_avaliacoes INT,
-     media_nota DOUBLE,
-     qualificacoes VARCHAR(255),
-     especialidade VARCHAR(255),
-     FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
+    id_usuario INT PRIMARY KEY,
+    numero_avaliacoes INT DEFAULT 10,
+    media_nota DECIMAL(5, 2) DEFAULT 4.0, 
+    qualificacoes VARCHAR(255),
+    especialidade VARCHAR(255),
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
 );
+
 
 CREATE TABLE mensagem (
     id_mensagem INT AUTO_INCREMENT PRIMARY KEY,
@@ -240,7 +216,6 @@ CREATE TABLE Leads (
     data_criacao DATETIME
 );
 
--- Inserções nas tabelas
 -- Inserções nas tabelas
 INSERT INTO endereco (logradouro, cep, bairro, cidade, estado, numero, complemento)
 VALUES 
@@ -323,18 +298,7 @@ VALUES
 ('Cílios', 'Alongamento e volume de cílios');
 
 INSERT INTO especificacao (especificacao, preco_colocacao, preco_manutencao, preco_retirada, tempo_colocacao, tempo_manutencao, tempo_retirada, colocacao, homecare, manutencao, retirada, fk_procedimento)
-INSERT INTO especificacao (especificacao, preco_colocacao, preco_manutencao, preco_retirada, tempo_colocacao, tempo_manutencao, tempo_retirada, colocacao, homecare, manutencao, retirada, fk_procedimento)
 VALUES 
-('Extensão de Cílios Fio a Fio', 150.00, 100.00, 50.00, '02:00', '01:30', '01:00', TRUE, FALSE, TRUE, TRUE, 3),
-('Extensão de Cílios Volume Russo', 200.00, 120.00, 70.00, '02:30', '01:40', '01:10', TRUE, FALSE, TRUE, TRUE, 3),
-('Design de Sobrancelhas', 80.00, 50.00, 30.00, '00:40', '00:30', '00:20', TRUE, FALSE, TRUE, TRUE, 2),
-('Micropigmentação de Sobrancelhas', 250.00, 150.00, 80.00, '03:00', '02:00', '01:30', TRUE, FALSE, TRUE, TRUE, 2),
-('Henna para Sobrancelhas', 70.00, 40.00, 20.00, '01:00', '00:45', '00:30', TRUE, FALSE, TRUE, TRUE, 2),
-('Maquiagem Social', 100.00, 0.00, 0.00, '01:30', '00:00', '00:00', TRUE, FALSE, FALSE, FALSE, 1),
-('Maquiagem para Noivas', 300.00, 0.00, 0.00, '03:00', '00:00', '00:00', TRUE, FALSE, FALSE, FALSE, 1),
-('Lifting de Cílios', 120.00, 80.00, 40.00, '01:30', '01:00', '00:45', TRUE, TRUE, TRUE, TRUE, 3),
-('Maquiagem Artística', 200.00, 0.00, 0.00, '02:00', '00:00', '00:00', TRUE, FALSE, FALSE, FALSE, 1),
-('Maquiagem para Eventos', 150.00, 0.00, 0.00, '02:00', '00:00', '00:00', TRUE, FALSE, FALSE, FALSE, 1);
 ('Extensão de Cílios Fio a Fio', 150.00, 100.00, 50.00, '02:00', '01:30', '01:00', TRUE, FALSE, TRUE, TRUE, 3),
 ('Extensão de Cílios Volume Russo', 200.00, 120.00, 70.00, '02:30', '01:40', '01:10', TRUE, FALSE, TRUE, TRUE, 3),
 ('Design de Sobrancelhas', 80.00, 50.00, 30.00, '00:40', '00:30', '00:20', TRUE, FALSE, TRUE, TRUE, 2),
@@ -415,11 +379,7 @@ VALUES
 ('Finalizado', '#3366CC', 'Atendimento finalizado com sucesso');
 -- Inserindo agendamentos para garantir que os usuários fidelizados apareçam
 INSERT INTO agendamento (id_agendamento, data_horario, tipo_agendamento, tempo_para_agendar, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status, homecare, valor, cep, logradouro, numero) VALUES
-INSERT INTO agendamento (id_agendamento, data_horario, tipo_agendamento, tempo_para_agendar, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status, homecare, valor, cep, logradouro, numero) VALUES
 -- Agendamentos para Maria Silva (id_usuario = 7)
-(1, '2024-07-15 09:00:00', 'Manutencao', 30, 7, 1, 2, 1, 0, 120.50, '12345678', 'Rua Maria', '100'),
-(2, '2024-08-12 11:00:00', 'Colocacao', 40, 7, 1, 3, 1, 1, 150.00, '23456789', 'Av. Silva', '200'),
-(3, '2024-09-10 14:00:00', 'Retirada', 35, 7, 1, 1, 1, 0, 80.75, '34567890', 'Rua Pedro', '300'),
 (1, '2024-07-15 09:00:00', 'Manutencao', 30, 7, 1, 2, 1, 0, 120.50, '12345678', 'Rua Maria', '100'),
 (2, '2024-08-12 11:00:00', 'Colocacao', 40, 7, 1, 3, 1, 1, 150.00, '23456789', 'Av. Silva', '200'),
 (3, '2024-09-10 14:00:00', 'Retirada', 35, 7, 1, 1, 1, 0, 80.75, '34567890', 'Rua Pedro', '300'),
@@ -428,22 +388,13 @@ INSERT INTO agendamento (id_agendamento, data_horario, tipo_agendamento, tempo_p
 (4, '2024-07-10 10:00:00', 'Manutencao', 20, 8, 2, 3, 1, 0, 100.00, '45678901', 'Rua Carla', '400'),
 (5, '2024-08-08 12:00:00', 'Colocacao', 30, 8, 2, 2, 1, 1, 200.00, '56789012', 'Av. Borges', '500'),
 (6, '2024-09-05 13:00:00', 'Retirada', 25, 8, 2, 1, 1, 0, 90.25, '67890123', 'Rua São Paulo', '600'),
-(4, '2024-07-10 10:00:00', 'Manutencao', 20, 8, 2, 3, 1, 0, 100.00, '45678901', 'Rua Carla', '400'),
-(5, '2024-08-08 12:00:00', 'Colocacao', 30, 8, 2, 2, 1, 1, 200.00, '56789012', 'Av. Borges', '500'),
-(6, '2024-09-05 13:00:00', 'Retirada', 25, 8, 2, 1, 1, 0, 90.25, '67890123', 'Rua São Paulo', '600'),
 
 -- Agendamentos para Pedro Marques (id_usuario = 9)
 (7, '2024-07-20 09:30:00', 'Colocacao', 45, 9, 3, 1, 1, 1, 180.60, '78901234', 'Rua Pedro', '700'),
 (8, '2024-08-18 10:30:00', 'Manutencao', 50, 9, 3, 2, 1, 0, 110.00, '89012345', 'Av. Marques', '800'),
 (9, '2024-09-15 11:30:00', 'Retirada', 30, 9, 3, 1, 1, 1, 130.45, '90123456', 'Rua Centro', '900'),
-(7, '2024-07-20 09:30:00', 'Colocacao', 45, 9, 3, 1, 1, 1, 180.60, '78901234', 'Rua Pedro', '700'),
-(8, '2024-08-18 10:30:00', 'Manutencao', 50, 9, 3, 2, 1, 0, 110.00, '89012345', 'Av. Marques', '800'),
-(9, '2024-09-15 11:30:00', 'Retirada', 30, 9, 3, 1, 1, 1, 130.45, '90123456', 'Rua Centro', '900'),
 
 -- Agendamentos para Ana Martins (id_usuario = 10)
-(10, '2024-07-05 09:30:00', 'Colocacao', 25, 10, 1, 3, 1, 1, 160.20, '01234567', 'Rua Ana', '1000'),
-(11, '2024-08-02 10:30:00', 'Manutencao', 40, 10, 1, 2, 1, 0, 140.00, '12345678', 'Av. Martins', '1100'),
-(12, '2024-09-12 12:30:00', 'Retirada', 35, 10, 1, 1, 1, 1, 110.50, '23456789', 'Rua Bela', '1200');
 (10, '2024-07-05 09:30:00', 'Colocacao', 25, 10, 1, 3, 1, 1, 160.20, '01234567', 'Rua Ana', '1000'),
 (11, '2024-08-02 10:30:00', 'Manutencao', 40, 10, 1, 2, 1, 0, 140.00, '12345678', 'Av. Martins', '1100'),
 (12, '2024-09-12 12:30:00', 'Retirada', 35, 10, 1, 1, 1, 1, 110.50, '23456789', 'Rua Bela', '1200');
@@ -476,7 +427,7 @@ INSERT INTO Leads (nome, email, telefone, instagram, mensagem, data_criacao)
 VALUES 
 ('Maria Silva', 'maria.silva@example.com', 11987654321, '@mariasilva', 'Gostaria de saber mais sobre seus serviços.', NOW()),
 ('João Pereira', 'joao.pereira@example.com', 11912345678, '@joaopereira', 'Tenho interesse em fazer uma extensão de cílios.', NOW()),
-('Ana Souza', 'ana.souza@example.com', 11987611234, '@anasouza', 'Quais são os valores para design de sobrancelha?', NOW()),
+('Ana Souza', 'ana.souza@example.com', 11987611234, NULL, 'Quais são os valores para design de sobrancelha?', NOW()),
 ('Carla Oliveira', 'carla.oliveira@example.com', 11933332222, '@carlaoliveira', 'Vi uma promoção no Instagram e quero mais detalhes.', NOW()),
 ('Pedro Santos', 'pedro.santos@example.com', 11998765432, '@pedrosantos', 'Como funciona o procedimento de volume russo?', NOW());
 
@@ -552,7 +503,6 @@ INSERT INTO login_logoff (logi, data_horario, fk_usuario) VALUES
 ('LOGOF', '2023-03-05 09:00:00', 5),
 ('LOGIN', '2023-06-15 08:00:00', 5),
 
-
 ('LOGOF', '2023-06-15 09:00:00', 5),
 
 ('LOGIN', '2023-03-10 09:30:00', 6),
@@ -585,7 +535,6 @@ INSERT INTO login_logoff (logi, data_horario, fk_usuario) VALUES
 ('LOGOF', '2023-03-05 08:00:00', 10);
 
 DROP PROCEDURE IF EXISTS gerar_agendamentos_aleatorios;
-DROP PROCEDURE IF EXISTS gerar_agendamentos_aleatorios;
 
 DELIMITER //
 
@@ -595,7 +544,6 @@ BEGIN
   DECLARE fim DATE;
   DECLARE qtd_agendamentos INT;
 
-  DECLARE hora_aleatoria INT;
   DECLARE hora_aleatoria INT;
   DECLARE mes_atual INT;
   DECLARE usuario_fidelizado INT;
@@ -634,23 +582,11 @@ BEGIN
           SET hora_aleatoria = hora_aleatoria + 30;  -- Adiciona 30 minutos
         END IF;
 
-        -- Geração de hora aleatória com minutos 00 ou 30
-        SET hora_aleatoria = 9 + FLOOR(RAND() * 9);  -- Gera a hora entre 09 e 17
-        SET hora_aleatoria = hora_aleatoria * 100;  -- Multiplica para ajustar a hora, sem minutos
-        -- Ajusta os minutos para 00 ou 30
-        IF FLOOR(RAND() * 2) = 0 THEN
-          SET hora_aleatoria = hora_aleatoria + 0;  -- Adiciona 00 minutos
-        ELSE
-          SET hora_aleatoria = hora_aleatoria + 30;  -- Adiciona 30 minutos
-        END IF;
-
         SET tempo_aleatorio = 15 + FLOOR(RAND() * 106);
         SET usuario_fidelizado = CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(@usuarios_fidelizados, ',', FLOOR(1 + (RAND() * 4))), ',', -1) AS UNSIGNED);
 
         INSERT INTO agendamento (data_horario, tipo_agendamento, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status, tempo_para_agendar, homecare, valor, cep, logradouro, numero)
-        INSERT INTO agendamento (data_horario, tipo_agendamento, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status, tempo_para_agendar, homecare, valor, cep, logradouro, numero)
         SELECT 
-          CONCAT(dia_atual, ' ', LPAD(hora_aleatoria DIV 100, 2, '0'), ':', LPAD(hora_aleatoria MOD 100, 2, '0')) AS data_horario, 
           CONCAT(dia_atual, ' ', LPAD(hora_aleatoria DIV 100, 2, '0'), ':', LPAD(hora_aleatoria MOD 100, 2, '0')) AS data_horario, 
           CASE FLOOR(RAND() * 2) 
             WHEN 0 THEN 'Colocação'
@@ -660,12 +596,6 @@ BEGIN
           FLOOR(1 + (RAND() * 3)) AS fk_procedimento, 
           FLOOR(1 + (RAND() * 10)) AS fk_especificacao_procedimento, 
           FLOOR(1 + (RAND() * 10)) AS fk_status,  -- Gera um status aleatório entre 1 e 10
-          tempo_aleatorio AS tempo_para_agendar,
-          FLOOR(RAND() * 2) AS homecare,  -- Gera um valor aleatório entre 0 e 1 (não ou sim)
-          ROUND(RAND() * 200, 2) AS valor,  -- Gera um valor aleatório entre 0 e 200, com duas casas decimais
-          LPAD(FLOOR(RAND() * 100000000), 8, '0') AS cep,  -- Gera um CEP aleatório de 8 dígitos
-          CONCAT('Rua ', FLOOR(1 + (RAND() * 100))) AS logradouro,  -- Gera um logradouro aleatório
-          FLOOR(1 + (RAND() * 200)) AS numero  -- Gera um número aleatório
           tempo_aleatorio AS tempo_para_agendar,
           FLOOR(RAND() * 2) AS homecare,  -- Gera um valor aleatório entre 0 e 1 (não ou sim)
           ROUND(RAND() * 200, 2) AS valor,  -- Gera um valor aleatório entre 0 e 200, com duas casas decimais
@@ -689,7 +619,6 @@ END //
 DELIMITER ;
 
 -- Chamada da procedure para gerar agendamentos
--- Chamada da procedure para gerar agendamentos
 CALL gerar_agendamentos_aleatorios();
 CALL gerar_agendamentos_aleatorios();
 CALL gerar_agendamentos_aleatorios();
@@ -708,5 +637,4 @@ VALUES
 ('Adorei o resultado final! Super recomendo.', 5, 10, 2, 5);
 
 select * from agendamento;
-
-select * from leads;
+select * from usuario;
