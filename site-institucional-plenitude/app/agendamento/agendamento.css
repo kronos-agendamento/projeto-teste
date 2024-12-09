@@ -565,11 +565,13 @@ Inicio Tabela de procedimentos
 .btn-save {
   background-color: #28a745;
   color: white;
+  font-family: Poppins;
 }
 
 .modal-content .btn-no {
   background-color: #dc3545;
   color: white;
+  font-family: Poppins;
 }
 
 .modal-content .btn-yes:hover {
@@ -591,6 +593,8 @@ Inicio Tabela de procedimentos
   text-align: center;
   display: flex;
   flex-direction: column;
+  font-family: Poppins;
+  
 }
 
 .modal-content2 p {
@@ -612,11 +616,13 @@ Inicio Tabela de procedimentos
 .btn-save {
   background-color: #28a745;
   color: white;
+  font-family: Poppins;
 }
 
 .modal-content2 .btn-no {
   background-color: #dc3545;
   color: white;
+  font-family: Poppins;
 }
 
 .modal-content2 .btn-yes:hover {

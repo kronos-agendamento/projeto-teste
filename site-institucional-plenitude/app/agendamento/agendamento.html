@@ -157,7 +157,7 @@
             </p>
           </div>
           <div id="notification" class="notification">
-            <svg
+            <!-- <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
               height="20"
@@ -168,7 +168,7 @@
               <path
                 d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z"
               />
-            </svg>
+            </svg> -->
             <span id="notification-message"></span>
           </div>
         </header>
@@ -457,10 +457,10 @@
 
     <div id="delete-modal" class="modal">
       <div class="modal-content">
-        <p>Tem certeza que deseja excluir o status?</p>
+        <p>Tem certeza que deseja <b>excluir</b> o status?</p>
         <p id="status-name"></p>
-        <button class="btn btn-yes" onclick="confirmDeletion2()">SIM</button>
-        <button class="btn btn-no" onclick="closeDeleteModal()">NÃO</button>
+        <button class="btn btn-yes" onclick="confirmDeletion2()">Sim</button>
+        <button class="btn btn-no" onclick="closeDeleteModal()">Não</button>
       </div>
     </div>
 
@@ -574,7 +574,7 @@
           >
             Atendimento Concluído
           </button>
-          <button id="select-status-btn" class="btn btn-select">
+          <button id="select-status-btn" class="btn btn-select" style="font-family: Poppins;">
             Selecionar Status
           </button>
         </div>
@@ -617,7 +617,7 @@
     </script>
 
     <div id="export-modal" class="modal">
-      <div class="modal-content" style="width: 40%; height: 40%">
+      <div class="modal-content" style="width: 40%; height: 45%">
         <h3>Exportar Agendamentos</h3>
         <p>Escolha quais agendamentos deseja exportar:</p>
         <div class="export-buttons">
