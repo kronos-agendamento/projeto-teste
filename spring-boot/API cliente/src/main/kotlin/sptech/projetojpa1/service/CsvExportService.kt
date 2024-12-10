@@ -11,8 +11,16 @@ class CsvExportService {
 
     fun gerarCsv(dadosRequest: DadosExportRequest): ByteArray {
         val outputStream = ByteArrayOutputStream()
+
+        // Escrevendo o BOM para UTF-8
+        outputStream.write(0xEF)
+        outputStream.write(0xBB)
+        outputStream.write(0xBF)
+
         val writer = OutputStreamWriter(outputStream, Charsets.UTF_8)
         val formatter = Formatter(writer)
+
+
 
         // Escrevendo o cabeçalho do CSV
         formatter.format("Título;Dado;Data Início;Data Fim\n")
