@@ -5,7 +5,6 @@
 }
 
 .form-section {
-  width: 153vh;
   background-color: #fff0f5;
   margin-bottom: 20px;
   margin-left: 50px;
@@ -155,10 +154,12 @@
 .horario-button {
   padding: 10px;
   border: none;
-  border-radius: 50%;
+  border-radius: 25%;
   background-color: #f0f0f0;
   cursor: pointer;
   transition: background-color 0.3s;
+  margin-left: 2vh;
+  margin-bottom: 2vh;
 }
 
 .horario-button:hover {

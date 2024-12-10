@@ -21,7 +21,7 @@
 
   <body>
     <div class="corpo">
-      <div class="navigation">
+      <div class="navigation" style="height: 190vh;">
         <li
           class="list"
           style="
@@ -159,7 +159,7 @@
             </p>
           </div>
           <div id="notification" class="notification">
-            <svg
+            <!-- <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
               height="20"
@@ -170,7 +170,7 @@
               <path
                 d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zM12.03 5.97a.75.75 0 1 0-1.06-1.06L7 8.94 5.53 7.47a.75.75 0 1 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z"
               />
-            </svg>
+            </svg> -->
             <span id="notification-message"></span>
           </div>
         </header>
@@ -232,7 +232,54 @@
                     >
                       <option value="">Selecione uma especificação</option>
                     </select>
+                    <div
+                    style="
+                      display: flex;
+                      width: 100%;
+                      align-items: flex-start;
+                      margin-top: 3vh;
+                    "
+                  >
+                    <!-- Campo de CEP -->
+                    <div
+                      class="form-group hidden form-input"
+                      id="cep-group"
+                      style="width: 50%"
+                    >
+                      <label for="cep">CEP:</label>
+                      <input
+                        type="text"
+                        id="cep"
+                        placeholder="Insira o CEP"
+                        maxlength="9"
+                      />
+                    </div>
+
+                    <!-- Campo de Número -->
+                    <div
+                      class="form-group hidden form-input"
+                      id="numero-group"
+                      style="width: 50%; margin-left: 10px"
+                    >
+                      <label for="numero">Número:</label>
+                      <input
+                        type="text"
+                        id="numero"
+                        placeholder="Insira o número"
+                        maxlength="10"
+                      />
+                    </div>
                   </div>
+                <div id="taxa-total" class="hidden" >
+                    <p>
+                     <span id="valor-taxa"></span>
+                    </p>
+                    <p>
+                      <span id="total-km"></span>
+                    </p>
+                  </div> 
+                  </div>
+                  
                   <div style="width: 100%">
                     <div class="form-group form-input" style="width: 100%">
                       <label for="localidade">Localidade:</label>
@@ -242,43 +289,7 @@
                         <option value="Homecare">Homecare</option>
                       </select>
                     </div>
-                    <div
-                      style="
-                        display: flex;
-                        width: 100%;
-                        align-items: flex-start;
-                      "
-                    >
-                      <!-- Campo de CEP -->
-                      <div
-                        class="form-group hidden form-input"
-                        id="cep-group"
-                        style="width: 50%"
-                      >
-                        <label for="cep">CEP:</label>
-                        <input
-                          type="text"
-                          id="cep"
-                          placeholder="Insira o CEP"
-                          maxlength="9"
-                        />
-                      </div>
-
-                      <!-- Campo de Número -->
-                      <div
-                        class="form-group hidden form-input"
-                        id="numero-group"
-                        style="width: 50%; margin-left: 10px"
-                      >
-                        <label for="numero">Número:</label>
-                        <input
-                          type="text"
-                          id="numero"
-                          placeholder="Insira o número"
-                          maxlength="10"
-                        />
-                      </div>
-                    </div>
+                   
 
                     <!-- Campo de endereço -->
                     <div
@@ -294,16 +305,7 @@
                         readonly
                         style="width: 100%"
                       />
-                      <div id="taxa-total" class="hidden">
-                        <p>
-                          <strong>Taxa Total Cobrada:</strong>
-                          <span id="valor-taxa"></span>
-                        </p>
-                        <p>
-                          <strong>Total de Km's até o local:</strong>
-                          <span id="total-km"></span>
-                        </p>
-                      </div>
+                     
                     </div>
                   </div>
                 </form>

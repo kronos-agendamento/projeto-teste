@@ -22,7 +22,7 @@ body {
 
 .container {
   display: flex;
-  width: 100%;
+  width: 90%;
 }
 
 .edit-btn,
@@ -33,6 +33,7 @@ body {
   cursor: pointer;
   font-size: 16px;
   padding: 2px;
+  font-family: Poppins;
 }
 
 aside {
@@ -564,11 +565,13 @@ Inicio Tabela de procedimentos
 .btn-save {
   background-color: #28a745;
   color: white;
+  font-family: Poppins;
 }
 
 .modal-content .btn-no {
   background-color: #dc3545;
   color: white;
+  font-family: Poppins;
 }
 
 .modal-content .btn-yes:hover {
@@ -590,6 +593,8 @@ Inicio Tabela de procedimentos
   text-align: center;
   display: flex;
   flex-direction: column;
+  font-family: Poppins;
+  
 }
 
 .modal-content2 p {
@@ -611,11 +616,13 @@ Inicio Tabela de procedimentos
 .btn-save {
   background-color: #28a745;
   color: white;
+  font-family: Poppins;
 }
 
 .modal-content2 .btn-no {
   background-color: #dc3545;
   color: white;
+  font-family: Poppins;
 }
 
 .modal-content2 .btn-yes:hover {
@@ -846,6 +853,7 @@ select {
   margin-left: 0.2vw;
   margin-top: 15px;
   width: 50%;
+  font-family: Poppins;
 }
 
 .disabled-input {
@@ -958,6 +966,7 @@ table tr.clickable-row:hover {
   top: 120px; /* Ajuste conforme necessário */
   left: 32%;
   transform: translateX(-50%);
+  font-family: Poppins;
 }
 
 /* Estilos do tooltip */
@@ -974,6 +983,7 @@ table tr.clickable-row:hover {
   top: 120px; /* Ajuste conforme necessário */
   left: 40%;
   transform: translateX(-50%);
+  font-family: Poppins;
 }
 
 .tooltip3 {
@@ -989,6 +999,7 @@ table tr.clickable-row:hover {
   top: 120px; /* Ajuste conforme necessário */
   left: 65%;
   transform: translateX(-50%);
+  font-family: Poppins;
 }
 
 .tooltip4 {
@@ -1004,6 +1015,7 @@ table tr.clickable-row:hover {
   top: 120px; /* Ajuste conforme necessário */
   left: 79%;
   transform: translateX(-50%);
+  font-family: Poppins;
 }
 
 .tooltip5 {
@@ -1019,6 +1031,7 @@ table tr.clickable-row:hover {
   top: 120px; /* Ajuste conforme necessário */
   left: 90%;
   transform: translateX(-50%);
+  font-family: Poppins;
 }
 
 /* Estilos do tooltip */
@@ -1035,6 +1048,7 @@ table tr.clickable-row:hover {
   top: -25px; /* Posiciona o tooltip abaixo do botão */
   margin-left: -70px; /* Centraliza horizontalmente */
   transform: translateX(-50%); /* Ajusta a posição para centralizar */
+  font-family: Poppins;
 }
 
 .tooltip7 {
