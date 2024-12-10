@@ -21,7 +21,7 @@
 
   <body>
     <div class="corpo">
-      <div class="navigation">
+      <div class="navigation" style="height: 190vh;">
         <li
           class="list"
           style="
@@ -144,6 +144,7 @@
       </div>
 
       <main>
+        
         <header
           style="
             height: 14vh;
@@ -158,8 +159,8 @@
               Essa página é destinada para a edição de um agendamento.
             </p>
           </div>
-          <!-- <div id="notification" class="notification">
-            <svg
+          <div id="notification" class="notification">
+            <!-- <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
               height="20"
@@ -232,21 +233,12 @@
                     >
                       <option value="">Selecione uma especificação</option>
                     </select>
-                  </div>
-                  <div style="width: 100%">
-                    <div class="form-group form-input" style="width: 100%">
-                      <label for="localidade">Localidade:</label>
-                      <select id="localidade" name="localidade" disabled>
-                        <option value="">Selecione a localidade</option>
-                        <option value="Presencial">Presencial</option>
-                        <option value="Homecare">Homecare</option>
-                      </select>
-                    </div>
                     <div
                       style="
                         display: flex;
                         width: 100%;
                         align-items: flex-start;
+                        margin-top: 3vh;
                       "
                     >
                       <!-- Campo de CEP -->
@@ -279,6 +271,17 @@
                         />
                       </div>
                     </div>
+                  </div>
+                  <div style="width: 100%">
+                    <div class="form-group form-input" style="width: 100%">
+                      <label for="localidade">Localidade:</label>
+                      <select id="localidade" name="localidade" disabled>
+                        <option value="">Selecione a localidade</option>
+                        <option value="Presencial">Presencial</option>
+                        <option value="Homecare">Homecare</option>
+                      </select>
+                    </div>
+                    
 
                     <!-- Campo de endereço -->
                     <div
