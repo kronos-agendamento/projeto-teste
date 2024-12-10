@@ -402,8 +402,8 @@ document.addEventListener("DOMContentLoaded", function () {
       try {
         const km = await calcularDistancia(endereco);
         const taxa = km * gasolina + maoObra;
-        valorTaxaSpan.textContent = `R$ ${taxa.toFixed(2)}`;
-        totalKmSpan.textContent = `${km.toFixed(2)} km`;
+        valorTaxaSpan.textContent = `Taxa Total Cobrada: R$ ${taxa.toFixed(2)}`;
+        totalKmSpan.textContent = `Total de KM's até o local:${km.toFixed(2)}`;
         taxaTotalDiv.classList.remove("hidden");
         return taxa;
       } catch (error) {
@@ -563,6 +563,56 @@ document.addEventListener("DOMContentLoaded", function () {
   carregarClientes();
   carregarProcedimentos();
   carregarEspecificacoes();
+
+  new window.VLibras.Widget("https://vlibras.gov.br/app");
+});
+
+async function carregarImagem2() {
+  const cpf = localStorage.getItem("cpf"); // Captura o valor do CPF a cada execução
+  const perfilImage = document.getElementById("perfilImage");
+
+  if (!cpf) {
+      console.log("CPF não encontrado.");
+      return;
+  }
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/usuarios/busca-imagem-usuario-cpf/${cpf}`,
+      {
+        method: "GET",
+      }
+    );
+
+      if (response.ok) {
+          const blob = await response.blob(); // Recebe a imagem como Blob
+          const imageUrl = URL.createObjectURL(blob); // Cria uma URL temporária para o Blob
+
+          // Define a URL da imagem carregada como src do img
+          perfilImage.src = imageUrl;
+          perfilImage.alt = "Foto do usuário";
+          perfilImage.style.width = "20vh";
+          perfilImage.style.height = "20vh";
+          perfilImage.style.borderRadius = "300px";
+      } else {
+          console.log("Imagem não encontrada para o CPF informado.");
+      }
+  } catch (error) {
+      console.error("Erro ao buscar a imagem:", error);
+  }
+}
+
+// Carrega a imagem automaticamente quando a página termina de carregar
+window.onload = carregarImagem2;
+
+document.addEventListener("DOMContentLoaded", function () {
+  const nome = localStorage.getItem("nome");
+  const instagram = localStorage.getItem("instagram");
+
+  if (nome && instagram) {
+    document.getElementById("userName").textContent = nome;
+    document.getElementById("userInsta").textContent = instagram;
+  }
 
   new window.VLibras.Widget("https://vlibras.gov.br/app");
 });
