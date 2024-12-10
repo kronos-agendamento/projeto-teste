@@ -186,9 +186,16 @@ class AgendamentoService(
         return agendamentoRepository.findAgendamentosPorIntervalo(startDate, endDate)
     }
 
-    fun agendamentosRealizadosUltimos5Meses(): List<Int> {
-        return agendamentoRepository.findAgendamentosConcluidosUltimos5Meses()
+    fun agendamentosRealizados(startDate: String, endDate: String): Map<String, Int> {
+        val resultados = agendamentoRepository.findAgendamentosConcluidos(startDate, endDate)
+        return resultados.associate {
+            val mesAno = it["mes_ano"] as String
+            val quantidade = (it["quantidade_agendamentos"] as Number).toInt()
+            mesAno to quantidade
+        }
     }
+
+
 
     fun listarHorariosDisponiveis(
         empresaId: Int,

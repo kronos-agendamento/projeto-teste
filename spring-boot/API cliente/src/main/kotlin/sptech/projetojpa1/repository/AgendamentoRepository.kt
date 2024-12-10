@@ -290,19 +290,25 @@ WHERE
 
     @Query(
         nativeQuery = true, value = """ 
-        SELECT 
-                COUNT(*) AS quantidade_agendamentos
-            FROM 
-                agendamento
-            WHERE 
-                data_horario >= DATE_SUB(CURDATE(), INTERVAL 5 MONTH)
-            GROUP BY 
-                YEAR(data_horario), MONTH(data_horario)
-            ORDER BY 
-                YEAR(data_horario) DESC, MONTH(data_horario) DESC;
-        """
+    SELECT 
+    DATE_FORMAT(data_horario, '%Y-%m') AS mes_ano, 
+    COUNT(*) AS quantidade_agendamentos
+FROM 
+    agendamento
+WHERE 
+    data_horario BETWEEN :startDate AND :endDate
+GROUP BY 
+    DATE_FORMAT(data_horario, '%Y-%m')
+ORDER BY 
+    mes_ano DESC;
+    """
     )
-    fun findAgendamentosConcluidosUltimos5Meses(): List<Int>
+    fun findAgendamentosConcluidos(
+        @Param("startDate") startDate: String,
+        @Param("endDate") endDate: String
+    ): List<Map<String, Any>>
+
+
 
     @Query("SELECT a FROM Agendamento a WHERE a.dataHorario BETWEEN :dataInicio AND :dataFim")
     fun findByDataHorarioBetween(

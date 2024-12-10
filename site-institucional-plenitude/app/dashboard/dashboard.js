@@ -1,24 +1,28 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+    // Obtém a data de hoje
     const today = new Date();
-    const endDate = today.toISOString().split("T")[0];
+    const endDate = today.toISOString().split("T")[0]; // Formato YYYY-MM-DD
 
     // Calcula a data de 3 meses atrás
     const startDate = new Date();
     startDate.setMonth(startDate.getMonth() - 3);
-    const startDateString = startDate.toISOString().split("T")[0];
+    const startDateString = startDate.toISOString().split("T")[0]; // Formato YYYY-MM-DD
 
-    // Preenche todos os campos de data automaticamente
-    const startDateFields = document.querySelectorAll('input[type="date"][id^="startDate"]');
-    const endDateFields = document.querySelectorAll('input[type="date"][id^="endDate"]');
+    // Atualiza os campos de data global
+    const startDateInput = document.getElementById("startDateGlobal");
+    const endDateInput = document.getElementById("endDateGlobal");
 
-    startDateFields.forEach(field => {
-        field.value = startDateString;
-    });
+    if (startDateInput) {
+        startDateInput.value = startDateString; // Define o valor no formato correto
+    }
 
-    endDateFields.forEach(field => {
-        field.value = endDate;
-    });
+    if (endDateInput) {
+        endDateInput.value = endDate; // Define o valor no formato correto
+    }
+
+    // Faz a chamada inicial para atualizar os filtros e gráficos
+    atualizarTodosOsFiltros("startDateGlobal", "endDateGlobal");
 
 
     // Função de atualização geral dos filtros
@@ -994,18 +998,34 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateChartUsabilidade1(data) {
-        labelsChartUsabilidade1 = data.map(item => {
-            const [year, month] = item[0].split("-"); // Divide "YYYY-MM-DD" em [year, month, day]
-            const date = new Date(year, month - 1);   // Cria uma data usando ano e mês (mês é zero-based)
-            return date.toLocaleDateString("pt-BR", { month: "long" }).charAt(0).toUpperCase() +
-                date.toLocaleDateString("pt-BR", { month: "long" }).slice(1);
-        });
-
-        dataChartUsabilidade1 = data.map(item => item[1]);
-
-
-        createChartUsabilidade1();
+        try {
+            // Verifica se os dados são válidos e têm o formato esperado
+            if (typeof data !== "object" || data === null || Object.keys(data).length === 0) {
+                console.error("Os dados fornecidos estão vazios ou não são um objeto.");
+                return;
+            }
+    
+            // Cria os rótulos com base nas chaves do objeto (mês e ano)
+            labelsChartUsabilidade1 = Object.keys(data);
+    
+            // Os valores do gráfico são os valores associados às chaves
+            dataChartUsabilidade1 = Object.values(data).map(item => {
+                if (typeof item !== "number") {
+                    console.error("O valor não é um número válido:", item);
+                    return 0; // Substitui valores inválidos por 0
+                }
+                return item;
+            });
+    
+            // Cria o gráfico com os dados processados
+            createChartUsabilidade1();
+        } catch (error) {
+            console.error("Erro ao processar os dados para o gráfico:", error);
+        }
     }
+    
+    
+    
 
 
 
@@ -1628,8 +1648,8 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById("userInsta").textContent = instagram;
     }
 
-    showContent(operacionalContent);
-    operacionalBtn.classList.add('active');
+    showContent(gerencialContent);
+    gerencialBtn.classList.add('active');
 });
 
 

@@ -281,12 +281,12 @@ VALUES
 INSERT INTO usuario (nome, email, senha, instagram, cpf, telefone, data_nasc, genero, indicacao, status, fk_nivel_acesso, fk_endereco, fk_empresa, fk_ficha_anamnese)
 VALUES 
 ('Priscila Plenitude', 'priscila@plenitude.com', 'senhaAdmin', '@plenitudenoolhar', '401.235.740-99', 11987654321, '1980-01-01', 'Feminino', 'Instagram', TRUE, 1, 1, 1, NULL),
-('Ana Paula', 'ana@beleza.com', 'senha123', '@anabeauty', '363.813.610-85', 21987654321, '1992-02-02', 'Feminino', 'Indicação de Amiga', TRUE, 2, 2, 2, 2),
-('Carlos Eduardo', 'carlos@olharperfeito.com', 'senha123', '@carlosedu', '166.801.900-02', 31987654322, '1995-03-03', 'Masculino', 'Facebook', TRUE, 2, 3, 3, 3),
-('Juliana Costa', 'juliana@glamour.com', 'senha123', '@jucosta', '058.534.810-37', 41987654323, '1990-04-04', 'Feminino', 'Google', TRUE, 2, 4, 4, 4),
-('Roberta Silva', 'roberta@ciliosdiva.com', 'senha123', '@robdiva', '735.394.060-34', 51987654324, '1993-05-05', 'Feminino', 'Instagram', TRUE, 2, 5, 5, 5),
-('Daniel Souza', 'daniel@makeup.com', 'senha123', '@danmake', '756.507.960-09', 61987654325, '1991-06-06', 'Masculino', 'Indicação de Influencer', TRUE, 2, 6, 6, 6),
-('Larissa Nunes', 'larissa@refinada.com', 'senha123', '@larissarefinada', '418.774.800-88', 71987654326, '1987-07-07', 'Feminino', 'Instagram', TRUE, 2, 7, 7, 7),
+('Gyulia Piqueira', 'gyulia.piqueira@sptech.school', 'senha123', '@gyuliapiqueira', '363.813.610-85', 21987654321, '1992-02-02', 'Feminino', 'Indicação de Amiga', TRUE, 2, 2, 2, 2),
+('César Martins', 'cesar.bmartins@sptech.school', 'senha123', '@cesinha_martin', '166.801.900-02', 31987654322, '1995-03-03', 'Masculino', 'Facebook', TRUE, 2, 3, 3, 3),
+('Gabriel Schiavo', 'gabriel.soliveira@sptech.school', 'senha123', '@biell_schiavo', '058.534.810-37', 41987654323, '1990-04-04', 'Masculino', 'Google', TRUE, 2, 4, 4, 4),
+('Ruan Montanari', 'ruan.montanari@sptech.school', 'senha123', '@ruan_rdz', '735.394.060-34', 51987654324, '1993-05-05', 'Masculino', 'Instagram', TRUE, 2, 5, 5, 5),
+('Rita de Cássia', 'rita.barbosa@sptech.school', 'senha123', '@srta.rita', '756.507.960-09', 61987654325, '1991-06-06', 'Feminino', 'Indicação de Influencer', TRUE, 2, 6, 6, 6),
+('Yan Coutinho', 'yan.cesario@sptech.school', 'senha123', '@yxn.yc', '418.774.800-88', 71987654326, '1987-07-07', 'Masculino', 'Instagram', TRUE, 2, 7, 7, 7),
 ('Tatiana Melo', 'tatiana@ouro.com', 'senha123', '@tatiouro', '491.260.810-67', 81987654327, '1985-08-08', 'Feminino', 'Indicação de Amiga', TRUE, 2, 8, 8, 8),
 ('Paula Gomes', 'paula@cilios.com', 'senha123', '@paulagomes', '701.221.130-04', 91987654328, '1982-09-09', 'Feminino', 'Indicação Familiar', TRUE, 2, 9, 9, 9),
 ('Marília Costa', 'cecilia@elegantes.com', 'senha123', '@ceciliaelegantes', '701.221.130-04', 11987654329, '1989-10-19', 'Feminino', 'Instagram', TRUE, 2, 10, 10, 10);
@@ -636,5 +636,23 @@ VALUES
 ('Profissional muito educado e atencioso.', 5, 7, 8, 3),
 ('Adorei o resultado final! Super recomendo.', 5, 10, 2, 5);
 
-select * from agendamento;
-select * from usuario;
+INSERT INTO agendamento (data_horario, tipo_agendamento, tempo_para_agendar, fk_usuario, fk_procedimento, fk_especificacao_procedimento, fk_status, homecare, valor, cep, logradouro, numero) VALUES
+-- Agendamentos para Maria Silva (id_usuario = 7)
+('2024-12-15 09:00:00', 'Manutencao', 30, 7, 1, 2, 1, 0, 120.50, '12345678', 'Rua Maria', '100'),
+('2024-12-12 11:00:00', 'Colocacao', 40, 7, 1, 3, 1, 1, 150.00, '23456789', 'Av. Silva', '200'),
+('2024-12-10 14:00:00', 'Retirada', 35, 7, 1, 1, 1, 0, 80.75, '34567890', 'Rua Pedro', '300'),
+
+-- Agendamentos para Carla Borges (id_usuario = 8)
+('2025-01-10 10:00:00', 'Manutencao', 20, 8, 2, 3, 1, 0, 100.00, '45678901', 'Rua Carla', '400'),
+('2025-02-08 12:00:00', 'Colocacao', 30, 8, 2, 2, 1, 1, 200.00, '56789012', 'Av. Borges', '500'),
+('2025-02-05 13:00:00', 'Retirada', 25, 8, 2, 1, 1, 0, 90.25, '67890123', 'Rua São Paulo', '600'),
+
+-- Agendamentos para Pedro Marques (id_usuario = 9)
+('2025-01-20 09:30:00', 'Colocacao', 45, 9, 3, 1, 1, 1, 180.60, '78901234', 'Rua Pedro', '700'),
+('2025-01-18 10:30:00', 'Manutencao', 50, 9, 3, 2, 1, 0, 110.00, '89012345', 'Av. Marques', '800'),
+('2025-02-15 11:30:00', 'Retirada', 30, 9, 3, 1, 1, 1, 130.45, '90123456', 'Rua Centro', '900'),
+
+-- Agendamentos para Ana Martins (id_usuario = 10)
+('2025-01-05 09:30:00', 'Colocacao', 25, 10, 1, 3, 1, 1, 160.20, '01234567', 'Rua Ana', '1000'),
+('2025-02-02 10:30:00', 'Manutencao', 40, 10, 1, 2, 1, 0, 140.00, '12345678', 'Av. Martins', '1100'),
+('2025-01-12 12:30:00', 'Retirada', 35, 10, 1, 1, 1, 1, 110.50, '23456789', 'Rua Bela', '1200');
